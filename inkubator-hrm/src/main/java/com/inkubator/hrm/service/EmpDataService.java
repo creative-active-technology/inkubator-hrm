@@ -63,6 +63,8 @@ public interface EmpDataService extends IService<EmpData> {
 
     public EmpData getByBioDataIdWithDepartment(long id) throws Exception;
 
+    public List<EmpData> getAllDataByNameOrNik(String param, Long companyId) throws Exception;
+    
     public List<EmpData> getAllDataByNameOrNik(String param) throws Exception;
 
     public EmpData getByIdWithDetail(long id) throws Exception;

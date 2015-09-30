@@ -166,8 +166,11 @@ public interface EmpDataDao extends IDAO<EmpData> {
      * get list
      *
      * @param param
+     * @param companyId TODO
      * @return
      */
+    public List<EmpData> getAllDataByNameOrNik(String param, Long companyId);
+    
     public List<EmpData> getAllDataByNameOrNik(String param);
 
     public List<EmpData> getAllDataByJabatanId(Long jabatanId, Order order);

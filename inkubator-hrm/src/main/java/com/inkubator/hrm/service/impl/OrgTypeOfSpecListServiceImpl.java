@@ -55,7 +55,7 @@ public class OrgTypeOfSpecListServiceImpl extends IServiceImpl implements OrgTyp
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public OrgTypeOfSpec getSpecTypeNameByOrgTypeOfSpecListId(Long id) throws Exception {
+    public OrgTypeOfSpecList getSpecTypeNameByOrgTypeOfSpecListId(Long id) throws Exception {
         return this.orgTypeOfSpecListDao.getSpecTypeNameByOrgTypeOfSpecListId(id);
     }
 

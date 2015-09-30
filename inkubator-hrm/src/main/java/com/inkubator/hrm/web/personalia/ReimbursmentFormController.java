@@ -14,6 +14,7 @@ import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.ReimbursmentSchemaService;
 import com.inkubator.hrm.service.ReimbursmentService;
 import com.inkubator.hrm.service.TransactionCodeficationService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.ReimbursmentModel;
@@ -245,7 +246,7 @@ public class ReimbursmentFormController extends BaseController {
     public List<EmpData> doAutoCompletEmployee(String param) {
         List<EmpData> empDatas = new ArrayList<EmpData>();
         try {
-            empDatas = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(param));
+            empDatas = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(param), HrmUserInfoUtil.getCompanyId());
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }

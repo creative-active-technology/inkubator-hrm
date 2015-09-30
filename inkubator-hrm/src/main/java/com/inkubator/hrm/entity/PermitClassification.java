@@ -48,6 +48,8 @@ public class PermitClassification implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private Integer batasMaju;
+    private Integer batasMudur;
     private Set<ApprovalDefinitionPermit> approvalDefinitionPermits = new HashSet<ApprovalDefinitionPermit>(0);
 
     public PermitClassification() {
@@ -298,4 +300,24 @@ public class PermitClassification implements java.io.Serializable {
         this.approvalDefinitionPermits = approvalDefinitionPermits;
     }
 
+    
+    @Column(name = "batas_maju")
+    public Integer getBatasMaju() {
+        return batasMaju;
+    }
+
+    public void setBatasMaju(Integer batasMaju) {
+        this.batasMaju = batasMaju;
+    }
+
+    @Column(name = "batas_mundur")
+    public Integer getBatasMudur() {
+        return batasMudur;
+    }
+
+    public void setBatasMudur(Integer batasMudur) {
+        this.batasMudur = batasMudur;
+    }
+    
+    
 }

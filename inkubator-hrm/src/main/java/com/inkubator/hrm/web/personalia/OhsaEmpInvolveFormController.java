@@ -28,6 +28,7 @@ import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.OhsaEmpInvolveService;
 import com.inkubator.hrm.service.OhsaIncidentService;
 import com.inkubator.hrm.service.SavingTypeService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.CompanyBankAccountModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -184,7 +185,7 @@ public class OhsaEmpInvolveFormController extends BaseController {
 
     public List<EmpData> completeEmpData(String query) {
         try {
-            List<EmpData> allEmpData = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(query));
+            List<EmpData> allEmpData = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(query), HrmUserInfoUtil.getCompanyId());
 
             return allEmpData;
         } catch (Exception ex) {

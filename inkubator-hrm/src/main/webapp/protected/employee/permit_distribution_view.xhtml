@@ -184,6 +184,14 @@
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['costcenter.balance']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{permitDistributionViewController.selected.balance}"/> </p:column>
                         </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.start_date']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{permitDistributionViewController.selected.startDate}"> <f:convertDateTime pattern="dd MMMM yyyy" /> </p:outputLabel> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.end_date']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{permitDistributionViewController.selected.endDate}"> <f:convertDateTime pattern="dd MMMM yyyy" /> </p:outputLabel> </p:column>
+                        </p:row>
                         
 
                         <f:facet name="footer">

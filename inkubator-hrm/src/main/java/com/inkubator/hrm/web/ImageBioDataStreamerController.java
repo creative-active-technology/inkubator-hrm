@@ -5,21 +5,18 @@
  */
 package com.inkubator.hrm.web;
 
-import com.inkubator.common.util.FilesUtil;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.BioDocument;
 import com.inkubator.hrm.entity.BioSertifikasi;
+import com.inkubator.hrm.entity.Document;
 import com.inkubator.hrm.entity.MedicalCare;
 import com.inkubator.hrm.entity.OhsaIncidentDocument;
 import com.inkubator.hrm.entity.PermitImplementation;
-import com.inkubator.hrm.entity.RecruitMppApply;
 import com.inkubator.hrm.entity.Reimbursment;
-import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.BioDataService;
 import com.inkubator.hrm.service.BioDocumentService;
 import com.inkubator.hrm.service.BioEducationHistoryService;
 import com.inkubator.hrm.service.BioSertifikasiService;
+import com.inkubator.hrm.service.DocumentService;
 import com.inkubator.hrm.service.MedicalCareService;
 import com.inkubator.hrm.service.OhsaIncidentDocumentService;
 import com.inkubator.hrm.service.PermitImplementationService;
@@ -28,7 +25,6 @@ import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesIO;
 import com.inkubator.webcore.util.FacesUtil;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.faces.bean.ApplicationScoped;
@@ -66,7 +62,8 @@ public class ImageBioDataStreamerController extends BaseController {
     private BioSertifikasiService bioSertifikasiService;
     @ManagedProperty(value = "#{ohsaIncidentDocumentService}")
     private OhsaIncidentDocumentService ohsaIncidentDocumentService;  
-    private StreamedContent ijazahFile;
+    @ManagedProperty(value = "#{documentService}")
+    private DocumentService documentService;
 
     public OhsaIncidentDocumentService getOhsaIncidentDocumentService() {
         return ohsaIncidentDocumentService;
@@ -114,6 +111,14 @@ public class ImageBioDataStreamerController extends BaseController {
 
     public void setBioSertifikasiService(BioSertifikasiService bioSertifikasiService) {
         this.bioSertifikasiService = bioSertifikasiService;
+    }
+
+    public DocumentService getDocumentService() {
+        return documentService;
+    }
+
+    public void setDocumentService(DocumentService documentService) {
+        this.documentService = documentService;
     }
     
     
@@ -369,5 +374,29 @@ public class ImageBioDataStreamerController extends BaseController {
             }
         }
     }
+    
+    public StreamedContent getReferenceDocumentFile() throws IOException {
+        FacesContext context = FacesUtil.getFacesContext();
+        String id = context.getExternalContext().getRequestParameterMap().get("id");
+        if (context.getRenderResponse() || id == null) {
+            return new DefaultStreamedContent();
+        } else {
+            InputStream is = null;
+            try {
+                Document document = documentService.getEntiyByPK(Long.parseLong(id));
+                String path = document.getUploadPath();
 
+                if (StringUtils.isEmpty(path)) {
+                    path = facesIO.getPathUpload() + "no_image.png";
+                }
+                is = facesIO.getInputStreamFromURL(path);
+
+                return new DefaultStreamedContent(is, null, StringUtils.substringAfterLast(path, "/"));
+
+            } catch (Exception ex) {
+                LOGGER.error(ex, ex);
+                return new DefaultStreamedContent();
+            }
+        }
+    }
 }

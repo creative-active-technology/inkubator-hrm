@@ -260,7 +260,7 @@ public class RmbsApplicationFormController extends BaseController {
     public List<EmpData> doAutoCompleteEmployee(String param) {
         List<EmpData> empDatas = new ArrayList<EmpData>();
         try {
-            empDatas = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(param));
+            empDatas = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(param), HrmUserInfoUtil.getCompanyId());
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -272,7 +272,6 @@ public class RmbsApplicationFormController extends BaseController {
         	model.setRmbsTypeId(null);
         	rmbsSchemaListOfType = null;
         	totalRequestThisMoth = new BigDecimal(0);
-        	
             RmbsSchemaListOfEmp rmbsSchemaListOfEmp = rmbsSchemaListOfEmpService.getEntityByEmpDataId(model.getEmpData().getId());
             if (rmbsSchemaListOfEmp != null) {
                 rmbsSchema = rmbsSchemaListOfEmp.getRmbsSchema();

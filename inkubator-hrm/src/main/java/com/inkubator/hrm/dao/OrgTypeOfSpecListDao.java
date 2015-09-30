@@ -22,7 +22,7 @@ public interface OrgTypeOfSpecListDao extends IDAO<OrgTypeOfSpecList> {
 
     public Long getTotalOrgTypeOfSpecListByParam(OrgTypeOfSpecListSearchParameter searchParameter);
 
-    public OrgTypeOfSpec getSpecTypeNameByOrgTypeOfSpecListId(Long id);
+    public OrgTypeOfSpecList getSpecTypeNameByOrgTypeOfSpecListId(Long id);
 
     public List<OrgTypeOfSpecList> getOrgTypeOfSpecList(long id);
     

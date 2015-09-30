@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="unreg_salary_slip" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="40" rightMargin="0" topMargin="0" bottomMargin="0" uuid="83697877-455a-4d56-a5c8-4858e62de398">
+	<property name="ireport.zoom" value="1.000000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="com.inkubator.hrm.util.TerbilangUtil"/>
+	<import value="org.apache.commons.lang3.StringUtils"/>
+	<parameter name="ARRAY_EMP_DATA_ID" class="java.util.Collection">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="UNREG_SALARY_ID" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT pay.*,emp.join_date
+FROM emp_data emp
+LEFT JOIN bio_data bio ON bio.id=emp.bio_data_id
+LEFT JOIN log_unreg_payroll pay
+ON emp.id=pay.emp_data_id
+AND pay.unreg_salary_id=$P{UNREG_SALARY_ID}
+AND pay.model_comp_specific=100
+WHERE $X{IN, pay.emp_data_id, ARRAY_EMP_DATA_ID}
+ORDER BY bio.first_name,bio.last_name]]>
+	</queryString>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="created_by" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="created_on" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="department_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="department_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emp_data_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emp_gol_jabatan" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emp_jabatan_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emp_jabatan_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emp_jabatan_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emp_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emp_nik" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emp_type_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="emp_type_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="factor" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="model_comp_specific" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nominal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pay_salary_comp_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pay_salary_comp_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pay_salary_desc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="periode_end" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="periode_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="periode_start" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unreg_salary_end_period" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unreg_salary_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unreg_salary_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unreg_salary_payment_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unreg_salary_start_period" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="version" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="join_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<pageHeader>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="20" width="503" height="20" forecolor="#000000" uuid="221fb88f-f710-436f-903a-38682f8abd84"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PT. BPR BHAKTI DAYA PRIMA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="503" height="20" forecolor="#000000" uuid="a17b74a2-f53b-4493-b79e-558b9f455c30"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Jl. Perintis Kemerdekaan 23/24 Sleman Yogyakarta]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="140" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="20" width="150" height="20" forecolor="#000000" uuid="1343e559-c545-424c-953e-7a69cc8eb04d"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Periode]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="150" height="20" forecolor="#000000" uuid="b5c6c41f-8943-4350-a997-39804d18e528"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[NIK]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="60" width="150" height="20" forecolor="#000000" uuid="31cb0f9b-4607-4517-b527-580f93669bf5"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nama Karyawan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="80" width="150" height="20" forecolor="#000000" uuid="64e93cf6-6abb-45ee-9165-847c3983a7c5"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Jabatan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="100" width="150" height="20" forecolor="#000000" uuid="3033127b-4811-4c43-ba6a-2b33d14b1859"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[TMB]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-30" y="130" width="575" height="1" forecolor="#666666" uuid="c20c53ad-4fe4-4960-a252-f8a000273355"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</line>
+			<textField pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement x="150" y="20" width="60" height="20" uuid="27cd42a4-df87-459c-80d5-44e0982c300b"/>
+				<textElement>
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{periode_start}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement x="230" y="20" width="60" height="20" uuid="99b814ed-9575-44d8-9171-1fd803c95124"/>
+				<textElement>
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{periode_end}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="210" y="20" width="20" height="20" forecolor="#000000" uuid="881b2ee2-e0b7-4731-8e4f-72e140bc2139"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[s/d]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="150" y="40" width="140" height="20" uuid="f4fd6145-21a9-44e6-8b2d-5d5c23bad4c9"/>
+				<textElement>
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_nik}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="150" y="60" width="140" height="20" uuid="4338e223-5567-4262-802e-37c62397131b"/>
+				<textElement>
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="150" y="80" width="140" height="20" uuid="4de81f41-05a5-42c9-945d-7e9a3d8abc9a"/>
+				<textElement>
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_jabatan_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd MMMMM yyyy" isBlankWhenNull="true">
+				<reportElement x="150" y="100" width="140" height="20" uuid="51337ee9-3693-47d1-877d-d09254444630"/>
+				<textElement>
+					<font fontName="Arial" size="11" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{join_date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="503" height="20" uuid="15776392-6c49-4a97-b898-c84aec300b47"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SLIP " + StringUtils.upperCase($F{unreg_salary_name})]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="120" splitType="Prevent">
+			<subreport>
+				<reportElement x="0" y="0" width="200" height="45" uuid="41ef5d0b-2222-494a-9d3d-a1f94c42c86a"/>
+				<subreportParameter name="EMP_DATA_ID">
+					<subreportParameterExpression><![CDATA[$F{emp_data_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="UNREG_SALARY_ID">
+					<subreportParameterExpression><![CDATA[$F{unreg_salary_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/unreg_sub_report_income_slip.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="290" y="0" width="200" height="45" uuid="b1ad7751-4dd1-4ea6-890d-831b7f13200a"/>
+				<subreportParameter name="EMP_DATA_ID">
+					<subreportParameterExpression><![CDATA[$F{emp_data_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="UNREG_SALARY_ID">
+					<subreportParameterExpression><![CDATA[$F{unreg_salary_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/unreg_sub_report_deduction_slip.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="290" y="60" width="200" height="45" uuid="4633f586-e306-4769-8e94-8c9faf9ad4af"/>
+				<subreportParameter name="EMP_DATA_ID">
+					<subreportParameterExpression><![CDATA[$F{emp_data_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="UNREG_SALARY_ID">
+					<subreportParameterExpression><![CDATA[$F{unreg_salary_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/unreg_sub_report_subsidy_slip.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="200">
+			<staticText>
+				<reportElement x="0" y="0" width="150" height="20" forecolor="#000000" uuid="dcd16d92-ec20-4e76-bebe-963fa825f8df"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total (NET)]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="150" y="0" width="80" height="20" uuid="8cd1d771-58bd-4686-93b9-4ba4765b0984"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nominal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="150" height="20" forecolor="#000000" uuid="9df01188-1d98-41d3-a094-bf53bb6b00e2"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Terbilang]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" x="150" y="20" width="340" height="20" uuid="c2724d32-481c-4460-914f-ea574420b1d4"/>
+				<textElement>
+					<font fontName="Arial" size="11" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["(" + new TerbilangUtil($F{nominal}).toString() + ")"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="100" width="150" height="20" forecolor="#000000" uuid="79999f00-b67e-48cb-b846-b445f963c334"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Mengetahui,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="160" width="150" height="20" forecolor="#000000" uuid="7269ee0c-b106-4492-a33c-234d25dcd4cc"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Bagian Penggajian]]></text>
+			</staticText>
+			<break>
+				<reportElement x="0" y="199" width="100" height="1" uuid="c575514d-c866-45ba-9acc-525cb589b0a0"/>
+			</break>
+		</band>
+	</detail>
+</jasperReport>

@@ -165,7 +165,7 @@ public class RmbsCancelationFormController extends BaseController {
     public List<EmpData> doAutoCompleteEmployee(String param){
 		List<EmpData> empDatas = new ArrayList<EmpData>();
 		try {
-			empDatas = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(param));
+			empDatas = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(param), HrmUserInfoUtil.getCompanyId());
 		} catch (Exception e) {
 			LOGGER.error("Error", e);
 		}

@@ -10,6 +10,7 @@ import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.EmpPersonAchievement;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.EmpPersonAchievementService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.EmpPersonAchievementModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -86,7 +87,7 @@ public class EmpPersonAchievementFormController extends BaseController {
     public List<EmpData> doAutoCompletEmployee(String param){
 		List<EmpData> empDatas = new ArrayList<EmpData>();
 		try {
-			empDatas = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(param));
+			empDatas = empDataService.getAllDataByNameOrNik(StringUtils.stripToEmpty(param), HrmUserInfoUtil.getCompanyId());
 		} catch (Exception e) {
 			LOGGER.error("Error", e);
 		}
