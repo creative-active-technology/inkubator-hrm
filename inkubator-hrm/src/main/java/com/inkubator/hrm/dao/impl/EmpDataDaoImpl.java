@@ -48,6 +48,7 @@ import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
+import com.inkubator.hrm.web.model.RecruitAgreementNoticeViewModel;
 import com.inkubator.hrm.web.model.ReportEmpPensionPreparationModel;
 import com.inkubator.hrm.web.model.ReportEmployeeEducationViewModel;
 import com.inkubator.hrm.web.model.SearchEmployeeCandidateViewModel;
@@ -2283,4 +2284,58 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
             criteria.add(Restrictions.ilike("bioData.combineName", searchParameter.getEmpDataName().toLowerCase(), MatchMode.ANYWHERE));
         }
 	}
+	
+	public List<RecruitAgreementNoticeViewModel> getAllEmployeeForRecruitAggrementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter, int firstResult, int maxResults, Order orderable){
+		 final StringBuilder query = new StringBuilder("SELECT emp.id as employeeId, bio.id as bioDataId, bio.first_name as firstName, bio.last_name as lastName, jabatan.name as jabatanName, pangkat.pangkat_name as pangkatName, bio.date_of_birth as birthOfDate,");
+	        query.append(" (SELECT pangkat2.pangkat_name FROM pangkat pangkat2");
+			query.append(" WHERE pangkat2.level < pangkat.level ORDER BY LEVEL DESC LIMIT 1) as jabatanDituju,");
+			query.append(" pangkat.level");
+			query.append(" FROM emp_data emp ");
+			query.append(" INNER JOIN bio_data bio ON bio.id = emp.bio_data_id");
+/*			query.append(" INNER JOIN bio_education_history beh ON beh.biodata_id = bio.id");
+			query.append(" INNER JOIN education_level el ON el.id = beh.pendidikan_level_id");*/
+			query.append(" INNER JOIN jabatan jabatan ON emp.jabatan_id = jabatan.id");
+			query.append(" INNER JOIN golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
+			query.append(" INNER JOIN pangkat pangkat ON goljab.pangkat_id = pangkat.id");
+			
+			query.append(" ORDER BY ");
+			  
+			if (StringUtils.equals("firstName", orderable.getPropertyName())) {
+	            query.append("firstName ");
+	        }else if (StringUtils.equals("jabatanName", orderable.getPropertyName())) {
+	            query.append("jabatanName ");
+	        }else if (StringUtils.equals("jabatanDituju", orderable.getPropertyName())) {
+	            query.append("jabatanDituju ");
+	        }else if (StringUtils.equals("lastEducationLevel", orderable.getPropertyName())) {
+	            query.append("lastEducationLevel ");
+	        }else if (StringUtils.equals("birthOfDate", orderable.getPropertyName())) {
+	            query.append("birthOfDate ");
+	        }
+
+	        query.append(orderable.isAscending() ? " ASC " : " DESC ");
+	        
+			//Limit query based on paging parameter
+	        query.append(" LIMIT ").append(firstResult).append(",").append(maxResults).append(" ");
+			return getCurrentSession().createSQLQuery(query.toString())
+	                .setResultTransformer(Transformers.aliasToBean(RecruitAgreementNoticeViewModel.class))
+	                .list();
+	}
+	
+    public Long getTotalAllEmployeeForRecruitAggrementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter){
+    	final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT emp.id as employeeId, bio.id as bioDataId, bio.first_name as firstName, bio.last_name as lastName, jabatan.name as jabatanName, pangkat.pangkat_name as pangkatName, ");
+        query.append(" (SELECT pangkat2.pangkat_name FROM pangkat pangkat2");
+		query.append(" WHERE pangkat2.level < pangkat.level ORDER BY LEVEL DESC LIMIT 1) as jabatanDituju,");
+		query.append(" pangkat.level,");
+		query.append(" (SELECT pangkat2.level FROM pangkat pangkat2");
+		query.append(" WHERE pangkat2.level < pangkat.level ORDER BY LEVEL DESC LIMIT 1) as levelDituju ");
+		query.append(" FROM emp_data emp ");
+		query.append(" INNER JOIN bio_data bio ON bio.id = emp.bio_data_id");
+		query.append(" INNER JOIN jabatan jabatan ON emp.jabatan_id = jabatan.id");
+		query.append(" INNER JOIN golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
+		query.append(" INNER JOIN pangkat pangkat ON goljab.pangkat_id = pangkat.id) as totalRows");
+    	
+		return Long.valueOf(getCurrentSession().createSQLQuery(query.toString()).uniqueResult().toString());
+    }
+
+    
 }
