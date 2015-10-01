@@ -65,4 +65,7 @@
         <property name="ownerAdministrator" value="${email_param_owner_administrator}"/>
     </bean>  
 
+    <bean id="scheduleDinamicService" class="com.inkubator.hrm.service.impl.ScheduleDinamicServiceImpl" lazy-init="false">
+        
+    </bean>
 </beans>

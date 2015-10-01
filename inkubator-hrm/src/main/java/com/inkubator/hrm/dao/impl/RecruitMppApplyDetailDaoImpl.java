@@ -196,4 +196,18 @@ public class RecruitMppApplyDetailDaoImpl extends IDAOImpl<RecruitMppApplyDetail
         return (RecruitMppApplyDetail) criteria.uniqueResult();
     }
 
+	@Override
+	public List<RecruitMppApplyDetail> getListInSelectedMppPeriodIdWithApprovalStatus(Long recruitMppPeriodId, Integer approvalStatus) {
+		 Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        /*criteria.setFetchMode("recruitMppApply", FetchMode.JOIN);
+        criteria.setFetchMode("recruitMppApply.recruitMppPeriod", FetchMode.JOIN);
+        criteria.setFetchMode("jabatan", FetchMode.JOIN);*/
+        criteria.createAlias("recruitMppApply", "recruitMppApply", JoinType.INNER_JOIN);
+        criteria.createAlias("recruitMppApply.recruitMppPeriod", "recruitMppPeriod", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatan", "jabatan", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("recruitMppPeriod.id", recruitMppPeriodId));
+        criteria.add(Restrictions.eq("recruitMppApply.applicationStatus", approvalStatus));
+        return criteria.list();
+	}
+
 }
