@@ -36,8 +36,14 @@
                                 <p:column  style="width: 80%">
                                     <p:selectOneMenu id="scheduleName"  styleClass="isitext_hrm"  value="#{schedulerConfigFormController.schedulerConfigModel.name}" filter="true"  filterMatchMode="contains" required="true">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="Pengiriman Notifikasi User" itemValue="USER_NOTIFICATION" />
+                                        <f:selectItem itemLabel="Pengiriman Notifikasi Password User" itemValue="USER_PASSWORD_NOTIFICATION" />
                                         <f:selectItem itemLabel="Pengiriman Notifikasi Approval Matriks" itemValue="APROVAL_MATRIX_NOTIF" />
+                                        <f:selectItem itemLabel="Penghapusan Riwayat Akses" itemValue="DELETE_ACESS_HISTORY" />
+                                        <f:selectItem itemLabel="Penghapusan Riwayat Masuk Ke Aplikasi" itemValue="DELETE_LOG_HISTORY" />
+                                        <f:selectItem itemLabel="Update Data Libur Tiap Tahun" itemValue="HOLIDAY_UPDATE" />
+                                        <f:selectItem itemLabel="Kalkulasi Update Jadwal Kerja" itemValue="SCHEDULE_WORK" />
+                                        <f:selectItem itemLabel="Penghapusan Riwayat Jadwal Kerja Sementara" itemValue="DELETE_TEMP_SCHEDULE_WORK" />
+                                        <f:selectItem itemLabel="Auto Approval Matriks" itemValue="AUTO_APPROVAL_MATRIX" />
                                     </p:selectOneMenu>
                                     <p:message for="scheduleName"/>
                                 </p:column>
@@ -98,7 +104,7 @@
                                     <p:outputLabel for="endDate" value="#{appmsg['scheduler_config.end_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:calendar id="endDate" value="#{schedulerConfigFormController.schedulerConfigModel.startDate}" pattern="dd MMMM yyyy" disabled="#{schedulerConfigFormController.isDisableDateRange}" />
+                                    <p:calendar id="endDate" value="#{schedulerConfigFormController.schedulerConfigModel.endDate}" pattern="dd MMMM yyyy" disabled="#{schedulerConfigFormController.isDisableDateRange}" />
                                     <!--<p:message for="startDate"/>-->
                                     <p:message for="endDate"/>
                                 </p:column>
