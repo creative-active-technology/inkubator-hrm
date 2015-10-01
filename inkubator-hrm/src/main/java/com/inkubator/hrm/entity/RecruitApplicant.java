@@ -19,15 +19,16 @@ import javax.persistence.Version;
  * @author rizkykojek
  */
 @Entity
-@Table(name = "applicant", catalog = "hrm"
+@Table(name = "recruit_applicant", catalog = "hrm"
 )
-public class Applicant implements Serializable {
+public class RecruitApplicant implements Serializable {
 
 	private Long id;
 	private Integer version;
 	private BioData bioData;
 	private Integer careerCandidate;
-	private Integer statusApp;
+	private Boolean isActive;
+	private Boolean isVerified;
 	private EducationLevel educationLevel;
 	private Integer educationStartYear;
 	private Integer educationEndYear;
@@ -47,11 +48,11 @@ public class Applicant implements Serializable {
     private String updatedBy;    
     private Date updatedOn;
     
-    public Applicant(){
+    public RecruitApplicant(){
     	
     }
     
-    public Applicant(Long id){
+    public RecruitApplicant(Long id){
     	this.id = id;
     }
     
@@ -93,14 +94,23 @@ public class Applicant implements Serializable {
 	public void setCareerCandidate(Integer careerCandidate) {
 		this.careerCandidate = careerCandidate;
 	}
-
-	@Column(name = "status_app", nullable = false)
-	public Integer getStatusApp() {
-		return statusApp;
+	
+	@Column(name = "is_active")
+	public Boolean getIsActive() {
+		return isActive;
 	}
 
-	public void setStatusApp(Integer statusApp) {
-		this.statusApp = statusApp;
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	@Column(name = "is_verified")
+	public Boolean getIsVerified() {
+		return isVerified;
+	}
+
+	public void setIsVerified(Boolean isVerified) {
+		this.isVerified = isVerified;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)

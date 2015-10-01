@@ -12,10 +12,10 @@ import org.primefaces.model.LazyDataModel;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.Applicant;
-import com.inkubator.hrm.service.ApplicantService;
-import com.inkubator.hrm.web.lazymodel.ApplicantLazyDataModel;
-import com.inkubator.hrm.web.search.ApplicantSearchParameter;
+import com.inkubator.hrm.entity.RecruitApplicant;
+import com.inkubator.hrm.service.RecruitApplicantService;
+import com.inkubator.hrm.web.lazymodel.RecruitApplicantLazyDataModel;
+import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -24,26 +24,26 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
  *
  * @author rizkykojek
  */
-@ManagedBean(name = "applicantViewController")
+@ManagedBean(name = "recruitApplicantViewController")
 @ViewScoped
-public class ApplicantViewController extends BaseController {
+public class RecruitApplicantViewController extends BaseController {
 
-    private ApplicantSearchParameter parameter;
-    private LazyDataModel<Applicant> lazyData;
-    private Applicant selected;
-    @ManagedProperty(value = "#{applicantService}")
-    private ApplicantService applicantService;
+    private RecruitApplicantSearchParameter parameter;
+    private LazyDataModel<RecruitApplicant> lazyData;
+    private RecruitApplicant selected;
+    @ManagedProperty(value = "#{recruitApplicantService}")
+    private RecruitApplicantService recruitApplicantService;
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        parameter = new ApplicantSearchParameter();
+        parameter = new RecruitApplicantSearchParameter();
     }
 
     @PreDestroy
     public void cleanAndExit() {
-    	applicantService = null;
+    	recruitApplicantService = null;
         parameter = null;
         lazyData = null;
         selected = null;
@@ -67,7 +67,7 @@ public class ApplicantViewController extends BaseController {
 
     public void doSelectEntity() {
         try {
-            selected = this.applicantService.getEntiyByPK(selected.getId());
+            selected = this.recruitApplicantService.getEntiyByPK(selected.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -75,7 +75,7 @@ public class ApplicantViewController extends BaseController {
 
     public void doDelete() {
         try {
-        	applicantService.delete(selected);
+        	recruitApplicantService.delete(selected);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
         } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
@@ -86,39 +86,39 @@ public class ApplicantViewController extends BaseController {
         }
     }
 
-	public ApplicantSearchParameter getParameter() {
+	public RecruitApplicantSearchParameter getParameter() {
 		return parameter;
 	}
 
-	public void setParameter(ApplicantSearchParameter parameter) {
+	public void setParameter(RecruitApplicantSearchParameter parameter) {
 		this.parameter = parameter;
 	}
 
-	public LazyDataModel<Applicant> getLazyData() {
+	public LazyDataModel<RecruitApplicant> getLazyData() {
+		if(lazyData == null) {
+			lazyData = new RecruitApplicantLazyDataModel(parameter, recruitApplicantService);
+		}
 		return lazyData;
 	}
 
-	public void setLazyData(LazyDataModel<Applicant> lazyData) {
-		if(lazyData == null) {
-			lazyData = new ApplicantLazyDataModel(parameter, applicantService);
-		}
+	public void setLazyData(LazyDataModel<RecruitApplicant> lazyData) {		
 		this.lazyData = lazyData;
 	}
 
-	public Applicant getSelected() {
+	public RecruitApplicant getSelected() {
 		return selected;
 	}
 
-	public void setSelected(Applicant selected) {
+	public void setSelected(RecruitApplicant selected) {
 		this.selected = selected;
 	}
 
-	public ApplicantService getApplicantService() {
-		return applicantService;
+	public RecruitApplicantService getRecruitApplicantService() {
+		return recruitApplicantService;
 	}
 
-	public void setApplicantService(ApplicantService applicantService) {
-		this.applicantService = applicantService;
+	public void setRecruitApplicantService(RecruitApplicantService recruitApplicantService) {
+		this.recruitApplicantService = recruitApplicantService;
 	}
     
 }
