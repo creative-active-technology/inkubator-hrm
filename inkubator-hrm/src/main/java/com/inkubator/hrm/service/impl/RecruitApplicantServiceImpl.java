@@ -11,138 +11,138 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.hrm.dao.ApplicantDao;
-import com.inkubator.hrm.entity.Applicant;
-import com.inkubator.hrm.service.ApplicantService;
-import com.inkubator.hrm.web.search.ApplicantSearchParameter;
+import com.inkubator.hrm.dao.RecruitApplicantDao;
+import com.inkubator.hrm.entity.RecruitApplicant;
+import com.inkubator.hrm.service.RecruitApplicantService;
+import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
 
 /**
  *
  * @author rizkykojek
  */
-@Service(value = "applicantService")
+@Service(value = "recruitApplicantService")
 @Lazy
-public class ApplicantServiceImpl extends IServiceImpl implements ApplicantService {
+public class RecruitApplicantServiceImpl extends IServiceImpl implements RecruitApplicantService {
 
 	@Autowired
-	private ApplicantDao applicantDao;
+	private RecruitApplicantDao recruitApplicantDao;
 	
 	@Override
-	public Applicant getEntiyByPK(String id) throws Exception {
+	public RecruitApplicant getEntiyByPK(String id) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Applicant getEntiyByPK(Integer id) throws Exception {
+	public RecruitApplicant getEntiyByPK(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Applicant getEntiyByPK(Long id) throws Exception {
+	public RecruitApplicant getEntiyByPK(Long id) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void save(Applicant entity) throws Exception {
+	public void save(RecruitApplicant entity) throws Exception {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void update(Applicant entity) throws Exception {
+	public void update(RecruitApplicant entity) throws Exception {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void saveOrUpdate(Applicant enntity) throws Exception {
+	public void saveOrUpdate(RecruitApplicant enntity) throws Exception {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public Applicant saveData(Applicant entity) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Applicant updateData(Applicant entity) throws Exception {
+	public RecruitApplicant saveData(RecruitApplicant entity) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Applicant saveOrUpdateData(Applicant entity) throws Exception {
+	public RecruitApplicant updateData(RecruitApplicant entity) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Applicant getEntityByPkIsActive(String id, Integer isActive) throws Exception {
+	public RecruitApplicant saveOrUpdateData(RecruitApplicant entity) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Applicant getEntityByPkIsActive(String id, Byte isActive) throws Exception {
+	public RecruitApplicant getEntityByPkIsActive(String id, Integer isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Applicant getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
+	public RecruitApplicant getEntityByPkIsActive(String id, Byte isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Applicant getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
+	public RecruitApplicant getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Applicant getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
+	public RecruitApplicant getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Applicant getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
+	public RecruitApplicant getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Applicant getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
+	public RecruitApplicant getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Applicant getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
+	public RecruitApplicant getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Applicant getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
+	public RecruitApplicant getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void delete(Applicant entity) throws Exception {
+	public RecruitApplicant getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void delete(RecruitApplicant entity) throws Exception {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void softDelete(Applicant entity) throws Exception {
+	public void softDelete(RecruitApplicant entity) throws Exception {
 		// TODO Auto-generated method stub
 
 	}
@@ -172,51 +172,51 @@ public class ApplicantServiceImpl extends IServiceImpl implements ApplicantServi
 	}
 
 	@Override
-	public List<Applicant> getAllData() throws Exception {
+	public List<RecruitApplicant> getAllData() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Applicant> getAllData(Boolean isActive) throws Exception {
+	public List<RecruitApplicant> getAllData(Boolean isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Applicant> getAllData(Integer isActive) throws Exception {
+	public List<RecruitApplicant> getAllData(Integer isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Applicant> getAllData(Byte isActive) throws Exception {
+	public List<RecruitApplicant> getAllData(Byte isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Applicant> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
+	public List<RecruitApplicant> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Applicant> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive)
+	public List<RecruitApplicant> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Applicant> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive)
+	public List<RecruitApplicant> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Applicant> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive)
+	public List<RecruitApplicant> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return null;
@@ -224,16 +224,16 @@ public class ApplicantServiceImpl extends IServiceImpl implements ApplicantServi
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<Applicant> getByParam(ApplicantSearchParameter parameter, int first, int pageSize, Order orderable) throws Exception {
+	public List<RecruitApplicant> getByParam(RecruitApplicantSearchParameter parameter, int first, int pageSize, Order orderable) throws Exception {
 		
-		return applicantDao.getByParam(parameter, first, pageSize, orderable);
+		return recruitApplicantDao.getByParam(parameter, first, pageSize, orderable);
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalByParam(ApplicantSearchParameter parameter) throws Exception {
+	public Long getTotalByParam(RecruitApplicantSearchParameter parameter) throws Exception {
 
-		return applicantDao.getTotalByParam(parameter);
+		return recruitApplicantDao.getTotalByParam(parameter);
 	}
 
 }

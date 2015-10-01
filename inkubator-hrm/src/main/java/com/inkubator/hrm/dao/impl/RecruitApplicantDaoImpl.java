@@ -14,26 +14,26 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.dao.ApplicantDao;
-import com.inkubator.hrm.entity.Applicant;
-import com.inkubator.hrm.web.search.ApplicantSearchParameter;
+import com.inkubator.hrm.dao.RecruitApplicantDao;
+import com.inkubator.hrm.entity.RecruitApplicant;
+import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
 
 /**
  *
  * @author rizkykojek
  */
-@Repository(value = "applicantDao")
+@Repository(value = "recruitApplicantDao")
 @Lazy
-public class ApplicantDaoImpl extends IDAOImpl<Applicant>implements ApplicantDao {
+public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implements RecruitApplicantDao {
 
 	@Override
-	public Class<Applicant> getEntityClass() {
+	public Class<RecruitApplicant> getEntityClass() {
 		
-		return Applicant.class;
+		return RecruitApplicant.class;
 	}
 
 	@Override
-	public List<Applicant> getByParam(ApplicantSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
+	public List<RecruitApplicant> getByParam(RecruitApplicantSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		this.doSearchByParam(parameter, criteria);
 		criteria.addOrder(orderable);
@@ -43,13 +43,13 @@ public class ApplicantDaoImpl extends IDAOImpl<Applicant>implements ApplicantDao
 	}
 
 	@Override
-	public Long getTotalByParam(ApplicantSearchParameter parameter) {
+	public Long getTotalByParam(RecruitApplicantSearchParameter parameter) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchByParam(parameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 	
-	private void doSearchByParam(ApplicantSearchParameter parameter, Criteria criteria) {
+	private void doSearchByParam(RecruitApplicantSearchParameter parameter, Criteria criteria) {
 		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
 		criteria.createAlias("bioData.city", "city", JoinType.INNER_JOIN);
 
@@ -63,7 +63,7 @@ public class ApplicantDaoImpl extends IDAOImpl<Applicant>implements ApplicantDao
         	criteria.add(Restrictions.like("bioData.personalEmail", parameter.getEmail(),MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotEmpty(parameter.getCityName())) {
-        	criteria.add(Restrictions.like("cityName", parameter.getCityName(),MatchMode.ANYWHERE));
+        	criteria.add(Restrictions.like("city.cityName", parameter.getCityName(),MatchMode.ANYWHERE));
         }
     }
 

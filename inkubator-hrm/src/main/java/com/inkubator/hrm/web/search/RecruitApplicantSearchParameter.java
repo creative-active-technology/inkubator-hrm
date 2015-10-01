@@ -8,7 +8,7 @@ import com.inkubator.webcore.util.SearchParameter;
  *
  * @author rizkykojek
  */
-public class ApplicantSearchParameter extends SearchParameter {
+public class RecruitApplicantSearchParameter extends SearchParameter {
 
 	private String name;
     private String email;

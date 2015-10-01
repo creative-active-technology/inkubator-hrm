@@ -10,30 +10,30 @@ import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
-import com.inkubator.hrm.entity.Applicant;
-import com.inkubator.hrm.service.ApplicantService;
-import com.inkubator.hrm.web.search.ApplicantSearchParameter;
+import com.inkubator.hrm.entity.RecruitApplicant;
+import com.inkubator.hrm.service.RecruitApplicantService;
+import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
 
 
 /**
 *
 * @author rizkykojek
 */
-public class ApplicantLazyDataModel extends LazyDataModel<Applicant> implements Serializable {
+public class RecruitApplicantLazyDataModel extends LazyDataModel<RecruitApplicant> implements Serializable {
 
-	private static final Logger LOGGER = Logger.getLogger(ApplicantLazyDataModel.class);
-    private final ApplicantSearchParameter parameter;
-    private final ApplicantService applicantService;
-    private List<Applicant> list = new ArrayList<>();
+	private static final Logger LOGGER = Logger.getLogger(RecruitApplicantLazyDataModel.class);
+    private final RecruitApplicantSearchParameter parameter;
+    private final RecruitApplicantService recruitApplicantService;
+    private List<RecruitApplicant> list = new ArrayList<>();
     private Integer total;
 
-    public ApplicantLazyDataModel(ApplicantSearchParameter parameter, ApplicantService applicantService) {
+    public RecruitApplicantLazyDataModel(RecruitApplicantSearchParameter parameter, RecruitApplicantService recruitApplicantService) {
         this.parameter = parameter;
-        this.applicantService = applicantService;
+        this.recruitApplicantService = recruitApplicantService;
     }
 
     @Override
-    public List<Applicant> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+    public List<RecruitApplicant> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;
@@ -43,8 +43,8 @@ public class ApplicantLazyDataModel extends LazyDataModel<Applicant> implements 
 	        	orderable = Order.desc("createdOn");
 	        }
 	        
-	        list = applicantService.getByParam(parameter, first, pageSize, orderable);
-            total = Integer.parseInt(String.valueOf(applicantService.getTotalByParam(parameter)));            
+	        list = recruitApplicantService.getByParam(parameter, first, pageSize, orderable);
+            total = Integer.parseInt(String.valueOf(recruitApplicantService.getTotalByParam(parameter)));            
         	LOGGER.info("Success Load Lazy data Model");
         	
         } catch (Exception ex) {
@@ -58,13 +58,13 @@ public class ApplicantLazyDataModel extends LazyDataModel<Applicant> implements 
     }
 
     @Override
-    public Object getRowKey(Applicant entity) {
+    public Object getRowKey(RecruitApplicant entity) {
         return entity.getId();
     }
 
     @Override
-    public Applicant getRowData(String id) {
-        for (Applicant entity : list) {
+    public RecruitApplicant getRowData(String id) {
+        for (RecruitApplicant entity : list) {
             if (id.equals(String.valueOf(entity.getId()))) {
                 return entity;
             }
