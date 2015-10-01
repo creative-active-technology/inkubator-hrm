@@ -27,4 +27,6 @@ public interface RecruitMppApplyDetailService extends IService<RecruitMppApplyDe
     
     public List<RecruitMppApplyDetailViewModel> getListPerMonthByMppPeriodIdAndJabatanId(Long mppPeriodId, Long jabatanId) throws Exception;
     
+    public List<RecruitMppApplyDetail> getListInSelectedMppPeriodIdWithApprovalStatus(Long recruitMppPeriodId, Integer approvalStatus) throws Exception;
+    
 }

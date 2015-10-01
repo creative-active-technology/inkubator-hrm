@@ -319,5 +319,11 @@ public class RecruitMppApplyDetailServiceImpl extends IServiceImpl implements Re
 		model.setMpp(plan.longValue());
 		return model;
 	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RecruitMppApplyDetail> getListInSelectedMppPeriodIdWithApprovalStatus(Long recruitMppPeriodId, Integer approvalStatus) throws Exception {
+		return recruitMppApplyDetailDao.getListInSelectedMppPeriodIdWithApprovalStatus(recruitMppPeriodId, approvalStatus);
+	}
     
 }
