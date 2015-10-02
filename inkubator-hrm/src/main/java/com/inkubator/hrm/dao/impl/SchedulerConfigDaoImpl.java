@@ -52,9 +52,9 @@ public class SchedulerConfigDaoImpl extends IDAOImpl<SchedulerConfig> implements
 	}
 	
 	private void doSearchByParam(SchedulerConfigSearchParameter searchParameter, Criteria criteria){
-		if(searchParameter.getName() != null){
+		/*if(searchParameter.getName() != null){
 			criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
-		}
+		}*/
 		criteria.add(Restrictions.isNotNull("id"));
 	}
 	
