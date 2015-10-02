@@ -39,6 +39,7 @@ public class SchedulerConfigDetilController extends BaseController {
             String execution = FacesUtil.getRequestParameter("execution");
             String param = execution.substring(0, 1);
             if(StringUtils.equals(param, "e")){
+                selected = schedulerConfigService.getEntiyByPK(Long.parseLong(execution.substring(1)));
 //                selected = schedulerConfigService.getEntityWithDetail(Long.parseLong(execution.substring(1)));
             }
         } catch (Exception ex){
@@ -56,6 +57,22 @@ public class SchedulerConfigDetilController extends BaseController {
 
     public void setSchedulerConfigService(SchedulerConfigService schedulerConfigService) {
         this.schedulerConfigService = schedulerConfigService;
+    }
+
+    public SchedulerConfig getSelected() {
+        return selected;
+    }
+
+    public void setSelected(SchedulerConfig selected) {
+        this.selected = selected;
+    }
+    
+    public String doBack(){
+        return "/protected/reference/scheduler_config_view.htm?faces-redirect=true";
+    }
+    
+    public String doUpdates(){
+        return "/protected/reference/scheduler_config_form.htm?faces-redirect=true&execution=e" + selected.getId();
     }
 
 }
