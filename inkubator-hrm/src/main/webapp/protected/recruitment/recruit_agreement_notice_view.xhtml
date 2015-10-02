@@ -36,6 +36,8 @@
                                     <p:selectOneMenu value="#{recruitAgreementNoticeViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="empDataName"/>
+                                        <f:selectItem itemLabel="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_last']}" itemValue="jabatan"/>
+                                        <!-- <f:selectItem itemLabel="#{appmsg['empCandidateSearch.last_education_level']}" itemValue="lastEducation"/> -->
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{recruitAgreementNoticeViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{recruitAgreementNoticeViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>

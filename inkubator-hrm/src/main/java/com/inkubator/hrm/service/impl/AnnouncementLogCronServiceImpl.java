@@ -43,137 +43,137 @@ import com.inkubator.hrm.web.model.AnnouncementJsonModel;
  */
 public class AnnouncementLogCronServiceImpl extends IServiceImpl implements AnnouncementLogCronService {
 
-	private String applicationUrl;
-	private String applicationName;
-	private String ownerEmail;
-	private String ownerCompany;
-	private String ownerAdministrator;
-	 
-	@Autowired
-	private VelocityTemplateSender velocityTemplateSender;
-	@Autowired
-	private HrmUserDao hrmUserDao;
-	@Autowired
-	private AnnouncementLogDao announcementLogDao;
-	@Autowired
-	private AnnouncementDao announcementDao;
-	@Autowired
+    private String applicationUrl;
+    private String applicationName;
+    private String ownerEmail;
+    private String ownerCompany;
+    private String ownerAdministrator;
+
+    @Autowired
+    private VelocityTemplateSender velocityTemplateSender;
+    @Autowired
+    private HrmUserDao hrmUserDao;
+    @Autowired
+    private AnnouncementLogDao announcementLogDao;
+    @Autowired
+    private AnnouncementDao announcementDao;
+    @Autowired
     protected JmsTemplate jmsTemplateBroadcastAnnouncement;
-	 
-	@Override
-	@Scheduled(cron = "${cron.generating.announcement.log}")
-	@Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
-	public void generatingAnnouncementLog() throws Exception {
-		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-		Date planExecutionDate = DateUtils.truncate(new Date(),Calendar.DAY_OF_MONTH);
-		
-		List<Announcement> announcements = announcementDao.getAllDataValidForGeneratingLog(planExecutionDate);
-		for(Announcement entity : announcements){			
-        	AnnouncementJsonModel jsonModel = new AnnouncementJsonModel();
-        	jsonModel.setIsGeneratingAnnouncementLog(Boolean.TRUE);
-        	jsonModel.setAnnouncementId(entity.getId());
-        	jsonModel.setViewModel(entity.getViewModel());	
-        	jsonModel.setPlanExecutionDate(planExecutionDate);
-        	final String json = gson.toJson(jsonModel);
-        	
-	        jmsTemplateBroadcastAnnouncement.send(new MessageCreator() {
-	            @Override
-	            public Message createMessage(Session session) throws JMSException {
-	                return session.createTextMessage(json);
-	            }
-	        });
-		}
-	}
-	
-	@Override
-	@Scheduled(cron = "${cron.processing.email.announcement.not.sent}")
-	@Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
-	public void processingAllEmailNotSent() throws Exception {
-		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-		AnnouncementJsonModel jsonModel = new AnnouncementJsonModel();
-		jsonModel.setIsSendingAllEmailNotSent(Boolean.TRUE);
-		final String json = gson.toJson(jsonModel);
-    	
+
+    @Override
+    @Scheduled(cron = "${cron.generating.announcement.log}")
+    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+    public void generatingAnnouncementLog() throws Exception {
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+        Date planExecutionDate = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
+
+        List<Announcement> announcements = announcementDao.getAllDataValidForGeneratingLog(planExecutionDate);
+        for (Announcement entity : announcements) {
+            AnnouncementJsonModel jsonModel = new AnnouncementJsonModel();
+            jsonModel.setIsGeneratingAnnouncementLog(Boolean.TRUE);
+            jsonModel.setAnnouncementId(entity.getId());
+            jsonModel.setViewModel(entity.getViewModel());
+            jsonModel.setPlanExecutionDate(planExecutionDate);
+            final String json = gson.toJson(jsonModel);
+
+            jmsTemplateBroadcastAnnouncement.send(new MessageCreator() {
+                @Override
+                public Message createMessage(Session session) throws JMSException {
+                    return session.createTextMessage(json);
+                }
+            });
+        }
+    }
+
+    @Override
+    @Scheduled(cron = "${cron.processing.email.announcement.not.sent}")
+    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+    public void processingAllEmailNotSent() throws Exception {
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+        AnnouncementJsonModel jsonModel = new AnnouncementJsonModel();
+        jsonModel.setIsSendingAllEmailNotSent(Boolean.TRUE);
+        final String json = gson.toJson(jsonModel);
+
         jmsTemplateBroadcastAnnouncement.send(new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {
                 return session.createTextMessage(json);
             }
         });
-	}
-	
-	@Override
-	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void executeBatchSendingEmail(AnnouncementLog announcementLog) throws Exception {
-		VelocityTempalteModel vtm = new VelocityTempalteModel();
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void executeBatchSendingEmail(AnnouncementLog announcementLog) throws Exception {
+        VelocityTempalteModel vtm = new VelocityTempalteModel();
         List<String> toSend = new ArrayList<>();
         List<String> toSentCC = new ArrayList<String>();
         List<String> toSentBCC = new ArrayList<String>();
         HrmUser user = hrmUserDao.getByEmpDataId(announcementLog.getEmpData().getId());
-        
-        if(user != null && StringUtils.isNotEmpty(user.getEmailAddress())){
-	        vtm.setTemplatePath("email_announcement_broadcast.vm");
-	        vtm.setFrom(ownerEmail);
-	        vtm.setSubject(announcementLog.getAnnouncement().getSubject());
-	        toSend.add(user.getEmailAddress());
-	        vtm.setTo(toSend.toArray(new String[toSend.size()]));
-	        vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
-	        vtm.setBcc(toSentBCC.toArray(new String[toSentBCC.size()]));
-	        Map<String,String> maptoSend = new HashMap<String,String>();
-	        maptoSend.put("empployeeName", announcementLog.getEmpData().getBioData().getFullName());
-	        maptoSend.put("content", announcementLog.getAnnouncement().getAnnouncementContent());
-	        maptoSend.put("ownerAdministrator", ownerAdministrator);
-	        maptoSend.put("ownerCompany", ownerCompany);
-	        maptoSend.put("applicationUrl", applicationUrl);
-	        maptoSend.put("applicationName", applicationName);
-	        velocityTemplateSender.sendMail(vtm, maptoSend); 
-	        
-	        announcementLog.setIsAlreadyExecuted(Boolean.TRUE);
-	        announcementLog.setExecutionDate(new Date());
-	        announcementLog.setUpdatedBy(HRMConstant.SYSTEM_ADMIN);
-	        announcementLog.setUpdatedOn(new Date());
-	        announcementLogDao.update(announcementLog);
-        }        
-	}
 
-	public String getApplicationUrl() {
-		return applicationUrl;
-	}
+        if (user != null && StringUtils.isNotEmpty(user.getEmailAddress())) {
+            vtm.setTemplatePath("email_announcement_broadcast.vm");
+            vtm.setFrom(ownerEmail);
+            vtm.setSubject(announcementLog.getAnnouncement().getSubject());
+            toSend.add(user.getEmailAddress());
+            vtm.setTo(toSend.toArray(new String[toSend.size()]));
+            vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
+            vtm.setBcc(toSentBCC.toArray(new String[toSentBCC.size()]));
+            Map<String, String> maptoSend = new HashMap<String, String>();
+            maptoSend.put("empployeeName", announcementLog.getEmpData().getBioData().getFullName());
+            maptoSend.put("content", announcementLog.getAnnouncement().getAnnouncementContent());
+            maptoSend.put("ownerAdministrator", ownerAdministrator);
+            maptoSend.put("ownerCompany", ownerCompany);
+            maptoSend.put("applicationUrl", applicationUrl);
+            maptoSend.put("applicationName", applicationName);
+            velocityTemplateSender.sendMail(vtm, maptoSend);
 
-	public void setApplicationUrl(String applicationUrl) {
-		this.applicationUrl = applicationUrl;
-	}
+            announcementLog.setIsAlreadyExecuted(Boolean.TRUE);
+            announcementLog.setExecutionDate(new Date());
+            announcementLog.setUpdatedBy(HRMConstant.SYSTEM_ADMIN);
+            announcementLog.setUpdatedOn(new Date());
+            announcementLogDao.update(announcementLog);
+        }
+    }
 
-	public String getApplicationName() {
-		return applicationName;
-	}
+    public String getApplicationUrl() {
+        return applicationUrl;
+    }
 
-	public void setApplicationName(String applicationName) {
-		this.applicationName = applicationName;
-	}
+    public void setApplicationUrl(String applicationUrl) {
+        this.applicationUrl = applicationUrl;
+    }
 
-	public String getOwnerEmail() {
-		return ownerEmail;
-	}
+    public String getApplicationName() {
+        return applicationName;
+    }
 
-	public void setOwnerEmail(String ownerEmail) {
-		this.ownerEmail = ownerEmail;
-	}
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
+    }
 
-	public String getOwnerCompany() {
-		return ownerCompany;
-	}
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
 
-	public void setOwnerCompany(String ownerCompany) {
-		this.ownerCompany = ownerCompany;
-	}
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
+    }
 
-	public String getOwnerAdministrator() {
-		return ownerAdministrator;
-	}
+    public String getOwnerCompany() {
+        return ownerCompany;
+    }
 
-	public void setOwnerAdministrator(String ownerAdministrator) {
-		this.ownerAdministrator = ownerAdministrator;
-	}
-	
+    public void setOwnerCompany(String ownerCompany) {
+        this.ownerCompany = ownerCompany;
+    }
+
+    public String getOwnerAdministrator() {
+        return ownerAdministrator;
+    }
+
+    public void setOwnerAdministrator(String ownerAdministrator) {
+        this.ownerAdministrator = ownerAdministrator;
+    }
+
 }

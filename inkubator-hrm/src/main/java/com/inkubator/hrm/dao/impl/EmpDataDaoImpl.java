@@ -2289,7 +2289,11 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 		 final StringBuilder query = new StringBuilder("SELECT emp.id as employeeId, bio.id as bioDataId, bio.first_name as firstName, bio.last_name as lastName, jabatan.name as jabatanName, pangkat.pangkat_name as pangkatName, bio.date_of_birth as birthOfDate,");
 	        query.append(" (SELECT pangkat2.pangkat_name FROM pangkat pangkat2");
 			query.append(" WHERE pangkat2.level < pangkat.level ORDER BY LEVEL DESC LIMIT 1) as jabatanDituju,");
-			query.append(" pangkat.level");
+			query.append(" pangkat.level,");
+			query.append(" (SELECT el.name FROM education_level el ");
+			query.append(" INNER JOIN bio_education_history beh ON el.id = beh.pendidikan_level_id");
+			query.append(" INNER JOIN bio_data bio2 ON bio2.id = beh.biodata_id");
+			query.append(" WHERE beh.biodata_id = bio.id ORDER by el.name DESC LIMIT 1 ) as lastEducationLevel");
 			query.append(" FROM emp_data emp ");
 			query.append(" INNER JOIN bio_data bio ON bio.id = emp.bio_data_id");
 /*			query.append(" INNER JOIN bio_education_history beh ON beh.biodata_id = bio.id");
@@ -2297,7 +2301,9 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 			query.append(" INNER JOIN jabatan jabatan ON emp.jabatan_id = jabatan.id");
 			query.append(" INNER JOIN golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
 			query.append(" INNER JOIN pangkat pangkat ON goljab.pangkat_id = pangkat.id");
-			
+			//query for action searching
+			doSearchEmployeeForRecruitAgreementNoticeWithNativeQuery(searchParameter);
+			//order query base on orderable
 			query.append(" ORDER BY ");
 			  
 			if (StringUtils.equals("firstName", orderable.getPropertyName())) {
@@ -2327,15 +2333,30 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 		query.append(" WHERE pangkat2.level < pangkat.level ORDER BY LEVEL DESC LIMIT 1) as jabatanDituju,");
 		query.append(" pangkat.level,");
 		query.append(" (SELECT pangkat2.level FROM pangkat pangkat2");
-		query.append(" WHERE pangkat2.level < pangkat.level ORDER BY LEVEL DESC LIMIT 1) as levelDituju ");
+		query.append(" WHERE pangkat2.level < pangkat.level ORDER BY LEVEL DESC LIMIT 1) as levelDituju,");
+		query.append(" (SELECT el.name FROM education_level el ");
+		query.append(" INNER JOIN bio_education_history beh ON el.id = beh.pendidikan_level_id");
+		query.append(" INNER JOIN bio_data bio2 ON bio2.id = beh.biodata_id");
+		query.append(" WHERE beh.biodata_id = bio.id ORDER by el.name DESC LIMIT 1 ) as lastEducationLevel");		
 		query.append(" FROM emp_data emp ");
 		query.append(" INNER JOIN bio_data bio ON bio.id = emp.bio_data_id");
 		query.append(" INNER JOIN jabatan jabatan ON emp.jabatan_id = jabatan.id");
 		query.append(" INNER JOIN golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
-		query.append(" INNER JOIN pangkat pangkat ON goljab.pangkat_id = pangkat.id) as totalRows");
-    	
+		query.append(" INNER JOIN pangkat pangkat ON goljab.pangkat_id = pangkat.id");
+		//query for action searching
+		doSearchEmployeeForRecruitAgreementNoticeWithNativeQuery(searchParameter);
+		query.append(" ) as totalRows");
 		return Long.valueOf(getCurrentSession().createSQLQuery(query.toString()).uniqueResult().toString());
     }
 
+    public void doSearchEmployeeForRecruitAgreementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter){
+    	StringBuilder query = new StringBuilder();
+    	//query for action searching
+		if(searchParameter.getEmpDataName() != null){
+			query.append(" WHERE bio.first_name like '%" + searchParameter.getEmpDataName() + "%'");
+		}else if(searchParameter.getJabatan() != null){
+			query.append(" WHERE jabatan.name like '%" + searchParameter.getJabatan() + "%'");
+		}
+    }
     
 }
