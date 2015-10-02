@@ -179,7 +179,7 @@ public class VacancyAdvertisementFormController implements Serializable {
 		VacancyAdvertisementModel model = (VacancyAdvertisementModel) context.getFlowScope().get("model");
 		List<VacancyAdvertisementDetailModel> listAdvertisementDetail =  model.getListAdvertisementDetail();
 		
-		//remote object dalam list
+		//remove object dalam list
 		listAdvertisementDetail.remove(detailModel);
 		model.setListAdvertisementDetail(listAdvertisementDetail);
 		context.getFlowScope().put("model", model);

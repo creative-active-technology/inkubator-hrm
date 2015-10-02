@@ -136,8 +136,9 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void delete(RecruitApplicant entity) throws Exception {
-		// TODO Auto-generated method stub
+		recruitApplicantDao.delete(entity);
 
 	}
 
@@ -234,6 +235,13 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 	public Long getTotalByParam(RecruitApplicantSearchParameter parameter) throws Exception {
 
 		return recruitApplicantDao.getTotalByParam(parameter);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public RecruitApplicant getEntityByPkWithDetail(Long id) throws Exception {
+		
+		return recruitApplicantDao.getEntityByPkWithDetail(id);
 	}
 
 }

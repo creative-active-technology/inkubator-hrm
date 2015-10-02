@@ -18,4 +18,6 @@ public interface RecruitApplicantDao extends IDAO<RecruitApplicant> {
 
 	public Long getTotalByParam(RecruitApplicantSearchParameter parameter);
 
+	public RecruitApplicant getEntityByPkWithDetail(Long id);
+
 }

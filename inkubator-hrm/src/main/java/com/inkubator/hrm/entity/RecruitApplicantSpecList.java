@@ -24,7 +24,7 @@ import javax.persistence.TemporalType;
 public class RecruitApplicantSpecList implements java.io.Serializable {
 
     private ApplicantSpecListId id;
-    private RecruitApplicant applicant;
+    private RecruitApplicant recruitApplicant;
     private OrgTypeOfSpecList orgTypeOfSpecList;
     private Date createdOn;
     private String createdBy;
@@ -32,15 +32,15 @@ public class RecruitApplicantSpecList implements java.io.Serializable {
     public RecruitApplicantSpecList() {
     }
 
-    public RecruitApplicantSpecList(ApplicantSpecListId id, RecruitApplicant applicant, OrgTypeOfSpecList orgTypeOfSpecList) {
+    public RecruitApplicantSpecList(ApplicantSpecListId id, RecruitApplicant recruitApplicant, OrgTypeOfSpecList orgTypeOfSpecList) {
         this.id = id;
-        this.applicant = applicant;
+        this.recruitApplicant = recruitApplicant;
         this.orgTypeOfSpecList = orgTypeOfSpecList;
     }
 
-    public RecruitApplicantSpecList(ApplicantSpecListId id, RecruitApplicant applicant, OrgTypeOfSpecList orgTypeOfSpecList, Date createdOn, String createdBy) {
+    public RecruitApplicantSpecList(ApplicantSpecListId id, RecruitApplicant recruitApplicant, OrgTypeOfSpecList orgTypeOfSpecList, Date createdOn, String createdBy) {
     	this.id = id;
-        this.applicant = applicant;
+        this.recruitApplicant = recruitApplicant;
         this.orgTypeOfSpecList = orgTypeOfSpecList;
         this.createdOn = createdOn;
         this.createdBy = createdBy;
@@ -60,12 +60,12 @@ public class RecruitApplicantSpecList implements java.io.Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "applicant_id", nullable = false, insertable = false, updatable = false)
-    public RecruitApplicant getApplicant() {
-		return applicant;
+    public RecruitApplicant getRecruitApplicant() {
+		return recruitApplicant;
 	}
 
-	public void setApplicant(RecruitApplicant applicant) {
-		this.applicant = applicant;
+	public void setRecruitApplicant(RecruitApplicant recruitApplicant) {
+		this.recruitApplicant = recruitApplicant;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)

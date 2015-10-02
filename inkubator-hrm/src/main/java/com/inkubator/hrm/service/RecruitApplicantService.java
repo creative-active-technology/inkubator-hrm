@@ -17,5 +17,7 @@ public interface RecruitApplicantService extends IService<RecruitApplicant> {
 	public List<RecruitApplicant> getByParam(RecruitApplicantSearchParameter parameter, int first, int pageSize, Order orderable) throws Exception;
 
 	public Long getTotalByParam(RecruitApplicantSearchParameter parameter) throws Exception;
+	
+	public RecruitApplicant getEntityByPkWithDetail(Long id) throws Exception;
 
 }
