@@ -12,7 +12,12 @@ import com.inkubator.hrm.service.ScheduleDinamicService;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -26,45 +31,88 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
 
     @Autowired
     private SchedulerConfigDao schedulerConfigDao;
+    @Autowired
+    private JmsTemplate jmsTemplateUserPassNotif;
 
-    @Scheduled(cron = "${cron.dinamic.scheduler}")
-    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Scheduled(cron = "${cron.dinamic.scheduler}")// Harus REQUARED NEW
+    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     @Override
     public void doDinamicCheck() throws Exception {
 
-        LOGGER.warn(" Eksekusi pada :" + new SimpleDateFormat("dd MMMM yyyy HH:mm:ss").format(new Date()));
+        LOGGER.info(" Eksekusi pada :" + new SimpleDateFormat("dd MMMM yyyy HH:mm:ss").format(new Date()));
         List<SchedulerConfig> allScheduleActive = schedulerConfigDao.getAllData(Boolean.TRUE);
         for (SchedulerConfig config : allScheduleActive) {
             if ("REPEAT".equals(config.getSchedullerType())) {
                 if ("EVERY_DAY".equals(config.getRepeateType())) {
-                    LOGGER.warn("Jenis Jadwal :" + config.getSchedullerType());
-                    LOGGER.warn("Kategori Jenis Pengulangan :" + config.getRepeateType());
+                    LOGGER.info("===========================PENGULANGAN TIAP HARI =================================================");
+                    LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
+                    LOGGER.info("Jenis Jadwal :" + config.getSchedullerType());
+                    LOGGER.info("Kategori Jenis Pengulangan :" + config.getRepeateType());
+                    LOGGER.info("Waktu Pengulapan Pada Pukul :" + config.getSchedullerTime());
+                    LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getHourDiv() + " JAM");
+                    LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getMinuteDiv() + " MINUTE");
+                    LOGGER.info("===========================PENGULANGAN TIAP HARI =================================================");
                     doCheckCurrentDate(config);
+
                 }
                 if ("EVERY_WEEK".equals(config.getRepeateType())) {
-                    LOGGER.warn("Jenis Jadwal :" + config.getSchedullerType());
-                    LOGGER.warn("Kategori Jenis Pengulangan :" + config.getRepeateType());
+                    LOGGER.info("===========================PENGULANGAN TIAP MINGGU =================================================");
+                    LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
+                    LOGGER.info("Jenis Jadwal :" + config.getSchedullerType());
+                    LOGGER.info("Kategori Jenis Pengulangan :" + config.getRepeateType());
+                    LOGGER.info("Waktu Pengulapan Pada Pukul :" + config.getSchedullerTime());
+                    LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getHourDiv() + " JAM");
+                    LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getMinuteDiv() + " MINUTE");
+                    LOGGER.info("===========================PENGULANGAN TIAP MINGGU =================================================");
                     doCheckCurrentDate(config);
                 }
                 if ("EVERY_MONTH".equals(config.getRepeateType())) {
-                    LOGGER.warn("Jenis Jadwal :" + config.getSchedullerType());
-                    LOGGER.warn("Kategori Jenis Pengulangan :" + config.getRepeateType());
+                    LOGGER.info("===========================PENGULANGAN TIAP BULAN =================================================");
+                    LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
+                    LOGGER.info("Jenis Jadwal :" + config.getSchedullerType());
+                    LOGGER.info("Kategori Jenis Pengulangan :" + config.getRepeateType());
+                    LOGGER.info("Waktu Pengulapan Pada Pukul :" + config.getSchedullerTime());
+                    LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getHourDiv() + " JAM");
+                    LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getMinuteDiv() + " MINUTE");
+                    LOGGER.info("===========================PENGULANGAN TIAP BULAN =================================================");
                     doCheckCurrentDate(config);
                 }
                 if ("EVERTY_YEAR".equals(config.getRepeateType())) {
-                    LOGGER.warn("Jenis Jadwal :" + config.getSchedullerType());
-                    LOGGER.warn("Kategori Jenis Pengulangan :" + config.getRepeateType());
+                    LOGGER.info("===========================PENGULANGAN TIAP TAHUN =================================================");
+                    LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
+                    LOGGER.info("Jenis Jadwal :" + config.getSchedullerType());
+                    LOGGER.info("Kategori Jenis Pengulangan :" + config.getRepeateType());
+                    LOGGER.info("Waktu Pengulapan Pada Pukul :" + config.getSchedullerTime());
+                    LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getHourDiv() + " JAM");
+                    LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getMinuteDiv() + " MINUTE");
+                    LOGGER.info("===========================PENGULANGAN TIAP TAHUN =================================================");
                     doCheckCurrentDate(config);
                 }
             }
 
             if ("ONCE".equals(config.getSchedullerType())) {
-                LOGGER.warn(" Eksekusi pada :" + config.getSchedullerType());
+                LOGGER.info("===========================PENGULANGAN HANYA SEKALI ===============================================");
+                LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
+                LOGGER.info("Jenis Jadwal :" + config.getSchedullerType());
+                LOGGER.info("Kategori Jenis Pengulangan :" + config.getRepeateType());
+                LOGGER.info("Waktu Pengulapan Pada Pukul :" + config.getSchedullerTime());
+                LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getHourDiv() + " JAM");
+                LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getMinuteDiv() + " MINUTE");
+                LOGGER.info("===========================PENGULANGAN HANYA SEKALI ===============================================");
                 doCheckCurrentDateEquale(config);
             }
 
             if ("RANGE_TIME".equals(config.getSchedullerType())) {
-                LOGGER.warn(" Eksekusi pada :" + config.getSchedullerType());
+                LOGGER.info("===========================PENGULANGAN PADA RENTANG WAKTU ===============================================");
+                LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
+                LOGGER.info("Jenis Jadwal :" + config.getSchedullerType());
+                LOGGER.info("Kategori Jenis Pengulangan :" + config.getRepeateType());
+                LOGGER.info("MULAI TANGGAL PENGULANGAN :" + config.getStartDate());
+                LOGGER.info("SAMPAI TANGGAL PENGULANGAN :" + config.getEndDate());
+                LOGGER.info("Waktu Pengulapan Pada Pukul :" + config.getSchedullerTime());
+                LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getHourDiv() + " JAM");
+                LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getMinuteDiv() + " MINUTE");
+                LOGGER.info("===========================PENGULANGAN PADA RENTANG WAKTU ===============================================");
                 doCheckCurrentDateRange(config);
             }
         }
@@ -77,42 +125,29 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
             Date currentDate = new SimpleDateFormat("dd MM yyyy").parse(currentDateString);
             if (doDateExecution.equals(currentDate) || doDateExecution.before(currentDate)) {
                 if (config.getIsTimeDiv()) {
-//                    LOGGER.warn("Di eksekusi tiap " + config.getTimeDivExecution());
                     Date lastExecution = config.getLastExecution();
-                    LOGGER.warn("Last Eksekusinya adalahhhhhhh " + config.getLastExecution());
                     Date currentDateTime = new Date();
                     if (lastExecution != null) {
-                        LOGGER.warn("Di eksekusi karena tiap jeda waktu dana daa lasst ++++++++++++++++++++++++==================");
-                        LOGGER.warn(" Current Date :" + currentDateTime.getTime());
-                        LOGGER.warn(" Lase Execution :" + lastExecution.getTime());
-                        LOGGER.warn(" Time Div Haour:" + config.getHourDiv());
-                        LOGGER.warn(" Time Div Minute:" + config.getMinuteDiv());
                         Integer hour = config.getHourDiv() * 3600 * 1000;
                         Integer minute = config.getMinuteDiv() * 60 * 1000;
                         Integer totalDiv = (hour + minute) / 1000;
                         Long total = currentDateTime.getTime() - lastExecution.getTime();
-                        LOGGER.warn("Total Time Div:" + totalDiv);
-                        LOGGER.warn("Total:" + total);
-                        LOGGER.warn("Total Int:" + total.intValue() / 1000);
                         if (totalDiv == total.intValue() / 1000) {
+                            config.setLastExecution(new Date());
+                            schedulerConfigDao.update(config);
                             executionSchedullerViaMessaging(config);
-                            LOGGER.warn("Lakukan ekseskusi scheduler lewat messaging " + new Date());
+                            LOGGER.info("++++++++++++++++++++++++++==Pengiriman Message Untuk Proses Pngulangan Semua Jeda Waktu ++++++++++++++++++++++  :" + config.getHourDiv() + " JAM" + config.getMinuteDiv() + " MIN");
                         }
                     }
                 } else {
                     String currentDateStringTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
                     Date currentDateTime = new SimpleDateFormat("HH:mm:ss").parse(currentDateStringTime);
-                    LOGGER.warn("tanggal eksekusi :" + config.getSchedullerTime().getTime());
-                    LOGGER.warn("tanggal sekarang :" + currentDateTime.getTime());
                     if (currentDateTime.getTime() == config.getSchedullerTime().getTime()) {
                         executionSchedullerViaMessaging(config);
-                        LOGGER.warn("Lakukan ekseskusi scheduler  :" + config.getSchedullerTime());
+                        LOGGER.info("++++++++++++++++++++++++++Pengiriman Message Untuk Proses Pada Waktu Tertentu ++++++++++++++++++++++  :" + config.getSchedullerTime());
                     }
                 }
-                LOGGER.warn("Tanggalnya sekarang sama atau sudah lewat:");
             }
-            LOGGER.warn("Taanggal Mulai eksekusi :" + config.getDateStartExecution());
-            LOGGER.warn("Tanggal Hari ini :" + new Date());
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }
@@ -125,42 +160,29 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
             Date currentDate = new SimpleDateFormat("dd MM yyyy").parse(currentDateString);
             if (doDateExecution.equals(currentDate)) {
                 if (config.getIsTimeDiv()) {
-//                    LOGGER.warn("Di eksekusi tiap " + config.getTimeDivExecution());
                     Date lastExecution = config.getLastExecution();
-                    LOGGER.warn("Last Eksekusinya adalahhhhhhh " + config.getLastExecution());
                     Date currentDateTime = new Date();
                     if (lastExecution != null) {
-                        LOGGER.warn("Di eksekusi karena tiap jeda waktu dana daa lasst ++++++++++++++++++++++++==================");
-                        LOGGER.warn(" Current Date :" + currentDateTime.getTime());
-                        LOGGER.warn(" Lase Execution :" + lastExecution.getTime());
-                        LOGGER.warn(" Time Div Haour:" + config.getHourDiv());
-                        LOGGER.warn(" Time Div Minute:" + config.getMinuteDiv());
                         Integer hour = config.getHourDiv() * 3600 * 1000;
                         Integer minute = config.getMinuteDiv() * 60 * 1000;
                         Integer totalDiv = (hour + minute) / 1000;
                         Long total = currentDateTime.getTime() - lastExecution.getTime();
-                        LOGGER.warn("Total Time Div:" + totalDiv);
-                        LOGGER.warn("Total:" + total);
-                        LOGGER.warn("Total Int:" + total.intValue() / 1000);
                         if (totalDiv == total.intValue() / 1000) {
+                            config.setLastExecution(new Date());
+                            schedulerConfigDao.update(config);
                             executionSchedullerViaMessaging(config);
-                            LOGGER.warn("Lakukan ekseskusi scheduler " + new Date());
+                            LOGGER.info("++++++++++++++++++++++++++==Pengiriman Message Untuk Proses Pngulangan Semua Jeda Waktu ++++++++++++++++++++++  :" + config.getHourDiv() + " JAM" + config.getMinuteDiv() + " MIN");
                         }
                     }
                 } else {
                     String currentDateStringTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
                     Date currentDateTime = new SimpleDateFormat("HH:mm:ss").parse(currentDateStringTime);
-                    LOGGER.warn("tanggal eksekusi :" + config.getSchedullerTime().getTime());
-                    LOGGER.warn("tanggal sekarang :" + currentDateTime.getTime());
                     if (currentDateTime.getTime() == config.getSchedullerTime().getTime()) {
-                        LOGGER.warn("Lakukan ekseskusi scheduler  :" + config.getSchedullerTime());
                         executionSchedullerViaMessaging(config);
+                        LOGGER.info("++++++++++++++++++++++++++Pengiriman Message Untuk Proses Pada Waktu Tertentu ++++++++++++++++++++++  :" + config.getSchedullerTime());
                     }
                 }
-                LOGGER.warn("Tanggalnya sekarang sama atau sudah lewat:");
             }
-            LOGGER.warn("Taanggal Mulai eksekusi :" + config.getDateStartExecution());
-            LOGGER.warn("Tanggal Hari ini :" + new Date());
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }
@@ -174,48 +196,69 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
             Date currentDate = new SimpleDateFormat("dd MM yyyy").parse(currentDateString);
             if (doDateExecution.equals(currentDate) || (doDateExecution.before(currentDate) && endRangeExecution.after(currentDate)) || endRangeExecution.equals(currentDate)) {
                 if (config.getIsTimeDiv()) {
-//                    LOGGER.warn("Di eksekusi tiap " + config.getTimeDivExecution());
                     Date lastExecution = config.getLastExecution();
-                    LOGGER.warn("Last Eksekusinya adalahhhhhhh " + config.getLastExecution());
                     Date currentDateTime = new Date();
                     if (lastExecution != null) {
-                        LOGGER.warn("Di eksekusi karena tiap jeda waktu dana daa lasst ++++++++++++++++++++++++==================");
-                        LOGGER.warn(" Current Date :" + currentDateTime.getTime());
-                        LOGGER.warn(" Lase Execution :" + lastExecution.getTime());
-                        LOGGER.warn(" Time Div Haour:" + config.getHourDiv());
-                        LOGGER.warn(" Time Div Minute:" + config.getMinuteDiv());
                         Integer hour = config.getHourDiv() * 3600 * 1000;
                         Integer minute = config.getMinuteDiv() * 60 * 1000;
                         Integer totalDiv = (hour + minute) / 1000;
                         Long total = currentDateTime.getTime() - lastExecution.getTime();
-                        LOGGER.warn("Total Time Div:" + totalDiv);
-                        LOGGER.warn("Total:" + total);
-                        LOGGER.warn("Total Int:" + total.intValue() / 1000);
                         if (totalDiv == total.intValue() / 1000) {
-                            LOGGER.warn("Lakukan ekseskusi scheduler " + new Date());
+                            config.setLastExecution(new Date());
+                            schedulerConfigDao.update(config);
                             executionSchedullerViaMessaging(config);
+                            LOGGER.info("++++++++++++++++++++++++++==Pengiriman Message Untuk Proses Pngulangan Semua Jeda Waktu ++++++++++++++++++++++  :" + config.getHourDiv() + " JAM" + config.getMinuteDiv() + " MIN");
                         }
                     }
                 } else {
                     String currentDateStringTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
                     Date currentDateTime = new SimpleDateFormat("HH:mm:ss").parse(currentDateStringTime);
-                    LOGGER.warn("tanggal eksekusi :" + config.getSchedullerTime().getTime());
-                    LOGGER.warn("tanggal sekarang :" + currentDateTime.getTime());
                     if (currentDateTime.getTime() == config.getSchedullerTime().getTime()) {
-                        LOGGER.warn("Lakukan ekseskusi scheduler  :" + config.getSchedullerTime());
                         executionSchedullerViaMessaging(config);
+                        LOGGER.info("++++++++++++++++++++++++++Pengiriman Message Untuk Proses Pada Waktu Tertentu ++++++++++++++++++++++  :" + config.getSchedullerTime());
                     }
                 }
-                LOGGER.warn("Tanggalnya sekarang sama atau sudah lewat:");
             }
-            LOGGER.warn("Taanggal Mulai eksekusi :" + config.getDateStartExecution());
-            LOGGER.warn("Tanggal Hari ini :" + new Date());
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }
     }
 
     private void executionSchedullerViaMessaging(SchedulerConfig config) {
+
+        final long configId = config.getId();
+        switch (config.getName()) {
+            case "USER_PASSWORD_NOTIFICATION":
+                jmsTemplateUserPassNotif.send(new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createTextMessage(String.valueOf(configId));
+                    }
+                });
+                break;
+            case "APROVAL_MATRIX_NOTIF":
+//                monthString = "February";
+                break;
+            case "DELETE_ACESS_HISTORY":
+//                monthString = "March";
+                break;
+            case "DELETE_LOG_HISTORY":
+//                monthString = "April";
+                break;
+            case "HOLIDAY_UPDATE":
+//                monthString = "May";
+                break;
+            case "SCHEDULE_WORK":
+//                monthString = "June";
+                break;
+            case "DELETE_TEMP_SCHEDULE_WORK":
+//                monthString = "July";
+                break;
+            case "AUTO_APPROVAL_MATRIX":
+//                monthString = "August";
+                break;
+
+        }
 
     }
 }
