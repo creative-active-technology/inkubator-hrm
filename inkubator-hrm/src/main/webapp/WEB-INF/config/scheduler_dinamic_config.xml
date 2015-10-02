@@ -51,4 +51,29 @@
         <property name="sessionTransacted" value="true"/>
         <property name="defaultDestinationName" value="delAccessHis"/>
     </bean> 
+    <bean id="jmsTemplateDelLogHis" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
+        <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
+        <property name="sessionTransacted" value="true"/>
+        <property name="defaultDestinationName" value="delLogHis"/>
+    </bean> 
+    <bean id="jmsTemplateHolidayUpdate" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
+        <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
+        <property name="sessionTransacted" value="true"/>
+        <property name="defaultDestinationName" value="holidayUpdate"/>
+    </bean> 
+    <bean id="jmsTemplateScheduleWork" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
+        <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
+        <property name="sessionTransacted" value="true"/>
+        <property name="defaultDestinationName" value="scheduleWork"/>
+    </bean> 
+    <bean id="jmsTemplateDelTempScheduleWork" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
+        <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
+        <property name="sessionTransacted" value="true"/>
+        <property name="defaultDestinationName" value="delTempScheduleWork"/>
+    </bean> 
+    <bean id="jmsTemplateAutoApprovalMat" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
+        <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
+        <property name="sessionTransacted" value="true"/>
+        <property name="defaultDestinationName" value="autoApprovalMat"/>
+    </bean> 
 </beans>

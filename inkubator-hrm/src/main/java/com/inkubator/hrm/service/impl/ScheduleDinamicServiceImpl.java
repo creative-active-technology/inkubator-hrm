@@ -37,6 +37,16 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
     private JmsTemplate jmsTemplateApprovalNotif;
     @Autowired
     private JmsTemplate jmsTemplateDelAccessHis;
+    @Autowired
+    private JmsTemplate jmsTemplateDelLogHis;
+    @Autowired
+    private JmsTemplate jmsTemplateHolidayUpdate;
+    @Autowired
+    private JmsTemplate jmsTemplateScheduleWork;
+    @Autowired
+    private JmsTemplate jmsTemplateDelTempScheduleWork;
+    @Autowired
+    private JmsTemplate jmsTemplateAutoApprovalMat;
 
     @Scheduled(cron = "${cron.dinamic.scheduler}")// Harus REQUARED NEW
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
@@ -229,7 +239,6 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
     }
 
     private void executionSchedullerViaMessaging(SchedulerConfig config) {
-
         final long configId = config.getId();
         switch (config.getName()) {
             case "USER_PASSWORD_NOTIFICATION":
@@ -257,21 +266,45 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                 });
                 break;
             case "DELETE_LOG_HISTORY":
-//                monthString = "April";
+                jmsTemplateDelLogHis.send(new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createTextMessage(String.valueOf(configId));
+                    }
+                });
                 break;
             case "HOLIDAY_UPDATE":
-//                monthString = "May";
+                jmsTemplateHolidayUpdate.send(new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createTextMessage(String.valueOf(configId));
+                    }
+                });
                 break;
             case "SCHEDULE_WORK":
-//                monthString = "June";
+                jmsTemplateScheduleWork.send(new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createTextMessage(String.valueOf(configId));
+                    }
+                });
                 break;
             case "DELETE_TEMP_SCHEDULE_WORK":
-//                monthString = "July";
+                jmsTemplateDelTempScheduleWork.send(new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createTextMessage(String.valueOf(configId));
+                    }
+                });
                 break;
             case "AUTO_APPROVAL_MATRIX":
-//                monthString = "August";
+                jmsTemplateAutoApprovalMat.send(new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createTextMessage(String.valueOf(configId));
+                    }
+                });
                 break;
-
         }
 
     }
