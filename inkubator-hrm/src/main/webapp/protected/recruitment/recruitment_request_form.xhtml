@@ -46,7 +46,7 @@
                                     <p:outputLabel for="mppPeriodeId" value="#{appmsg['mppRecruitmentHist.mpp_period']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:selectOneMenu id="mppPeriodeId" required="true" value="#{recruitHireApplyFormController.model.recruitMppId}">
+                                    <p:selectOneMenu id="mppPeriodeId" required="true" value="#{recruitHireApplyFormController.model.recruitMppPeriodId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{recruitHireApplyFormController.mapPeriode}" />
                                         <p:ajax   listener="#{recruitHireApplyFormController.onChangeMppPeriod()}"  update="jabatanId"/>

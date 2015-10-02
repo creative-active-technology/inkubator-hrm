@@ -33,4 +33,6 @@ public interface RecruitMppApplyDetailDao extends IDAO<RecruitMppApplyDetail> {
     public Long getTotalNumberOfMppByJabatanIdAndDateRange(Long jabatanId, Date startDate, Date endDate);
     
     public RecruitMppApplyDetail getEntityByDateRangeAndJabatanId(Long jabatanId, Date startDate, Date endDate);
+    
+    public List<RecruitMppApplyDetail> getListInSelectedMppPeriodIdWithApprovalStatus(Long recruitMppPeriodId, Integer approvalStatus);
 }

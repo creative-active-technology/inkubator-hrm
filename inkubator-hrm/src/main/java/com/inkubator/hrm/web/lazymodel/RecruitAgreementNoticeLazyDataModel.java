@@ -14,14 +14,15 @@ import com.inkubator.hrm.entity.AdmonitionType;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.service.AdmonitionTypeService;
 import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.web.model.RecruitAgreementNoticeViewModel;
 import com.inkubator.hrm.web.search.AdmonitionTypeSearchParameter;
 import com.inkubator.hrm.web.search.RecruitAgreementNoticeSearchParameter;
 
-public class RecruitAgreementNoticeLazyDataModel extends LazyDataModel<EmpData> implements Serializable{
-	private static final Logger LOGGER = Logger.getLogger(AdmonitionTypeLazyDataModel.class);
+public class RecruitAgreementNoticeLazyDataModel extends LazyDataModel<RecruitAgreementNoticeViewModel> implements Serializable{
+	private static final Logger LOGGER = Logger.getLogger(RecruitAgreementNoticeLazyDataModel.class);
     private final RecruitAgreementNoticeSearchParameter searchParameter;
     private final EmpDataService empDataService;
-    private List<EmpData> listEmpData = new ArrayList<>();
+    private List<RecruitAgreementNoticeViewModel> listEmpData = new ArrayList<>();
     private Integer total;
     
 	public RecruitAgreementNoticeLazyDataModel(RecruitAgreementNoticeSearchParameter searchParameter, EmpDataService empDataService) {
@@ -30,7 +31,7 @@ public class RecruitAgreementNoticeLazyDataModel extends LazyDataModel<EmpData> 
 	}
     
 	@Override
-    public List<EmpData> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+    public List<RecruitAgreementNoticeViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 		LOGGER.info("Step Load Lazy data Model");
 
         try {
@@ -38,10 +39,10 @@ public class RecruitAgreementNoticeLazyDataModel extends LazyDataModel<EmpData> 
             if(sortField != null){
                 order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
             }else{
-                order = Order.desc("nik");
+                order = Order.desc("firstName");
             }
-            listEmpData = empDataService.getAllEmployeeForRecruitAggrementNotice(searchParameter, first, pageSize, order);
-            total = Integer.parseInt(String.valueOf(empDataService.getTotalAllEmployeeForRecruitAggrementNotice(searchParameter)));
+            listEmpData = empDataService.getAllEmployeeForRecruitAggrementNoticeWithNativeQuery(searchParameter, first, pageSize, order);
+            total = Integer.parseInt(String.valueOf(empDataService.getTotalAllEmployeeForRecruitAggrementNoticeWithNativeQuery(searchParameter)));
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -54,15 +55,15 @@ public class RecruitAgreementNoticeLazyDataModel extends LazyDataModel<EmpData> 
     }
 
     @Override
-    public Object getRowKey(EmpData empData) {
-        return empData.getId();
+    public Object getRowKey(RecruitAgreementNoticeViewModel agreementNoticeViewModel) {
+        return agreementNoticeViewModel.getEmployeeId();
     }
 
     @Override
-    public EmpData getRowData(String id) {
-        for (EmpData empData : listEmpData) {
-            if (id.equals(String.valueOf(empData.getId()))) {
-                return empData;
+    public RecruitAgreementNoticeViewModel getRowData(String id) {
+        for (RecruitAgreementNoticeViewModel agreementNoticeViewModel : listEmpData) {
+            if (id.equals(String.valueOf(agreementNoticeViewModel.getEmployeeId()))) {
+                return agreementNoticeViewModel;
             }
         }
         return null;
