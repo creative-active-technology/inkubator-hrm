@@ -33,6 +33,10 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
     private SchedulerConfigDao schedulerConfigDao;
     @Autowired
     private JmsTemplate jmsTemplateUserPassNotif;
+    @Autowired
+    private JmsTemplate jmsTemplateApprovalNotif;
+    @Autowired
+    private JmsTemplate jmsTemplateDelAccessHis;
 
     @Scheduled(cron = "${cron.dinamic.scheduler}")// Harus REQUARED NEW
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
@@ -237,10 +241,20 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                 });
                 break;
             case "APROVAL_MATRIX_NOTIF":
-//                monthString = "February";
+                jmsTemplateApprovalNotif.send(new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createTextMessage(String.valueOf(configId));
+                    }
+                });
                 break;
             case "DELETE_ACESS_HISTORY":
-//                monthString = "March";
+                jmsTemplateDelAccessHis.send(new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createTextMessage(String.valueOf(configId));
+                    }
+                });
                 break;
             case "DELETE_LOG_HISTORY":
 //                monthString = "April";
