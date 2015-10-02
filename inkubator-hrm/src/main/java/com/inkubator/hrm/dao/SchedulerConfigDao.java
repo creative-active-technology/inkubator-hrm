@@ -5,13 +5,20 @@
  */
 package com.inkubator.hrm.dao;
 
+import java.util.List;
+
+import org.hibernate.criterion.Order;
+
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.SchedulerConfig;
+import com.inkubator.hrm.web.search.SchedulerConfigSearchParameter;
 
 /**
  *
  * @author denifahri
  */
 public interface SchedulerConfigDao extends  IDAO<SchedulerConfig>{
+    public List<SchedulerConfig> getByParam(SchedulerConfigSearchParameter searchParameter, int firstResult, int maxResults, Order order);
     
+    public Long getTotalByParam(SchedulerConfigSearchParameter searchParameter);
 }
