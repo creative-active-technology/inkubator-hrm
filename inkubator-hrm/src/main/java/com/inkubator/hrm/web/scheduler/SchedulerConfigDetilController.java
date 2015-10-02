@@ -40,6 +40,7 @@ public class SchedulerConfigDetilController extends BaseController {
             String param = execution.substring(0, 1);
             if(StringUtils.equals(param, "e")){
                 selected = schedulerConfigService.getEntiyByPK(Long.parseLong(execution.substring(1)));
+//                selected = schedulerConfigService.getEntityWithDetail(Long.parseLong(execution.substring(1)));
             }
         } catch (Exception ex){
             LOGGER.error("error", ex);

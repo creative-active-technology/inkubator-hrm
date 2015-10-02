@@ -41,4 +41,14 @@
         <property name="sessionTransacted" value="true"/>
         <property name="defaultDestinationName" value="userPassNotif"/>
     </bean> 
+    <bean id="jmsTemplateApprovalNotif" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
+        <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
+        <property name="sessionTransacted" value="true"/>
+        <property name="defaultDestinationName" value="approvalNotif"/>
+    </bean> 
+    <bean id="jmsTemplateDelAccessHis" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
+        <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
+        <property name="sessionTransacted" value="true"/>
+        <property name="defaultDestinationName" value="delAccessHis"/>
+    </bean> 
 </beans>
