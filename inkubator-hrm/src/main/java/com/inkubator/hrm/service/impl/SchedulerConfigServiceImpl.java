@@ -11,6 +11,7 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.SchedulerConfigDao;
 import com.inkubator.hrm.entity.SchedulerConfig;
 import com.inkubator.hrm.service.SchedulerConfigService;
+import com.inkubator.hrm.web.search.SchedulerConfigSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
@@ -221,5 +222,18 @@ public class SchedulerConfigServiceImpl extends IServiceImpl implements Schedule
     public List<SchedulerConfig> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<SchedulerConfig> getByParam(SchedulerConfigSearchParameter searchParameter, int firstResult,
+			int maxResults, Order order) throws Exception {
+		return this.schedulerConfigDao.getByParam(searchParameter, firstResult, maxResults, order);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByParam(SchedulerConfigSearchParameter searchParameter) throws Exception {
+		return this.schedulerConfigDao.getTotalByParam(searchParameter);
+	}
     
 }

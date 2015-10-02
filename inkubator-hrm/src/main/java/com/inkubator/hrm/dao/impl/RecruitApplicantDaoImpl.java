@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -66,5 +67,12 @@ public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implement
         	criteria.add(Restrictions.like("city.cityName", parameter.getCityName(),MatchMode.ANYWHERE));
         }
     }
+
+	@Override
+	public RecruitApplicant getEntityByPkWithDetail(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.setFetchMode("bioData", FetchMode.JOIN);
+		return (RecruitApplicant) criteria.uniqueResult();
+	}
 
 }

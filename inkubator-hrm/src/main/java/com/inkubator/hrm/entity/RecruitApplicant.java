@@ -2,13 +2,17 @@ package com.inkubator.hrm.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -47,6 +51,7 @@ public class RecruitApplicant implements Serializable {
     private String createdBy;
     private String updatedBy;    
     private Date updatedOn;
+    private Set<RecruitApplicantSpecList> recruitApplicantSpecLists = new HashSet<RecruitApplicantSpecList>();
     
     public RecruitApplicant(){
     	
@@ -280,4 +285,14 @@ public class RecruitApplicant implements Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitApplicant", cascade = CascadeType.REMOVE)
+	public Set<RecruitApplicantSpecList> getRecruitApplicantSpecLists() {
+		return recruitApplicantSpecLists;
+	}
+
+	public void setRecruitApplicantSpecLists(Set<RecruitApplicantSpecList> recruitApplicantSpecLists) {
+		this.recruitApplicantSpecLists = recruitApplicantSpecLists;
+	}    
+    
 }

@@ -54,20 +54,20 @@ public class RecruitApplicantViewController extends BaseController {
     }
 
     public String doDetail() {
-        return "/protected/recruitment/applicant_detail.htm?faces-redirect=true&execution=e" + selected.getId();
+        return "/protected/recruitment/recruit_applicant_detail.htm?faces-redirect=true&execution=e" + selected.getId();
     }
     
     public String doAdd() {
-    	return "/protected/recruitment/applicant_form.htm?faces-redirect=true";
+    	return "/protected/recruitment/recruit_applicant_form.htm?faces-redirect=true";
     }
 
     public String doUpdate() {
-    	return "/protected/recruitment/applicant_form.htm?faces-redirect=true&execution=e" + selected.getId();
+    	return "/protected/recruitment/recruit_applicant_form.htm?faces-redirect=true&execution=e" + selected.getId();
     }
 
     public void doSelectEntity() {
         try {
-            selected = this.recruitApplicantService.getEntiyByPK(selected.getId());
+            selected = this.recruitApplicantService.getEntityByPkWithDetail(selected.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
