@@ -121,13 +121,14 @@ public class RecruitHireApplyFormController extends BaseController {
 
             maxRequestEmp = 0;
             model = new RecruitHireApplyModel();
-            List<RecruitMppApply> listApprovedMpp = recruitMppApplyService.getListWithDetailByApprovalStatus(HRMConstant.APPROVAL_STATUS_APPROVED);
-
-            for (RecruitMppApply recruit : listApprovedMpp) {
-                String periodeStart = DateFormatter.getDateAsStringActiveLocale(recruit.getRecruitMppPeriod().getPeriodeStart(), "dd MMMM yyyy", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-                String periodeEnd = DateFormatter.getDateAsStringActiveLocale(recruit.getRecruitMppPeriod().getPeriodeEnd(), "dd MMMM yyyy", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-                mapPeriode.put(periodeStart + " - " + periodeEnd + "  |  " + recruit.getRecruitMppPeriod().getName(), recruit.getId());
+            List<RecruitMppPeriod> listMppPeriod = recruitMppPeriodService.getAllData();
+            
+            for (RecruitMppPeriod recruitMppPeriod : listMppPeriod) {
+                String periodeStart = DateFormatter.getDateAsStringActiveLocale(recruitMppPeriod.getPeriodeStart(), "dd MMMM yyyy", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+                String periodeEnd = DateFormatter.getDateAsStringActiveLocale(recruitMppPeriod.getPeriodeEnd(), "dd MMMM yyyy", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+                mapPeriode.put(periodeStart + " - " + periodeEnd + "  |  " + recruitMppPeriod.getName(), recruitMppPeriod.getId());
             }
+           
 
             List<EmployeeType> typeToShow = employeeTypeService.getAllData();
             for (EmployeeType employeeType : typeToShow) {
@@ -222,7 +223,7 @@ public class RecruitHireApplyFormController extends BaseController {
             }
 
             recruitHireApply.setRecruitHireApplyDetails(setRecruitHireApplyDetails);
-            String message = "";
+            String message = StringUtils.EMPTY;
             if (isEdit) {
                 recruitHireApplyService.updateRecruitHireWithApproval(recruitHireApply, selectedApprovalActivity.getActivityNumber());
             } else {
@@ -239,8 +240,7 @@ public class RecruitHireApplyFormController extends BaseController {
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
-            /*MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-             redirect = "/protected/recruitment/recruitment_req_history_view.htm?faces-redirect=true";*/
+            
         } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
@@ -253,11 +253,8 @@ public class RecruitHireApplyFormController extends BaseController {
     public void onChangeMppPeriod() {
         try {
             mapJabatan.clear();
-            Long recruitMppId = model.getRecruitMppId();
-            RecruitMppApply entity = recruitMppApplyService.getEntityWithDetailById(recruitMppId);
-            model.setRecruitMppPeriodId(entity.getRecruitMppPeriod().getId());
-
-            List<RecruitMppApplyDetail> listMppDetail = recruitMppApplyDetailService.getListWithDetailByRecruitMppApplyId(recruitMppId);
+            //Get jabatan dari periode terpilih dari mpp apply yang statusnya telah di setujui
+            List<RecruitMppApplyDetail> listMppDetail = recruitMppApplyDetailService.getListInSelectedMppPeriodIdWithApprovalStatus(model.getRecruitMppPeriodId(), HRMConstant.APPROVAL_STATUS_APPROVED );
             for (RecruitMppApplyDetail detail : listMppDetail) {
                 mapJabatan.put(detail.getJabatan().getName(), detail.getJabatan().getId());
             }
@@ -290,7 +287,7 @@ public class RecruitHireApplyFormController extends BaseController {
     private RecruitHireApplyModel getModelFromEntity(RecruitHireApply recruitHireApply) throws Exception {
         HrmUser user = hrmUserService.getUserWithDetail(selectedApprovalActivity.getRequestBy());
         EmpData employeeApplier = empDataService.getByIdWithDetail(user.getEmpData().getId());
-
+        
         RecruitHireApplyModel recruitHireApplyModel = new RecruitHireApplyModel();
         recruitHireApplyModel.setActual(0l);
         recruitHireApplyModel.setAgeMax(recruitHireApply.getAgeMax());
@@ -306,6 +303,7 @@ public class RecruitHireApplyFormController extends BaseController {
         recruitHireApplyModel.setJabatanId(recruitHireApply.getJabatan().getId());
         recruitHireApplyModel.setMaritalStatus(recruitHireApply.getMaritalStatus());
         recruitHireApplyModel.setRecruitMppId(recruitHireApply.getRecruitMppPeriod().getId());
+        recruitHireApplyModel.setRecruitMppPeriodId(recruitHireApply.getRecruitMppPeriod().getId());
         recruitHireApplyModel.setProposeDate(recruitHireApply.getProposeDate());
         recruitHireApplyModel.setReason(recruitHireApply.getReason());
         recruitHireApplyModel.setSalaryMin(recruitHireApply.getSalaryMin());
@@ -321,7 +319,8 @@ public class RecruitHireApplyFormController extends BaseController {
         } else {
             model.setMpp(0l);
         }
-
+        
+        
         return recruitHireApplyModel;
     }
 
@@ -393,6 +392,12 @@ public class RecruitHireApplyFormController extends BaseController {
                 dataForRenders.get(index).setSource(listSource);
             }
         }
+        
+        List<RecruitMppApplyDetail> listMppDetail = recruitMppApplyDetailService.getListInSelectedMppPeriodIdWithApprovalStatus(model.getRecruitMppPeriodId(), HRMConstant.APPROVAL_STATUS_APPROVED );
+        for (RecruitMppApplyDetail detail : listMppDetail) {
+            mapJabatan.put(detail.getJabatan().getName(), detail.getJabatan().getId());
+        }
+
 
         return model;
     }

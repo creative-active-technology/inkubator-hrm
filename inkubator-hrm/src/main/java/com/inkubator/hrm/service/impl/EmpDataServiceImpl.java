@@ -90,6 +90,7 @@ import com.inkubator.hrm.web.model.EmployeeRestModel;
 import com.inkubator.hrm.web.model.EmployeeResumeDashboardModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
+import com.inkubator.hrm.web.model.RecruitAgreementNoticeViewModel;
 import com.inkubator.hrm.web.model.ReportEmpPensionPreparationModel;
 import com.inkubator.hrm.web.model.ReportEmployeeEducationViewModel;
 import com.inkubator.hrm.web.model.SearchEmployeeCandidateViewModel;
@@ -1320,6 +1321,18 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public EmpData getEmpDataWithBioDataAndMaritalStatusById(long id) throws Exception {
 		return empDataDao.getEmpDataWithBioDataAndMaritalStatusById(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<RecruitAgreementNoticeViewModel> getAllEmployeeForRecruitAggrementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) throws Exception {
+		return empDataDao.getAllEmployeeForRecruitAggrementNoticeWithNativeQuery(searchParameter, firstResult, maxResults, orderable);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalAllEmployeeForRecruitAggrementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter) throws Exception {
+		return empDataDao.getTotalAllEmployeeForRecruitAggrementNoticeWithNativeQuery(searchParameter);
 	}
 
 }

@@ -13,6 +13,7 @@ import com.inkubator.hrm.entity.RecruitAgreementNotice;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.RecruitAgreementNoticeService;
 import com.inkubator.hrm.web.lazymodel.RecruitAgreementNoticeLazyDataModel;
+import com.inkubator.hrm.web.model.RecruitAgreementNoticeViewModel;
 import com.inkubator.hrm.web.search.RecruitAgreementNoticeSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 
@@ -25,7 +26,7 @@ public class RecruitAgreementNoticeViewController extends BaseController {
 	@ManagedProperty(value = "#{recruitAgreementNoticeService}")
     private RecruitAgreementNoticeService recruitAgreementNoticeService;
     private RecruitAgreementNoticeSearchParameter searchParameter;
-    private LazyDataModel<EmpData> lazyDataModel;
+    private LazyDataModel<RecruitAgreementNoticeViewModel> lazyDataModel;
     private EmpData selectedEmpData;
     
     @PostConstruct
@@ -74,14 +75,14 @@ public class RecruitAgreementNoticeViewController extends BaseController {
 		this.searchParameter = searchParameter;
 	}
 
-	public LazyDataModel<EmpData> getLazyDataModel() {
+	public LazyDataModel<RecruitAgreementNoticeViewModel> getLazyDataModel() {
 		if(lazyDataModel == null){
 			lazyDataModel = new RecruitAgreementNoticeLazyDataModel(searchParameter, empDataService);
 		}
 		return lazyDataModel;
 	}
 
-	public void setLazyDataModel(LazyDataModel<EmpData> lazyDataModel) {
+	public void setLazyDataModel(LazyDataModel<RecruitAgreementNoticeViewModel> lazyDataModel) {
 		this.lazyDataModel = lazyDataModel;
 	}
 

@@ -2,13 +2,17 @@ package com.inkubator.hrm.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,15 +23,16 @@ import javax.persistence.Version;
  * @author rizkykojek
  */
 @Entity
-@Table(name = "applicant", catalog = "hrm"
+@Table(name = "recruit_applicant", catalog = "hrm"
 )
-public class Applicant implements Serializable {
+public class RecruitApplicant implements Serializable {
 
 	private Long id;
 	private Integer version;
 	private BioData bioData;
 	private Integer careerCandidate;
-	private Integer statusApp;
+	private Boolean isActive;
+	private Boolean isVerified;
 	private EducationLevel educationLevel;
 	private Integer educationStartYear;
 	private Integer educationEndYear;
@@ -46,12 +51,13 @@ public class Applicant implements Serializable {
     private String createdBy;
     private String updatedBy;    
     private Date updatedOn;
+    private Set<RecruitApplicantSpecList> recruitApplicantSpecLists = new HashSet<RecruitApplicantSpecList>();
     
-    public Applicant(){
+    public RecruitApplicant(){
     	
     }
     
-    public Applicant(Long id){
+    public RecruitApplicant(Long id){
     	this.id = id;
     }
     
@@ -93,14 +99,23 @@ public class Applicant implements Serializable {
 	public void setCareerCandidate(Integer careerCandidate) {
 		this.careerCandidate = careerCandidate;
 	}
-
-	@Column(name = "status_app", nullable = false)
-	public Integer getStatusApp() {
-		return statusApp;
+	
+	@Column(name = "is_active")
+	public Boolean getIsActive() {
+		return isActive;
 	}
 
-	public void setStatusApp(Integer statusApp) {
-		this.statusApp = statusApp;
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	@Column(name = "is_verified")
+	public Boolean getIsVerified() {
+		return isVerified;
+	}
+
+	public void setIsVerified(Boolean isVerified) {
+		this.isVerified = isVerified;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -270,4 +285,14 @@ public class Applicant implements Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitApplicant", cascade = CascadeType.REMOVE)
+	public Set<RecruitApplicantSpecList> getRecruitApplicantSpecLists() {
+		return recruitApplicantSpecLists;
+	}
+
+	public void setRecruitApplicantSpecLists(Set<RecruitApplicantSpecList> recruitApplicantSpecLists) {
+		this.recruitApplicantSpecLists = recruitApplicantSpecLists;
+	}    
+    
 }

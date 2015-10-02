@@ -68,28 +68,52 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="#{data.bioData.firstName}" style="width: 20%">
+                            <p:column sortBy="#{data.firstName}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
-                                <h:outputLabel value="#{data.bioData.firstName} #{data.bioData.lastName}" />
+                                <h:outputLabel value="#{data.firstName} #{data.lastName}" />
+                            </p:column>
+                            <p:column sortBy="#{data.jabatanName}" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_last']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.jabatanName}" />
+                            </p:column>
+                            <p:column sortBy="#{data.jabatanDituju}" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['recruitAgreementNotice.recruitAgreementNotice.intended_position']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.jabatanDituju}" />
+                            </p:column>
+                            <p:column sortBy="#{data.lastEducationLevel}" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['empCandidateSearch.last_education_level']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.lastEducationLevel}" />
+                            </p:column>
+                            <!-- <p:column sortBy="#{data.jabatanByJabatanId.name}" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="Level"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.level}" />
                             </p:column>
                             <p:column sortBy="#{data.jabatanByJabatanId.name}" style="width: 20%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['companyRelation.jabatan']}"/>
+                                    <h:outputText value="Level"/>
                                 </f:facet>
-                                <h:outputLabel value="#{data.jabatanByJabatanId.name}" />
-                            </p:column>
-                            <p:column sortBy="#{data.bioData.dateOfBirth}" style="width: 20%">
+                                <h:outputLabel value="#{data.levelDituju}" />
+                            </p:column> -->
+                            <p:column sortBy="#{data.birthOfDate}" style="width: 10%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['biodata.age']}"/>
                                 </f:facet>
-                                <h:outputLabel value="#{data.bioData.dateOfBirth}" >
+                                <h:outputLabel value="#{data.birthOfDate}" >
                                 	<f:converter converterId="ageByDateConverter" />
                                 </h:outputLabel>
                             </p:column>
                             
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 7%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                          style="font-size: 10px!important" 
                                                          action="#{recruitAgreementNoticeViewController.doDetail()}">                        
