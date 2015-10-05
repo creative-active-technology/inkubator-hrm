@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -18,22 +19,30 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import ch.lambdaj.Lambda;
+
+import com.google.gson.Gson;
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.LeaveDao;
 import com.inkubator.hrm.dao.LeaveDistributionDao;
 import com.inkubator.hrm.dao.LeaveImplementationDao;
 import com.inkubator.hrm.dao.NeracaCutiDao;
+import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveDistribution;
 import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.entity.NeracaCuti;
+import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.LeaveDistributionService;
 import com.inkubator.hrm.web.search.LeaveDistributionSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -56,13 +65,56 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
     private NeracaCutiDao neracaCutiDao;
     @Autowired
     private LeaveImplementationDao leaveImplementationDao;
+	@Autowired
+	private HrmUserDao hrmUserDao;
+	@Autowired
+	private ApprovalActivityDao approvalActivityDao;
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<LeaveDistribution> getByParamWithDetail(LeaveDistributionSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-        return leaveDistributionDao.getByParamWithDetail(searchParameter, firstResult, maxResults, order);
+    	List<LeaveDistribution> listLeaveDistribution = leaveDistributionDao.getByParamWithDetail(searchParameter, firstResult, maxResults, order);
+    	Boolean isDisabled = Boolean.FALSE;
+    	Boolean isAppliedOrPending = Boolean.FALSE;
+    	
+    	for(LeaveDistribution leaveDistribution : listLeaveDistribution){
+    		//Long totalEmployees = leaveImplementationDao.getTotalEmployeeByEmployeeId(leaveDistribution.getEmpData().getId());
+    		isAppliedOrPending = isAppliedOrPending(leaveDistribution.getEmpData().getId(), leaveDistribution.getLeave().getName());
+    		if(isAppliedOrPending == Boolean.TRUE){
+    			leaveDistribution.setIsDisabled(isAppliedOrPending);
+    		}
+    	}
+    	return listLeaveDistribution;
     }
 
+    private Boolean isAppliedOrPending(Long id, String name){
+    	System.out.println(name + " namaaa");
+    	Boolean isAppliedOrPending = Boolean.FALSE;
+    	//check if employee has been applied leave and has been approved
+    	if(isAppliedOrPending == Boolean.FALSE){
+    		Long totalEmployees = leaveImplementationDao.getTotalEmployeeByEmployeeId(id);
+    		if(totalEmployees > 0){
+    			isAppliedOrPending = Boolean.TRUE;
+    		}
+    	}
+    	
+    	//check if employee has applied leave with status pending
+    	if(isAppliedOrPending == Boolean.FALSE){
+	    	System.out.println("if kedua");
+			HrmUser requester = hrmUserDao.getByEmpDataId(id);
+			List<ApprovalActivity> listApprovalActivities = approvalActivityDao.getAllDataNotApprovedYet(requester.getUserId(), HRMConstant.LEAVE);
+			for(ApprovalActivity appActivity : listApprovalActivities){
+				
+				Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+				LeaveImplementation leaveImplementation = gson.fromJson(appActivity.getPendingData(), LeaveImplementation.class);
+				if(leaveImplementation.getLeave().getName().equals(name)){
+					isAppliedOrPending = Boolean.TRUE;
+				}
+			}
+    	}
+    	return isAppliedOrPending;
+    }
+    
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalLeaveDistributionByParam(LeaveDistributionSearchParameter searchParameter) throws Exception {
@@ -92,13 +144,59 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(LeaveDistribution entity) throws Exception {
-        LeaveDistribution update = leaveDistributionDao.getEntiyByPK(entity.getId());
+        Leave leaveNew = leaveDao.getEntiyByPK(entity.getLeave().getId());
+    	Long totalDuplicate = leaveDistributionDao.getTotalLeaveDistributionNameAndEmpDataAndNotId(leaveNew.getName(), entity.getEmpData().getId(), entity.getId());
+    	if(totalDuplicate > 0){
+        	throw new BussinessException("businesstravel.cannot_apply_date_already_appplied");
+        }
+    	
+    	LeaveDistribution update = leaveDistributionDao.getEntiyByPK(entity.getId());
         update.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
+        update.setLeave(leaveNew);
+
+        //save neraca cuti
+        saveNeracaCuti(update.getBalance(), entity.getBalance(), update);
+        /*if(update.getBalance() > entity.getBalance()){
+        	double balance = update.getBalance() - entity.getBalance();
+        	NeracaCuti neracaCuti = new NeracaCuti();
+            neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+            neracaCuti.setLeaveDistribution(update);
+            neracaCuti.setKredit(balance);
+            neracaCuti.setCreatedBy(UserInfoUtil.getUserName());
+            neracaCuti.setCreatedOn(new Date());
+            neracaCutiDao.save(neracaCuti);
+        }else{
+        	double balance = entity.getBalance() - update.getBalance();
+        	NeracaCuti neracaCuti = new NeracaCuti();
+            neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+            neracaCuti.setLeaveDistribution(update);
+            neracaCuti.setDebet(balance);
+            neracaCuti.setCreatedBy(UserInfoUtil.getUserName());
+            neracaCuti.setCreatedOn(new Date());
+            neracaCutiDao.save(neracaCuti);
+        }*/
         update.setBalance(entity.getBalance());
-        update.setLeave(leaveDao.getEntiyByPK(entity.getLeave().getId()));
         leaveDistributionDao.update(update);
     }
 
+    private void saveNeracaCuti(double oldBalance, double newBalance, LeaveDistribution leaveDistribution){
+    	NeracaCuti neracaCuti = new NeracaCuti();
+    	if(oldBalance > newBalance){
+        	double balance = oldBalance - newBalance;
+            neracaCuti.setKredit(balance);
+        }else{
+        	double balance = newBalance - oldBalance;
+            neracaCuti.setDebet(balance);
+            
+        }
+    	
+        neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        neracaCuti.setLeaveDistribution(leaveDistribution);
+    	neracaCuti.setCreatedBy(UserInfoUtil.getUserName());
+        neracaCuti.setCreatedOn(new Date());
+        neracaCutiDao.save(neracaCuti);
+    }
+    
     @Override
     public void saveOrUpdate(LeaveDistribution enntity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -326,20 +424,6 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
         return leaveDistributionDao.getEntityByLeaveIdAndEmpDataId(leaveId, empDataId);
 
     }
-
-	@Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<LeaveDistribution> getAllDataByEmpDataId(Long empDataId) throws Exception {
-		List<LeaveDistribution> listLeaveDist =  leaveDistributionDao.getAllDataByEmpDataId(empDataId);
-		List<LeaveImplementation> leaveImplementation = leaveImplementationDao.getAllDataByEmpDataId(empDataId);
-		
-		int i = 0;
-		int consume;
-		for(LeaveDistribution ld : listLeaveDist){
-//			leaveImplementation.get(i).get
-			i++;
-		}
-		return listLeaveDist;
-	}
+	
 
 }

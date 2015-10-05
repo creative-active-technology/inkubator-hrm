@@ -59,9 +59,9 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 @RequestScoped
 public class HomeDashboardController extends BaseController {
 
-	private Date startCalendarDate;
-	private Date endCalendarDate;
-	private List<Integer> listHolidayDate = new ArrayList<Integer>();
+    private Date startCalendarDate;
+    private Date endCalendarDate;
+    private List<Integer> listHolidayDate = new ArrayList<Integer>();
     private Date lastUpdateEmpDistByGender;
     private Date lastUpdateEmpDistByDepartment;
     private Date lastUpdateEmpDistByAge;
@@ -92,31 +92,32 @@ public class HomeDashboardController extends BaseController {
     private WtScheduleShiftService wtScheduleShiftService;
     @ManagedProperty(value = "#{wtHolidayService}")
     private WtHolidayService wtHolidayService;
-    
+
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        
+
         distribusiKaryawanPerDepartment = new CartesianChartModel();
         barChartDistribusiByDept = new BarChartModel();
         pieModel = new PieChartModel();
         totalMale = new Long(0);
         totalFemale = new Long(0);
         try {
-        	/**
-             * find All holiday date based on JadwalKaryawan "DEFAULT" which is OFF and public holiday
+            /**
+             * find All holiday date based on JadwalKaryawan "DEFAULT" which is
+             * OFF and public holiday
              */
-        	DateTime now = new DateTime(); 
-        	now = now.withMillisOfSecond(0).withSecondOfMinute(0).withMinuteOfHour(0).withHourOfDay(0);
-        	startCalendarDate = now.dayOfMonth().withMinimumValue().toDate();
-        	endCalendarDate = now.dayOfMonth().withMaximumValue().toDate();
-        	Set<Date> holidays = wtScheduleShiftService.getAllRegulerOffDaysBetween(startCalendarDate, endCalendarDate);
-        	for(Date holiday:holidays){
-        		DateTime dtHoliday =  new DateTime(holiday);
-        		listHolidayDate.add(dtHoliday.getDayOfMonth());
-        	}
-        	
+            DateTime now = new DateTime();
+            now = now.withMillisOfSecond(0).withSecondOfMinute(0).withMinuteOfHour(0).withHourOfDay(0);
+            startCalendarDate = now.dayOfMonth().withMinimumValue().toDate();
+            endCalendarDate = now.dayOfMonth().withMaximumValue().toDate();
+            Set<Date> holidays = wtScheduleShiftService.getAllRegulerOffDaysBetween(startCalendarDate, endCalendarDate);
+            for (Date holiday : holidays) {
+                DateTime dtHoliday = new DateTime(holiday);
+                listHolidayDate.add(dtHoliday.getDayOfMonth());
+            }
+
             /**
              * calculate employee distribution based on GENDER
              */
@@ -124,7 +125,7 @@ public class HomeDashboardController extends BaseController {
             totalFemale = employeesByGender.get("male");
             totalMale = employeesByGender.get("female");
             lastUpdateEmpDistByGender = new Date(employeesByGender.get("lastUpdate"));
-            
+
             /**
              * calculate employee distribution based on DEPARTMENT
              */
@@ -170,12 +171,12 @@ public class HomeDashboardController extends BaseController {
             pieModel.setDiameter(120);
             pieModel.setSeriesColors("66cc00,629de1,003366,990000,cccc00,6600cc");
             lastUpdateEmpDistByAge = new Date(employeesByAge.get("lastUpdate"));
-            
+
             /**
              * calculate employee resume
              */
-            employeeResumeModel = empDataService.getEmployeeResumeOnDashboard(HrmUserInfoUtil.getCompanyId());            
-            
+            employeeResumeModel = empDataService.getEmployeeResumeOnDashboard(HrmUserInfoUtil.getCompanyId());
+
             /**
              * calculate attendance statistic
              */
@@ -184,8 +185,6 @@ public class HomeDashboardController extends BaseController {
             double totalSchedule = Double.parseDouble(String.valueOf(attendanceModel.getTotaldaySchedule()));
             totalPersent = (totalPresent / totalSchedule);
 
-            
-           
             persentasiKehadiranPerWeek = new CartesianChartModel();
             barChartModel = new BarChartModel();
             barChartModel.setStacked(false);
@@ -198,30 +197,28 @@ public class HomeDashboardController extends BaseController {
             Axis yAxis = barChartModel.getAxis(AxisType.Y);
             yAxis.setMax(150);
             yAxis.setMin(0);
-            
+
             //Get Attendance Percentation per Department on Active Period
             Map<String, List<DepAttendanceRealizationViewModel>> mapResult = empDataService.getListDepAttendanceByCompanyId(HrmUserInfoUtil.getCompanyId());
-          
+
             //Looping and render it
             for (Map.Entry<String, List<DepAttendanceRealizationViewModel>> entry : mapResult.entrySet()) {
-            	
-            	ChartSeries charDepartmentSeries = new ChartSeries();
-            	charDepartmentSeries.setLabel(entry.getKey());
-            	List<DepAttendanceRealizationViewModel> listDepartmentModel = Lambda.sort(entry.getValue(), Lambda.on(DepAttendanceRealizationViewModel.class).getWeekNumber());
-            	for(DepAttendanceRealizationViewModel depAttendanceModel : listDepartmentModel){            		
-            		charDepartmentSeries.set(ResourceBundleUtil.getAsString("global.week") + "  " +depAttendanceModel.getWeekNumber(), depAttendanceModel.getAttendancePercentage().doubleValue()*100);
-            	}
-            	
-            	barChartModel.addSeries(charDepartmentSeries);            	
-            }
 
+                ChartSeries charDepartmentSeries = new ChartSeries();
+                charDepartmentSeries.setLabel(entry.getKey());
+                List<DepAttendanceRealizationViewModel> listDepartmentModel = Lambda.sort(entry.getValue(), Lambda.on(DepAttendanceRealizationViewModel.class).getWeekNumber());
+                for (DepAttendanceRealizationViewModel depAttendanceModel : listDepartmentModel) {
+                    charDepartmentSeries.set(ResourceBundleUtil.getAsString("global.week") + "  " + depAttendanceModel.getWeekNumber(), depAttendanceModel.getAttendancePercentage().doubleValue() * 100);
+                }
+
+                barChartModel.addSeries(charDepartmentSeries);
+            }
 
         } catch (Exception e) {
             LOGGER.error("Error ", e);
         }
 
-
-        persentasiKehadiranPerWeek = new CartesianChartModel();       
+        persentasiKehadiranPerWeek = new CartesianChartModel();
 
         presensiModel = new CartesianChartModel();
         presensiBarChartModel = new HorizontalBarChartModel();
@@ -271,21 +268,21 @@ public class HomeDashboardController extends BaseController {
         xAxis.setMin(0);
 
     }
-    
-    public void onSelectDate(SelectEvent event){
-    	try {
-    		Date date = (Date) event.getObject();
-    		WtHoliday holiday = wtHolidayService.getEntityByDate(date);
-    		if(holiday!=null){
-    			//libur holiday
-    			ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
-    			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, messages.getString("global.information"), holiday.getHolidayName());
-    			FacesUtil.getFacesContext().addMessage(null, msg);
-    		} else if( Lambda.exists(listHolidayDate, Matchers.equalTo(new DateTime(date).getDayOfMonth()))) {
-    			//libur jadwal kerja reguler(default)
-    			MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.information", "global.regular_holiday", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());    			
-    		}
-    	} catch (Exception e) {
+
+    public void onSelectDate(SelectEvent event) {
+        try {
+            Date date = (Date) event.getObject();
+            WtHoliday holiday = wtHolidayService.getEntityByDate(date);
+            if (holiday != null) {
+                //libur holiday
+                ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+                FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, messages.getString("global.information"), holiday.getHolidayName());
+                FacesUtil.getFacesContext().addMessage(null, msg);
+            } else if (Lambda.exists(listHolidayDate, Matchers.equalTo(new DateTime(date).getDayOfMonth()))) {
+                //libur jadwal kerja reguler(default)
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.information", "global.regular_holiday", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            }
+        } catch (Exception e) {
             LOGGER.error("Error ", e);
         }
     }
@@ -422,48 +419,48 @@ public class HomeDashboardController extends BaseController {
         this.totalPersent = totalPersent;
     }
 
-	public EmployeeResumeDashboardModel getEmployeeResumeModel() {
-		return employeeResumeModel;
-	}
+    public EmployeeResumeDashboardModel getEmployeeResumeModel() {
+        return employeeResumeModel;
+    }
 
-	public void setEmployeeResumeModel(EmployeeResumeDashboardModel employeeResumeModel) {
-		this.employeeResumeModel = employeeResumeModel;
-	}
+    public void setEmployeeResumeModel(EmployeeResumeDashboardModel employeeResumeModel) {
+        this.employeeResumeModel = employeeResumeModel;
+    }
 
-	public void setWtPeriodeService(WtPeriodeService wtPeriodeService) {
-		this.wtPeriodeService = wtPeriodeService;
-	}
+    public void setWtPeriodeService(WtPeriodeService wtPeriodeService) {
+        this.wtPeriodeService = wtPeriodeService;
+    }
 
-	public List<Integer> getListHolidayDate() {
-		return listHolidayDate;
-	}
+    public List<Integer> getListHolidayDate() {
+        return listHolidayDate;
+    }
 
-	public void setListHolidayDate(List<Integer> listHolidayDate) {
-		this.listHolidayDate = listHolidayDate;
-	}
-	
-	public Date getStartCalendarDate() {
-		return startCalendarDate;
-	}
+    public void setListHolidayDate(List<Integer> listHolidayDate) {
+        this.listHolidayDate = listHolidayDate;
+    }
 
-	public void setStartCalendarDate(Date startCalendarDate) {
-		this.startCalendarDate = startCalendarDate;
-	}
+    public Date getStartCalendarDate() {
+        return startCalendarDate;
+    }
 
-	public Date getEndCalendarDate() {
-		return endCalendarDate;
-	}
+    public void setStartCalendarDate(Date startCalendarDate) {
+        this.startCalendarDate = startCalendarDate;
+    }
 
-	public void setEndCalendarDate(Date endCalendarDate) {
-		this.endCalendarDate = endCalendarDate;
-	}
+    public Date getEndCalendarDate() {
+        return endCalendarDate;
+    }
 
-	public void setWtScheduleShiftService(WtScheduleShiftService wtScheduleShiftService) {
-		this.wtScheduleShiftService = wtScheduleShiftService;
-	}
+    public void setEndCalendarDate(Date endCalendarDate) {
+        this.endCalendarDate = endCalendarDate;
+    }
 
-	public void setWtHolidayService(WtHolidayService wtHolidayService) {
-		this.wtHolidayService = wtHolidayService;
-	}	    	
+    public void setWtScheduleShiftService(WtScheduleShiftService wtScheduleShiftService) {
+        this.wtScheduleShiftService = wtScheduleShiftService;
+    }
+
+    public void setWtHolidayService(WtHolidayService wtHolidayService) {
+        this.wtHolidayService = wtHolidayService;
+    }
 
 }
