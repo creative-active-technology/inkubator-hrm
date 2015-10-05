@@ -71,7 +71,6 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <!--View for parent bank-->
                             <p:column sortBy="#{data.name}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
@@ -94,7 +93,7 @@
                             </p:column> 
                             <p:column sortBy="#{data.repeateNumber}"  style="width: 27%" rendered="true">
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['bank.branch_name']}"/>
+                                    <h:outputText value="Jumlah perulangan"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.repeateNumber}"/>
                             </p:column> 
@@ -103,7 +102,7 @@
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                                  style="font-size: 10px!important"
                                                  action="#{schedulerConfigViewController.doDetail()}" >                        
-                                    <f:setPropertyActionListener value="#{bankData}" target="#{schedulerConfigViewController.selected}" />
+                                    <f:setPropertyActionListener value="#{data}" target="#{schedulerConfigViewController.selected}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 

@@ -7,6 +7,7 @@ package com.inkubator.hrm.web.scheduler;
 
 import com.inkubator.hrm.entity.SchedulerConfig;
 import com.inkubator.hrm.service.SchedulerConfigService;
+import com.inkubator.hrm.web.lazymodel.SchedulerConfigLazyDataModel;
 import com.inkubator.hrm.web.model.SchedulerConfigModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -35,14 +36,14 @@ public class SchedulerConfigDetilController extends BaseController {
     public void initialization() {
         super.initialization();
        try {
-            super.initialization();
-            String execution = FacesUtil.getRequestParameter("execution");
-            String param = execution.substring(0, 1);
+            String schedulerConfigId = FacesUtil.getRequestParameter("execution");
+            System.out.println("schedulerConfigId  di initialization : " + schedulerConfigId);
+            selected = schedulerConfigService.getEntiyByPK(Long.parseLong(schedulerConfigId));
+            /*String param = schedulerConfigId.substring(0, 1);
             if(StringUtils.equals(param, "e")){
-                selected = schedulerConfigService.getEntiyByPK(Long.parseLong(execution.substring(1)));
-//                selected = schedulerConfigService.getEntityWithDetail(Long.parseLong(execution.substring(1)));
-            }
-        } catch (Exception ex){
+                selected = schedulerConfigService.getEntiyByPK(Long.parseLong(schedulerConfigId.substring(1)));
+            }*/
+           } catch (Exception ex){
             LOGGER.error("error", ex);
         }
     }
