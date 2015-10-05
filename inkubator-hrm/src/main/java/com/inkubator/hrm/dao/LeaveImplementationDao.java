@@ -50,4 +50,6 @@ public interface LeaveImplementationDao extends IDAO<LeaveImplementation> {
     public Long getTotalLeaveDataReport(ReportLeaveDataSearchParameter parameter);
     
     public Long getCurrentMaxId();
+    
+    public Long getTotalEmployeeByEmployeeId(Long id);
 }

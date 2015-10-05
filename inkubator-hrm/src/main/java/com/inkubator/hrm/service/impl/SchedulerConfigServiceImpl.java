@@ -30,28 +30,28 @@ import org.springframework.transaction.annotation.Transactional;
 @Service(value = "schedulerConfigService")
 @Lazy
 public class SchedulerConfigServiceImpl extends IServiceImpl implements SchedulerConfigService {
-    
+
     @Autowired
     private SchedulerConfigDao schedulerConfigDao;
-    
+
     @Override
     public SchedulerConfig getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public SchedulerConfig getEntiyByPK(Integer id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public SchedulerConfig getEntiyByPK(Long id) throws Exception {
         return this.schedulerConfigDao.getEntiyByPK(id);
     }
-    
-    @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+
+    @Override// Harus serialiasai agar tidak tumpang tindih dengan proses schedulerr yang berjalan
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(SchedulerConfig entity) throws Exception {
         long totalDuplicates = schedulerConfigDao.getTotalByName(entity.getName());
         if (totalDuplicates > 0) {
@@ -60,11 +60,14 @@ public class SchedulerConfigServiceImpl extends IServiceImpl implements Schedule
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCretedOn(new Date());
+        if (entity.getIsTimeDiv()) {
+            entity.setLastExecution(new Date());
+        }
         schedulerConfigDao.save(entity);
     }
-    
-    @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+
+    @Override //Harus serialiasai agar tidak tumpang tindih dengan proses schedulerr yang berjalan
+    @Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(SchedulerConfig entity) throws Exception {
         long totalDuplicate = schedulerConfigDao.getTotalByNameAndNotId(entity.getName(), entity.getId());
         if (totalDuplicate > 0) {
@@ -85,155 +88,158 @@ public class SchedulerConfigServiceImpl extends IServiceImpl implements Schedule
         schedulerConfig.setMinuteDiv(entity.getMinuteDiv());
         schedulerConfig.setUpdatedBy(UserInfoUtil.getUserName());
         schedulerConfig.setUpdatedOn(new Date());
+        if (entity.getIsTimeDiv()) {
+            schedulerConfig.setLastExecution(new Date());
+        }
         schedulerConfigDao.update(schedulerConfig);
     }
-    
+
     @Override
     public void saveOrUpdate(SchedulerConfig enntity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public SchedulerConfig saveData(SchedulerConfig entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public SchedulerConfig updateData(SchedulerConfig entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public SchedulerConfig saveOrUpdateData(SchedulerConfig entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public SchedulerConfig getEntityByPkIsActive(String id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public SchedulerConfig getEntityByPkIsActive(String id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public SchedulerConfig getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public SchedulerConfig getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public SchedulerConfig getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public SchedulerConfig getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public SchedulerConfig getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public SchedulerConfig getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public SchedulerConfig getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public void delete(SchedulerConfig entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public void softDelete(SchedulerConfig entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public Long getTotalData() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public Long getTotalDataIsActive(Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public Long getTotalDataIsActive(Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public Long getTotalDataIsActive(Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<SchedulerConfig> getAllData() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<SchedulerConfig> getAllData(Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<SchedulerConfig> getAllData(Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<SchedulerConfig> getAllData(Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<SchedulerConfig> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<SchedulerConfig> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<SchedulerConfig> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<SchedulerConfig> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<SchedulerConfig> getByParam(SchedulerConfigSearchParameter searchParameter, int firstResult,
-			int maxResults, Order order) throws Exception {
-		return this.schedulerConfigDao.getByParam(searchParameter, firstResult, maxResults, order);
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<SchedulerConfig> getByParam(SchedulerConfigSearchParameter searchParameter, int firstResult,
+            int maxResults, Order order) throws Exception {
+        return this.schedulerConfigDao.getByParam(searchParameter, firstResult, maxResults, order);
+    }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalByParam(SchedulerConfigSearchParameter searchParameter) throws Exception {
-		return this.schedulerConfigDao.getTotalByParam(searchParameter);
-	}
-    
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalByParam(SchedulerConfigSearchParameter searchParameter) throws Exception {
+        return this.schedulerConfigDao.getTotalByParam(searchParameter);
+    }
+
 }
