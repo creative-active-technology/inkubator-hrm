@@ -116,13 +116,13 @@
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-                                                 style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                                 style="font-size: 10px!important" update=":panelDialogConfirmId" disabled="#{data.isDisabled}"
                                                  action="#{leaveDistributionViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDelete').show()">
                                     <f:setPropertyActionListener value="#{data}" target="#{leaveDistributionViewController.selected}" />
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
-                                                  action="#{leaveDistributionViewController.doUpdate()}" >
+                                                  action="#{leaveDistributionViewController.doUpdate()}" disabled="#{data.isDisabled}">
                                     <f:setPropertyActionListener value="#{data}" target="#{leaveDistributionViewController.selected}" />
                                     <p:ajax event="dialogReturn" listener="#{leaveDistributionViewController.onDialogReturn}"  update="tableId, :formId:growlId"/>
                                 </p:commandButton> 
