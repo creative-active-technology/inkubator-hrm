@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 /**
@@ -35,6 +36,7 @@ public class LeaveDistribution  implements java.io.Serializable {
      private Date createdOn;
      private String updatedBy;
      private Date updatedOn;
+     private Boolean isDisabled;
 
     public LeaveDistribution() {
     }
@@ -168,7 +170,15 @@ public class LeaveDistribution  implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
+        @Transient
+	public Boolean getIsDisabled() {
+		return isDisabled;
+	}
 
+
+	public void setIsDisabled(Boolean isDisabled) {
+		this.isDisabled = isDisabled;
+	}
 
 
 }
