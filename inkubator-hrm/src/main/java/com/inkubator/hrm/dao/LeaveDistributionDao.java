@@ -10,6 +10,7 @@ import com.inkubator.hrm.web.search.LeaveDistributionSearchParameter;
 
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -35,4 +36,6 @@ public interface LeaveDistributionDao extends IDAO<LeaveDistribution> {
 	public List<LeaveDistribution> getAllDataByEmpIdFetchLeave(Long empDataId);
 
 	public LeaveDistribution getEntityByLeaveIdAndEmpDataId(Long leaveId, Long empDataId);
+	
+	public Long getTotalLeaveDistributionNameAndEmpDataAndNotId(String name, Long empDataId, Long id);
 }
