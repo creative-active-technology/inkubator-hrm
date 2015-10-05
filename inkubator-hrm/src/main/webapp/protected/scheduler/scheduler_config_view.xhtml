@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">                    
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="bank.png" height="36" width="36" cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Scheduler Config" styleClass="header_big" />
+                                <p:outputLabel value="Scheduer Config dari Scheduler" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                    <p:separator/>
+                    <p:growl id="growlSchedulerConfigViewlId" globalOnly="true" showDetail="true" />
+
+                    <h:form id="formSchedulerConfigId">
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                    <p:selectOneMenu value="#{schedulerConfigViewController.searchParameter.keyParam}" style="margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="Nama" itemValue="name"/>
+                                    </p:selectOneMenu>
+                                    <p:inputText id="searchId" value="#{schedulerConfigViewController.searchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{schedulerConfigViewController.doSearch()}" update="tableSchedulerConfigId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Excel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableSchedulerConfigId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Bank"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" action="#{schedulerConfigViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <!--<p:ajax event="dialogReturn" listener="#{schedulerConfigViewController.onDialogReturn}"  update="tableSchedulerConfigId,:growlBankViewlId"/>-->
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{schedulerConfigViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:focus for="searchId" />
+
+                        <p:dataTable  id="tableSchedulerConfigId" var="data"  value="#{schedulerConfigViewController.lazyDataSchedulerConfig}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="List Scheduler Config"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="#{data.name}"  style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.name}"/>
+                            </p:column>
+
+                            <p:column sortBy="#{data.schedullerType}"  style="width: 30%">
+                                <f:facet name="header">  
+                                    <h:outputText value="Scheduler Type"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.schedullerType}"/>
+                            </p:column>
+                            
+                            <p:column sortBy="#{data.repeateType}"  style="width: 15%" rendered="true">
+                                <f:facet name="header">  
+                                    <h:outputText value="Repeate Type"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.repeateType}"/>
+                            </p:column> 
+                            <p:column sortBy="#{data.repeateNumber}"  style="width: 27%" rendered="true">
+                                <f:facet name="header">  
+                                    <h:outputText value="Jumlah perulangan"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.repeateNumber}"/>
+                            </p:column> 
+
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                 style="font-size: 10px!important"
+                                                 action="#{schedulerConfigViewController.doDetail()}" >                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{schedulerConfigViewController.selected}" />
+                                </p:commandButton>
+                                - 
+                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                 action="#{schedulerConfigViewController.doUpdate()}" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{schedulerConfigViewController.selected}" />
+                                </p:commandButton>
+                            </p:column>                        
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{schedulerConfigViewController.lazyDataSchedulerConfig.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formSchedulerConfigId" trigger="tableSchedulerConfigId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                        <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                            <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                        </p:dialog>
+                    </h:form>
+                </div>
+
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>
+

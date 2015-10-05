@@ -17,6 +17,7 @@
     <import resource="security-config.xml"/>
     <import resource="web-messaging-config.xml" />
     <import resource="scheduler_config.xml"/>
+    <!--<import resource="scheduler_dinamic_config.xml"/>-->
     <import resource="batch-config.xml" />
      
 <!--    <import resource="webmvc-config.xml" />

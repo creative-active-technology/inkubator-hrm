@@ -142,8 +142,8 @@ public class SchedulerConfigFormController extends BaseController {
         return null;
     }
     
-    public void doBack() {
-        
+    public String doBack() {
+        return "/protected/scheduler/scheduler_config_view.htm";
     }
     
     public Boolean getIsDisabaleJeda() {
