@@ -245,7 +245,7 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
             criteria.add(Restrictions.in("approvalDefinition.id", ids));
             isStillHaveWaitingStatus = criteria.list().size() > 0;
         }
-
+        
         return isStillHaveWaitingStatus;
     }
     
