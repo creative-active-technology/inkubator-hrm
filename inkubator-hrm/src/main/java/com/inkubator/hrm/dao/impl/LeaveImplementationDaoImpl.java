@@ -344,4 +344,10 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
 		return realOrderField;
 	}
 
+        @Override
+	public Long getTotalEmployeeByEmployeeId(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", id));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
 }
