@@ -1,6 +1,7 @@
 package com.inkubator.hrm.dao.impl;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -70,6 +71,7 @@ public class LogUnregPayrollDaoImpl extends IDAOImpl<LogUnregPayroll> implements
     public List<UnregPayrollViewModel> getByParam(UnregPayrollSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
     	StringBuffer selectQuery = new StringBuffer(
     			"SELECT id as id, "
+    			+ "unregSalaryId as unregSalaryId, "
     			+ "empDataId as empDataId, "
     			+ "empNik as empNik, "
     			+ "empName as empName, "
@@ -92,14 +94,15 @@ public class LogUnregPayrollDaoImpl extends IDAOImpl<LogUnregPayroll> implements
     @Override
     public Long getTotalByParam(UnregPayrollSearchParameter parameter) {
     	StringBuffer selectQuery = new StringBuffer(
-    			"SELECT count(distinct empDataId) "
+    			"SELECT id "
     			+ "FROM LogUnregPayroll ");    	
     	selectQuery.append(this.getWhereQueryByParam(parameter));
+    	selectQuery.append("GROUP BY unregSalaryId,empDataId ");
     	
     	Query hbm = getCurrentSession().createQuery(selectQuery.toString());    	
     	hbm = this.setValueQueryByParam(hbm, parameter);
     	
-        return Long.valueOf(hbm.uniqueResult().toString());
+        return Long.valueOf(hbm.list().size());
     }
 
     private String getWhereQueryByParam(UnregPayrollSearchParameter parameter) {
@@ -151,6 +154,20 @@ public class LogUnregPayrollDaoImpl extends IDAOImpl<LogUnregPayroll> implements
 		criteria.add(Restrictions.eq("empDataId", empDataId));
 		criteria.add(Restrictions.eq("unregSalaryId", unregSalaryId));
 		return criteria.list();
+	}
+
+	@Override
+	public Collection<Long> getAllDataEmpIdByParam(UnregPayrollSearchParameter searchParameter) {
+		StringBuffer selectQuery = new StringBuffer(
+	  			  "SELECT empDataId AS empDataId "
+	  			+ "FROM LogUnregPayroll ");    	
+		selectQuery.append(this.getWhereQueryByParam(searchParameter));
+	  	selectQuery.append("GROUP BY unregSalaryId,empDataId ");
+		
+	  	Query hbm = getCurrentSession().createQuery(selectQuery.toString());
+	  	hbm = this.setValueQueryByParam(hbm, searchParameter);
+	
+	  	return hbm.list();  	
 	}
 
 	

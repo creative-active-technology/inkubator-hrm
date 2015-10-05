@@ -142,9 +142,15 @@ public class BusinessTravelFormController implements Serializable{
 				//get default quantity based on range start and end date
 				int defaultQuantity = DateTimeUtil.getTotalDay(model.getStart(), model.getEnd());
 				
+				//re-set quantity based on default value
 				List<BusinessTravelComponent> businessTravelComponents = model.getBusinessTravelComponents();
 				Lambda.forEach(businessTravelComponents).setQuantity(defaultQuantity);
 				model.setBusinessTravelComponents(businessTravelComponents);
+				
+				//re-calculate total amount
+				double totalAmount = calculateTotalAmount(businessTravelComponents);
+				model.setTotalAmount(totalAmount);
+				
 				context.getFlowScope().put("businessTravelModel", model);
 			} catch (Exception ex) {
 				LOGGER.error("Error", ex);

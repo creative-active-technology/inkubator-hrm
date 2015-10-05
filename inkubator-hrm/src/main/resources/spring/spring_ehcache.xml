@@ -67,6 +67,5 @@
            timeToLiveSeconds="86400" overflowToDisk="false"
            memoryStoreEvictionPolicy="LFU">
     </cache>
-    
-	
+    	
 </ehcache>

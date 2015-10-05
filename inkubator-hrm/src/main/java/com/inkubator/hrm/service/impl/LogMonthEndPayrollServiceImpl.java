@@ -1,7 +1,9 @@
 package com.inkubator.hrm.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +25,7 @@ import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.LogMonthEndPayrollDao;
 import com.inkubator.hrm.dao.PayComponentDataExceptionDao;
 import com.inkubator.hrm.dao.PayTempAttendanceStatusDao;
@@ -31,6 +34,7 @@ import com.inkubator.hrm.dao.PayTempKalkulasiEmpPajakDao;
 import com.inkubator.hrm.dao.PayTempOvertimeDao;
 import com.inkubator.hrm.dao.WtHolidayDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.entity.PayComponentDataException;
 import com.inkubator.hrm.entity.WtPeriode;
@@ -71,6 +75,8 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 	private PayTempOvertimeDao payTempOvertimeDao;
 	@Autowired
 	private PayComponentDataExceptionDao payComponentDataExceptionDao;
+	@Autowired
+	private EmpDataDao empDataDao;
 
 	@Override
 	public LogMonthEndPayroll getEntiyByPK(String id) throws Exception {
@@ -422,20 +428,31 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-	public StreamedContent generateSalarySlip(Long periodId, Long empDataId) throws Exception {
+	public StreamedContent generatePersonalSalarySlip(Long periodId, Long empDataId) throws Exception {
+		EmpData empData = empDataDao.getEntiyByPK(empDataId);
+		Collection<Long> arrayEmpDataId = new ArrayList<>();
+		arrayEmpDataId.add(empDataId);		
+        return generateSalarySlip(periodId, arrayEmpDataId, Boolean.FALSE, empData.getNik());
 		
-		List<LogMonthEndPayroll> list = logMonthEndPayrollDao.getEntityByEmpDataIdAndPeriodIdAndCompSpecific(empDataId, periodId, HRMConstant.MODEL_COMP_TAKE_HOME_PAY);
-		LogMonthEndPayroll monthEndPayroll = list.get(0);
-		TerbilangUtil util = new TerbilangUtil(monthEndPayroll.getNominal());
+	}
+	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public StreamedContent generateMassSalarySlip(ReportSalaryNoteSearchParameter searchParameter) throws Exception {
+		Collection<Long> arrayEmpDataId = logMonthEndPayrollDao.getAllDataEmpIdByParam(searchParameter);	
+		Boolean isAllPeriod = searchParameter.getPeriodeId() == null;
+        return generateSalarySlip(searchParameter.getPeriodeId(), arrayEmpDataId, isAllPeriod, "print_mass");
 		
+	}
+	
+	private StreamedContent generateSalarySlip(Long periodId, Collection<Long> arrayEmpDataId, Boolean isAllPeriod, String pdf) throws Exception {
 		Map<String, Object> params = new HashMap<>();
-        params.put("EMP_DATA_ID", empDataId);
+        params.put("ARRAY_EMP_DATA_ID", arrayEmpDataId);
         params.put("PERIOD_ID", periodId);
-        params.put("THP_AS_STRING", util.toString());
+        params.put("IS_ALL_PERIOD", isAllPeriod);
         params.put("SUBREPORT_DIR", FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/reports/"));
-        StreamedContent file = CommonReportUtil.exportReportToPDFStream("salary_slip.jasper", params, monthEndPayroll.getEmpNik() + ".pdf");
+        StreamedContent file = CommonReportUtil.exportReportToPDFStream("salary_slip.jasper", params, pdf + ".pdf");
         return file;
-		
 	}
         
     @Override

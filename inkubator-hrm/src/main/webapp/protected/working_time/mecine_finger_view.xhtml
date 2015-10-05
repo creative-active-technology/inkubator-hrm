@@ -36,9 +36,20 @@
                                     <p:selectOneMenu value="#{mecineFingerViewController.mecineFingerSearchParamater.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['mechineFinger.mechineFinger_name']}" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['mechineFinger.mechineFinger_code']}" itemValue="code"/>
                                         <f:selectItem itemLabel="#{appmsg['mechineFinger.mechineFinger_method']}" itemValue="methodType"/>
+                                        <p:ajax update="groupSearchId"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{mecineFingerViewController.mecineFingerSearchParamater.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <h:panelGroup id="groupSearchId">
+                                    	<p:inputText id="searchTextId" rendered="#{mecineFingerViewController.mecineFingerSearchParamater.keyParam != 'methodType'}" 
+                                    			 	 value="#{mecineFingerViewController.mecineFingerSearchParamater.parameter}"  style="width: 250px" styleClass="label_button"/>
+                                    	<p:selectOneMenu id="searchDropDownId" rendered="#{mecineFingerViewController.mecineFingerSearchParamater.keyParam == 'methodType'}"
+                                    					 value="#{mecineFingerViewController.mecineFingerSearchParamater.parameter}" style="width: 150px;margin-right: 3px" >	                                        
+	                                        <f:selectItem itemLabel="#{appmsg['mecinefinger.upload']}" itemValue="0"/>
+	                                        <f:selectItem itemLabel="#{appmsg['mecinefinger.service']}" itemValue="1"/>
+	                                        <f:selectItem itemLabel="#{appmsg['mecinefinger.query']}" itemValue="2"/>
+	                                    </p:selectOneMenu>
+                                    </h:panelGroup>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{mecineFingerViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -55,7 +66,7 @@
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
-                        <p:focus for="searchId" />
+                        <p:focus for="groupSearchId" />
                         <p:dataTable  var="data"  value="#{mecineFingerViewController.mecineFingerLazyDataModel}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"

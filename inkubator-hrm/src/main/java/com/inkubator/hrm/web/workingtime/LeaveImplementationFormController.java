@@ -149,7 +149,9 @@ public class LeaveImplementationFormController extends BaseController {
                 LOGGER.error("Error", ex);
             }
         } else {
+        	String numberFilling = model.getNumberFilling();
             model = new LeaveImplementationModel();
+            model.setNumberFilling(numberFilling);
         }
     }
 

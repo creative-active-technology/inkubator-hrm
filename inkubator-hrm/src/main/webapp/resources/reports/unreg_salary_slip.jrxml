@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="salary_slip" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="40" rightMargin="0" topMargin="0" bottomMargin="0" uuid="83697877-455a-4d56-a5c8-4858e62de398">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="unreg_salary_slip" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="40" rightMargin="0" topMargin="0" bottomMargin="0" uuid="83697877-455a-4d56-a5c8-4858e62de398">
 	<property name="ireport.zoom" value="1.000000000000004"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="com.inkubator.hrm.util.TerbilangUtil"/>
+	<import value="org.apache.commons.lang3.StringUtils"/>
 	<parameter name="ARRAY_EMP_DATA_ID" class="java.util.Collection">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["\\"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="PERIOD_ID" class="java.lang.Long">
+	<parameter name="UNREG_SALARY_ID" class="java.lang.Long">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="IS_ALL_PERIOD" class="java.lang.Boolean"/>
 	<queryString>
 		<![CDATA[SELECT pay.*,emp.join_date
 FROM emp_data emp
 LEFT JOIN bio_data bio ON bio.id=emp.bio_data_id
-LEFT JOIN log_month_end_payroll pay
+LEFT JOIN log_unreg_payroll pay
 ON emp.id=pay.emp_data_id
-AND (pay.periode_id=$P{PERIOD_ID} OR $P{IS_ALL_PERIOD})
+AND pay.unreg_salary_id=$P{UNREG_SALARY_ID}
 AND pay.model_comp_specific=100
 WHERE $X{IN, pay.emp_data_id, ARRAY_EMP_DATA_ID}
 ORDER BY bio.first_name,bio.last_name]]>
@@ -94,6 +94,21 @@ ORDER BY bio.first_name,bio.last_name]]>
 	<field name="periode_start" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="unreg_salary_end_period" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unreg_salary_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unreg_salary_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unreg_salary_payment_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unreg_salary_start_period" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="version" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -120,13 +135,6 @@ ORDER BY bio.first_name,bio.last_name]]>
 	</pageHeader>
 	<detail>
 		<band height="140" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="0" width="503" height="20" forecolor="#000000" uuid="9ded28aa-b2ed-44a1-bf3d-ebc261b74ca4"/>
-				<textElement textAlignment="Left">
-					<font fontName="Arial" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[SLIP GAJI KARYAWAN]]></text>
-			</staticText>
 			<staticText>
 				<reportElement x="0" y="20" width="150" height="20" forecolor="#000000" uuid="1343e559-c545-424c-953e-7a69cc8eb04d"/>
 				<textElement textAlignment="Left">
@@ -217,49 +225,56 @@ ORDER BY bio.first_name,bio.last_name]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{join_date}]]></textFieldExpression>
 			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="503" height="20" uuid="15776392-6c49-4a97-b898-c84aec300b47"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SLIP " + StringUtils.upperCase($F{unreg_salary_name})]]></textFieldExpression>
+			</textField>
 		</band>
 		<band height="120" splitType="Prevent">
 			<subreport>
 				<reportElement x="0" y="0" width="200" height="45" uuid="41ef5d0b-2222-494a-9d3d-a1f94c42c86a"/>
-				<subreportParameter name="SUBREPORT_DIR">
-					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
-				</subreportParameter>
 				<subreportParameter name="EMP_DATA_ID">
 					<subreportParameterExpression><![CDATA[$F{emp_data_id}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="PERIOD_ID">
-					<subreportParameterExpression><![CDATA[$F{periode_id}]]></subreportParameterExpression>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="UNREG_SALARY_ID">
+					<subreportParameterExpression><![CDATA[$F{unreg_salary_id}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/sub_report_income_slip.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/unreg_sub_report_income_slip.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
 				<reportElement x="290" y="0" width="200" height="45" uuid="b1ad7751-4dd1-4ea6-890d-831b7f13200a"/>
-				<subreportParameter name="SUBREPORT_DIR">
-					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
-				</subreportParameter>
 				<subreportParameter name="EMP_DATA_ID">
 					<subreportParameterExpression><![CDATA[$F{emp_data_id}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="PERIOD_ID">
-					<subreportParameterExpression><![CDATA[$F{periode_id}]]></subreportParameterExpression>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="UNREG_SALARY_ID">
+					<subreportParameterExpression><![CDATA[$F{unreg_salary_id}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/sub_report_deduction_slip.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/unreg_sub_report_deduction_slip.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
 				<reportElement x="290" y="60" width="200" height="45" uuid="4633f586-e306-4769-8e94-8c9faf9ad4af"/>
-				<subreportParameter name="SUBREPORT_DIR">
-					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
-				</subreportParameter>
 				<subreportParameter name="EMP_DATA_ID">
 					<subreportParameterExpression><![CDATA[$F{emp_data_id}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="PERIOD_ID">
-					<subreportParameterExpression><![CDATA[$F{periode_id}]]></subreportParameterExpression>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="UNREG_SALARY_ID">
+					<subreportParameterExpression><![CDATA[$F{unreg_salary_id}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/sub_report_subsidy_slip.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "/unreg_sub_report_subsidy_slip.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="200">
