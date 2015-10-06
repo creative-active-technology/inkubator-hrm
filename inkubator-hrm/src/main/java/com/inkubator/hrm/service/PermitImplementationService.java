@@ -45,4 +45,8 @@ public interface PermitImplementationService extends IService<PermitImplementati
     public void update(PermitImplementation entity, UploadedFile documentFile) throws Exception;
     
     public String save(PermitImplementation entity, UploadedFile documentFile, boolean isBypassApprovalChecking) throws Exception;
+
+    public List<EmpData> getListApproverByEmpDataId(Long empDataId) throws Exception;
+    
+    public List<EmpData> getListApproverByEmpDataId(Long empDataId, Long permitDistributionId) throws Exception;
 }
