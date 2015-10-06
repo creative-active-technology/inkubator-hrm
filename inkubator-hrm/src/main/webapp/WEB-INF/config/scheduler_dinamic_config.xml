@@ -87,4 +87,6 @@
         
         
     </jms:listener-container>
+    <!--================== List dari semua listener scheduller... di sini ==========================-->
+    <bean id="" class="" lazy-init="true" />
 </beans>
