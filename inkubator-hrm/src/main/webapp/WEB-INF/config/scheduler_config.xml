@@ -57,13 +57,13 @@
         <property name="ownerAdministrator" value="${email_param_owner_administrator}"/>
     </bean>
     
-    <bean id="announcementLogCronService" class="com.inkubator.hrm.service.impl.AnnouncementLogCronServiceImpl" lazy-init="false">
+<!--    <bean id="announcementLogCronService" class="com.inkubator.hrm.service.impl.AnnouncementLogCronServiceImpl" lazy-init="false">
         <property name="applicationUrl" value="${email_param_application_url}"/>
         <property name="applicationName" value="${email_param_application_name}"/>
         <property name="ownerEmail" value="${email_param_owner_email}"/>
         <property name="ownerCompany" value="${email_param_owner_company}"/>
         <property name="ownerAdministrator" value="${email_param_owner_administrator}"/>
-    </bean>  
+    </bean>  -->
 
     
 </beans>
