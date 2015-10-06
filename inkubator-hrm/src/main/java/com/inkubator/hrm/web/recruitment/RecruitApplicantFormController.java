@@ -1,23 +1,48 @@
 package com.inkubator.hrm.web.recruitment;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.Matchers;
+import org.joda.time.DateTime;
+import org.primefaces.model.DualListModel;
+
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.BioData;
+import com.inkubator.hrm.entity.CompanyPolicyJabatan;
+import com.inkubator.hrm.entity.GolonganJabatan;
+import com.inkubator.hrm.entity.OrgTypeOfSpec;
+import com.inkubator.hrm.entity.OrgTypeOfSpecList;
+import com.inkubator.hrm.entity.RecruitApplicant;
+import com.inkubator.hrm.entity.RecruitApplicantSpecList;
 import com.inkubator.hrm.service.BusinessTypeService;
+import com.inkubator.hrm.service.CityService;
 import com.inkubator.hrm.service.DialectService;
 import com.inkubator.hrm.service.EducationLevelService;
 import com.inkubator.hrm.service.InstitutionEducationService;
 import com.inkubator.hrm.service.KlasifikasiKerjaService;
 import com.inkubator.hrm.service.MaritalStatusService;
 import com.inkubator.hrm.service.NationalityService;
+import com.inkubator.hrm.service.OrgTypeOfSpecListService;
+import com.inkubator.hrm.service.OrgTypeOfSpecService;
 import com.inkubator.hrm.service.RaceService;
 import com.inkubator.hrm.service.RecruitApplicantService;
 import com.inkubator.hrm.service.ReligionService;
 import com.inkubator.hrm.web.model.ApplicantModel;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
+
+import ch.lambdaj.Lambda;
+import ch.lambdaj.group.Group;
 
 /**
  *
@@ -28,6 +53,7 @@ import com.inkubator.webcore.controller.BaseController;
 public class RecruitApplicantFormController extends BaseController {
 
 	private ApplicantModel model;
+	private Boolean isUpdate;
 	@ManagedProperty(value = "#{recruitApplicantService}")
     private RecruitApplicantService recruitApplicantService;
 	@ManagedProperty(value = "#{maritalStatusService}")
@@ -48,6 +74,12 @@ public class RecruitApplicantFormController extends BaseController {
 	private BusinessTypeService businessTypeService;
 	@ManagedProperty(value = "#{klasifikasiKerjaService}")
 	private KlasifikasiKerjaService klasifikasiKerjaService;
+	@ManagedProperty(value = "#{cityService}")
+	private CityService cityService;
+	@ManagedProperty(value = "#{orgTypeOfSpecListService}")
+	private OrgTypeOfSpecListService orgTypeOfSpecListService;
+	@ManagedProperty(value = "#{orgTypeOfSpecService}")
+	private OrgTypeOfSpecService orgTypeOfSpecService;
 	
 	
 	@PostConstruct
@@ -65,12 +97,33 @@ public class RecruitApplicantFormController extends BaseController {
         	model.setListNationality(nationalityService.getAllData());
         	model.setListRace(raceService.getAllData());
         	model.setListReligion(religionService.getAllData());
+        	model.setListCity(cityService.getAllData());
+        	model.setSpecListDualModel(orgTypeOfSpecListService.getAllBySpectJabatan());
+        	model.setSpecListName(orgTypeOfSpecListService.getOrgTypeSpecName());
+        	
+        	isUpdate = Boolean.FALSE;
+        	String param = FacesUtil.getRequestParameter("execution");
+			if (StringUtils.isNotEmpty(param) && StringUtils.isNumeric(param.substring(1))) {
+				RecruitApplicant applicant = recruitApplicantService.getEntityByPkWithDetail(Long.parseLong(param.substring(1)));
+				if (applicant != null) {
+					this.getModelFromEntity(applicant);
+					isUpdate = Boolean.TRUE;
+				}
+			} else {
+				//default value
+				DateTime dt = new DateTime();
+				model.setEducationEndYear(dt.getYear());
+				model.setEducationStartYear(dt.getYear());
+				model.setLastWorkSince(dt.getYear());
+				model.setLastWorkEnd(dt.getYear());
+				model.setLastJabatanSince(dt.getYear());
+			}
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
     }
 
-    @PreDestroy
+	@PreDestroy
     public void cleanAndExit() {
     	model = null;
     	recruitApplicantService = null;
@@ -83,15 +136,106 @@ public class RecruitApplicantFormController extends BaseController {
     	institutionEducationService = null;
     	businessTypeService = null;
     	klasifikasiKerjaService = null;
+    	cityService = null;
+    	orgTypeOfSpecListService = null;
+    	orgTypeOfSpecService = null;
     }
     
-    public void doSave(){
-    	
+    public String doSave(){
+        try {
+        	RecruitApplicant applicant;
+            if (isUpdate) {
+            	applicant = recruitApplicantService.update(model);
+            	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            } else {
+            	applicant = recruitApplicantService.save(model);
+            	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            }
+            return "/protected/recruitment/recruit_applicant_view.htm?faces-redirect=true";
+            
+        } catch (BussinessException ex) { 
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+        
+        return null;
     }
-    
-    public String doBack(){
+
+	public String doBack(){
     	return "/protected/recruitment/recruit_applicant_view.htm?faces-redirect=true";
     }
+	
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	private void getModelFromEntity(RecruitApplicant applicant) {
+		model.setId(applicant.getId());
+		model.setEducationLevelId(applicant.getEducationLevel().getId());
+		model.setInstitutionEducationId(applicant.getInstitutionEducation().getId());
+		model.setEducationStartYear(applicant.getEducationStartYear());
+		model.setEducationEndYear(applicant.getEducationEndYear());
+		model.setScale(applicant.getScale());
+		model.setScore(applicant.getScore());
+		model.setCertificateNumber(applicant.getCertificateNumber());
+		model.setLastWorkCompany(applicant.getLastWorkCompany());
+		model.setLastWorkSince(applicant.getLastWorkSince());
+		model.setLastWorkEnd(applicant.getLastWorkEnd());
+		model.setLastJabatan(applicant.getLastJabatan());
+		model.setKlasifikasiKerjaId(applicant.getKlasifikasiKerja().getId());
+		model.setLastJabatanSince(applicant.getLastJabatanSince());
+		model.setBusinessTypeId(applicant.getBusinessType().getId());		
+		
+		BioData bioData = applicant.getBioData();
+		model.setBioDataId(bioData.getId());
+		model.setFirstName(bioData.getFirstName());
+		model.setLastName(bioData.getLastName());
+		model.setTitle(bioData.getTitle());
+		model.setNickname(bioData.getNickname());
+		model.setDateOfBirth(bioData.getDateOfBirth());
+		model.setCityOfBirthId(bioData.getCity().getId());
+		model.setGender(bioData.getGender());
+		model.setMaritalStatusId(bioData.getMaritalStatus().getId());
+		model.setNoKK(bioData.getNoKK());
+		model.setBloodType(bioData.getBloodType());
+		model.setNpwp(bioData.getNpwp());
+		model.setJamsostek(bioData.getJamsostek());
+		model.setNationalityId(bioData.getNationality().getId());
+		model.setDialectId(bioData.getDialect().getId());
+		model.setReligionId(bioData.getReligion().getId());
+		model.setRaceId(bioData.getRace().getId());
+		model.setPhoneNumber(bioData.getMobilePhone());
+		model.setEmailAddress(bioData.getPersonalEmail());
+		
+		//set dual list for OrgTypeOfSpecList. Removed OrgTypeOfSpecList that already selected from "available" list
+		try {
+			List<String> specListName = model.getSpecListName();
+	        List<DualListModel> specListDualModel = model.getSpecListDualModel();
+			
+			//Group selected list by OrgTypeOfSpec
+			List<OrgTypeOfSpecList> allSelectedSpecList = Lambda.extract(applicant.getRecruitApplicantSpecLists(), Lambda.on(RecruitApplicantSpecList.class).getOrgTypeOfSpecList());
+			Group<OrgTypeOfSpecList> groupSelectedSpecList = Lambda.group(allSelectedSpecList, Lambda.by(Lambda.on(OrgTypeOfSpecList.class).getOrgTypeOfSpec().getId()));
+	        
+	        //iterate each group list element
+	        for (String key : groupSelectedSpecList.keySet()) {
+	            OrgTypeOfSpec orgTypeOfSpec = orgTypeOfSpecService.getEntiyByPK(Long.parseLong(key));
+	            int index = specListName.indexOf(orgTypeOfSpec.getName());
+
+	            if (index != -1) {
+	            	List<OrgTypeOfSpecList> selectedSpecList = groupSelectedSpecList.find(key);
+	                List<OrgTypeOfSpecList> availableSpecList = specListDualModel.get(index).getSource();
+	                availableSpecList.removeAll(selectedSpecList);
+
+	                specListDualModel.get(index).setTarget(selectedSpecList);
+	                specListDualModel.get(index).setSource(availableSpecList);
+	            }
+	        }
+	        
+	        model.setSpecListDualModel(specListDualModel);
+		} catch (Exception ex) {
+			LOGGER.error("Error", ex);
+		}		
+	}
 
 	public ApplicantModel getModel() {
 		return model;
@@ -179,6 +323,30 @@ public class RecruitApplicantFormController extends BaseController {
 
 	public void setKlasifikasiKerjaService(KlasifikasiKerjaService klasifikasiKerjaService) {
 		this.klasifikasiKerjaService = klasifikasiKerjaService;
-	}    
-    
+	}
+
+	public CityService getCityService() {
+		return cityService;
+	}
+
+	public void setCityService(CityService cityService) {
+		this.cityService = cityService;
+	}
+
+	public OrgTypeOfSpecListService getOrgTypeOfSpecListService() {
+		return orgTypeOfSpecListService;
+	}
+
+	public void setOrgTypeOfSpecListService(OrgTypeOfSpecListService orgTypeOfSpecListService) {
+		this.orgTypeOfSpecListService = orgTypeOfSpecListService;
+	}
+
+	public OrgTypeOfSpecService getOrgTypeOfSpecService() {
+		return orgTypeOfSpecService;
+	}
+
+	public void setOrgTypeOfSpecService(OrgTypeOfSpecService orgTypeOfSpecService) {
+		this.orgTypeOfSpecService = orgTypeOfSpecService;
+	}   
+	
 }

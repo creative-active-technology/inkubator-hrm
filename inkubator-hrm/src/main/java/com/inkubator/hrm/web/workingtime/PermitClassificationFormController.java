@@ -112,6 +112,9 @@ public class PermitClassificationFormController extends BaseController {
                 } catch (Exception e) {
                     LOGGER.error("Error", e);
                 }
+            }else{
+            	permitClassificationModel.setBatasMaju(0);
+            	permitClassificationModel.setBatasMudur(0);
             }
 
         } catch (Exception ex) {

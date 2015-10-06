@@ -210,4 +210,16 @@ public class RecruitMppApplyDetailDaoImpl extends IDAOImpl<RecruitMppApplyDetail
         return criteria.list();
 	}
 
+	@Override
+	public Boolean isJabatanMppExistOnSelectedMppPeriod(Long jabatanId,	Long recruitMppPeriodId) {
+		 Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		 criteria.createAlias("recruitMppApply", "recruitMppApply", JoinType.INNER_JOIN);
+		 criteria.createAlias("recruitMppApply.recruitMppPeriod", "recruitMppPeriod", JoinType.INNER_JOIN);
+		 criteria.createAlias("jabatan", "jabatan", JoinType.INNER_JOIN);
+		 criteria.add(Restrictions.eq("recruitMppPeriod.id", recruitMppPeriodId));
+		 criteria.add(Restrictions.eq("jabatan.id", jabatanId));
+		 
+		return criteria.list().size() > 0;
+	}
+
 }

@@ -71,7 +71,10 @@ public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implement
 	@Override
 	public RecruitApplicant getEntityByPkWithDetail(Long id) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("id", id));
 		criteria.setFetchMode("bioData", FetchMode.JOIN);
+		criteria.setFetchMode("recruitApplicantSpecLists", FetchMode.JOIN);
+		criteria.setFetchMode("recruitApplicantSpecLists.orgTypeOfSpecList", FetchMode.JOIN);
 		return (RecruitApplicant) criteria.uniqueResult();
 	}
 
