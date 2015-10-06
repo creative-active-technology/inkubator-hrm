@@ -64,27 +64,27 @@
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="#{appmsg['scheduler_config.repeate_count']}" styleClass="label_hrm"/>
-                                </p:column>
-                                <p:column  style="width: 80%">
-                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.schedullerTime}" />
-                                </p:column>
-                            </p:row>
-                            
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important">
                                     <p:outputLabel value="#{appmsg['scheduler_config.start_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel  value="#{schedulerConfigDetilController.selected.startDate}" />
                                 </p:column>
-                            </p:row>  
+                            </p:row>
+                            
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
                                     <p:outputLabel value="#{appmsg['scheduler_config.end_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel  value="#{schedulerConfigDetilController.selected.endDate}" />
+                                </p:column>
+                            </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['scheduler_config.start_execution']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.dateStartExecution}" />
                                 </p:column>
                             </p:row>  
                             
@@ -103,19 +103,21 @@
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="#{appmsg['scheduler_config.last_execution']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['scheduler_config.time_range_execution']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.lastExecution}" />
+                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.hourDiv} #{appmsg['global.hour']} - #{schedulerConfigDetilController.selected.minuteDiv} #{appmsg['global.minute']}" />
                                 </p:column>
                             </p:row>
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="#{appmsg['scheduler_config.start_execution']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['user_form.is_active']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.dateStartExecution}" />
+                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.isActive}" >
+                                    <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
                                 </p:column>
                             </p:row>
 
