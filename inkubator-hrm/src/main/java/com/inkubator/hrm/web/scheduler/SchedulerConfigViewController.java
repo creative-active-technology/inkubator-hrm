@@ -57,12 +57,10 @@ public class SchedulerConfigViewController extends BaseController{
 	}
 	
 	public String doUpdate(){
-            System.out.println("di doUpdate  " + selected.getId());
 		return "/protected/scheduler/scheduler_config_form.htm?faces-redirect=true&execution=e" + selected.getId();
 	}
 	
 	public String doDetail(){
-            System.out.println("di doDetail " + selected.getId());
 		return "/protected/scheduler/scheduler_config_detail.htm?faces-redirect=true&execution=" + selected.getId();
 	}
 

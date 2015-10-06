@@ -73,8 +73,19 @@ public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implement
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("id", id));
 		criteria.setFetchMode("bioData", FetchMode.JOIN);
-		criteria.setFetchMode("recruitApplicantSpecLists", FetchMode.JOIN);
+		criteria.setFetchMode("bioData.city", FetchMode.JOIN);
+        criteria.setFetchMode("bioData.race", FetchMode.JOIN);
+        criteria.setFetchMode("bioData.religion", FetchMode.JOIN);
+        criteria.setFetchMode("bioData.nationality", FetchMode.JOIN);
+        criteria.setFetchMode("bioData.maritalStatus", FetchMode.JOIN);
+        criteria.setFetchMode("bioData.dialect", FetchMode.JOIN);
+        criteria.setFetchMode("klasifikasiKerja", FetchMode.JOIN);
+        criteria.setFetchMode("businessType", FetchMode.JOIN);
+        criteria.setFetchMode("institutionEducation", FetchMode.JOIN);
+        criteria.setFetchMode("educationLevel", FetchMode.JOIN);
+        criteria.setFetchMode("recruitApplicantSpecLists", FetchMode.JOIN);
 		criteria.setFetchMode("recruitApplicantSpecLists.orgTypeOfSpecList", FetchMode.JOIN);
+		criteria.setFetchMode("recruitApplicantSpecLists.orgTypeOfSpecList.orgTypeOfSpec", FetchMode.JOIN);
 		return (RecruitApplicant) criteria.uniqueResult();
 	}
 
