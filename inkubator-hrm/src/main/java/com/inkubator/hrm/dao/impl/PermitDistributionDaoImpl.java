@@ -12,6 +12,7 @@ import com.inkubator.hrm.web.search.PermitDistributionSearchParameter;
 
 import java.util.Date;
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -141,4 +142,12 @@ public class PermitDistributionDaoImpl extends IDAOImpl<PermitDistribution> impl
         criteria.setFetchMode("permitClassification", FetchMode.JOIN);
         return (PermitDistribution) criteria.uniqueResult();
     }
+
+	@Override
+	public List<PermitDistribution> getAllDataByEmpDataId(Long empDataId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		criteria.setFetchMode("permitClassification", FetchMode.JOIN);
+		return criteria.list();
+	}
 }
