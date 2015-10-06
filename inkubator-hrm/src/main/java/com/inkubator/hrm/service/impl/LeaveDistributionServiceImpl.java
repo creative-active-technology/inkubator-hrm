@@ -147,7 +147,7 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
     	Leave leaveNew = leaveDao.getEntiyByPK(entity.getLeave().getId());
     	Long totalDuplicate = leaveDistributionDao.getTotalLeaveDistributionNameAndEmpDataAndNotId(leaveNew.getName(), entity.getEmpData().getId(), entity.getId());
     	if(totalDuplicate > 0){
-        	throw new BussinessException("businesstravel.cannot_apply_date_already_appplied");
+        	throw new BussinessException("leaveDistribution.leave_and_employee_already_exists");
         }
     	LeaveDistribution update = leaveDistributionDao.getEntiyByPK(entity.getId());
         update.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
