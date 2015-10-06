@@ -33,7 +33,7 @@ import com.inkubator.webcore.util.FacesUtil;
 @ManagedBean(name = "loanDetailController")
 @ViewScoped
 public class LoanDetailController extends BaseController {
-	
+
     private ApprovalActivity selectedApprovalActivity;
     private Loan selectedLoan;
     private List<LoanPaymentDetail> loanPaymentDetails;
@@ -51,16 +51,20 @@ public class LoanDetailController extends BaseController {
             super.initialization();
             String execution = FacesUtil.getRequestParameter("execution");
             String param = execution.substring(0, 1);
-            if(StringUtils.equals(param, "e")){
-            	/* parameter (id) ini datangnya dari loan Flow atau View */
-            	selectedLoan = loanService.getEntityByPkWithDetail(Long.parseLong(execution.substring(1)));
+            if (StringUtils.equals(param, "e")) {
+                /* parameter (id) ini datangnya dari loan Flow atau View */
+                selectedLoan = loanService.getEntityByPkWithDetail(Long.parseLong(execution.substring(1)));
+
             } else {
-            	/* parameter (activityNumber) ini datangnya dari home approval request history View */
-            	selectedLoan = loanService.getEntityByApprovalActivityNumberWithDetail(execution.substring(1));
+                /* parameter (activityNumber) ini datangnya dari home approval request history View */
+                selectedLoan = loanService.getEntityByApprovalActivityNumberWithDetail(execution.substring(1));
+                  System.out.println("Approval Activi numbernya  adalaha =================================================== " + execution.substring(1));
+                System.out.println("Objectnya adalaha =================================================== " + selectedLoan);
             }
-            
+
             selectedApprovalActivity = approvalActivityService.getEntityByActivityNumberLastSequence(selectedLoan.getApprovalActivityNumber());
-            loanPaymentDetails = loanPaymentDetailService.getAllDataByLoanId(selectedLoan.getId());  
+            loanPaymentDetails = loanPaymentDetailService.getAllDataByLoanId(selectedLoan.getId());
+            System.out.println("Ukurannya adalaha " + loanPaymentDetails.size());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 
@@ -69,71 +73,71 @@ public class LoanDetailController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
-    	selectedLoan = null;
+        selectedLoan = null;
         selectedApprovalActivity = null;
         approvalActivityService = null;
         loanService = null;
         loanPaymentDetailService = null;
         loanPaymentDetails = null;
-    }   
+    }
 
-	public Loan getSelectedLoan() {
-		return selectedLoan;
-	}
+    public Loan getSelectedLoan() {
+        return selectedLoan;
+    }
 
-	public void setSelectedLoan(Loan selectedLoan) {
-		this.selectedLoan = selectedLoan;
-	}
+    public void setSelectedLoan(Loan selectedLoan) {
+        this.selectedLoan = selectedLoan;
+    }
 
-	public List<LoanPaymentDetail> getLoanPaymentDetails() {
-		return loanPaymentDetails;
-	}
+    public List<LoanPaymentDetail> getLoanPaymentDetails() {
+        return loanPaymentDetails;
+    }
 
-	public void setLoanPaymentDetails(List<LoanPaymentDetail> loanPaymentDetails) {
-		this.loanPaymentDetails = loanPaymentDetails;
-	}
+    public void setLoanPaymentDetails(List<LoanPaymentDetail> loanPaymentDetails) {
+        this.loanPaymentDetails = loanPaymentDetails;
+    }
 
-	public void setLoanService(LoanService loanService) {
-		this.loanService = loanService;
-	}
+    public void setLoanService(LoanService loanService) {
+        this.loanService = loanService;
+    }
 
-	public void setLoanPaymentDetailService(
-			LoanPaymentDetailService loanPaymentDetailService) {
-		this.loanPaymentDetailService = loanPaymentDetailService;
-	}
+    public void setLoanPaymentDetailService(
+            LoanPaymentDetailService loanPaymentDetailService) {
+        this.loanPaymentDetailService = loanPaymentDetailService;
+    }
 
-	public ApprovalActivity getSelectedApprovalActivity() {
-		return selectedApprovalActivity;
-	}
+    public ApprovalActivity getSelectedApprovalActivity() {
+        return selectedApprovalActivity;
+    }
 
-	public void setSelectedApprovalActivity(
-			ApprovalActivity selectedApprovalActivity) {
-		this.selectedApprovalActivity = selectedApprovalActivity;
-	}
+    public void setSelectedApprovalActivity(
+            ApprovalActivity selectedApprovalActivity) {
+        this.selectedApprovalActivity = selectedApprovalActivity;
+    }
 
-	public void setApprovalActivityService(
-			ApprovalActivityService approvalActivityService) {
-		this.approvalActivityService = approvalActivityService;
-	}
+    public void setApprovalActivityService(
+            ApprovalActivityService approvalActivityService) {
+        this.approvalActivityService = approvalActivityService;
+    }
 
-	public Boolean getIsHaveApprovalActivity(){
-		return selectedApprovalActivity != null;
-	}
-	
-	public Boolean getIsPaginator(){
-		return loanPaymentDetails.size() > 11;
-	}
-	
-	public String doBack() {
+    public Boolean getIsHaveApprovalActivity() {
+        return selectedApprovalActivity != null;
+    }
+
+    public Boolean getIsPaginator() {
+        return loanPaymentDetails.size() > 11;
+    }
+
+    public String doBack() {
         return "/protected/personalia/loan_view.htm?faces-redirect=true";
-    }    
+    }
 
-	public void doUpdate() {
-    	try {
+    public void doUpdate() {
+        try {
             ExternalContext red = FacesUtil.getExternalContext();
             red.redirect(red.getRequestContextPath() + "/flow-protected/loan?id=" + selectedLoan.getId());
         } catch (IOException ex) {
-          LOGGER.error("Erorr", ex);
+            LOGGER.error("Erorr", ex);
         }
     }
 
