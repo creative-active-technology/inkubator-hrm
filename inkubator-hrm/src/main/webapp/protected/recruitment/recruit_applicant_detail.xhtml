@@ -82,7 +82,9 @@
 	                                    <p:outputLabel  value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_date']}" styleClass="label_hrm" />
 	                                </p:column>
 	                                <p:column style="width: 34%" >
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.dateOfBirth}" />
+	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.dateOfBirth}">
+	                                		<f:convertDateTime pattern="dd-MMMM-yyyy" />
+	                                	</p:outputLabel>
 	                                </p:column>
 	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
 	                                    <p:outputLabel  value="#{appmsg['ras.ras']}" styleClass="label_hrm"/>
@@ -97,7 +99,9 @@
 	                                    <p:outputLabel  value="#{appmsg['global.gender']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 34%" >
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.gender}" />
+	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.gender}">
+	                                		<f:converter converterId="genderConverter" />
+	                                	</p:outputLabel>
 	                                </p:column>
 	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
 	                                    <p:outputLabel  value="#{appmsg['dialect.dialect']}" styleClass="label_hrm"/>
@@ -142,7 +146,9 @@
 	                                    <p:outputLabel  value="#{appmsg['biodata.blood_type']}"  styleClass="label_hrm" />
 	                                </p:column>
 	                                <p:column style="width: 34%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.bloodType}" />
+	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.bloodType}">
+	                                		<f:converter converterId="blodTypeConverter"/>
+	                                	</p:outputLabel>
 	                                </p:column>
 	                                <p:column style="width: 16%;background-color: #e1f0f0!important">
 	                                    <p:outputLabel  value="#{appmsg['biodata.email_address']}" styleClass="label_hrm"/>

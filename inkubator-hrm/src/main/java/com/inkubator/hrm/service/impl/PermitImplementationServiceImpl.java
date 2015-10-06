@@ -1123,4 +1123,25 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
         detail.append("Dari tanggal " + dateFormat.format(entity.getStartDate()) + " s/d " + dateFormat.format(entity.getEndDate()));
         return detail.toString();
     }
+    
+    @Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<EmpData> getListApproverByEmpDataId(Long empDataId) throws Exception {
+		HrmUser requester = hrmUserDao.getByEmpDataId(empDataId);
+		PermitClassification permitClassification = permitDistributionDao.getAllDataByEmpDataId(empDataId).get(0).getPermitClassification();
+        List<ApprovalDefinition> appDefs = Lambda.extract(permitClassification.getApprovalDefinitionPermits(), Lambda.on(ApprovalDefinitionPermit.class).getApprovalDefinition());
+        
+		return super.getListApproverByListAppDef(appDefs, requester.getUserId());
+	}
+    
+    @Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public List<EmpData> getListApproverByEmpDataId(Long empDataId, Long permitClassificationId) throws Exception {
+    	HrmUser requester = hrmUserDao.getByEmpDataId(empDataId);
+		PermitDistribution permitDistribution = permitDistributionDao.getEntityByPermitClassificationIdAndEmpDataId(permitClassificationId, empDataId);
+		PermitClassification permitClassification = permitDistribution.getPermitClassification();
+        List<ApprovalDefinition> appDefs = Lambda.extract(permitClassification.getApprovalDefinitionPermits(), Lambda.on(ApprovalDefinitionPermit.class).getApprovalDefinition());
+        
+		return super.getListApproverByListAppDef(appDefs, requester.getUserId());
+	}
 }

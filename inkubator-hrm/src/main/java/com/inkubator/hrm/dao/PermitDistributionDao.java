@@ -4,13 +4,14 @@
  */
 package com.inkubator.hrm.dao;
 
+import java.util.Date;
+import java.util.List;
+
+import org.hibernate.criterion.Order;
+
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.PermitDistribution;
 import com.inkubator.hrm.web.search.PermitDistributionSearchParameter;
-
-import java.util.Date;
-import java.util.List;
-import org.hibernate.criterion.Order;
 
 /**
  *
@@ -35,4 +36,6 @@ public interface PermitDistributionDao extends IDAO<PermitDistribution> {
 	public List<PermitDistribution> getAllDataByEmpIdFetchPermit(Long empDataId);
 
 	public PermitDistribution getEntityByPermitClassificationIdAndEmpDataId(Long permitClassificationId, Long empDataId);
+	
+	public List<PermitDistribution> getAllDataByEmpDataId(Long empDataId);
 }
