@@ -45,6 +45,8 @@ import javax.jms.Message;
 import javax.jms.Session;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -438,7 +440,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         WtOverTime selectTedWtOverTime = wtOverTimeDao.getEntiyByPK(overTimeId);
         Date currentDate = new Date();
         Integer selisihWaktu = DateTimeUtil.getTotalDayDifference(currentDate, entity.getImplementationDate());
-    
+      
         if (selisihWaktu > 0) {
             if (selisihWaktu > selectTedWtOverTime.getBatasMaju()) {
                 throw new BussinessException("implementOt.implementation_date_outofrange");
@@ -451,7 +453,24 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
                 throw new BussinessException("implementOt.implementation_date_outofrange");
             }
         }
-
+        
+        EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
+        HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
+        
+        List<ApprovalActivity> listPendingRequest = approvalActivityDao.getPendingRequest(requestUser.getUserId());
+        listPendingRequest = Lambda.select(listPendingRequest, Lambda.having(Lambda.on(ApprovalActivity.class).getApprovalDefinition().getName(), Matchers.equalTo(HRMConstant.OVERTIME)));
+        
+        if(!listPendingRequest.isEmpty()){
+        	for(ApprovalActivity pendingRequest : listPendingRequest){
+        		Gson gsonPending = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
+        		ImplementationOfOverTime pendingEntity = gsonPending.fromJson(pendingRequest.getPendingData(), ImplementationOfOverTime.class);
+        		if(DateUtils.isSameDay(pendingEntity.getImplementationDate(),entity.getImplementationDate() )){
+        			throw new BussinessException("leaveimplementation.error_still_have_waiting_status");
+        		}
+        	}
+        	
+        }
+        
         // check duplicate code
         long totalDuplicates = implementationOfOverTimeDao.getByCode(entity.getCode());
         if (totalDuplicates > 0) {
@@ -472,7 +491,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
             throw new BussinessException("implementationovertime.your_implementation_date_far");
         }
 
-        EmpData empData = empDataDao.getEntiyByPK(entity.getEmpData().getId());
+        
         WtOverTime wtOverTime = wtOverTimeDao.getEntityByPkWithDetail(entity.getWtOverTime().getId());
         String createdBy = org.apache.commons.lang.StringUtils.isEmpty(wtOverTime.getCreatedBy()) ? UserInfoUtil.getUserName() : wtOverTime.getCreatedBy();
         Date createdOn = wtOverTime.getCreatedOn() == null ? new Date() : wtOverTime.getCreatedOn();
@@ -482,9 +501,9 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         entity.setCreatedBy(createdBy);
         entity.setCreatedOn(createdOn);
 
-        HrmUser requestUser = hrmUserDao.getByEmpDataId(empData.getId());
+        
         List<ApprovalDefinition> appDefs = Lambda.extract(wtOverTime.getApprovalDefinitionOTs(), Lambda.on(ApprovalDefinitionOT.class).getApprovalDefinition());
-
+       
         // check jika ada cuti yang masih diproses approval, hanya boleh mengajukan cuti jika tidak ada approval yang pending
         if (approvalActivityDao.isStillHaveWaitingStatus(appDefs, requestUser.getUserId())) {
             throw new BussinessException("leaveimplementation.error_still_have_waiting_status");

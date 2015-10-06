@@ -47,7 +47,9 @@ public interface ApprovalActivityDao extends IDAO<ApprovalActivity> {
     
     
 	
-    /** get All Data */
+    /** get All Data
+     * @param userName
+     * @param firstResult */
 	public List<ApprovalActivity> getRequestHistory(String userName, int firstResult, int maxResults, Order order);
 
     public List<ApprovalActivity> getAllDataWithAllRelation(ApprovalActivitySearchParameter searchParameter, int firstResult, int maxResults, Order order);    

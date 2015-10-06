@@ -33,47 +33,47 @@
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 35%">
                                 <p:outputLabel value="NIK" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
-                            	<p:inputText value="#{rmbsSchemaEmpFormController.empData.nik}" readonly="true" styleClass="isitext_hrm" style="width:300px;" />                                
+                            <p:column  style="width: 64%">
+                            	<p:inputText value="#{rmbsSchemaEmpFormController.empData.nik}" readonly="true" styleClass="isitext_hrm" style="width:250px;" />                                
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 35%">
                                 <p:outputLabel value="#{appmsg['employee.employee_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
-                            	<p:inputText value="#{rmbsSchemaEmpFormController.empData.bioData.fullName}" readonly="true" styleClass="isitext_hrm" style="width:300px;" />                                
+                            <p:column  style="width: 64%">
+                            	<p:inputText value="#{rmbsSchemaEmpFormController.empData.bioData.fullName}" readonly="true" styleClass="isitext_hrm" style="width:250px;" />                                
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 35%">
                                 <p:outputLabel value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
-                            	<p:inputText value="#{rmbsSchemaEmpFormController.empData.jabatanByJabatanId.name}" readonly="true" styleClass="isitext_hrm" style="width:300px;" />                                
+                            <p:column  style="width: 64%">
+                            	<p:inputText value="#{rmbsSchemaEmpFormController.empData.jabatanByJabatanId.name}" readonly="true" styleClass="isitext_hrm" style="width:250px;" />                                
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 35%">
                                 <p:outputLabel for="rmbsSchemaId" value="#{appmsg['rmbs_schema.reimbursement_schema']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="rmbsSchemaId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
-                            	<p:selectOneMenu id="rmbsSchemaId" styleClass="isitext_hrm" required="true"  value="#{rmbsSchemaEmpFormController.model.rmbsSchemaId}" style="width:310px;">
+                            <p:column  style="width: 64%">
+                            	<p:selectOneMenu id="rmbsSchemaId" styleClass="isitext_hrm" required="true"  value="#{rmbsSchemaEmpFormController.model.rmbsSchemaId}" style="width:260px;">
 	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                               	<f:selectItems value="#{rmbsSchemaEmpFormController.listRmbsSchema}" var="rmbsSchema" itemValue="#{rmbsSchema.id}" itemLabel="#{rmbsSchema.name}"/>
 	                          	</p:selectOneMenu>                              
@@ -85,15 +85,15 @@
                             </p:column>
                         </p:row>  
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 35%">
                                 <p:outputLabel for="nomorSkId" value="#{appmsg['rmbs_schema.no_sk']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="nomorSkId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 64%">
                                     <p:inputText id="nomorSkId" title="Nama Tipe Penggantian" value="#{rmbsSchemaEmpFormController.model.nomorSk}" 
-                                    			 required="true" maxlength="60" styleClass="isitext_hrm" style="width:300px;" />                                
+                                    			 required="true" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />                                
                             </p:column>
                         </p:row>
                         <p:row>
@@ -102,15 +102,15 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 35%">
                                 <p:outputLabel for="description" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="description" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 70%">
+                            <p:column  style="width: 64%">
                                     <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="225" value="#{rmbsSchemaEmpFormController.model.description}" 
-                                                 	 style="width: 300px; height: 40px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                                 	 style="width: 250px; height: 40px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
                                                  	 label="#{appmsg['global.description']}" title="#{appmsg['global.description']}" />
                             </p:column>
                         </p:row>
@@ -120,13 +120,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 29%">
+                            <p:column style="width: 35%">
                                 <p:outputLabel  value="" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel  value=""  styleClass="label_hrm"/>
                             </p:column>
-                            <p:column style="width: 70%" >
+                            <p:column style="width: 64%" >
                                 <h:outputText id="counter" />
                             </p:column>
                         </p:row>            
