@@ -208,8 +208,8 @@
                                     <p:outputLabel for="batasMajuId" value="#{appmsg['overtime.batas_maju']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column  style="width: 50%">
-                                    <p:spinner id="batasMajuId" value="#{permitClassificationFormController.permitClassificationModel.batasMaju}" size="3" label="#{appmsg['overtime.batas_maju']}"
-                                               min="1" max="100" stepFactor="1"/> #{appmsg['global.day']}
+                                    <p:spinner id="batasMajuId" value="#{permitClassificationFormController.permitClassificationModel.batasMaju}" size="3" required="true" label="#{appmsg['overtime.batas_maju']}"
+                                               min="0" max="100" stepFactor="1"/> #{appmsg['global.day']}
                                     <p:message for="batasMajuId"/>
                                 </p:column>
                             </p:row>
@@ -218,8 +218,8 @@
                                     <p:outputLabel for="batasMundurId" value="#{appmsg['overtime.batas_mundur']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column  style="width: 50%">
-                                    <p:spinner id="batasMundurId" value="#{permitClassificationFormController.permitClassificationModel.batasMudur}" size="3" label="#{appmsg['overtime.batas_mundur']}"
-                                               min="1" max="100" stepFactor="1"/> #{appmsg['global.day']}
+                                    <p:spinner id="batasMundurId" value="#{permitClassificationFormController.permitClassificationModel.batasMudur}" size="3" required="true" label="#{appmsg['overtime.batas_mundur']}"
+                                               min="0" max="100" stepFactor="1"/> #{appmsg['global.day']}
                                     <p:message for="batasMajuId"/>
                                 </p:column>
                             </p:row>

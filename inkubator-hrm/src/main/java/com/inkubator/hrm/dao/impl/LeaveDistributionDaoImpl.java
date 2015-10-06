@@ -16,6 +16,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -152,4 +153,17 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
         criteria.setFetchMode("leave", FetchMode.JOIN);
         return criteria.list();
 	}
+
+	@Override
+	public Long getTotalLeaveDistributionNameAndEmpDataAndNotId(String name, Long empDataId, Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("leave", "leave", JoinType.INNER_JOIN);
+		
+		criteria.add(Restrictions.eq("leave.name", name));
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		criteria.add(Restrictions.ne("id", id));
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+
 }

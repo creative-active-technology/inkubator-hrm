@@ -160,32 +160,32 @@
                           showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <p:panelGrid id="panelDialogDetailId" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['rmbs_type.code']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{rmbsTypeViewController.selected.code}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:40%"><p:outputLabel value="#{appmsg['rmbs_type.code']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:60%;"><p:outputLabel value="#{rmbsTypeViewController.selected.code}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['rmbs_type.name']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{rmbsTypeViewController.selected.name}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:40%"><p:outputLabel value="#{appmsg['rmbs_type.name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:60%;"><p:outputLabel value="#{rmbsTypeViewController.selected.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{rmbsTypeViewController.selected.description}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:40%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:60%;"><p:outputLabel value="#{rmbsTypeViewController.selected.description}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="COA" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{rmbsTypeViewController.selected.costCenter.name}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:40%"><p:outputLabel value="COA" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:60%;"><p:outputLabel value="#{rmbsTypeViewController.selected.costCenter.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['rmbs_type.rounding_method']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;">
+                            <p:column style="width:40%"><p:outputLabel value="#{appmsg['rmbs_type.rounding_method']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:60%;">
                             <p:outputLabel value="#{rmbsTypeViewController.selected.roundDigit}" styleClass="label_hrm">
                             	<f:converter converterId="rmbsTypeRoundDigitConverter"/>
                             </p:outputLabel>
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['rmbs_type.available_since']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;">
+                            <p:column style="width:40%"><p:outputLabel value="#{appmsg['rmbs_type.available_since']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:60%;">
                             	<p:outputLabel value="#{rmbsTypeViewController.selected.daysOfAvailable}" styleClass="label_hrm"/>
                             	<p:outputLabel value=" #{appmsg['global.day']}" styleClass="label_hrm"/>
                             </p:column>

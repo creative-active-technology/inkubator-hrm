@@ -73,7 +73,7 @@ public class RmbsSchemaEmpViewController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 550);
+        options.put("contentWidth", 480);
         options.put("contentHeight", 430);
         RequestContext.getCurrentInstance().openDialog("rmbs_schema_emp_form", options, params);
     }

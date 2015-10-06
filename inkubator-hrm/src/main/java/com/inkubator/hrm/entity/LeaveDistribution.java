@@ -38,6 +38,7 @@ public class LeaveDistribution  implements java.io.Serializable {
      private String updatedBy;
      private Date updatedOn;
      private Integer totalConsume;
+     private Boolean isDisabled;
 
     public LeaveDistribution() {
     }
@@ -181,7 +182,17 @@ public class LeaveDistribution  implements java.io.Serializable {
 		this.totalConsume = totalConsume;
 	}
 
+	@Transient
+	public Boolean getIsDisabled() {
+		return isDisabled;
+	}
 
+
+	public void setIsDisabled(Boolean isDisabled) {
+		this.isDisabled = isDisabled;
+	}
+
+	
 
 
 }
