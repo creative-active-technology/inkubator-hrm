@@ -1,8 +1,11 @@
 package com.inkubator.hrm.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
+import org.primefaces.model.DualListModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -10,11 +13,42 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.BioDataDao;
+import com.inkubator.hrm.dao.BusinessTypeDao;
+import com.inkubator.hrm.dao.CityDao;
+import com.inkubator.hrm.dao.DialectDao;
+import com.inkubator.hrm.dao.EducationLevelDao;
+import com.inkubator.hrm.dao.InstitutionEducationDao;
+import com.inkubator.hrm.dao.KlasifikasiKerjaDao;
+import com.inkubator.hrm.dao.MaritalStatusDao;
+import com.inkubator.hrm.dao.NationalityDao;
+import com.inkubator.hrm.dao.OrgTypeOfSpecDao;
+import com.inkubator.hrm.dao.OrgTypeOfSpecListDao;
+import com.inkubator.hrm.dao.RaceDao;
 import com.inkubator.hrm.dao.RecruitApplicantDao;
+import com.inkubator.hrm.dao.RecruitApplicantSpecListDao;
+import com.inkubator.hrm.dao.ReligionDao;
+import com.inkubator.hrm.entity.ApplicantSpecListId;
+import com.inkubator.hrm.entity.BioData;
+import com.inkubator.hrm.entity.BusinessType;
+import com.inkubator.hrm.entity.City;
+import com.inkubator.hrm.entity.Dialect;
+import com.inkubator.hrm.entity.EducationLevel;
+import com.inkubator.hrm.entity.InstitutionEducation;
+import com.inkubator.hrm.entity.KlasifikasiKerja;
+import com.inkubator.hrm.entity.MaritalStatus;
+import com.inkubator.hrm.entity.Nationality;
+import com.inkubator.hrm.entity.OrgTypeOfSpecList;
+import com.inkubator.hrm.entity.Race;
 import com.inkubator.hrm.entity.RecruitApplicant;
+import com.inkubator.hrm.entity.RecruitApplicantSpecList;
+import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.service.RecruitApplicantService;
+import com.inkubator.hrm.web.model.ApplicantModel;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -26,6 +60,32 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 
 	@Autowired
 	private RecruitApplicantDao recruitApplicantDao;
+	@Autowired
+	private CityDao cityDao;
+	@Autowired
+	private MaritalStatusDao maritalStatusDao;
+	@Autowired
+	private NationalityDao nationalityDao;
+	@Autowired
+	private DialectDao dialectDao;
+	@Autowired
+	private ReligionDao religionDao;
+	@Autowired
+	private RaceDao raceDao;
+	@Autowired
+	private BioDataDao bioDataDao;
+	@Autowired
+	private BusinessTypeDao businessTypeDao;
+	@Autowired
+	private KlasifikasiKerjaDao klasifikasiKerjaDao;
+	@Autowired
+	private InstitutionEducationDao institutionEducationDao;
+	@Autowired
+	private EducationLevelDao educationLevelDao;
+	@Autowired
+	private RecruitApplicantSpecListDao recruitApplicantSpecListDao;
+	@Autowired
+	private OrgTypeOfSpecListDao orgTypeOfSpecListDao;
 	
 	@Override
 	public RecruitApplicant getEntiyByPK(String id) throws Exception {
@@ -242,6 +302,153 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 	public RecruitApplicant getEntityByPkWithDetail(Long id) throws Exception {
 		
 		return recruitApplicantDao.getEntityByPkWithDetail(id);
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public RecruitApplicant update(ApplicantModel model) throws Exception {
+		
+		//Start updating BioData
+		BioData bioData = bioDataDao.getEntiyByPK(model.getBioDataId());
+		bioData = this.bindingValueBioData(bioData, model);
+		bioData.setUpdatedBy(UserInfoUtil.getUserName());
+		bioData.setUpdatedOn(new Date());
+		bioDataDao.update(bioData);
+		
+		
+		//Start updating RecruitApplicant
+		RecruitApplicant applicant = recruitApplicantDao.getEntiyByPK(model.getId());
+		applicant = this.bindingValueApplicant(applicant, model);
+		applicant.setBioData(bioData);
+		applicant.setCareerCandidate(0); //default
+		applicant.setIsActive(Boolean.TRUE); //default
+		applicant.setIsVerified(Boolean.TRUE); //default
+		applicant.setUpdatedBy(UserInfoUtil.getUserName());
+		applicant.setUpdatedOn(new Date());
+		recruitApplicantDao.update(applicant);		
+		
+		
+		//Start updating list of orgTypeOfSpec
+		recruitApplicantSpecListDao.deleteByApplicantId(applicant.getId());
+		List<OrgTypeOfSpecList> listSelectedSpec = new ArrayList<>();
+        for (DualListModel<OrgTypeOfSpecList> dual : model.getSpecListDualModel()) {
+            listSelectedSpec.addAll(dual.getTarget());
+        }
+        for(OrgTypeOfSpecList spec : listSelectedSpec){
+        	spec = orgTypeOfSpecListDao.getEntiyByPK(spec.getId());
+        	
+        	RecruitApplicantSpecList specList = new RecruitApplicantSpecList();
+        	ApplicantSpecListId id = new ApplicantSpecListId(applicant.getId(), spec.getId());
+        	specList.setId(id);
+        	specList.setOrgTypeOfSpecList(spec);
+        	specList.setRecruitApplicant(applicant);
+        	specList.setCreatedBy(UserInfoUtil.getUserName());
+        	specList.setCreatedOn(new Date());
+        	recruitApplicantSpecListDao.save(specList);
+        }		
+		        
+		return applicant;
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public RecruitApplicant save(ApplicantModel model) throws Exception {
+		
+		//Start saving BioData
+		BioData bioData = new BioData();
+		bioData = this.bindingValueBioData(bioData, model);
+		bioData.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		bioData.setCreatedBy(UserInfoUtil.getUserName());
+		bioData.setCreatedOn(new Date());
+		bioDataDao.save(bioData);
+		
+		
+		//Start saving RecruitApplicant
+		RecruitApplicant applicant = new RecruitApplicant();
+		applicant = this.bindingValueApplicant(applicant, model);
+		applicant.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		applicant.setBioData(bioData);
+		applicant.setCareerCandidate(0); //default
+		applicant.setIsActive(Boolean.TRUE); //default
+		applicant.setIsVerified(Boolean.TRUE); //default
+		applicant.setCreatedBy(UserInfoUtil.getUserName());
+		applicant.setCreatedOn(new Date());
+		recruitApplicantDao.save(applicant);
+		
+		
+		//Start saving list of orgTypeOfSpec
+		List<OrgTypeOfSpecList> listSelectedSpec = new ArrayList<>();
+        for (DualListModel<OrgTypeOfSpecList> dual : model.getSpecListDualModel()) {
+            listSelectedSpec.addAll(dual.getTarget());
+        }
+        for(OrgTypeOfSpecList spec : listSelectedSpec){
+        	spec = orgTypeOfSpecListDao.getEntiyByPK(spec.getId());
+        	
+        	RecruitApplicantSpecList specList = new RecruitApplicantSpecList();
+        	ApplicantSpecListId id = new ApplicantSpecListId(applicant.getId(), spec.getId());
+        	specList.setId(id);
+        	specList.setOrgTypeOfSpecList(spec);
+        	specList.setRecruitApplicant(applicant);
+        	specList.setCreatedBy(UserInfoUtil.getUserName());
+        	specList.setCreatedOn(new Date());
+        	recruitApplicantSpecListDao.save(specList);
+        }
+		
+		return applicant;
+	}
+	
+	private BioData bindingValueBioData(BioData bioData, ApplicantModel model){
+		City cityOfBirth = cityDao.getEntiyByPK(model.getCityOfBirthId());
+		MaritalStatus maritalStatus = maritalStatusDao.getEntiyByPK(model.getMaritalStatusId());
+		Nationality nationality = nationalityDao.getEntiyByPK(model.getNationalityId());
+		Dialect dialect = dialectDao.getEntiyByPK(model.getDialectId());
+		Religion religion = religionDao.getEntiyByPK(model.getReligionId());
+		Race race = raceDao.getEntiyByPK(model.getRaceId());
+		
+		bioData.setFirstName(model.getFirstName());
+		bioData.setLastName(model.getLastName());
+		bioData.setTitle(model.getTitle());
+		bioData.setNickname(model.getNickname());
+		bioData.setDateOfBirth(model.getDateOfBirth());
+		bioData.setCity(cityOfBirth);
+		bioData.setGender(model.getGender());
+		bioData.setMaritalStatus(maritalStatus);
+		bioData.setNoKK(model.getNoKK());
+		bioData.setBloodType(model.getBloodType());
+		bioData.setNpwp(model.getNpwp());
+		bioData.setJamsostek(model.getJamsostek());
+		bioData.setNationality(nationality);
+		bioData.setDialect(dialect);
+		bioData.setReligion(religion);
+		bioData.setRace(race);
+		bioData.setMobilePhone(model.getPhoneNumber());
+		bioData.setPersonalEmail(model.getEmailAddress());
+		
+		return bioData;
+	}
+	
+	private RecruitApplicant bindingValueApplicant(RecruitApplicant applicant, ApplicantModel model){
+		BusinessType businessType = businessTypeDao.getEntiyByPK(model.getBusinessTypeId());
+		KlasifikasiKerja klasifikasiKerja = klasifikasiKerjaDao.getEntiyByPK(model.getKlasifikasiKerjaId());
+		InstitutionEducation institutionEducation = institutionEducationDao.getEntiyByPK(model.getInstitutionEducationId());
+		EducationLevel educationLevel = educationLevelDao.getEntiyByPK(model.getEducationLevelId());
+		
+		applicant.setBusinessType(businessType);
+		applicant.setCertificateNumber(model.getCertificateNumber());
+		applicant.setEducationEndYear(model.getEducationEndYear());
+		applicant.setEducationStartYear(model.getEducationStartYear());
+		applicant.setEducationLevel(educationLevel);
+		applicant.setInstitutionEducation(institutionEducation);
+		applicant.setKlasifikasiKerja(klasifikasiKerja);
+		applicant.setLastJabatan(model.getLastJabatan());
+		applicant.setLastJabatanSince(model.getLastJabatanSince());
+		applicant.setLastWorkCompany(model.getLastWorkCompany());
+		applicant.setLastWorkEnd(model.getLastWorkEnd());
+		applicant.setLastWorkSince(model.getLastWorkSince());
+		applicant.setScale(model.getScale());
+		applicant.setScore(model.getScore());
+		
+		return applicant;
 	}
 
 }
