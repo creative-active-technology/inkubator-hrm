@@ -61,6 +61,16 @@
                                     <p:outputLabel  value="#{schedulerConfigDetilController.selected.repeateNumber}" />
                                 </p:column>
                             </p:row>  
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="Waktu Penjadwalan" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.schedullerTime}" />
+                                </p:column>
+                            </p:row>
+                            
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
                                     <p:outputLabel value="Awal Pengulangan" styleClass="label_hrm"/>
@@ -83,7 +93,28 @@
                                     <p:outputLabel value="Jeda Waktu" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.isTimeDiv}" />
+                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.isTimeDiv}" >
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
+                                    
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="Pelaksanaan Terakhir" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.lastExecution}" />
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="Tanggal Pelaksanaan" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.dateStartExecution}" />
                                 </p:column>
                             </p:row>
 
