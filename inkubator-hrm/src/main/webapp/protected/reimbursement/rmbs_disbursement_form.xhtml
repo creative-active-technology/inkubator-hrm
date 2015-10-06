@@ -162,7 +162,7 @@
                             </p:column>
                             <p:column style="width: 5%">
 					            <f:facet name="header">
-					                <h:outputText value=" " />
+                                                        <h:outputText value="#{appmsg['global.action']}" />
 					            </f:facet>
 					            <p:selectBooleanButton value="#{rmbsDisbursementFormController.model.selectedIds[data.id]}" styleClass="label_button"
 					            					   onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" offIcon="ui-icon-close"/>

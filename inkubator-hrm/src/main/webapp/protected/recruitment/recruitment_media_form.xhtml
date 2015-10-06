@@ -99,7 +99,7 @@
                             <p:column style="width: 50%" >
                                 <p:inputTextarea id="address" rows="5" cols="37" maxlength="500" value="#{recruitAdvertisementMediaFormController.model.address}" 
                                                  style="width: 96%; height: 50px;" autoResize="true" required="true"
-                                                 label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
+                                                 label="#{appmsg['global.address']}" title="#{appmsg['global.address']}" />
 
                             </p:column>
                         </p:row>
@@ -185,7 +185,7 @@
                                 <h:outputLabel for="tipeSumber" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneRadio id="tipeSumber" styleClass="isitext_hrm" required="true" value="#{recruitAdvertisementMediaFormController.model.typeOfMedia}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
+                                <p:selectOneRadio id="tipeSumber" styleClass="isitext_hrm" required="true" value="#{recruitAdvertisementMediaFormController.model.typeOfMedia}" label="#{appmsg['global.mediaType']}">
                                         <!--Cek HRM Constanta..-->
                                         <f:selectItem itemLabel="Internet" itemValue="0" />
                                         <f:selectItem itemLabel="Eksternal" itemValue="1" />
