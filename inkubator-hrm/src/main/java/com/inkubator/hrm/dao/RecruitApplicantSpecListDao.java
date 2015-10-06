@@ -9,4 +9,6 @@ import com.inkubator.hrm.entity.RecruitApplicantSpecList;
  */
 public interface RecruitApplicantSpecListDao extends IDAO<RecruitApplicantSpecList> {
 
+	public void deleteByApplicantId(Long applicantId);
+
 }

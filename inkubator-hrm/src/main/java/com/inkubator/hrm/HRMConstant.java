@@ -480,5 +480,13 @@ public class HRMConstant {
     public static final String HOSPITAL_TYPE_INSTITUTION = "INSTITUTION";
     /* END */
     
-    
+    /* 
+     * Constant for Hospital Module */
+    public static final String COMPARATOR_EQUALS = "EQUALS";
+    public static final String COMPARATOR_NOT_EQUALS = "NOT_EQUALS";
+    public static final String COMPARATOR_GREATER_THAN = "GREATER_THAN";
+    public static final String COMPARATOR_GREATER_EQUALS = "GREATER_EQUALS";
+    public static final String COMPARATOR_LESS_THAN = "LESS_THAN";
+    public static final String COMPARATOR_LESS_EQUALS = "LESS_EQUALS";;
+    /* END */
 }

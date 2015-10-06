@@ -45,6 +45,7 @@
 	                                			decimalPlaces="0" maxValue="1000000000000000" required="true" styleClass="isitext_hrm" style="width:160px;">
 	                            	<f:validator validatorId="doubleNumberBetweenValidator"  />
                                     <f:attribute name="endNumberDouble" value="#{topRateId}"/>
+                                    <f:attribute name="validatorConstraint" value="GREATER_EQUALS"/>
                                     <f:attribute name="validatorMessage" value="#{appmsg['taxrate.tax_rate_double_validator']}"/>
 	                            </pe:inputNumber>	                                
                             </p:column>

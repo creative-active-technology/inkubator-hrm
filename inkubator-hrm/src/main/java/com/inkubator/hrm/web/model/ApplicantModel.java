@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import org.primefaces.model.DualListModel;
+
 import com.inkubator.hrm.entity.BusinessType;
+import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.entity.Dialect;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.InstitutionEducation;
@@ -20,7 +23,25 @@ import com.inkubator.hrm.entity.Religion;
  */
 public class ApplicantModel implements Serializable {
 	
+	//Applicant
+	private Long id;
+    private Long educationLevelId;
+    private Long institutionEducationId;
+    private Integer educationStartYear;
+    private Integer educationEndYear;
+    private Double score;
+    private Double scale;
+    private String certificateNumber;
+    private String lastWorkCompany;
+	private Integer lastWorkSince;
+	private Integer lastWorkEnd;
+	private String lastJabatan;
+	private Long klasifikasiKerjaId;
+	private Integer lastJabatanSince;
+	private Long businessTypeId;
+	
 	//Bio Data
+	private Long bioDataId;
 	private String firstName;
     private String lastName;
     private String title;
@@ -39,20 +60,6 @@ public class ApplicantModel implements Serializable {
     private Long raceId;
     private String phoneNumber;
     private String emailAddress;
-    
-    //Applicant
-    private Long educationLevelId;
-    private Long institutionEducationId;
-    private Double score;
-    private Integer scale;
-    private String certificateNumber;
-    private String lastWorkCompany;
-	private Integer lastWorkSince;
-	private Integer lastWorkEnd;
-	private String lastJabatan;
-	private Long klasifikasiKerjaId;
-	private Integer lastJabatanSince;
-	private Long businessTypeId;
 	
 	//List
 	private List<MaritalStatus> listMaritalStatus;
@@ -64,7 +71,17 @@ public class ApplicantModel implements Serializable {
 	private List<InstitutionEducation> listInstitutionEducation;
 	private List<BusinessType> listBusinessType;
 	private List<KlasifikasiKerja> listKlasifikasiKerja;
+	private List<City> listCity;
+	private List<DualListModel> specListDualModel; 
+	private List<String> specListName; 
 	
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public String getFirstName() {
 		return firstName;
 	}
@@ -191,10 +208,10 @@ public class ApplicantModel implements Serializable {
 	public void setScore(Double score) {
 		this.score = score;
 	}
-	public Integer getScale() {
+	public Double getScale() {
 		return scale;
 	}
-	public void setScale(Integer scale) {
+	public void setScale(Double scale) {
 		this.scale = scale;
 	}
 	public String getCertificateNumber() {
@@ -298,6 +315,42 @@ public class ApplicantModel implements Serializable {
 	}
 	public void setListKlasifikasiKerja(List<KlasifikasiKerja> listKlasifikasiKerja) {
 		this.listKlasifikasiKerja = listKlasifikasiKerja;
+	}
+	public List<City> getListCity() {
+		return listCity;
+	}
+	public void setListCity(List<City> listCity) {
+		this.listCity = listCity;
+	}
+	public Integer getEducationStartYear() {
+		return educationStartYear;
+	}
+	public void setEducationStartYear(Integer educationStartYear) {
+		this.educationStartYear = educationStartYear;
+	}
+	public Integer getEducationEndYear() {
+		return educationEndYear;
+	}
+	public void setEducationEndYear(Integer educationEndYear) {
+		this.educationEndYear = educationEndYear;
+	}
+	public List<DualListModel> getSpecListDualModel() {
+		return specListDualModel;
+	}
+	public void setSpecListDualModel(List<DualListModel> specListDualModel) {
+		this.specListDualModel = specListDualModel;
+	}
+	public List<String> getSpecListName() {
+		return specListName;
+	}
+	public void setSpecListName(List<String> specListName) {
+		this.specListName = specListName;
+	}
+	public Long getBioDataId() {
+		return bioDataId;
+	}
+	public void setBioDataId(Long bioDataId) {
+		this.bioDataId = bioDataId;
 	}
     
 }

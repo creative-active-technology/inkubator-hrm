@@ -37,7 +37,6 @@ public class SchedulerConfigDetilController extends BaseController {
         super.initialization();
        try {
             String schedulerConfigId = FacesUtil.getRequestParameter("execution");
-            System.out.println("schedulerConfigId  di initialization : " + schedulerConfigId);
             selected = schedulerConfigService.getEntiyByPK(Long.parseLong(schedulerConfigId));
             /*String param = schedulerConfigId.substring(0, 1);
             if(StringUtils.equals(param, "e")){
@@ -69,7 +68,7 @@ public class SchedulerConfigDetilController extends BaseController {
     }
     
     public String doBack(){
-        return "/protected/reference/scheduler_config_view.htm?faces-redirect=true";
+        return "/protected/scheduler/scheduler_config_view.htm?faces-redirect=true";
     }
     
     public String doUpdates(){

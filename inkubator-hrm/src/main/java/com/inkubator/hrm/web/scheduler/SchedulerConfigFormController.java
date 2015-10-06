@@ -143,7 +143,7 @@ public class SchedulerConfigFormController extends BaseController {
     }
     
     public String doBack() {
-        return "/protected/scheduler/scheduler_config_view.htm";
+        return "/protected/scheduler/scheduler_config_view.htm?faces-redirect=true";
     }
     
     public Boolean getIsDisabaleJeda() {

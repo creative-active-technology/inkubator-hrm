@@ -37,7 +37,7 @@ public class RecruitApplicant implements Serializable {
 	private Integer educationStartYear;
 	private Integer educationEndYear;
 	private Double score;
-	private Integer scale;
+	private Double scale;
 	private InstitutionEducation institutionEducation;
 	private String certificateNumber;
 	private String lastWorkCompany;
@@ -156,11 +156,11 @@ public class RecruitApplicant implements Serializable {
 	}
 
 	@Column(name = "scale")
-	public Integer getScale() {
+	public Double getScale() {
 		return scale;
 	}
 
-	public void setScale(Integer scale) {
+	public void setScale(Double scale) {
 		this.scale = scale;
 	}
 

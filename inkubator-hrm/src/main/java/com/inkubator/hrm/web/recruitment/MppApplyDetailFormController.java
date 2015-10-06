@@ -180,11 +180,15 @@ public class MppApplyDetailFormController extends BaseController {
     }
 
     public void doSave() {
-
+    	
         RecruitMppApplyDetail recruitMppApplyDetail = getEntityFromViewModel(mppApplyDetailModel);
+        
         try {
+        	checkPositionAlreadyExistAtSelectedMppPeriod(recruitMppApplyDetail);
             RequestContext.getCurrentInstance().closeDialog(recruitMppApplyDetail);
             cleanAndExit();
+        } catch (BussinessException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
@@ -217,7 +221,13 @@ public class MppApplyDetailFormController extends BaseController {
         return null;
     }
 
-
+    private void checkPositionAlreadyExistAtSelectedMppPeriod(RecruitMppApplyDetail recruitMppApplyDetail) throws Exception{
+    	Jabatan jabatan = recruitMppApplyDetail.getJabatan();
+    	Boolean result = recruitMppApplyDetailService.isJabatanMppExistOnSelectedMppPeriod(jabatan.getId(), mppApplyDetailModel.getMppPeriodeId());
+    	if(result){
+    		throw new BussinessException("mpp_recruitment.selected_position_already_exist_at_selected");
+    	}
+    }
     public Boolean getIsUpdate() {
         return isUpdate;
     }
