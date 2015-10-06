@@ -87,7 +87,7 @@
         </batch:step>
         <!-- add job execution listener  -->
         <batch:listeners>
-        	<batch:listener ref="fingerSwapCapturedDownloadXmlJobListener"/>
+            <batch:listener ref="fingerSwapCapturedDownloadXmlJobListener"/>
         </batch:listeners>
     </batch:job>	
     
@@ -116,7 +116,7 @@
         </batch:step>
         <!-- add job execution listener  -->
         <batch:listeners>
-        	<batch:listener ref="payEmployeeCalculationJobListener"/>
+            <batch:listener ref="payEmployeeCalculationJobListener"/>
         </batch:listeners>
     </batch:job>
     
@@ -161,7 +161,7 @@
         </batch:step>
         <!-- add job execution listener  -->
         <batch:listeners>
-        	<batch:listener ref="monthEndPayrollJobListener"/>
+            <batch:listener ref="monthEndPayrollJobListener"/>
         </batch:listeners>
     </batch:job>
     
@@ -182,14 +182,14 @@
         </batch:step>
         <!-- add job execution listener  -->
         <batch:listeners>
-        	<batch:listener ref="monthEndAttendanceJobListener"/>
+            <batch:listener ref="monthEndAttendanceJobListener"/>
         </batch:listeners>
     </batch:job>
     
     <batch:job id="jobLoanUpload">
         <batch:step id="stepJobLoanUpload_1">
             <batch:tasklet>
-                 <!-- Commit interval di set 1 untuk memastikan kalau id loan yang di dapat pada proses kodefikasi adalah id terakhir.  -->	
+                <!-- Commit interval di set 1 untuk memastikan kalau id loan yang di dapat pada proses kodefikasi adalah id terakhir.  -->	
                 <batch:chunk reader="customLoanUploadItemReader" writer="customLoanUploadItemWriter"
                              commit-interval="1">
                 </batch:chunk>
@@ -222,7 +222,7 @@
         </batch:step>
         <!-- add job execution listener  -->
         <batch:listeners>
-        	<batch:listener ref="unregCalculationJobListener"/>
+            <batch:listener ref="unregCalculationJobListener"/>
         </batch:listeners>
     </batch:job>
     
@@ -250,7 +250,7 @@
         </batch:step>
         <!-- add job execution listener  -->
         <batch:listeners>
-        	<batch:listener ref="unregPayrollJobListener"/>
+            <batch:listener ref="unregPayrollJobListener"/>
         </batch:listeners>
     </batch:job>
     
@@ -284,66 +284,66 @@
         </batch:step>
     </batch:job>
     
-     <!-- Job Calculation of Emp Attendance Realization  -->
-     <batch:job id="jobTempAttendanceRealizationCalculation">
+    <!-- Job Calculation of Emp Attendance Realization  -->
+    <batch:job id="jobTempAttendanceRealizationCalculation">
         <batch:step id="stepJobTempAttendanceRealizationCalculation_1">
             <batch:tasklet>                
                 <batch:chunk reader="customTempAttendanceRealizationCalculationItemReader" processor="customTempAttendanceRealizationCalculationItemProcessor"
-                 writer="customTempAttendanceRealizationCalculationItemWriter"   commit-interval="20"/>               
+                             writer="customTempAttendanceRealizationCalculationItemWriter"   commit-interval="20"/>               
             </batch:tasklet>
         </batch:step>
         <!-- add job execution listener  -->
         <batch:listeners>
-        	<batch:listener ref="tempAttendanceRealizationCalculationJobListener"/>
+            <batch:listener ref="tempAttendanceRealizationCalculationJobListener"/>
         </batch:listeners>
     </batch:job>
     
             
     <!-- ALL batch listeners -->
     <bean id="monthEndAttendanceJobListener" class="com.inkubator.hrm.batch.MonthEndAttendanceJobListener" lazy-init="true">
-		<property name="wtPeriodeService" ref="wtPeriodeService"/>
-		<property name="logWtAttendanceRealizationService" ref="logWtAttendanceRealizationService"/>
-		<property name="logWtProcessReadFingerService" ref="logWtProcessReadFingerService"/>	
-	</bean>
+        <property name="wtPeriodeService" ref="wtPeriodeService"/>
+        <property name="logWtAttendanceRealizationService" ref="logWtAttendanceRealizationService"/>
+        <property name="logWtProcessReadFingerService" ref="logWtProcessReadFingerService"/>	
+    </bean>
     <bean id="monthEndPayrollJobListener" class="com.inkubator.hrm.batch.MonthEndPayrollJobListener" lazy-init="true">
-		<property name="wtPeriodeService" ref="wtPeriodeService"/>
-		<property name="logMonthEndPayrollService" ref="logMonthEndPayrollService"/>
-		<property name="logListOfTransferService" ref="logListOfTransferService"/>
-		<property name="logSalaryJournalService" ref="logSalaryJournalService"/>
-		<property name="logMonthEndTaxesService" ref="logMonthEndTaxesService"/>		
-	</bean>
-	<bean id="payEmployeeCalculationJobListener" class="com.inkubator.hrm.batch.PayEmployeeCalculationJobListener" lazy-init="true">
-		<property name="wtPeriodeService" ref="wtPeriodeService"/>
-		<property name="payTempKalkulasiService" ref="payTempKalkulasiService"/>
-		<property name="payTempKalkulasiEmpPajakService" ref="payTempKalkulasiEmpPajakService"/>		
-	</bean>
-	<bean id="unregCalculationJobListener" class="com.inkubator.hrm.batch.UnregCalculationJobListener" lazy-init="true">
-		<property name="tempUnregPayrollService" ref="tempUnregPayrollService"/>
-		<property name="tempUnregPayrollEmpPajakService" ref="tempUnregPayrollEmpPajakService"/>
-		<property name="unregSalaryService" ref="unregSalaryService"/>				
-	</bean>
-	<bean id="unregPayrollJobListener" class="com.inkubator.hrm.batch.UnregPayrollJobListener" lazy-init="true">
-		<property name="logUnregPayrollService" ref="logUnregPayrollService"/>
-		<property name="logUnregTaxesService" ref="logUnregTaxesService"/>
-		<property name="logUnregListOfTransferService" ref="logUnregListOfTransferService"/>				
-	</bean>	
-	<bean id="tempAttendanceRealizationCalculationJobListener" class="com.inkubator.hrm.batch.TempAttendanceRealizationCalculationJobListener" lazy-init="true">
-		<property name="tempAttendanceRealizationService" ref="tempAttendanceRealizationService"/>					
-	</bean>
-	<bean id="fingerSwapCapturedDownloadXmlJobListener" class="com.inkubator.hrm.batch.FingerSwapCapturedDownloadXmlJobListener" lazy-init="true">
-		<property name="mecineFingerService" ref="mecineFingerService"/>			
-	</bean>
+        <property name="wtPeriodeService" ref="wtPeriodeService"/>
+        <property name="logMonthEndPayrollService" ref="logMonthEndPayrollService"/>
+        <property name="logListOfTransferService" ref="logListOfTransferService"/>
+        <property name="logSalaryJournalService" ref="logSalaryJournalService"/>
+        <property name="logMonthEndTaxesService" ref="logMonthEndTaxesService"/>		
+    </bean>
+    <bean id="payEmployeeCalculationJobListener" class="com.inkubator.hrm.batch.PayEmployeeCalculationJobListener" lazy-init="true">
+        <property name="wtPeriodeService" ref="wtPeriodeService"/>
+        <property name="payTempKalkulasiService" ref="payTempKalkulasiService"/>
+        <property name="payTempKalkulasiEmpPajakService" ref="payTempKalkulasiEmpPajakService"/>		
+    </bean>
+    <bean id="unregCalculationJobListener" class="com.inkubator.hrm.batch.UnregCalculationJobListener" lazy-init="true">
+        <property name="tempUnregPayrollService" ref="tempUnregPayrollService"/>
+        <property name="tempUnregPayrollEmpPajakService" ref="tempUnregPayrollEmpPajakService"/>
+        <property name="unregSalaryService" ref="unregSalaryService"/>				
+    </bean>
+    <bean id="unregPayrollJobListener" class="com.inkubator.hrm.batch.UnregPayrollJobListener" lazy-init="true">
+        <property name="logUnregPayrollService" ref="logUnregPayrollService"/>
+        <property name="logUnregTaxesService" ref="logUnregTaxesService"/>
+        <property name="logUnregListOfTransferService" ref="logUnregListOfTransferService"/>				
+    </bean>	
+    <bean id="tempAttendanceRealizationCalculationJobListener" class="com.inkubator.hrm.batch.TempAttendanceRealizationCalculationJobListener" lazy-init="true">
+        <property name="tempAttendanceRealizationService" ref="tempAttendanceRealizationService"/>					
+    </bean>
+    <bean id="fingerSwapCapturedDownloadXmlJobListener" class="com.inkubator.hrm.batch.FingerSwapCapturedDownloadXmlJobListener" lazy-init="true">
+        <property name="mecineFingerService" ref="mecineFingerService"/>			
+    </bean>
 	
 	
     
     <!-- reader and writer for synchronization_data_finger_realization -->
     <bean id="customSynchDataFingerRealizationItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" lazy-init="true">
-	    <property name="sessionFactory" ref="sessionFactory"/>
-	    <property name="queryString" value="from EmpData as empData 
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="queryString" value="from EmpData as empData 
 	    									where status != 'EMP_TERMINATION'"/>
-	    <property name="pageSize" value="10"/>
-	</bean>
-	<bean id="customSynchDataFingerRealizationItemWriter" class="com.inkubator.hrm.batch.DataFingerRealizationWriter" scope="step" lazy-init="true">
+        <property name="pageSize" value="10"/>
+    </bean>
+    <bean id="customSynchDataFingerRealizationItemWriter" class="com.inkubator.hrm.batch.DataFingerRealizationWriter" scope="step" lazy-init="true">
         <property name="tempProcessReadFingerService" ref="tempProcessReadFingerService" />
         <property name="wtPeriodeService" ref="wtPeriodeService" />
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>
@@ -354,8 +354,8 @@
 	
     <!-- reader, processor and writer for month_end attendance/working time -->
     <bean id="customMonthEndAttendanceRealizationItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" lazy-init="true">
-	    <property name="sessionFactory" ref="sessionFactory"/>
-	    <property name="queryString" value="from TempAttendanceRealization as tempAttendanceRealization 
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="queryString" value="from TempAttendanceRealization as tempAttendanceRealization 
 	    									inner join fetch tempAttendanceRealization.empData as empData
 	    									inner join fetch empData.bioData as bioData
 	    									inner join fetch empData.jabatanByJabatanId as jabatanByJabatanId
@@ -363,9 +363,9 @@
 	    									inner join fetch empData.golonganJabatan as golonganJabatan
 	    									inner join fetch empData.employeeType as employeeType
 	    									inner join fetch tempAttendanceRealization.wtGroupWorking as wtGroupWorking"/>
-	    <property name="pageSize" value="100"/>
-	</bean>
-	<bean id="customMonthEndAttendanceRealizationItemProcessor" class="com.inkubator.hrm.batch.MonthEndAttendanceRealizationProcessor" scope="step" lazy-init="true">
+        <property name="pageSize" value="100"/>
+    </bean>
+    <bean id="customMonthEndAttendanceRealizationItemProcessor" class="com.inkubator.hrm.batch.MonthEndAttendanceRealizationProcessor" scope="step" lazy-init="true">
         <property name="periodeId" value="#{jobParameters['periodeId']}"/>
         <property name="periodeStart" value="#{jobParameters['periodeStart']}"/>
         <property name="periodeEnd" value="#{jobParameters['periodeEnd']}"/>
@@ -388,17 +388,17 @@
         </property>
     </bean>
     <bean id="customMonthEndProcessReadFingerItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" lazy-init="true">
-	    <property name="sessionFactory" ref="sessionFactory"/>
-	    <property name="queryString" value="from TempProcessReadFinger as tempProcessReadFinger 
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="queryString" value="from TempProcessReadFinger as tempProcessReadFinger 
 	    									inner join fetch tempProcessReadFinger.empData as empData
 	    									inner join fetch empData.bioData as bioData
 	    									inner join fetch empData.jabatanByJabatanId as jabatanByJabatanId
 	    									inner join fetch jabatanByJabatanId.department as department
 	    									inner join fetch empData.golonganJabatan as golonganJabatan
 	    									inner join fetch empData.employeeType as employeeType"/>
-	    <property name="pageSize" value="100"/>
-	</bean>
-	<bean id="customMonthEndProcessReadFingerItemProcessor" class="com.inkubator.hrm.batch.MonthEndProcessReadFingerProcessor" scope="step" lazy-init="true">
+        <property name="pageSize" value="100"/>
+    </bean>
+    <bean id="customMonthEndProcessReadFingerItemProcessor" class="com.inkubator.hrm.batch.MonthEndProcessReadFingerProcessor" scope="step" lazy-init="true">
         <property name="periodeId" value="#{jobParameters['periodeId']}"/>
         <property name="periodeStart" value="#{jobParameters['periodeStart']}"/>
         <property name="periodeEnd" value="#{jobParameters['periodeEnd']}"/>
@@ -425,8 +425,8 @@
     
     <!-- reader, processor and writer for month_end_payroll -->
     <bean id="customMonthEndPayrollItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" lazy-init="true">
-	    <property name="sessionFactory" ref="sessionFactory"/>
-	    <property name="queryString" value="from PayTempKalkulasi as payTempKalkulasi 
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="queryString" value="from PayTempKalkulasi as payTempKalkulasi 
 	    									inner join fetch payTempKalkulasi.empData as empData
 	    									inner join fetch empData.bioData as bioData
 	    									inner join fetch empData.jabatanByJabatanId as jabatanByJabatanId
@@ -435,11 +435,11 @@
 	    									inner join fetch empData.employeeType as employeeType
 	    									inner join fetch payTempKalkulasi.paySalaryComponent as paySalaryComponent
 	    									inner join fetch paySalaryComponent.modelComponent as modelComponent"/>
-	    <property name="pageSize" value="100"/>
-	</bean>
-	<bean id="customMonthEndTransferLogItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" lazy-init="true">
-	    <property name="sessionFactory" ref="sessionFactory"/>
-	    <property name="queryString" value="from PayTempKalkulasi as payTempKalkulasi 
+        <property name="pageSize" value="100"/>
+    </bean>
+    <bean id="customMonthEndTransferLogItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" lazy-init="true">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="queryString" value="from PayTempKalkulasi as payTempKalkulasi 
 	    									inner join fetch payTempKalkulasi.empData as empData
 	    									inner join fetch empData.bioData as bioData
 	    									inner join fetch empData.jabatanByJabatanId as jabatanByJabatanId
@@ -448,20 +448,20 @@
 	    									inner join fetch payTempKalkulasi.paySalaryComponent as paySalaryComponent
 	    									inner join fetch paySalaryComponent.modelComponent as modelComponent
 	    									where modelComponent.spesific = :spesific"/>
-	   	<property name="parameterValues">
-	   		<map>
-	   			<entry key="spesific" value="100" value-type="java.lang.Integer"/>	   			
-	   		</map>
-	   	</property>
-	    <property name="pageSize" value="100"/>
-	</bean>
-	<bean id="customMonthEndJournalLogItemReader" class="com.inkubator.hrm.batch.MonthEndJournalLogReader" scope="step" lazy-init="true">
+        <property name="parameterValues">
+            <map>
+                <entry key="spesific" value="100" value-type="java.lang.Integer"/>	   			
+            </map>
+        </property>
+        <property name="pageSize" value="100"/>
+    </bean>
+    <bean id="customMonthEndJournalLogItemReader" class="com.inkubator.hrm.batch.MonthEndJournalLogReader" scope="step" lazy-init="true">
         <constructor-arg name="payTempKalkulasiService" ref="payTempKalkulasiService"/>
         <constructor-arg name="locale" value="#{jobParameters['locale']}"/>
     </bean>
     <bean id="customMonthEndTaxesItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" lazy-init="true">
-	    <property name="sessionFactory" ref="sessionFactory"/>
-	    <property name="queryString" value="from PayTempKalkulasiEmpPajak as payTempKalkulasiEmpPajak 
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="queryString" value="from PayTempKalkulasiEmpPajak as payTempKalkulasiEmpPajak 
 	    									inner join fetch payTempKalkulasiEmpPajak.empData as empData
 	    									inner join fetch empData.bioData as bioData
 	    									inner join fetch empData.jabatanByJabatanId as jabatanByJabatanId
@@ -469,9 +469,9 @@
 	    									inner join fetch empData.golonganJabatan as golonganJabatan
 	    									inner join fetch empData.employeeType as employeeType
 	    									inner join fetch payTempKalkulasiEmpPajak.taxComponent as taxComponent"/>
-	    <property name="pageSize" value="100"/>
-	</bean>
-	<bean id="customMonthEndPayrollItemProcessor" class="com.inkubator.hrm.batch.MonthEndPayrollProcessor" scope="step" lazy-init="true">
+        <property name="pageSize" value="100"/>
+    </bean>
+    <bean id="customMonthEndPayrollItemProcessor" class="com.inkubator.hrm.batch.MonthEndPayrollProcessor" scope="step" lazy-init="true">
         <property name="periodeId" value="#{jobParameters['periodeId']}"/>
         <property name="periodeStart" value="#{jobParameters['periodeStart']}"/>
         <property name="periodeEnd" value="#{jobParameters['periodeEnd']}"/>
@@ -491,7 +491,7 @@
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>
         <property name="createdOn" value="#{jobParameters['createdOn']}"/>
     </bean>
-	<bean id="customMonthEndPayrollItemWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter" lazy-init="true">
+    <bean id="customMonthEndPayrollItemWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter" lazy-init="true">
         <property name="dataSource" ref="c3p0DataSource-1" />
         <property name="sql">
             <value>
@@ -507,9 +507,9 @@
         </property>
     </bean>
     <bean id="customMonthEndTransferLogItemWriter" class="com.inkubator.hrm.batch.MonthEndTransferLogWriter" scope="step" lazy-init="true">    	
-    	<property name="wtPeriodeService" ref="wtPeriodeService"/>
-    	<property name="logListOfTransferService" ref="logListOfTransferService"/>
-    	<property name="periodeId" value="#{jobParameters['periodeId']}"/>
+        <property name="wtPeriodeService" ref="wtPeriodeService"/>
+        <property name="logListOfTransferService" ref="logListOfTransferService"/>
+        <property name="periodeId" value="#{jobParameters['periodeId']}"/>
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>
         <property name="createdOn" value="#{jobParameters['createdOn']}"/>
     </bean>
@@ -552,7 +552,7 @@
         <property name="payTempKalkulasiService" ref="payTempKalkulasiService"/>
     </bean>
     <bean name="customPayReceiverAccountItemWriter" class="com.inkubator.hrm.batch.PayReceiverAccountWriter" scope="step" lazy-init="true">
-    	<property name="fileName" value="#{jobParameters['fileName']}"/>
+        <property name="fileName" value="#{jobParameters['fileName']}"/>
     </bean>
 	
 	
@@ -594,26 +594,26 @@
 	
 	
 	
-	<!-- reader and writer for finger_swap_captured download OR upload -->	
+    <!-- reader and writer for finger_swap_captured download OR upload -->	
     <bean id="customFingerSwapCapturedUploadItemReader" class="com.inkubator.hrm.batch.FingerSwapCapturedUploadReader" scope="step" destroy-method="destroy" lazy-init="true">
         <constructor-arg name="filePath"  value="#{jobParameters['input.file.path']}"></constructor-arg>
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>
         <property name="machineId" value="#{jobParameters['machineId']}"/>
     </bean>
     <bean id="customFingerSwapCapturedDownloadXmlItemReader" class="org.springframework.batch.item.xml.StaxEventItemReader" scope="step">
-	    <property name="fragmentRootElementName" value="#{jobParameters['fragmentRootElementName']}" />
-	    <property name="resource" value="#{jobParameters['resourcePath']}" />
-	    <property name="unmarshaller">
-	    	<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="fragmentRootElementName" value="#{jobParameters['fragmentRootElementName']}" />
+        <property name="resource" value="#{jobParameters['resourcePath']}" />
+        <property name="unmarshaller">
+            <bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
                 <property name="classesToBeBound">
                     <list>
                         <value>com.inkubator.hrm.web.model.FingerSwapCapturedBatchModel</value>
                     </list>
                 </property>
             </bean>
-	    </property>
-	</bean>	
-	<bean id="customFingerSwapCapturedDownloadXmlItemProcessor" class="com.inkubator.hrm.batch.FingerSwapCapturedDownloadXmlProcessor" scope="step" lazy-init="true">
+        </property>
+    </bean>	
+    <bean id="customFingerSwapCapturedDownloadXmlItemProcessor" class="com.inkubator.hrm.batch.FingerSwapCapturedDownloadXmlProcessor" scope="step" lazy-init="true">
         <property name="machineId" value="#{jobParameters['machineId']}"/>
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>
         <property name="createdOn" value="#{jobParameters['createdOn']}"/>
@@ -757,8 +757,8 @@
     
     <!-- reader, processor and writer for unreg_payroll -->
     <bean id="customUnregPayrollItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" scope="step" lazy-init="true">
-	    <property name="sessionFactory" ref="sessionFactory"/>
-	    <property name="queryString" value="from TempUnregPayroll as tempUnregPayroll 
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="queryString" value="from TempUnregPayroll as tempUnregPayroll 
 	    									inner join fetch tempUnregPayroll.empData as empData
 	    									inner join fetch empData.bioData as bioData
 	    									inner join fetch empData.jabatanByJabatanId as jabatanByJabatanId
@@ -770,14 +770,14 @@
 	    									inner join fetch tempUnregPayroll.unregSalary as unregSalary
 	    									inner join fetch unregSalary.wtPeriode as wtPeriode
 	    									where unregSalary.id = :unregSalaryId"/>
-	   	<property name="parameterValues">
-	   		<map>
-	   			<entry key="unregSalaryId" value="#{jobParameters['unregSalaryId']}" value-type="java.lang.Long"/>	   			
-	   		</map>
-	   	</property>
-	    <property name="pageSize" value="100"/>
-	</bean>
-	<bean id="customUnregPayrollItemProcessor" class="com.inkubator.hrm.batch.UnregPayrollProcessor" scope="step" lazy-init="true">
+        <property name="parameterValues">
+            <map>
+                <entry key="unregSalaryId" value="#{jobParameters['unregSalaryId']}" value-type="java.lang.Long"/>	   			
+            </map>
+        </property>
+        <property name="pageSize" value="100"/>
+    </bean>
+    <bean id="customUnregPayrollItemProcessor" class="com.inkubator.hrm.batch.UnregPayrollProcessor" scope="step" lazy-init="true">
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>
         <property name="createdOn" value="#{jobParameters['createdOn']}"/>
     </bean>
@@ -796,9 +796,9 @@
             <bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
         </property>
     </bean>    
-	<bean id="customUnregTransferLogItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" scope="step" lazy-init="true">
-	    <property name="sessionFactory" ref="sessionFactory"/>
-	    <property name="queryString" value="from TempUnregPayroll as tempUnregPayroll 
+    <bean id="customUnregTransferLogItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" scope="step" lazy-init="true">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="queryString" value="from TempUnregPayroll as tempUnregPayroll 
 	    									inner join fetch tempUnregPayroll.empData as empData
 	    									inner join fetch empData.bioData as bioData
 	    									inner join fetch empData.jabatanByJabatanId as jabatanByJabatanId
@@ -810,22 +810,22 @@
 	    									inner join fetch unregSalary.wtPeriode as wtPeriode
 	    									where modelComponent.spesific = :spesific
 	    									and unregSalary.id = :unregSalaryId"/>
-	   	<property name="parameterValues">
-	   		<map>
-	   			<entry key="spesific" value="100" value-type="java.lang.Integer"/>
-	   			<entry key="unregSalaryId" value="#{jobParameters['unregSalaryId']}" value-type="java.lang.Long"/>	   			
-	   		</map>
-	   	</property>
-	    <property name="pageSize" value="100"/>
-	</bean>
-	<bean id="customUnregTransferLogItemWriter" class="com.inkubator.hrm.batch.UnregPayrollTransferLogWriter" scope="step" lazy-init="true">    	
-    	<property name="logUnregListOfTransferService" ref="logUnregListOfTransferService"/>
+        <property name="parameterValues">
+            <map>
+                <entry key="spesific" value="100" value-type="java.lang.Integer"/>
+                <entry key="unregSalaryId" value="#{jobParameters['unregSalaryId']}" value-type="java.lang.Long"/>	   			
+            </map>
+        </property>
+        <property name="pageSize" value="100"/>
+    </bean>
+    <bean id="customUnregTransferLogItemWriter" class="com.inkubator.hrm.batch.UnregPayrollTransferLogWriter" scope="step" lazy-init="true">    	
+        <property name="logUnregListOfTransferService" ref="logUnregListOfTransferService"/>
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>
         <property name="createdOn" value="#{jobParameters['createdOn']}"/>
     </bean>
     <bean id="customUnregTaxesItemReader" class="org.springframework.batch.item.database.HibernatePagingItemReader" scope="step" lazy-init="true">
-	    <property name="sessionFactory" ref="sessionFactory"/>
-	    <property name="queryString" value="from TempUnregPayrollEmpPajak as tempUnregPayrollEmpPajak 
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="queryString" value="from TempUnregPayrollEmpPajak as tempUnregPayrollEmpPajak 
 	    									inner join fetch tempUnregPayrollEmpPajak.empData as empData
 	    									inner join fetch empData.bioData as bioData
 	    									inner join fetch empData.jabatanByJabatanId as jabatanByJabatanId
@@ -836,13 +836,13 @@
 	    									inner join fetch tempUnregPayrollEmpPajak.unregSalary as unregSalary
 	    									inner join fetch unregSalary.wtPeriode as wtPeriode
 	    									where unregSalary.id = :unregSalaryId"/>
-	    <property name="parameterValues">
-	   		<map>
-	   			<entry key="unregSalaryId" value="#{jobParameters['unregSalaryId']}" value-type="java.lang.Long"/>	   			
-	   		</map>
-	   	</property>
-	   	<property name="pageSize" value="100"/>
-	</bean>
+        <property name="parameterValues">
+            <map>
+                <entry key="unregSalaryId" value="#{jobParameters['unregSalaryId']}" value-type="java.lang.Long"/>	   			
+            </map>
+        </property>
+        <property name="pageSize" value="100"/>
+    </bean>
     <bean id="customUnregTaxesItemProcessor" class="com.inkubator.hrm.batch.UnregPayrollTaxesProcessor" scope="step" lazy-init="true">
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>
         <property name="createdOn" value="#{jobParameters['createdOn']}"/>
@@ -894,31 +894,31 @@
     
     
     <!-- reader and writer for sending email announcement -->
-	<bean id="customEmailingAnnouncementItemReader" class="com.inkubator.hrm.batch.EmailingAnnouncementLogReader" scope="step" lazy-init="true">
+    <bean id="customEmailingAnnouncementItemReader" class="com.inkubator.hrm.batch.EmailingAnnouncementLogReader" scope="step" lazy-init="true">
         <constructor-arg name="announcementLogService" ref="announcementLogService"/>
         <constructor-arg name="announcementId" value="#{jobParameters['announcementId']}"/>
         <constructor-arg name="planExecutionDate" value="#{jobParameters['planExecutionDate']}"/>
     </bean>
-	<bean id="customEmailingAnnouncementItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter" lazy-init="true">
-        <property name="targetObject" ref="announcementLogCronService" />
+    <bean id="customEmailingAnnouncementItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter" lazy-init="true">
+        <property name="targetObject" ref="announcementLogCronBatchService" />
         <property name="targetMethod" value="executeBatchSendingEmail" />
     </bean>
     <bean id="customEmailingAnnouncementNotSentItemReader" class="com.inkubator.hrm.batch.EmailingAnnouncementNotSentLogReader" scope="step" lazy-init="true">
         <constructor-arg name="announcementLogService" ref="announcementLogService"/>
     </bean>
-	<bean id="customEmailingAnnouncementNotSentItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter" lazy-init="true">
-        <property name="targetObject" ref="announcementLogCronService" />
+    <bean id="customEmailingAnnouncementNotSentItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter" lazy-init="true">
+        <property name="targetObject" ref="announcementLogCronBatchService" />
         <property name="targetMethod" value="executeBatchSendingEmail" />
     </bean>
     
     <!-- reader, processor, and writer for temp attendance realization calculation -->	
     <bean id="customTempAttendanceRealizationCalculationItemReader" class="com.inkubator.hrm.batch.TempAttendanceRealizationCalculationReader" scope="step" destroy-method="destroy" lazy-init="true">
-    	<constructor-arg name="empDataService" ref="empDataService"/>
+        <constructor-arg name="empDataService" ref="empDataService"/>
         <constructor-arg name="periodUntillDate"  value="#{jobParameters['periodUntillDate']}"></constructor-arg>      
     </bean>	
     <bean id="customTempAttendanceRealizationCalculationItemProcessor" class="com.inkubator.hrm.batch.TempAttendanceRealizationCalculationProcessor" scope="step" lazy-init="true">
-    	<constructor-arg name="tempAttendanceRealizationService" ref="tempAttendanceRealizationService"/>
-    	<property name="wtPeriodId" value="#{jobParameters['wtPeriodId']}"/>
+        <constructor-arg name="tempAttendanceRealizationService" ref="tempAttendanceRealizationService"/>
+        <property name="wtPeriodId" value="#{jobParameters['wtPeriodId']}"/>
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>
         <property name="createdOn" value="#{jobParameters['createdOn']}"/>
     </bean>
@@ -927,4 +927,12 @@
         <property name="targetMethod" value="executeBatchFileUpload" />        
     </bean>
     
+    
+    <bean id="announcementLogCronBatchService"  class="com.inkubator.hrm.service.impl.AnnouncementLogCronBatchServiceImpl" lazy-init="false">
+        <property name="applicationUrl" value="${email_param_application_url}"/>
+        <property name="applicationName" value="${email_param_application_name}"/>
+        <property name="ownerEmail" value="${email_param_owner_email}"/>
+        <property name="ownerCompany" value="${email_param_owner_company}"/>
+        <property name="ownerAdministrator" value="${email_param_owner_administrator}"/>
+    </bean>
 </beans>

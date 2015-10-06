@@ -153,7 +153,7 @@ public class RecruitApplicantFormController extends BaseController {
             	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
-            return "/protected/recruitment/recruit_applicant_view.htm?faces-redirect=true";
+            return "/protected/recruitment/recruit_applicant_detail.htm?faces-redirect=true&execution=e" + applicant.getId();
             
         } catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
