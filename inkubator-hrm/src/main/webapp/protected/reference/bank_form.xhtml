@@ -23,8 +23,8 @@
                             <p:graphicImage library="images" name="bank.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Formulir Bank" styleClass="header_big" />
-                                    <p:outputLabel value="Data Bank dari Referensi" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['bank.bank_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['bank.bank_data_from_finance_and_bussiness']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -35,7 +35,7 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="Parent Bank"  for="bankId" styleClass="label_hrm" />
+                                    <p:outputLabel  value="#{appmsg['bank.parent_bank']}"  for="bankId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu id="bankId" value="#{bankFormController.bankModel.bank}" style="margin-right: 3px" required="false">
