@@ -120,7 +120,8 @@
     <jms:listener-container container-type="default" connection-factory="connectionFactoryComsume" acknowledge="transacted" 
                             transaction-manager="jsmTransaction"   >
         <jms:listener destination="userPassNotif" ref="checkPasswordHistoryEmailNotSendServiceListener" method="onMessage"  /> 
-        
+        <jms:listener destination="delAccessHis" ref="deleteRiwayatAksesListenerServiceImpl" method="onMessage"  /> 
+        <jms:listener destination="delLogHis" ref="deleteLogHistoryListenerServiceImpl" method="onMessage"  /> 
         
     </jms:listener-container>
     <!--================== List dari semua listener scheduller... di sini ==========================-->
@@ -130,5 +131,12 @@
         <property name="ownerEmail" value="${email_param_owner_email}"/>
         <property name="ownerCompany" value="${email_param_owner_company}"/>
         <property name="ownerAdministrator" value="${email_param_owner_administrator}"/>
+    </bean>
+    
+    <bean id="deleteRiwayatAksesListenerServiceImpl" class="com.inkubator.hrm.service.impl.DeleteRiwayatAksesListenerServiceImpl" lazy-init="true" >
+        <property name="difWeekToDelete" value="${dif.number.week.to.delete}"/>
+    </bean>
+    <bean id="deleteLogHistoryListenerServiceImpl" class="com.inkubator.hrm.service.impl.DeleteLogHistoryListenerServiceImpl" lazy-init="true" >
+        <property name="difWeekToDelete" value="${dif.number.week.to.delete}"/>
     </bean>
 </beans>
