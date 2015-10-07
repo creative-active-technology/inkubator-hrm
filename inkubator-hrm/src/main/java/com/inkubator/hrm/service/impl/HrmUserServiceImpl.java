@@ -32,6 +32,7 @@ import com.inkubator.webcore.util.FacesUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.jms.JMSException;
@@ -389,7 +390,8 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         passwordHistory.setPhoneNumber(user.getPhoneNumber());
         passwordHistory.setPassword(AESUtil.getAESEncription(u.getPassword(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO));
         passwordHistory.setUserName(user.getUserId());
-        passwordHistory.setLocalId("en");
+        //passwordHistory.setLocalId("en");
+        passwordHistory.setLocalId(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         List<String> roleNames = new ArrayList<>();
         for (HrmUserRole userRole : hrmUserRoleDao.getByUserId(u.getId())) {
             roleNames.add(userRole.getHrmRole().getRoleName());
