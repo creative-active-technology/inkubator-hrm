@@ -9,10 +9,15 @@ import com.inkubator.hrm.dao.NeracaCutiDao;
 import com.inkubator.hrm.entity.Leave;
 import com.inkubator.hrm.entity.LeaveDistribution;
 import com.inkubator.hrm.entity.NeracaCuti;
+import com.inkubator.hrm.entity.SchedulerConfig;
+import com.inkubator.hrm.entity.SchedulerLog;
 import com.inkubator.hrm.service.LeaveCronService;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.TextMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
- * @author rizkykojek
+ * @author deni.fahri
  */
-public class LeaveCronServiceImpl extends IServiceImpl implements LeaveCronService {
+public class LeaveCronListenerServiceImpl extends BaseSchedulerDinamicListenerImpl implements MessageListener {
 
     @Autowired
     private LeaveDao leaveDao;
@@ -35,8 +40,23 @@ public class LeaveCronServiceImpl extends IServiceImpl implements LeaveCronServi
     private NeracaCutiDao neracaCutiDao;
 
     @Override
-    @Scheduled(cron = "${cron.process.of.adding.leave.balance}")
-    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+    public void onMessage(Message msg) {
+         try {
+            TextMessage textMessage = (TextMessage) msg;
+            SchedulerLog schedulerLog = new SchedulerLog();
+            schedulerLog.setSchedulerConfig(new SchedulerConfig(Long.parseLong(textMessage.getText())));
+            SchedulerLog log = super.doSaveSchedulerLogSchedulerLog(schedulerLog);
+            processAddingOfLeaveBalance();
+            log.setStatusMessages("FINISH");
+            schedulerLogDao.update(log);
+        } catch (Exception ex) {
+            LOGGER.error(ex, ex);
+        }
+    }
+//    @Override
+//    @Scheduled(cron = "${cron.process.of.adding.leave.balance}")
+//    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+
     public void processAddingOfLeaveBalance() throws Exception {
 
         Date current = new Date();
@@ -171,7 +191,7 @@ public class LeaveCronServiceImpl extends IServiceImpl implements LeaveCronServi
          */
         List<LeaveDistribution> leaveDistributions = leaveDistributionDao.getAllDataByEndDateLessThan(current);
         for (LeaveDistribution leaveDistribution : leaveDistributions) {
-			//set year endDate menjadi sama dengan current, lalu di cek lagi jika masih lebih kecil dari current tambahkan setahun
+            //set year endDate menjadi sama dengan current, lalu di cek lagi jika masih lebih kecil dari current tambahkan setahun
             //kenapa dibuat logic seperti di atas, untuk mengatasi end date(20 Februari 2010) sedangkan current(31 Maret 2014)
             Date endDate = DateUtils.setYears(leaveDistribution.getEndDate(), currentYear);
             if (current.after(endDate)) {
@@ -242,4 +262,5 @@ public class LeaveCronServiceImpl extends IServiceImpl implements LeaveCronServi
         neracaCuti.setCreatedOn(new Date());
         neracaCutiDao.save(neracaCuti);
     }
+
 }

@@ -5,6 +5,8 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.SchedulerConfigDao;
 import com.inkubator.hrm.entity.SchedulerConfig;
@@ -100,14 +102,19 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
             if (doDateExecution.equals(currentDate) || doDateExecution.before(currentDate)) {
                 if (config.getIsTimeDiv()) {
                     Date lastExecution = config.getLastExecution();
-                    Date currentDateTime = new Date();
+//                    Date currentDateTime = new Date();
                     if (lastExecution != null) {
-                        Integer hour = config.getHourDiv() * 3600 * 1000;
-                        Integer minute = config.getMinuteDiv() * 60 * 1000;
-                        Integer totalDiv = (hour + minute) / 1000;
-                        Long total = currentDateTime.getTime() - lastExecution.getTime();
-                        if (totalDiv == total.intValue() / 1000) {
-                            config.setLastExecution(new Date());
+                        Integer hour = config.getHourDiv();
+                        Integer minute = config.getMinuteDiv();
+//                        Integer totalDiv = (hour + minute) / 1000;
+                        Date lasExePlusHour = DateTimeUtil.getDateFrom(lastExecution, hour, CommonUtilConstant.DATE_FORMAT_HOURS);
+                        Date lastExePlusMinute = DateTimeUtil.getDateFrom(lasExePlusHour, minute, CommonUtilConstant.DATE_FORMAT_MINUTES);
+                        Date newDate = new Date();
+                        String dateString = new SimpleDateFormat("dd MM yyyy HH:mm").format(newDate);
+                        Date forComparison = new SimpleDateFormat("dd MM yyyy HH:mm").parse(dateString);
+//                        Long total = currentDateTime.getTime() - lastExecution.getTime();
+                        if (lastExePlusMinute.equals(forComparison)) {
+                            config.setLastExecution(forComparison);
                             LOGGER.info("===========================PROSES SCHEDULER ===============================================");
                             LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
                             LOGGER.info("Jenis Jadwal :" + config.getSchedullerType());
@@ -155,14 +162,18 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
             if (doDateExecution.equals(currentDate)) {
                 if (config.getIsTimeDiv()) {
                     Date lastExecution = config.getLastExecution();
-                    Date currentDateTime = new Date();
+//                    Date currentDateTime = new Date();
                     if (lastExecution != null) {
-                        Integer hour = config.getHourDiv() * 3600 * 1000;
-                        Integer minute = config.getMinuteDiv() * 60 * 1000;
-                        Integer totalDiv = (hour + minute) / 1000;
-                        Long total = currentDateTime.getTime() - lastExecution.getTime();
-                        if (totalDiv == total.intValue() / 1000) {
-                            config.setLastExecution(new Date());
+                        Integer hour = config.getHourDiv();
+                        Integer minute = config.getMinuteDiv();
+//                         Integer totalDiv = (hour + minute) / 1000;
+                        Date lasExePlusHour = DateTimeUtil.getDateFrom(lastExecution, hour, CommonUtilConstant.DATE_FORMAT_HOURS);
+                        Date lastExePlusMinute = DateTimeUtil.getDateFrom(lasExePlusHour, minute, CommonUtilConstant.DATE_FORMAT_MINUTES);
+                        Date newDate = new Date();
+                        String dateString = new SimpleDateFormat("dd MM yyyy HH:mm").format(newDate);
+                        Date forComparison = new SimpleDateFormat("dd MM yyyy HH:mm").parse(dateString);
+                        if (lastExePlusMinute.equals(forComparison)) {
+                            config.setLastExecution(forComparison);
                             schedulerConfigDao.update(config);
                             LOGGER.info("===========================PROSES SCHEDULER ===============================================");
                             LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
@@ -211,14 +222,17 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
             if (doDateExecution.equals(currentDate) || (doDateExecution.before(currentDate) && endRangeExecution.after(currentDate)) || endRangeExecution.equals(currentDate)) {
                 if (config.getIsTimeDiv()) {
                     Date lastExecution = config.getLastExecution();
-                    Date currentDateTime = new Date();
+//                    Date currentDateTime = new Date();
                     if (lastExecution != null) {
-                        Integer hour = config.getHourDiv() * 3600 * 1000;
-                        Integer minute = config.getMinuteDiv() * 60 * 1000;
-                        Integer totalDiv = (hour + minute) / 1000;
-                        Long total = currentDateTime.getTime() - lastExecution.getTime();
-                        if (totalDiv == total.intValue() / 1000) {
-                            config.setLastExecution(new Date());
+                        Integer hour = config.getHourDiv();
+                        Integer minute = config.getMinuteDiv();
+                        Date lasExePlusHour = DateTimeUtil.getDateFrom(lastExecution, hour, CommonUtilConstant.DATE_FORMAT_HOURS);
+                        Date lastExePlusMinute = DateTimeUtil.getDateFrom(lasExePlusHour, minute, CommonUtilConstant.DATE_FORMAT_MINUTES);
+                        Date newDate = new Date();
+                        String dateString = new SimpleDateFormat("dd MM yyyy HH:mm").format(newDate);
+                        Date forComparison = new SimpleDateFormat("dd MM yyyy HH:mm").parse(dateString);
+                        if (lastExePlusMinute.equals(forComparison)) {
+                            config.setLastExecution(forComparison);
                             schedulerConfigDao.update(config);
                             LOGGER.info("===========================PROSES SCHEDULER ===============================================");
                             LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());

@@ -13,6 +13,7 @@ import com.inkubator.hrm.entity.SchedulerConfig;
 import com.inkubator.hrm.service.SchedulerConfigService;
 import com.inkubator.hrm.web.search.SchedulerConfigSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -61,7 +62,9 @@ public class SchedulerConfigServiceImpl extends IServiceImpl implements Schedule
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCretedOn(new Date());
         if (entity.getIsTimeDiv()) {
-            entity.setLastExecution(new Date());
+            Date now=new Date();
+            String nowString=new SimpleDateFormat("dd MM yyyy HH:mm").format(now);
+            entity.setLastExecution(new SimpleDateFormat("dd MM yyyy HH:mm").parse(nowString));
         }
         schedulerConfigDao.save(entity);
     }
@@ -89,7 +92,11 @@ public class SchedulerConfigServiceImpl extends IServiceImpl implements Schedule
         schedulerConfig.setUpdatedBy(UserInfoUtil.getUserName());
         schedulerConfig.setUpdatedOn(new Date());
         if (entity.getIsTimeDiv()) {
-            schedulerConfig.setLastExecution(new Date());
+            Date now=new Date();
+            String nowString=new SimpleDateFormat("dd MM yyyy HH:mm").format(now);
+            schedulerConfig.setLastExecution(new SimpleDateFormat("dd MM yyyy HH:mm").parse(nowString));
+            System.out.println(" Tanggal nya adalah "+schedulerConfig.getLastExecution());
+            System.out.println(" Tanggal nya adalah ========================================"+schedulerConfig.getLastExecution());
         }
         schedulerConfigDao.update(schedulerConfig);
     }
