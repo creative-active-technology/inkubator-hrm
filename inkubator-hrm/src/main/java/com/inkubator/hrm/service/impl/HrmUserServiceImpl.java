@@ -387,7 +387,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         passwordHistory.setPhoneNumber(user.getPhoneNumber());
         passwordHistory.setPassword(AESUtil.getAESEncription(u.getPassword(), HRMConstant.KEYVALUE, HRMConstant.AES_ALGO));
         passwordHistory.setUserName(user.getUserId());
-        passwordHistory.setLocalId("en");
+        passwordHistory.setLocalId(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         List<String> roleNames = new ArrayList<>();
         for (HrmUserRole userRole : hrmUserRoleDao.getByUserId(u.getId())) {
             roleNames.add(userRole.getHrmRole().getRoleName());
