@@ -28,7 +28,7 @@
     <task:executor id="myExecutor" pool-size="5-25" queue-capacity="100" />
     <task:scheduler id="myScheduler" pool-size="10"/>
    
-<!--    <bean id="announcementLogCronService" class="com.inkubator.hrm.service.impl.AnnouncementLogCronServiceImpl" lazy-init="false">
+    <!--    <bean id="announcementLogCronService" class="com.inkubator.hrm.service.impl.AnnouncementLogCronServiceImpl" lazy-init="false">
         <property name="applicationUrl" value="${email_param_application_url}"/>
         <property name="applicationName" value="${email_param_application_name}"/>
         <property name="ownerEmail" value="${email_param_owner_email}"/>
@@ -83,10 +83,16 @@
     
     <jms:listener-container container-type="default" connection-factory="connectionFactoryComsume" acknowledge="transacted" 
                             transaction-manager="jsmTransaction"   >
-        
+        <jms:listener destination="userPassNotif" ref="checkPasswordHistoryEmailNotSendServiceListener" method="onMessage"  /> 
         
         
     </jms:listener-container>
     <!--================== List dari semua listener scheduller... di sini ==========================-->
-    <bean id="" class="" lazy-init="true" />
+    <bean id="checkPasswordHistoryEmailNotSendServiceListener" class="com.inkubator.hrm.service.impl.CheckPasswordHistoryEmailNotSendListenerServiceImpl" lazy-init="true" >
+        <property name="applicationUrl" value="${email_param_application_url}"/>
+        <property name="applicationName" value="${email_param_application_name}"/>
+        <property name="ownerEmail" value="${email_param_owner_email}"/>
+        <property name="ownerCompany" value="${email_param_owner_company}"/>
+        <property name="ownerAdministrator" value="${email_param_owner_administrator}"/>
+    </bean>
 </beans>
