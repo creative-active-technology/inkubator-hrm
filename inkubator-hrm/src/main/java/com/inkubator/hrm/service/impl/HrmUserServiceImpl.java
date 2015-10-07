@@ -95,7 +95,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(HrmUser entity) throws Exception {
-    	System.out.println("update service");
+        System.out.println("update service");
         HrmUser hrmUser = this.hrmUserDao.getEntiyByPK(entity.getId());
         hrmUser.getHrmUserRoles().clear();
         if (entity.getEmpData() != null) {
@@ -573,7 +573,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         for (HrmUserRole hrmRole : this.hrmUserRoleDao.getByUserId(hrmUser.getId())) {
             hrmRoles.add(hrmRole.getHrmRole());
         }
-    
+
         hrmUser.setRoles(hrmRoles);
         return hrmUser;
     }

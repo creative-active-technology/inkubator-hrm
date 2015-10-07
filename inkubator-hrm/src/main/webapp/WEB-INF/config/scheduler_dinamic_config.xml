@@ -79,6 +79,42 @@
         <property name="defaultDestinationName" value="autoApprovalMat"/>
     </bean> 
     
+    <bean id="jmsTemplateAddBalanceLeave" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
+        <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
+        <property name="sessionTransacted" value="true"/>
+        <property name="defaultDestinationName" value="addBalanceLeave"/>
+    </bean> 
+    
+    <bean id="jmsTemplateAddBalancePermit" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
+        <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
+        <property name="sessionTransacted" value="true"/>
+        <property name="defaultDestinationName" value="addBalancePermit"/>
+    </bean>
+    
+    <bean id="jmsTemplateCompanyPolicySend" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
+        <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
+        <property name="sessionTransacted" value="true"/>
+        <property name="defaultDestinationName" value="companyPolicySend"/>
+    </bean>
+    
+    <bean id="jmsTemplateAttendaceCalculatte" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
+        <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
+        <property name="sessionTransacted" value="true"/>
+        <property name="defaultDestinationName" value="attendaceCalculatte"/>
+    </bean>
+    
+    <bean id="jmsTemplateAnnoucmentGeneratingLog" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
+        <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
+        <property name="sessionTransacted" value="true"/>
+        <property name="defaultDestinationName" value="annoucmentGeneratingLog"/>
+    </bean>
+    
+    <bean id="jmsTemplateAnnoucmentSendingNotif" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
+        <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
+        <property name="sessionTransacted" value="true"/>
+        <property name="defaultDestinationName" value="annoucmentSendingNotif"/>
+    </bean>
+    
     
     
     <jms:listener-container container-type="default" connection-factory="connectionFactoryComsume" acknowledge="transacted" 

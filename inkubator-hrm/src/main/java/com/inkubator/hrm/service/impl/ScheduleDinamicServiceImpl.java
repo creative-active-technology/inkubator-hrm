@@ -47,86 +47,46 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
     private JmsTemplate jmsTemplateDelTempScheduleWork;
     @Autowired
     private JmsTemplate jmsTemplateAutoApprovalMat;
+    @Autowired
+    private JmsTemplate jmsTemplateAddBalanceLeave;
+    @Autowired
+    private JmsTemplate jmsTemplateAddBalancePermit;
+    @Autowired
+    private JmsTemplate jmsTemplateCompanyPolicySend;
+    @Autowired
+    private JmsTemplate jmsTemplateAttendaceCalculatte;
+    @Autowired
+    private JmsTemplate jmsTemplateAnnoucmentGeneratingLog;
+    @Autowired
+    private JmsTemplate jmsTemplateAnnoucmentSendingNotif;
 
     @Scheduled(cron = "${cron.dinamic.scheduler}")// Harus REQUARED NEW
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     @Override
     public void doDinamicCheck() throws Exception {
-
         LOGGER.info(" Eksekusi pada :" + new SimpleDateFormat("dd MMMM yyyy HH:mm:ss").format(new Date()));
         List<SchedulerConfig> allScheduleActive = schedulerConfigDao.getAllData(Boolean.TRUE);
         for (SchedulerConfig config : allScheduleActive) {
             if ("REPEAT".equals(config.getSchedullerType())) {
                 if ("EVERY_DAY".equals(config.getRepeateType())) {
-                    LOGGER.info("===========================PENGULANGAN TIAP HARI =================================================");
-                    LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
-                    LOGGER.info("Jenis Jadwal :" + config.getSchedullerType());
-                    LOGGER.info("Kategori Jenis Pengulangan :" + config.getRepeateType());
-                    LOGGER.info("Waktu Pengulapan Pada Pukul :" + config.getSchedullerTime());
-                    LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getHourDiv() + " JAM");
-                    LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getMinuteDiv() + " MINUTE");
-                    LOGGER.info("===========================PENGULANGAN TIAP HARI =================================================");
                     doCheckCurrentDate(config);
-
                 }
                 if ("EVERY_WEEK".equals(config.getRepeateType())) {
-                    LOGGER.info("===========================PENGULANGAN TIAP MINGGU =================================================");
-                    LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
-                    LOGGER.info("Jenis Jadwal :" + config.getSchedullerType());
-                    LOGGER.info("Kategori Jenis Pengulangan :" + config.getRepeateType());
-                    LOGGER.info("Waktu Pengulapan Pada Pukul :" + config.getSchedullerTime());
-                    LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getHourDiv() + " JAM");
-                    LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getMinuteDiv() + " MINUTE");
-                    LOGGER.info("===========================PENGULANGAN TIAP MINGGU =================================================");
                     doCheckCurrentDate(config);
                 }
                 if ("EVERY_MONTH".equals(config.getRepeateType())) {
-                    LOGGER.info("===========================PENGULANGAN TIAP BULAN =================================================");
-                    LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
-                    LOGGER.info("Jenis Jadwal :" + config.getSchedullerType());
-                    LOGGER.info("Kategori Jenis Pengulangan :" + config.getRepeateType());
-                    LOGGER.info("Waktu Pengulapan Pada Pukul :" + config.getSchedullerTime());
-                    LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getHourDiv() + " JAM");
-                    LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getMinuteDiv() + " MINUTE");
-                    LOGGER.info("===========================PENGULANGAN TIAP BULAN =================================================");
                     doCheckCurrentDate(config);
                 }
                 if ("EVERTY_YEAR".equals(config.getRepeateType())) {
-                    LOGGER.info("===========================PENGULANGAN TIAP TAHUN =================================================");
-                    LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
-                    LOGGER.info("Jenis Jadwal :" + config.getSchedullerType());
-                    LOGGER.info("Kategori Jenis Pengulangan :" + config.getRepeateType());
-                    LOGGER.info("Waktu Pengulapan Pada Pukul :" + config.getSchedullerTime());
-                    LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getHourDiv() + " JAM");
-                    LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getMinuteDiv() + " MINUTE");
-                    LOGGER.info("===========================PENGULANGAN TIAP TAHUN =================================================");
                     doCheckCurrentDate(config);
                 }
             }
 
             if ("ONCE".equals(config.getSchedullerType())) {
-                LOGGER.info("===========================PENGULANGAN HANYA SEKALI ===============================================");
-                LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
-                LOGGER.info("Jenis Jadwal :" + config.getSchedullerType());
-                LOGGER.info("Kategori Jenis Pengulangan :" + config.getRepeateType());
-                LOGGER.info("Waktu Pengulapan Pada Pukul :" + config.getSchedullerTime());
-                LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getHourDiv() + " JAM");
-                LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getMinuteDiv() + " MINUTE");
-                LOGGER.info("===========================PENGULANGAN HANYA SEKALI ===============================================");
                 doCheckCurrentDateEquale(config);
             }
 
             if ("RANGE_TIME".equals(config.getSchedullerType())) {
-                LOGGER.info("===========================PENGULANGAN PADA RENTANG WAKTU ===============================================");
-                LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
-                LOGGER.info("Jenis Jadwal :" + config.getSchedullerType());
-                LOGGER.info("Kategori Jenis Pengulangan :" + config.getRepeateType());
-                LOGGER.info("MULAI TANGGAL PENGULANGAN :" + config.getStartDate());
-                LOGGER.info("SAMPAI TANGGAL PENGULANGAN :" + config.getEndDate());
-                LOGGER.info("Waktu Pengulapan Pada Pukul :" + config.getSchedullerTime());
-                LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getHourDiv() + " JAM");
-                LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getMinuteDiv() + " MINUTE");
-                LOGGER.info("===========================PENGULANGAN PADA RENTANG WAKTU ===============================================");
                 doCheckCurrentDateRange(config);
             }
         }
@@ -148,6 +108,16 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                         Long total = currentDateTime.getTime() - lastExecution.getTime();
                         if (totalDiv == total.intValue() / 1000) {
                             config.setLastExecution(new Date());
+                            LOGGER.info("===========================PROSES SCHEDULER ===============================================");
+                            LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
+                            LOGGER.info("Jenis Jadwal :" + config.getSchedullerType());
+                            LOGGER.info("Kategori Jenis Pengulangan :" + config.getRepeateType());
+                            LOGGER.info("MULAI TANGGAL PENGULANGAN :" + config.getStartDate());
+                            LOGGER.info("SAMPAI TANGGAL PENGULANGAN :" + config.getEndDate());
+                            LOGGER.info("Waktu Pengulapan Pada Pukul :" + config.getSchedullerTime());
+                            LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getHourDiv() + " JAM");
+                            LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getMinuteDiv() + " MINUTE");
+                            LOGGER.info("===========================PROSES SCHEDULER===============================================");
                             schedulerConfigDao.update(config);
                             executionSchedullerViaMessaging(config);
                             LOGGER.info("++++++++++++++++++++++++++==Pengiriman Message Untuk Proses Pngulangan Semua Jeda Waktu ++++++++++++++++++++++  :" + config.getHourDiv() + " JAM" + config.getMinuteDiv() + " MIN");
@@ -157,6 +127,16 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                     String currentDateStringTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
                     Date currentDateTime = new SimpleDateFormat("HH:mm:ss").parse(currentDateStringTime);
                     if (currentDateTime.getTime() == config.getSchedullerTime().getTime()) {
+                        LOGGER.info("===========================PROSES SCHEDULER ===============================================");
+                        LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
+                        LOGGER.info("Jenis Jadwal :" + config.getSchedullerType());
+                        LOGGER.info("Kategori Jenis Pengulangan :" + config.getRepeateType());
+                        LOGGER.info("MULAI TANGGAL PENGULANGAN :" + config.getStartDate());
+                        LOGGER.info("SAMPAI TANGGAL PENGULANGAN :" + config.getEndDate());
+                        LOGGER.info("Waktu Pengulapan Pada Pukul :" + config.getSchedullerTime());
+                        LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getHourDiv() + " JAM");
+                        LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getMinuteDiv() + " MINUTE");
+                        LOGGER.info("===========================PROSES SCHEDULER===============================================");
                         executionSchedullerViaMessaging(config);
                         LOGGER.info("++++++++++++++++++++++++++Pengiriman Message Untuk Proses Pada Waktu Tertentu ++++++++++++++++++++++  :" + config.getSchedullerTime());
                     }
@@ -184,6 +164,16 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                         if (totalDiv == total.intValue() / 1000) {
                             config.setLastExecution(new Date());
                             schedulerConfigDao.update(config);
+                            LOGGER.info("===========================PROSES SCHEDULER ===============================================");
+                            LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
+                            LOGGER.info("Jenis Jadwal :" + config.getSchedullerType());
+                            LOGGER.info("Kategori Jenis Pengulangan :" + config.getRepeateType());
+                            LOGGER.info("MULAI TANGGAL PENGULANGAN :" + config.getStartDate());
+                            LOGGER.info("SAMPAI TANGGAL PENGULANGAN :" + config.getEndDate());
+                            LOGGER.info("Waktu Pengulapan Pada Pukul :" + config.getSchedullerTime());
+                            LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getHourDiv() + " JAM");
+                            LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getMinuteDiv() + " MINUTE");
+                            LOGGER.info("===========================PROSES SCHEDULER===============================================");
                             executionSchedullerViaMessaging(config);
                             LOGGER.info("++++++++++++++++++++++++++==Pengiriman Message Untuk Proses Pngulangan Semua Jeda Waktu ++++++++++++++++++++++  :" + config.getHourDiv() + " JAM" + config.getMinuteDiv() + " MIN");
                         }
@@ -192,6 +182,16 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                     String currentDateStringTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
                     Date currentDateTime = new SimpleDateFormat("HH:mm:ss").parse(currentDateStringTime);
                     if (currentDateTime.getTime() == config.getSchedullerTime().getTime()) {
+                        LOGGER.info("===========================PROSES SCHEDULER ===============================================");
+                        LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
+                        LOGGER.info("Jenis Jadwal :" + config.getSchedullerType());
+                        LOGGER.info("Kategori Jenis Pengulangan :" + config.getRepeateType());
+                        LOGGER.info("MULAI TANGGAL PENGULANGAN :" + config.getStartDate());
+                        LOGGER.info("SAMPAI TANGGAL PENGULANGAN :" + config.getEndDate());
+                        LOGGER.info("Waktu Pengulapan Pada Pukul :" + config.getSchedullerTime());
+                        LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getHourDiv() + " JAM");
+                        LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getMinuteDiv() + " MINUTE");
+                        LOGGER.info("===========================PROSES SCHEDULER===============================================");
                         executionSchedullerViaMessaging(config);
                         LOGGER.info("++++++++++++++++++++++++++Pengiriman Message Untuk Proses Pada Waktu Tertentu ++++++++++++++++++++++  :" + config.getSchedullerTime());
                     }
@@ -220,6 +220,16 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                         if (totalDiv == total.intValue() / 1000) {
                             config.setLastExecution(new Date());
                             schedulerConfigDao.update(config);
+                            LOGGER.info("===========================PROSES SCHEDULER ===============================================");
+                            LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
+                            LOGGER.info("Jenis Jadwal :" + config.getSchedullerType());
+                            LOGGER.info("Kategori Jenis Pengulangan :" + config.getRepeateType());
+                            LOGGER.info("MULAI TANGGAL PENGULANGAN :" + config.getStartDate());
+                            LOGGER.info("SAMPAI TANGGAL PENGULANGAN :" + config.getEndDate());
+                            LOGGER.info("Waktu Pengulapan Pada Pukul :" + config.getSchedullerTime());
+                            LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getHourDiv() + " JAM");
+                            LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getMinuteDiv() + " MINUTE");
+                            LOGGER.info("===========================PROSES SCHEDULER===============================================");
                             executionSchedullerViaMessaging(config);
                             LOGGER.info("++++++++++++++++++++++++++==Pengiriman Message Untuk Proses Pngulangan Semua Jeda Waktu ++++++++++++++++++++++  :" + config.getHourDiv() + " JAM" + config.getMinuteDiv() + " MIN");
                         }
@@ -228,6 +238,16 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                     String currentDateStringTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
                     Date currentDateTime = new SimpleDateFormat("HH:mm:ss").parse(currentDateStringTime);
                     if (currentDateTime.getTime() == config.getSchedullerTime().getTime()) {
+                        LOGGER.info("===========================PROSES SCHEDULER ===============================================");
+                        LOGGER.info("Kategori Jenis Pengulangan :" + config.getName());
+                        LOGGER.info("Jenis Jadwal :" + config.getSchedullerType());
+                        LOGGER.info("Kategori Jenis Pengulangan :" + config.getRepeateType());
+                        LOGGER.info("MULAI TANGGAL PENGULANGAN :" + config.getStartDate());
+                        LOGGER.info("SAMPAI TANGGAL PENGULANGAN :" + config.getEndDate());
+                        LOGGER.info("Waktu Pengulapan Pada Pukul :" + config.getSchedullerTime());
+                        LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getHourDiv() + " JAM");
+                        LOGGER.info("Waktu Pengungalan Jeda Setiap  :" + config.getMinuteDiv() + " MINUTE");
+                        LOGGER.info("===========================PROSES SCHEDULER===============================================");
                         executionSchedullerViaMessaging(config);
                         LOGGER.info("++++++++++++++++++++++++++Pengiriman Message Untuk Proses Pada Waktu Tertentu ++++++++++++++++++++++  :" + config.getSchedullerTime());
                     }
@@ -299,6 +319,59 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                 break;
             case "AUTO_APPROVAL_MATRIX":
                 jmsTemplateAutoApprovalMat.send(new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createTextMessage(String.valueOf(configId));
+                    }
+                });
+                break;
+            case "ADD_BALANCE_LEAVE":
+                jmsTemplateAddBalanceLeave.send(new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createTextMessage(String.valueOf(configId));
+                    }
+                });
+                break;
+
+            case "ADD_BALANCE_PERMIT":
+                jmsTemplateAddBalancePermit.send(new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createTextMessage(String.valueOf(configId));
+                    }
+                });
+                break;
+
+            case "COMPANY_POLICY_SEND":
+                jmsTemplateCompanyPolicySend.send(new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createTextMessage(String.valueOf(configId));
+                    }
+                });
+                break;
+
+            case "ATTENDANCE_CALCULATE":
+                jmsTemplateAttendaceCalculatte.send(new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createTextMessage(String.valueOf(configId));
+                    }
+                });
+                break;
+
+            case "ANNOUNCMENT_GENERATING_LOG":
+                jmsTemplateAnnoucmentGeneratingLog.send(new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createTextMessage(String.valueOf(configId));
+                    }
+                });
+                break;
+
+            case "ANNOUNCMENT_SENDING_NOTIF":
+                jmsTemplateAnnoucmentSendingNotif.send(new MessageCreator() {
                     @Override
                     public Message createMessage(Session session) throws JMSException {
                         return session.createTextMessage(String.valueOf(configId));
