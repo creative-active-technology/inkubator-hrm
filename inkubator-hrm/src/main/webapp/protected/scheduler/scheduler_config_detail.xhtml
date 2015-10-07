@@ -31,7 +31,7 @@
                         <p:panelGrid style="width: 100%;margin-top: 20px;" styleClass="grid_border3">   
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="Nama Penjadwalan" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['scheduler_config.name']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel  value="#{schedulerConfigDetilController.selected.name}" />
@@ -39,7 +39,7 @@
                             </p:row>  
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="Jenis Penjadwalan" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['scheduler_config.scheduler_type']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel  value="#{schedulerConfigDetilController.selected.schedullerType}" />
@@ -47,7 +47,7 @@
                             </p:row>  
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="Kategori Pengulangan Terus Menerus" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['scheduler_config.repeate_type']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel  value="#{schedulerConfigDetilController.selected.repeateType}" />
@@ -55,35 +55,69 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="Jumlah Pelaksanaan" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['scheduler_config.repeate_count']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel  value="#{schedulerConfigDetilController.selected.repeateNumber}" />
                                 </p:column>
                             </p:row>  
+                            
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="Awal Pengulangan" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['scheduler_config.start_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel  value="#{schedulerConfigDetilController.selected.startDate}" />
                                 </p:column>
-                            </p:row>  
+                            </p:row>
+                            
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="Akhir Pengulangan" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['scheduler_config.end_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel  value="#{schedulerConfigDetilController.selected.endDate}" />
                                 </p:column>
                             </p:row>  
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['scheduler_config.start_execution']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.dateStartExecution}" />
+                                </p:column>
+                            </p:row>  
                             
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="Jeda Waktu" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['scheduler_config.time_range']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.isTimeDiv}" />
+                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.isTimeDiv}" >
+                                        <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
+                                    
+                                </p:column>
+                                
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['scheduler_config.time_range_execution']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.hourDiv} #{appmsg['global.hour']} - #{schedulerConfigDetilController.selected.minuteDiv} #{appmsg['global.minute']}" />
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['user_form.is_active']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.isActive}" >
+                                    <f:converter converterId="booleanMessageConverter" />
+                                    </p:outputLabel>
                                 </p:column>
                             </p:row>
 

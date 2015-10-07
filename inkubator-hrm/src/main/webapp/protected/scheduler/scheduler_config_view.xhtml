@@ -73,27 +73,27 @@
                             </p:column>
                             <p:column sortBy="#{data.name}" >
                                 <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['global.name']}"/>
+                                    <h:outputText value="#{appmsg['scheduler_config.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}"/>
                             </p:column>
 
                             <p:column sortBy="#{data.schedullerType}">
                                 <f:facet name="header">  
-                                    <h:outputText value="Scheduler Type"/>
+                                    <h:outputText value="#{appmsg['scheduler_config.scheduler_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.schedullerType}"/>
                             </p:column>
 
                             <p:column sortBy="#{data.repeateType}"  >
                                 <f:facet name="header">  
-                                    <h:outputText value="Repeate Type"/>
+                                    <h:outputText value="#{appmsg['scheduler_config.repeate_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.repeateType}"/>
                             </p:column> 
                             <p:column sortBy="#{data.repeateNumber}"  >
                                 <f:facet name="header">  
-                                    <h:outputText value="Mulai Pelaksanaan"/>
+                                    <h:outputText value="#{appmsg['scheduler_config.start_date']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{data.dateStartExecution}">
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
@@ -101,7 +101,7 @@
                             </p:column> 
                             <p:column sortBy="#{data.repeateNumber}"  >
                                 <f:facet name="header">  
-                                    <h:outputText value="Jeda Waktu"/>
+                                    <h:outputText value="#{appmsg['scheduler_config.time_range']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{data.isTimeDiv}">
                                     <f:converter converterId="booleanMessageConverter" />

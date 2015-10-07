@@ -66,6 +66,7 @@ public class PermitImplementationFormController extends BaseController {
     private UploadFilesUtil uploadFilesUtil;
     private Boolean isRequiredAttachment;
     private Boolean isAdmin;
+    private List<EmpData> listApprover;
 
     @PostConstruct
     @Override
@@ -121,6 +122,7 @@ public class PermitImplementationFormController extends BaseController {
         isRequiredAttachment = null;
         isAdmin = null;
         transactionCodeficationService = null;
+        listApprover = null;
     }
 
     public PermitImplementationModel getModel() {
@@ -305,7 +307,7 @@ public class PermitImplementationFormController extends BaseController {
             permitDistributions = Lambda.select(permitDistributions, Lambda.having(Lambda.on(PermitDistribution.class).getPermitClassification().getIsActive(), Matchers.equalTo(true)));
             permits = Lambda.extract(permitDistributions, Lambda.on(PermitDistribution.class).getPermitClassification());
             model.setPermitId(null);
-
+            
             //cek juga actual permit taken-nya
             this.onChangeStartOrEndDate();
         } catch (Exception e) {
@@ -328,6 +330,12 @@ public class PermitImplementationFormController extends BaseController {
             isRequiredAttachment = !permitDistribution.getPermitClassification().getAttachmentRequired();
             //cek juga actual permit taken-nya
             this.onChangeStartOrEndDate();
+            
+            if(model.getEmpData() != null){
+            	listApprover = permitImplementationService.getListApproverByEmpDataId(model.getEmpData().getId(), model.getPermitId());
+            }else{
+            	listApprover = new ArrayList<EmpData>();
+            }
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -356,4 +364,14 @@ public class PermitImplementationFormController extends BaseController {
             MessagesResourceUtil.setMessagesFromException(FacesMessage.SEVERITY_ERROR, "global.error", errorMsg, FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         }
     }
+
+	public List<EmpData> getListApprover() {
+		return listApprover;
+	}
+
+	public void setListApprover(List<EmpData> listApprover) {
+		this.listApprover = listApprover;
+	}
+    
+    
 }

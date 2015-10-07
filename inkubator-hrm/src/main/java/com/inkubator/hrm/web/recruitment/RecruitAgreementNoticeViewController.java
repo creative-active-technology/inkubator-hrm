@@ -27,7 +27,8 @@ public class RecruitAgreementNoticeViewController extends BaseController {
     private RecruitAgreementNoticeService recruitAgreementNoticeService;
     private RecruitAgreementNoticeSearchParameter searchParameter;
     private LazyDataModel<RecruitAgreementNoticeViewModel> lazyDataModel;
-    private EmpData selectedEmpData;
+    //private EmpData selectedEmpData;
+    private RecruitAgreementNoticeViewModel selectedEmpData;
     
     @PostConstruct
     @Override
@@ -50,11 +51,11 @@ public class RecruitAgreementNoticeViewController extends BaseController {
     }
     
     public String doDetail() throws Exception{
-    	RecruitAgreementNotice isEdit = recruitAgreementNoticeService.getEntityByBioDataId(selectedEmpData.getBioData().getId());
+    	RecruitAgreementNotice isEdit = recruitAgreementNoticeService.getEntityByBioDataId(Long.valueOf(String.valueOf(selectedEmpData.getBioDataId())));
     	if(isEdit != null){
-    		return "/protected/recruitment/recruit_agreement_notice_form.htm?faces-redirect=true&execution=e" + selectedEmpData.getBioData().getId();
+    		return "/protected/recruitment/recruit_agreement_notice_form.htm?faces-redirect=true&execution=e" + Long.valueOf(String.valueOf(selectedEmpData.getBioDataId()));
     	}else{
-    		return "/protected/recruitment/recruit_agreement_notice_form.htm?faces-redirect=true&execution=a" + selectedEmpData.getBioData().getId();
+    		return "/protected/recruitment/recruit_agreement_notice_form.htm?faces-redirect=true&execution=a" + Long.valueOf(String.valueOf(selectedEmpData.getBioDataId()));
     	}
     }
 
@@ -86,16 +87,26 @@ public class RecruitAgreementNoticeViewController extends BaseController {
 		this.lazyDataModel = lazyDataModel;
 	}
 
-	public EmpData getSelectedEmpData() {
+/*	public EmpData getSelectedEmpData() {
 		return selectedEmpData;
 	}
 
 	public void setSelectedEmpData(EmpData selectedEmpData) {
 		this.selectedEmpData = selectedEmpData;
-	}
+	}*/
+	
+	
 
 	public RecruitAgreementNoticeService getRecruitAgreementNoticeService() {
 		return recruitAgreementNoticeService;
+	}
+
+	public RecruitAgreementNoticeViewModel getSelectedEmpData() {
+		return selectedEmpData;
+	}
+
+	public void setSelectedEmpData(RecruitAgreementNoticeViewModel selectedEmpData) {
+		this.selectedEmpData = selectedEmpData;
 	}
 
 	public void setRecruitAgreementNoticeService(

@@ -8,7 +8,9 @@ import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.PermitDistribution;
 import com.inkubator.hrm.web.search.PermitDistributionSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -30,4 +32,5 @@ public interface PermitDistributionService extends IService<PermitDistribution> 
     public List<PermitDistribution> getAllDataByEmpIdFetchPermit(Long empDataId) throws Exception;
     
     public PermitDistribution getEntityByPermitClassificationIdAndEmpDataId(Long leaveId, Long empDataId) throws Exception;
+    
 }

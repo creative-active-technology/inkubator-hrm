@@ -4,6 +4,8 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import ch.lambdaj.Lambda;
+
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
@@ -11,13 +13,20 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.PermitClassificationDao;
 import com.inkubator.hrm.dao.PermitDistributionDao;
 import com.inkubator.hrm.dao.NeracaPermitDao;
+import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionPermit;
+import com.inkubator.hrm.entity.ApprovalDefinitionRmbsSchema;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.PermitClassification;
 import com.inkubator.hrm.entity.PermitDistribution;
 import com.inkubator.hrm.entity.NeracaPermit;
+import com.inkubator.hrm.entity.RmbsSchema;
 import com.inkubator.hrm.service.PermitDistributionService;
 import com.inkubator.hrm.web.search.PermitDistributionSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -53,6 +62,8 @@ public class PermitDistributionServiceImpl extends IServiceImpl implements Permi
     private PermitClassificationDao permitDao;
     @Autowired
     private NeracaPermitDao neracaPermitDao;
+	@Autowired
+	private HrmUserDao hrmUserDao;
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
@@ -340,5 +351,6 @@ public class PermitDistributionServiceImpl extends IServiceImpl implements Permi
         return permitDistributionDao.getEntityByPermitClassificationIdAndEmpDataId(permitId, empDataId);
 
     }
+
 
 }

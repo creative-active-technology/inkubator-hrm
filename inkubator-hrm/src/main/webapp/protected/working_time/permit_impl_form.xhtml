@@ -84,7 +84,7 @@
                                     <p:selectOneMenu id="permitId" styleClass="isitext_hrm" required="true"  value="#{permitImplementationFormController.model.permitId}" style="width:295px;">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{permitImplementationFormController.permits}" var="permit" itemLabel="#{permit.name}" itemValue="#{permit.id}"/>
-                                        <p:ajax listener="#{permitImplementationFormController.onChangePermitClassification()}" update="latestPermitDateId,remainingPermitId,attachmentId,minMaxId"/>
+                                        <p:ajax listener="#{permitImplementationFormController.onChangePermitClassification()}" update="latestPermitDateId,remainingPermitId,attachmentId,minMaxId,tableApproverId"/>
                                     </p:selectOneMenu>
                                     <p:message for="permitId"/>
                                 </p:column>
@@ -181,6 +181,34 @@
                                     <p:outputLabel value="#{appmsg['global.file_name']}"/>
                                     <p:outputLabel value="#{permitImplementationFormController.model.uploadFileName}" id="fileNameId"/>  
                                     <p:message for="attachmentId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['loan.loan_approver']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column id="listApproverId" style="width: 80%">
+                                	<h:panelGrid  columns="1" style="margin-left: -10px;">
+                                        <p:dataTable  id="tableApproverId" var="approverData"  value="#{permitImplementationFormController.listApprover}" lazy="false" paginator="false" pageLinks="7"
+                                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                                      rowIndexVar="no"> 
+                                            <p:column style="text-align: center;width: 5%">
+                                                <f:facet name="header">  
+                                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                                </f:facet>
+                                                <h:outputLabel value="#{no+1}." />
+                                            </p:column>  
+                                            <p:column style="text-align: center;width: 95%">
+                                                <f:facet name="header">  
+                                                    <h:outputText value="#{appmsg['loan.loan_approver']}"/>
+                                                </f:facet>
+                                                <h:outputLabel value= "#{approverData.nik} #{approverData.bioData.firstName} #{approverData.bioData.lastName}">
+
+                                                </h:outputLabel>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:panelGrid>                                  
                                 </p:column>
                             </p:row>    
                         </p:panelGrid>	                 	
