@@ -140,25 +140,24 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     private void doSearchEmpDataByParam(EmpDataSearchParameter dataSearchParameter, Criteria criteria) {
+    	 criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
         if (dataSearchParameter.getJabatanKode() != null) {
-            criteria.createAlias("jabatanByJabatanId", "jb", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("jb.code", dataSearchParameter.getJabatanKode(), MatchMode.START));
+            criteria.add(Restrictions.like("jabatanByJabatanId.code", dataSearchParameter.getJabatanKode(), MatchMode.START));
         }
 
         if (dataSearchParameter.getJabatanName() != null) {
-            criteria.createAlias("jabatanByJabatanId", "jb", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("jb.name", dataSearchParameter.getJabatanName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.like("jabatanByJabatanId.name", dataSearchParameter.getJabatanName(), MatchMode.ANYWHERE));
         }
 
         if (dataSearchParameter.getNIK() != null) {
             criteria.add(Restrictions.like("nik", dataSearchParameter.getNIK(), MatchMode.START));
         }
-        criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         if (dataSearchParameter.getName() != null) {
 
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bio.firstName", dataSearchParameter.getName(), MatchMode.START));
-            disjunction.add(Restrictions.like("bio.lastName", dataSearchParameter.getName(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.firstName", dataSearchParameter.getName(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.lastName", dataSearchParameter.getName(), MatchMode.START));
             criteria.add(disjunction);
         }
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
