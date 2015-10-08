@@ -10,15 +10,12 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hamcrest.Matchers;
 import org.joda.time.DateTime;
 import org.primefaces.model.DualListModel;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.BioData;
-import com.inkubator.hrm.entity.CompanyPolicyJabatan;
-import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.OrgTypeOfSpec;
 import com.inkubator.hrm.entity.OrgTypeOfSpecList;
 import com.inkubator.hrm.entity.RecruitApplicant;
@@ -35,6 +32,7 @@ import com.inkubator.hrm.service.OrgTypeOfSpecListService;
 import com.inkubator.hrm.service.OrgTypeOfSpecService;
 import com.inkubator.hrm.service.RaceService;
 import com.inkubator.hrm.service.RecruitApplicantService;
+import com.inkubator.hrm.service.RecruitVacancyAdvertisementService;
 import com.inkubator.hrm.service.ReligionService;
 import com.inkubator.hrm.web.model.ApplicantModel;
 import com.inkubator.webcore.controller.BaseController;
@@ -80,7 +78,8 @@ public class RecruitApplicantFormController extends BaseController {
 	private OrgTypeOfSpecListService orgTypeOfSpecListService;
 	@ManagedProperty(value = "#{orgTypeOfSpecService}")
 	private OrgTypeOfSpecService orgTypeOfSpecService;
-	
+	@ManagedProperty(value = "#{recruitVacancyAdvertisementService}")
+	private RecruitVacancyAdvertisementService recruitVacancyAdvertisementService;
 	
 	@PostConstruct
     @Override
@@ -100,6 +99,7 @@ public class RecruitApplicantFormController extends BaseController {
         	model.setListCity(cityService.getAllData());
         	model.setSpecListDualModel(orgTypeOfSpecListService.getAllBySpectJabatan());
         	model.setSpecListName(orgTypeOfSpecListService.getOrgTypeSpecName());
+        	model.setListVacancyAdvertisement(recruitVacancyAdvertisementService.getAllDataIsStillEffective());
         	
         	isUpdate = Boolean.FALSE;
         	String param = FacesUtil.getRequestParameter("execution");
@@ -117,6 +117,8 @@ public class RecruitApplicantFormController extends BaseController {
 				model.setLastWorkSince(dt.getYear());
 				model.setLastWorkEnd(dt.getYear());
 				model.setLastJabatanSince(dt.getYear());
+				model.setIsActive(Boolean.TRUE);
+				model.setIsVerified(Boolean.TRUE);
 			}
         } catch (Exception e) {
             LOGGER.error("Error", e);
@@ -139,6 +141,7 @@ public class RecruitApplicantFormController extends BaseController {
     	cityService = null;
     	orgTypeOfSpecListService = null;
     	orgTypeOfSpecService = null;
+    	recruitVacancyAdvertisementService = null;
     }
     
     public String doSave(){
@@ -171,8 +174,8 @@ public class RecruitApplicantFormController extends BaseController {
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	private void getModelFromEntity(RecruitApplicant applicant) {
 		model.setId(applicant.getId());
-		model.setEducationLevelId(applicant.getEducationLevel().getId());
-		model.setInstitutionEducationId(applicant.getInstitutionEducation().getId());
+		model.setEducationLevelId(applicant.getEducationLevel() != null ? applicant.getEducationLevel().getId() : null);
+		model.setInstitutionEducationId(applicant.getInstitutionEducation() != null ? applicant.getInstitutionEducation().getId() : null);
 		model.setEducationStartYear(applicant.getEducationStartYear());
 		model.setEducationEndYear(applicant.getEducationEndYear());
 		model.setScale(applicant.getScale());
@@ -182,9 +185,13 @@ public class RecruitApplicantFormController extends BaseController {
 		model.setLastWorkSince(applicant.getLastWorkSince());
 		model.setLastWorkEnd(applicant.getLastWorkEnd());
 		model.setLastJabatan(applicant.getLastJabatan());
-		model.setKlasifikasiKerjaId(applicant.getKlasifikasiKerja().getId());
+		model.setKlasifikasiKerjaId(applicant.getKlasifikasiKerja() != null ? applicant.getKlasifikasiKerja().getId() : null);
 		model.setLastJabatanSince(applicant.getLastJabatanSince());
-		model.setBusinessTypeId(applicant.getBusinessType().getId());		
+		model.setBusinessTypeId(applicant.getBusinessType() != null ? applicant.getBusinessType().getId() : null);
+		model.setIsActive(applicant.getIsActive());
+		model.setIsVerified(applicant.getIsVerified());
+		model.setVacancyAdvertisementId(applicant.getRecruitVacancyAdvertisement().getId());
+		model.setUploadPath(applicant.getUploadPath());
 		
 		BioData bioData = applicant.getBioData();
 		model.setBioDataId(bioData.getId());
@@ -193,17 +200,17 @@ public class RecruitApplicantFormController extends BaseController {
 		model.setTitle(bioData.getTitle());
 		model.setNickname(bioData.getNickname());
 		model.setDateOfBirth(bioData.getDateOfBirth());
-		model.setCityOfBirthId(bioData.getCity().getId());
+		model.setCityOfBirthId(bioData.getCity() != null ? bioData.getCity().getId() : null);
 		model.setGender(bioData.getGender());
-		model.setMaritalStatusId(bioData.getMaritalStatus().getId());
+		model.setMaritalStatusId(bioData.getMaritalStatus() != null ? bioData.getMaritalStatus().getId() : null);
 		model.setNoKK(bioData.getNoKK());
 		model.setBloodType(bioData.getBloodType());
 		model.setNpwp(bioData.getNpwp());
 		model.setJamsostek(bioData.getJamsostek());
-		model.setNationalityId(bioData.getNationality().getId());
-		model.setDialectId(bioData.getDialect().getId());
-		model.setReligionId(bioData.getReligion().getId());
-		model.setRaceId(bioData.getRace().getId());
+		model.setNationalityId(bioData.getNationality() != null ? bioData.getNationality().getId() : null);
+		model.setDialectId(bioData.getDialect() != null ? bioData.getDialect().getId() : null);
+		model.setReligionId(bioData.getReligion() != null ? bioData.getReligion().getId() : null);
+		model.setRaceId(bioData.getRace() != null ? bioData.getRace().getId() : null);
 		model.setPhoneNumber(bioData.getMobilePhone());
 		model.setEmailAddress(bioData.getPersonalEmail());
 		
@@ -347,6 +354,15 @@ public class RecruitApplicantFormController extends BaseController {
 
 	public void setOrgTypeOfSpecService(OrgTypeOfSpecService orgTypeOfSpecService) {
 		this.orgTypeOfSpecService = orgTypeOfSpecService;
+	}
+
+	public RecruitVacancyAdvertisementService getRecruitVacancyAdvertisementService() {
+		return recruitVacancyAdvertisementService;
+	}
+
+	public void setRecruitVacancyAdvertisementService(
+			RecruitVacancyAdvertisementService recruitVacancyAdvertisementService) {
+		this.recruitVacancyAdvertisementService = recruitVacancyAdvertisementService;
 	}   
 	
 }

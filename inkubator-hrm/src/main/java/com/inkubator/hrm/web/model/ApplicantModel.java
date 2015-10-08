@@ -15,6 +15,7 @@ import com.inkubator.hrm.entity.KlasifikasiKerja;
 import com.inkubator.hrm.entity.MaritalStatus;
 import com.inkubator.hrm.entity.Nationality;
 import com.inkubator.hrm.entity.Race;
+import com.inkubator.hrm.entity.RecruitVacancyAdvertisement;
 import com.inkubator.hrm.entity.Religion;
 
 /**
@@ -39,6 +40,10 @@ public class ApplicantModel implements Serializable {
 	private Long klasifikasiKerjaId;
 	private Integer lastJabatanSince;
 	private Long businessTypeId;
+	private Long vacancyAdvertisementId;
+	private Boolean isActive;
+	private Boolean isVerified;
+	private String uploadPath;
 	
 	//Bio Data
 	private Long bioDataId;
@@ -71,6 +76,7 @@ public class ApplicantModel implements Serializable {
 	private List<InstitutionEducation> listInstitutionEducation;
 	private List<BusinessType> listBusinessType;
 	private List<KlasifikasiKerja> listKlasifikasiKerja;
+	private List<RecruitVacancyAdvertisement> listVacancyAdvertisement;
 	private List<City> listCity;
 	private List<DualListModel> specListDualModel; 
 	private List<String> specListName; 
@@ -262,6 +268,30 @@ public class ApplicantModel implements Serializable {
 	public void setBusinessTypeId(Long businessTypeId) {
 		this.businessTypeId = businessTypeId;
 	}
+	public Long getVacancyAdvertisementId() {
+		return vacancyAdvertisementId;
+	}
+	public void setVacancyAdvertisementId(Long vacancyAdvertisementId) {
+		this.vacancyAdvertisementId = vacancyAdvertisementId;
+	}
+	public Boolean getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+	public Boolean getIsVerified() {
+		return isVerified;
+	}
+	public void setIsVerified(Boolean isVerified) {
+		this.isVerified = isVerified;
+	}
+	public String getUploadPath() {
+		return uploadPath;
+	}
+	public void setUploadPath(String uploadPath) {
+		this.uploadPath = uploadPath;
+	}
 	public List<MaritalStatus> getListMaritalStatus() {
 		return listMaritalStatus;
 	}
@@ -351,6 +381,12 @@ public class ApplicantModel implements Serializable {
 	}
 	public void setBioDataId(Long bioDataId) {
 		this.bioDataId = bioDataId;
+	}
+	public List<RecruitVacancyAdvertisement> getListVacancyAdvertisement() {
+		return listVacancyAdvertisement;
+	}
+	public void setListVacancyAdvertisement(List<RecruitVacancyAdvertisement> listVacancyAdvertisement) {
+		this.listVacancyAdvertisement = listVacancyAdvertisement;
 	}
     
 }

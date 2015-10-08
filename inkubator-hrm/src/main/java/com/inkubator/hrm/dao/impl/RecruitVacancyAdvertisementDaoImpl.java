@@ -1,5 +1,6 @@
 package com.inkubator.hrm.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -91,6 +92,14 @@ public class RecruitVacancyAdvertisementDaoImpl extends IDAOImpl<RecruitVacancyA
 	public Long getCurrentMaxId(){
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
         return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
+	}
+
+	@Override
+	public List<RecruitVacancyAdvertisement> getAllDataLessThanEffectiveDate(Date date) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.le("effectiveDate", date));
+		criteria.setFetchMode("advertisementMedia", FetchMode.JOIN);
+		return criteria.list();
 	}
 
 	

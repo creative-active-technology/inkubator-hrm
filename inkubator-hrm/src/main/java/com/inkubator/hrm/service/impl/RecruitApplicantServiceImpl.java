@@ -1,9 +1,11 @@
 package com.inkubator.hrm.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.DualListModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +26,11 @@ import com.inkubator.hrm.dao.InstitutionEducationDao;
 import com.inkubator.hrm.dao.KlasifikasiKerjaDao;
 import com.inkubator.hrm.dao.MaritalStatusDao;
 import com.inkubator.hrm.dao.NationalityDao;
-import com.inkubator.hrm.dao.OrgTypeOfSpecDao;
 import com.inkubator.hrm.dao.OrgTypeOfSpecListDao;
 import com.inkubator.hrm.dao.RaceDao;
 import com.inkubator.hrm.dao.RecruitApplicantDao;
 import com.inkubator.hrm.dao.RecruitApplicantSpecListDao;
+import com.inkubator.hrm.dao.RecruitVacancyAdvertisementDao;
 import com.inkubator.hrm.dao.ReligionDao;
 import com.inkubator.hrm.entity.ApplicantSpecListId;
 import com.inkubator.hrm.entity.BioData;
@@ -44,9 +46,11 @@ import com.inkubator.hrm.entity.OrgTypeOfSpecList;
 import com.inkubator.hrm.entity.Race;
 import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.entity.RecruitApplicantSpecList;
+import com.inkubator.hrm.entity.RecruitVacancyAdvertisement;
 import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.service.RecruitApplicantService;
 import com.inkubator.hrm.web.model.ApplicantModel;
+import com.inkubator.hrm.web.model.ApplicantUploadBatchModel;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
@@ -86,6 +90,8 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 	private RecruitApplicantSpecListDao recruitApplicantSpecListDao;
 	@Autowired
 	private OrgTypeOfSpecListDao orgTypeOfSpecListDao;
+	@Autowired
+	private RecruitVacancyAdvertisementDao recruitVacancyAdvertisementDao;
 	
 	@Override
 	public RecruitApplicant getEntiyByPK(String id) throws Exception {
@@ -369,8 +375,6 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 		applicant.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 		applicant.setBioData(bioData);
 		applicant.setCareerCandidate(0); //default
-		applicant.setIsActive(Boolean.TRUE); //default
-		applicant.setIsVerified(Boolean.TRUE); //default
 		applicant.setCreatedBy(UserInfoUtil.getUserName());
 		applicant.setCreatedOn(new Date());
 		recruitApplicantDao.save(applicant);
@@ -432,6 +436,7 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 		KlasifikasiKerja klasifikasiKerja = klasifikasiKerjaDao.getEntiyByPK(model.getKlasifikasiKerjaId());
 		InstitutionEducation institutionEducation = institutionEducationDao.getEntiyByPK(model.getInstitutionEducationId());
 		EducationLevel educationLevel = educationLevelDao.getEntiyByPK(model.getEducationLevelId());
+		RecruitVacancyAdvertisement vacancyAdvertisement = recruitVacancyAdvertisementDao.getEntiyByPK(model.getVacancyAdvertisementId());
 		
 		applicant.setBusinessType(businessType);
 		applicant.setCertificateNumber(model.getCertificateNumber());
@@ -447,8 +452,68 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 		applicant.setLastWorkSince(model.getLastWorkSince());
 		applicant.setScale(model.getScale());
 		applicant.setScore(model.getScore());
+		applicant.setRecruitVacancyAdvertisement(vacancyAdvertisement);
+		applicant.setIsActive(model.getIsActive());
+		applicant.setIsVerified(model.getIsVerified());
 		
 		return applicant;
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void uploadBatchProcess(ApplicantUploadBatchModel model) throws Exception {
+		if(StringUtils.isNotEmpty(model.getFirstName()) || StringUtils.isNotEmpty(model.getLastName())){
+			
+			//Start saving BioData
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			Date dateOfBirth = null;		
+			try {
+				dateFormat.parse(model.getDateOfBirth());
+			} catch (Exception e) {}
+			
+			BioData bioData = new BioData();
+			bioData.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+			bioData.setFirstName(model.getFirstName());
+			bioData.setLastName(model.getLastName());
+			bioData.setDateOfBirth(dateOfBirth);
+			bioData.setCity(cityDao.getEntityByName(model.getCityOfBirth()));
+			bioData.setGender(StringUtils.equals("Perempuan", model.getGender()) ? 0 : 1);
+			bioData.setMobilePhone(model.getPhoneNumber());
+			bioData.setPersonalEmail(model.getEmailAddress());
+			bioData.setCreatedBy(model.getCreatedBy());
+			bioData.setCreatedOn(model.getCreatedOn());
+			bioDataDao.save(bioData);			
+			
+			
+			//Start saving RecruitApplicant
+			Integer educationStartYear = null;
+			Integer educationEndYear = null;
+			try {
+				educationStartYear = Integer.parseInt(model.getEducationStartYear());
+			} catch (Exception e) {}
+			try {
+				educationEndYear = Integer.parseInt(model.getEducationEndYear());
+			} catch (Exception e) {}
+			
+			RecruitApplicant applicant = new RecruitApplicant();
+			applicant.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+			applicant.setBioData(bioData);
+			applicant.setCareerCandidate(0); //default
+			applicant.setIsActive(Boolean.FALSE); //default
+			applicant.setIsVerified(Boolean.FALSE); //default
+			applicant.setEducationLevel(educationLevelDao.getEntityByName(model.getEducationLevel()));
+			applicant.setInstitutionEducation(institutionEducationDao.getEntityByName(model.getInstitutionEducation()));
+			applicant.setEducationStartYear(educationStartYear);
+			applicant.setEducationEndYear(educationEndYear);
+			applicant.setScore(model.getScore());
+			applicant.setScale(model.getScale());
+			applicant.setCertificateNumber(model.getCertificateNumber());
+			applicant.setUploadPath(model.getUploadPath());
+			applicant.setRecruitVacancyAdvertisement(recruitVacancyAdvertisementDao.getEntiyByPK(model.getVacancyAdvertisementId()));
+			applicant.setCreatedBy(model.getCreatedBy());
+			applicant.setCreatedOn(model.getCreatedOn());
+			recruitApplicantDao.save(applicant);
+		}
 	}
 
 }

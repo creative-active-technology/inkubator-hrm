@@ -23,9 +23,11 @@ public interface CityDao extends IDAO<City> {
 	public Long getTotalByCodeAndNotId(String code, Long id);
 
 	public City getCityByIdWithDetail(Long id);
-	
+
 	public List<City> getByProvinceId(Long provinceId);
 
-        public List<City> getByProvinceIdWithDetail(Long id);
+	public List<City> getByProvinceIdWithDetail(Long id);
+	
+	public City getEntityByName(String name);
 
 }
