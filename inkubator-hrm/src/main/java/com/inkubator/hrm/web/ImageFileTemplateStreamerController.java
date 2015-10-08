@@ -108,6 +108,46 @@ public class ImageFileTemplateStreamerController extends BaseController {
         
         return streamedContent;
     }
+	
+	public StreamedContent getRecruitApplicantUploadFile() throws IOException {
+        FacesContext context = FacesUtil.getFacesContext();
+        String extension = context.getExternalContext().getRequestParameterMap().get("extension");
+        StreamedContent streamedContent = new DefaultStreamedContent();
+        
+        if (!context.getRenderResponse() && extension != null) {
+            try {
+            	String fileName = StringUtils.EMPTY;
+                StringBuffer path = new StringBuffer();
+                path.append(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/file_template/recruit_applicant/"));
+                switch (extension) {
+					case "csv":
+						path.append("/recruit_applicant.csv");
+						fileName = "recruit_applicant.csv";
+						break;
+					case "xls":
+						path.append("/recruit_applicant.xls");
+						fileName = "recruit_applicant.xls";
+						break;
+					case "xlsx":
+						path.append("/recruit_applicant.xlsx");
+						fileName = "recruit_applicant.xlsx";
+						break;
+					default:
+						path.append("/recruit_applicant.csv");
+						fileName = "recruit_applicant.csv";
+						break;
+				}
+                
+                InputStream is = facesIO.getInputStreamFromURL(path.toString());
+                streamedContent = new DefaultStreamedContent(is, null, fileName);
+
+            } catch (Exception ex) {
+                LOGGER.error(ex, ex);
+            }
+        }
+        
+        return streamedContent;
+    }
         
     public StreamedContent getPayTempAttendanceUploadFile() throws IOException {
         FacesContext context = FacesUtil.getFacesContext();

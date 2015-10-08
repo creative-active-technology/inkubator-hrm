@@ -48,6 +48,27 @@ public class FileStreamerController extends BaseController {
     @ManagedProperty(value = "#{facesIO}")
     private FacesIO facesIO;
 
+    public StreamedContent getFileFromPath() {
+        FacesContext context = FacesUtil.getFacesContext();
+        String path = context.getExternalContext().getRequestParameterMap().get("path");
+        String fileName = context.getExternalContext().getRequestParameterMap().get("fileName");
+        StreamedContent streamedContent = new DefaultStreamedContent();
+
+        if (StringUtils.isNotEmpty(path)) {
+            try {
+            	if(StringUtils.isEmpty(fileName)){
+            		fileName = StringUtils.substringAfterLast(path, "/");
+            	}
+            	InputStream is = facesIO.getInputStreamFromURL(path);
+                streamedContent = new DefaultStreamedContent(is, null, fileName);                
+            } catch (Exception ex) {
+                LOGGER.error("Error", ex);
+            }
+        }
+
+        return streamedContent;
+    }
+    
     public StreamedContent getRmbsApplicationReceiptBlob() {
         FacesContext context = FacesUtil.getFacesContext();
         String rmbsApplicationId = context.getExternalContext().getRequestParameterMap().get("rmbsApplicationId");

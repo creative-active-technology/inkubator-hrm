@@ -104,4 +104,11 @@ public class CityDaoImpl extends IDAOImpl<City> implements CityDao {
 		
 	}
 
+	@Override
+	public City getEntityByName(String name) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("cityName", name));
+        return (City) criteria.uniqueResult();
+	}
+
 }
