@@ -26,4 +26,6 @@ public interface RecruitVacancyAdvertisementService extends IService<RecruitVaca
 	public RecruitVacancyAdvertisement getEntityByPkWithDetail(Long id) throws Exception;
 
 	public RecruitVacancyAdvertisement getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) throws Exception;
+
+	public List<RecruitVacancyAdvertisement> getAllDataIsStillEffective() throws Exception;
 }

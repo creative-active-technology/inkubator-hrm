@@ -1,5 +1,6 @@
 package com.inkubator.hrm.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -23,4 +24,6 @@ public interface RecruitVacancyAdvertisementDao extends IDAO<RecruitVacancyAdver
 	public Long getCurrentMaxId();
 
 	public RecruitVacancyAdvertisement getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber);
+
+	public List<RecruitVacancyAdvertisement> getAllDataLessThanEffectiveDate(Date date);
 }

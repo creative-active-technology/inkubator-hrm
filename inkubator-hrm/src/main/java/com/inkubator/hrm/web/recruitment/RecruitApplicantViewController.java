@@ -1,5 +1,8 @@
 package com.inkubator.hrm.web.recruitment;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -8,6 +11,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.hibernate.exception.ConstraintViolationException;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -85,6 +89,16 @@ public class RecruitApplicantViewController extends BaseController {
             LOGGER.error("Error ", ex);
         }
     }
+    
+    public void doUpload(){        
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 700);
+        options.put("contentHeight", 360);
+        RequestContext.getCurrentInstance().openDialog("recruit_applicant_upload_file", options, null);
+	}
 
 	public RecruitApplicantSearchParameter getParameter() {
 		return parameter;

@@ -51,8 +51,8 @@ public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implement
 	}
 	
 	private void doSearchByParam(RecruitApplicantSearchParameter parameter, Criteria criteria) {
-		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
-		criteria.createAlias("bioData.city", "city", JoinType.INNER_JOIN);
+		criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
+		criteria.createAlias("bioData.city", "city", JoinType.LEFT_OUTER_JOIN);
 
         if (StringUtils.isNotEmpty(parameter.getName())) {  
         	Disjunction disjunction = Restrictions.disjunction();
@@ -83,6 +83,8 @@ public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implement
         criteria.setFetchMode("businessType", FetchMode.JOIN);
         criteria.setFetchMode("institutionEducation", FetchMode.JOIN);
         criteria.setFetchMode("educationLevel", FetchMode.JOIN);
+        criteria.setFetchMode("recruitVacancyAdvertisement", FetchMode.JOIN);
+        criteria.setFetchMode("recruitVacancyAdvertisement.advertisementMedia", FetchMode.JOIN);
         criteria.setFetchMode("recruitApplicantSpecLists", FetchMode.JOIN);
 		criteria.setFetchMode("recruitApplicantSpecLists.orgTypeOfSpecList", FetchMode.JOIN);
 		criteria.setFetchMode("recruitApplicantSpecLists.orgTypeOfSpecList.orgTypeOfSpec", FetchMode.JOIN);

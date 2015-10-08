@@ -89,4 +89,11 @@ public class InstitutionEducationDaoImpl extends IDAOImpl<InstitutionEducation> 
         return (InstitutionEducation) criteria.uniqueResult();
     }
 
+	@Override
+	public InstitutionEducation getEntityByName(String name) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("institutionEducationName", name));
+        return (InstitutionEducation) criteria.uniqueResult();
+	}
+
 }

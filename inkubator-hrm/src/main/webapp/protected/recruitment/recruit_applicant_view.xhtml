@@ -47,9 +47,12 @@
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
-                                <h:panelGrid columns="3" >
+                                <h:panelGrid columns="4" >
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Applicant_Upload"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.upload']}" actionListener="#{recruitApplicantViewController.doUpload()}" title="#{appmsg['global.upload']}" label="#{appmsg['global.upload']}" styleClass="label_button" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{recruitApplicantViewController.onDialogReturn}"  update="formId,:growlId"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" action="#{recruitApplicantViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true"/>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{recruitApplicantViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
@@ -110,7 +113,15 @@
                                     <h:outputText value="#{appmsg['global.phone']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.bioData.mobilePhone}"/>
-                            </p:column>   
+                            </p:column> 
+                            <p:column sortBy="#{data.isVerified}"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['recruitment_applicant.verified']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.isVerified}">
+                                	<f:converter converterId="booleanMessageConverter"/>
+                                </h:outputLabel>
+                            </p:column>  
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
                                 				 style="font-size: 10px!important" action="#{recruitApplicantViewController.doDetail()}">                        

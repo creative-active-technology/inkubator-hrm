@@ -511,6 +511,13 @@ public class RecruitVacancyAdvertisementServiceImpl extends BaseApprovalServiceI
 	public RecruitVacancyAdvertisement getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber) throws Exception {
 		return recruitVacancyAdvertisementDao.getEntityByApprovalActivityNumberWithDetail(approvalActivityNumber);
 	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RecruitVacancyAdvertisement> getAllDataIsStillEffective() throws Exception {
+		
+		return recruitVacancyAdvertisementDao.getAllDataLessThanEffectiveDate(new Date());
+	}
 	
 
 }

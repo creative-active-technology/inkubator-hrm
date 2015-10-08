@@ -279,6 +279,51 @@
 	                        </p:panelGrid>    
 	                	</p:fieldset>
 	                	
+	                	<p:fieldset legend="#{appmsg['recruitment_applicant.other_data']}" style="margin-bottom:10px">
+                        	<p:panelGrid style="width: 100%;" styleClass="grid_border3">
+                        		<p:row>
+	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
+	                                    <p:outputLabel  value="#{appmsg['recruitment.vacancy_advertisement']}" styleClass="label_hrm"/>
+	                                </p:column>
+	                                <p:column style="width: 84%">
+		                                <p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.recruitVacancyAdvertisement.vacancyAdvCode} - #{recruitApplicantDetailController.selectedRecruitApplicant.recruitVacancyAdvertisement.advertisementMedia.name}" />
+		                            </p:column>
+		                         </p:row>
+                        		<p:row>
+	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
+	                                    <p:outputLabel  value="#{appmsg['global.active']}" styleClass="label_hrm"/>
+	                                </p:column>
+	                                <p:column style="width: 84%">
+                                        <p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.isActive}">
+                                        	<f:converter converterId="booleanMessageConverter" />
+                                        </p:outputLabel>                   	   
+	                                </p:column>
+	                            </p:row>
+	                            <p:row>
+	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
+	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.verified']}" styleClass="label_hrm"/>
+	                                </p:column>
+	                                <p:column style="width: 84%">
+	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.isVerified}">
+                                        	<f:converter converterId="booleanMessageConverter" />
+                                        </p:outputLabel>
+	                                </p:column>
+	                            </p:row>
+	                            <p:row rendered="#{recruitApplicantDetailController.selectedRecruitApplicant.uploadPath != null}">
+	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
+	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.download_resource_from']}" styleClass="label_hrm"/>
+	                                </p:column>
+	                                <p:column style="width: 84%">
+	                                	<p:commandLink ajax="false" value="Download" title="Download" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                    		<p:fileDownload value="#{fileStreamerController.fileFromPath}" />
+                                        	<f:param name="path" value="#{recruitApplicantDetailController.selectedRecruitApplicant.uploadPath}"/>
+                                        	<f:param name="fileName" value="applicant"/>
+                                   		</p:commandLink>
+	                                </p:column>
+	                            </p:row>
+                        	</p:panelGrid>
+                        </p:fieldset>
+	                	
 	                	<p:fieldset legend="#{appmsg['mppRecruitmentHist.work_specification']}" style="margin-bottom:15px">
 		                	<p:dataTable  id="tableId" var="data"  value="#{recruitApplicantDetailController.listJobsSpecification}" lazy="false" paginator="false" pageLinks="7"
 		                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -304,23 +349,7 @@
 		                            </p:column>	                            
 		                    </p:dataTable>
 	                    </p:fieldset>
-	                	<!-- <p:fieldset legend="#{appmsg['mppRecruitmentHist.work_specification']}" style="margin-bottom:15px">
-                            <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
-                                <c:forEach   var="data" items="#{recruitApplicantDetailController.selectedRecruitApplicant.specListDualModel}" begin="0" end="#{recruitApplicantDetailController.selectedRecruitApplicant.specListDualModel.size()-1}" varStatus="loop"  >                                
-                                    <p:row>
-                                        <p:column style="width: 15%;background-color: #e1f0f0!important">
-                                            <p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.specListName.get(loop.index)}" styleClass="label_hrm"/>
-                                        </p:column>
-                                        <p:column  style="width: 80%">
-                                            <p:pickList value="#{data}"  var="orgTypeOfSpecList" itemValue="#{orgTypeOfSpecList}" converter="orgTipeListConverter" 
-                                                        style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['org_level.work_location']}" styleClass="isitext_hrm"
-                                                        itemLabel="#{orgTypeOfSpecList.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
-                                                        removeLabel="#{appmsg['global.remove']}"/>
-                                        </p:column>
-                                    </p:row>                          
-                                </c:forEach>
-                            </p:panelGrid>
-                        </p:fieldset> -->
+	                	
 	                	
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">

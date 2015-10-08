@@ -1,15 +1,7 @@
 package com.inkubator.hrm.dao.impl;
 
-import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.dao.EducationLevelDao;
-import com.inkubator.hrm.entity.EducationLevel;
-import com.inkubator.hrm.entity.HrmUser;
-import com.inkubator.hrm.entity.PaySalaryGrade;
-import com.inkubator.hrm.web.search.EducationLevelSearchParameter;
-
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -17,6 +9,11 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
+
+import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.dao.EducationLevelDao;
+import com.inkubator.hrm.entity.EducationLevel;
+import com.inkubator.hrm.web.search.EducationLevelSearchParameter;
 
 /**
  *
@@ -120,6 +117,13 @@ public class EducationLevelDaoImpl extends IDAOImpl<EducationLevel> implements E
 	public Integer getCurrentMaxLevel() {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
         return (Integer) criteria.setProjection(Projections.max("level")).uniqueResult();
+	}
+
+	@Override
+	public EducationLevel getEntityByName(String name) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("name", name));
+        return (EducationLevel) criteria.uniqueResult();
 	}
 
 }
