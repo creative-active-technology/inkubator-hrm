@@ -29,23 +29,29 @@ public class DeleteLogHistoryListenerServiceImpl extends BaseSchedulerDinamicLis
     private int difWeekToDelete;
     @Autowired
     private LoginHistoryDao loginHistoryDao;
+
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public void onMessage(Message msg) {
+        SchedulerLog log = null;
         try {
             TextMessage textMessage = (TextMessage) msg;
             SchedulerLog schedulerLog = new SchedulerLog();
             schedulerLog.setSchedulerConfig(new SchedulerConfig(Long.parseLong(textMessage.getText())));
-            SchedulerLog log = super.doSaveSchedulerLogSchedulerLog(schedulerLog);
+            log = super.doSaveSchedulerLogSchedulerLog(schedulerLog);
             deleteLoginHistory();
             log.setStatusMessages("FINISH");
-            schedulerLogDao.update(log);
+            super.doUpdateSchedulerLogSchedulerLog(log);
         } catch (Exception ex) {
+            if (log != null) {
+                log.setStatusMessages(ex.getMessage());
+                super.doUpdateSchedulerLogSchedulerLog(log);
+            }
             LOGGER.error(ex, ex);
         }
     }
 
-  public void deleteLoginHistory() throws Exception {
+    public void deleteLoginHistory() throws Exception {
         LOGGER.error("Begin Running Dellete Log Akses");
         List<LoginHistory> dataToDelete = loginHistoryDao.getByWeekDif(difWeekToDelete);
         LOGGER.error("Ukuran Data to Delete " + dataToDelete.size());

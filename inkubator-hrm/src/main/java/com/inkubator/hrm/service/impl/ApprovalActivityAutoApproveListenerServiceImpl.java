@@ -62,15 +62,20 @@ public class ApprovalActivityAutoApproveListenerServiceImpl extends BaseSchedule
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public void onMessage(Message msg) {
+        SchedulerLog log = null;
         try {
             TextMessage textMessage = (TextMessage) msg;
             SchedulerLog schedulerLog = new SchedulerLog();
             schedulerLog.setSchedulerConfig(new SchedulerConfig(Long.parseLong(textMessage.getText())));
-            SchedulerLog log = super.doSaveSchedulerLogSchedulerLog(schedulerLog);
+            log = super.doSaveSchedulerLogSchedulerLog(schedulerLog);
             checkAutomaticApproval();
             log.setStatusMessages("FINISH");
-            schedulerLogDao.update(log);
+            super.doUpdateSchedulerLogSchedulerLog(log);
         } catch (Exception ex) {
+            if (log != null) {
+                log.setStatusMessages(ex.getMessage());
+                super.doUpdateSchedulerLogSchedulerLog(log);
+            }
             LOGGER.error(ex, ex);
         }
     }
@@ -79,7 +84,7 @@ public class ApprovalActivityAutoApproveListenerServiceImpl extends BaseSchedule
 //    @Scheduled(cron = "${cron.check.automatic.approval}")
 //    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     private void checkAutomaticApproval() throws Exception {
-        
+
         LOGGER.error(" Auto apporave is runnning +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=");
         List<ApprovalActivity> autoApprovals = new ArrayList<ApprovalActivity>();
         Date now = new Date();

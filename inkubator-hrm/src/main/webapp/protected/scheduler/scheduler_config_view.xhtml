@@ -71,7 +71,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="#{data.name}" >
+                            <p:column sortBy="#{data.name}" style="width: 200px">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['scheduler_config.name']}"/>
                                 </f:facet>
@@ -99,7 +99,7 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </p:outputLabel>
                             </p:column> 
-                            <p:column sortBy="#{data.repeateNumber}"  >
+                            <p:column sortBy="#{data.repeateNumber}"  style="width: 50px">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['scheduler_config.time_range']}"/>
                                 </f:facet>

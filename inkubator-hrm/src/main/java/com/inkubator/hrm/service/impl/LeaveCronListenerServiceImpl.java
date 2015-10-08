@@ -41,15 +41,20 @@ public class LeaveCronListenerServiceImpl extends BaseSchedulerDinamicListenerIm
 
     @Override
     public void onMessage(Message msg) {
-         try {
+        SchedulerLog log = null;
+        try {
             TextMessage textMessage = (TextMessage) msg;
             SchedulerLog schedulerLog = new SchedulerLog();
             schedulerLog.setSchedulerConfig(new SchedulerConfig(Long.parseLong(textMessage.getText())));
-            SchedulerLog log = super.doSaveSchedulerLogSchedulerLog(schedulerLog);
+            log = super.doSaveSchedulerLogSchedulerLog(schedulerLog);
             processAddingOfLeaveBalance();
             log.setStatusMessages("FINISH");
-            schedulerLogDao.update(log);
+            super.doUpdateSchedulerLogSchedulerLog(log);
         } catch (Exception ex) {
+            if (log != null) {
+                log.setStatusMessages(ex.getMessage());
+                super.doUpdateSchedulerLogSchedulerLog(log);
+            }
             LOGGER.error(ex, ex);
         }
     }

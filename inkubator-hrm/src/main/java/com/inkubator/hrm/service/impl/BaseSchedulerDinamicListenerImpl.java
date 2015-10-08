@@ -31,10 +31,16 @@ public class BaseSchedulerDinamicListenerImpl extends IServiceImpl {
     protected SchedulerLog doSaveSchedulerLogSchedulerLog(SchedulerLog schedulerLog) {
         schedulerLog.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
         schedulerLog.setSchedulerConfig(schedulerConfigDao.getEntiyByPK(schedulerLog.getSchedulerConfig().getId()));
-        schedulerLog.setExecutionDate(new Date());
-        schedulerLog.setStatusMessages("Proses");
+        schedulerLog.setStartExecution(new Date());
+        schedulerLog.setStatusMessages("PROCESS");
         schedulerLogDao.save(schedulerLog);
         return schedulerLog;
 
+    }
+
+    protected SchedulerLog doUpdateSchedulerLogSchedulerLog(SchedulerLog schedulerLog) {
+        schedulerLog.setEndExecution(new Date());
+        schedulerLogDao.update(schedulerLog);
+        return schedulerLog;
     }
 }
