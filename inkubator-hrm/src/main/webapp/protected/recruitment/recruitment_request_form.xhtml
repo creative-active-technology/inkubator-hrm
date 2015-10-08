@@ -264,7 +264,7 @@
                                              icon="ui-icon-disk"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>
                             <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" rendered="#{!recruitHireApplyFormController.isEdit}" update="selectionTipeFormId"
-                                             process="@this" icon="ui-icon-refresh" id="cleareId"   styleClass="label_button"  style="margin-right: 5px">  
+                                             process="@this" icon="ui-icon-refresh" id="cleareId" action="#{recruitHireApplyFormController.doReset()}"  styleClass="label_button"  style="margin-right: 5px">  
                                 <p:resetInput target="selectionTipeFormId" />  
                             </p:commandButton>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{recruitHireApplyFormController.doBack()}" immediate="true"
