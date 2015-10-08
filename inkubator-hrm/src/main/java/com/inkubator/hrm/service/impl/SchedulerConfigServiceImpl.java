@@ -91,12 +91,11 @@ public class SchedulerConfigServiceImpl extends IServiceImpl implements Schedule
         schedulerConfig.setMinuteDiv(entity.getMinuteDiv());
         schedulerConfig.setUpdatedBy(UserInfoUtil.getUserName());
         schedulerConfig.setUpdatedOn(new Date());
+        schedulerConfig.setIsActive(entity.getIsActive());
         if (entity.getIsTimeDiv()) {
             Date now=new Date();
             String nowString=new SimpleDateFormat("dd MM yyyy HH:mm").format(now);
             schedulerConfig.setLastExecution(new SimpleDateFormat("dd MM yyyy HH:mm").parse(nowString));
-            System.out.println(" Tanggal nya adalah "+schedulerConfig.getLastExecution());
-            System.out.println(" Tanggal nya adalah ========================================"+schedulerConfig.getLastExecution());
         }
         schedulerConfigDao.update(schedulerConfig);
     }

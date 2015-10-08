@@ -118,6 +118,10 @@
         <jms:listener destination="delTempScheduleWork" ref="deleteTempEmpShceduleListenerServiceImpl" method="onMessage"  /> 
         <jms:listener destination="approvalNotif" ref="approvalActivityNotSendListenerServiceImpl" method="onMessage"  /> 
         <jms:listener destination="autoApprovalMat" ref="approvalActivityAutoApproveListenerServiceImpl" method="onMessage"  /> 
+        <jms:listener destination="addBalanceLeave" ref="leaveCronListenerServiceImpl" method="onMessage"  /> 
+        <jms:listener destination="addBalancePermit" ref="permitCronListenerServiceImpl" method="onMessage"  /> 
+        <jms:listener destination="companyPolicySend" ref="companyPolicyCronListenerServiceImpl" method="onMessage"  /> 
+        <jms:listener destination="attendaceCalculatte" ref="attendanceCronListenerServiceImpl" method="onMessage"  /> 
         
     </jms:listener-container>
     <!--================== List dari semua listener scheduller... di sini ==========================-->
@@ -151,4 +155,8 @@
     
     <bean id="approvalActivityAutoApproveListenerServiceImpl" class="com.inkubator.hrm.service.impl.ApprovalActivityAutoApproveListenerServiceImpl" lazy-init="true"/>
     <bean id="leaveCronListenerServiceImpl" class="com.inkubator.hrm.service.impl.LeaveCronListenerServiceImpl" lazy-init="true"/>
+    <bean id="permitCronListenerServiceImpl" class="com.inkubator.hrm.service.impl.PermitCronListenerServiceImpl" lazy-init="true"/>
+    <bean id="companyPolicyCronListenerServiceImpl" class="com.inkubator.hrm.service.impl.CompanyPolicyCronListenerServiceImpl" lazy-init="true"/>
+    <bean id="attendanceCronListenerServiceImpl" class="com.inkubator.hrm.service.impl.AttendanceCronListenerServiceImpl" lazy-init="true"/>
+    
 </beans>
