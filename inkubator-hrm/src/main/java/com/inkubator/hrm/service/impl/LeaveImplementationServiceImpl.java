@@ -681,6 +681,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
             neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
             neracaCuti.setLeaveDistribution(leaveDistribution);
             neracaCuti.setKredit(actualLeave);
+            neracaCuti.setSaldo(balance);
             neracaCuti.setCreatedBy(userBy);
             neracaCuti.setCreatedOn(new Date());
             neracaCutiDao.save(neracaCuti);
@@ -700,6 +701,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
             neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
             neracaCuti.setLeaveDistribution(leaveDistribution);
             neracaCuti.setDebet(actualLeave);
+            neracaCuti.setSaldo(balance);
             neracaCuti.setCreatedBy(userBy);
             neracaCuti.setCreatedOn(new Date());
             neracaCutiDao.save(neracaCuti);
