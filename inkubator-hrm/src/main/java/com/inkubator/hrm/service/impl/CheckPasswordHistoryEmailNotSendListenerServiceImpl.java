@@ -71,7 +71,7 @@ public class CheckPasswordHistoryEmailNotSendListenerServiceImpl extends BaseSch
 
     public void checkPasswordHistoryEmailNotSend() throws Exception {
         List<PasswordHistory> passwordHistories = passwordHistoryDao.getByEmailNotification(HRMConstant.EMAIL_NOTIFICATION_NOT_YET_SEND);
-        LOGGER.info("--------------- TOTAL sending email which will be processed : " + passwordHistories.size());
+        LOGGER.warn("--------------- TOTAL sending email which will be processed : " + passwordHistories.size());
         for (PasswordHistory passwordHistory : passwordHistories) {
 //            try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");

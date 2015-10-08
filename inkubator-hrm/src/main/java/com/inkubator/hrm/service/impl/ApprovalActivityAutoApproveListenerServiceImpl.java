@@ -85,7 +85,7 @@ public class ApprovalActivityAutoApproveListenerServiceImpl extends BaseSchedule
 //    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     private void checkAutomaticApproval() throws Exception {
 
-        LOGGER.error(" Auto apporave is runnning +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=");
+        LOGGER.warn(" Auto apporave is runnning +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=");
         List<ApprovalActivity> autoApprovals = new ArrayList<ApprovalActivity>();
         Date now = new Date();
 

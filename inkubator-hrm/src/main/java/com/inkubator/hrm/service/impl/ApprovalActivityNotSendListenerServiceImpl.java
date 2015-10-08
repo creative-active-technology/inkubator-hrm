@@ -100,7 +100,7 @@ public class ApprovalActivityNotSendListenerServiceImpl extends BaseSchedulerDin
     }
 
     public void sendNotificationApprovalNotSend() throws Exception {
-        LOGGER.error("Proses krim approval activiei karena schcedullerrerere");
+        LOGGER.warn("Proses krim approval activiei karena schcedullerrerere");
         List<ApprovalActivity> dataToSend = approvalActivityDao.getDataNotSendEmailYet();
         for (ApprovalActivity appActivity : dataToSend) {
             JsonObject jsonObject = (JsonObject) jsonConverter.getClassFromJson(appActivity.getPendingData(), JsonObject.class);

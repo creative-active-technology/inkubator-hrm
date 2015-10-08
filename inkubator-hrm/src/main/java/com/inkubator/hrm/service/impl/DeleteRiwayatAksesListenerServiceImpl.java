@@ -50,11 +50,11 @@ public class DeleteRiwayatAksesListenerServiceImpl extends BaseSchedulerDinamicL
     }
 
     private void deleteRiwayatAkses() throws Exception {
-        LOGGER.error("Begin Running Dellete Riwayar Akses");
+        LOGGER.warn("Begin Running Dellete Riwayar Akses");
         List<RiwayatAkses> dataToDelete = riwayatAksesDao.getByWeekDif(difWeekToDelete);
-        LOGGER.error("Ukuran Data to Delete " + dataToDelete.size());
+        LOGGER.warn("Ukuran Data to Delete " + dataToDelete.size());
         riwayatAksesDao.deleteBatch(dataToDelete);
-        LOGGER.error("Finish Running Dellete Riwayar Akses");
+        LOGGER.warn("Finish Running Dellete Riwayar Akses");
     }
 
     public void setDifWeekToDelete(int difWeekToDelete) {

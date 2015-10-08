@@ -52,11 +52,11 @@ public class DeleteLogHistoryListenerServiceImpl extends BaseSchedulerDinamicLis
     }
 
     public void deleteLoginHistory() throws Exception {
-        LOGGER.error("Begin Running Dellete Log Akses");
+        LOGGER.warn("Begin Running Dellete Log Akses");
         List<LoginHistory> dataToDelete = loginHistoryDao.getByWeekDif(difWeekToDelete);
-        LOGGER.error("Ukuran Data to Delete " + dataToDelete.size());
+        LOGGER.warn("Ukuran Data to Delete " + dataToDelete.size());
         loginHistoryDao.deleteBatch(dataToDelete);
-        LOGGER.error("Finish Running Dellete Log Akses");
+        LOGGER.warn("Finish Running Dellete Log Akses");
     }
 
     public void setDifWeekToDelete(int difWeekToDelete) {

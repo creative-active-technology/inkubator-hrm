@@ -54,11 +54,11 @@ public class DeleteTempEmpShceduleListenerServiceImpl extends BaseSchedulerDinam
     }
 
     public void deleteTempEmployeeSchedule() throws Exception {
-        LOGGER.error("Begin Running Delete Temporary Employee Schedule");
+        LOGGER.warn("Begin Running Delete Temporary Employee Schedule");
         List<TempJadwalKaryawan> dataToDelete = tempJadwalKaryawanDao.getByMonthDif(difNumberOfMonthTempEmployeeScheduleToDelete);
-        LOGGER.error("Size of Data to Delete " + dataToDelete.size());
+        LOGGER.warn("Size of Data to Delete " + dataToDelete.size());
         tempJadwalKaryawanDao.deleteBacth(dataToDelete);
-        LOGGER.error("Finish Running Delete Temporary Employee Schedule");
+        LOGGER.warn("Finish Running Delete Temporary Employee Schedule");
     }
 
     public void setDifNumberOfMonthTempEmployeeScheduleToDelete(int difNumberOfMonthTempEmployeeScheduleToDelete) {
