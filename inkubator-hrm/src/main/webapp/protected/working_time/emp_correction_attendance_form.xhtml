@@ -53,7 +53,7 @@
                                                     var="empData" itemValue="#{empData}" itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
                                                     converter="empDataConverter" styleClass="isitext_hrm" size="45"
                                                     required="true" readonly="#{not (empCorrectionAttendanceFormController.isAdministator and not empCorrectionAttendanceFormController.isRevised)}">
-                                        <p:ajax event="itemSelect" listener="#{empCorrectionAttendanceFormController.onChangeEmployee()}" update="workingGroupNameId"/>
+                                        <p:ajax event="itemSelect" listener="#{empCorrectionAttendanceFormController.onChangeEmployee()}" update="workingGroupNameId,tableId"/>
                                     </p:autoComplete>
                                     <p:message for="employeeId"/>
                                 </p:column>
