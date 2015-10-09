@@ -14,8 +14,8 @@
             Pada tanggal ${proposeDate}, karyawan ${nik}/${requesterName} mengajukan permohonan untuk izin.<br /><br />
 			Adapun izin yang dimaksud yaitu: <br /><br />
 			Definisi Izin : ${permitClassification}<br />
-			Jam Mulai : ${startDate}<br />
-			Jam Selesai : ${endDate}<br />
+			Tanggal Mulai : ${startDate}<br /> 
+			Tanggal Selesai : ${endDate}<br />
 			<br />
 			
             Adapun informasi lebih lanjut dapat di lihat pada:  <a href="${applicationUrl}" target="_blank">${applicationUrl}</a>
