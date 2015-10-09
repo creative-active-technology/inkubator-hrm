@@ -14,8 +14,10 @@ import com.inkubator.hrm.service.SchedulerConfigService;
 import com.inkubator.hrm.web.search.SchedulerConfigSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -64,7 +66,8 @@ public class SchedulerConfigServiceImpl extends IServiceImpl implements Schedule
         if (entity.getIsTimeDiv()) {
             Date now=new Date();
             String nowString=new SimpleDateFormat("dd MM yyyy HH:mm").format(now);
-            entity.setLastExecution(new SimpleDateFormat("dd MM yyyy HH:mm").parse(nowString));
+//            entity.setLastExecution(new SimpleDateFormat("dd MM yyyy HH:mm").parse(nowString));
+               entity.setLastExecution(DateUtils.truncate(now, Calendar.SECOND));
         }
         schedulerConfigDao.save(entity);
     }
@@ -95,7 +98,8 @@ public class SchedulerConfigServiceImpl extends IServiceImpl implements Schedule
         if (entity.getIsTimeDiv()) {
             Date now=new Date();
             String nowString=new SimpleDateFormat("dd MM yyyy HH:mm").format(now);
-            schedulerConfig.setLastExecution(new SimpleDateFormat("dd MM yyyy HH:mm").parse(nowString));
+//            schedulerConfig.setLastExecution(new SimpleDateFormat("dd MM yyyy HH:mm").parse(nowString));
+                schedulerConfig.setLastExecution(DateUtils.truncate(now, Calendar.SECOND));
         }
         schedulerConfigDao.update(schedulerConfig);
     }

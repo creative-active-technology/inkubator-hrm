@@ -13,7 +13,6 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
@@ -23,19 +22,12 @@ import com.inkubator.hrm.entity.MecineFinger;
 import com.inkubator.hrm.entity.SchedulerConfig;
 import com.inkubator.hrm.entity.SchedulerLog;
 import com.inkubator.hrm.entity.WtPeriode;
-import com.inkubator.hrm.service.AttendanceCronService;
 import com.inkubator.hrm.util.MachineFingerUtil;
 import com.inkubator.webcore.util.FacesIO;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 /**
  *
@@ -78,7 +70,7 @@ public class AttendanceCronListenerServiceImpl extends BaseSchedulerDinamicListe
 //	@Override
 //    @Scheduled(cron = "${cron.calculate.attendance.daily}")
     public void calculateAttendanceDaily() throws Exception {
-        LOGGER.warn("Calculate Attendance Running =========================================================="+new Date());
+        LOGGER.warn("Calculate Attendance Running ==========================================================" + new Date());
         JobExecution jobExecution;
         JobParameters jobParameters;
         WtPeriode period = wtPeriodeDao.getEntityByAbsentTypeActive();
@@ -132,7 +124,7 @@ public class AttendanceCronListenerServiceImpl extends BaseSchedulerDinamicListe
                 .addLong("wtPeriodId", period.getId())
                 .toJobParameters();
         jobExecution = jobLauncher.run(jobTempAttendanceRealizationCalculation, jobParameters);
-         LOGGER.warn("Calculate Attendance Finish =========================================================="+new Date());
+        LOGGER.warn("Calculate Attendance Finish ==========================================================" + new Date());
     }
 
     @Override
