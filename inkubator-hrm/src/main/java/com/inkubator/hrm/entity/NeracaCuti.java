@@ -30,6 +30,7 @@ public class NeracaCuti  implements java.io.Serializable {
      private LeaveDistribution leaveDistribution;
      private Double debet;
      private Double kredit;
+     private Double saldo;
      private Date createdOn;
      private String createdBy;
      private Date updatedOn;
@@ -104,8 +105,17 @@ public class NeracaCuti  implements java.io.Serializable {
     public void setKredit(Double kredit) {
         this.kredit = kredit;
     }
+    
+    @Column(name="saldo", precision=22, scale=0)
+    public Double getSaldo() {
+		return saldo;
+	}
 
-    @Temporal(TemporalType.TIMESTAMP)
+	public void setSaldo(Double saldo) {
+		this.saldo = saldo;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
     @Column(name="created_on", length=19)
     public Date getCreatedOn() {
         return this.createdOn;

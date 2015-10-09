@@ -108,9 +108,9 @@ public class LeaveCronListenerServiceImpl extends BaseSchedulerDinamicListenerIm
                         balance = this.getBalanceAllowedTakingToNextYear(balance, isTakingToNextYear, maxTakingToNextYear, leaveDistribution);
                         
                         double debet = quotaPerYear;
-                        this.debetNeracaCuti(debet, leaveDistribution);
-                        
                         balance = balance + debet;
+                        
+                        this.debetNeracaCuti(debet, balance, leaveDistribution);
                         this.saveLeaveDistribution(balance, leaveDistribution);
                     }
                     
@@ -156,9 +156,9 @@ public class LeaveCronListenerServiceImpl extends BaseSchedulerDinamicListenerIm
                         }
                         
                         double debet = quotaPerMonth;
-                        this.debetNeracaCuti(debet, leaveDistribution);
-                        
                         balance = balance + debet;
+                        
+                        this.debetNeracaCuti(debet, balance, leaveDistribution);
                         this.saveLeaveDistribution(balance, leaveDistribution);
                     }
                     
@@ -179,9 +179,9 @@ public class LeaveCronListenerServiceImpl extends BaseSchedulerDinamicListenerIm
                     Date availabilityAtSpecificDate = DateUtils.setYears(leave.getAvailabilityAtSpecificDate(), currentYear);
                     if (DateUtils.isSameDay(current, availabilityAtSpecificDate)) {
                         double debet = quotaPerYear;
-                        this.debetNeracaCuti(debet, leaveDistribution);
-                        
                         double balance = leaveDistribution.getBalance() + debet;
+                        
+                        this.debetNeracaCuti(debet, balance, leaveDistribution);
                         this.saveLeaveDistribution(balance, leaveDistribution);
                     }
                 }
@@ -223,17 +223,20 @@ public class LeaveCronListenerServiceImpl extends BaseSchedulerDinamicListenerIm
              */
             if (balance > maxTakingToNextYear) {
                 double credit = balance - maxTakingToNextYear;
-                this.creditNeracaCuti(credit, leaveDistribution);
-                
                 balance = balance - credit;
+                
+                this.creditNeracaCuti(credit, balance, leaveDistribution);
+                
             }
         } else {
             /**
              * set balance ke 0(zero), lakukan operasi credit ke neraca cuti
              */
             double credit = balance;
-            this.creditNeracaCuti(credit, leaveDistribution);
             balance = 0.0;
+            
+            this.creditNeracaCuti(credit, balance, leaveDistribution);
+            
         }
         
         return balance;
@@ -245,22 +248,24 @@ public class LeaveCronListenerServiceImpl extends BaseSchedulerDinamicListenerIm
         leaveDistribution.setUpdatedBy(HRMConstant.SYSTEM_ADMIN);
         leaveDistributionDao.update(leaveDistribution);
     }
-    
-    private void debetNeracaCuti(double debet, LeaveDistribution leaveDistribution) {
+
+    private void debetNeracaCuti(double debet, double saldo, LeaveDistribution leaveDistribution) {
         NeracaCuti neracaCuti = new NeracaCuti();
         neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         neracaCuti.setLeaveDistribution(leaveDistribution);
         neracaCuti.setDebet(debet);
+        neracaCuti.setSaldo(saldo);
         neracaCuti.setCreatedBy(HRMConstant.SYSTEM_ADMIN);
         neracaCuti.setCreatedOn(new Date());
         neracaCutiDao.save(neracaCuti);
     }
-    
-    private void creditNeracaCuti(double credit, LeaveDistribution leaveDistribution) {
+
+    private void creditNeracaCuti(double credit, double saldo, LeaveDistribution leaveDistribution) {
         NeracaCuti neracaCuti = new NeracaCuti();
         neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         neracaCuti.setLeaveDistribution(leaveDistribution);
         neracaCuti.setKredit(credit);
+        neracaCuti.setSaldo(saldo);
         neracaCuti.setCreatedBy(HRMConstant.SYSTEM_ADMIN);
         neracaCuti.setCreatedOn(new Date());
         neracaCutiDao.save(neracaCuti);
