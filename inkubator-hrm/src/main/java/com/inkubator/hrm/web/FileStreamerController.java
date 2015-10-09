@@ -57,8 +57,10 @@ public class FileStreamerController extends BaseController {
         if (StringUtils.isNotEmpty(path)) {
             try {
             	if(StringUtils.isEmpty(fileName)){
-            		fileName = StringUtils.substringAfterLast(path, "/");
+            		fileName = StringUtils.substringAfterLast(path, "/");            		
             	}
+                String extension = StringUtils.substringAfterLast(path, ".");
+                fileName = fileName+"."+extension;
             	InputStream is = facesIO.getInputStreamFromURL(path);
                 streamedContent = new DefaultStreamedContent(is, null, fileName);                
             } catch (Exception ex) {

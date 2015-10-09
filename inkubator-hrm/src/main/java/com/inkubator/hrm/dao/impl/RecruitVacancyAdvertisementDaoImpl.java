@@ -95,9 +95,16 @@ public class RecruitVacancyAdvertisementDaoImpl extends IDAOImpl<RecruitVacancyA
 	}
 
 	@Override
-	public List<RecruitVacancyAdvertisement> getAllDataLessThanEffectiveDate(Date date) {
+	public List<RecruitVacancyAdvertisement> getAllDataGreaterThanEffectiveDate(Date date) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.le("effectiveDate", date));
+		criteria.add(Restrictions.ge("effectiveDate", date));
+		criteria.setFetchMode("advertisementMedia", FetchMode.JOIN);
+		return criteria.list();
+	}
+	
+	@Override
+	public List<RecruitVacancyAdvertisement> getAllData() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.setFetchMode("advertisementMedia", FetchMode.JOIN);
 		return criteria.list();
 	}

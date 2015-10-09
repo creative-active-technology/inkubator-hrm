@@ -34,7 +34,9 @@
                                     <p:outputLabel value="#{appmsg['scheduler_config.name']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.name}" />
+                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.name}" >
+                                    	<f:converter converterId="schedulerConfigNameConverter" />
+                                    </p:outputLabel>
                                 </p:column>
                             </p:row>  
                             <p:row>

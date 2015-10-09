@@ -25,5 +25,5 @@ public interface RecruitVacancyAdvertisementDao extends IDAO<RecruitVacancyAdver
 
 	public RecruitVacancyAdvertisement getEntityByApprovalActivityNumberWithDetail(String approvalActivityNumber);
 
-	public List<RecruitVacancyAdvertisement> getAllDataLessThanEffectiveDate(Date date);
+	public List<RecruitVacancyAdvertisement> getAllDataGreaterThanEffectiveDate(Date date);
 }
