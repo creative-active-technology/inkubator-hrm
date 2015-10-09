@@ -47,6 +47,8 @@ public class RecruitApplicant implements Serializable {
 	private KlasifikasiKerja klasifikasiKerja;
 	private Integer lastJabatanSince;
 	private BusinessType businessType;
+	private RecruitVacancyAdvertisement recruitVacancyAdvertisement;
+	private String uploadPath;
 	private Date createdOn;
     private String createdBy;
     private String updatedBy;    
@@ -81,7 +83,7 @@ public class RecruitApplicant implements Serializable {
         this.version = version;
     }
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "bio_data_id", nullable = false)
     public BioData getBioData() {
 		return bioData;
@@ -246,6 +248,25 @@ public class RecruitApplicant implements Serializable {
 
 	public void setBusinessType(BusinessType businessType) {
 		this.businessType = businessType;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recruit_vacancy_advertisement_id", nullable = false)
+	public RecruitVacancyAdvertisement getRecruitVacancyAdvertisement() {
+		return recruitVacancyAdvertisement;
+	}
+
+	public void setRecruitVacancyAdvertisement(RecruitVacancyAdvertisement recruitVacancyAdvertisement) {
+		this.recruitVacancyAdvertisement = recruitVacancyAdvertisement;
+	}
+
+	@Column(name = "upload_path")
+	public String getUploadPath() {
+		return uploadPath;
+	}
+
+	public void setUploadPath(String uploadPath) {
+		this.uploadPath = uploadPath;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

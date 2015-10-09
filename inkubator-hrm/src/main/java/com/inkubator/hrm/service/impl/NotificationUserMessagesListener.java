@@ -124,11 +124,12 @@ public class NotificationUserMessagesListener extends IServiceImpl implements Me
                 maptoSend.put("ownerCompany", ownerCompany);
                 maptoSend.put("applicationUrl", applicationUrl);
                 maptoSend.put("applicationName", applicationName);
-                try {
+//                try {
                     velocityTemplateSender.sendMail(vtm, maptoSend);
-                } catch (Exception ex) {
-                    LOGGER.error("Error", ex);
-                }
+                    System.out.println(" Suskses kirimm  email");
+//                } catch (Exception ex) {
+//                    LOGGER.error("Error", ex);
+//                }
                 passwordHistory.setEmailNotification(1);
                 passwordHistory.setPassword(HashingUtils.getHashSHA256(passwordHistory.getPassword()));
                 this.passwordHistoryDao.update(passwordHistory);

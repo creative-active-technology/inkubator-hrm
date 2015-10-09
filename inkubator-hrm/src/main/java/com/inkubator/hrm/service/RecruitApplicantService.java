@@ -7,6 +7,7 @@ import org.hibernate.criterion.Order;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.web.model.ApplicantModel;
+import com.inkubator.hrm.web.model.ApplicantUploadBatchModel;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
 
 /**
@@ -24,5 +25,7 @@ public interface RecruitApplicantService extends IService<RecruitApplicant> {
 	public RecruitApplicant update(ApplicantModel model) throws Exception;
 
 	public RecruitApplicant save(ApplicantModel model) throws Exception;
+	
+	public void uploadBatchProcess(ApplicantUploadBatchModel model) throws Exception;
 
 }

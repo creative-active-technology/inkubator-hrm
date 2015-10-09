@@ -437,7 +437,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
          * company don't create alias for that entity, or will get error :
          * duplicate association path
          */
-        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+//        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
         criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
 
         criteria.createAlias("wtGroupWorking", "wg", JoinType.LEFT_OUTER_JOIN);

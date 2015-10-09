@@ -312,7 +312,7 @@
                       	</p:fieldset>
                       	
                         <p:fieldset legend="#{appmsg['recruitment_applicant.latest_working_data']}" style="margin-bottom:10px">
-                            <p:panelGrid style="width: 100%;" styleClass="grid_border3"  >
+                            <p:panelGrid style="width: 100%;" styleClass="grid_border3">
                             	<p:row>
 	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
 	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.latest_company']}" styleClass="label_hrm" for="lastWorkCompanyId"/>
@@ -391,7 +391,55 @@
 	                        </p:panelGrid>    
 	                	</p:fieldset>
 	                	
-	                	<p:fieldset legend="#{appmsg['mppRecruitmentHist.work_specification']}" style="margin-bottom:15px">
+	                	<p:fieldset legend="#{appmsg['recruitment_applicant.other_data']}" style="margin-bottom:10px">
+                        	<p:panelGrid style="width: 100%;" styleClass="grid_border3">
+                        		<p:row>
+	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
+	                                    <p:outputLabel  value="#{appmsg['recruitment.vacancy_advertisement']}" styleClass="label_hrm" for="vacancyAdvertisementId"/>
+	                                </p:column>
+	                                <p:column style="width: 84%">
+		                            	<p:selectOneMenu id="vacancyAdvertisementId" style="width: 31%"  filter="true" required="true"
+		                                                 value="#{recruitApplicantFormController.model.vacancyAdvertisementId}">
+		                                	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+		                                    <f:selectItems value="#{recruitApplicantFormController.model.listVacancyAdvertisement}" var="vacancy" itemValue="#{vacancy.id}" itemLabel="#{vacancy.vacancyAdvCode} - #{vacancy.advertisementMedia.name}" />
+		                             	</p:selectOneMenu>
+		                                <p:message for="vacancyAdvertisementId"/>
+		                            </p:column>
+		                         </p:row>
+                        		<p:row>
+	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
+	                                    <p:outputLabel  value="#{appmsg['global.active']}" styleClass="label_hrm"/>
+	                                </p:column>
+	                                <p:column style="width: 84%">
+	                                	<p:selectBooleanButton value="#{recruitApplicantFormController.model.isActive}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           	   offIcon="ui-icon-close" styleClass="label_button"/>
+	                                </p:column>
+	                            </p:row>
+	                            <p:row>
+	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
+	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.verified']}" styleClass="label_hrm"/>
+	                                </p:column>
+	                                <p:column style="width: 84%">
+	                                	<p:selectBooleanButton value="#{recruitApplicantFormController.model.isVerified}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           	   offIcon="ui-icon-close" styleClass="label_button"/>
+	                                </p:column>
+	                            </p:row>
+	                            <p:row rendered="#{recruitApplicantFormController.model.uploadPath != null}">
+	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
+	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.download_resource_from']}" styleClass="label_hrm"/>
+	                                </p:column>
+	                                <p:column style="width: 84%">
+	                                	<p:commandLink ajax="false" value="Download" title="Download" onclick="PrimeFaces.monitorDownload(start, stop);" immediate="true">
+                                    		<p:fileDownload value="#{fileStreamerController.fileFromPath}" />
+                                        	<f:param name="path" value="#{recruitApplicantFormController.model.uploadPath}"/>
+                                        	<f:param name="fileName" value="applicant"/>
+                                   		</p:commandLink>
+	                                </p:column>
+	                            </p:row>
+                        	</p:panelGrid>
+                        </p:fieldset>
+	                	
+	                	<p:fieldset legend="#{appmsg['mppRecruitmentHist.work_specification']}" style="margin-bottom:10px">
                             <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
                                 <c:forEach   var="data" items="#{recruitApplicantFormController.model.specListDualModel}" begin="0" end="#{recruitApplicantFormController.model.specListDualModel.size()-1}" varStatus="loop"  >                                
                                     <p:row>

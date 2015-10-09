@@ -200,6 +200,11 @@ public class RecruitHireApplyFormController extends BaseController {
         cleanAndExit();
         return "/protected/recruitment/recruitment_req_history_view.htm?faces-redirect=true";
     }
+    
+    public void doReset(){
+    	model.setJabatanId(null);
+    	model.setRecruitMppPeriodId(null);
+    }
 
     public String doSave() {
         String redirect = null;

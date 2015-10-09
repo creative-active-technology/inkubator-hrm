@@ -230,11 +230,11 @@
                     <div id="art-main">
                         <div style="float:left">
                             <h:panelGrid style="margin-left: 50px;padding-top: 8px" columns="2">
-                               <!--  <p:commandLink >
+                                 <p:commandLink >
                                     <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="22" width="22" cache="false" style="border:  1px solid #ffffff !important; border-radius: 4px !important" >
                                         <f:param name="id" value="#{BIODATA_ID}"/>
                                     </p:graphicImage>  
-                                </p:commandLink>  -->
+                                </p:commandLink>  
                                 <h:panelGroup>
                                     <p:outputLabel value="#{realName} : " style="color: #ff9933 !important;font-weight: bold!important"  styleClass="label_welcome_header" />
                                     <p:outputLabel value="#{appmsg['global.login_as']} #{homeController.roleUser}" styleClass="label_welcome_header" />
@@ -325,7 +325,7 @@
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['scheduler.scheduler_setting']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['scheduler.scheduler_config']}"  style="color: #003366" title="#{appmsg['scheduler.scheduler_config']}" url="/protected/scheduler/scheduler_config_view.htm"  icon="img-user"/> 
-                                                <p:menuitem value="#{appmsg['scheduler.scheduler_monitoring']}"  style="color: #003366" title="#{appmsg['scheduler.scheduler_monitoring']}" url="/protected/scheduler/role_view.htm" icon="img-user-role" />
+                                                <p:menuitem value="#{appmsg['scheduler.scheduler_monitoring']}"  style="color: #003366" title="#{appmsg['scheduler.scheduler_monitoring']}" url="/protected/scheduler/scheduler_log_view.htm" icon="img-user-role" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['menu.approvalPattern']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['approvaldefinition.approval_definition']}"  style="color: #003366" title="#{appmsg['approvaldefinition.approval_definition']}" url="/protected/approval/approval_definition_view.htm"  icon="img-approval-definition"/> 
@@ -656,8 +656,8 @@
                                             </p:submenu>
                                             <p:menuitem value="#{appmsg['recruitment.search_candidate']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.search_candidate']}" url="/flow-protected/search_employee_candidate" /> 
                                             <p:submenu label="#{appmsg['recruitment.recruitment_request']}"  styleClass="menu_child" >
-                                                <p:menuitem value="#{appmsg['recruitment.recruitment_request_history']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.recruitment_request_history']}" url="/protected/recruitment/recruitment_req_history_view.htm" /> 
-                                                <p:menuitem value="#{appmsg['recruitment.recruitment_request_inbox']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.recruitment_request_inbox']}" url="#" /> 
+                                                <p:menuitem value="#{appmsg['recruitment.recruitment_application_form']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.recruitment_application_form']}" url="/protected/recruitment/recruitment_req_history_form.htm" /> 
+                                                <p:menuitem value="#{appmsg['recruitment.recruitment_request_inbox']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.recruitment_request_inbox']}" url="/protected/recruitment/recruitment_req_history_view.htm" /> 
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['recruitment.vacancy']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['recruitment.vacancy_advertisement']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.vacancy_advertisement']}" url="/protected/recruitment/vacancy_advertisement_view.htm" /> 

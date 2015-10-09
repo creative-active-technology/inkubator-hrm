@@ -125,12 +125,12 @@ public class SchedulerConfigFormController extends BaseController {
                 schedulerConfigService.update(config);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-                return "/protected/scheduler/scheduler_config_detail.htm?faces-redirect=true&execution=e" + config.getId();
+//                return "/protected/scheduler/scheduler_config_detail.htm?faces-redirect=true&execution=e" + config.getId();
             } else {
                 schedulerConfigService.save(config);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-                return "/protected/scheduler/scheduler_config_detail.htm?faces-redirect=true&execution=e" + config.getId();
+//                return "/protected/scheduler/scheduler_config_detail.htm?faces-redirect=true&execution=e" + config.getId();
             }
             
         } catch (BussinessException ex) {
@@ -138,8 +138,7 @@ public class SchedulerConfigFormController extends BaseController {
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-        
-        return null;
+        return "/protected/scheduler/scheduler_config_view.htm?faces-redirect=true";
     }
     
     public String doBack() {
