@@ -12,4 +12,6 @@ package com.inkubator.hrm.service;
 public interface ScheduleDinamicService {
 
     public void doDinamicCheck() throws Exception;
+
+    public void initMethode() throws Exception;
 }

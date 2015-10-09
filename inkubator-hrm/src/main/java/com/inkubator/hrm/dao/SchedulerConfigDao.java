@@ -17,8 +17,11 @@ import com.inkubator.hrm.web.search.SchedulerConfigSearchParameter;
  *
  * @author denifahri
  */
-public interface SchedulerConfigDao extends  IDAO<SchedulerConfig>{
+public interface SchedulerConfigDao extends IDAO<SchedulerConfig> {
+
     public List<SchedulerConfig> getByParam(SchedulerConfigSearchParameter searchParameter, int firstResult, int maxResults, Order order);
-    
+
     public Long getTotalByParam(SchedulerConfigSearchParameter searchParameter);
+
+    public List<SchedulerConfig> getAllWithIsTimeDiv(Boolean boolean1);
 }

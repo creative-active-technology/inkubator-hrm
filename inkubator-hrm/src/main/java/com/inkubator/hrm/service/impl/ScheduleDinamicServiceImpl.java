@@ -404,4 +404,20 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
         }
 
     }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+    public void initMethode() throws Exception {
+        System.out.println(" Hererererer ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        List<SchedulerConfig> dataToUpdateLastExecution = this.schedulerConfigDao.getAllWithIsTimeDiv(Boolean.TRUE);
+        System.out.println(" Size ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" + dataToUpdateLastExecution.size());
+        for (SchedulerConfig config : dataToUpdateLastExecution) {
+            Date now = new Date();
+            String nowString = new SimpleDateFormat("dd MM yyyy HH:mm").format(now);
+            config.setLastExecution(new SimpleDateFormat("dd MM yyyy HH:mm").parse(nowString));
+           this.schedulerConfigDao .save(config);
+//            }
+        }
+    }
+
 }
