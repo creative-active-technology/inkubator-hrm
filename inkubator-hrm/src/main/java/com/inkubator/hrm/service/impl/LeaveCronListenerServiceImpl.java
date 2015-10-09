@@ -28,14 +28,14 @@ import org.springframework.transaction.annotation.Transactional;
  * @author deni.fahri
  */
 public class LeaveCronListenerServiceImpl extends BaseSchedulerDinamicListenerImpl implements MessageListener {
-
+    
     @Autowired
     private LeaveDao leaveDao;
     @Autowired
     private LeaveDistributionDao leaveDistributionDao;
     @Autowired
     private NeracaCutiDao neracaCutiDao;
-
+    
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public void onMessage(Message msg) {
@@ -61,7 +61,7 @@ public class LeaveCronListenerServiceImpl extends BaseSchedulerDinamicListenerIm
 //    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 
     public void processAddingOfLeaveBalance() throws Exception {
-
+        LOGGER.warn("Prosesss Add Balance Cuti Di Mulai ++++++++++++++++++++++++++++++++++++++++");
         Date current = new Date();
         int currentYear = DateUtils.toCalendar(current).get(Calendar.YEAR);
 
@@ -96,7 +96,7 @@ public class LeaveCronListenerServiceImpl extends BaseSchedulerDinamicListenerIm
             List<LeaveDistribution> leaveDistributions = leaveDistributionDao.getAllDataByLeaveIdAndIsActiveEmployee(leave.getId());
             for (LeaveDistribution leaveDistribution : leaveDistributions) {
                 Date endLeave = leaveDistribution.getEndDate();
-
+                
                 if (StringUtils.equals(availability, HRMConstant.LEAVE_AVAILABILITY_FULL)) {
 
                     /**
@@ -106,14 +106,14 @@ public class LeaveCronListenerServiceImpl extends BaseSchedulerDinamicListenerIm
                     if (DateUtils.isSameDay(oneDayBeforeCurrent, endLeave)) {
                         double balance = leaveDistribution.getBalance();
                         balance = this.getBalanceAllowedTakingToNextYear(balance, isTakingToNextYear, maxTakingToNextYear, leaveDistribution);
-
+                        
                         double debet = quotaPerYear;
                         balance = balance + debet;
                         
                         this.debetNeracaCuti(debet, balance, leaveDistribution);
                         this.saveLeaveDistribution(balance, leaveDistribution);
                     }
-
+                    
                 } else if (StringUtils.equals(availability, HRMConstant.LEAVE_AVAILABILITY_INCREASES_MONTH)) {
                     int quotaPerMonth = quotaPerYear / 12;	//quota per bulan					
 
@@ -154,14 +154,14 @@ public class LeaveCronListenerServiceImpl extends BaseSchedulerDinamicListenerIm
                         if (isProceedTakingBalanceToNextYear) {
                             balance = this.getBalanceAllowedTakingToNextYear(balance, isTakingToNextYear, maxTakingToNextYear, leaveDistribution);
                         }
-
+                        
                         double debet = quotaPerMonth;
                         balance = balance + debet;
                         
                         this.debetNeracaCuti(debet, balance, leaveDistribution);
                         this.saveLeaveDistribution(balance, leaveDistribution);
                     }
-
+                    
                 } else if (StringUtils.equals(availability, HRMConstant.LEAVE_AVAILABILITY_INCREASES_SPECIFIC_DATE)) {
                     if (DateUtils.isSameDay(oneDayBeforeCurrent, endLeave)) {
                         double balance = leaveDistribution.getBalance();
@@ -204,14 +204,14 @@ public class LeaveCronListenerServiceImpl extends BaseSchedulerDinamicListenerIm
             //logic-nya adalah start date ditambah sehari dari endDate, lalu kurangi setahun
             Date startDate = DateUtils.addDays(endDate, 1);
             startDate = DateUtils.addYears(startDate, -1);
-
+            
             leaveDistribution.setStartDate(startDate);
             leaveDistribution.setEndDate(endDate);
             leaveDistributionDao.update(leaveDistribution);
         }
-
+        
     }
-
+    
     private double getBalanceAllowedTakingToNextYear(Double balance, Boolean isTakingToNextYear, Integer maxTakingToNextYear, LeaveDistribution leaveDistribution) {
         /**
          * Check berapa balance cuti yang diperbolehkan dibawa ke tahun depan
@@ -238,10 +238,10 @@ public class LeaveCronListenerServiceImpl extends BaseSchedulerDinamicListenerIm
             this.creditNeracaCuti(credit, balance, leaveDistribution);
             
         }
-
+        
         return balance;
     }
-
+    
     private void saveLeaveDistribution(double balance, LeaveDistribution leaveDistribution) {
         leaveDistribution.setBalance(balance);
         leaveDistribution.setUpdatedOn(new Date());
@@ -270,5 +270,5 @@ public class LeaveCronListenerServiceImpl extends BaseSchedulerDinamicListenerIm
         neracaCuti.setCreatedOn(new Date());
         neracaCutiDao.save(neracaCuti);
     }
-
+    
 }

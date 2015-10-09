@@ -392,6 +392,15 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                     }
                 });
                 break;
+
+//            case "ADD_BALANCE_LEAVE":
+//                jmsTemplateAnnoucmentSendingNotif.send(new MessageCreator() {
+//                    @Override
+//                    public Message createMessage(Session session) throws JMSException {
+//                        return session.createTextMessage(String.valueOf(configId));
+//                    }
+//                });
+//                break;
         }
 
     }

@@ -233,9 +233,9 @@ public class RecruitVacancyAdvertisementServiceImpl extends BaseApprovalServiceI
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<RecruitVacancyAdvertisement> getAllData() throws Exception {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose ECLIPSE Preferences | Code Style | Code Templates.
+		return recruitVacancyAdvertisementDao.getAllData();
 	}
 
 	@Override
@@ -516,7 +516,7 @@ public class RecruitVacancyAdvertisementServiceImpl extends BaseApprovalServiceI
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<RecruitVacancyAdvertisement> getAllDataIsStillEffective() throws Exception {
 		
-		return recruitVacancyAdvertisementDao.getAllDataLessThanEffectiveDate(new Date());
+		return recruitVacancyAdvertisementDao.getAllDataGreaterThanEffectiveDate(new Date());
 	}
 	
 

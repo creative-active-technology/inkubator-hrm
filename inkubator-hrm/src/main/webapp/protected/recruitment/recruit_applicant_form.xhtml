@@ -429,7 +429,7 @@
 	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.download_resource_from']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">
-	                                	<p:commandLink ajax="false" value="Download" title="Download" onclick="PrimeFaces.monitorDownload(start, stop);">
+	                                	<p:commandLink ajax="false" value="Download" title="Download" onclick="PrimeFaces.monitorDownload(start, stop);" immediate="true">
                                     		<p:fileDownload value="#{fileStreamerController.fileFromPath}" />
                                         	<f:param name="path" value="#{recruitApplicantFormController.model.uploadPath}"/>
                                         	<f:param name="fileName" value="applicant"/>
