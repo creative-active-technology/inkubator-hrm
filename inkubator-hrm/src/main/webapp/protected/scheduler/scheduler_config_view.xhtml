@@ -16,6 +16,7 @@
                 Home
             </ui:define>
             <ui:define name="center">
+            	<pe:importConstants className="com.inkubator.hrm.HRMConstant" var="hrmConstant" />
                 <div id="box_bg" style="margin: 10px">                    
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
                         <p:graphicImage library="images" name="bank.png" height="36" width="36" cache="true"/>
@@ -38,9 +39,28 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{schedulerConfigViewController.searchParameter.keyParam}" style="margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="Nama" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['scheduler_config.name']}" itemValue="name"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{schedulerConfigViewController.searchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                     <p:selectOneMenu id="scheduleSearchName"  styleClass="isitext_hrm"  value="#{schedulerConfigViewController.searchParameter.parameter}" filter="true"  filterMatchMode="contains" required="true">
+
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['scheduler_config.user_password_notification_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_USER_PASSWORD_NOTIFICATION}" />
+                                        <f:selectItem itemLabel="#{appmsg['scheduler_config.approval_matrix_notification_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_APROVAL_MATRIX_NOTIF}" />
+                                        <f:selectItem itemLabel="#{appmsg['scheduler_config.delete_access_history_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_DELETE_ACESS_HISTORY}" />
+                                        <f:selectItem itemLabel="#{appmsg['scheduler_config.delete_login_history_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_DELETE_LOG_HISTORY}" />
+                                        <f:selectItem itemLabel="#{appmsg['scheduler_config.year_holiday_update_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_HOLIDAY_UPDATE}" />
+                                        <f:selectItem itemLabel="#{appmsg['scheduler_config.work_schedule_calculation_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_SCHEDULE_WORK}" />
+                                        <f:selectItem itemLabel="#{appmsg['scheduler_config.delete_temp_work_schedule_history_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_DELETE_TEMP_SCHEDULE_WORK}" />
+                                        <f:selectItem itemLabel="#{appmsg['scheduler_config.auto_approval_matrix_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_AUTO_APPROVAL_MATRIX}" />
+                                        <f:selectItem itemLabel="#{appmsg['scheduler_config.add_leave_balance_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_ADD_BALANCE_LEAVE}" />
+                                        <f:selectItem itemLabel="#{appmsg['scheduler_config.add_permit_balance_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_ADD_BALANCE_PERMIT}" />
+                                        <f:selectItem itemLabel="#{appmsg['scheduler_config.company_policy_broadcast_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_COMPANY_POLICY_SEND}" />
+                                        <f:selectItem itemLabel="#{appmsg['scheduler_config.employee_attendance_calculation_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_ATTENDANCE_CALCULATE}" />
+                                        <f:selectItem itemLabel="#{appmsg['scheduler_config.create_notification_log_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_ANNOUNCMENT_GENERATING_LOG}" />
+                                        <f:selectItem itemLabel="#{appmsg['scheduler_config.notification_broadcast_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_ANNOUNCMENT_SENDING_NOTIF}" />
+                                        
+                                    </p:selectOneMenu>
+                                    <!-- <p:inputText id="searchId" value="#{schedulerConfigViewController.searchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/> -->
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{schedulerConfigViewController.doSearch()}" update="tableSchedulerConfigId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -49,14 +69,14 @@
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Excel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableSchedulerConfigId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Bank"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" action="#{schedulerConfigViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" action="#{schedulerConfigViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true" immediate="true" >
                                         <!--<p:ajax event="dialogReturn" listener="#{schedulerConfigViewController.onDialogReturn}"  update="tableSchedulerConfigId,:growlBankViewlId"/>-->
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{schedulerConfigViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
-                        <p:focus for="searchId" />
+                        <p:focus for="scheduleSearchName" />
 
                         <p:dataTable  id="tableSchedulerConfigId" var="data"  value="#{schedulerConfigViewController.lazyDataSchedulerConfig}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -75,7 +95,9 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['scheduler_config.name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.name}"/>
+                                <h:outputLabel value= "#{data.name}" >
+                                	<f:converter converterId="schedulerConfigNameConverter" />
+                                </h:outputLabel>
                             </p:column>
 
                             <p:column sortBy="#{data.schedullerType}">
@@ -118,13 +140,13 @@
 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
-                                                 style="font-size: 10px!important"
+                                                 style="font-size: 10px!important" ajax="true" immediate="true"
                                                  action="#{schedulerConfigViewController.doDetail()}" >                        
                                     <f:setPropertyActionListener value="#{data}" target="#{schedulerConfigViewController.selected}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                 action="#{schedulerConfigViewController.doUpdate()}" >
+                                                 action="#{schedulerConfigViewController.doUpdate()}" ajax="true" immediate="true" >
                                     <f:setPropertyActionListener value="#{data}" target="#{schedulerConfigViewController.selected}" />
                                 </p:commandButton>
                             </p:column>                        
