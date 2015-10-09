@@ -47,8 +47,8 @@
                                     <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Saving_Type"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{orgTypeOfSpecListViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{orgTypeOfSpecListViewController.onDialogReturn}"  update="tableId, growlId"/>
+                                    <p:commandButton value="#{appmsg['global.add']}" action="#{orgTypeOfSpecListViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <!-- <p:ajax event="dialogReturn" listener="#{orgTypeOfSpecListViewController.onDialogReturn}"  update="tableId, growlId"/> -->
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{orgTypeOfSpecListViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                     
@@ -89,8 +89,8 @@
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
-                                                 onclick="PF('statusDialog').show()"  oncomplete="PF('detail').show()" update=":detailPanel"
-                                                 style="font-size: 10px!important" action="#{orgTypeOfSpecListViewController.doSelectEntity()}">                        
+                                                 update=":detailPanel"
+                                                 style="font-size: 10px!important" action="#{orgTypeOfSpecListViewController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{data}" target="#{orgTypeOfSpecListViewController.selected}" />
                                 </p:commandButton>
                                 - 
@@ -101,9 +101,9 @@
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
-                                                  action="#{orgTypeOfSpecListViewController.doEdit()}" >
+                                                  action="#{orgTypeOfSpecListViewController.doUpdate()}" >
                                     <f:setPropertyActionListener value="#{data}" target="#{orgTypeOfSpecListViewController.selected}" />
-                                    <p:ajax event="dialogReturn" listener="#{orgTypeOfSpecListViewController.onDialogReturn}"  update="tableId, :formId:growlId"/>
+                                    <!-- <p:ajax event="dialogReturn" listener="#{orgTypeOfSpecListViewController.onDialogReturn}"  update="tableId, :formId:growlId"/> -->
                                 </p:commandButton> 
                             </p:column> 
                             <f:facet name="footer">

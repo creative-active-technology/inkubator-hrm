@@ -9,8 +9,11 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.OrgTypeOfSpecListDao;
 import com.inkubator.hrm.entity.OrgTypeOfSpec;
 import com.inkubator.hrm.entity.OrgTypeOfSpecList;
+import com.inkubator.hrm.entity.ReimbursmentSchema;
 import com.inkubator.hrm.web.search.OrgTypeOfSpecListSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
@@ -87,5 +90,21 @@ public class OrgTypeOfSpecListDaoImpl extends IDAOImpl<OrgTypeOfSpecList> implem
         criteria.addOrder(Order.asc("code"));
         return criteria.list();
     }
+
+	@Override
+	public OrgTypeOfSpecList getEntityByPkWithDetail(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("orgTypeOfSpec", FetchMode.JOIN);
+        criteria.setFetchMode("orgTypeOfSpecListKlasifikasis", FetchMode.JOIN);
+        criteria.setFetchMode("orgTypeOfSpecListKlasifikasis.klasifikasiKerja", FetchMode.JOIN);
+        return (OrgTypeOfSpecList) criteria.uniqueResult();
+	}
+
+	@Override
+	public void saveAndMerge(OrgTypeOfSpecList orgTypeOfSpecList) {
+		getCurrentSession().update(orgTypeOfSpecList);
+        getCurrentSession().flush();
+	}
 
 }
