@@ -222,7 +222,7 @@ public class EmpCorrectionAttendanceFormController extends BaseController {
     }
 
     private void getEntityFromModel(EmpCorrectionAttendanceModel m) {
-    	empCorrectionAttendance = new WtEmpCorrectionAttendance();
+    	empCorrectionAttendance = new WtEmpCorrectionAttendance(); //inisialisasi object
         if (m.getId() != null) {
             empCorrectionAttendance.setId(m.getId());
         }
@@ -232,6 +232,7 @@ public class EmpCorrectionAttendanceFormController extends BaseController {
         empCorrectionAttendance.setRequestCode(m.getRequestCode());
         empCorrectionAttendance.setRequestDate(m.getRequestDate());
         
+        listEmpCorrectionAttendanceDetails = new ArrayList<>(); //inisialisasi object
         for(EmpCorrectionAttendanceDetailModel detail : m.getListDetail()){
         	WtEmpCorrectionAttendanceDetail empCorrectionAttendanceDetail = new WtEmpCorrectionAttendanceDetail();
         	empCorrectionAttendanceDetail.setAttendanceDate(detail.getAttendanceDate());

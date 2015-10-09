@@ -104,14 +104,18 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['scheduler_config.scheduler_type']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.schedullerType}"/>
+                                <h:outputLabel value= "#{data.schedullerType}">
+                                	<f:converter converterId="schedulerSchedTypeConverter"/>
+                                </h:outputLabel>
                             </p:column>
 
                             <p:column sortBy="#{data.repeateType}"  >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['scheduler_config.repeate_type']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.repeateType}"/>
+                                <h:outputLabel value= "#{data.repeateType}">
+                                	<f:converter converterId="schedulerRepeatTypeConverter"/>
+                                </h:outputLabel>
                             </p:column> 
                             <p:column sortBy="#{data.repeateNumber}"  >
                                 <f:facet name="header">  

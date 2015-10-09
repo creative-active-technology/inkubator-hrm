@@ -8,8 +8,11 @@ package com.inkubator.hrm.dao;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.OrgTypeOfSpec;
 import com.inkubator.hrm.entity.OrgTypeOfSpecList;
+import com.inkubator.hrm.entity.ReimbursmentSchema;
 import com.inkubator.hrm.web.search.OrgTypeOfSpecListSearchParameter;
+
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 
 /**
@@ -27,4 +30,8 @@ public interface OrgTypeOfSpecListDao extends IDAO<OrgTypeOfSpecList> {
     public List<OrgTypeOfSpecList> getOrgTypeOfSpecList(long id);
     
     public List<OrgTypeOfSpecList> getAllDataByOrgTypeOfSpecIdAndOrderByCode(Long id);
+    
+    public OrgTypeOfSpecList getEntityByPkWithDetail(Long id);
+
+    public void saveAndMerge(OrgTypeOfSpecList orgTypeOfSpecList);
 }

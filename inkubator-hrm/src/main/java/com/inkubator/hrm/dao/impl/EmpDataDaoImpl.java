@@ -2302,7 +2302,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 			query.append(" INNER JOIN golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
 			query.append(" INNER JOIN pangkat pangkat ON goljab.pangkat_id = pangkat.id");
 			//query for action searching
-			doSearchEmployeeForRecruitAgreementNoticeWithNativeQuery(searchParameter);
+			doSearchEmployeeForRecruitAgreementNoticeWithNativeQuery(searchParameter, query);
 			//order query base on orderable
 			query.append(" ORDER BY ");
 			  
@@ -2328,6 +2328,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 	}
 	
     public Long getTotalAllEmployeeForRecruitAggrementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter){
+    	System.out.println(searchParameter.getEmpDataName() + " hohoho");
     	final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT emp.id as employeeId, bio.id as bioDataId, bio.first_name as firstName, bio.last_name as lastName, jabatan.name as jabatanName, pangkat.pangkat_name as pangkatName, ");
         query.append(" (SELECT pangkat2.pangkat_name FROM pangkat pangkat2");
 		query.append(" WHERE pangkat2.level < pangkat.level ORDER BY LEVEL DESC LIMIT 1) as jabatanDituju,");
@@ -2344,13 +2345,13 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 		query.append(" INNER JOIN golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
 		query.append(" INNER JOIN pangkat pangkat ON goljab.pangkat_id = pangkat.id");
 		//query for action searching
-		doSearchEmployeeForRecruitAgreementNoticeWithNativeQuery(searchParameter);
+		doSearchEmployeeForRecruitAgreementNoticeWithNativeQuery(searchParameter, query);
 		query.append(" ) as totalRows");
 		return Long.valueOf(getCurrentSession().createSQLQuery(query.toString()).uniqueResult().toString());
     }
 
-    public void doSearchEmployeeForRecruitAgreementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter){
-    	StringBuilder query = new StringBuilder();
+    public void doSearchEmployeeForRecruitAgreementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter, StringBuilder query){
+    	/*StringBuilder query = new StringBuilder();*/
     	//query for action searching
 		if(searchParameter.getEmpDataName() != null){
 			query.append(" WHERE bio.first_name like '%" + searchParameter.getEmpDataName() + "%'");

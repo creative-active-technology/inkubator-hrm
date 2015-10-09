@@ -44,7 +44,7 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
-                                    <p:commandButton value="Export to XLS" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                    <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_of_Implementation_Overtime"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add']}" actionListener="#{implementationOfOverTimeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true" >
@@ -91,7 +91,9 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['overTimeImplementation.implementation_date']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.implementationDate}" />
+                                <h:outputLabel value= "#{data.implementationDate}" >
+                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
                             </p:column>
                             <p:column sortBy="#{data.startTime}" style="width: 12%">
                                 <f:facet name="header">

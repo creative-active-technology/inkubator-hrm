@@ -44,7 +44,9 @@
                                     <p:outputLabel value="#{appmsg['scheduler_config.scheduler_type']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.schedullerType}" />
+                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.schedullerType}">
+                                    	<f:converter converterId="schedulerSchedTypeConverter"/>
+                                    </p:outputLabel>
                                 </p:column>
                             </p:row>  
                             <p:row>
@@ -52,7 +54,9 @@
                                     <p:outputLabel value="#{appmsg['scheduler_config.repeate_type']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.repeateType}" />
+                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.repeateType}">
+                                    	<f:converter converterId="schedulerRepeatTypeConverter"/>
+                                    </p:outputLabel>
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -86,7 +90,9 @@
                                     <p:outputLabel value="#{appmsg['scheduler_config.start_execution']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.dateStartExecution}" />
+                                    <p:outputLabel  value="#{schedulerConfigDetilController.selected.dateStartExecution}" >
+                                    	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
                                 </p:column>
                             </p:row>  
                             

@@ -13,15 +13,18 @@ import com.inkubator.hrm.web.search.OrgTypeOfSpecListSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -90,16 +93,28 @@ public class OrgTypeOfSpecListViewController extends BaseController{
         RequestContext.getCurrentInstance().openDialog("org_typespec_list_form", options, params);
     }
     
-    public void doAdd(){
+    /*public void doAdd(){
         showDialog(null);
+    }*/
+    
+    public String doAdd(){
+        return "/protected/organisation/org_typespec_list_form.htm?faces-redirect=true";
     }
     
-    public void doEdit(){
+    public String doUpdate() {
+        return "/protected/organisation/org_typespec_list_form.htm?faces-redirect=true&execution=e" + selected.getId();
+    }
+    
+/*    public void doEdit(){
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add(String.valueOf(selected.getId()));
         dataToSend.put("orgTypeOfSpecListId", dataIsi);
         showDialog(dataToSend);
+    }*/
+    
+    public String doDetail(){
+    	return "/protected/organisation/org_typespec_list_detail.htm?faces-redirect=true&execution=e" + selected.getId();
     }
     
     @Override

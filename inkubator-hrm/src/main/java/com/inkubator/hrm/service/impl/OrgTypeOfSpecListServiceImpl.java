@@ -5,19 +5,11 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.dao.OrgTypeOfSpecDao;
-import com.inkubator.hrm.dao.OrgTypeOfSpecListDao;
-import com.inkubator.hrm.entity.OrgTypeOfSpec;
-import com.inkubator.hrm.entity.OrgTypeOfSpecList;
-import com.inkubator.hrm.service.OrgTypeOfSpecListService;
-import com.inkubator.hrm.web.search.OrgTypeOfSpecListSearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
 import org.hibernate.criterion.Order;
 import org.primefaces.model.DualListModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +18,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.OrgTypeOfSpecDao;
+import com.inkubator.hrm.dao.OrgTypeOfSpecListDao;
+import com.inkubator.hrm.dao.OrgTypeOfSpecListKlasifikasiDao;
+import com.inkubator.hrm.entity.KlasifikasiKerja;
+import com.inkubator.hrm.entity.OrgTypeOfSpec;
+import com.inkubator.hrm.entity.OrgTypeOfSpecList;
+import com.inkubator.hrm.entity.OrgTypeOfSpecListKlasifikasi;
+import com.inkubator.hrm.entity.ReimbursmentSchemaEmployeeType;
+import com.inkubator.hrm.service.OrgTypeOfSpecListService;
+import com.inkubator.hrm.web.search.OrgTypeOfSpecListSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -40,6 +46,9 @@ public class OrgTypeOfSpecListServiceImpl extends IServiceImpl implements OrgTyp
 
     @Autowired
     private OrgTypeOfSpecDao orgTypeOfSpecDao;
+    
+    @Autowired
+    private OrgTypeOfSpecListKlasifikasiDao orgTypeOfSpecListKlasifikasiDao;
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
@@ -82,7 +91,7 @@ public class OrgTypeOfSpecListServiceImpl extends IServiceImpl implements OrgTyp
         if (totalDuplicates > 0) {
             throw new BussinessException("marital.error_duplicate_marital_code");
         }
-        entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        /*entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));*/
         entity.setOrgTypeOfSpec(orgTypeOfSpecDao.getEntiyByPK(entity.getOrgTypeOfSpec().getId()));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
@@ -90,17 +99,26 @@ public class OrgTypeOfSpecListServiceImpl extends IServiceImpl implements OrgTyp
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(OrgTypeOfSpecList entity) throws Exception {
         long totalDuplicates = orgTypeOfSpecListDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
         if (totalDuplicates > 0) {
             throw new BussinessException("marital.error_duplicate_marital_code");
         }
         OrgTypeOfSpecList update = orgTypeOfSpecListDao.getEntiyByPK(entity.getId());
+        update.getOrgTypeOfSpecListKlasifikasis().clear();
         update.setCode(entity.getCode());
         update.setName(entity.getName());
         update.setDescription(entity.getDescription());
-        update.setOrgTypeOfSpec(entity.getOrgTypeOfSpec());
+        update.setOrgTypeOfSpec(orgTypeOfSpecDao.getEntiyByPK(entity.getOrgTypeOfSpec().getId()));
         update.setUpdatedBy(UserInfoUtil.getUserName());
+        this.orgTypeOfSpecListDao.saveAndMerge(update);
+        Set<OrgTypeOfSpecListKlasifikasi> dataToSave = entity.getOrgTypeOfSpecListKlasifikasis();
+        System.out.println(dataToSave.size() + " size dari service");
+        for (OrgTypeOfSpecListKlasifikasi orgTypeOfSpecListKlasifikasi : dataToSave) {
+        	orgTypeOfSpecListKlasifikasi.setOrgTypeOfSpecList(update);
+            this.orgTypeOfSpecListKlasifikasiDao.save(orgTypeOfSpecListKlasifikasi);
+        }
     }
 
     @Override
@@ -270,5 +288,19 @@ public class OrgTypeOfSpecListServiceImpl extends IServiceImpl implements OrgTyp
     public List<OrgTypeOfSpecList> getAllDataByOrgTypeOfSpecIdAndOrderByCode(Long id) throws Exception {
         return orgTypeOfSpecListDao.getAllDataByOrgTypeOfSpecIdAndOrderByCode(id);
     }
+
+    @Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public OrgTypeOfSpecList getAllDataWithDetail(Long id) throws Exception {
+		OrgTypeOfSpecList orgTypeOfSpecList = orgTypeOfSpecListDao.getEntityByPkWithDetail(id);
+        List<KlasifikasiKerja> klasifikasiKerja = new ArrayList<>();
+        List<OrgTypeOfSpecListKlasifikasi> listOrgTypeOfSpecListKlasifikasi = orgTypeOfSpecListKlasifikasiDao.getByorgTypeOfSpecListId(id);
+        for (OrgTypeOfSpecListKlasifikasi orgTypeOfSpecListKlasifikasi : this.orgTypeOfSpecListKlasifikasiDao.getByorgTypeOfSpecListId(id)) {
+        	klasifikasiKerja.add(orgTypeOfSpecListKlasifikasi.getKlasifikasiKerja());
+        }
+        orgTypeOfSpecList.setKlasifikasiKerja(klasifikasiKerja);
+        return orgTypeOfSpecList;
+	}
+
 
 }
