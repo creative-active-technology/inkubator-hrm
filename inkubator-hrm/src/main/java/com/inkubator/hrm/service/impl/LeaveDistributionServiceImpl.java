@@ -191,6 +191,7 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
         }
     	
         neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        neracaCuti.setSaldo(newBalance);
         neracaCuti.setLeaveDistribution(leaveDistribution);
     	neracaCuti.setCreatedBy(UserInfoUtil.getUserName());
         neracaCuti.setCreatedOn(new Date());
@@ -387,6 +388,7 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
             NeracaCuti neracaCuti = new NeracaCuti();
             neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
             neracaCuti.setDebet(startBalance);
+            neracaCuti.setSaldo(startBalance);
             neracaCuti.setLeaveDistribution(distribution);
             neracaCuti.setCreatedBy(UserInfoUtil.getUserName());
             neracaCuti.setCreatedOn(new Date());
