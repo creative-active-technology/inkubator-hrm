@@ -99,7 +99,7 @@ public class RecruitApplicantFormController extends BaseController {
         	model.setListCity(cityService.getAllData());
         	model.setSpecListDualModel(orgTypeOfSpecListService.getAllBySpectJabatan());
         	model.setSpecListName(orgTypeOfSpecListService.getOrgTypeSpecName());
-        	model.setListVacancyAdvertisement(recruitVacancyAdvertisementService.getAllDataIsStillEffective());
+        	
         	
         	isUpdate = Boolean.FALSE;
         	String param = FacesUtil.getRequestParameter("execution");
@@ -108,6 +108,9 @@ public class RecruitApplicantFormController extends BaseController {
 				if (applicant != null) {
 					this.getModelFromEntity(applicant);
 					isUpdate = Boolean.TRUE;
+					
+					//untuk "edit/update applicant", tampilkan semua list iklan lowongan tanpa ada filter 
+					model.setListVacancyAdvertisement(recruitVacancyAdvertisementService.getAllData());
 				}
 			} else {
 				//default value
@@ -119,6 +122,9 @@ public class RecruitApplicantFormController extends BaseController {
 				model.setLastJabatanSince(dt.getYear());
 				model.setIsActive(Boolean.TRUE);
 				model.setIsVerified(Boolean.TRUE);
+				
+				//untuk "add applicant",  list iklan lowongan yang  ditampilan difilter berdasarkan "efektif date"
+				model.setListVacancyAdvertisement(recruitVacancyAdvertisementService.getAllDataIsStillEffective()); 
 			}
         } catch (Exception e) {
             LOGGER.error("Error", e);

@@ -77,17 +77,17 @@
                                 <h:outputLabel value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-								<p:commandLink ajax="false" value="CSV" title="CSV" style="font-size: 12px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
+								<p:commandLink ajax="false" value="CSV" title="CSV" style="font-size: 12px!important" onclick="PrimeFaces.monitorDownload(start, stop);" immediate="true">
                                     <p:fileDownload value="#{imageFileTemplateStreamerController.recruitApplicantUploadFile}" />
                                     <f:param name="extension" value="csv"/>
                                 </p:commandLink>
                                 &nbsp;&nbsp;&nbsp;
-                                <p:commandLink ajax="false" value="XLS" title="XLS" style="font-size: 12px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                <p:commandLink ajax="false" value="XLS" title="XLS" style="font-size: 12px!important" onclick="PrimeFaces.monitorDownload(start, stop);" immediate="true">
                                     <p:fileDownload value="#{imageFileTemplateStreamerController.recruitApplicantUploadFile}" />
                                     <f:param name="extension" value="xls"/>
                                 </p:commandLink>
                                 &nbsp;&nbsp;&nbsp;
-                                <p:commandLink ajax="false" value="XLSX" title="XLSX" style="font-size: 12px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                <p:commandLink ajax="false" value="XLSX" title="XLSX" style="font-size: 12px!important" onclick="PrimeFaces.monitorDownload(start, stop);" immediate="true">
                                     <p:fileDownload value="#{imageFileTemplateStreamerController.recruitApplicantUploadFile}" />
                                     <f:param name="extension" value="xlsx"/>
                                 </p:commandLink>   
