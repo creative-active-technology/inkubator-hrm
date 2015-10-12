@@ -63,7 +63,8 @@ public class UserModel implements Serializable {
         this.emailAddress = emailAddress;
     }
 
-    @Pattern(regexp = "^[+][\\d() -]+", message = "{errorr_phone}")
+    /*@Pattern(regexp = "^[+][\\d() -]+", message = "{errorr_phone}")*/
+    @Pattern(regexp = "^[\\d() -]+", message = "{error_phone_without_country_code}")
     public String getPhoneNumber() {
         return phoneNumber;
     }

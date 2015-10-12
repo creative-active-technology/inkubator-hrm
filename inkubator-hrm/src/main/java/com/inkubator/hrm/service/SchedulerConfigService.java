@@ -17,8 +17,11 @@ import com.inkubator.hrm.web.search.SchedulerConfigSearchParameter;
  *
  * @author denifahri
  */
-public interface SchedulerConfigService extends IService<SchedulerConfig>{
-	public List<SchedulerConfig> getByParam(SchedulerConfigSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
-	
-	public Long getTotalByParam(SchedulerConfigSearchParameter searchParameter) throws Exception;
+public interface SchedulerConfigService extends IService<SchedulerConfig> {
+
+    public List<SchedulerConfig> getByParam(SchedulerConfigSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+
+    public Long getTotalByParam(SchedulerConfigSearchParameter searchParameter) throws Exception;
+
+    
 }

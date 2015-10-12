@@ -62,6 +62,22 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
     @Autowired
     private JmsTemplate jmsTemplateAnnoucmentSendingNotif;
 
+//    @Override
+//    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+//    public void initMethode() throws Exception {
+//        List<SchedulerConfig> dataToUpdateLastExecution = this.schedulerConfigDao.getAllWithIsTimeDiv(Boolean.TRUE);
+////        for (SchedulerConfig config : dataToUpdateLastExecution) {
+//            Date now = new Date();
+//            String nowString = new SimpleDateFormat("dd MM yyyy HH:mm").format(now);
+////            config.setLastExecution(new SimpleDateFormat("dd MM yyyy HH:mm").parse(nowString));
+//            SchedulerConfig config=dataToUpdateLastExecution.get(0);
+//            config.setLastExecution(new SimpleDateFormat("dd MM yyyy HH:mm").parse(nowString));
+//            this.schedulerConfigDao.update(config);
+//           
+////            }
+////        }
+//    }
+
     @Scheduled(cron = "${cron.dinamic.scheduler}")// Harus REQUARED NEW
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     @Override
@@ -404,4 +420,5 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
         }
 
     }
+
 }

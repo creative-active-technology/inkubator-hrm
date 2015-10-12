@@ -2,16 +2,24 @@ package com.inkubator.hrm.entity;
 // Generated Apr 15, 2015 2:40:35 PM by Hibernate Tools 4.3.1
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -26,7 +34,7 @@ import javax.persistence.Version;
 public class OrgTypeOfSpecList  implements java.io.Serializable {
 
 
-     private long id;
+     private Long id;
      private Integer version;
      private OrgTypeOfSpec orgTypeOfSpec;
      private String code;
@@ -36,17 +44,19 @@ public class OrgTypeOfSpecList  implements java.io.Serializable {
      private Date updatedOn;
      private String createdBy;
      private String updatedBy;
+     private Set<OrgTypeOfSpecListKlasifikasi> orgTypeOfSpecListKlasifikasis = new HashSet<OrgTypeOfSpecListKlasifikasi>(0);
+     List<KlasifikasiKerja> klasifikasiKerja = new ArrayList<>();
 
     public OrgTypeOfSpecList() {
     }
 
 	
-    public OrgTypeOfSpecList(long id, OrgTypeOfSpec orgTypeOfSpec, String code) {
+    public OrgTypeOfSpecList(Long id, OrgTypeOfSpec orgTypeOfSpec, String code) {
         this.id = id;
         this.orgTypeOfSpec = orgTypeOfSpec;
         this.code = code;
     }
-    public OrgTypeOfSpecList(long id, OrgTypeOfSpec orgTypeOfSpec, String code, String name, String description, Date createdOn, Date updatedOn, String createdBy, String updatedBy) {
+    public OrgTypeOfSpecList(Long id, OrgTypeOfSpec orgTypeOfSpec, String code, String name, String description, Date createdOn, Date updatedOn, String createdBy, String updatedBy) {
        this.id = id;
        this.orgTypeOfSpec = orgTypeOfSpec;
        this.code = code;
@@ -62,11 +72,11 @@ public class OrgTypeOfSpecList  implements java.io.Serializable {
 
     
     @Column(name="id", unique=true, nullable=false)
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
     
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -183,7 +193,27 @@ public class OrgTypeOfSpecList  implements java.io.Serializable {
 			return false;
 		return true;
 	}
+        
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="orgTypeOfSpecList", orphanRemoval = true)
+    public Set<OrgTypeOfSpecListKlasifikasi> getOrgTypeOfSpecListKlasifikasis() {
+        return this.orgTypeOfSpecListKlasifikasis;
+    }
+    
+    public void setOrgTypeOfSpecListKlasifikasis(Set<OrgTypeOfSpecListKlasifikasi> orgTypeOfSpecListKlasifikasis) {
+        this.orgTypeOfSpecListKlasifikasis = orgTypeOfSpecListKlasifikasis;
+    }
 
+    @Transient
+	public List<KlasifikasiKerja> getKlasifikasiKerja() {
+		return klasifikasiKerja;
+	}
+
+
+	public void setKlasifikasiKerja(List<KlasifikasiKerja> klasifikasiKerja) {
+		this.klasifikasiKerja = klasifikasiKerja;
+	}
+
+    
 }
 
 

@@ -3,9 +3,13 @@ package com.inkubator.hrm.entity;
 
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,7 +36,8 @@ public class OrgTypeOfSpec  implements java.io.Serializable {
      private String createdBy;
      private Date updatedOn;
      private String updatedBy;
-
+     private Set<OrgTypeOfSpecList> orgTypeOfSpecLists = new HashSet<OrgTypeOfSpecList>(0);
+     
     public OrgTypeOfSpec() {
     }
 
@@ -148,6 +153,15 @@ public class OrgTypeOfSpec  implements java.io.Serializable {
         this.updatedBy = updatedBy;
     }
 
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="orgTypeOfSpec")
+    public Set<OrgTypeOfSpecList> getOrgTypeOfSpecLists() {
+        return this.orgTypeOfSpecLists;
+    }
+    
+    public void setOrgTypeOfSpecLists(Set<OrgTypeOfSpecList> orgTypeOfSpecLists) {
+        this.orgTypeOfSpecLists = orgTypeOfSpecLists;
+    }
 
 
 

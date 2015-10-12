@@ -9,9 +9,7 @@ package com.inkubator.hrm.service;
  *
  * @author denifahri
  */
-public interface ScheduleDinamicService {
+public interface SchedulerConfigInitService {
 
-    public void doDinamicCheck() throws Exception;
-
-    
+    public void initMethode() throws Exception;
 }

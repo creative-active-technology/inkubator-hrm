@@ -10,13 +10,14 @@
         <title>IGNORED</title>
     </h:head>
     <h:body>
-        <ui:composition template="/templates/dialog_layout.xhtml">
+       <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
-
+                Home
             </ui:define>
             <ui:define name="center">
                 <p:growl id="growlId" globalOnly="true" showDetail="true"/>
                 <h:form id="formId">
+                <div id="box_bg" style="margin: 10px">
                     <h:panelGrid  columns="2">
                         <p:graphicImage library="images" name="bank.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
@@ -27,96 +28,74 @@
                         </h:panelGroup>
                     </h:panelGrid>
                     <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
-                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                    </h:panelGrid> 
                     
-                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
-                        
+                    <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                            
                         <p:row>
-                            <p:column style="width: 40%">
+                            <p:column style="width: 20%;background-color: #e1f0f0!important">
                                 <p:outputLabel for="code" value="#{appmsg['org_type_of_spec_list.specification_code']}" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
+                            <p:column  style="width: 80%">
                                 <p:inputText id="code"  value="#{orgTypeOfSpecListFormController.model.code}"
                                              required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
+                            	
                                 <p:message for="code"/>
                             </p:column>
                         </p:row>
                         
                         <p:row>
-                            <p:column style="width: 40%">
+                            <p:column style="width: 20%;background-color: #e1f0f0!important">
                                 <p:outputLabel for="name" value="#{appmsg['org_type_of_spec_list.specification_name']}" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
+                            <p:column  style="width: 80%">
                                 <p:inputText id="name"  value="#{orgTypeOfSpecListFormController.model.name}"
                                              required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
+                            	
                                 <p:message for="name"/>
                             </p:column>
                         </p:row>
                         
                         <p:row>
-                            <p:column style="width: 40%">
+                            <p:column style="width: 20%;background-color: #e1f0f0!important">
                                 <p:outputLabel for="departmentId" value="#{appmsg['org_type_of_spec_list.job_specification_type']}" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="departmentId" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 50%">
+                            <p:column style="width: 80%">
                                 <p:selectOneMenu id="departmentId" value="#{orgTypeOfSpecListFormController.model.orgTypeOfSpecId}" style="width: 156px" >
                                                 <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                                 <f:selectItems value="#{orgTypeOfSpecListFormController.dropDownOrgTypeOfSpec}"/>
                                             </p:selectOneMenu>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
+                                            
                                 <p:message for="departmentId"/>
                             </p:column>
                         </p:row>
-                        
                         <p:row>
-                            <p:column style="width: 37%">
+                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="pickListKlasifikasiKerja" value="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 80%" >
+                                <p:pickList value="#{orgTypeOfSpecListFormController.dualListModel}" var="klasifikasiKerja" itemValue="#{klasifikasiKerja}" converter="klasifikasiKerjaConverter" id="pickListKlasifikasiKerja"
+                                        required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['jobFamily.list_of_jobFamily']}" styleClass="isitext_hrm"
+                                        itemLabel="#{klasifikasiKerja.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                        removeLabel="#{appmsg['global.remove']}"/>
+                            	<p:message for="pickListKlasifikasiKerja" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important">
                                 <p:outputLabel for="description" value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="description" value=":"  styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 50%" >
+                            <p:column style="width: 80%" >
                                 <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{orgTypeOfSpecListFormController.model.description}" 
                                                  style="width: 96%; height: 60px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
                                                  label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
 
-                            </p:column>
-                        </p:row>
-                        
-                        <p:row>
-                            <p:column colspan="3">
                                 <p:message for="description"/>
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 25%">
-                                <p:outputLabel  value="" styleClass="label_hrm"/>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important">
                             </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel  value=""  styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 60%" >
+                            <p:column style="width: 80%" >
                                 <h:outputText id="counter" />
                             </p:column>
                         </p:row>
@@ -124,7 +103,7 @@
                     </p:panelGrid>
                     <p:focus context="formId" />
                     <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
-                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                    <div style="margin-bottom: 5px">
                         <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
                                          action="#{orgTypeOfSpecListFormController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
@@ -133,7 +112,9 @@
                                          icon="ui-icon-refresh" styleClass="isitext_hrm" >  
                             <p:resetInput target="formId" />  
                         </p:commandButton>
-                    </h:panelGrid>
+                    
+                    </div>
+                    </div>
                 </h:form>
             </ui:define>
 
