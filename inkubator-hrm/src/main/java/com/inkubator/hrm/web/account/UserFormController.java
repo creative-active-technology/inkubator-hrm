@@ -249,7 +249,7 @@ public class UserFormController extends BaseController {
 
     public HrmUser getEntityFromView(UserModel userModel) {
         HrmUser hrmUser = new HrmUser();
-        String phoneNumber = userModel.getCountryPhoneCode()+""+userModel.getPhoneNumbers();
+        String phoneNumber = userModel.getCountryPhoneCode()+""+userModel.getPhoneNumber().substring(1);
         if (userModel.getId() != null) {
             hrmUser.setId(userModel.getId());
         }
@@ -284,14 +284,11 @@ public class UserFormController extends BaseController {
 
     public UserModel getUserModelFromEntity(HrmUser hrmUser) {
         UserModel us = new UserModel();
-    	System.out.println("get User Model From Entity");
     	//replace phone number, ex: from +6285720123456 to 085720123456
-    	if(hrmUser.getPhoneCode() != null){
+    	if(hrmUser.getPhoneNumber() != null){
 	    	String phoneWithCode = hrmUser.getPhoneNumber();
-	    	System.out.println(phoneWithCode + " - " + hrmUser.getPhoneNumber() + " - " + hrmUser.getPhoneCode().length() + " - " + hrmUser.getPhoneNumber().length());
 	    	String phoneNumberWithoutCode = phoneWithCode.substring(hrmUser.getPhoneCode().length(), hrmUser.getPhoneNumber().length());
-	        System.out.println(phoneNumberWithoutCode);
-	        us.setPhoneNumbers(Long.valueOf(phoneNumberWithoutCode));
+	        us.setPhoneNumber("0"+phoneNumberWithoutCode);
 	        us.setCountryPhoneCode(hrmUser.getPhoneCode());
     	}
         us.setId(hrmUser.getId());
@@ -312,7 +309,7 @@ public class UserFormController extends BaseController {
             us.setIsLock(Boolean.FALSE);
         }
         us.setPassword(hrmUser.getPassword());
-        us.setPhoneNumber(hrmUser.getPhoneNumber());
+        /*us.setPhoneNumber(hrmUser.getPhoneNumber());*/
         us.setRealName(hrmUser.getRealName());
         us.setUserId(hrmUser.getUserId());
         if(hrmUser.getEmpData() != null){
