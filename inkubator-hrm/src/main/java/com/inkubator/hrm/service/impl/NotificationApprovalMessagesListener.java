@@ -6,8 +6,10 @@
 package com.inkubator.hrm.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -16,6 +18,7 @@ import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.velocity.tools.generic.DateTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -34,7 +37,9 @@ import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.HrmUser;
-import com.inkubator.hrm.entity.RecruitMppApplyDetail;
+import com.inkubator.hrm.entity.WtEmpCorrectionAttendanceDetail;
+import com.inkubator.hrm.json.util.DateJsonDeserializer;
+import com.inkubator.hrm.json.util.JsonUtil;
 
 /**
  *
@@ -96,12 +101,12 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
              toSentCC.add(el.getAsString());
              }
              }*/
-            toSend.add("deni.arianto24@yahoo.com");
+            /*toSend.add("deni.arianto24@yahoo.com");
             toSend.add("rizal2_dhfr@yahoo.com");
             toSend.add("yosa.mareta@gmail.com");
-            toSend.add("guntur@incubatechnology.com");
+            toSend.add("guntur@incubatechnology.com");*/
             toSentCC.add("rizkykojek@gmail.com");
-            toSentCC.add("amjadicky@gmail.com");
+            /*toSentCC.add("amjadicky@gmail.com");*/
             vtm.setTo(toSend.toArray(new String[toSend.size()]));
             vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
             vtm.setBcc(toSentBCC.toArray(new String[toSentBCC.size()]));
@@ -114,6 +119,23 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                 if (Objects.equals(appActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL)) {
                     //configure email parameter based on approval name
                     switch (appActivity.getApprovalDefinition().getName()) {
+	                    case HRMConstant.EMP_CORRECTION_ATTENDANCE:
+	                    	Gson gsonDateSerializer = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
+	                    	List<WtEmpCorrectionAttendanceDetail> listCorrectionAttendance = gsonDateSerializer.fromJson(jsonObject.get("listCorrectionAttendance").getAsString(), new TypeToken<List<WtEmpCorrectionAttendanceDetail>>() {}.getType());
+                            
+	                        vtm.setSubject("Pengajuan Koreksi Kehadiran");
+	                        vtm.setTemplatePath("email_recruit_applicant_waiting_approval.vm");
+	                        maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+	                        maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+	                        maptoSend.put("nik", requesterUser.getEmpData().getNik());
+	                        maptoSend.put("startDate", jsonObject.get("startDate").getAsString());
+	                        maptoSend.put("endDate", jsonObject.get("endDate").getAsString());
+	                        maptoSend.put("applyDate", jsonObject.get("applyDate").getAsString());
+	                        maptoSend.put("listCorrectionAttendance", listCorrectionAttendance);
+	                        maptoSend.put("dateTool", new DateTool());
+	                        maptoSend.put("locale", new Locale(locale));
+	                        break;
+                        
                         case HRMConstant.BUSINESS_TRAVEL:
                             vtm.setSubject("Permohonan Perjalanan Dinas");
                             vtm.setTemplatePath("email_travel_waiting_approval.vm");
@@ -283,7 +305,24 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                         || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)) {
                     //configure email parameter based on approval name	
                     switch (appActivity.getApprovalDefinition().getName()) {
-                        case HRMConstant.BUSINESS_TRAVEL:
+	                    case HRMConstant.EMP_CORRECTION_ATTENDANCE:
+	                    	Gson gsonDateSerializer = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
+	                    	List<WtEmpCorrectionAttendanceDetail> listCorrectionAttendance = gsonDateSerializer.fromJson(jsonObject.get("listCorrectionAttendance").getAsString(), new TypeToken<List<WtEmpCorrectionAttendanceDetail>>() {}.getType());
+	                        
+	                        vtm.setSubject("Pengajuan Koreksi Kehadiran");
+	                        vtm.setTemplatePath("email_recruit_applicant_approved_or_rejected.vm");
+	                        maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+	                        maptoSend.put("nik", requesterUser.getEmpData().getNik());
+	                        maptoSend.put("startDate", jsonObject.get("startDate").getAsString());
+	                        maptoSend.put("endDate", jsonObject.get("endDate").getAsString());
+	                        maptoSend.put("applyDate", jsonObject.get("applyDate").getAsString());
+	                        maptoSend.put("listCorrectionAttendance", listCorrectionAttendance);
+	                        maptoSend.put("dateTool", new DateTool());
+	                        maptoSend.put("locale", new Locale(locale));
+	                        maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+	                        break;
+                        
+                    	case HRMConstant.BUSINESS_TRAVEL:
                             vtm.setSubject("Permohonan Perjalanan Dinas");
                             vtm.setTemplatePath("email_travel_approved_or_rejected_approval.vm");
                             maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
