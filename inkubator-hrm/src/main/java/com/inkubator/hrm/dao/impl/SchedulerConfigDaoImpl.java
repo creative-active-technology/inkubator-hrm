@@ -33,30 +33,36 @@ public class SchedulerConfigDaoImpl extends IDAOImpl<SchedulerConfig> implements
         return SchedulerConfig.class;
     }
 
-	@Override
-	public List<SchedulerConfig> getByParam(SchedulerConfigSearchParameter searchParameter, int firstResult,
-			int maxResults, Order order) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		doSearchByParam(searchParameter, criteria);
-		criteria.addOrder(order);
-		criteria.setFirstResult(firstResult);
-		criteria.setMaxResults(maxResults);
-		return criteria.list();
-	}
+    @Override
+    public List<SchedulerConfig> getByParam(SchedulerConfigSearchParameter searchParameter, int firstResult,
+            int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParam(searchParameter, criteria);
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
 
-	@Override
-	public Long getTotalByParam(SchedulerConfigSearchParameter searchParameter) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		doSearchByParam(searchParameter, criteria);	
-		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-	}
-	
-	private void doSearchByParam(SchedulerConfigSearchParameter searchParameter, Criteria criteria){
-		if(searchParameter.getName() != null){
-			criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
-		}
-		criteria.add(Restrictions.isNotNull("id"));
-	}
-	
+    @Override
+    public Long getTotalByParam(SchedulerConfigSearchParameter searchParameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParam(searchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    private void doSearchByParam(SchedulerConfigSearchParameter searchParameter, Criteria criteria) {
+        if (searchParameter.getName() != null) {
+            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
+        }
+        criteria.add(Restrictions.isNotNull("id"));
+    }
+
+    @Override
+    public List<SchedulerConfig> getAllWithIsTimeDiv(Boolean boolean1) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("isTimeDiv", boolean1));
+        return criteria.list();
+    }
 
 }
