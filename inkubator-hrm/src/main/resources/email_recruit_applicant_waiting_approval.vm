@@ -18,10 +18,10 @@
 			<br/>
 			#if (!$listCorrectionAttendance.isEmpty())
 				#foreach($data in $listCorrectionAttendance)
-		            $velocityCount. Tanggal : $dateTool.format('long_date', $data.attendanceDate)<br/>
-		            Jadwal : ${data.scheduleIn} s/d ${data.scheduleOut}<br/>
-		            Terbaca : ${data.attendanceIn} s/d ${data.attendanceOut}<br/>
-		            Koreksi : ${data.correctionIn} s/d ${data.correctionOut}<br/>
+		            $velocityCount. Tanggal : $dateTool.format('dd-MMMM-yyy', $data.attendanceDate, $locale)<br/>
+		            &nbsp;&nbsp;&nbsp; Jadwal : #if ($data.scheduleIn) $dateTool.format('HH:mm', $data.scheduleIn, $locale) #else --:-- #end s/d #if ($data.scheduleOut) $dateTool.format('HH:mm', $data.scheduleOut, $locale) #else --:-- #end<br/>
+		            &nbsp;&nbsp;&nbsp; Terbaca : #if ($data.attendanceIn) $dateTool.format('HH:mm', $data.attendanceIn, $locale) #else --:-- #end s/d #if ($data.attendanceOut) $dateTool.format('HH:mm', $data.attendanceOut, $locale) #else --:-- #end <br/>
+		            &nbsp;&nbsp;&nbsp; Koreksi : #if ($data.correctionIn) $dateTool.format('HH:mm', $data.correctionIn, $locale) #else --:-- #end s/d #if ($data.correctionOut) $dateTool.format('HH:mm', $data.correctionOut, $locale) #else --:-- #end <br/>
 		            <br/> 
 		        #end
             #end
