@@ -83,12 +83,12 @@
                                                   required="true" id="phone"/>
                                     <p:message for="phone"/> -->
                                     <p:inputText  value="#{userFormController.userModel.countryPhoneCode}" styleClass="isitext_hrm" style="width: 50px;" label="#{appmsg['user_form.phone_number']}"
-                                                  required="true" id="countryPhoneCode" >
+                                                  required="true" id="countryPhoneCode" placeholder="+62" >
                                         <p:clientValidator/>
                                     </p:inputText>
-                                    <pe:inputNumber value="#{userFormController.userModel.phoneNumbers}" styleClass="isitext_hrm" style="width: 75%" maxValue="999999999999" decimalPlaces="0" label="#{appmsg['user_form.phone_number']}"
-                                                  required="true" id="phone">
-                                    </pe:inputNumber>
+                                    <p:inputText value="#{userFormController.userModel.phoneNumber}" styleClass="isitext_hrm" style="width: 265px;" label="#{appmsg['user_form.phone_number']}"
+                                                  required="true" id="phone" placeholder="085123456789">
+                                    </p:inputText>
                                     <p:message for="countryPhoneCode"/>
                                     <p:message for="phone"/>
                                 </p:column>
