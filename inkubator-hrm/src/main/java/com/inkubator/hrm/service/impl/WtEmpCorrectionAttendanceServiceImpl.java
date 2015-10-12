@@ -3,16 +3,26 @@ package com.inkubator.hrm.service.impl;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -366,6 +376,40 @@ public class WtEmpCorrectionAttendanceServiceImpl extends BaseApprovalServiceImp
         //send sms notification to requester if need revision
 		super.sendApprovalSmsnotif(appActivity);
 		
+		//initialization
+		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy", new Locale(appActivity.getLocale()));
+        
+        //get all sendCC email address on status approve OR reject
+        List<String> ccEmailAddresses = new ArrayList<String>();
+        if ((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)) {
+            ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
+        }
+		
+        WtEmpCorrectionAttendance entity = gson.fromJson(appActivity.getPendingData(), WtEmpCorrectionAttendance.class);
+        JsonObject jsonObject = gson.fromJson(appActivity.getPendingData(), JsonObject.class);
+        
+        final JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("approvalActivityId", appActivity.getId());
+            jsonObj.put("ccEmailAddresses", ccEmailAddresses);
+            jsonObj.put("locale", appActivity.getLocale());
+            jsonObj.put("applyDate", dateFormat.format(entity.getCreatedOn()));
+            jsonObj.put("startDate", dateFormat.format(entity.getStartDate()));
+            jsonObj.put("endDate", dateFormat.format(entity.getEndDate()));
+            jsonObj.put("listCorrectionAttendance", jsonObject.get("listDetail").getAsString());
+
+        } catch (JSONException e) {
+            LOGGER.error("Error when create json Object ", e);
+        }
+
+        //send messaging, to trigger sending email
+        super.jmsTemplateApproval.send(new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                return session.createTextMessage(jsonObj.toString());
+            }
+        });
 	}
 
 	@Override
