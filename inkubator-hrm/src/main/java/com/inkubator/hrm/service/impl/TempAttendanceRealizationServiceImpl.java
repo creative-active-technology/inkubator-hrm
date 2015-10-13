@@ -731,7 +731,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         listWtHitungLemburJam = Lambda.select(listWtHitungLemburJam, Lambda.having(Lambda.on(WtHitungLemburJam.class).getJamKe(), Matchers.lessThanOrEqualTo(overtimeRounded)));
 
         WtHitungLemburJam wtHitungLemburJamSisa = null;
-        Float realTotalOtFromWtHitungLemburJam = 0f;
+        Double realTotalOtFromWtHitungLemburJam = 0d;
         Float realSisa = 0f;
 
         //check implementOn
@@ -742,7 +742,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
                 /*if overtime was implemented on WorkingDay,
                  //sum real OverTime Value from field 'hariKerja' in listWtHitungLemburJam,
                  //and calculate realSisa from WtHitungLemburJam which field 'jamKe' equal overtimeRounded + 1*/
-                realTotalOtFromWtHitungLemburJam = Lambda.sum(listWtHitungLemburJam, Lambda.on(WtHitungLemburJam.class).getHariKerja().floatValue());
+                realTotalOtFromWtHitungLemburJam = Lambda.sum(listWtHitungLemburJam, Lambda.on(WtHitungLemburJam.class).getHariKerja().doubleValue());
                 wtHitungLemburJamSisa = Lambda.selectFirst(listWtHitungLemburJam, Lambda.having(Lambda.on(WtHitungLemburJam.class).getJamKe(), Matchers.equalTo(overtimeRounded + 1)));
                 if (null != wtHitungLemburJamSisa) {
                     realSisa = sisa * wtHitungLemburJamSisa.getHariKerja().floatValue();
@@ -755,7 +755,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
                 /*if overtime was implemented on public Religion Holiday (from table WtHoliday with religion is not Null),
                  //sum real OverTime Value from field 'hariRaya' in listWtHitungLemburJam,
                  //and calculate realSisa from WtHitungLemburJam which field 'jamKe' equal overtimeRounded + 1*/
-                realTotalOtFromWtHitungLemburJam = Lambda.sum(listWtHitungLemburJam, Lambda.on(WtHitungLemburJam.class).getHariRaya().floatValue());
+                realTotalOtFromWtHitungLemburJam = Lambda.sum(listWtHitungLemburJam, Lambda.on(WtHitungLemburJam.class).getHariRaya().doubleValue());
                 wtHitungLemburJamSisa = Lambda.selectFirst(listWtHitungLemburJam, Lambda.having(Lambda.on(WtHitungLemburJam.class).getJamKe(), Matchers.equalTo(overtimeRounded + 1)));
                 if (null != wtHitungLemburJamSisa) {
                     realSisa = sisa * wtHitungLemburJamSisa.getHariRaya().floatValue();
@@ -768,7 +768,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
                 /*if overtime was implemented on public holiday but not related to religion (ex Independence Day, 17 August) from table WtHoliday  or HolidaySchedule from table TempJadwalKaryawan,
                  //sum real OverTime Value from field 'hariLibur' in listWtHitungLemburJam,
                  //and calculate realSisa from WtHitungLemburJam which field 'jamKe' equal overtimeRounded + 1*/
-                realTotalOtFromWtHitungLemburJam = Lambda.sum(listWtHitungLemburJam, Lambda.on(WtHitungLemburJam.class).getHariLibur().floatValue());
+                realTotalOtFromWtHitungLemburJam = Lambda.sum(listWtHitungLemburJam, Lambda.on(WtHitungLemburJam.class).getHariLibur().doubleValue());
                 wtHitungLemburJamSisa = Lambda.selectFirst(listWtHitungLemburJam, Lambda.having(Lambda.on(WtHitungLemburJam.class).getJamKe(), Matchers.equalTo(overtimeRounded + 1)));
                 if (null != wtHitungLemburJamSisa) {
                     realSisa = sisa * wtHitungLemburJamSisa.getHariLibur().floatValue();
@@ -781,7 +781,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
         }
 
         //sum realTotalOtFromWtHitungLemburJam and realSisa to get totalRealOvertime
-        totalRealOvertime = realTotalOtFromWtHitungLemburJam + realSisa;
+        totalRealOvertime = (float) (realTotalOtFromWtHitungLemburJam + realSisa);
 
         // return totalRealOvertime
         return totalRealOvertime;
@@ -1093,10 +1093,19 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
     private Integer getTotalWorkingDaysBetween(Long empDataId, Date startDate, Date endDate) throws Exception {
         EmpData empData = empDataDao.getEntiyByPK(empDataId);
         Integer totalWorkingDays = 0;
-        List<TempJadwalKaryawan> tempJadwalKaryawans = new ArrayList<TempJadwalKaryawan>();
-
+        //List<TempJadwalKaryawan> tempJadwalKaryawans = new ArrayList<TempJadwalKaryawan>();
+        
+        //get jadwal real dari karyawan terpilih, sesuai dengan range terpilih
+        List<TempJadwalKaryawan> tempJadwalKaryawans = tempJadwalKaryawanDao.getAllByEmpIdWithDetailWithFromAndUntilPeriod(empDataId, startDate, endDate);
+        
+        //Filter hanya yang Working Code nya bukan "OFF"
+        tempJadwalKaryawans = Lambda.select(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getWtWorkingHour().getCode(), Matchers.not("OFF")));
+        if(tempJadwalKaryawans != null){
+        	totalWorkingDays = tempJadwalKaryawans.size();
+        }
+        
         //loop date-nya, check jadwal berdasarkan kelompok kerja		
-        for (Date loop = startDate; loop.before(endDate) || DateUtils.isSameDay(loop, endDate); loop = DateUtils.addDays(loop, 1)) {
+        /*for (Date loop = startDate; loop.before(endDate) || DateUtils.isSameDay(loop, endDate); loop = DateUtils.addDays(loop, 1)) {
             TempJadwalKaryawan jadwal = Lambda.selectFirst(tempJadwalKaryawans, Lambda.having(Lambda.on(TempJadwalKaryawan.class).getTanggalWaktuKerja().getTime(), Matchers.equalTo(loop.getTime())));
             if (jadwal == null) {
                 //jika tidak terdapat jadwal kerja di date tersebut, maka generate jadwal kerja temporary-nya, lalu check kembali jadwal kerja-nya
@@ -1109,7 +1118,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
             if (!StringUtils.equals(jadwal.getWtWorkingHour().getCode(), "OFF")) {
                 totalWorkingDays++;
             }
-        }
+        }*/
         return totalWorkingDays;
     }
 
