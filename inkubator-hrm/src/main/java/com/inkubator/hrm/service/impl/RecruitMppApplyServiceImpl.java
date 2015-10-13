@@ -55,8 +55,11 @@ import com.inkubator.hrm.dao.RecruitMppApplyDetailDao;
 import com.inkubator.hrm.dao.RecruitMppPeriodDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
+import com.inkubator.hrm.entity.ApprovalDefinitionLoan;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.entity.LoanNewSchema;
 import com.inkubator.hrm.entity.RecruitMppApply;
 import com.inkubator.hrm.entity.RecruitMppApplyDetail;
 import com.inkubator.hrm.entity.RecruitMppPeriod;
@@ -339,11 +342,11 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
 
         String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
         Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
-        
+        System.out.println("createBy : " + createdBy);
         entity.setCreatedBy(createdBy);
         entity.setCreatedOn(createdOn);
         entity.setApplicationStatus(HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL);
-        ApprovalActivity approvalActivity = super.checkApprovalProcess(HRMConstant.RECRUIT_MPP_APPLY, createdBy);
+        ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.RECRUIT_MPP_APPLY, createdBy);
         if(approvalActivity == null){
         	
              RecruitMppPeriod recruitMppPeriod = recruitMppPeriodDao.getEntiyByPK(entity.getRecruitMppPeriod().getId());
@@ -378,6 +381,8 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
     	
     	return result;
     }
+    
+    
     private String convertToJsonData(RecruitMppApply entity, UploadedFile recruitMppFile, List<RecruitMppApplyDetail> listMppDetail) throws IOException {
         //saving file uploaded temporary
         String uploadPath = null;
