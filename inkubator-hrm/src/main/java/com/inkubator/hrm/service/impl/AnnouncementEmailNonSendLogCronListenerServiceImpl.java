@@ -1,14 +1,10 @@
 package com.inkubator.hrm.service.impl;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
@@ -17,11 +13,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
-import com.inkubator.common.notification.service.VelocityTemplateSender;
-import com.inkubator.hrm.dao.AnnouncementDao;
-import com.inkubator.hrm.dao.AnnouncementLogDao;
-import com.inkubator.hrm.dao.HrmUserDao;
-import com.inkubator.hrm.entity.Announcement;
 import com.inkubator.hrm.entity.SchedulerConfig;
 import com.inkubator.hrm.entity.SchedulerLog;
 import com.inkubator.hrm.json.util.JsonUtil;
@@ -33,67 +24,52 @@ import javax.jms.TextMessage;
  *
  * @author deni.fahri
  */
-public class AnnouncementGenerateLogCronListenerServiceImpl extends BaseSchedulerDinamicListenerImpl implements MessageListener {
+public class AnnouncementEmailNonSendLogCronListenerServiceImpl extends BaseSchedulerDinamicListenerImpl implements MessageListener {
 
-    private String applicationUrl;
-    private String applicationName;
-    private String ownerEmail;
-    private String ownerCompany;
-    private String ownerAdministrator;
-
-    @Autowired
-    private VelocityTemplateSender velocityTemplateSender;
-    @Autowired
-    private HrmUserDao hrmUserDao;
-    @Autowired
-    private AnnouncementLogDao announcementLogDao;
-    @Autowired
-    private AnnouncementDao announcementDao;
     @Autowired
     protected JmsTemplate jmsTemplateBroadcastAnnouncement;
 
 //    @Override
 //    @Scheduled(cron = "${cron.generating.announcement.log}")
 //    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
-    public void generatingAnnouncementLog() throws Exception {
-          LOGGER.warn("Proseccc Generate Annoucment Log Running ===========================================================");
-        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-        Date planExecutionDate = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
-
-        List<Announcement> announcements = announcementDao.getAllDataValidForGeneratingLog(planExecutionDate);
-        for (Announcement entity : announcements) {
-            AnnouncementJsonModel jsonModel = new AnnouncementJsonModel();
-            jsonModel.setIsGeneratingAnnouncementLog(Boolean.TRUE);
-            jsonModel.setAnnouncementId(entity.getId());
-            jsonModel.setViewModel(entity.getViewModel());
-            jsonModel.setPlanExecutionDate(planExecutionDate);
-            final String json = gson.toJson(jsonModel);
-
-            jmsTemplateBroadcastAnnouncement.send(new MessageCreator() {
-                @Override
-                public Message createMessage(Session session) throws JMSException {
-                    return session.createTextMessage(json);
-                }
-            });
-        }
-    }
-
+//    public void generatingAnnouncementLog() throws Exception {
+//          LOGGER.warn("Proseccc Generate Annoucment Log Running ===========================================================");
+//        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+//        Date planExecutionDate = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
+//
+//        List<Announcement> announcements = announcementDao.getAllDataValidForGeneratingLog(planExecutionDate);
+//        for (Announcement entity : announcements) {
+//            AnnouncementJsonModel jsonModel = new AnnouncementJsonModel();
+//            jsonModel.setIsGeneratingAnnouncementLog(Boolean.TRUE);
+//            jsonModel.setAnnouncementId(entity.getId());
+//            jsonModel.setViewModel(entity.getViewModel());
+//            jsonModel.setPlanExecutionDate(planExecutionDate);
+//            final String json = gson.toJson(jsonModel);
+//
+//            jmsTemplateBroadcastAnnouncement.send(new MessageCreator() {
+//                @Override
+//                public Message createMessage(Session session) throws JMSException {
+//                    return session.createTextMessage(json);
+//                }
+//            });
+//        }
+//    }
 //    @Override
 //    @Scheduled(cron = "${cron.processing.email.announcement.not.sent}")
 //    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
-//    public void processingAllEmailNotSent() throws Exception {
-//        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-//        AnnouncementJsonModel jsonModel = new AnnouncementJsonModel();
-//        jsonModel.setIsSendingAllEmailNotSent(Boolean.TRUE);
-//        final String json = gson.toJson(jsonModel);
-//
-//        jmsTemplateBroadcastAnnouncement.send(new MessageCreator() {
-//            @Override
-//            public Message createMessage(Session session) throws JMSException {
-//                return session.createTextMessage(json);
-//            }
-//        });
-//    }
+    public void processingAllEmailNotSent() throws Exception {
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+        AnnouncementJsonModel jsonModel = new AnnouncementJsonModel();
+        jsonModel.setIsSendingAllEmailNotSent(Boolean.TRUE);
+        final String json = gson.toJson(jsonModel);
+
+        jmsTemplateBroadcastAnnouncement.send(new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                return session.createTextMessage(json);
+            }
+        });
+    }
 
 //    @Override
 //    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -129,45 +105,8 @@ public class AnnouncementGenerateLogCronListenerServiceImpl extends BaseSchedule
 //        }
 //    }
 
-    public String getApplicationUrl() {
-        return applicationUrl;
-    }
 
-    public void setApplicationUrl(String applicationUrl) {
-        this.applicationUrl = applicationUrl;
-    }
-
-    public String getApplicationName() {
-        return applicationName;
-    }
-
-    public void setApplicationName(String applicationName) {
-        this.applicationName = applicationName;
-    }
-
-    public String getOwnerEmail() {
-        return ownerEmail;
-    }
-
-    public void setOwnerEmail(String ownerEmail) {
-        this.ownerEmail = ownerEmail;
-    }
-
-    public String getOwnerCompany() {
-        return ownerCompany;
-    }
-
-    public void setOwnerCompany(String ownerCompany) {
-        this.ownerCompany = ownerCompany;
-    }
-
-    public String getOwnerAdministrator() {
-        return ownerAdministrator;
-    }
-
-    public void setOwnerAdministrator(String ownerAdministrator) {
-        this.ownerAdministrator = ownerAdministrator;
-    }
+   
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
@@ -178,7 +117,7 @@ public class AnnouncementGenerateLogCronListenerServiceImpl extends BaseSchedule
             SchedulerLog schedulerLog = new SchedulerLog();
             schedulerLog.setSchedulerConfig(new SchedulerConfig(Long.parseLong(textMessage.getText())));
             log = super.doSaveSchedulerLogSchedulerLog(schedulerLog);
-            generatingAnnouncementLog();
+            processingAllEmailNotSent();
             log.setStatusMessages("FINISH");
             super.doUpdateSchedulerLogSchedulerLog(log);
         } catch (Exception ex) {
