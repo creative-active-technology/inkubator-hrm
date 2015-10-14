@@ -102,7 +102,11 @@
                                     <p:outputLabel for="startDate" value="#{appmsg['scheduler_config.start_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:calendar id="startDate" pattern="dd MMMM yyyy" value="#{schedulerConfigFormController.schedulerConfigModel.startDate}" disabled="#{schedulerConfigFormController.isDisableDateRange}" />
+                                    <p:calendar id="startDate"  binding="#{startDate}" pattern="dd MMMM yyyy" value="#{schedulerConfigFormController.schedulerConfigModel.startDate}" disabled="#{schedulerConfigFormController.isDisableDateRange}" >
+                                    	<f:validator validatorId="dateBetweenValidator"  />
+	                                    <f:attribute name="endTime" value="#{endDate}"/>
+	                                    <f:attribute name="dateBetweenValidatorMessage" value="#{appmsg['scheduler_config.start_date_is_greater']}"/>
+                                    </p:calendar>
                                     <p:message for="startDate"/>
                                 </p:column>
                             </p:row>  
@@ -111,8 +115,7 @@
                                     <p:outputLabel for="endDate" value="#{appmsg['scheduler_config.end_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:calendar id="endDate" value="#{schedulerConfigFormController.schedulerConfigModel.endDate}" pattern="dd MMMM yyyy" disabled="#{schedulerConfigFormController.isDisableDateRange}" />
-                                    <!--<p:message for="startDate"/>-->
+                                    <p:calendar id="endDate" binding="#{endDate}"  value="#{schedulerConfigFormController.schedulerConfigModel.endDate}" pattern="dd MMMM yyyy" disabled="#{schedulerConfigFormController.isDisableDateRange}" />
                                     <p:message for="endDate"/>
                                 </p:column>
                             </p:row>  
@@ -121,7 +124,12 @@
                                     <p:outputLabel for="stardSchedule" value="#{appmsg['scheduler_config.start_execution']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:calendar id="stardSchedule" value="#{schedulerConfigFormController.schedulerConfigModel.dateStartExecution}" pattern="dd MMMM yyyy" required="true"/>
+                                    <p:calendar id="stardSchedule" value="#{schedulerConfigFormController.schedulerConfigModel.dateStartExecution}" pattern="dd MMMM yyyy" required="true" >
+                                    	<f:validator validatorId="dateInSpecificRangeValidator"  />
+                                    	<f:attribute name="startTime" value="#{startDate}"/>
+	                                    <f:attribute name="endTime" value="#{endDate}"/>
+	                                    <f:attribute name="dateInSpecificRangeValidatorMessage" value="#{appmsg['scheduler_config.start_execution_should_be_at_specific_range']}"/>
+                                    </p:calendar>
                                     <p:message for="stardSchedule"/>
                                 </p:column>
                             </p:row>  

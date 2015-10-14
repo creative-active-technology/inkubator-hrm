@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <div style="font-family:Trebuchet MS;margin-bottom: 20px;font-weight: bold;color: black;padding: 3px 3px 3px 10px;background-image: linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -o-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -moz-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -ms-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-gradient(linear,left bottom,left topcolor-stop(0.68, rgb(114,185,215)));">
+            PENGAJUAN KOREKSI KEHADIRAN ${nik}/${requesterName}</div>
+        <div style="padding-left: 10px;font-family: Verdana">
+            Yth ${requesterName},
+            <br />
+            <br />
+            <br />
+            Pada tanggal ${applyDate}, anda mengajukan koreksi kehadiran, dengan detail sebagai berikut :<br />
+			<br />
+			Periode Pelaksanaan : ${startDate} s/d ${endDate}<br />
+			Koreksi yang dimaksud adalah sebagai berikut :<br />
+			<br/>
+			#if (!$listCorrectionAttendance.isEmpty())
+				#foreach($data in $listCorrectionAttendance)
+		            $velocityCount. Tanggal : $dateTool.format('dd-MMMM-yyy', $data.attendanceDate, $locale)<br/>
+		            &nbsp;&nbsp;&nbsp; Jadwal : #if ($data.scheduleIn) $dateTool.format('HH:mm', $data.scheduleIn, $locale) #else --:-- #end s/d #if ($data.scheduleOut) $dateTool.format('HH:mm', $data.scheduleOut, $locale) #else --:-- #end<br/>
+		            &nbsp;&nbsp;&nbsp; Terbaca : #if ($data.attendanceIn) $dateTool.format('HH:mm', $data.attendanceIn, $locale) #else --:-- #end s/d #if ($data.attendanceOut) $dateTool.format('HH:mm', $data.attendanceOut, $locale) #else --:-- #end <br/>
+		            &nbsp;&nbsp;&nbsp; Koreksi : #if ($data.correctionIn) $dateTool.format('HH:mm', $data.correctionIn, $locale) #else --:-- #end s/d #if ($data.correctionOut) $dateTool.format('HH:mm', $data.correctionOut, $locale) #else --:-- #end <br/>
+		            <br/> 
+		        #end
+            #end
+            <br />
+			Status : <b>${statusDesc}</b><br />	
+            <br />
+ 			<br />
+            Demikian pemberitahuan ini disampaikan, atas perhatian dan kerjasamanya disampaikan terima kasih.
+			<br />
+ 			<br />
+			Salam,
+            <br/>
+            <br/>
+            On Behalf ${applicationName}<br/>
+            ${ownerAdministrator}
+        </div>
+        <div style="font-family:Trebuchet MS ;margin-top: 20px;font-weight: bold;color: black;padding: 3px 3px 3px 10px;background-image: linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -o-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -moz-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -ms-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-gradient(linear,left bottom,left topcolor-stop(0.68, rgb(114,185,215)));">${applicationName} @${ownerCompany}
+        </div>
+    </body>
+</html> 

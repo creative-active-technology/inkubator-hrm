@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.BusinessTypeDao;
 import com.inkubator.hrm.dao.CityDao;
@@ -326,9 +327,6 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 		RecruitApplicant applicant = recruitApplicantDao.getEntiyByPK(model.getId());
 		applicant = this.bindingValueApplicant(applicant, model);
 		applicant.setBioData(bioData);
-		applicant.setCareerCandidate(0); //default
-		applicant.setIsActive(Boolean.TRUE); //default
-		applicant.setIsVerified(Boolean.TRUE); //default
 		applicant.setUpdatedBy(UserInfoUtil.getUserName());
 		applicant.setUpdatedOn(new Date());
 		recruitApplicantDao.update(applicant);		
@@ -374,7 +372,7 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 		applicant = this.bindingValueApplicant(applicant, model);
 		applicant.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 		applicant.setBioData(bioData);
-		applicant.setCareerCandidate(0); //default
+		applicant.setCareerCandidate(HRMConstant.RECRUIT_APPLICANT_CAREER_CANDIDATE_EXTERNAL); //default
 		applicant.setCreatedBy(UserInfoUtil.getUserName());
 		applicant.setCreatedOn(new Date());
 		recruitApplicantDao.save(applicant);
@@ -498,7 +496,7 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 			RecruitApplicant applicant = new RecruitApplicant();
 			applicant.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 			applicant.setBioData(bioData);
-			applicant.setCareerCandidate(0); //default
+			applicant.setCareerCandidate(HRMConstant.RECRUIT_APPLICANT_CAREER_CANDIDATE_EXTERNAL); //default
 			applicant.setIsActive(Boolean.FALSE); //default
 			applicant.setIsVerified(Boolean.FALSE); //default
 			applicant.setEducationLevel(educationLevelDao.getEntityByName(model.getEducationLevel()));
