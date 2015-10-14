@@ -167,5 +167,5 @@
         <property name="ownerCompany" value="${email_param_owner_company}"/>
         <property name="ownerAdministrator" value="${email_param_owner_administrator}"/>    
     </bean>
-    <bean id="announcementEmailNonSendLogCronListenerServiceImpl" class="com.inkubator.hrm.service.impl.AnnouncementEmailNonSendLogCronListenerServiceImpl" lazy-init="true">
+    <bean id="announcementEmailNonSendLogCronListenerServiceImpl" class="com.inkubator.hrm.service.impl.AnnouncementEmailNonSendLogCronListenerServiceImpl" lazy-init="true"/>
 </beans>
