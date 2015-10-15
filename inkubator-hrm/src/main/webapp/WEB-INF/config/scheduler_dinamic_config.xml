@@ -124,6 +124,7 @@
         <jms:listener destination="attendaceCalculatte" ref="attendanceCronListenerServiceImpl" method="onMessage"  /> 
         <jms:listener destination="annoucmentGeneratingLog" ref="announcementGenerateLogCronListenerServiceImpl" method="onMessage"  /> 
         <jms:listener destination="annoucmentSendingNotif" ref="announcementEmailNonSendLogCronListenerServiceImpl" method="onMessage"  /> 
+        <jms:listener destination="holidayUpdate" ref="wtHolidayCronListenerServiceImpl" method="onMessage"  /> 
         
     </jms:listener-container>
     <!--================== List dari semua listener scheduller... di sini ==========================-->
@@ -168,4 +169,5 @@
         <property name="ownerAdministrator" value="${email_param_owner_administrator}"/>    
     </bean>
     <bean id="announcementEmailNonSendLogCronListenerServiceImpl" class="com.inkubator.hrm.service.impl.AnnouncementEmailNonSendLogCronListenerServiceImpl" lazy-init="true"/>
+    <bean id="wtHolidayCronListenerServiceImpl" class="com.inkubator.hrm.service.impl.WtHolidayCronListenerServiceImpl" lazy-init="true"/>
 </beans>
