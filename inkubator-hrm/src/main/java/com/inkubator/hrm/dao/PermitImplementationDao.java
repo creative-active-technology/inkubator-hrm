@@ -41,5 +41,7 @@ public interface PermitImplementationDao extends IDAO<PermitImplementation> {
     public Long getTotalActualPermit(Date date);
     
     public Long getCurrentMaxId();
+    
+    public Long getTotalEmployeeByEmployeeId(Long id);
 
 }

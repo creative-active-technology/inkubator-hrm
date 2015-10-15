@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 /**
@@ -37,6 +38,7 @@ public class PermitDistribution implements java.io.Serializable {
 	private Date createdOn;
 	private String updatedBy;
 	private Date updatedOn;
+	private Boolean isDisabled;
 	private Set<NeracaPermit> neracaPermits = new HashSet<NeracaPermit>(0);
 
 	public PermitDistribution() {
@@ -178,4 +180,12 @@ public class PermitDistribution implements java.io.Serializable {
 		this.neracaPermits = neracaPermits;
 	}
 
+	@Transient
+	public Boolean getIsDisabled() {
+		return isDisabled;
+	}
+
+	public void setIsDisabled(Boolean isDisabled) {
+		this.isDisabled = isDisabled;
+	}
 }
