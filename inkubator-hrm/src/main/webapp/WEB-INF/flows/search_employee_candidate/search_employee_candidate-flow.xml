@@ -20,11 +20,19 @@
         <on-render>
             <evaluate expression="searchEmployeeCandidateViewController.doSearchByParam(flowRequestContext)" /> 
         </on-render>
+         <transition on="commit"  to="commit_data"/>
         <transition on="back" to="start"/>
         <transition on="personalInfo" to="personal"/>
         <transition on="employeeInfo" to="employee"/>
         <transition on="employeeBackgroundInfo" to="employeeBackground"/>
     </view-state>
+    
+    <action-state id="commit_data">
+        <evaluate expression="searchEmployeeCandidateViewController.doCommitData(flowRequestContext)"/>
+        <transition on="success" to="start"/>
+       <!--  <transition on="success_without_approval" to="end_detail"/>
+        <transition on="error" to="add_loan_payment_detail"/> -->
+    </action-state >
     <end-state id="personal" view="externalRedirect:contextRelative:/protected/personalia/biodata_detail.htm?execution=e#{searchEmployeeCandidateModel.selectedEmpCandidate.empDataId}"/>
     <end-state id="employee" view="externalRedirect:contextRelative:/protected/employee/emp_placement_detail.htm?execution=e#{searchEmployeeCandidateModel.selectedEmpCandidate.empDataId}"/>
     <end-state id="employeeBackground" view="externalRedirect:contextRelative:/protected/personalia/emp_background_detail.htm?execution=e#{searchEmployeeCandidateModel.selectedEmpCandidate.empDataId}"/>

@@ -32,7 +32,9 @@
 
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="right">
-                                <h:panelGrid columns="3" >                                    
+                                <h:panelGrid columns="3" >                
+                                	<p:commandButton value="#{appmsg['empCandidateSearch.commit_selected_data']}" icon="ui-icon-disk" title="#{appmsg['empCandidateSearch.commit_selected_data']}" action="commit"
+                                                     styleClass="label_button"/>                    
                                     <p:commandButton value="#{appmsg['empCandidateSearch.search_again']}"  icon="ui-icon-search"  title="#{appmsg['empCandidateSearch.search_again']}"  action="back"
                                                      styleClass="label_button"/>
                                 </h:panelGrid>
@@ -85,7 +87,11 @@
                                 </f:facet>
                                 <h:outputLabel value="#{data.kriteria}" />
                             </p:column>
-
+							
+							  <p:column headerText="#{appmsg['empCandidateSearch.commit']}" style="width: 8%;text-align: center" exportable="false">                               
+                                	<p:selectBooleanButton value="#{searchEmployeeCandidateModel.selectedIds[data.empDataId]}" styleClass="label_button"
+									onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" offIcon="ui-icon-close"/>
+                            </p:column>    
                             <p:column style="text-align: center;width: 13%"> 
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.action']}"/>
