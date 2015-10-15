@@ -4,28 +4,39 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.google.gson.Gson;
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.PermitClassificationDao;
 import com.inkubator.hrm.dao.PermitDistributionDao;
 import com.inkubator.hrm.dao.NeracaPermitDao;
+import com.inkubator.hrm.dao.PermitImplementationDao;
+import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.entity.LeaveImplementation;
 import com.inkubator.hrm.entity.PermitClassification;
 import com.inkubator.hrm.entity.PermitDistribution;
 import com.inkubator.hrm.entity.NeracaPermit;
+import com.inkubator.hrm.entity.PermitImplementation;
+import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.PermitDistributionService;
 import com.inkubator.hrm.web.search.PermitDistributionSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,11 +62,56 @@ public class PermitDistributionServiceImpl extends IServiceImpl implements Permi
     private PermitClassificationDao permitDao;
     @Autowired
     private NeracaPermitDao neracaPermitDao;
+	@Autowired
+	private PermitImplementationDao permitImplementationDao;
+	@Autowired
+	private ApprovalActivityDao approvalActivityDao;
+	@Autowired
+	private HrmUserDao hrmUserDao;
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<PermitDistribution> getByParamWithDetail(PermitDistributionSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-        return permitDistributionDao.getByParamWithDetail(searchParameter, firstResult, maxResults, order);
+    	List<PermitDistribution> listPermitDistribution = permitDistributionDao.getByParamWithDetail(searchParameter, firstResult, maxResults, order);
+    	Boolean isAppliedOrPending = Boolean.FALSE;
+    	
+    	for(PermitDistribution permitDistribution : listPermitDistribution){
+    		//Long totalEmployees = leaveImplementationDao.getTotalEmployeeByEmployeeId(leaveDistribution.getEmpData().getId());
+    		isAppliedOrPending = isAppliedOrPending(permitDistribution.getEmpData().getId(), permitDistribution.getPermitClassification().getName());
+    		if(isAppliedOrPending == Boolean.TRUE){
+    			permitDistribution.setIsDisabled(isAppliedOrPending);
+    		}
+    	}
+        return listPermitDistribution;
+    }
+    
+    private Boolean isAppliedOrPending(Long id, String name){
+    	Boolean isAppliedOrPending = Boolean.FALSE;
+    	//check if employee has been applied leave and has been approved
+    	if(isAppliedOrPending == Boolean.FALSE){
+    		Long totalEmployees = permitImplementationDao.getTotalEmployeeByEmployeeId(id);
+    		if(totalEmployees > 0){
+    			isAppliedOrPending = Boolean.TRUE;
+    		}
+    	}
+    	
+    	//check if employee has applied leave with status pending
+    	if(isAppliedOrPending == Boolean.FALSE){
+	    	HrmUser requester = hrmUserDao.getByEmpDataId(id);
+			List<ApprovalActivity> listApprovalActivities = new ArrayList<ApprovalActivity>();
+			if(requester != null){
+				listApprovalActivities = approvalActivityDao.getAllDataNotApprovedYet(requester.getUserId(), HRMConstant.PERMIT);
+			}
+			for(ApprovalActivity appActivity : listApprovalActivities){
+				
+				Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+				PermitImplementation permitImplementation = gson.fromJson(appActivity.getPendingData(), PermitImplementation.class);
+				if(permitImplementation.getPermitClassification().getName().equals(name)){
+					isAppliedOrPending = Boolean.TRUE;
+				}
+			}
+    	}
+    	return isAppliedOrPending;
     }
 
     @Override
@@ -86,12 +142,33 @@ public class PermitDistributionServiceImpl extends IServiceImpl implements Permi
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void update(PermitDistribution entity) throws Exception {
-        PermitDistribution update = permitDistributionDao.getEntiyByPK(entity.getId());
-        update.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
-        update.setBalance(entity.getBalance());
-        update.setPermitClassification(permitDao.getEntiyByPK(entity.getPermitClassification().getId()));
-        permitDistributionDao.update(update);
+    public void update(PermitDistribution newData) throws Exception {
+        PermitDistribution oldData = permitDistributionDao.getEntiyByPK(newData.getId());
+        oldData.setEmpData(empDataDao.getEntiyByPK(newData.getEmpData().getId()));
+        oldData.setPermitClassification(permitDao.getEntiyByPK(newData.getPermitClassification().getId()));
+        //save neraca permit
+        saveNeracaPermit(oldData.getBalance(), newData.getBalance(), oldData);
+        oldData.setBalance(newData.getBalance());
+        permitDistributionDao.update(oldData);
+    }
+
+    private void saveNeracaPermit(double oldBalance, double newBalance, PermitDistribution permitDistribution){
+    	NeracaPermit neracaPermit = new NeracaPermit();
+    	if(oldBalance > newBalance){
+        	double balance = oldBalance - newBalance;
+        	neracaPermit.setKredit(balance);
+        }else{
+        	double balance = newBalance - oldBalance;
+        	neracaPermit.setDebet(balance);
+            
+        }
+    	
+    	neracaPermit.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+    	/*neracaPermit.setSaldo(newBalance);*/
+    	neracaPermit.setPermitDistribution(permitDistribution);
+    	neracaPermit.setCreatedBy(UserInfoUtil.getUserName());
+    	neracaPermit.setCreatedOn(new Date());
+        neracaPermitDao.save(neracaPermit);
     }
 
     @Override
