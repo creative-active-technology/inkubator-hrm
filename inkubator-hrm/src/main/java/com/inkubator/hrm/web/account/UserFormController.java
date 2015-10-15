@@ -285,7 +285,7 @@ public class UserFormController extends BaseController {
     public UserModel getUserModelFromEntity(HrmUser hrmUser) {
         UserModel us = new UserModel();
     	//replace phone number, ex: from +6285720123456 to 085720123456
-    	if(hrmUser.getPhoneNumber() != null){
+        if(hrmUser.getPhoneNumber() != null && hrmUser.getPhoneCode() != null){
 	    	String phoneWithCode = hrmUser.getPhoneNumber();
 	    	String phoneNumberWithoutCode = phoneWithCode.substring(hrmUser.getPhoneCode().length(), hrmUser.getPhoneNumber().length());
 	        us.setPhoneNumber("0"+phoneNumberWithoutCode);
