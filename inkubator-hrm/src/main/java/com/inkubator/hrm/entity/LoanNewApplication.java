@@ -315,7 +315,8 @@ public class LoanNewApplication implements java.io.Serializable {
     public void setNoPencairan(String noPencairan) {
         this.noPencairan = noPencairan;
     }
-
+    
+    @Transient
     public Boolean getIsSelected() {
         return isSelected;
     }
