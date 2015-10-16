@@ -16,24 +16,24 @@
             </ui:define>
             <ui:define name="center">
                 <div id="box_bg" style="margin: 10px">
-                    
-                        <h:panelGrid style="margin-bottom: 5px" columns="2">
-                            <p:graphicImage library="images" name="login_history.png" height="36" width="36" />
-                            <h:panelGroup layout="block">
-                                <h:panelGrid>
-                                    <p:outputLabel value="#{appmsg['taxrate.tax_rate']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['taxrate.data_tax_rate']}" styleClass="header_small_no_bold" />
-                                </h:panelGrid>
-                            </h:panelGroup>
-                        </h:panelGrid>
-                        <p:separator/>
+
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="login_history.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['taxrate.tax_rate']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['taxrate.data_tax_rate']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator/>
                     <p:growl id="growlTaxRateViewId" globalOnly="true" showDetail="true" />
-					<h:form id="formTaxRateId">
+                    <h:form id="formTaxRateId">
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableTaxRateId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Tax_Rate"/>
+                                        <pe:exporter target="tableTaxRatePrinted" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Tax_Rate"/>
                                     </p:commandButton>
 <!--                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{taxRateViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{taxRateViewController.onDialogReturn}"  update="tableTaxRateId,:growlTaxRateViewId"/>
@@ -60,9 +60,9 @@
                                     <h:outputText value="#{appmsg['taxrate.lowest']}"/>
                                 </f:facet>
                                 <div style="text-align: right;">
-	                                <h:outputLabel value= "#{taxRateData.lowRate}">
-	                                	<f:convertNumber pattern="###,###" type="currency"/>
-	                                </h:outputLabel>
+                                    <h:outputLabel value= "#{taxRateData.lowRate}">
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </h:outputLabel>
                                 </div>
                             </p:column>
                             <p:column sortBy="#{taxRateData.topRate}" style="width: 30%">
@@ -70,35 +70,35 @@
                                     <h:outputText value="#{appmsg['taxrate.highest']}"/>
                                 </f:facet>
                                 <div style="text-align: right;">
-	                                <h:outputLabel value= "#{taxRateData.topRate}">
-	                                	<f:convertNumber pattern="###,###" type="currency"/>
-	                                </h:outputLabel>
+                                    <h:outputLabel value= "#{taxRateData.topRate}">
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </h:outputLabel>
                                 </div>
                             </p:column>
                             <p:column sortBy="#{taxRateData.percentRate}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.tax']}"/>
                                 </f:facet>
-                                <div style="text-align: right;">
-                                	<h:outputLabel value= "#{taxRateData.percentRate}" />
+                                <div style="text-align: right;" >
+                                    <p:outputLabel value= "#{taxRateData.percentRate}"  />
                                 </div>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
-                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important" ajax="true"
+                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important" ajax="true" update="detailPanel"
                                                   action="#{taxRateViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('detailTaxRate').show()">                        
                                     <f:setPropertyActionListener value="#{taxRateData}" target="#{taxRateViewController.selectedTaxRate}" />
                                 </p:commandButton> 
                                 - 
-                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-                                				 style="font-size: 10px!important" action="#{taxRateViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmTaxRate').show()">
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  update="deleteId"
+                                                 style="font-size: 10px!important" action="#{taxRateViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmTaxRate').show()">
                                     <f:setPropertyActionListener value="#{taxRateData}" target="#{taxRateViewController.selectedTaxRate}" />
                                 </p:commandButton>
-                                -
+
 <!--                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
-                                                  action="#{taxRateViewController.doUpdate()}" >
-                                    <f:setPropertyActionListener value="#{taxRateData}" target="#{taxRateViewController.selectedTaxRate}" />
-                                    <p:ajax event="dialogReturn" listener="#{taxRateViewController.onDialogReturn}"  update="tableTaxRateId,:growlTaxRateViewId"/>
-                                </p:commandButton> -->
+                  action="#{taxRateViewController.doUpdate()}" >
+    <f:setPropertyActionListener value="#{taxRateData}" target="#{taxRateViewController.selectedTaxRate}" />
+    <p:ajax event="dialogReturn" listener="#{taxRateViewController.onDialogReturn}"  update="tableTaxRateId,:growlTaxRateViewId"/>
+</p:commandButton> -->
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
@@ -118,11 +118,21 @@
                           appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                     <div align="center">
                         <div align="center">
-                            <h:panelGrid columns="2" style="text-align: justify">
+                            <h:panelGrid columns="2" style="text-align: justify" id="deleteId">
                                 <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
                                 <h:panelGroup>
-                                    <h:panelGrid style="text-align: center">
+                                    <h:panelGrid style="text-align: center" columns="1">
                                         <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                        <h:panelGroup layout="block">
+                                            <p:outputLabel value="#{taxRateViewController.selectedTaxRate.lowRate}">
+                                                <f:convertNumber pattern="###,###" type="number"/>
+                                            </p:outputLabel>
+                                            - 
+                                            <p:outputLabel value="#{taxRateViewController.selectedTaxRate.topRate}">
+                                                <f:convertNumber pattern="###,###" type="number"/>
+                                            </p:outputLabel>
+                                        </h:panelGroup>
+
                                     </h:panelGrid>
                                 </h:panelGroup>
                             </h:panelGrid>
@@ -139,18 +149,18 @@
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['taxrate.lowest']}" styleClass="label_hrm"/></p:column>
                             <p:column>
-                            <p:outputLabel value="#{taxRateViewController.selectedTaxRate.lowRate}"> 
-                            	<f:convertNumber pattern="###,###" type="currency"/>
-                            </p:outputLabel>
+                                <p:outputLabel value="#{taxRateViewController.selectedTaxRate.lowRate}"> 
+                                    <f:convertNumber pattern="###,###" type="currency"/>
+                                </p:outputLabel>
                             </p:column>
                         </p:row>
 
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['taxrate.highest']}" styleClass="label_hrm"/></p:column>
                             <p:column>
-                            	<p:outputLabel value="#{taxRateViewController.selectedTaxRate.topRate}">
-                            		<f:convertNumber pattern="###,###" type="currency"/>
-                            	</p:outputLabel> 
+                                <p:outputLabel value="#{taxRateViewController.selectedTaxRate.topRate}">
+                                    <f:convertNumber pattern="###,###" type="currency"/>
+                                </p:outputLabel> 
                             </p:column>
                         </p:row>
                         <p:row>
@@ -164,6 +174,71 @@
                         </f:facet>
                     </p:panelGrid>
                 </p:dialog>
+                
+                <p:dataTable  id="tableTaxRatePrinted" var="taxRateData" value="#{taxRateViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7" rendered="false"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['taxrate.list_of_tax_rate']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="#{taxRateData.lowRate}" style="width: 30%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['taxrate.lowest']}"/>
+                                </f:facet>
+                                <!--<div style="text-align: right;">-->
+                                    <h:outputLabel value= "#{taxRateData.lowRate}">
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </h:outputLabel>
+                                <!--</div>-->
+                            </p:column>
+                            <p:column sortBy="#{taxRateData.topRate}" style="width: 30%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['taxrate.highest']}"/>
+                                </f:facet>
+                                <!--<div style="text-align: right;">-->
+                                    <h:outputLabel value= "#{taxRateData.topRate}">
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </h:outputLabel>
+                                <!--</div>-->
+                            </p:column>
+                            <p:column sortBy="#{taxRateData.percentRate}" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['global.tax']}"/>
+                                </f:facet>
+                                <!--<div style="text-align: right;" >-->
+                                    <p:outputLabel value= "#{taxRateData.percentRate}"  />
+                                <!--</div>-->
+                            </p:column>
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important" ajax="true" update="detailPanel"
+                                                  action="#{taxRateViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('detailTaxRate').show()">                        
+                                    <f:setPropertyActionListener value="#{taxRateData}" target="#{taxRateViewController.selectedTaxRate}" />
+                                </p:commandButton> 
+                                - 
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  update="deleteId"
+                                                 style="font-size: 10px!important" action="#{taxRateViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmTaxRate').show()">
+                                    <f:setPropertyActionListener value="#{taxRateData}" target="#{taxRateViewController.selectedTaxRate}" />
+                                </p:commandButton>
+
+<!--                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
+                  action="#{taxRateViewController.doUpdate()}" >
+    <f:setPropertyActionListener value="#{taxRateData}" target="#{taxRateViewController.selectedTaxRate}" />
+    <p:ajax event="dialogReturn" listener="#{taxRateViewController.onDialogReturn}"  update="tableTaxRateId,:growlTaxRateViewId"/>
+</p:commandButton> -->
+                            </p:column> 
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{taxRateViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
             </ui:define>
         </ui:composition>
     </h:body>
