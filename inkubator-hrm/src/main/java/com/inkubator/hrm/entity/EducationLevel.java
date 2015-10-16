@@ -261,6 +261,7 @@ public class EducationLevel implements Serializable {
 		this.isActive = isActive;
 	}
 
+	@Transient
 	public Boolean getIsRendered() {
 	
 		isRendered = Boolean.TRUE;
