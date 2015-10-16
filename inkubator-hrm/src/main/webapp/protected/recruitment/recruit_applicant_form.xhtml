@@ -315,11 +315,23 @@
                             <p:panelGrid style="width: 100%;" styleClass="grid_border3">
                             	<p:row>
 	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
+	                                    <p:outputLabel  value="Fresh Graduate" styleClass="label_hrm"/>
+	                                </p:column>
+	                                <p:column style="width: 84%">
+	                                	<p:selectBooleanButton value="#{recruitApplicantFormController.model.isFreshGraduate}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           	   offIcon="ui-icon-close" styleClass="label_button">
+                                        	<p:ajax listener="#{recruitApplicantFormController.onChangeFreshGraduate()}"
+                                        			update="lastWorkCompanyId,businessTypeId,lastWorkSinceId,lastWorkEndId,lastJabatanId,klasifikasiKerjaId,lastJabatanSinceId" />
+                                        </p:selectBooleanButton>
+	                                </p:column>
+	                            </p:row>
+                            	<p:row>
+	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
 	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.latest_company']}" styleClass="label_hrm" for="lastWorkCompanyId"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">
 	                                    <p:inputText id="lastWorkCompanyId" value="#{recruitApplicantFormController.model.lastWorkCompany}" styleClass="isitext_hrm" style="width: 30%" 
-	                                    			 required="true"/>
+	                                    			 required="true" disabled="#{recruitApplicantFormController.model.isFreshGraduate}"/>
 	                                    <p:message for="lastWorkCompanyId"/>
 	                                </p:column>
 	                            </p:row>
@@ -329,7 +341,7 @@
 	                                </p:column>
 	                                <p:column style="width: 84%">
 	                                    <p:selectOneMenu id="businessTypeId" style="width: 31%"  filter="true" required="true"
-	                                                     value="#{recruitApplicantFormController.model.businessTypeId}">
+	                                                     value="#{recruitApplicantFormController.model.businessTypeId}" disabled="#{recruitApplicantFormController.model.isFreshGraduate}">
 	                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                        <f:selectItems value="#{recruitApplicantFormController.model.listBusinessType}" var="businessType" itemValue="#{businessType.id}" itemLabel="#{businessType.name}" />
 	                                    </p:selectOneMenu>
@@ -342,14 +354,14 @@
 	                                </p:column>
 	                                <p:column style="width: 84%">
 	                               		<p:spinner id="lastWorkSinceId" value="#{recruitApplicantFormController.model.lastWorkSince}" size="4" max="2050" min="1950" 
-	                                		   	   styleClass="isitext_hrm" required="true" label="#{appmsg['recruitment_applicant.start_year']}">
+	                                		   	   styleClass="isitext_hrm" required="true" label="#{appmsg['recruitment_applicant.start_year']}" disabled="#{recruitApplicantFormController.model.isFreshGraduate}">
 	                                		<f:validator validatorId="integerNumberBetweenValidator"  />
 			                                <f:attribute name="endNumberInteger" value="#{lastWorkEndId}"/>
 			                                <f:attribute name="validatorConstraint" value="GREATER_THAN"/>
 			                                <f:attribute name="validatorMessage" value="#{appmsg['global.DateIn_validator']}"/>
 	                                	</p:spinner>
 	                                    <p:outputLabel  value="&nbsp;&nbsp; #{appmsg['global.to']} &nbsp;&nbsp;" styleClass="label_hrm"/>
-	                                    <p:spinner id="lastWorkEndId" binding="${lastWorkEndId}" value="#{recruitApplicantFormController.model.lastWorkEnd}" size="4" max="2050" min="1950" 
+	                                    <p:spinner id="lastWorkEndId" binding="${lastWorkEndId}" value="#{recruitApplicantFormController.model.lastWorkEnd}" size="4" max="2050" min="1950" disabled="#{recruitApplicantFormController.model.isFreshGraduate}"
 	                                		   	   styleClass="isitext_hrm" required="true" label="#{appmsg['recruitment_applicant.end_year']}"/>
                                     	<p:message for="lastWorkSinceId"/>
 	                                    <p:message for="lastWorkEndId"/>
@@ -361,7 +373,7 @@
 	                                </p:column>
 	                                <p:column style="width: 84%">
 	                                    <p:inputText id="lastJabatanId" value="#{recruitApplicantFormController.model.lastJabatan}" styleClass="isitext_hrm" style="width: 30%" 
-	                                    			 required="true"/>
+	                                    			 required="true" disabled="#{recruitApplicantFormController.model.isFreshGraduate}"/>
 	                                    <p:message for="lastJabatanId"/>
 	                                </p:column>
 	                            </p:row>
@@ -371,7 +383,7 @@
 	                                </p:column>
 	                                <p:column style="width: 84%">
 	                                    <p:selectOneMenu id="klasifikasiKerjaId" style="width: 31%"  filter="true" required="true"
-	                                                     value="#{recruitApplicantFormController.model.klasifikasiKerjaId}">
+	                                                     value="#{recruitApplicantFormController.model.klasifikasiKerjaId}" disabled="#{recruitApplicantFormController.model.isFreshGraduate}">
 	                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                        <f:selectItems value="#{recruitApplicantFormController.model.listKlasifikasiKerja}" var="klasifikasiKerja" itemValue="#{klasifikasiKerja.id}" itemLabel="#{klasifikasiKerja.name}" />
 	                                    </p:selectOneMenu>
@@ -384,7 +396,7 @@
 	                                </p:column>
 	                                <p:column style="width: 84%">
 	                               		<p:spinner id="lastJabatanSinceId" value="#{recruitApplicantFormController.model.lastJabatanSince}" size="4" max="2050" min="1950" 
-	                                		   	   styleClass="isitext_hrm" required="true"/>
+	                                		   	   styleClass="isitext_hrm" required="true" disabled="#{recruitApplicantFormController.model.isFreshGraduate}"/>
 	                                    <p:message for="lastJabatanSinceId"/>
 	                                </p:column>
 	                            </p:row>

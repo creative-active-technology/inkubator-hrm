@@ -12,6 +12,7 @@ import javax.faces.validator.ValidatorException;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
+import org.primefaces.component.calendar.Calendar;
 
 /**
  *
@@ -27,6 +28,12 @@ public class DateInSpecificRangeValidator implements Validator {
         // Obtain the component and submitted value of start and end date component.
         UIInput startTimeComponent = (UIInput) component.getAttributes().get("startTime");
         UIInput endTimeComponent = (UIInput) component.getAttributes().get("endTime");
+        
+        //Jika status nya disabled, berarti bukan mandatory, tidak perlu melakukan pengecekan
+        if(((Calendar)startTimeComponent).isDisabled() || ((Calendar)endTimeComponent).isDisabled() ){
+        	return;
+        }
+        
         Date startDate = null;
         Date endDate = null;
         try {

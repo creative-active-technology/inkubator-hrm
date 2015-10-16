@@ -8,12 +8,16 @@ package com.inkubator.hrm.web.model;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.Religion;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.DualListModel;
 import org.primefaces.model.LazyDataModel;
 
@@ -38,6 +42,8 @@ public class SearchEmployeeCandidateModel implements Serializable{
     private Double gpa;
     private Double gpaScale = 4.0;
     private LazyDataModel<SearchEmployeeCandidateViewModel> lazyDataModel;
+    private List<Long> listIdEmpDataCandidate = new ArrayList<Long>();
+    private Map<Long, Boolean> selectedIds = new HashMap<Long, Boolean>();
     
     public Long getId() {
         return id;
@@ -168,6 +174,27 @@ public class SearchEmployeeCandidateModel implements Serializable{
     public void setReligions(String religions) {
         this.religions = religions;
     }
+
+	public List<Long> getListIdEmpDataCandidate() {
+		for (Map.Entry<Long, Boolean> selected : selectedIds.entrySet()) {
+            if (StringUtils.equals(String.valueOf(selected.getValue()), "true")) {
+            	listIdEmpDataCandidate.add(selected.getKey());
+            }
+        }
+		return listIdEmpDataCandidate;
+	}
+
+	public void setListIdEmpDataCandidate(List<Long> listIdEmpDataCandidate) {
+		this.listIdEmpDataCandidate = listIdEmpDataCandidate;
+	}
+
+	public Map<Long, Boolean> getSelectedIds() {
+		return selectedIds;
+	}
+
+	public void setSelectedIds(Map<Long, Boolean> selectedIds) {
+		this.selectedIds = selectedIds;
+	}
 
     
     

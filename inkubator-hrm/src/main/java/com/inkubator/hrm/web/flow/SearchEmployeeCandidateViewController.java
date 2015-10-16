@@ -113,6 +113,10 @@ public class SearchEmployeeCandidateViewController implements Serializable {
         searchEmployeeCandidateModel.setLazyDataModel(lazyDataModel);
 
     }
+    
+    public String doCommitData(RequestContext context) throws Exception {
+    	return "success";
+    }
 
     public List<Integer> getNumberBetweenFromAndUntil(int from, int until) {
         List<Integer> listNumber = new ArrayList<Integer>();
