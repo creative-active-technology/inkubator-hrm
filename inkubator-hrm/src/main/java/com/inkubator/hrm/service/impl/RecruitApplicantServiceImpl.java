@@ -13,7 +13,10 @@ import org.primefaces.model.DualListModel;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.LineChartModel;
+import org.primefaces.model.chart.PieChartModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -535,12 +538,67 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 		
 		ApplicantStatisticViewModel model = new ApplicantStatisticViewModel();
 		
-        model.setEducationLevelApplicant(this.initEducationLevelApplicantBarmodel(resourceBundle));
+        model.setEducationLevelApplicant(this.initEducationLevelApplicantBarModel(resourceBundle));
+        model.setWorkingExperienceApplicant(this.initWorkingExperienceApplicantPieModel(resourceBundle));
+        model.setJobClassificationApplicant(this.initJobClassificationApplicantLineModel(resourceBundle));
+        model.setListApplicantAge(this.recruitApplicantDao.getDataChartAge());
         
 		return model;
 	}
 	
-	private BarChartModel initEducationLevelApplicantBarmodel(ResourceBundle resourceBundle) {		
+	private LineChartModel  initJobClassificationApplicantLineModel(ResourceBundle resourceBundle) {
+		LineChartModel model = new LineChartModel();
+		model.setTitle(resourceBundle.getString("recruitment_applicant.applicant_job_classification"));
+		model.setLegendPosition("ne");
+        model.setShowPointLabels(true);
+        model.setShowDatatip(false);
+		 
+        ChartSeries internal = new ChartSeries();
+        internal.setLabel("Internal");
+ 
+        ChartSeries external = new ChartSeries();
+        external.setLabel("External");
+        
+        List<ApplicantViewModel> listApplicant = recruitApplicantDao.getDataChartJobClassification();
+        for(ApplicantViewModel applicant : listApplicant) {
+        	internal.set(applicant.getName(), applicant.getTotalInternalDecimal());
+        	external.set(applicant.getName(), applicant.getTotalExternalDecimal());
+        }
+        model.addSeries(internal);
+        model.addSeries(external);
+        
+        Long maxInternal = Lambda.max(listApplicant, Lambda.on(ApplicantViewModel.class).getTotalInternalDecimal().longValue());
+        Long maxExternal = Lambda.max(listApplicant, Lambda.on(ApplicantViewModel.class).getTotalExternalDecimal()).longValue();
+        Long max = maxInternal > maxExternal ? maxInternal : maxExternal;
+        max =  max + (10 - (max % 10)); //tujuannya untuk buat genap, per 10
+        
+        Axis yAxis = model.getAxis(AxisType.Y);
+        yAxis.setLabel(resourceBundle.getString("educationhistory.score"));
+        yAxis.setMin(0);
+        yAxis.setMax(max);
+                
+        model.getAxes().put(AxisType.X, new CategoryAxis(""));
+        
+        return model;
+	}
+	
+	private PieChartModel initWorkingExperienceApplicantPieModel(ResourceBundle resourceBundle) {
+		ApplicantViewModel applicant = recruitApplicantDao.getDataChartWorkingExperience();
+		
+		PieChartModel model = new PieChartModel();
+        model.set("Internal", applicant.getTotalInternal());
+        model.set("Fresh Graduate", applicant.getTotalFreshGraduate());
+        model.set("Working", applicant.getTotalNotFreshGraduate());
+         
+        model.setTitle(resourceBundle.getString("recruitment_applicant.applicant_working_experience"));
+        model.setLegendPosition("ne");
+        model.setFill(true);
+        model.setShowDataLabels(true);
+        
+		return model;
+	}
+	
+	private BarChartModel initEducationLevelApplicantBarModel(ResourceBundle resourceBundle) {		
 		BarChartModel model = new BarChartModel();
 		model.setTitle(resourceBundle.getString("recruitment_applicant.applicant_education_level"));
         model.setLegendPosition("ne");
@@ -553,7 +611,7 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
         ChartSeries external = new ChartSeries();
         external.setLabel("External");
  
-        List<ApplicantViewModel> listApplicant = recruitApplicantDao.getAllDataGroupByEducationLevel();
+        List<ApplicantViewModel> listApplicant = recruitApplicantDao.getDataChartEducationLevel();
         for(ApplicantViewModel applicant : listApplicant) {
         	internal.set(applicant.getName(), applicant.getTotalInternal());
         	external.set(applicant.getName(), applicant.getTotalExternal());

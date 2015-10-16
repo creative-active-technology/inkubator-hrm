@@ -14,8 +14,6 @@ public class ApplicantAgeViewModel implements Serializable {
 	private Long maleAgeBetween25And30;
 	private Long femaleAgeAbove30;
 	private Long maleAgeAbove30;
-	private Long femaleMarried;
-	private Long maleMarried;
 	private String candidate;
 	
 	public Long getFemaleAgeBelow25() {
@@ -53,18 +51,6 @@ public class ApplicantAgeViewModel implements Serializable {
 	}
 	public void setMaleAgeAbove30(Long maleAgeAbove30) {
 		this.maleAgeAbove30 = maleAgeAbove30;
-	}
-	public Long getFemaleMarried() {
-		return femaleMarried;
-	}
-	public void setFemaleMarried(Long femaleMarried) {
-		this.femaleMarried = femaleMarried;
-	}
-	public Long getMaleMarried() {
-		return maleMarried;
-	}
-	public void setMaleMarried(Long maleMarried) {
-		this.maleMarried = maleMarried;
 	}
 	public String getCandidate() {
 		return candidate;

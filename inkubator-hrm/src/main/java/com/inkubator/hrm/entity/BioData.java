@@ -59,6 +59,7 @@ public class BioData implements java.io.Serializable {
     private String npwp;
     private String graduatedFrom;
     private Integer graduatedYear;
+    private Integer age;
     private List<Long> listEducationHistoryId = new ArrayList<Long>();
     private Set<BioEducationHistory> educationHistories = new HashSet<BioEducationHistory>(0);
     private Set<BioAddress> bioAddresses = new HashSet<BioAddress>(0);
@@ -581,4 +582,14 @@ public class BioData implements java.io.Serializable {
     public void setCombineName(String combineName) {
         this.combineName = combineName;
     }
+
+    @Formula(value = "((YEAR(NOW()) - YEAR(date_of_birth)) - ((DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(NOW(), '00-%m-%d'))))")
+	public Integer getAge() {
+		return age;
+	}
+
+	public void setAge(Integer age) {
+		this.age = age;
+	}    
+    
 }
