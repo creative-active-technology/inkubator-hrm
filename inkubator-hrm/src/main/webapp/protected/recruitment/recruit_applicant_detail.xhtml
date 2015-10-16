@@ -228,6 +228,16 @@
                             <p:panelGrid style="width: 100%;" styleClass="grid_border3"  >
                             	<p:row>
 	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
+	                                    <p:outputLabel  value="Fresh Graduate" styleClass="label_hrm"/>
+	                                </p:column>
+	                                <p:column style="width: 84%">
+                                        <p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.isFreshGraduate}">
+                                        	<f:converter converterId="booleanMessageConverter" />
+                                        </p:outputLabel>                   	   
+	                                </p:column>
+	                            </p:row>
+                            	<p:row>
+	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
 	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.latest_company']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">

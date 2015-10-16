@@ -41,6 +41,7 @@ public class ApplicantModel implements Serializable {
 	private Integer lastJabatanSince;
 	private Long businessTypeId;
 	private Long vacancyAdvertisementId;
+	private Boolean isFreshGraduate;
 	private Boolean isActive;
 	private Boolean isVerified;
 	private String uploadPath;
@@ -273,6 +274,12 @@ public class ApplicantModel implements Serializable {
 	}
 	public void setVacancyAdvertisementId(Long vacancyAdvertisementId) {
 		this.vacancyAdvertisementId = vacancyAdvertisementId;
+	}
+	public Boolean getIsFreshGraduate() {
+		return isFreshGraduate;
+	}
+	public void setIsFreshGraduate(Boolean isFreshGraduate) {
+		this.isFreshGraduate = isFreshGraduate;
 	}
 	public Boolean getIsActive() {
 		return isActive;

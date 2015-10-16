@@ -4,10 +4,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.DualListModel;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -51,9 +57,14 @@ import com.inkubator.hrm.entity.RecruitVacancyAdvertisement;
 import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.service.RecruitApplicantService;
 import com.inkubator.hrm.web.model.ApplicantModel;
+import com.inkubator.hrm.web.model.ApplicantStatisticViewModel;
 import com.inkubator.hrm.web.model.ApplicantUploadBatchModel;
+import com.inkubator.hrm.web.model.ApplicantViewModel;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.util.FacesUtil;
+
+import ch.lambdaj.Lambda;
 
 /**
  *
@@ -430,8 +441,8 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 	}
 	
 	private RecruitApplicant bindingValueApplicant(RecruitApplicant applicant, ApplicantModel model){
-		BusinessType businessType = businessTypeDao.getEntiyByPK(model.getBusinessTypeId());
-		KlasifikasiKerja klasifikasiKerja = klasifikasiKerjaDao.getEntiyByPK(model.getKlasifikasiKerjaId());
+		BusinessType businessType = businessTypeDao.getEntiyByPK(model.getBusinessTypeId()!= null ? model.getBusinessTypeId() : 0);
+		KlasifikasiKerja klasifikasiKerja = klasifikasiKerjaDao.getEntiyByPK(model.getKlasifikasiKerjaId() != null ? model.getKlasifikasiKerjaId() : 0);
 		InstitutionEducation institutionEducation = institutionEducationDao.getEntiyByPK(model.getInstitutionEducationId());
 		EducationLevel educationLevel = educationLevelDao.getEntiyByPK(model.getEducationLevelId());
 		RecruitVacancyAdvertisement vacancyAdvertisement = recruitVacancyAdvertisementDao.getEntiyByPK(model.getVacancyAdvertisementId());
@@ -451,6 +462,7 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 		applicant.setScale(model.getScale());
 		applicant.setScore(model.getScore());
 		applicant.setRecruitVacancyAdvertisement(vacancyAdvertisement);
+		applicant.setIsFreshGraduate(model.getIsFreshGraduate());
 		applicant.setIsActive(model.getIsActive());
 		applicant.setIsVerified(model.getIsVerified());
 		
@@ -497,6 +509,7 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 			applicant.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 			applicant.setBioData(bioData);
 			applicant.setCareerCandidate(HRMConstant.RECRUIT_APPLICANT_CAREER_CANDIDATE_EXTERNAL); //default
+			applicant.setIsFreshGraduate(Boolean.FALSE); //default
 			applicant.setIsActive(Boolean.FALSE); //default
 			applicant.setIsVerified(Boolean.FALSE); //default
 			applicant.setEducationLevel(educationLevelDao.getEntityByName(model.getEducationLevel()));
@@ -513,5 +526,55 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 			recruitApplicantDao.save(applicant);
 		}
 	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public ApplicantStatisticViewModel getAllDataApplicantStatistic() throws Exception {
+		String locale = FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString();
+		ResourceBundle resourceBundle = ResourceBundle.getBundle("Messages", new Locale(locale));
+		
+		ApplicantStatisticViewModel model = new ApplicantStatisticViewModel();
+		
+        model.setEducationLevelApplicant(this.initEducationLevelApplicantBarmodel(resourceBundle));
+        
+		return model;
+	}
+	
+	private BarChartModel initEducationLevelApplicantBarmodel(ResourceBundle resourceBundle) {		
+		BarChartModel model = new BarChartModel();
+		model.setTitle(resourceBundle.getString("recruitment_applicant.applicant_education_level"));
+        model.setLegendPosition("ne");
+        model.setShowPointLabels(true);
+        model.setShowDatatip(false);
+        
+        ChartSeries internal = new ChartSeries();
+        internal.setLabel("Internal");
+ 
+        ChartSeries external = new ChartSeries();
+        external.setLabel("External");
+ 
+        List<ApplicantViewModel> listApplicant = recruitApplicantDao.getAllDataGroupByEducationLevel();
+        for(ApplicantViewModel applicant : listApplicant) {
+        	internal.set(applicant.getName(), applicant.getTotalInternal());
+        	external.set(applicant.getName(), applicant.getTotalExternal());
+        }
+        model.addSeries(internal);
+        model.addSeries(external);
+         
+        Long maxInternal = Lambda.max(listApplicant, Lambda.on(ApplicantViewModel.class).getTotalInternal());
+        Long maxExternal = Lambda.max(listApplicant, Lambda.on(ApplicantViewModel.class).getTotalExternal());
+        Long max = maxInternal > maxExternal ? maxInternal : maxExternal;
+        max =  max + (10 - (max % 10)); //tujuannya untuk buat genap, per 10
+        
+        Axis yAxis = model.getAxis(AxisType.Y);
+        yAxis.setLabel(resourceBundle.getString("educationhistory.score"));
+        yAxis.setMin(0);
+        yAxis.setMax(max);
+        
+        Axis xAxis = model.getAxis(AxisType.X);
+        xAxis.setTickAngle(30);
+        
+        return model;
+    }
 
 }

@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.RecruitApplicant;
+import com.inkubator.hrm.web.model.ApplicantViewModel;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
 
 /**
@@ -19,5 +20,7 @@ public interface RecruitApplicantDao extends IDAO<RecruitApplicant> {
 	public Long getTotalByParam(RecruitApplicantSearchParameter parameter);
 
 	public RecruitApplicant getEntityByPkWithDetail(Long id);
+	
+	public List<ApplicantViewModel> getAllDataGroupByEducationLevel();
 
 }

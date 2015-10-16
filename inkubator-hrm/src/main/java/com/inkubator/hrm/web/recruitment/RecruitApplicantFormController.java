@@ -177,6 +177,16 @@ public class RecruitApplicantFormController extends BaseController {
     	return "/protected/recruitment/recruit_applicant_view.htm?faces-redirect=true";
     }
 	
+	public void onChangeFreshGraduate(){
+		model.setLastWorkCompany(StringUtils.EMPTY);
+		model.setBusinessTypeId(null);
+		model.setLastWorkSince(null);
+		model.setLastWorkEnd(null);
+		model.setLastJabatan(StringUtils.EMPTY);
+		model.setKlasifikasiKerjaId(null);
+		model.setLastJabatanSince(null);
+	}
+	
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	private void getModelFromEntity(RecruitApplicant applicant) {
 		model.setId(applicant.getId());
@@ -194,6 +204,7 @@ public class RecruitApplicantFormController extends BaseController {
 		model.setKlasifikasiKerjaId(applicant.getKlasifikasiKerja() != null ? applicant.getKlasifikasiKerja().getId() : null);
 		model.setLastJabatanSince(applicant.getLastJabatanSince());
 		model.setBusinessTypeId(applicant.getBusinessType() != null ? applicant.getBusinessType().getId() : null);
+		model.setIsFreshGraduate(applicant.getIsFreshGraduate());
 		model.setIsActive(applicant.getIsActive());
 		model.setIsVerified(applicant.getIsVerified());
 		model.setVacancyAdvertisementId(applicant.getRecruitVacancyAdvertisement().getId());

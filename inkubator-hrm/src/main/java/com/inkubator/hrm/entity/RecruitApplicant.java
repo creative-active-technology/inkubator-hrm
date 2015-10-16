@@ -31,6 +31,7 @@ public class RecruitApplicant implements Serializable {
 	private Integer version;
 	private BioData bioData;
 	private Integer careerCandidate;
+	private Boolean isFreshGraduate;
 	private Boolean isActive;
 	private Boolean isVerified;
 	private EducationLevel educationLevel;
@@ -102,6 +103,15 @@ public class RecruitApplicant implements Serializable {
 		this.careerCandidate = careerCandidate;
 	}
 	
+	@Column(name = "is_fresh_graduate")
+	public Boolean getIsFreshGraduate() {
+		return isFreshGraduate;
+	}
+
+	public void setIsFreshGraduate(Boolean isFreshGraduate) {
+		this.isFreshGraduate = isFreshGraduate;
+	}
+
 	@Column(name = "is_active")
 	public Boolean getIsActive() {
 		return isActive;

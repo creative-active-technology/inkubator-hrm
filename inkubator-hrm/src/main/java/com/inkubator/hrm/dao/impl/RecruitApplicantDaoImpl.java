@@ -5,18 +5,22 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
+import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.RecruitApplicantDao;
 import com.inkubator.hrm.entity.RecruitApplicant;
+import com.inkubator.hrm.web.model.ApplicantViewModel;
+import com.inkubator.hrm.web.model.LogMonthEndPayrollViewModel;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
 
 /**
@@ -89,6 +93,22 @@ public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implement
 		criteria.setFetchMode("recruitApplicantSpecLists.orgTypeOfSpecList", FetchMode.JOIN);
 		criteria.setFetchMode("recruitApplicantSpecLists.orgTypeOfSpecList.orgTypeOfSpec", FetchMode.JOIN);
 		return (RecruitApplicant) criteria.uniqueResult();
+	}
+
+	@Override
+	public List<ApplicantViewModel> getAllDataGroupByEducationLevel() {
+		
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT educationLevel.name AS name, "
+    			+ "SUM(CASE WHEN recruitApplicant.careerCandidate=0 then 1 else 0 END) AS totalExternal, "
+    			+ "SUM(CASE WHEN recruitApplicant.careerCandidate=1 then 1 else 0 END) AS totalInternal "
+    			+ "FROM RecruitApplicant recruitApplicant "
+    			+ "JOIN recruitApplicant.educationLevel educationLevel "
+    			+ "GROUP BY educationLevel.id "
+    			+ "ORDER BY educationLevel.level DESC "); 
+        
+    	Query hbm = getCurrentSession().createQuery(selectQuery.toString()).setResultTransformer(Transformers.aliasToBean(ApplicantViewModel.class));
+    	return hbm.list(); 
 	}
 
 }
