@@ -246,10 +246,15 @@ public class RecruitApplicantFormController extends BaseController {
 	            int index = specListName.indexOf(orgTypeOfSpec.getName());
 
 	            if (index != -1) {
+	            	System.out.println("=========================");
 	            	List<OrgTypeOfSpecList> selectedSpecList = groupSelectedSpecList.find(key);
+	            	System.out.println("selected " + selectedSpecList.size());
 	                List<OrgTypeOfSpecList> availableSpecList = specListDualModel.get(index).getSource();
+	                System.out.println("available " + availableSpecList.size());
 	                availableSpecList.removeAll(selectedSpecList);
 
+	                System.out.println("selected " + selectedSpecList.size());
+	                System.out.println("available " + availableSpecList.size());
 	                specListDualModel.get(index).setTarget(selectedSpecList);
 	                specListDualModel.get(index).setSource(availableSpecList);
 	            }

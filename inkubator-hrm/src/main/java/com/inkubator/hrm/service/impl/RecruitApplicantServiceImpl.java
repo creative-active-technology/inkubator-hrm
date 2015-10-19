@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.Gson;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
@@ -36,6 +37,7 @@ import com.inkubator.hrm.dao.InstitutionEducationDao;
 import com.inkubator.hrm.dao.KlasifikasiKerjaDao;
 import com.inkubator.hrm.dao.MaritalStatusDao;
 import com.inkubator.hrm.dao.NationalityDao;
+import com.inkubator.hrm.dao.OrgTypeOfSpecDao;
 import com.inkubator.hrm.dao.OrgTypeOfSpecListDao;
 import com.inkubator.hrm.dao.RaceDao;
 import com.inkubator.hrm.dao.RecruitApplicantDao;
@@ -52,6 +54,7 @@ import com.inkubator.hrm.entity.InstitutionEducation;
 import com.inkubator.hrm.entity.KlasifikasiKerja;
 import com.inkubator.hrm.entity.MaritalStatus;
 import com.inkubator.hrm.entity.Nationality;
+import com.inkubator.hrm.entity.OrgTypeOfSpec;
 import com.inkubator.hrm.entity.OrgTypeOfSpecList;
 import com.inkubator.hrm.entity.Race;
 import com.inkubator.hrm.entity.RecruitApplicant;
@@ -63,6 +66,8 @@ import com.inkubator.hrm.web.model.ApplicantModel;
 import com.inkubator.hrm.web.model.ApplicantStatisticViewModel;
 import com.inkubator.hrm.web.model.ApplicantUploadBatchModel;
 import com.inkubator.hrm.web.model.ApplicantViewModel;
+import com.inkubator.hrm.web.model.RadarChartData;
+import com.inkubator.hrm.web.model.RadarDataset;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
@@ -107,6 +112,8 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 	private OrgTypeOfSpecListDao orgTypeOfSpecListDao;
 	@Autowired
 	private RecruitVacancyAdvertisementDao recruitVacancyAdvertisementDao;
+	@Autowired
+	private OrgTypeOfSpecDao orgTypeOfSpecDao;
 	
 	@Override
 	public RecruitApplicant getEntiyByPK(String id) throws Exception {
@@ -540,13 +547,53 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 		
         model.setEducationLevelApplicant(this.initEducationLevelApplicantBarModel(resourceBundle));
         model.setWorkingExperienceApplicant(this.initWorkingExperienceApplicantPieModel(resourceBundle));
-        model.setJobClassificationApplicant(this.initJobClassificationApplicantLineModel(resourceBundle));
+        model.setJobClassificationApplicant(this.initJobClassificationApplicantRadarModel());
+        //model.setJobClassificationApplicantLineModel(this.initJobClassificationApplicantLineModel(resourceBundle));
         model.setListApplicantAge(this.recruitApplicantDao.getDataChartAge());
         
 		return model;
 	}
 	
-	private LineChartModel  initJobClassificationApplicantLineModel(ResourceBundle resourceBundle) {
+	private String initJobClassificationApplicantRadarModel(){
+		RadarDataset internal = new RadarDataset();
+		internal.setLabel("Internal");
+		internal.setFillColor("rgba(75,178,197,0.3)");
+		internal.setStrokeColor("rgba(75,178,197,0.3)");
+		internal.setPointColor("rgba(75,178,197,1)");
+		internal.setPointStrokeColor("#fff");
+		internal.setPointHighlightFill("#fff");
+		
+		RadarDataset external = new RadarDataset();
+		external.setLabel("External");
+		external.setFillColor("rgba(234,162,40,0.3)");
+		external.setStrokeColor("rgba(234,162,40,0.3)");
+		external.setPointColor("rgba(234,162,40,1)");
+		external.setPointStrokeColor("#fff");
+		external.setPointHighlightFill("#fff");
+		
+		List<OrgTypeOfSpec> listSpec = orgTypeOfSpecDao.getAllData();
+		//List<ApplicantViewModel> listApplicant = recruitApplicantDao.getDataChartJobClassification();
+		RadarChartData data = new RadarChartData(listSpec.size());
+		int i=0;
+		for(OrgTypeOfSpec spec : listSpec){
+			System.out.println(spec.getName() + " internal  " + recruitApplicantDao.getTotalByCareerCandidateAndOrgTypeOfSpecId(HRMConstant.RECRUIT_APPLICANT_CAREER_CANDIDATE_INTERNAL, spec.getId()));
+			System.out.println(spec.getName() + " external  " + recruitApplicantDao.getTotalByCareerCandidateAndOrgTypeOfSpecId(HRMConstant.RECRUIT_APPLICANT_CAREER_CANDIDATE_EXTERNAL, spec.getId()));
+			data.addLabel(i, spec.getName());
+			internal.addData(String.valueOf(recruitApplicantDao.getTotalByCareerCandidateAndOrgTypeOfSpecId(HRMConstant.RECRUIT_APPLICANT_CAREER_CANDIDATE_INTERNAL, spec.getId())));
+			external.addData(String.valueOf(recruitApplicantDao.getTotalByCareerCandidateAndOrgTypeOfSpecId(HRMConstant.RECRUIT_APPLICANT_CAREER_CANDIDATE_EXTERNAL, spec.getId())));
+			i++;
+		}
+		
+		RadarDataset[] datasets = new RadarDataset[2];
+		datasets[0] = internal;
+		datasets[1] = external;
+		data.setDatasets(datasets);
+    	
+		Gson gson = new Gson();
+    	return gson.toJson(data);
+	}
+	
+	/*private LineChartModel  initJobClassificationApplicantLineModel(ResourceBundle resourceBundle) {
 		LineChartModel model = new LineChartModel();
 		model.setTitle(resourceBundle.getString("recruitment_applicant.applicant_job_classification"));
 		model.setLegendPosition("ne");
@@ -580,7 +627,7 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
         model.getAxes().put(AxisType.X, new CategoryAxis(""));
         
         return model;
-	}
+	}*/
 	
 	private PieChartModel initWorkingExperienceApplicantPieModel(ResourceBundle resourceBundle) {
 		ApplicantViewModel applicant = recruitApplicantDao.getDataChartWorkingExperience();

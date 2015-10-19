@@ -29,5 +29,7 @@ public interface RecruitApplicantDao extends IDAO<RecruitApplicant> {
 	public ApplicantViewModel getDataChartWorkingExperience();
 
 	public List<ApplicantAgeViewModel> getDataChartAge();
+	
+	public Long getTotalByCareerCandidateAndOrgTypeOfSpecId(Integer careerCandidate, Long specId);
 
 }

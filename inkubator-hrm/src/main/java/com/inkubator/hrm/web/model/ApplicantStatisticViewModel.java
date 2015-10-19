@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.primefaces.model.chart.BarChartModel;
-import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.PieChartModel;
 
 /**
@@ -15,7 +14,8 @@ public class ApplicantStatisticViewModel implements Serializable {
 	
 	private PieChartModel workingExperienceApplicant;
 	private BarChartModel educationLevelApplicant;
-	private LineChartModel jobClassificationApplicant;
+	private String jobClassificationApplicant;
+	//private LineChartModel jobClassificationApplicantLineModel;
 	private List<ApplicantAgeViewModel> listApplicantAge;
 	
 	public PieChartModel getWorkingExperienceApplicant() {
@@ -30,10 +30,10 @@ public class ApplicantStatisticViewModel implements Serializable {
 	public void setEducationLevelApplicant(BarChartModel educationLevelApplicant) {
 		this.educationLevelApplicant = educationLevelApplicant;
 	}
-	public LineChartModel getJobClassificationApplicant() {
+	public String getJobClassificationApplicant() {
 		return jobClassificationApplicant;
 	}
-	public void setJobClassificationApplicant(LineChartModel jobClassificationApplicant) {
+	public void setJobClassificationApplicant(String jobClassificationApplicant) {
 		this.jobClassificationApplicant = jobClassificationApplicant;
 	}
 	public List<ApplicantAgeViewModel> getListApplicantAge() {
@@ -41,6 +41,12 @@ public class ApplicantStatisticViewModel implements Serializable {
 	}
 	public void setListApplicantAge(List<ApplicantAgeViewModel> listApplicantAge) {
 		this.listApplicantAge = listApplicantAge;
-	}	
+	}
+	/*public LineChartModel getJobClassificationApplicantLineModel() {
+		return jobClassificationApplicantLineModel;
+	}
+	public void setJobClassificationApplicantLineModel(LineChartModel jobClassificationApplicantLineModel) {
+		this.jobClassificationApplicantLineModel = jobClassificationApplicantLineModel;
+	}*/
 	
 }
