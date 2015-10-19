@@ -1,6 +1,7 @@
 package com.inkubator.hrm.dao.impl;
 
 import ch.lambdaj.Lambda;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -10,7 +11,9 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
+
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -18,6 +21,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
+
 import com.inkubator.hrm.dao.RecruitHireApplyDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
@@ -26,7 +30,9 @@ import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.web.model.RecruitReqHistoryViewModel;
 import com.inkubator.hrm.web.search.RecruitHireApplySearchParameter;
 import com.inkubator.hrm.web.search.RecruitReqHistorySearchParameter;
+
 import java.util.ArrayList;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 import org.hibernate.FetchMode;
@@ -212,4 +218,25 @@ public class RecruitHireApplyDaoImpl extends IDAOImpl<RecruitHireApply> implemen
         
         return (RecruitHireApply) criteria.uniqueResult();
     }
+
+	@Override
+	public RecruitHireApply getEntityByJabatanId(Long jabatanId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.setFetchMode("employeeType", FetchMode.JOIN);
+		criteria.setFetchMode("currency", FetchMode.JOIN);
+		criteria.setFetchMode("recruitMppPeriod", FetchMode.JOIN);
+		criteria.createAlias("jabatan", "jabatan", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("jabatan.id", jabatanId));
+		return (RecruitHireApply) criteria.uniqueResult();
+	}
+
+	@Override
+	public List<RecruitHireApply> getAllDataWithDetail() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.setFetchMode("employeeType", FetchMode.JOIN);
+		criteria.setFetchMode("currency", FetchMode.JOIN);
+		criteria.setFetchMode("recruitMppPeriod", FetchMode.JOIN);
+		criteria.setFetchMode("jabatan", FetchMode.JOIN);
+		return criteria.list();
+	}
 }

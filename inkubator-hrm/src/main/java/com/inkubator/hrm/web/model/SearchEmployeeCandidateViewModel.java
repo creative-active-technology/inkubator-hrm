@@ -107,6 +107,7 @@ public class SearchEmployeeCandidateViewModel implements Serializable {
     public void setLastEducationLevelName(String lastEducationLevelName) {
         this.lastEducationLevelName = lastEducationLevelName;
     }
+
     
    
 }

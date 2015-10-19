@@ -21,5 +21,6 @@ public interface RecruitVacancyAdvertisementDetailDao extends IDAO<RecruitVacanc
 	public Long getTotalVacancyByParam(VacancySearchParameter parameter);
 
 	public RecruitVacancyAdvertisementDetail getEntityByPkWithDetail(Long id);
-
+	
+	public RecruitVacancyAdvertisementDetail getEntityByRecruitHireApplyId(Long recruitHireApplyId);
 }
