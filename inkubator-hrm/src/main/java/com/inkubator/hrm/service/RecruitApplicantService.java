@@ -30,5 +30,7 @@ public interface RecruitApplicantService extends IService<RecruitApplicant> {
 	public void uploadBatchProcess(ApplicantUploadBatchModel model) throws Exception;
 	
 	public ApplicantStatisticViewModel getAllDataApplicantStatistic() throws Exception;
+	
+	public String commitDataInternalCareerCandidate(List<Long> listEmpDataId) throws Exception;
 
 }

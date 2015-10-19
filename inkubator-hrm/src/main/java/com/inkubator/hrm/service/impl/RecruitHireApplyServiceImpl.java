@@ -745,4 +745,10 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
 		detail.append("Periode MPP " + dateFormat.format(entity.getRecruitMppPeriod().getPeriodeStart()) + " s/d " + dateFormat.format(entity.getRecruitMppPeriod().getPeriodeEnd()));
 		return detail.toString();
 	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RecruitHireApply> getAllDataWithDetail() throws Exception {
+		return recruitHireApplyDao.getAllDataWithDetail();
+	}
 }
