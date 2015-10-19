@@ -19,13 +19,16 @@ import com.inkubator.hrm.web.model.UnitKerjaModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -33,6 +36,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.context.RequestContext;
 
 /**
@@ -60,7 +64,8 @@ public class UnitKerjaFormController extends BaseController{
     private List<Province> provinceList = new ArrayList<>();
     private List<Country> countryList = new ArrayList<>();
     private City city;
-    private Boolean disabled;
+    private Boolean disabledProvince;
+    private Boolean disabledCity;
     private ResourceBundle messages;
 
     @PostConstruct
@@ -68,18 +73,27 @@ public class UnitKerjaFormController extends BaseController{
     public void initialization() {
         super.initialization();
         String param = FacesUtil.getRequestParameter("param");
-        unitKerjaModel = new UnitKerjaModel();
         
+        String locale = FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString();
+        messages = ResourceBundle.getBundle("Messages", new Locale(locale));
+        
+        disabledProvince = Boolean.TRUE;
+        disabledCity = Boolean.TRUE;
+        
+        unitKerjaModel = new UnitKerjaModel();
+        listDropDownCountry = new TreeMap<String, Long>();
+        listDropDownProvince = new TreeMap<String, Long>();
         listDropDownCity = new TreeMap<>();
+        
         try {
-            cityList = cityService.getAllData();
+        	countryList = countryService.getAllData();
         } catch (Exception ex) {
             Logger.getLogger(UnitKerjaFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (City citiesList : cityList) {
-            listDropDownCity.put(citiesList.getCityName(), citiesList.getId());                
+        
+        for(Country country : countryList){
+        	listDropDownCountry.put(country.getCountryName(), country.getId());
         }
-        MapUtil.sortByValue(listDropDownCity);
         
         try {
             if (param != null) {
@@ -88,6 +102,7 @@ public class UnitKerjaFormController extends BaseController{
                 
                 UnitKerja unitKerja = unitKerjaService.getEntityByPkWithCity(Long.parseLong(param));
                 isEdit = Boolean.TRUE;
+                
                 unitKerjaModel.setId(unitKerja.getId());
                 unitKerjaModel.setCode(unitKerja.getCode());
                 unitKerjaModel.setName(unitKerja.getName());
@@ -98,6 +113,9 @@ public class UnitKerjaFormController extends BaseController{
                 unitKerjaModel.setPhoneNumber(unitKerja.getPhoneNumber());
                 unitKerjaModel.setEmailAddress(unitKerja.getEmailAddress());
                 unitKerjaModel.setFaxNumber(unitKerja.getFaxNumber());
+                
+                disabledProvince = Boolean.FALSE;
+                disabledCity = Boolean.FALSE;
                 
             } else {
                 isEdit = Boolean.FALSE;
@@ -172,17 +190,15 @@ public class UnitKerjaFormController extends BaseController{
     
     public void countryChanged() {
         try {
-
-            Country country = countryService.getEntiyByPK(Long.parseLong(String.valueOf(unitKerjaModel.getCountryId())));
+        	
             List<Province> listProvinces = provinceService.getByCountryIdWithDetail(Long.parseLong(String.valueOf(unitKerjaModel.getCountryId())));
-
             if (listProvinces.isEmpty() || listProvinces == null) {
-                disabled = Boolean.TRUE;
+                disabledProvince = Boolean.TRUE;
                 unitKerjaModel.setProvinceId(null);
-                FacesContext.getCurrentInstance().addMessage("formCityFormId:provinceId", new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), messages.getString("city.province_is_empty")));
+                FacesContext.getCurrentInstance().addMessage("formUnitKerjaId:messagesProvinceId", new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), messages.getString("city.province_is_empty")));
 
             } else {
-                disabled = Boolean.FALSE;
+                disabledProvince = Boolean.FALSE;
                 listDropDownProvince.clear();
                 for (Province province : listProvinces) {
                     listDropDownProvince.put(province.getProvinceName(), province.getId());
@@ -199,16 +215,15 @@ public class UnitKerjaFormController extends BaseController{
     public void provinceChanged() {
         try {
 
-            Province province = provinceService.getEntiyByPK(Long.parseLong(String.valueOf(unitKerjaModel.getProvinceId())));
             List<City> listCities = cityService.getByProvinceIdWithDetail(Long.parseLong(String.valueOf(unitKerjaModel.getProvinceId())));
 
             if (listCities.isEmpty() || listCities == null) {
-                disabled = Boolean.TRUE;
-                unitKerjaModel.setCityId(null);
-                FacesContext.getCurrentInstance().addMessage("formCityFormId:provinceId", new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), messages.getString("city.province_is_empty")));
-
+                disabledCity = Boolean.TRUE;
+                unitKerjaModel.setCityId(null); 
+                FacesContext.getCurrentInstance().addMessage("formUnitKerjaId:messagesCityId", new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), messages.getString("city.city_is_empty")));
+                
             } else {
-                disabled = Boolean.FALSE;
+            	disabledCity = Boolean.FALSE;
                 listDropDownCity.clear();
                 for (City cities : listCities) {
                     listDropDownCity.put(cities.getCityName(), cities.getId());
@@ -334,5 +349,23 @@ public class UnitKerjaFormController extends BaseController{
     public void setCity(City city) {
         this.city = city;
     }
+
+	public Boolean getDisabledProvince() {
+		return disabledProvince;
+	}
+
+	public void setDisabledProvince(Boolean disabledProvince) {
+		this.disabledProvince = disabledProvince;
+	}
+
+	public Boolean getDisabledCity() {
+		return disabledCity;
+	}
+
+	public void setDisabledCity(Boolean disabledCity) {
+		this.disabledCity = disabledCity;
+	}
+    
+    
     
 }
