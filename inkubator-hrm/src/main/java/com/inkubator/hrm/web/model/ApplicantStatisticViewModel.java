@@ -15,8 +15,7 @@ public class ApplicantStatisticViewModel implements Serializable {
 	
 	private PieChartModel workingExperienceApplicant;
 	private BarChartModel educationLevelApplicant;
-	private LineChartModel specificationInternalApplicant;
-	private LineChartModel specificationExternalApplicant;
+	private LineChartModel jobClassificationApplicant;
 	private List<ApplicantAgeViewModel> listApplicantAge;
 	
 	public PieChartModel getWorkingExperienceApplicant() {
@@ -31,17 +30,11 @@ public class ApplicantStatisticViewModel implements Serializable {
 	public void setEducationLevelApplicant(BarChartModel educationLevelApplicant) {
 		this.educationLevelApplicant = educationLevelApplicant;
 	}
-	public LineChartModel getSpecificationInternalApplicant() {
-		return specificationInternalApplicant;
+	public LineChartModel getJobClassificationApplicant() {
+		return jobClassificationApplicant;
 	}
-	public void setSpecificationInternalApplicant(LineChartModel specificationInternalApplicant) {
-		this.specificationInternalApplicant = specificationInternalApplicant;
-	}
-	public LineChartModel getSpecificationExternalApplicant() {
-		return specificationExternalApplicant;
-	}
-	public void setSpecificationExternalApplicant(LineChartModel specificationExternalApplicant) {
-		this.specificationExternalApplicant = specificationExternalApplicant;
+	public void setJobClassificationApplicant(LineChartModel jobClassificationApplicant) {
+		this.jobClassificationApplicant = jobClassificationApplicant;
 	}
 	public List<ApplicantAgeViewModel> getListApplicantAge() {
 		return listApplicantAge;
