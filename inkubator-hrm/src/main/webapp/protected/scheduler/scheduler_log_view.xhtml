@@ -16,7 +16,7 @@
                 Home
             </ui:define>
             <ui:define name="center">
-            	<pe:importConstants className="com.inkubator.hrm.HRMConstant" var="hrmConstant" />
+                <pe:importConstants className="com.inkubator.hrm.HRMConstant" var="hrmConstant" />
                 <div id="box_bg" style="margin: 10px">                    
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
                         <p:graphicImage library="images" name="bank.png" height="36" width="36" cache="true"/>
@@ -58,7 +58,7 @@
                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.employee_attendance_calculation_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_ATTENDANCE_CALCULATE}" />
                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.create_notification_log_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_ANNOUNCMENT_GENERATING_LOG}" />
                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.notification_broadcast_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_ANNOUNCMENT_SENDING_NOTIF}" />
-                                        
+                                        <f:selectItem itemLabel="#{appmsg['scheduler_config.monitoring_log_delete']}" itemValue="#{hrmConstant.SCHEDULER_MONITORING_LOG_DELETE}" />
                                     </p:selectOneMenu>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{schedulerLogViewController.doSearch()}" update="tableSchedulerConfigId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
@@ -68,7 +68,7 @@
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Excel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableSchedulerConfigId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Log_scheduler"/>
                                     </p:commandButton>
-                                    
+
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{schedulerLogViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -93,7 +93,7 @@
                                     <h:outputText value="#{appmsg['scheduler_config.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.schedulerConfig.name}">
-                                	<f:converter converterId="schedulerConfigNameConverter" />
+                                    <f:converter converterId="schedulerConfigNameConverter" />
                                 </h:outputLabel>
                             </p:column>
 
@@ -114,15 +114,15 @@
                                     <f:convertDateTime pattern="dd MMM yyyy HH:mm:ss"  />
                                 </h:outputLabel>
                             </p:column> 
-                            
+
                             <p:column sortBy="#{data.statusMessages}"  >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['batchJobExecution.status']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.statusMessages}" />
                             </p:column>
-                            
-                                    
+
+
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
                                 <p:outputLabel value="#{schedulerLogViewController.lazyData.rowCount}"/>

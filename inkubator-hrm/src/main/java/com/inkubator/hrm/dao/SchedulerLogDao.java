@@ -10,6 +10,7 @@ import java.util.List;
 import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
+import com.inkubator.hrm.entity.LoginHistory;
 import com.inkubator.hrm.entity.SchedulerLog;
 import com.inkubator.hrm.web.search.SchedulerLogSearchParameter;
 
@@ -17,8 +18,13 @@ import com.inkubator.hrm.web.search.SchedulerLogSearchParameter;
  *
  * @author denifahri
  */
-public interface SchedulerLogDao extends IDAO<SchedulerLog>{
-	public List<SchedulerLog> getByParam(SchedulerLogSearchParameter searchParameter, int firstResult, int maxResults, Order order);
-    
+public interface SchedulerLogDao extends IDAO<SchedulerLog> {
+
+    public List<SchedulerLog> getByParam(SchedulerLogSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+
     public Long getTotalByParam(SchedulerLogSearchParameter searchParameter);
+
+    public List<SchedulerLog> getByMonthDif(int value);
+
+    public void deleteBatch(List<SchedulerLog> data);
 }

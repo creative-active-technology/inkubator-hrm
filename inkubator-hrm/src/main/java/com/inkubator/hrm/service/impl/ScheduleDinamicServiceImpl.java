@@ -61,6 +61,8 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
     private JmsTemplate jmsTemplateAnnoucmentGeneratingLog;
     @Autowired
     private JmsTemplate jmsTemplateAnnoucmentSendingNotif;
+    @Autowired
+    private JmsTemplate jmsTemplateDeleteMonitoringLog;
 
 //    @Override
 //    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -77,7 +79,6 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
 ////            }
 ////        }
 //    }
-
     @Scheduled(cron = "${cron.dinamic.scheduler}")// Harus REQUARED NEW
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     @Override
@@ -129,7 +130,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                         String dateString = new SimpleDateFormat("dd MM yyyy HH:mm").format(newDate);
                         Date forComparison = new SimpleDateFormat("dd MM yyyy HH:mm").parse(dateString);
 //                        Long total = currentDateTime.getTime() - lastExecution.getTime();
-                            LOGGER.info("===========================PROSES SCHEDULER Begin ===============================================");
+                        LOGGER.info("===========================PROSES SCHEDULER Begin ===============================================");
                         if (lastExePlusMinute.equals(forComparison)) {
                             config.setLastExecution(forComparison);
                             LOGGER.info("===========================PROSES SCHEDULER ===============================================");
@@ -409,15 +410,18 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                     }
                 });
                 break;
+            case "MONITORING_SCHEDULE_LOG_DELETE":
+                jmsTemplateDeleteMonitoringLog.send(new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createTextMessage(String.valueOf(configId));
+                    }
+                });
+                break;
 
-//            case "ADD_BALANCE_LEAVE":
-//                jmsTemplateAnnoucmentSendingNotif.send(new MessageCreator() {
-//                    @Override
-//                    public Message createMessage(Session session) throws JMSException {
-//                        return session.createTextMessage(String.valueOf(configId));
-//                    }
-//                });
-//                break;
+            default:
+                break;
+
         }
 
     }
