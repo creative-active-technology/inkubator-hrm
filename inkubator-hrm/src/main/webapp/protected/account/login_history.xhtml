@@ -79,7 +79,7 @@
                                     <h:outputText value="#{appmsg['loginhistory.login_date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loginHistoryData.loginDate}">
-                                    <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7" />
+                                    <f:convertDateTime pattern ="dd-MMMM-yyyy  HH:mm:ss" timeZone="GMT+7" />
                                 </h:outputLabel>
                             </p:column>
                             <p:column sortBy="#{loginHistoryData.logOutDate}" style="width: 20%">
@@ -87,7 +87,7 @@
                                     <h:outputText value="#{appmsg['loginhistory.logout_date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{loginHistoryData.logOutDate}">
-                                    <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7"/>
+                                    <f:convertDateTime pattern ="dd-MMMM-yyyy  HH:mm:ss" timeZone="GMT+7"/>
                                 </h:outputLabel>
                             </p:column>
                             <p:column sortBy="#{loginHistoryData.ipAddress}" style="width: 15%">
