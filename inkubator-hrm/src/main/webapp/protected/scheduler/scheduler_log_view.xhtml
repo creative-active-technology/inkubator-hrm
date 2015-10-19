@@ -102,7 +102,7 @@
                                     <h:outputText value="#{appmsg['scheduler_config.start_date_execution']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.startExecution}" >
-                                	<f:convertDateTime pattern="dd MMM yyyy hh:mm:ss" />
+                                    <f:convertDateTime pattern="dd MMM yyyy HH:mm:ss"  dateStyle="long"/>
                                 </h:outputLabel>
                             </p:column>
 
@@ -111,7 +111,7 @@
                                     <h:outputText value="#{appmsg['scheduler_config.end_date_execution']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.endExecution}" >
-                                	<f:convertDateTime pattern="dd MMM yyyy hh:mm:ss" />
+                                    <f:convertDateTime pattern="dd MMM yyyy HH:mm:ss"  />
                                 </h:outputLabel>
                             </p:column> 
                             

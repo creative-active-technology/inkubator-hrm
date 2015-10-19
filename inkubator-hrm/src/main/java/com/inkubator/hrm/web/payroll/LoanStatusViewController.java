@@ -73,9 +73,9 @@ public class LoanStatusViewController extends BaseController {
     }
 
 	public LazyDataModel<LoanNewApplication> getLazyDataModel() {
-		if(lazyDataModel == null){
+		/*if(lazyDataModel == null){
 			lazyDataModel = new LoanStatusLazyDataModel(loanStatusSearchParameter, loanNewApplicationService);
-        }
+        }*/
 		return lazyDataModel;
 	}
 

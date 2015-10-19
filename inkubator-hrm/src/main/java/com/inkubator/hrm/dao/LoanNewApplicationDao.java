@@ -8,8 +8,10 @@ import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.web.model.LoanHistoryViewModel;
 import com.inkubator.hrm.web.model.LoanNewApplicationBoxViewModel;
+import com.inkubator.hrm.web.model.LoanNewApplicationStatusViewModel;
 import com.inkubator.hrm.web.search.LoanNewApplicationBoxSearchParameter;
 import com.inkubator.hrm.web.search.LoanNewSearchParameter;
+import com.inkubator.hrm.web.search.LoanStatusSearchParameter;
 
 
 /**
@@ -45,4 +47,9 @@ public interface LoanNewApplicationDao extends IDAO<LoanNewApplication> {
         public List<LoanHistoryViewModel> getListLoanHistoryByEmpDataId(Long empDataId);
         
         public List<LoanNewApplication> getListLoanDisbursedOrPaidByEmpDataIdAndLoanNewTypeId(Long empDataId, Long loanNewTypeId);
+        
+        public List<LoanNewApplicationStatusViewModel> getAllDataLoanNewApplicationStatus(LoanStatusSearchParameter parameter, int firstResult, int maxResults, Order orderable);
+        
+        public Long getTotalDataLoanNewApplicationStatus(LoanStatusSearchParameter parameter);
+        
 }
