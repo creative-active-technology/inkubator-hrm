@@ -12,10 +12,12 @@ import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
 import com.inkubator.hrm.web.model.LoanHistoryViewModel;
 import com.inkubator.hrm.web.model.LoanNewApplicationBoxViewModel;
+import com.inkubator.hrm.web.model.LoanNewApplicationStatusViewModel;
 import com.inkubator.hrm.web.model.LoanNewCancellationFormModel;
 import com.inkubator.hrm.web.search.LeaveSearchParameter;
 import com.inkubator.hrm.web.search.LoanNewApplicationBoxSearchParameter;
 import com.inkubator.hrm.web.search.LoanNewSearchParameter;
+import com.inkubator.hrm.web.search.LoanStatusSearchParameter;
 
 import java.util.Date;
 
@@ -48,4 +50,8 @@ public interface LoanNewApplicationService extends IService<LoanNewApplication>,
     public Long getTotalUndisbursedActivityByParam(LoanNewApplicationBoxSearchParameter parameter) throws Exception;
     
     public List<LoanHistoryViewModel> getListLoanHistoryByEmpDataId(Long empDataId) throws Exception;
+    
+    public List<LoanNewApplicationStatusViewModel> getAllDataLoanNewApplicationStatus(LoanStatusSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
+    
+    public Long getTotalDataLoanNewApplicationStatus(LoanStatusSearchParameter parameter) throws Exception;
 }

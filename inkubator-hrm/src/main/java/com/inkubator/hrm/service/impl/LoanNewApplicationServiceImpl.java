@@ -76,9 +76,11 @@ import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.util.LoanPayment;
 import com.inkubator.hrm.web.model.LoanHistoryViewModel;
 import com.inkubator.hrm.web.model.LoanNewApplicationBoxViewModel;
+import com.inkubator.hrm.web.model.LoanNewApplicationStatusViewModel;
 import com.inkubator.hrm.web.model.LoanNewCancellationFormModel;
 import com.inkubator.hrm.web.search.LoanNewApplicationBoxSearchParameter;
 import com.inkubator.hrm.web.search.LoanNewSearchParameter;
+import com.inkubator.hrm.web.search.LoanStatusSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
@@ -835,5 +837,22 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
 			loanHistModel.setTotalAlreadyPaidInstallment(totalAlreadyPaidInstallment == null ? 0 : totalAlreadyPaidInstallment.intValue());
 		}
 		return listLoanHistory;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<LoanNewApplicationStatusViewModel> getAllDataLoanNewApplicationStatus(
+			LoanStatusSearchParameter parameter, int firstResult,
+			int maxResults, Order orderable) throws Exception {
+		// TODO Auto-generated method stub
+		return loanNewApplicationDao.getAllDataLoanNewApplicationStatus(parameter, firstResult, maxResults, orderable);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalDataLoanNewApplicationStatus(
+			LoanStatusSearchParameter parameter) throws Exception {
+		// TODO Auto-generated method stub
+		return loanNewApplicationDao.getTotalDataLoanNewApplicationStatus(parameter);
 	}
 }
