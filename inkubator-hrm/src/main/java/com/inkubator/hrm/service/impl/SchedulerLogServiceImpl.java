@@ -5,11 +5,14 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.SchedulerConfigDao;
 import com.inkubator.hrm.dao.SchedulerLogDao;
 import com.inkubator.hrm.entity.SchedulerLog;
 import com.inkubator.hrm.service.SchedulerLogService;
 import com.inkubator.hrm.web.search.SchedulerLogSearchParameter;
+import java.util.Date;
 
 import java.util.List;
 
@@ -28,9 +31,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service(value = "schedulerLogService")
 @Lazy
 public class SchedulerLogServiceImpl extends IServiceImpl implements SchedulerLogService {
-	
-	@Autowired
-	private SchedulerLogDao schedulerLogDao;
+
+    @Autowired
+    private SchedulerLogDao schedulerLogDao;
+    @Autowired
+    private SchedulerConfigDao schedulerConfigDao;
 
     @Override
     public SchedulerLog getEntiyByPK(String id) throws Exception {
@@ -192,16 +197,30 @@ public class SchedulerLogServiceImpl extends IServiceImpl implements SchedulerLo
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<SchedulerLog> getByParam(SchedulerLogSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
-		return schedulerLogDao.getByParam(searchParameter, firstResult, maxResults, order);
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<SchedulerLog> getByParam(SchedulerLogSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+        return schedulerLogDao.getByParam(searchParameter, firstResult, maxResults, order);
+    }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalByParam(SchedulerLogSearchParameter searchParameter) throws Exception {
-		return schedulerLogDao.getTotalByParam(searchParameter);
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalByParam(SchedulerLogSearchParameter searchParameter) throws Exception {
+        return schedulerLogDao.getTotalByParam(searchParameter);
+    }
+
+    @Override
+     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void saveBeforeJobBatch() throws Exception {
+       
+        SchedulerLog schedulerLog = new SchedulerLog();
+        schedulerLog.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+        String idAttendanceCalculate = "287902202371";
+        schedulerLog.setSchedulerConfig(schedulerConfigDao.getEntiyByPK(Long.parseLong(idAttendanceCalculate)));
+        schedulerLog.setStartExecution(new Date());
+        schedulerLog.setStatusMessages("PROCESS  for Detil Information See Bacth Monitoring");
+        schedulerLogDao.save(schedulerLog);
+
+    }
 
 }

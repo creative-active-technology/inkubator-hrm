@@ -35,7 +35,8 @@ public class WtHolidayCronListenerServiceImpl extends BaseSchedulerDinamicListen
     private WtHolidayDao wtHolidayDao;
 
     public void updateWtHolidayDateWhereIsEveryYearIsOne() throws Exception {
-        LOGGER.info("Begin Running Update WtHoliday");
+
+        LOGGER.warn("Begin Running Update WtHoliday");
         //ambil bulan dan taun januari sekarang
         DateTime monthAndYearNow = new DateTime();
         List<WtHoliday> dataToUpdate = wtHolidayDao.getByYearDif(difWeekToDelete);
@@ -95,6 +96,5 @@ public class WtHolidayCronListenerServiceImpl extends BaseSchedulerDinamicListen
     public void setDifWeekToDelete(int difWeekToDelete) {
         this.difWeekToDelete = difWeekToDelete;
     }
-    
-    
+
 }

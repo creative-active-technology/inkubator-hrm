@@ -57,7 +57,7 @@ public class EmpTimeScheduleFormController extends BaseController {
                 groupWorkingCode = "DEFAULT";
             }
             dataToShow = wtGroupWorkingService.getAllData();
-            
+
             for (WtGroupWorking dataToShow1 : dataToShow) {
                 workingTime.put(dataToShow1.getCode() + " - " + dataToShow1.getName(), dataToShow1.getCode());
             }
@@ -71,12 +71,12 @@ public class EmpTimeScheduleFormController extends BaseController {
     @PreDestroy
     public void cleanAndExit() {
         empDataService = null;
-        selectedEmpData=null;
-        wtGroupWorkingService=null;
-        dataToShow=null;
-        workingTime=null;
-        groupWorkingCode=null;
-        tempJadwalKaryawanService=null;
+        selectedEmpData = null;
+        wtGroupWorkingService = null;
+        dataToShow = null;
+        workingTime = null;
+        groupWorkingCode = null;
+        tempJadwalKaryawanService = null;
     }
 
     public void setEmpDataService(EmpDataService empDataService) {
@@ -117,13 +117,13 @@ public class EmpTimeScheduleFormController extends BaseController {
 
     public void setGroupWorkingCode(String groupWorkingCode) {
         this.groupWorkingCode = groupWorkingCode;
-    }    
+    }
 
     public void setTempJadwalKaryawanService(TempJadwalKaryawanService tempJadwalKaryawanService) {
-		this.tempJadwalKaryawanService = tempJadwalKaryawanService;
-	}
+        this.tempJadwalKaryawanService = tempJadwalKaryawanService;
+    }
 
-	public void doSave() {
+    public void doSave() {
         try {
             selectedEmpData.setWtGroupWorking(new WtGroupWorking(groupWorkingCode));
             tempJadwalKaryawanService.savePenempatanJadwal(selectedEmpData);

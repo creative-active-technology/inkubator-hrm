@@ -1,20 +1,11 @@
 package com.inkubator.hrm.batch;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Date;
 
 import org.apache.log4j.Logger;
-import org.springframework.batch.core.BatchStatus;
-import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;
 
-import com.inkubator.hrm.entity.WtPeriode;
-import com.inkubator.hrm.service.PayTempKalkulasiEmpPajakService;
-import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.service.TempAttendanceRealizationService;
-import com.inkubator.hrm.service.WtPeriodeService;
 
 /**
 *

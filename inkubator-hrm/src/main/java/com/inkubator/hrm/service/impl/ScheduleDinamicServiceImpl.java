@@ -129,6 +129,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                         String dateString = new SimpleDateFormat("dd MM yyyy HH:mm").format(newDate);
                         Date forComparison = new SimpleDateFormat("dd MM yyyy HH:mm").parse(dateString);
 //                        Long total = currentDateTime.getTime() - lastExecution.getTime();
+                            LOGGER.info("===========================PROSES SCHEDULER Begin ===============================================");
                         if (lastExePlusMinute.equals(forComparison)) {
                             config.setLastExecution(forComparison);
                             LOGGER.info("===========================PROSES SCHEDULER ===============================================");

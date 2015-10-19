@@ -17,8 +17,11 @@ import com.inkubator.hrm.web.search.SchedulerLogSearchParameter;
  *
  * @author denifahri
  */
-public interface SchedulerLogService extends IService<SchedulerLog>{
-	public List<SchedulerLog> getByParam(SchedulerLogSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
-    
+public interface SchedulerLogService extends IService<SchedulerLog> {
+
+    public List<SchedulerLog> getByParam(SchedulerLogSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+
     public Long getTotalByParam(SchedulerLogSearchParameter searchParameter) throws Exception;
+
+    public void saveBeforeJobBatch() throws Exception;
 }
