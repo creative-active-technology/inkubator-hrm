@@ -27,12 +27,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.gson.Gson;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.BusinessTypeDao;
 import com.inkubator.hrm.dao.CityDao;
 import com.inkubator.hrm.dao.DialectDao;
 import com.inkubator.hrm.dao.EducationLevelDao;
+import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.InstitutionEducationDao;
 import com.inkubator.hrm.dao.KlasifikasiKerjaDao;
 import com.inkubator.hrm.dao.MaritalStatusDao;
@@ -42,7 +44,9 @@ import com.inkubator.hrm.dao.OrgTypeOfSpecListDao;
 import com.inkubator.hrm.dao.RaceDao;
 import com.inkubator.hrm.dao.RecruitApplicantDao;
 import com.inkubator.hrm.dao.RecruitApplicantSpecListDao;
+import com.inkubator.hrm.dao.RecruitHireApplyDao;
 import com.inkubator.hrm.dao.RecruitVacancyAdvertisementDao;
+import com.inkubator.hrm.dao.RecruitVacancyAdvertisementDetailDao;
 import com.inkubator.hrm.dao.ReligionDao;
 import com.inkubator.hrm.entity.ApplicantSpecListId;
 import com.inkubator.hrm.entity.BioData;
@@ -50,7 +54,9 @@ import com.inkubator.hrm.entity.BusinessType;
 import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.entity.Dialect;
 import com.inkubator.hrm.entity.EducationLevel;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.InstitutionEducation;
+import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.KlasifikasiKerja;
 import com.inkubator.hrm.entity.MaritalStatus;
 import com.inkubator.hrm.entity.Nationality;
@@ -59,9 +65,12 @@ import com.inkubator.hrm.entity.OrgTypeOfSpecList;
 import com.inkubator.hrm.entity.Race;
 import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.entity.RecruitApplicantSpecList;
+import com.inkubator.hrm.entity.RecruitHireApply;
 import com.inkubator.hrm.entity.RecruitVacancyAdvertisement;
+import com.inkubator.hrm.entity.RecruitVacancyAdvertisementDetail;
 import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.service.RecruitApplicantService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.ApplicantModel;
 import com.inkubator.hrm.web.model.ApplicantStatisticViewModel;
 import com.inkubator.hrm.web.model.ApplicantUploadBatchModel;
@@ -461,7 +470,11 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 		KlasifikasiKerja klasifikasiKerja = klasifikasiKerjaDao.getEntiyByPK(model.getKlasifikasiKerjaId() != null ? model.getKlasifikasiKerjaId() : 0);
 		InstitutionEducation institutionEducation = institutionEducationDao.getEntiyByPK(model.getInstitutionEducationId());
 		EducationLevel educationLevel = educationLevelDao.getEntiyByPK(model.getEducationLevelId());
-		RecruitVacancyAdvertisement vacancyAdvertisement = recruitVacancyAdvertisementDao.getEntiyByPK(model.getVacancyAdvertisementId());
+		
+		List<RecruitVacancyAdvertisementDetail> listVacancyAdvertisementDetail = recruitVacancyAdvertisementDetailDao.getAllData();
+		
+		//RecruitVacancyAdvertisement vacancyAdvertisement = recruitVacancyAdvertisementDao.getEntiyByPK(model.getVacancyAdvertisementId());
+		
 		
 		applicant.setBusinessType(businessType);
 		applicant.setCertificateNumber(model.getCertificateNumber());
@@ -477,7 +490,8 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 		applicant.setLastWorkSince(model.getLastWorkSince());
 		applicant.setScale(model.getScale());
 		applicant.setScore(model.getScore());
-		applicant.setRecruitVacancyAdvertisement(vacancyAdvertisement);
+		//applicant.setRecruitVacancyAdvertisement(vacancyAdvertisement);
+		applicant.setRecruitVacancyAdvertisementDetail(listVacancyAdvertisementDetail.get(0));
 		applicant.setIsFreshGraduate(model.getIsFreshGraduate());
 		applicant.setIsActive(model.getIsActive());
 		applicant.setIsVerified(model.getIsVerified());
@@ -536,7 +550,8 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 			applicant.setScale(model.getScale());
 			applicant.setCertificateNumber(model.getCertificateNumber());
 			applicant.setUploadPath(model.getUploadPath());
-			applicant.setRecruitVacancyAdvertisement(recruitVacancyAdvertisementDao.getEntiyByPK(model.getVacancyAdvertisementId()));
+			//applicant.setRecruitVacancyAdvertisement(recruitVacancyAdvertisementDao.getEntiyByPK(model.getVacancyAdvertisementId()));
+			applicant.setRecruitVacancyAdvertisementDetail(recruitVacancyAdvertisementDetailDao.getAllData().get(0));
 			applicant.setCreatedBy(model.getCreatedBy());
 			applicant.setCreatedOn(model.getCreatedOn());
 			recruitApplicantDao.save(applicant);
@@ -687,5 +702,48 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
         
         return model;
     }
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public String commitDataInternalCareerCandidate(List<Long> listEmpDataId)	throws Exception {
+		String result = "error";
+		
+		if(listEmpDataId.isEmpty()){
+            throw new BussinessException("empCandidateSearch.commit_data_still_empty");
+        }
+		for(Long empDataId : listEmpDataId){
+			RecruitApplicant recruitApplicant = convertInternalCandidateToRecruitApplicant(empDataId);
+			recruitApplicantDao.save(recruitApplicant);
+		}
+		
+		result = "success";
+		return result;
+	}
+	
+	private RecruitApplicant convertInternalCandidateToRecruitApplicant(Long empDataId) throws Exception{
+		RecruitApplicant recruitApplicant = new RecruitApplicant();
+		EmpData empData = empDataDao.getByEmpIdWithDetail(empDataId);
+		BioData bioData = bioDataDao.getEntiyByPK(empData.getBioData().getId());
+		Jabatan jabatan = empData.getJabatanByJabatanId();
+		RecruitHireApply recruitHireApply = recruitHireApplyDao.getEntityByJabatanId(empData.getJabatanByJabatanId().getId());
+		RecruitVacancyAdvertisementDetail recruitVacancyAdvertisementDetail = recruitVacancyAdvertisementDetailDao.getEntityByRecruitHireApplyId(recruitHireApply.getId());
+		
+		//Jika recruitVacancyAdvertisementDetail == null, lempar business Exception (salah satu jabatan kandidat tenaga kerja belum dibuatkan iklan lowongan
+		if(recruitVacancyAdvertisementDetail == null){
+			throw new BussinessException("empCandidateSearch.emp_candidate_still_not_have_advertisement");
+		}
+		
+		recruitApplicant.setBioData(bioData);
+		recruitApplicant.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		recruitApplicant.setRecruitVacancyAdvertisementDetail(recruitVacancyAdvertisementDetail);
+		recruitApplicant.setCareerCandidate(HRMConstant.RECRUIT_APPLICANT_CAREER_CANDIDATE_INTERNAL);
+		recruitApplicant.setLastJabatan(jabatan.getName());
+		recruitApplicant.setCreatedOn(new Date());
+		recruitApplicant.setCreatedBy(HrmUserInfoUtil.getUserName());
+		
+		return recruitApplicant;
+	}
+	
+	
 
 }
