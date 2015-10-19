@@ -5,8 +5,6 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.hrm.dao.LoginHistoryDao;
-import com.inkubator.hrm.entity.LoginHistory;
 import com.inkubator.hrm.entity.SchedulerConfig;
 import com.inkubator.hrm.entity.SchedulerLog;
 import java.util.List;
@@ -22,11 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Deni Husni FR
  */
-public class DeleteLogHistoryListenerServiceImpl extends BaseSchedulerDinamicListenerImpl implements MessageListener {
+public class DeleteLogMonitoringListenerServiceImpl extends BaseSchedulerDinamicListenerImpl implements MessageListener {
 
-    private int difWeekToDelete;
-    @Autowired
-    private LoginHistoryDao loginHistoryDao;
+    private int difMonthLogMonitoringToDelete;
+//    @Autowired
+//    private SchedulerLogDao schedulerLogDao;
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
@@ -37,7 +35,7 @@ public class DeleteLogHistoryListenerServiceImpl extends BaseSchedulerDinamicLis
             SchedulerLog schedulerLog = new SchedulerLog();
             schedulerLog.setSchedulerConfig(new SchedulerConfig(Long.parseLong(textMessage.getText())));
             log = super.doSaveSchedulerLogSchedulerLog(schedulerLog);
-            deleteLoginHistory();
+            deleteLoginMonitoring();
             log.setStatusMessages("FINISH");
             super.doUpdateSchedulerLogSchedulerLog(log);
         } catch (Exception ex) {
@@ -49,15 +47,17 @@ public class DeleteLogHistoryListenerServiceImpl extends BaseSchedulerDinamicLis
         }
     }
 
-    public void deleteLoginHistory() throws Exception {
-        LOGGER.warn("Begin Running Dellete Log Akses");
-        List<LoginHistory> dataToDelete = loginHistoryDao.getByWeekDif(difWeekToDelete);
+    public void deleteLoginMonitoring() throws Exception {
+        LOGGER.warn("Begin Running Dellete Log Monitoring Scheduler");
+        List<SchedulerLog> dataToDelete = schedulerLogDao.getByMonthDif(difMonthLogMonitoringToDelete);
         LOGGER.warn("Ukuran Data to Delete " + dataToDelete.size());
-        loginHistoryDao.deleteBatch(dataToDelete);
-        LOGGER.warn("Finish Running Dellete Log Akses");
+        schedulerLogDao.deleteBatch(dataToDelete);
+        LOGGER.warn("Finish Running Dellete Log Monitoring Scheduler");
     }
 
-    public void setDifWeekToDelete(int difWeekToDelete) {
-        this.difWeekToDelete = difWeekToDelete;
+    public void setDifMonthLogMonitoringToDelete(int difMonthLogMonitoringToDelete) {
+        this.difMonthLogMonitoringToDelete = difMonthLogMonitoringToDelete;
     }
+
+    
 }

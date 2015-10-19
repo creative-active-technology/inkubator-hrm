@@ -114,6 +114,12 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 	private RecruitVacancyAdvertisementDao recruitVacancyAdvertisementDao;
 	@Autowired
 	private OrgTypeOfSpecDao orgTypeOfSpecDao;
+	@Autowired
+	private EmpDataDao empDataDao;
+	@Autowired
+	private RecruitHireApplyDao recruitHireApplyDao;
+	@Autowired
+	private RecruitVacancyAdvertisementDetailDao recruitVacancyAdvertisementDetailDao;
 	
 	@Override
 	public RecruitApplicant getEntiyByPK(String id) throws Exception {

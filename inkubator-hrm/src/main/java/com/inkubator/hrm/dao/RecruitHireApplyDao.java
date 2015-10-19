@@ -29,4 +29,8 @@ public interface RecruitHireApplyDao extends IDAO<RecruitHireApply> {
     public Long getCurrentMaxId();
 
     public RecruitHireApply getEntityWithDetailByActivityNumber(String activityNumber);
+    
+    public RecruitHireApply getEntityByJabatanId(Long jabatanId);
+    
+    public List<RecruitHireApply> getAllDataWithDetail();
 }

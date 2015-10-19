@@ -5,12 +5,16 @@
  */
 package com.inkubator.hrm.dao.impl;
 
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
 import java.util.List;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.SchedulerLogDao;
+import com.inkubator.hrm.entity.LoginHistory;
 import com.inkubator.hrm.entity.SchedulerLog;
 import com.inkubator.hrm.web.search.SchedulerLogSearchParameter;
+import java.util.Date;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
@@ -27,36 +31,58 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value = "schedulerLogDao")
 @Lazy
-public class SchedulerLogDaoImpl extends IDAOImpl<SchedulerLog> implements SchedulerLogDao{
+public class SchedulerLogDaoImpl extends IDAOImpl<SchedulerLog> implements SchedulerLogDao {
 
     @Override
     public Class<SchedulerLog> getEntityClass() {
-      return SchedulerLog.class;
+        return SchedulerLog.class;
     }
 
-	@Override
-	public List<SchedulerLog> getByParam(SchedulerLogSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		doSearchByParam(searchParameter, criteria);
-		criteria.addOrder(order);
-		criteria.setFirstResult(firstResult);
-		criteria.setMaxResults(maxResults);
-		return criteria.list();
-	}
+    @Override
+    public List<SchedulerLog> getByParam(SchedulerLogSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParam(searchParameter, criteria);
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
 
-	@Override
-	public Long getTotalByParam(SchedulerLogSearchParameter searchParameter) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		doSearchByParam(searchParameter, criteria);	
-		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-	}
-	
-	private void doSearchByParam(SchedulerLogSearchParameter searchParameter, Criteria criteria){
-		criteria.createAlias("schedulerConfig", "schedulerConfig", JoinType.INNER_JOIN);
-		if(searchParameter.getName() != null){
-			criteria.add(Restrictions.like("schedulerConfig.name", searchParameter.getName(), MatchMode.ANYWHERE));
-		}
-		criteria.add(Restrictions.isNotNull("id"));
-	}
-    
+    @Override
+    public Long getTotalByParam(SchedulerLogSearchParameter searchParameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchByParam(searchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    private void doSearchByParam(SchedulerLogSearchParameter searchParameter, Criteria criteria) {
+        criteria.createAlias("schedulerConfig", "schedulerConfig", JoinType.INNER_JOIN);
+        if (searchParameter.getName() != null) {
+            criteria.add(Restrictions.like("schedulerConfig.name", searchParameter.getName(), MatchMode.ANYWHERE));
+        }
+        criteria.add(Restrictions.isNotNull("id"));
+    }
+
+    @Override
+    public List<SchedulerLog> getByMonthDif(int value) {
+        Date now = new Date();
+        Date parameter = DateTimeUtil.getDateFrom(now, -value, CommonUtilConstant.DATE_FORMAT_WEEK);
+
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.lt("startExecution", parameter));
+        return criteria.list();
+    }
+
+    @Override
+    public void deleteBatch(List<SchedulerLog> data) {
+        int counter = 0;
+        for (SchedulerLog dataToDelte : data) {
+            getCurrentSession().delete(dataToDelte);
+            counter++;
+            if (counter % 20 == 0) {
+                getCurrentSession().flush();
+                getCurrentSession().clear();
+            }
+        }
+    }
 }

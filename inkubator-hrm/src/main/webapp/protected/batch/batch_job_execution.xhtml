@@ -87,7 +87,7 @@
                                     <h:outputText value="#{appmsg['batchJobExecution.startTime']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{batchJobExecutionData.startTime}">
-                                <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7" />
+                                <f:convertDateTime pattern ="dd-MMMM-yyyy  HH:mm:ss" timeZone="GMT+7" />
                                 </h:outputLabel>
                             </p:column>
                             <p:column sortBy="#{batchJobExecutionData.endTime}" >
@@ -95,7 +95,7 @@
                                     <h:outputText value="#{appmsg['batchJobExecution.endTime']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{batchJobExecutionData.endTime}">
-                                    <f:convertDateTime pattern ="dd-MMMM-yyyy  hh:mm:ss" timeZone="GMT+7" />
+                                    <f:convertDateTime pattern ="dd-MMMM-yyyy  HH:mm:ss" timeZone="GMT+7" />
                                 </h:outputLabel>
                             </p:column>
                             <p:column sortBy="#{batchJobExecutionData.exitCode}" >

@@ -189,6 +189,8 @@ public class RecruitApplicantFormController extends BaseController {
 	
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	private void getModelFromEntity(RecruitApplicant applicant) {
+    	
+    	
 		model.setId(applicant.getId());
 		model.setEducationLevelId(applicant.getEducationLevel() != null ? applicant.getEducationLevel().getId() : null);
 		model.setInstitutionEducationId(applicant.getInstitutionEducation() != null ? applicant.getInstitutionEducation().getId() : null);
@@ -207,7 +209,8 @@ public class RecruitApplicantFormController extends BaseController {
 		model.setIsFreshGraduate(applicant.getIsFreshGraduate());
 		model.setIsActive(applicant.getIsActive());
 		model.setIsVerified(applicant.getIsVerified());
-		model.setVacancyAdvertisementId(applicant.getRecruitVacancyAdvertisement().getId());
+		//model.setVacancyAdvertisementId();
+		//model.setVacancyAdvertisementId(applicant.getRecruitVacancyAdvertisement().getId());
 		model.setUploadPath(applicant.getUploadPath());
 		
 		BioData bioData = applicant.getBioData();

@@ -116,7 +116,7 @@ public class HRMConstant {
     public static final Integer ZONE_DOMESTICS = 0;
     public static final Integer ZONE_OVERSEAS = 1;
     /* END */
-    
+
     /* Constant for Business Travel */
     public static final Integer BUSINESS_TRAVEL_STATUS_WAITING = 10;
     public static final Integer BUSINESS_TRAVEL_STATUS_ON_GOING = 11;
@@ -391,7 +391,7 @@ public class HRMConstant {
     public static final String RECRUITMENT_REQUEST_KODE = "RECR-REQ";
     public static final String EMP_CORRECTION_ATTENDANCE_KODE = "CORR-ATT";
     public static final String VACANCY_ADVERTISEMENT_KODE = "VAC-ADV";
-    public static final String PUBCIL_HOLIDAY_KODE= "LVCO";
+    public static final String PUBCIL_HOLIDAY_KODE = "LVCO";
 
     public static final String APP_NAME = "Web Destop App";
 
@@ -440,20 +440,20 @@ public class HRMConstant {
     public static final String SUPER_ADMIN = "SUPER ADMIN";
     public static final String BIODATA_ID = "BIODATA_ID";
     public static final String EMP_DATA_ID = "EMP_DATA_ID";
-    public static final String COMPANY_NAME="COMPANY_NAME";
+    public static final String COMPANY_NAME = "COMPANY_NAME";
     /* END */
-    
+
     /* 
      * Constant for Emp Correction Attendance Module */
     public static final Integer EMP_CORRECTION_ATTENDANCE_STATUS_APPROVED = 0;
     public static final Integer EMP_CORRECTION_ATTENDANCE_STATUS_REJECTED = 1;
     public static final Integer EMP_CORRECTION_ATTENDANCE_STATUS_CANCELLED = 2;
     /* END */
-    
+
     //Constant For WT Period Status
     public static final String WT_PERIOD_STATUS_ACTIVE = "Active";
     public static final String WT_PERIOD_STATUS_VOID = "Void";
-    
+
     //Constant For Biodata Revision Data Type
     public static final String BIO_REV_DETAIL_BIO_DATA = "DETAIL_BIO_DATA";
     public static final String BIO_REV_ADDRESS = "ADDRESS";
@@ -465,21 +465,21 @@ public class HRMConstant {
     public static final String BIO_REV_SKILL = "SKILL";
     public static final String BIO_REV_SPESIFICATION_ABILITY = "SPESIFICATION_ABILITY";
     public static final String BIO_REV_INTEREST = "INTEREST";
-    
+
     /* 
      * Constant for Vacancy Advertisement Module */
     public static final Integer VACANCY_ADVERTISEMENT_STATUS_APPROVED = 0;
     public static final Integer VACANCY_ADVERTISEMENT_STATUS_REJECTED = 1;
     public static final Integer VACANCY_ADVERTISEMENT_STATUS_CANCELLED = 2;
     /* END */
-    
+
     /* 
      * Constant for Hospital Module */
     public static final String HOSPITAL_TYPE_GOVERNMENT = "GOVERNMENT";
     public static final String HOSPITAL_TYPE_PRIVATE = "PRIVATE";
     public static final String HOSPITAL_TYPE_INSTITUTION = "INSTITUTION";
     /* END */
-    
+
     /* 
      * Constant for Hospital Module */
     public static final String COMPARATOR_EQUALS = "EQUALS";
@@ -487,7 +487,8 @@ public class HRMConstant {
     public static final String COMPARATOR_GREATER_THAN = "GREATER_THAN";
     public static final String COMPARATOR_GREATER_EQUALS = "GREATER_EQUALS";
     public static final String COMPARATOR_LESS_THAN = "LESS_THAN";
-    public static final String COMPARATOR_LESS_EQUALS = "LESS_EQUALS";;
+    public static final String COMPARATOR_LESS_EQUALS = "LESS_EQUALS";
+    ;
     /* END */
     
     /* Constant for Scheduler Config Name */
@@ -505,8 +506,9 @@ public class HRMConstant {
     public static final String SCHEDULER_CONFIG_NAME_ATTENDANCE_CALCULATE = "ATTENDANCE_CALCULATE";
     public static final String SCHEDULER_CONFIG_NAME_ANNOUNCMENT_GENERATING_LOG = "ANNOUNCMENT_GENERATING_LOG";
     public static final String SCHEDULER_CONFIG_NAME_ANNOUNCMENT_SENDING_NOTIF = "ANNOUNCMENT_SENDING_NOTIF";
+    public static final String SCHEDULER_MONITORING_LOG_DELETE = "MONITORING_SCHEDULE_LOG_DELETE";
     /* END */
-    
+
     /* Constant for Recruit Applicant */
     public static final Integer RECRUIT_APPLICANT_CAREER_CANDIDATE_EXTERNAL = 0;
     public static final Integer RECRUIT_APPLICANT_CAREER_CANDIDATE_INTERNAL = 1;
