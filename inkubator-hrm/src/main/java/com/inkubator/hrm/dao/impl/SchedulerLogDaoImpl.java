@@ -58,7 +58,7 @@ public class SchedulerLogDaoImpl extends IDAOImpl<SchedulerLog> implements Sched
     private void doSearchByParam(SchedulerLogSearchParameter searchParameter, Criteria criteria) {
         criteria.createAlias("schedulerConfig", "schedulerConfig", JoinType.INNER_JOIN);
         if (searchParameter.getName() != null) {
-            criteria.add(Restrictions.like("schedulerConfig.name", searchParameter.getName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.eq("schedulerConfig.name", searchParameter.getName()));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

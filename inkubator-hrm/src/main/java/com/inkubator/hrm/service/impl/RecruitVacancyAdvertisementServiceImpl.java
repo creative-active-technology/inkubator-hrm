@@ -1,5 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -99,23 +100,41 @@ public class RecruitVacancyAdvertisementServiceImpl extends BaseApprovalServiceI
 		vacancyAdvertisement.setUpdatedOn(new Date());		
 		recruitVacancyAdvertisementDao.update(vacancyAdvertisement);
 		
-		/** update child list, with step is remove All first, then insert All new */
-		recruitVacancyAdvertisementDetailDao.deleteByVacancyAdvertisementId(vacancyAdvertisement.getId());		
-		for(RecruitVacancyAdvertisementDetail p : entity.getRecruitVacancyAdvertisementDetails()){
-        	RecruitHireApply hireApply =  recruitHireApplyDao.getEntiyByPK(p.getHireApply().getId());
+		/** update child list, 
+		 *  step nya di check masing2 mana yang harus di update dan insert baru, termasuk di delete jika sudah tidak terpakai */
+		List<RecruitVacancyAdvertisementDetail> insertList = new ArrayList<RecruitVacancyAdvertisementDetail>();
+		List<RecruitVacancyAdvertisementDetail> deletedList = new ArrayList<RecruitVacancyAdvertisementDetail>();
+		List<RecruitVacancyAdvertisementDetail> selectedListFromView = new ArrayList<RecruitVacancyAdvertisementDetail>();
+		
+		deletedList.addAll(vacancyAdvertisement.getRecruitVacancyAdvertisementDetails());
+		selectedListFromView.addAll(entity.getRecruitVacancyAdvertisementDetails());
+				
+		for(RecruitVacancyAdvertisementDetail det : selectedListFromView){
+			Boolean isUpdate = deletedList.remove(det);
         	
-        	RecruitVacancyAdvertisementDetail detail =  new RecruitVacancyAdvertisementDetail();
+        	RecruitVacancyAdvertisementDetail detail = isUpdate ? 
+        			recruitVacancyAdvertisementDetailDao.getEntiyByPK(det.getId()) : new RecruitVacancyAdvertisementDetail();
+        	RecruitHireApply hireApply =  recruitHireApplyDao.getEntiyByPK(det.getHireApply().getId());
         	detail.setVacancyAdvertisement(vacancyAdvertisement);
         	detail.setHireApply(hireApply);
-        	detail.setCost(p.getCost());
-        	detail.setDescription(p.getDescription());
-        	detail.setPublishEnd(p.getPublishEnd());
-        	detail.setPublishStart(p.getPublishStart());
-        	detail.setCreatedBy(UserInfoUtil.getUserName());
-        	detail.setCreatedOn(new Date());
-        	recruitVacancyAdvertisementDetailDao.save(detail);
+        	detail.setCost(det.getCost());
+        	detail.setDescription(det.getDescription());
+        	detail.setPublishEnd(det.getPublishEnd());
+        	detail.setPublishStart(det.getPublishStart());
+        	
+        	if(isUpdate){
+        		detail.setUpdatedBy(UserInfoUtil.getUserName());
+            	detail.setUpdatedOn(new Date());
+            	recruitVacancyAdvertisementDetailDao.update(detail);
+        	} else {
+        		detail.setCreatedBy(UserInfoUtil.getUserName());
+            	detail.setCreatedOn(new Date());
+            	insertList.add(detail);
+        	}
         }
 		
+		recruitVacancyAdvertisementDetailDao.deleteAll(deletedList);
+		recruitVacancyAdvertisementDetailDao.saveAll(insertList);
 	}
 
 	@Override
@@ -400,6 +419,7 @@ public class RecruitVacancyAdvertisementServiceImpl extends BaseApprovalServiceI
             entity.setVacancyAdvCode(nomor);
             
             recruitVacancyAdvertisementDao.save(entity);
+            recruitVacancyAdvertisementDetailDao.saveAll(entity.getRecruitVacancyAdvertisementDetails());
             
             message = "success_without_approval";
             

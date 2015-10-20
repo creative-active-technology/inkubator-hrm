@@ -414,8 +414,22 @@
 		                                                 value="#{recruitApplicantFormController.model.vacancyAdvertisementId}">
 		                                	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 		                                    <f:selectItems value="#{recruitApplicantFormController.model.listVacancyAdvertisement}" var="vacancy" itemValue="#{vacancy.id}" itemLabel="#{vacancy.vacancyAdvCode} - #{vacancy.advertisementMedia.name}" />
+		                                    <p:ajax listener="#{recruitApplicantFormController.onChangeVacancyAdvertisement()}" update="vacancyAdvertisementDetailId"/>
 		                             	</p:selectOneMenu>
 		                                <p:message for="vacancyAdvertisementId"/>
+		                            </p:column>
+		                         </p:row>
+		                         <p:row>
+	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
+	                                    <p:outputLabel  value="#{appmsg['global.detail']}" styleClass="label_hrm" for="vacancyAdvertisementDetailId"/>
+	                                </p:column>
+	                                <p:column style="width: 84%">
+		                            	<p:selectOneMenu id="vacancyAdvertisementDetailId" style="width: 31%"  filter="true" required="true"
+		                                                 value="#{recruitApplicantFormController.model.vacancyAdvertisementDetailId}">
+		                                	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+		                                    <f:selectItems value="#{recruitApplicantFormController.model.listVacancyAdvertisementDetail}" var="detail" itemValue="#{detail.id}" itemLabel="#{detail.hireApply.reqHireCode} - #{detail.hireApply.jabatan.name}" />
+		                             	</p:selectOneMenu>
+		                                <p:message for="vacancyAdvertisementDetailId"/>
 		                            </p:column>
 		                         </p:row>
                         		<p:row>
