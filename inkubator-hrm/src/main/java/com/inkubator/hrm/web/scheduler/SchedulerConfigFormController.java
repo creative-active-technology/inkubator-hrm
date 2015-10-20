@@ -29,7 +29,7 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean(name = "schedulerConfigFormController")
 @ViewScoped
 public class SchedulerConfigFormController extends BaseController {
-    
+
     private SchedulerConfigModel schedulerConfigModel;
     @ManagedProperty(value = "#{schedulerConfigService}")
     private SchedulerConfigService schedulerConfigService;
@@ -38,7 +38,7 @@ public class SchedulerConfigFormController extends BaseController {
     private Boolean isDisabaleJeda;
     private Boolean isEdit;
     private SchedulerConfig selectedSchedulerConfig;
-    
+
     @PostConstruct
     @Override
     public void initialization() {
@@ -65,39 +65,39 @@ public class SchedulerConfigFormController extends BaseController {
         } catch (Exception ex) {
             Logger.getLogger(SchedulerConfigFormController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
     public SchedulerConfigModel getSchedulerConfigModel() {
         return schedulerConfigModel;
     }
-    
+
     public void setSchedulerConfigModel(SchedulerConfigModel schedulerConfigModel) {
         this.schedulerConfigModel = schedulerConfigModel;
     }
-    
+
     public void setSchedulerConfigService(SchedulerConfigService schedulerConfigService) {
         this.schedulerConfigService = schedulerConfigService;
     }
-    
+
     public Boolean getIsDisableRepeatType() {
         return isDisableRepeatType;
     }
-    
+
     public void setIsDisableRepeatType(Boolean isDisableRepeatType) {
         this.isDisableRepeatType = isDisableRepeatType;
     }
-    
+
     public Boolean getIsDisableDateRange() {
         return isDisableDateRange;
     }
-    
+
     public void setIsDisableDateRange(Boolean isDisableDateRange) {
         this.isDisableDateRange = isDisableDateRange;
     }
-    
+
     public void doChangeTypeSchedule() {
-        
+
         if ("ONCE".equalsIgnoreCase(schedulerConfigModel.getSchedullerType()) || schedulerConfigModel.getSchedullerType().equals(" ")) {
             isDisableRepeatType = Boolean.TRUE;
 //            isDisableDateRange = Boolean.FALSE;
@@ -115,9 +115,9 @@ public class SchedulerConfigFormController extends BaseController {
             isDisableRepeatType = Boolean.TRUE;
             isDisableDateRange = Boolean.TRUE;
         }
-        
+
     }
-    
+
     public String doSave() {
         SchedulerConfig config = getEntityFromModel(schedulerConfigModel);
         try {
@@ -125,39 +125,39 @@ public class SchedulerConfigFormController extends BaseController {
                 schedulerConfigService.update(config);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//                return "/protected/scheduler/scheduler_config_detail.htm?faces-redirect=true&execution=e" + config.getId();
+                return "/protected/scheduler/scheduler_config_detail.htm?faces-redirect=true&execution=e" + config.getId();
             } else {
                 schedulerConfigService.save(config);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-//                return "/protected/scheduler/scheduler_config_detail.htm?faces-redirect=true&execution=e" + config.getId();
+                return "/protected/scheduler/scheduler_config_detail.htm?faces-redirect=true&execution=e" + config.getId();
             }
-            
+
         } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
-        return "/protected/scheduler/scheduler_config_view.htm?faces-redirect=true";
+        return null;
     }
-    
+
     public String doBack() {
         return "/protected/scheduler/scheduler_config_view.htm?faces-redirect=true";
     }
-    
+
     public Boolean getIsDisabaleJeda() {
         return isDisabaleJeda;
     }
-    
+
     public void setIsDisabaleJeda(Boolean isDisabaleJeda) {
         this.isDisabaleJeda = isDisabaleJeda;
     }
-    
+
     public void onChange() {
         isDisabaleJeda = schedulerConfigModel.getIsTimeDiv();
-        
+
     }
-    
+
     private SchedulerConfig getEntityFromModel(SchedulerConfigModel configModel) {
         SchedulerConfig schedulerConfig = new SchedulerConfig();
         if (configModel.getId() != null) {
@@ -177,7 +177,7 @@ public class SchedulerConfigFormController extends BaseController {
         schedulerConfig.setIsActive(configModel.getIsActive());
         return schedulerConfig;
     }
-    
+
     private SchedulerConfigModel getModelFormEntity(SchedulerConfig schedulerConfig) {
         SchedulerConfigModel configModel = new SchedulerConfigModel();
         configModel.setDateStartExecution(schedulerConfig.getDateStartExecution());
@@ -195,7 +195,7 @@ public class SchedulerConfigFormController extends BaseController {
         configModel.setIsActive(schedulerConfig.getIsActive());
         return configModel;
     }
-    
+
     @PreDestroy
     public void cleanAndExit() {
         schedulerConfigModel = null;
@@ -204,21 +204,21 @@ public class SchedulerConfigFormController extends BaseController {
         isDisableDateRange = null;
         isDisabaleJeda = null;
     }
-    
+
     public Boolean getIsEdit() {
         return isEdit;
     }
-    
+
     public void setIsEdit(Boolean isEdit) {
         this.isEdit = isEdit;
     }
-    
+
     public SchedulerConfig getSelectedSchedulerConfig() {
         return selectedSchedulerConfig;
     }
-    
+
     public void setSelectedSchedulerConfig(SchedulerConfig selectedSchedulerConfig) {
         this.selectedSchedulerConfig = selectedSchedulerConfig;
     }
-    
+
 }
