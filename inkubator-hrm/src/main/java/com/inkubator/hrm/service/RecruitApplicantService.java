@@ -10,6 +10,7 @@ import com.inkubator.hrm.web.model.ApplicantModel;
 import com.inkubator.hrm.web.model.ApplicantStatisticViewModel;
 import com.inkubator.hrm.web.model.ApplicantUploadBatchModel;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
+import com.inkubator.hrm.web.search.ReportSearchRecruitmentSearchParameter;
 
 /**
  *
@@ -33,4 +34,7 @@ public interface RecruitApplicantService extends IService<RecruitApplicant> {
 	
 	public String commitDataInternalCareerCandidate(List<Long> listEmpDataId) throws Exception;
 
+        public List<RecruitApplicant> getByParamForReportSearchRecruitment(ReportSearchRecruitmentSearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
+        
+        public Long getTotalByParamforReportSearchRecruitment(ReportSearchRecruitmentSearchParameter searchParameter);
 }

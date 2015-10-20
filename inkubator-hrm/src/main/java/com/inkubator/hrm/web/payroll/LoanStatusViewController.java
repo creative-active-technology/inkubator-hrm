@@ -18,6 +18,7 @@ import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.service.LoanNewApplicationService;
 import com.inkubator.hrm.web.lazymodel.LoanStatusLazyDataModel;
+import com.inkubator.hrm.web.model.LoanNewApplicationStatusViewModel;
 import com.inkubator.hrm.web.search.LoanStatusSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 
@@ -33,7 +34,7 @@ public class LoanStatusViewController extends BaseController {
 	private LoanStatusSearchParameter loanStatusSearchParameter;
 	private DualListModel<Department> dualListDepartment = new DualListModel<>();
 	private DualListModel<GolonganJabatan> dualListGolonganJabatan = new DualListModel<>();
-	private LazyDataModel<LoanNewApplication> lazyDataModel;
+	private LazyDataModel<LoanNewApplicationStatusViewModel> lazyDataModel;
 	
 	@PostConstruct
     @Override
@@ -72,14 +73,14 @@ public class LoanStatusViewController extends BaseController {
     	dualListGolonganJabatan = null;
     }
 
-	public LazyDataModel<LoanNewApplication> getLazyDataModel() {
-		/*if(lazyDataModel == null){
+	public LazyDataModel<LoanNewApplicationStatusViewModel> getLazyDataModel() {
+		if(lazyDataModel == null){
 			lazyDataModel = new LoanStatusLazyDataModel(loanStatusSearchParameter, loanNewApplicationService);
-        }*/
+        }
 		return lazyDataModel;
 	}
 
-	public void setLazyDataModel(LazyDataModel<LoanNewApplication> lazyDataModel) {
+	public void setLazyDataModel(LazyDataModel<LoanNewApplicationStatusViewModel> lazyDataModel) {
 		this.lazyDataModel = lazyDataModel;
 	}
 

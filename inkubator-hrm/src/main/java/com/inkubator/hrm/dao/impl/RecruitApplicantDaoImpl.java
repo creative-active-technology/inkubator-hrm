@@ -23,6 +23,7 @@ import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.web.model.ApplicantAgeViewModel;
 import com.inkubator.hrm.web.model.ApplicantViewModel;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
+import com.inkubator.hrm.web.search.ReportSearchRecruitmentSearchParameter;
 
 /**
  *
@@ -184,4 +185,54 @@ public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implement
     	return total != null ? total.longValue() : 0L; 
 	}
 
+    @Override
+    public List<RecruitApplicant> getByParamForReportSearchRecruitment(ReportSearchRecruitmentSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchRecruitApplicantByParamforReport(searchParameter, criteria);
+        criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalByParamforReportSearchRecruitment(ReportSearchRecruitmentSearchParameter searchParameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchRecruitApplicantByParamforReport(searchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+    
+    public void doSearchRecruitApplicantByParamforReport(ReportSearchRecruitmentSearchParameter searchParameter, Criteria criteria){
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("educationLevel", "educationLevel", JoinType.INNER_JOIN);
+        criteria.createAlias("klasifikasiKerja", "klasifikasiKerja", JoinType.INNER_JOIN);
+        
+        if(!searchParameter.getListEducationLevel().isEmpty()){
+            criteria.add(Restrictions.in("educationLevel.id", searchParameter.getListEducationLevel()));
+        }
+        
+        if(!searchParameter.getListKlasifikasiKerja().isEmpty()){
+            criteria.add(Restrictions.in("klasifikasiKerja.id", searchParameter.getListKlasifikasiKerja()));
+        }
+        
+        if (StringUtils.isNotEmpty(searchParameter.getAgeStart())) {
+            criteria.add(Restrictions.ge("bioData.age", Integer.parseInt(searchParameter.getAgeStart())));
+        }
+
+        if (StringUtils.isNotEmpty(searchParameter.getAgeEnd())) {
+            criteria.add(Restrictions.le("bioData.age", Integer.parseInt(searchParameter.getAgeEnd())));
+        }
+        
+        if(StringUtils.isNotBlank(searchParameter.getGender())){
+            criteria.add(Restrictions.eq("bioData.gender", Integer.parseInt(searchParameter.getGender())));
+        }
+        
+        if(StringUtils.isNotBlank(searchParameter.getCareerCandidate())){
+            criteria.add(Restrictions.eq("careerCandidate", Integer.parseInt(searchParameter.getCareerCandidate())));
+        }
+        
+        criteria.add(Restrictions.isNotNull("id"));
+        
+    }
+    
 }
