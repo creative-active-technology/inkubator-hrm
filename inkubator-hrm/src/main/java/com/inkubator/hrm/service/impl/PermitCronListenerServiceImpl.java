@@ -67,7 +67,7 @@ public class PermitCronListenerServiceImpl extends BaseSchedulerDinamicListenerI
                      * set balance to 0 jika sudah di akhir periode
                      */
                     if (DateUtils.isSameDay(oneDayBeforeCurrent.toDate(), endDate.toDate())) {
-                        this.creditNeracaPermit(distribution.getBalance(), distribution);
+                        this.creditNeracaPermit(distribution.getBalance(), 0, distribution);
                         this.savePermitDistribution(0, distribution);
                     }
 
@@ -87,16 +87,16 @@ public class PermitCronListenerServiceImpl extends BaseSchedulerDinamicListenerI
                     startDate = startDate.withMonthOfYear(current.getMonthOfYear()).withYear(current.getYear());
                     if (DateUtils.isSameDay(current.toDate(), startDate.toDate())) {
                         double debet = qty;
-                        this.debetNeracaPermit(debet, distribution);
-
                         double balance = distribution.getBalance() + debet;
+                        
+                        this.debetNeracaPermit(debet, balance, distribution);
                         this.savePermitDistribution(balance, distribution);
 
                     } else if (isLastDayOfStartMonth && isLastDayOfCurrentMonth) {
                         double debet = qty;
-                        this.debetNeracaPermit(debet, distribution);
-
                         double balance = distribution.getBalance() + debet;
+                        
+                        this.debetNeracaPermit(debet, balance, distribution);
                         this.savePermitDistribution(balance, distribution);
                     }
 
@@ -106,7 +106,7 @@ public class PermitCronListenerServiceImpl extends BaseSchedulerDinamicListenerI
                      * set balance to 0 jika sudah di akhir periode
                      */
                     if (DateUtils.isSameDay(oneDayBeforeCurrent.toDate(), endDate.toDate())) {
-                        this.creditNeracaPermit(distribution.getBalance(), distribution);
+                        this.creditNeracaPermit(distribution.getBalance(), 0, distribution);
                         this.savePermitDistribution(0, distribution);
                     }
 
@@ -117,9 +117,9 @@ public class PermitCronListenerServiceImpl extends BaseSchedulerDinamicListenerI
                     Date availabilityAtSpecificDate = current.withDayOfMonth(permit.getDateIncreased()).toDate();
                     if (DateUtils.isSameDay(current.toDate(), availabilityAtSpecificDate)) {
                         double debet = qty;
-                        this.debetNeracaPermit(debet, distribution);
-
                         double balance = distribution.getBalance() + debet;
+                        
+                        this.debetNeracaPermit(debet, balance, distribution);
                         this.savePermitDistribution(balance, distribution);
                     }
                 }
@@ -154,24 +154,26 @@ public class PermitCronListenerServiceImpl extends BaseSchedulerDinamicListenerI
         permitDistributionDao.update(distribution);
     }
 
-    private void debetNeracaPermit(double debet, PermitDistribution distribution) {
+    private void debetNeracaPermit(double debet, double saldo, PermitDistribution distribution) {
         NeracaPermit neracaPermit = new NeracaPermit();
         neracaPermit.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         neracaPermit.setPermitDistribution(distribution);
         neracaPermit.setDebet(debet);
+        neracaPermit.setSaldo(saldo);
         neracaPermit.setCreatedBy(HRMConstant.SYSTEM_ADMIN);
         neracaPermit.setCreatedOn(new Date());
         neracaPermitDao.save(neracaPermit);
     }
 
-    private void creditNeracaPermit(double credit, PermitDistribution distribution) {
-        NeracaPermit neracaCuti = new NeracaPermit();
-        neracaCuti.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-        neracaCuti.setPermitDistribution(distribution);
-        neracaCuti.setKredit(credit);
-        neracaCuti.setCreatedBy(HRMConstant.SYSTEM_ADMIN);
-        neracaCuti.setCreatedOn(new Date());
-        neracaPermitDao.save(neracaCuti);
+    private void creditNeracaPermit(double credit, double saldo, PermitDistribution distribution) {
+        NeracaPermit neracaPermit = new NeracaPermit();
+        neracaPermit.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        neracaPermit.setPermitDistribution(distribution);
+        neracaPermit.setKredit(credit);
+        neracaPermit.setSaldo(saldo);
+        neracaPermit.setCreatedBy(HRMConstant.SYSTEM_ADMIN);
+        neracaPermit.setCreatedOn(new Date());
+        neracaPermitDao.save(neracaPermit);
     }
 
     @Override

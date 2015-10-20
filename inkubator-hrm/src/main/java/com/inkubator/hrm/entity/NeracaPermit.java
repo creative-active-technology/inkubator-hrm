@@ -31,6 +31,7 @@ public class NeracaPermit  implements java.io.Serializable {
      private Date createdOn;
      private Double debet;
      private Double kredit;
+     private Double saldo;
      private String updatedBy;
      private Date updatedOn;
 
@@ -124,8 +125,16 @@ public class NeracaPermit  implements java.io.Serializable {
         this.kredit = kredit;
     }
 
-    
-    @Column(name="updated_by", length=45)
+    @Column(name="saldo", precision=22, scale=0)
+    public Double getSaldo() {
+		return saldo;
+	}
+
+	public void setSaldo(Double saldo) {
+		this.saldo = saldo;
+	}
+
+	@Column(name="updated_by", length=45)
     public String getUpdatedBy() {
         return this.updatedBy;
     }
