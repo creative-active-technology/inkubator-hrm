@@ -819,6 +819,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
         neracaPermit.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         neracaPermit.setPermitDistribution(permitDistribution);
         neracaPermit.setKredit(actualPermit);
+        neracaPermit.setSaldo(balance);
         neracaPermit.setCreatedBy(UserInfoUtil.getUserName());
         neracaPermit.setCreatedOn(new Date());
         neracaPermitDao.save(neracaPermit);
@@ -838,6 +839,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
         neracaPermit.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         neracaPermit.setPermitDistribution(permitDistribution);
         neracaPermit.setDebet(actualPermit);
+        neracaPermit.setSaldo(balance);
         neracaPermit.setCreatedBy(UserInfoUtil.getUserName());
         neracaPermit.setCreatedOn(new Date());
         neracaPermitDao.save(neracaPermit);

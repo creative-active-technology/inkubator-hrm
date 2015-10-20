@@ -296,6 +296,7 @@ public class PermitDistributionServiceImpl extends IServiceImpl implements Permi
             NeracaPermit neracaPermit = new NeracaPermit();
             neracaPermit.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
             neracaPermit.setDebet(startBalance);
+            neracaPermit.setSaldo(startBalance);
             neracaPermit.setPermitDistribution(distribution);
             neracaPermit.setCreatedBy(UserInfoUtil.getUserName());
             neracaPermit.setCreatedOn(new Date());
