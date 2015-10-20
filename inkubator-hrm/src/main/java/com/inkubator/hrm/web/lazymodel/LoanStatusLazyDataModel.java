@@ -45,7 +45,7 @@ public class LoanStatusLazyDataModel extends LazyDataModel<LoanNewApplicationSta
                 if(sortField != null){
                     order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
                 }else{
-                    order = Order.desc("name");
+                    order = Order.desc("firstName");
                 }
                 listLoanNewApplication = loanNewApplicationService.getAllDataLoanNewApplicationStatus(searchParameter, first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(loanNewApplicationService.getTotalDataLoanNewApplicationStatus(searchParameter)));

@@ -92,28 +92,28 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="fieldDataType" style="width: 43%">
+                            <p:column sortBy="fieldDataType" style="width: 22%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['recruitSelectionView.field_data_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.fieldDataType}" />
                             </p:column>
                             
-                            <p:column sortBy="fieldStaticReference" style="width: 43%">
+                            <p:column sortBy="fieldStaticReference" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['recruitSelectionView.data_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.fieldStaticReference}" />
                             </p:column>
                             
-                            <p:column sortBy="formModel" style="width: 43%">
+                            <p:column sortBy="formModel" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['recruitSelectionView.model_form']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.formModel}" />
                             </p:column>
                              
-                            <p:column sortBy="name" style="width: 43%">
+                            <p:column sortBy="name" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['recruitSelectionView.field_new_label']}"/>
                                 </f:facet>
@@ -121,6 +121,7 @@
                                                      required="false" 
                                                      maxlength="30" styleClass="isitext_hrm"  style="width:190px;"/>
                             </p:column>
+
 <!--                            <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
                                 <p:outputLabel value="#{recruitAdvertisementCategoryViewController.lazyDataModel.rowCount}"/>
