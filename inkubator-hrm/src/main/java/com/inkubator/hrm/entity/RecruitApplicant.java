@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 /**
@@ -338,6 +339,7 @@ public class RecruitApplicant implements Serializable {
 		this.recruitApplicantSpecLists = recruitApplicantSpecLists;
 	}
 
+	@Transient
 	public Integer getWorkingExperiences() {
             this.workingExperiences = lastWorkEnd-lastWorkSince;
             return workingExperiences;
