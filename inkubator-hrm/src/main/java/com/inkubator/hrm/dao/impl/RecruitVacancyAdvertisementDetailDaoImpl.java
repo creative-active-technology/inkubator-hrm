@@ -86,5 +86,14 @@ public class RecruitVacancyAdvertisementDetailDaoImpl extends IDAOImpl<RecruitVa
 		criteria.setFetchMode("hireApply.employeeType", FetchMode.JOIN);
 		return (RecruitVacancyAdvertisementDetail) criteria.uniqueResult();
 	}
+
+	@Override
+	public RecruitVacancyAdvertisementDetail getEntityByRecruitHireApplyId(Long recruitHireApplyId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.setFetchMode("vacancyAdvertisement", FetchMode.JOIN);		
+		criteria.createAlias("hireApply", "hireApply", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("hireApply.id", recruitHireApplyId));
+		return (RecruitVacancyAdvertisementDetail) criteria.uniqueResult();
+	}
 	
 }

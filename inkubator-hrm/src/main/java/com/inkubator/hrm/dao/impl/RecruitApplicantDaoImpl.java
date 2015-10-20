@@ -1,5 +1,6 @@
 package com.inkubator.hrm.dao.impl;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -120,7 +121,7 @@ public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implement
     			+ "SUM(CASE WHEN career_candidate=1 THEN 1 ELSE 0 END) AS totalInternalDecimal "
     			+ "FROM ( "
     			+ "SELECT orgTypeSpec.name AS name, recruitApplicant.career_candidate, recruitApplicant.id "
-    			+ "FROM hrm.recruit_applicant recruitApplicant "
+    			+ "FROM recruit_applicant recruitApplicant "
     			+ "JOIN recruit_applicant_spec_list specList on recruitApplicant.id=specList.applicant_id "
     			+ "JOIN org_type_of_spec_list orgTypeList on orgTypeList.id=specList.org_type_of_spec_list_id "
     			+ "JOIN org_type_of_spec orgTypeSpec on orgTypeSpec.id=orgTypeList.org_type_of_spec_id "
@@ -160,6 +161,27 @@ public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implement
         
     	Query hbm = getCurrentSession().createQuery(selectQuery.toString()).setResultTransformer(Transformers.aliasToBean(ApplicantAgeViewModel.class));
     	return hbm.list();
+	}
+
+	@Override
+	public Long getTotalByCareerCandidateAndOrgTypeOfSpecId(Integer careerCandidate, Long specId) {
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT COUNT(*) "
+    			+ "FROM ( "
+    			+ "SELECT recruitApplicant.* "
+    			+ "FROM recruit_applicant recruitApplicant "
+    			+ "JOIN recruit_applicant_spec_list specList on recruitApplicant.id=specList.applicant_id "
+    			+ "JOIN org_type_of_spec_list orgTypeList on orgTypeList.id=specList.org_type_of_spec_list_id "
+    			+ "JOIN org_type_of_spec orgTypeSpec on orgTypeSpec.id=orgTypeList.org_type_of_spec_id "
+    			+ "WHERE orgTypeSpec.id = :specId AND recruitApplicant.career_candidate = :careerCandidate "
+    			+ "GROUP BY recruitApplicant.id"
+    			+ ") as temp "); 
+        
+    	Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString());
+    	hbm.setParameter("specId", specId);
+    	hbm.setParameter("careerCandidate", careerCandidate);
+    	BigInteger total = (BigInteger) hbm.uniqueResult();
+    	return total != null ? total.longValue() : 0L; 
 	}
 
 }

@@ -34,4 +34,6 @@ public interface RecruitHireApplyService extends IService<RecruitHireApply>, Bas
     public Long getCurrentMaxId() throws Exception;
     
     public RecruitHireApply getEntityWithDetailByActivityNumber(String activityNumber) throws Exception;
+    
+    public List<RecruitHireApply> getAllDataWithDetail() throws Exception;
 }
