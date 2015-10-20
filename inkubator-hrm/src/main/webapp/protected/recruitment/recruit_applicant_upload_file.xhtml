@@ -43,8 +43,25 @@
                                 				 style="margin-right: 3px;width: 70%"  filter="true" required="true">
 	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                <f:selectItems value="#{recruitApplicantUploadFileFormController.listVacancyAdvertisement}" var="vacancy" itemValue="#{vacancy.id}" itemLabel="#{vacancy.vacancyAdvCode} - #{vacancy.advertisementMedia.name}" />
+	                                <p:ajax listener="#{recruitApplicantUploadFileFormController.onChangeVacancyAdvertisement()}" update="vacancyAdvertisementDetailId"/>
 	                            </p:selectOneMenu>
 	                            <p:message for="vacancyAdvertisementId"/> 
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 20%">
+                                <p:outputLabel for="vacancyAdvertisementDetailId" value="#{appmsg['global.detail']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="vacancyAdvertisementDetailId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:selectOneMenu id="vacancyAdvertisementDetailId" value="#{recruitApplicantUploadFileFormController.vacancyAdvertisementDetailId}" 
+                                				 style="margin-right: 3px;width: 70%"  filter="true" required="true">
+	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                <f:selectItems value="#{recruitApplicantUploadFileFormController.listVacancyAdvertisementDetail}" var="detail" itemValue="#{detail.id}" itemLabel="#{detail.hireApply.reqHireCode} - #{detail.hireApply.jabatan.name}" />
+	                            </p:selectOneMenu>
+	                            <p:message for="vacancyAdvertisementDetailId"/> 
                             </p:column>
                         </p:row>
                         <p:row>

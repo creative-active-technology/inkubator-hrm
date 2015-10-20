@@ -16,6 +16,7 @@ import com.inkubator.hrm.entity.MaritalStatus;
 import com.inkubator.hrm.entity.Nationality;
 import com.inkubator.hrm.entity.Race;
 import com.inkubator.hrm.entity.RecruitVacancyAdvertisement;
+import com.inkubator.hrm.entity.RecruitVacancyAdvertisementDetail;
 import com.inkubator.hrm.entity.Religion;
 
 /**
@@ -41,6 +42,7 @@ public class ApplicantModel implements Serializable {
 	private Integer lastJabatanSince;
 	private Long businessTypeId;
 	private Long vacancyAdvertisementId;
+	private Long vacancyAdvertisementDetailId;
 	private Boolean isFreshGraduate;
 	private Boolean isActive;
 	private Boolean isVerified;
@@ -78,6 +80,7 @@ public class ApplicantModel implements Serializable {
 	private List<BusinessType> listBusinessType;
 	private List<KlasifikasiKerja> listKlasifikasiKerja;
 	private List<RecruitVacancyAdvertisement> listVacancyAdvertisement;
+	private List<RecruitVacancyAdvertisementDetail> listVacancyAdvertisementDetail;
 	private List<City> listCity;
 	private List<DualListModel> specListDualModel; 
 	private List<String> specListName; 
@@ -394,6 +397,18 @@ public class ApplicantModel implements Serializable {
 	}
 	public void setListVacancyAdvertisement(List<RecruitVacancyAdvertisement> listVacancyAdvertisement) {
 		this.listVacancyAdvertisement = listVacancyAdvertisement;
+	}
+	public Long getVacancyAdvertisementDetailId() {
+		return vacancyAdvertisementDetailId;
+	}
+	public void setVacancyAdvertisementDetailId(Long vacancyAdvertisementDetailId) {
+		this.vacancyAdvertisementDetailId = vacancyAdvertisementDetailId;
+	}
+	public List<RecruitVacancyAdvertisementDetail> getListVacancyAdvertisementDetail() {
+		return listVacancyAdvertisementDetail;
+	}
+	public void setListVacancyAdvertisementDetail(List<RecruitVacancyAdvertisementDetail> listVacancyAdvertisementDetail) {
+		this.listVacancyAdvertisementDetail = listVacancyAdvertisementDetail;
 	}
     
 }

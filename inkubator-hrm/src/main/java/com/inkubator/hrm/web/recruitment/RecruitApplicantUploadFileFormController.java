@@ -2,6 +2,7 @@ package com.inkubator.hrm.web.recruitment;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -28,6 +29,8 @@ import org.springframework.batch.core.launch.JobLauncher;
 
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.RecruitVacancyAdvertisement;
+import com.inkubator.hrm.entity.RecruitVacancyAdvertisementDetail;
+import com.inkubator.hrm.service.RecruitVacancyAdvertisementDetailService;
 import com.inkubator.hrm.service.RecruitVacancyAdvertisementService;
 import com.inkubator.hrm.util.UploadFilesUtil;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -45,7 +48,9 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 public class RecruitApplicantUploadFileFormController extends BaseController {
 
 	private Long vacancyAdvertisementId;
+	private Long vacancyAdvertisementDetailId;
 	private List<RecruitVacancyAdvertisement> listVacancyAdvertisement;
+	private List<RecruitVacancyAdvertisementDetail> listVacancyAdvertisementDetail;
 	private UploadedFile file;
 	private String fileName;
 	@ManagedProperty(value = "#{uploadFilesUtil}")
@@ -58,6 +63,8 @@ public class RecruitApplicantUploadFileFormController extends BaseController {
 	private FacesIO facesIO;
 	@ManagedProperty(value = "#{recruitVacancyAdvertisementService}")
 	private RecruitVacancyAdvertisementService recruitVacancyAdvertisementService;
+	@ManagedProperty(value = "#{recruitVacancyAdvertisementDetailService}")
+	private RecruitVacancyAdvertisementDetailService recruitVacancyAdvertisementDetailService;
 
 	@PostConstruct
 	@Override
@@ -65,6 +72,7 @@ public class RecruitApplicantUploadFileFormController extends BaseController {
 		super.initialization();
 		try {
 			listVacancyAdvertisement = recruitVacancyAdvertisementService.getAllDataIsStillEffective();
+			listVacancyAdvertisementDetail =  new ArrayList<RecruitVacancyAdvertisementDetail>();
 		} catch (Exception e) {
 			LOGGER.error("Error", e);
 		}
@@ -80,7 +88,20 @@ public class RecruitApplicantUploadFileFormController extends BaseController {
 		facesIO = null;
 		listVacancyAdvertisement = null;
 		vacancyAdvertisementId = null;
+		vacancyAdvertisementDetailId = null;
+		listVacancyAdvertisementDetail = null;
+		recruitVacancyAdvertisementService = null;
+		recruitVacancyAdvertisementDetailService = null;
 	}
+	
+	public void onChangeVacancyAdvertisement() {
+        try {
+        	listVacancyAdvertisementDetail.clear();
+        	listVacancyAdvertisementDetail = recruitVacancyAdvertisementDetailService.getAllDataByVacancyAdvertisementIdWithDetail(vacancyAdvertisementId);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
 
 	public void doUpload() {
 		try {
@@ -93,7 +114,7 @@ public class RecruitApplicantUploadFileFormController extends BaseController {
 			JobParameters jobParameters = new JobParametersBuilder().addString("input.file.path", pathUpload)
 					.addString("createdBy", UserInfoUtil.getUserName())
 					.addDate("createdOn", new Date())
-					.addLong("vacancyAdvertisementId", vacancyAdvertisementId)
+					.addLong("vacancyAdvertisementDetailId", vacancyAdvertisementDetailId)
 					.addString("timeInMilis", String.valueOf(timeInMilis)).toJobParameters();
 			JobExecution jobExecution = jobLauncher.run(jobRecruitApplicantUpload, jobParameters);
 
@@ -217,6 +238,31 @@ public class RecruitApplicantUploadFileFormController extends BaseController {
 
 	public void setVacancyAdvertisementId(Long vacancyAdvertisementId) {
 		this.vacancyAdvertisementId = vacancyAdvertisementId;
+	}
+
+	public Long getVacancyAdvertisementDetailId() {
+		return vacancyAdvertisementDetailId;
+	}
+
+	public void setVacancyAdvertisementDetailId(Long vacancyAdvertisementDetailId) {
+		this.vacancyAdvertisementDetailId = vacancyAdvertisementDetailId;
+	}
+
+	public List<RecruitVacancyAdvertisementDetail> getListVacancyAdvertisementDetail() {
+		return listVacancyAdvertisementDetail;
+	}
+
+	public void setListVacancyAdvertisementDetail(List<RecruitVacancyAdvertisementDetail> listVacancyAdvertisementDetail) {
+		this.listVacancyAdvertisementDetail = listVacancyAdvertisementDetail;
+	}
+
+	public RecruitVacancyAdvertisementDetailService getRecruitVacancyAdvertisementDetailService() {
+		return recruitVacancyAdvertisementDetailService;
+	}
+
+	public void setRecruitVacancyAdvertisementDetailService(
+			RecruitVacancyAdvertisementDetailService recruitVacancyAdvertisementDetailService) {
+		this.recruitVacancyAdvertisementDetailService = recruitVacancyAdvertisementDetailService;
 	}
 	
 }

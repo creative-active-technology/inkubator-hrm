@@ -28,7 +28,7 @@ public class ApplicantUploadBatchModel implements Serializable {
     private String emailAddress;
     
     //Additional
-    private Long vacancyAdvertisementId;
+    private Long vacancyAdvertisementDetailId;
     private String createdBy;
     private Date createdOn;
     private String uploadPath;
@@ -117,12 +117,6 @@ public class ApplicantUploadBatchModel implements Serializable {
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
 	}
-	public Long getVacancyAdvertisementId() {
-		return vacancyAdvertisementId;
-	}
-	public void setVacancyAdvertisementId(Long vacancyAdvertisementId) {
-		this.vacancyAdvertisementId = vacancyAdvertisementId;
-	}
 	public String getCreatedBy() {
 		return createdBy;
 	}
@@ -140,6 +134,12 @@ public class ApplicantUploadBatchModel implements Serializable {
 	}
 	public void setUploadPath(String uploadPath) {
 		this.uploadPath = uploadPath;
+	}
+	public Long getVacancyAdvertisementDetailId() {
+		return vacancyAdvertisementDetailId;
+	}
+	public void setVacancyAdvertisementDetailId(Long vacancyAdvertisementDetailId) {
+		this.vacancyAdvertisementDetailId = vacancyAdvertisementDetailId;
 	}
     
 }

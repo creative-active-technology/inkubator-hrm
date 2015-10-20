@@ -33,4 +33,6 @@ public interface RecruitApplicantService extends IService<RecruitApplicant> {
 	
 	public String commitDataInternalCareerCandidate(List<Long> listEmpDataId) throws Exception;
 
+	public Long getTotalByVacancyAdvertisementDetailId(Long vacancyAdvertisementDetailId);
+
 }

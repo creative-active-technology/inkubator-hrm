@@ -32,4 +32,6 @@ public interface RecruitApplicantDao extends IDAO<RecruitApplicant> {
 	
 	public Long getTotalByCareerCandidateAndOrgTypeOfSpecId(Integer careerCandidate, Long specId);
 
+	public Long getTotalByVacancyAdvertisementDetailId(Long vacancyAdvertisementDetailId);
+
 }

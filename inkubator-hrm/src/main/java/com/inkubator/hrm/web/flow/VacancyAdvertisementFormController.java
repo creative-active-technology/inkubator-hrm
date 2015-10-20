@@ -21,6 +21,7 @@ import ch.lambdaj.Lambda;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
@@ -32,6 +33,7 @@ import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.RecruitAdvertisementMediaService;
+import com.inkubator.hrm.service.RecruitApplicantService;
 import com.inkubator.hrm.service.RecruitHireApplyService;
 import com.inkubator.hrm.service.RecruitVacancyAdvertisementService;
 import com.inkubator.hrm.service.TransactionCodeficationService;
@@ -61,6 +63,8 @@ public class VacancyAdvertisementFormController implements Serializable {
 	private ApprovalActivityService approvalActivityService;
 	@Autowired
 	private TransactionCodeficationService transactionCodeficationService;
+	@Autowired
+	private RecruitApplicantService recruitApplicantService;
 	
 	public void initialProcessFlow(RequestContext context){
 		try {			
@@ -176,13 +180,19 @@ public class VacancyAdvertisementFormController implements Serializable {
 	
 	public void doDeleteRecruitmentRequest(RequestContext context){
 		VacancyAdvertisementDetailModel detailModel = (VacancyAdvertisementDetailModel) context.getFlowScope().get("detailModel");
-		VacancyAdvertisementModel model = (VacancyAdvertisementModel) context.getFlowScope().get("model");
-		List<VacancyAdvertisementDetailModel> listAdvertisementDetail =  model.getListAdvertisementDetail();
-		
-		//remove object dalam list
-		listAdvertisementDetail.remove(detailModel);
-		model.setListAdvertisementDetail(listAdvertisementDetail);
-		context.getFlowScope().put("model", model);
+		if(recruitApplicantService.getTotalByVacancyAdvertisementDetailId(detailModel.getId()) > 0){
+			//Data tidak bisa di delete, sudah dipakai di table Applicant
+			MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+		} else {
+			//Data bisa di delete
+			VacancyAdvertisementModel model = (VacancyAdvertisementModel) context.getFlowScope().get("model");
+			List<VacancyAdvertisementDetailModel> listAdvertisementDetail =  model.getListAdvertisementDetail();
+			
+			//remove object dalam list
+			listAdvertisementDetail.remove(detailModel);
+			model.setListAdvertisementDetail(listAdvertisementDetail);
+			context.getFlowScope().put("model", model);
+		}
 	}
 	
 	public String doSave(RequestContext context){
@@ -260,18 +270,21 @@ public class VacancyAdvertisementFormController implements Serializable {
 		
 		Set<RecruitVacancyAdvertisementDetail> listAdvertisementDetail =  new HashSet<RecruitVacancyAdvertisementDetail>();
 		for(VacancyAdvertisementDetailModel detailModel:model.getListAdvertisementDetail()){
+			
 			RecruitVacancyAdvertisementDetail advertisementDetail =  new RecruitVacancyAdvertisementDetail();
-			advertisementDetail.setId(advertisementDetail.getId());
+			//karena hashset tidak boleh duplikat ID=null, maka dibuatkan random number sebagai temporary ID nya
+			Long id = detailModel.getId() == null ? Long.parseLong(RandomNumberUtil.getRandomNumber(9)) : detailModel.getId(); 
+			advertisementDetail.setId(id);
 			advertisementDetail.setVacancyAdvertisement(vacancyAdvertisement);
 			advertisementDetail.setHireApply(new RecruitHireApply(detailModel.getHireApplyId()));
 			advertisementDetail.setCost(detailModel.getCost());
 			advertisementDetail.setPublishStart(detailModel.getPublishStart());
 			advertisementDetail.setPublishEnd(detailModel.getPublishEnd());
+			advertisementDetail.setDescription(detailModel.getDescription());
 			
 			listAdvertisementDetail.add(advertisementDetail);
 		}
 		vacancyAdvertisement.setRecruitVacancyAdvertisementDetails(listAdvertisementDetail);
-		
 		return vacancyAdvertisement;
 	}
 	

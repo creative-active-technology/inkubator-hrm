@@ -88,8 +88,11 @@ public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implement
         criteria.setFetchMode("businessType", FetchMode.JOIN);
         criteria.setFetchMode("institutionEducation", FetchMode.JOIN);
         criteria.setFetchMode("educationLevel", FetchMode.JOIN);
-        criteria.setFetchMode("recruitVacancyAdvertisement", FetchMode.JOIN);
-        criteria.setFetchMode("recruitVacancyAdvertisement.advertisementMedia", FetchMode.JOIN);
+        criteria.setFetchMode("recruitVacancyAdvertisementDetail", FetchMode.JOIN);
+        criteria.setFetchMode("recruitVacancyAdvertisementDetail.hireApply", FetchMode.JOIN);
+        criteria.setFetchMode("recruitVacancyAdvertisementDetail.hireApply.jabatan", FetchMode.JOIN);
+        criteria.setFetchMode("recruitVacancyAdvertisementDetail.vacancyAdvertisement", FetchMode.JOIN);
+        criteria.setFetchMode("recruitVacancyAdvertisementDetail.vacancyAdvertisement.advertisementMedia", FetchMode.JOIN);
         criteria.setFetchMode("recruitApplicantSpecLists", FetchMode.JOIN);
 		criteria.setFetchMode("recruitApplicantSpecLists.orgTypeOfSpecList", FetchMode.JOIN);
 		criteria.setFetchMode("recruitApplicantSpecLists.orgTypeOfSpecList.orgTypeOfSpec", FetchMode.JOIN);
@@ -182,6 +185,13 @@ public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implement
     	hbm.setParameter("careerCandidate", careerCandidate);
     	BigInteger total = (BigInteger) hbm.uniqueResult();
     	return total != null ? total.longValue() : 0L; 
+	}
+
+	@Override
+	public Long getTotalByVacancyAdvertisementDetailId(Long vacancyAdvertisementDetailId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("recruitVacancyAdvertisementDetail.id", vacancyAdvertisementDetailId));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 
 }
