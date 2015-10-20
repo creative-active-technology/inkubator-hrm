@@ -1,5 +1,6 @@
 package com.inkubator.hrm.dao.impl;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -19,8 +20,8 @@ import org.springframework.stereotype.Repository;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.RecruitApplicantDao;
 import com.inkubator.hrm.entity.RecruitApplicant;
+import com.inkubator.hrm.web.model.ApplicantAgeViewModel;
 import com.inkubator.hrm.web.model.ApplicantViewModel;
-import com.inkubator.hrm.web.model.LogMonthEndPayrollViewModel;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
 import com.inkubator.hrm.web.search.ReportSearchRecruitmentSearchParameter;
 
@@ -97,7 +98,7 @@ public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implement
 	}
 
 	@Override
-	public List<ApplicantViewModel> getAllDataGroupByEducationLevel() {
+	public List<ApplicantViewModel> getDataChartEducationLevel() {
 		
 		StringBuffer selectQuery = new StringBuffer(
     			"SELECT educationLevel.name AS name, "
@@ -110,6 +111,78 @@ public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implement
         
     	Query hbm = getCurrentSession().createQuery(selectQuery.toString()).setResultTransformer(Transformers.aliasToBean(ApplicantViewModel.class));
     	return hbm.list(); 
+	}
+	
+	@Override
+	public List<ApplicantViewModel> getDataChartJobClassification() {
+		
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT name, "
+    			+ "SUM(CASE WHEN career_candidate=0 THEN 1 ELSE 0 END) AS totalExternalDecimal, "
+    			+ "SUM(CASE WHEN career_candidate=1 THEN 1 ELSE 0 END) AS totalInternalDecimal "
+    			+ "FROM ( "
+    			+ "SELECT orgTypeSpec.name AS name, recruitApplicant.career_candidate, recruitApplicant.id "
+    			+ "FROM recruit_applicant recruitApplicant "
+    			+ "JOIN recruit_applicant_spec_list specList on recruitApplicant.id=specList.applicant_id "
+    			+ "JOIN org_type_of_spec_list orgTypeList on orgTypeList.id=specList.org_type_of_spec_list_id "
+    			+ "JOIN org_type_of_spec orgTypeSpec on orgTypeSpec.id=orgTypeList.org_type_of_spec_id "
+    			+ "GROUP BY recruitApplicant.id, name"
+    			+ ") as temp "
+    			+ "GROUP BY name "); 
+        
+    	Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString()).setResultTransformer(Transformers.aliasToBean(ApplicantViewModel.class));
+    	return hbm.list(); 
+	}
+
+	@Override
+	public ApplicantViewModel getDataChartWorkingExperience() {
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT SUM(CASE WHEN careerCandidate=0 AND isFreshGraduate=true then 1 else 0 END) AS totalNotFreshGraduate, "
+    			+ "SUM(CASE WHEN careerCandidate=0 AND isFreshGraduate=false then 1 else 0 END) AS totalFreshGraduate, "
+    			+ "SUM(CASE WHEN careerCandidate=1 then 1 else 0 END) AS totalInternal "
+    			+ "FROM RecruitApplicant "); 
+        
+    	Query hbm = getCurrentSession().createQuery(selectQuery.toString()).setResultTransformer(Transformers.aliasToBean(ApplicantViewModel.class));
+    	return (ApplicantViewModel) hbm.uniqueResult();
+	}
+	
+	@Override
+	public List<ApplicantAgeViewModel> getDataChartAge() {
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT CASE WHEN recruitApplicant.careerCandidate=1 THEN 'Internal' ELSE 'External' END AS candidate, "
+    			+ "SUM(CASE WHEN bioData.age<25 AND bioData.gender=1 THEN 1 ELSE 0 END) AS maleAgeBelow25, "
+    			+ "SUM(CASE WHEN bioData.age<25 AND bioData.gender=0 THEN 1 ELSE 0 END) AS femaleAgeBelow25, "
+    			+ "SUM(CASE WHEN bioData.age>=25 AND bioData.age<=30 AND bioData.gender=1 THEN 1 ELSE 0 END) AS maleAgeBetween25And30, "
+    			+ "SUM(CASE WHEN bioData.age>=25 AND bioData.age<=30 AND bioData.gender=0 THEN 1 ELSE 0 END) AS femaleAgeBetween25And30, "
+    			+ "SUM(CASE WHEN bioData.age>30 AND bioData.gender=1 THEN 1 ELSE 0 END) AS maleAgeAbove30, "
+    			+ "SUM(CASE WHEN bioData.age>30 AND bioData.gender=0 THEN 1 ELSE 0 END) AS femaleAgeAbove30 "
+    			+ "FROM RecruitApplicant recruitApplicant "
+    			+ "JOIN recruitApplicant.bioData  bioData "
+    			+ "GROUP BY recruitApplicant.careerCandidate"); 
+        
+    	Query hbm = getCurrentSession().createQuery(selectQuery.toString()).setResultTransformer(Transformers.aliasToBean(ApplicantAgeViewModel.class));
+    	return hbm.list();
+	}
+
+	@Override
+	public Long getTotalByCareerCandidateAndOrgTypeOfSpecId(Integer careerCandidate, Long specId) {
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT COUNT(*) "
+    			+ "FROM ( "
+    			+ "SELECT recruitApplicant.* "
+    			+ "FROM recruit_applicant recruitApplicant "
+    			+ "JOIN recruit_applicant_spec_list specList on recruitApplicant.id=specList.applicant_id "
+    			+ "JOIN org_type_of_spec_list orgTypeList on orgTypeList.id=specList.org_type_of_spec_list_id "
+    			+ "JOIN org_type_of_spec orgTypeSpec on orgTypeSpec.id=orgTypeList.org_type_of_spec_id "
+    			+ "WHERE orgTypeSpec.id = :specId AND recruitApplicant.career_candidate = :careerCandidate "
+    			+ "GROUP BY recruitApplicant.id"
+    			+ ") as temp "); 
+        
+    	Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString());
+    	hbm.setParameter("specId", specId);
+    	hbm.setParameter("careerCandidate", careerCandidate);
+    	BigInteger total = (BigInteger) hbm.uniqueResult();
+    	return total != null ? total.longValue() : 0L; 
 	}
 
     @Override

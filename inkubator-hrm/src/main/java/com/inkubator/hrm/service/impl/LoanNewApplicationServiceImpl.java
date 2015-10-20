@@ -74,12 +74,16 @@ import com.inkubator.hrm.util.HRMFinanceLib;
 import com.inkubator.hrm.util.JadwalPembayaran;
 import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.util.LoanPayment;
+import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.web.model.LoanHistoryViewModel;
 import com.inkubator.hrm.web.model.LoanNewApplicationBoxViewModel;
+import com.inkubator.hrm.web.model.LoanNewApplicationStatusViewModel;
 import com.inkubator.hrm.web.model.LoanNewCancellationFormModel;
 import com.inkubator.hrm.web.search.LoanNewApplicationBoxSearchParameter;
 import com.inkubator.hrm.web.search.LoanNewSearchParameter;
+import com.inkubator.hrm.web.search.LoanStatusSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -835,5 +839,45 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
 			loanHistModel.setTotalAlreadyPaidInstallment(totalAlreadyPaidInstallment == null ? 0 : totalAlreadyPaidInstallment.intValue());
 		}
 		return listLoanHistory;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<LoanNewApplicationStatusViewModel> getAllDataLoanNewApplicationStatus(LoanStatusSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+		List<LoanNewApplicationStatusViewModel> listAllData = loanNewApplicationDao.getAllDataLoanNewApplicationStatus(parameter, firstResult, maxResults, orderable);
+		for(LoanNewApplicationStatusViewModel loanNewApplicationStatusViewModel : listAllData){
+			//kondisi kalo ditunda
+			if(loanNewApplicationStatusViewModel.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL || loanNewApplicationStatusViewModel.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_REVISED){
+				if(loanNewApplicationStatusViewModel.getLoanSchemaName() == null){
+					Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+	            	LoanNewApplication loanNewApplicationTemp = gson.fromJson(loanNewApplicationStatusViewModel.getJsonData(), LoanNewApplication.class);                
+	            	loanNewApplicationStatusViewModel.setLoanSchemaName(loanNewApplicationTemp.getLoanNewSchema().getLoanSchemaName());
+	            	loanNewApplicationStatusViewModel.setNominalPrincipal(loanNewApplicationTemp.getNominalPrincipal());
+	            	loanNewApplicationStatusViewModel.setTotalTermin(loanNewApplicationTemp.getTermin());
+	            	loanNewApplicationStatusViewModel.setApprovalMessage(ResourceBundleUtil.getAsString("loanStatusMessage.pending"));
+				}
+			}else if(loanNewApplicationStatusViewModel.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED){
+            	if(loanNewApplicationStatusViewModel.getLoanStatus() == HRMConstant.LOAN_DISBURSED && loanNewApplicationStatusViewModel.getTermin() != loanNewApplicationStatusViewModel.getTotalTermin()){
+        			loanNewApplicationStatusViewModel.setApprovalMessage(ResourceBundleUtil.getAsString("loanStatusMessage.withdraw"));
+        		}else if(loanNewApplicationStatusViewModel.getLoanStatus() == HRMConstant.LOAN_DISBURSED && loanNewApplicationStatusViewModel.getTermin() == loanNewApplicationStatusViewModel.getTotalTermin()){
+        			loanNewApplicationStatusViewModel.setApprovalMessage(ResourceBundleUtil.getAsString("loanStatusMessage.paid"));
+        		}else if(loanNewApplicationStatusViewModel.getLoanStatus() == HRMConstant.LOAN_UNDISBURSED){
+        			loanNewApplicationStatusViewModel.setApprovalMessage(ResourceBundleUtil.getAsString("loanStatusMessage.withdraw"));
+        		}
+			}else if(loanNewApplicationStatusViewModel.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED){
+            	loanNewApplicationStatusViewModel.setApprovalMessage(ResourceBundleUtil.getAsString("loanStatusMessage.reject"));
+			}else if(loanNewApplicationStatusViewModel.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_CANCELLED){
+            	loanNewApplicationStatusViewModel.setApprovalMessage(ResourceBundleUtil.getAsString("approvalactivity.cancelled"));
+			}
+		}
+		return listAllData;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalDataLoanNewApplicationStatus(
+			LoanStatusSearchParameter parameter) throws Exception {
+		// TODO Auto-generated method stub
+		return loanNewApplicationDao.getTotalDataLoanNewApplicationStatus(parameter);
 	}
 }

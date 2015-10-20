@@ -50,6 +50,7 @@ public class RecruitApplicant implements Serializable {
 	private Integer lastJabatanSince;
 	private BusinessType businessType;
 	private RecruitVacancyAdvertisement recruitVacancyAdvertisement;
+	private RecruitVacancyAdvertisementDetail recruitVacancyAdvertisementDetail;
 	private String uploadPath;
 	private Date createdOn;
     private String createdBy;
@@ -270,6 +271,16 @@ public class RecruitApplicant implements Serializable {
 	public void setRecruitVacancyAdvertisement(RecruitVacancyAdvertisement recruitVacancyAdvertisement) {
 		this.recruitVacancyAdvertisement = recruitVacancyAdvertisement;
 	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recruit_vacancy_advertisement_detail_id", nullable = false)
+	public RecruitVacancyAdvertisementDetail getRecruitVacancyAdvertisementDetail() {
+		return recruitVacancyAdvertisementDetail;
+	}
+
+	public void setRecruitVacancyAdvertisementDetail(RecruitVacancyAdvertisementDetail recruitVacancyAdvertisementDetail) {
+		this.recruitVacancyAdvertisementDetail = recruitVacancyAdvertisementDetail;
+	}
 
 	@Column(name = "upload_path")
 	public String getUploadPath() {
@@ -338,4 +349,5 @@ public class RecruitApplicant implements Serializable {
 	
 	
     
+	
 }

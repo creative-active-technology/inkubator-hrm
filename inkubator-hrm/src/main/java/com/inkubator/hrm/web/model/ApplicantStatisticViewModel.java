@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.primefaces.model.chart.BarChartModel;
-import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.PieChartModel;
 
 /**
@@ -15,8 +14,8 @@ public class ApplicantStatisticViewModel implements Serializable {
 	
 	private PieChartModel workingExperienceApplicant;
 	private BarChartModel educationLevelApplicant;
-	private LineChartModel specificationInternalApplicant;
-	private LineChartModel specificationExternalApplicant;
+	private String jobClassificationApplicant;
+	//private LineChartModel jobClassificationApplicantLineModel;
 	private List<ApplicantAgeViewModel> listApplicantAge;
 	
 	public PieChartModel getWorkingExperienceApplicant() {
@@ -31,23 +30,23 @@ public class ApplicantStatisticViewModel implements Serializable {
 	public void setEducationLevelApplicant(BarChartModel educationLevelApplicant) {
 		this.educationLevelApplicant = educationLevelApplicant;
 	}
-	public LineChartModel getSpecificationInternalApplicant() {
-		return specificationInternalApplicant;
+	public String getJobClassificationApplicant() {
+		return jobClassificationApplicant;
 	}
-	public void setSpecificationInternalApplicant(LineChartModel specificationInternalApplicant) {
-		this.specificationInternalApplicant = specificationInternalApplicant;
-	}
-	public LineChartModel getSpecificationExternalApplicant() {
-		return specificationExternalApplicant;
-	}
-	public void setSpecificationExternalApplicant(LineChartModel specificationExternalApplicant) {
-		this.specificationExternalApplicant = specificationExternalApplicant;
+	public void setJobClassificationApplicant(String jobClassificationApplicant) {
+		this.jobClassificationApplicant = jobClassificationApplicant;
 	}
 	public List<ApplicantAgeViewModel> getListApplicantAge() {
 		return listApplicantAge;
 	}
 	public void setListApplicantAge(List<ApplicantAgeViewModel> listApplicantAge) {
 		this.listApplicantAge = listApplicantAge;
-	}	
+	}
+	/*public LineChartModel getJobClassificationApplicantLineModel() {
+		return jobClassificationApplicantLineModel;
+	}
+	public void setJobClassificationApplicantLineModel(LineChartModel jobClassificationApplicantLineModel) {
+		this.jobClassificationApplicantLineModel = jobClassificationApplicantLineModel;
+	}*/
 	
 }

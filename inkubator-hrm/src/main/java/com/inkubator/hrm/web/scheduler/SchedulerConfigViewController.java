@@ -61,7 +61,7 @@ public class SchedulerConfigViewController extends BaseController{
 	}
 	
 	public String doDetail(){
-		return "/protected/scheduler/scheduler_config_detail.htm?faces-redirect=true&execution=" + selected.getId();
+		return "/protected/scheduler/scheduler_config_detail.htm?faces-redirect=true&execution=e" + selected.getId();
 	}
 
 	public SchedulerConfigSearchParameter getSearchParameter() {

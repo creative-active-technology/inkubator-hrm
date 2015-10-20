@@ -12,8 +12,10 @@ import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.LoanHistoryViewModel;
 import com.inkubator.hrm.web.model.LoanNewApplicationBoxViewModel;
+import com.inkubator.hrm.web.model.LoanNewApplicationStatusViewModel;
 import com.inkubator.hrm.web.search.LoanNewApplicationBoxSearchParameter;
 import com.inkubator.hrm.web.search.LoanNewSearchParameter;
+import com.inkubator.hrm.web.search.LoanStatusSearchParameter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -298,5 +300,57 @@ public class LoanNewApplicationDaoImpl extends IDAOImpl<LoanNewApplication> impl
 	        criteria.add(disjunction);
 
 	        return criteria.list();
+	}
+
+	@Override
+	public List<LoanNewApplicationStatusViewModel> getAllDataLoanNewApplicationStatus(LoanStatusSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
+		StringBuffer selectQuery = new StringBuffer(
+				"SELECT loanNewApplication.id as id, bioData.first_name as firstName, bioData.last_name as lastName, loanNewSchema.loan_schema_name as loanSchemaName, " +
+				"loanNewApplication.nominal_principal as nominalPrincipal, approvalDefinition.name as approvalName, loanNewApplication.dibursement_date as dibursmentDate, " +
+				"loanNewApplication.purpose_note as purposeNote, loanNewApplication.loan_status as loanStatus, loanNewApplication.termin as totalTermin, " +
+				"(select loanNewApplicationInstallment.num_of_installment from loan_new_application_installment loanNewApplicationInstallment " +
+				"where loanNewApplicationInstallment.installment_date < now() AND loanNewApplicationInstallment.loan_new_application_id = loanNewApplication.id) as termin, " +
+				"approvalActivity.pending_data AS jsonData, loanNewApplication.approval_activity_number as approvalActivityNumber, " +
+				"approvalActivity.approval_status as approvalStatus, approvalActivity.activity_number as activityNumber " +
+				"FROM hrm.approval_activity approvalActivity " +
+				"LEFT JOIN approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id " +
+				"LEFT JOIN hrm_user AS requester ON requester.user_id = approvalActivity.request_by " +
+				"LEFT JOIN emp_data AS empData ON requester.emp_data_id = empData.id " +
+				"INNER JOIN jabatan AS jabatan ON empData.jabatan_id = jabatan.id " +
+				"INNER JOIN department AS department ON jabatan.departement_id = department.id " +
+				"INNER JOIN company AS company ON department.company_id = company.id " +
+				"LEFT JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id " +
+				"LEFT JOIN loan_new_application AS loanNewApplication ON approvalActivity.activity_number = loanNewApplication.approval_activity_number " +
+				"LEFT JOIN loan_new_schema AS loanNewSchema ON loanNewApplication.loan_new_schema = loanNewSchema.id " +
+				"WHERE approvalDefinition.name = 'LOAN' " +
+				"AND (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number) ");    	
+		Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString()).setMaxResults(maxResults).setFirstResult(firstResult)
+            	.setResultTransformer(Transformers.aliasToBean(LoanNewApplicationStatusViewModel.class));
+		//hbm = this.setValueQueryUndisbursedActivityByParam(hbm, parameter);
+	
+		return hbm.list();                
+	}
+
+	@Override
+	public Long getTotalDataLoanNewApplicationStatus(LoanStatusSearchParameter parameter) {
+		StringBuffer selectQuery = new StringBuffer(
+				"SELECT count(*) " +
+				"FROM hrm.approval_activity approvalActivity " +
+				"LEFT JOIN approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id " +
+				"LEFT JOIN hrm_user AS requester ON requester.user_id = approvalActivity.request_by " +
+				"LEFT JOIN emp_data AS empData ON requester.emp_data_id = empData.id " +
+				"INNER JOIN jabatan AS jabatan ON empData.jabatan_id = jabatan.id " +
+				"INNER JOIN department AS department ON jabatan.departement_id = department.id " +
+				"INNER JOIN company AS company ON department.company_id = company.id " +
+				"LEFT JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id " +
+				"LEFT JOIN loan_new_application AS loanNewApplication ON approvalActivity.activity_number = loanNewApplication.approval_activity_number " +
+				"LEFT JOIN loan_new_schema AS loanNewSchema ON loanNewApplication.loan_new_schema = loanNewSchema.id " +
+				"WHERE approvalDefinition.name = 'LOAN' " +
+				"AND (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number)");    	
+		//selectQuery.append(this.setWhereQueryUndisbursedActivityByParam(parameter));    	
+    	Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString());    	
+    	//hbm = this.setValueQueryUndisbursedActivityByParam(hbm, parameter);
+    	
+        return Long.valueOf(hbm.uniqueResult().toString());
 	}
 }

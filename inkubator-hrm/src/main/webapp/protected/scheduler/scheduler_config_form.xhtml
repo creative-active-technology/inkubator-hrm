@@ -15,7 +15,7 @@
                 Home
             </ui:define>
             <ui:define name="center">
-            	<pe:importConstants className="com.inkubator.hrm.HRMConstant" var="hrmConstant" />
+                <pe:importConstants className="com.inkubator.hrm.HRMConstant" var="hrmConstant" />
                 <div id="box_bg">
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
                         <p:graphicImage library="images" name="approval_defition.png" height="36" width="36" />
@@ -51,6 +51,7 @@
                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.employee_attendance_calculation_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_ATTENDANCE_CALCULATE}" />
                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.create_notification_log_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_ANNOUNCMENT_GENERATING_LOG}" />
                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.notification_broadcast_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_ANNOUNCMENT_SENDING_NOTIF}" />
+                                        <f:selectItem itemLabel="#{appmsg['scheduler_config.monitoring_log_delete']}" itemValue="#{hrmConstant.SCHEDULER_MONITORING_LOG_DELETE}" />
                                     </p:selectOneMenu>
                                     <p:message for="scheduleName"/>
                                 </p:column>
@@ -103,9 +104,9 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:calendar id="startDate"  binding="#{startDate}" pattern="dd MMMM yyyy" value="#{schedulerConfigFormController.schedulerConfigModel.startDate}" disabled="#{schedulerConfigFormController.isDisableDateRange}" >
-                                    	<f:validator validatorId="dateBetweenValidator"  />
-	                                    <f:attribute name="endTime" value="#{endDate}"/>
-	                                    <f:attribute name="dateBetweenValidatorMessage" value="#{appmsg['scheduler_config.start_date_is_greater']}"/>
+                                        <f:validator validatorId="dateBetweenValidator"  />
+                                        <f:attribute name="endTime" value="#{endDate}"/>
+                                        <f:attribute name="dateBetweenValidatorMessage" value="#{appmsg['scheduler_config.start_date_is_greater']}"/>
                                     </p:calendar>
                                     <p:message for="startDate"/>
                                 </p:column>
@@ -125,10 +126,10 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:calendar id="stardSchedule" value="#{schedulerConfigFormController.schedulerConfigModel.dateStartExecution}" pattern="dd MMMM yyyy" required="true" >
-                                    	<f:validator validatorId="dateInSpecificRangeValidator"  />
-                                    	<f:attribute name="startTime" value="#{startDate}"/>
-	                                    <f:attribute name="endTime" value="#{endDate}"/>
-	                                    <f:attribute name="dateInSpecificRangeValidatorMessage" value="#{appmsg['scheduler_config.start_execution_should_be_at_specific_range']}"/>
+                                        <f:validator validatorId="dateInSpecificRangeValidator"  />
+                                        <f:attribute name="startTime" value="#{startDate}"/>
+                                        <f:attribute name="endTime" value="#{endDate}"/>
+                                        <f:attribute name="dateInSpecificRangeValidatorMessage" value="#{appmsg['scheduler_config.start_execution_should_be_at_specific_range']}"/>
                                     </p:calendar>
                                     <p:message for="stardSchedule"/>
                                 </p:column>

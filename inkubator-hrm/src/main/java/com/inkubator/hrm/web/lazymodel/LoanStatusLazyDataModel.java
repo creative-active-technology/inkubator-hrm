@@ -18,14 +18,15 @@ import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.SavingType;
 import com.inkubator.hrm.service.LoanNewApplicationService;
 import com.inkubator.hrm.service.SavingTypeService;
+import com.inkubator.hrm.web.model.LoanNewApplicationStatusViewModel;
 import com.inkubator.hrm.web.search.LoanStatusSearchParameter;
 import com.inkubator.hrm.web.search.SavingTypeSearchParameter;
 
-public class LoanStatusLazyDataModel extends LazyDataModel<LoanNewApplication> implements Serializable{
+public class LoanStatusLazyDataModel extends LazyDataModel<LoanNewApplicationStatusViewModel> implements Serializable{
     private static final Logger LOGGER = Logger.getLogger(LoanStatusLazyDataModel.class);
     private final LoanStatusSearchParameter searchParameter;
     private final LoanNewApplicationService loanNewApplicationService;
-    private List<LoanNewApplication> listLoanNewApplication = new ArrayList<>();
+    private List<LoanNewApplicationStatusViewModel> listLoanNewApplication = new ArrayList<>();
     private Integer jumlahData;
 
     
@@ -36,7 +37,7 @@ public class LoanStatusLazyDataModel extends LazyDataModel<LoanNewApplication> i
 	}
 
 	@Override
-    public List<LoanNewApplication> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+    public List<LoanNewApplicationStatusViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
             try {
@@ -44,10 +45,10 @@ public class LoanStatusLazyDataModel extends LazyDataModel<LoanNewApplication> i
                 if(sortField != null){
                     order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
                 }else{
-                    order = Order.desc("name");
+                    order = Order.desc("firstName");
                 }
-                /*listLoanNewApplication = loanNewApplicationService.get(searchParameter, first, pageSize, order);
-                jumlahData = Integer.parseInt(String.valueOf(service.getTotalSavingTypeByParam(searchParameter)));*/
+                listLoanNewApplication = loanNewApplicationService.getAllDataLoanNewApplicationStatus(searchParameter, first, pageSize, order);
+                jumlahData = Integer.parseInt(String.valueOf(loanNewApplicationService.getTotalDataLoanNewApplicationStatus(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
@@ -60,15 +61,15 @@ public class LoanStatusLazyDataModel extends LazyDataModel<LoanNewApplication> i
     }
     
     @Override
-    public Object getRowKey(LoanNewApplication loanNewApplication) {
-        return loanNewApplication.getId();
+    public Object getRowKey(LoanNewApplicationStatusViewModel loanNewApplicationStatusViewModel) {
+        return loanNewApplicationStatusViewModel.getId();
     }
 
     @Override
-    public LoanNewApplication getRowData(String id) {
-        for (LoanNewApplication loanNewApplication : listLoanNewApplication) {
-            if (id.equals(String.valueOf(loanNewApplication.getId()))) {
-                return loanNewApplication;
+    public LoanNewApplicationStatusViewModel getRowData(String id) {
+        for (LoanNewApplicationStatusViewModel loanNewApplicationStatusViewModel : listLoanNewApplication) {
+            if (id.equals(String.valueOf(loanNewApplicationStatusViewModel.getId()))) {
+                return loanNewApplicationStatusViewModel;
             }
         }
         return null;

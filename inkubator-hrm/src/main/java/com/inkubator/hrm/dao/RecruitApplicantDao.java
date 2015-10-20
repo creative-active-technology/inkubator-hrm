@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.RecruitApplicant;
+import com.inkubator.hrm.web.model.ApplicantAgeViewModel;
 import com.inkubator.hrm.web.model.ApplicantViewModel;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
 import com.inkubator.hrm.web.search.ReportSearchRecruitmentSearchParameter;
@@ -22,7 +23,15 @@ public interface RecruitApplicantDao extends IDAO<RecruitApplicant> {
 
 	public RecruitApplicant getEntityByPkWithDetail(Long id);
 	
-	public List<ApplicantViewModel> getAllDataGroupByEducationLevel();
+	public List<ApplicantViewModel> getDataChartEducationLevel();
+	
+	public List<ApplicantViewModel> getDataChartJobClassification();
+	
+	public ApplicantViewModel getDataChartWorkingExperience();
+
+	public List<ApplicantAgeViewModel> getDataChartAge();
+	
+	public Long getTotalByCareerCandidateAndOrgTypeOfSpecId(Integer careerCandidate, Long specId);
 
         public List<RecruitApplicant> getByParamForReportSearchRecruitment(ReportSearchRecruitmentSearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
         

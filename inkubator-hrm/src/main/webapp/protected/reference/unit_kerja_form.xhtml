@@ -91,10 +91,10 @@
                                 <h:outputLabel for="country" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu id="country" value="#{unitKerjaFormController.unitKerjaModel.countryId}" style="width: 150px;margin-right: 3px" >
+                                <p:selectOneMenu id="country" value="#{unitKerjaFormController.unitKerjaModel.countryId}" filter="true" filterMatchMode="contains" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{unitKerjaFormController.listDropDownCountry}"/>
-                                        <p:ajax update="province" process="@this" listener="#{unitKerjaFormController.countryChanged()}"/>
+                                        <p:ajax update="province,messagesProvinceId" process="@this" listener="#{unitKerjaFormController.countryChanged()}"/>
                                     </p:selectOneMenu>
                             </p:column>
                         </p:row>
@@ -111,16 +111,17 @@
                                 <h:outputLabel for="province" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu id="province" value="#{unitKerjaFormController.unitKerjaModel.provinceId}" style="width: 150px;margin-right: 3px" >
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                <p:selectOneMenu id="province" disabled="#{unitKerjaFormController.disabledProvince}" filter="true" filterMatchMode="contains" value="#{unitKerjaFormController.unitKerjaModel.provinceId}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}"  itemValue=""/>
                                         <f:selectItems value="#{unitKerjaFormController.listDropDownProvince}"/>
-                                        <p:ajax update="city" process="@this" listener="#{unitKerjaFormController.provinceChanged()}"/>
+                                        <p:ajax update="city,messagesCityId" process="@this" listener="#{unitKerjaFormController.provinceChanged()}"/>
                                     </p:selectOneMenu>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
-                                <p:message for="country"/>
+                                <p:message id="messagesProvinceId" for="messagesProvinceId"/>
+                                <p:message  for="province"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -131,7 +132,7 @@
                                 <h:outputLabel for="city" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu id="city" value="#{unitKerjaFormController.unitKerjaModel.cityId}" style="width: 150px;margin-right: 3px" >
+                                <p:selectOneMenu id="city" value="#{unitKerjaFormController.unitKerjaModel.cityId}" disabled="#{unitKerjaFormController.disabledCity}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{unitKerjaFormController.listDropDownCity}"/>
                                     </p:selectOneMenu>
@@ -139,6 +140,7 @@
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
+                            	<p:message id="messagesCityId" for="messagesCityId"/>
                                 <p:message for="city"/>
                             </p:column>
                         </p:row>

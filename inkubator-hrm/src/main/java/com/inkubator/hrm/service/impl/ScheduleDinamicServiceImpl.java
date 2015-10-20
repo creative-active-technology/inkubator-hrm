@@ -17,6 +17,7 @@ import java.util.List;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
@@ -61,6 +62,8 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
     private JmsTemplate jmsTemplateAnnoucmentGeneratingLog;
     @Autowired
     private JmsTemplate jmsTemplateAnnoucmentSendingNotif;
+    @Autowired
+    private JmsTemplate jmsTemplateDeleteMonitoringLog;
 
 //    @Override
 //    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -77,7 +80,6 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
 ////            }
 ////        }
 //    }
-
     @Scheduled(cron = "${cron.dinamic.scheduler}")// Harus REQUARED NEW
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     @Override
@@ -90,13 +92,22 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                     doCheckCurrentDate(config);
                 }
                 if ("EVERY_WEEK".equals(config.getRepeateType())) {
-                    doCheckCurrentDate(config);
+                    if (new SimpleDateFormat("uu").format(new Date()).equals(new SimpleDateFormat("uu").format(config.getDateStartExecution()))) {
+                        doCheckCurrentDate(config);
+                    }
+
                 }
                 if ("EVERY_MONTH".equals(config.getRepeateType())) {
-                    doCheckCurrentDate(config);
+                    if (new SimpleDateFormat("dd").format(new Date()).equals(new SimpleDateFormat("dd").format(config.getDateStartExecution()))) {
+                        doCheckCurrentDate(config);
+                    }
+
                 }
                 if ("EVERTY_YEAR".equals(config.getRepeateType())) {
-                    doCheckCurrentDate(config);
+                    if (new SimpleDateFormat("dd/MM").format(new Date()).equals(new SimpleDateFormat("dd/MM").format(config.getDateStartExecution()))) {
+                        doCheckCurrentDate(config);
+                    }
+
                 }
             }
 
@@ -111,6 +122,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
     }
 
     private void doCheckCurrentDate(SchedulerConfig config) {
+
         try {
             Date doDateExecution = config.getDateStartExecution();
             String currentDateString = new SimpleDateFormat("dd MM yyyy").format(new Date());
@@ -129,7 +141,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                         String dateString = new SimpleDateFormat("dd MM yyyy HH:mm").format(newDate);
                         Date forComparison = new SimpleDateFormat("dd MM yyyy HH:mm").parse(dateString);
 //                        Long total = currentDateTime.getTime() - lastExecution.getTime();
-                            LOGGER.info("===========================PROSES SCHEDULER Begin ===============================================");
+                        LOGGER.info("===========================PROSES SCHEDULER Begin ===============================================");
                         if (lastExePlusMinute.equals(forComparison)) {
                             config.setLastExecution(forComparison);
                             LOGGER.info("===========================PROSES SCHEDULER ===============================================");
@@ -409,15 +421,18 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                     }
                 });
                 break;
+            case "MONITORING_SCHEDULE_LOG_DELETE":
+                jmsTemplateDeleteMonitoringLog.send(new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createTextMessage(String.valueOf(configId));
+                    }
+                });
+                break;
 
-//            case "ADD_BALANCE_LEAVE":
-//                jmsTemplateAnnoucmentSendingNotif.send(new MessageCreator() {
-//                    @Override
-//                    public Message createMessage(Session session) throws JMSException {
-//                        return session.createTextMessage(String.valueOf(configId));
-//                    }
-//                });
-//                break;
+            default:
+                break;
+
         }
 
     }

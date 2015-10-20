@@ -29,8 +29,83 @@
                     <p:separator/>
                     
                     <p:chart type="bar" model="#{applicantStatisticViewController.model.educationLevelApplicant}" style="height:300px;width:700px;"/>
-                </div>                
-            </ui:define>
+
+					<p:fieldset legend="#{appmsg['recruitment_applicant.applicant_based_on_age']}" style="margin-bottom:15px">
+						<p:dataTable id="tableId" var="data" value="#{applicantStatisticViewController.model.listApplicantAge}" lazy="false" paginator="false" pageLinks="7" paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+									 rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+							<p:columnGroup type="header">
+					            <p:row>
+					            	<p:column colspan="1" rowspan="2" headerText="#{appmsg['global.number']}" />
+					            	<p:column colspan="1" rowspan="2" headerText="Data" />
+					                <p:column colspan="2" headerText="#{appmsg['recruitment_applicant.age_below_25']}" />
+					                <p:column colspan="2" headerText="#{appmsg['recruitment_applicant.age_between_25_30']}" />
+					                <p:column colspan="2" headerText="#{appmsg['recruitment_applicant.age_above_25']}" />
+					            </p:row>
+					            <p:row>
+					                <p:column headerText="#{appmsg['global_female']}" />
+					                <p:column headerText="#{appmsg['global_male']}" />
+					                <p:column headerText="#{appmsg['global_female']}" />
+					                <p:column headerText="#{appmsg['global_male']}" />
+					                <p:column headerText="#{appmsg['global_female']}" />
+					                <p:column headerText="#{appmsg['global_male']}" />
+					            </p:row>
+					        </p:columnGroup>
+							
+							<p:column style="text-align: center;width: 5%">
+								<h:outputLabel value="#{no+1}." />
+							</p:column>
+							<p:column style="text-align: center;width: 10%">
+								<h:outputLabel value="#{data.candidate}" />
+							</p:column>
+							<p:column style="text-align: center;width: 10%">
+								<h:outputLabel value="#{data.femaleAgeBelow25}" />
+							</p:column>
+							<p:column style="text-align: center;width: 10%">
+								<h:outputLabel value="#{data.maleAgeBelow25}" />
+							</p:column>
+							<p:column style="text-align: center;width: 10%">
+								<h:outputLabel value="#{data.femaleAgeBetween25And30}" />
+							</p:column>
+							<p:column style="text-align: center;width: 10%">
+								<h:outputLabel value="#{data.maleAgeBetween25And30}" />
+							</p:column>
+							<p:column style="text-align: center;width: 10%">
+								<h:outputLabel value="#{data.femaleAgeAbove30}" />
+							</p:column>
+							<p:column style="text-align: center;width: 10%">
+								<h:outputLabel value="#{data.maleAgeAbove30}" />
+							</p:column>
+						</p:dataTable>
+					</p:fieldset>
+
+					<h:panelGrid columns="2" >
+						<div class="jqplot-target" style="border:2px solid;border-color:rgba(128,128,128,0.8)">  
+							<div class="jqplot-title" style="position: relative; top: -25px; left: 0px; width: 500px; text-align: center;">#{appmsg['recruitment_applicant.applicant_job_classification']}</div>
+							<table class="jqplot-table-legend" style="position: absolute; right: 0px; top: 0px;">
+								<tbody>
+									<tr class="jqplot-table-legend"><td class="jqplot-table-legend jqplot-table-legend-swatch" style="text-align: center; padding-top: 0px;"><div class="jqplot-table-legend-swatch-outline"><div class="jqplot-table-legend-swatch" style="border-color: rgb(75, 178, 197); background-color: rgb(75, 178, 197);"></div></div></td><td class="jqplot-table-legend jqplot-table-legend-label" style="padding-top: 0px;">Internal</td></tr>
+									<tr class="jqplot-table-legend"><td class="jqplot-table-legend jqplot-table-legend-swatch" style="text-align: center; padding-top: 0.5em;"><div class="jqplot-table-legend-swatch-outline"><div class="jqplot-table-legend-swatch" style="border-color: rgb(234, 162, 40); background-color: rgb(234, 162, 40);"></div></div></td><td class="jqplot-table-legend jqplot-table-legend-label" style="padding-top: 0.5em;">External</td></tr>
+								</tbody>
+							</table>
+				       		<canvas id="radar" width="500" height="319"></canvas>  
+				     	</div>
+                    	<!-- <p:chart type="line" model="#{applicantStatisticViewController.model.jobClassificationApplicantLineModel}" style="height:300px;width:600px;"/> -->
+                    	<p:chart type="pie" model="#{applicantStatisticViewController.model.workingExperienceApplicant}" style="height:400px;width:400px;" />
+                    </h:panelGrid>
+                </div>
+
+			
+            <h:outputScript library="js" name="Chart.js" />
+			<script type="text/javascript">
+			var ctx = document.getElementById("radar").getContext("2d");
+			
+			var data = #{applicantStatisticViewController.model.jobClassificationApplicant};
+			
+			var myRadarChart = new Chart(ctx).Radar(data);
+			</script>
+
+
+		</ui:define>
         </ui:composition>
     </h:body>
 </html>

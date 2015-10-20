@@ -31,6 +31,8 @@ public interface RecruitApplicantService extends IService<RecruitApplicant> {
 	public void uploadBatchProcess(ApplicantUploadBatchModel model) throws Exception;
 	
 	public ApplicantStatisticViewModel getAllDataApplicantStatistic() throws Exception;
+	
+	public String commitDataInternalCareerCandidate(List<Long> listEmpDataId) throws Exception;
 
         public List<RecruitApplicant> getByParamForReportSearchRecruitment(ReportSearchRecruitmentSearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
         
