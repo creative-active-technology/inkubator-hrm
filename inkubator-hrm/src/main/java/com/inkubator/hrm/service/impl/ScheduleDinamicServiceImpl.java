@@ -17,6 +17,7 @@ import java.util.List;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
@@ -91,13 +92,22 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                     doCheckCurrentDate(config);
                 }
                 if ("EVERY_WEEK".equals(config.getRepeateType())) {
-                    doCheckCurrentDate(config);
+                    if (new SimpleDateFormat("uu").format(new Date()).equals(new SimpleDateFormat("uu").format(config.getDateStartExecution()))) {
+                        doCheckCurrentDate(config);
+                    }
+
                 }
                 if ("EVERY_MONTH".equals(config.getRepeateType())) {
-                    doCheckCurrentDate(config);
+                    if (new SimpleDateFormat("dd").format(new Date()).equals(new SimpleDateFormat("dd").format(config.getDateStartExecution()))) {
+                        doCheckCurrentDate(config);
+                    }
+
                 }
                 if ("EVERTY_YEAR".equals(config.getRepeateType())) {
-                    doCheckCurrentDate(config);
+                    if (new SimpleDateFormat("dd/MM").format(new Date()).equals(new SimpleDateFormat("dd/MM").format(config.getDateStartExecution()))) {
+                        doCheckCurrentDate(config);
+                    }
+
                 }
             }
 
@@ -112,6 +122,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
     }
 
     private void doCheckCurrentDate(SchedulerConfig config) {
+
         try {
             Date doDateExecution = config.getDateStartExecution();
             String currentDateString = new SimpleDateFormat("dd MM yyyy").format(new Date());

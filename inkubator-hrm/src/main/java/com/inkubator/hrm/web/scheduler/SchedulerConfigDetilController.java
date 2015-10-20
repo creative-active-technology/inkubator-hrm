@@ -7,7 +7,6 @@ package com.inkubator.hrm.web.scheduler;
 
 import com.inkubator.hrm.entity.SchedulerConfig;
 import com.inkubator.hrm.service.SchedulerConfigService;
-import com.inkubator.hrm.web.lazymodel.SchedulerConfigLazyDataModel;
 import com.inkubator.hrm.web.model.SchedulerConfigModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -15,7 +14,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -30,19 +28,18 @@ public class SchedulerConfigDetilController extends BaseController {
     private SchedulerConfigService schedulerConfigService;
     private SchedulerConfig selected;
 
-
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-       try {
+        try {
             String schedulerConfigId = FacesUtil.getRequestParameter("execution");
-            selected = schedulerConfigService.getEntiyByPK(Long.parseLong(schedulerConfigId));
+            selected = schedulerConfigService.getEntiyByPK(Long.parseLong(schedulerConfigId.substring(1)));
             /*String param = schedulerConfigId.substring(0, 1);
-            if(StringUtils.equals(param, "e")){
-                selected = schedulerConfigService.getEntiyByPK(Long.parseLong(schedulerConfigId.substring(1)));
-            }*/
-           } catch (Exception ex){
+             if(StringUtils.equals(param, "e")){
+             selected = schedulerConfigService.getEntiyByPK(Long.parseLong(schedulerConfigId.substring(1)));
+             }*/
+        } catch (Exception ex) {
             LOGGER.error("error", ex);
         }
     }
@@ -66,12 +63,16 @@ public class SchedulerConfigDetilController extends BaseController {
     public void setSelected(SchedulerConfig selected) {
         this.selected = selected;
     }
-    
-    public String doBack(){
+
+    public String doBack() {
         return "/protected/scheduler/scheduler_config_view.htm?faces-redirect=true";
     }
-    
-    public String doUpdates(){
+
+    public String doEdit() {
+        return "/protected/scheduler/scheduler_config_form.htm?faces-redirect=true&execution=e" + selected.getId();
+    }
+
+    public String doUpdates() {
         return "/protected/reference/scheduler_config_form.htm?faces-redirect=true&execution=e" + selected.getId();
     }
 

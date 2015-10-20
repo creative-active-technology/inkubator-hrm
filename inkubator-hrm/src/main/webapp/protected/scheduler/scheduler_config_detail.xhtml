@@ -35,7 +35,7 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel  value="#{schedulerConfigDetilController.selected.name}" >
-                                    	<f:converter converterId="schedulerConfigNameConverter" />
+                                        <f:converter converterId="schedulerConfigNameConverter" />
                                     </p:outputLabel>
                                 </p:column>
                             </p:row>  
@@ -45,7 +45,7 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel  value="#{schedulerConfigDetilController.selected.schedullerType}">
-                                    	<f:converter converterId="schedulerSchedTypeConverter"/>
+                                        <f:converter converterId="schedulerSchedTypeConverter"/>
                                     </p:outputLabel>
                                 </p:column>
                             </p:row>  
@@ -55,7 +55,7 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel  value="#{schedulerConfigDetilController.selected.repeateType}">
-                                    	<f:converter converterId="schedulerRepeatTypeConverter"/>
+                                        <f:converter converterId="schedulerRepeatTypeConverter"/>
                                     </p:outputLabel>
                                 </p:column>
                             </p:row>
@@ -67,7 +67,7 @@
                                     <p:outputLabel  value="#{schedulerConfigDetilController.selected.repeateNumber}" />
                                 </p:column>
                             </p:row>  
-                            
+
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
                                     <p:outputLabel value="#{appmsg['scheduler_config.start_date']}" styleClass="label_hrm"/>
@@ -76,7 +76,7 @@
                                     <p:outputLabel  value="#{schedulerConfigDetilController.selected.startDate}" />
                                 </p:column>
                             </p:row>
-                            
+
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
                                     <p:outputLabel value="#{appmsg['scheduler_config.end_date']}" styleClass="label_hrm"/>
@@ -91,11 +91,11 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel  value="#{schedulerConfigDetilController.selected.dateStartExecution}" >
-                                    	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
                                     </p:outputLabel>
                                 </p:column>
                             </p:row>  
-                            
+
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
                                     <p:outputLabel value="#{appmsg['scheduler_config.time_range']}" styleClass="label_hrm"/>
@@ -104,11 +104,11 @@
                                     <p:outputLabel  value="#{schedulerConfigDetilController.selected.isTimeDiv}" >
                                         <f:converter converterId="booleanMessageConverter" />
                                     </p:outputLabel>
-                                    
+
                                 </p:column>
-                                
+
                             </p:row>
-                            
+
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
                                     <p:outputLabel value="#{appmsg['scheduler_config.time_execution']}" styleClass="label_hrm"/>
@@ -117,7 +117,7 @@
                                     <p:outputLabel  value="#{schedulerConfigDetilController.selected.schedullerTime} " rendered="#{!schedulerConfigDetilController.selected.isTimeDiv}" />
                                 </p:column>
                             </p:row>
-                            
+
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
                                     <p:outputLabel value="#{appmsg['scheduler_config.time_range_execution']}" styleClass="label_hrm"/>
@@ -126,25 +126,25 @@
                                     <p:outputLabel  value="#{schedulerConfigDetilController.selected.hourDiv} #{appmsg['global.hour']} - #{schedulerConfigDetilController.selected.minuteDiv} #{appmsg['global.minute']}"  rendered="#{schedulerConfigDetilController.selected.isTimeDiv}"/>
                                 </p:column>
                             </p:row>
-                            
+
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
                                     <p:outputLabel value="#{appmsg['user_form.is_active']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:outputLabel  value="#{schedulerConfigDetilController.selected.isActive}" >
-                                    <f:converter converterId="booleanMessageConverter" />
+                                        <f:converter converterId="booleanMessageConverter" />
                                     </p:outputLabel>
                                 </p:column>
                             </p:row>
 
-                            
+
 
                         </p:panelGrid>
 
                         <p:separator/>
                         <div style="margin-bottom: 5px">
-                            
+                            <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{schedulerConfigDetilController.doEdit()}" styleClass="label_button"/>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{schedulerConfigDetilController.doBack()}" immediate="true"
                                              styleClass="label_button"/>
                             <!--</p:panel>-->
