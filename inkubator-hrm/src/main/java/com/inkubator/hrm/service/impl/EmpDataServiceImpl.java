@@ -1335,4 +1335,10 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 		return empDataDao.getTotalAllEmployeeForRecruitAggrementNoticeWithNativeQuery(searchParameter);
 	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<EmpData> getListEmpDataWhichNotExistOnFingerEmpMatch() throws Exception {
+		return empDataDao.getListEmpDataWhichNotExistOnFingerEmpMatch();
+	}
+
 }

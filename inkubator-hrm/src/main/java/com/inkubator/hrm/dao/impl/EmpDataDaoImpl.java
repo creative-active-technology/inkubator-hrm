@@ -22,12 +22,14 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
+import org.springframework.beans.factory.config.SetFactoryBean;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -36,6 +38,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.FingerMatchEmp;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.LeaveDistribution;
@@ -2359,5 +2362,20 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 			query.append(" WHERE jabatan.name like '%" + searchParameter.getJabatan() + "%'");
 		}
     }
+
+	@Override
+	public List<EmpData> getListEmpDataWhichNotExistOnFingerEmpMatch() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		
+		DetachedCriteria fingerMatchEmpCriteria = DetachedCriteria.forClass(FingerMatchEmp.class)
+				.createAlias("empData", "empData",JoinType.INNER_JOIN)
+				.setProjection(Projections.property("empData.id"));
+		
+		String[] propertyEmpDataId = {"id"};
+		criteria.add(Subqueries.propertiesNotIn(propertyEmpDataId, fingerMatchEmpCriteria))
+			.setFetchMode("bioData", FetchMode.JOIN)
+			.setFetchMode("jabatanByJabatanId", FetchMode.JOIN);
+		return criteria.list();
+	}
     
 }
