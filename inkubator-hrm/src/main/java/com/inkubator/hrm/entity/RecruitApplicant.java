@@ -44,6 +44,7 @@ public class RecruitApplicant implements Serializable {
 	private String lastWorkCompany;
 	private Integer lastWorkSince;
 	private Integer lastWorkEnd;
+	private Integer workingExperiences;
 	private String lastJabatan;
 	private KlasifikasiKerja klasifikasiKerja;
 	private Integer lastJabatanSince;
@@ -324,6 +325,17 @@ public class RecruitApplicant implements Serializable {
 
 	public void setRecruitApplicantSpecLists(Set<RecruitApplicantSpecList> recruitApplicantSpecLists) {
 		this.recruitApplicantSpecLists = recruitApplicantSpecLists;
+	}
+
+	public Integer getWorkingExperiences() {
+            this.workingExperiences = lastWorkEnd-lastWorkSince;
+            return workingExperiences;
+	}
+
+	public void setWorkingExperiences(Integer workingExperiences) {
+            this.workingExperiences = workingExperiences;
 	}    
+	
+	
     
 }

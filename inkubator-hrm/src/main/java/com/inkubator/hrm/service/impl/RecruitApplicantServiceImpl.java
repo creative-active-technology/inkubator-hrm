@@ -65,6 +65,7 @@ import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
 
 import ch.lambdaj.Lambda;
+import com.inkubator.hrm.web.search.ReportSearchRecruitmentSearchParameter;
 
 /**
  *
@@ -575,6 +576,18 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
         xAxis.setTickAngle(30);
         
         return model;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<RecruitApplicant> getByParamForReportSearchRecruitment(ReportSearchRecruitmentSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) {
+    	return recruitApplicantDao.getByParamForReportSearchRecruitment(searchParameter, firstResult, maxResults, orderable);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalByParamforReportSearchRecruitment(ReportSearchRecruitmentSearchParameter searchParameter) {
+        return this.recruitApplicantDao.getTotalByParamforReportSearchRecruitment(searchParameter);
     }
 
 }
