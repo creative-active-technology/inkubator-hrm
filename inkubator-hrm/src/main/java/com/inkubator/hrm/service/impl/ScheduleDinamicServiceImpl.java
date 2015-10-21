@@ -161,6 +161,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                         }
                     }
                 } else {
+                       LOGGER.info("===========================PROSES SCHEDULER JEDA WAKTU===============================================");
                     String currentDateStringTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
                     Date currentDateTime = new SimpleDateFormat("HH:mm:ss").parse(currentDateStringTime);
                     if (currentDateTime.getTime() == config.getSchedullerTime().getTime()) {

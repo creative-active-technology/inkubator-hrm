@@ -44,6 +44,7 @@ public class GroupWorkingModel implements Serializable {
     private Integer kondisiSchedule;
     private Boolean isActive;
     private String descriptions;
+    private Boolean isDisableForm;
 
     public Long getId() {
         return id;
@@ -216,23 +217,28 @@ public class GroupWorkingModel implements Serializable {
         this.kondisiSchedule = kondisiSchedule;
     }
 
-	public Boolean getIsActive() {
-		return isActive;
-	}
+    public Boolean getIsActive() {
+        return isActive;
+    }
 
-	public void setIsActive(Boolean isActive) {
-		this.isActive = isActive;
-	}
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
 
-	public String getDescriptions() {
-		return descriptions;
-	}
+    public String getDescriptions() {
+        return descriptions;
+    }
 
-	public void setDescriptions(String descriptions) {
-		this.descriptions = descriptions;
-	}
-    
-    
+    public void setDescriptions(String descriptions) {
+        this.descriptions = descriptions;
+    }
 
-    
+    public Boolean getIsDisableForm() {
+        return isDisableForm;
+    }
+
+    public void setIsDisableForm(Boolean isDisableForm) {
+        this.isDisableForm = isDisableForm;
+    }
+
 }

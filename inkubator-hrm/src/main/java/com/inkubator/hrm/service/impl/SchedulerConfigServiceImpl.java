@@ -67,7 +67,7 @@ public class SchedulerConfigServiceImpl extends IServiceImpl implements Schedule
             Date now=new Date();
             String nowString=new SimpleDateFormat("dd MM yyyy HH:mm").format(now);
 //            entity.setLastExecution(new SimpleDateFormat("dd MM yyyy HH:mm").parse(nowString));
-               entity.setLastExecution(DateUtils.truncate(now, Calendar.SECOND));
+               entity.setLastExecution(DateUtils.truncate(now, Calendar.MINUTE));
         }
         schedulerConfigDao.save(entity);
     }
@@ -99,7 +99,7 @@ public class SchedulerConfigServiceImpl extends IServiceImpl implements Schedule
             Date now=new Date();
             String nowString=new SimpleDateFormat("dd MM yyyy HH:mm").format(now);
 //            schedulerConfig.setLastExecution(new SimpleDateFormat("dd MM yyyy HH:mm").parse(nowString));
-                schedulerConfig.setLastExecution(DateUtils.truncate(now, Calendar.SECOND));
+                schedulerConfig.setLastExecution(DateUtils.truncate(now, Calendar.MINUTE));
         }
         schedulerConfigDao.update(schedulerConfig);
     }
