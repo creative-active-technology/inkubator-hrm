@@ -240,4 +240,10 @@ public class RecruitVacancyAdvertisementDetailServiceImpl extends IServiceImpl i
 		return recruitVacancyAdvertisementDetailDao.getEntityByPkWithDetail(id);
 	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RecruitVacancyAdvertisementDetail> getAllDataByVacancyAdvertisementIdWithDetail(Long vacancyAdvertisementId) throws Exception {
+		return recruitVacancyAdvertisementDetailDao.getAllDataByVacancyAdvertisementIdWithDetail(vacancyAdvertisementId);
+	}
+
 }

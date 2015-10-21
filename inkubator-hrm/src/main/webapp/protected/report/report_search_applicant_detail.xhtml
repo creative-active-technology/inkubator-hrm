@@ -24,8 +24,8 @@
 	                        <p:graphicImage library="images" name="biodata_ico.png" height="36" width="36" />
 	                        <h:panelGroup layout="block">
 	                            <h:panelGrid>
-	                                <p:outputLabel value="#{appmsg['recruitment_applicant.detail_applicant_upload']}" styleClass="header_big" />
-	                                <p:outputLabel value="#{appmsg['recruitment_applicant.applicant_upload_from_recruitment']}" styleClass="header_small_no_bold" />
+	                                <p:outputLabel value="Detail Pelamar" styleClass="header_big" />
+	                                <p:outputLabel value="Detail Pelamar dari Perekrutan" styleClass="header_small_no_bold" />
 	                            </h:panelGrid>
 	                        </h:panelGroup>
 	                    </h:panelGrid>
@@ -37,13 +37,13 @@
 	                                    <p:outputLabel  value="#{appmsg['biodata.front_name']}" styleClass="label_hrm" />
 	                                </p:column>
 	                                <p:column style="width: 34%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.firstName}" />	                                    
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.bioData.firstName}" />	                                    
 	                                </p:column>
 	                                <p:column style="width: 16%;background-color: #e1f0f0!important">
 	                                    <p:outputLabel  value="#{appmsg['biodata.title']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 34%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.title}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.bioData.title}" />
 	                                </p:column>
 	                            </p:row>
 	                            
@@ -52,13 +52,13 @@
 	                                    <p:outputLabel  value="#{appmsg['biodata.last_name']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 34%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.lastName}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.bioData.lastName}" />
 	                                </p:column>
 	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
 	                                    <p:outputLabel  value="#{appmsg['biodata.nickname']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 34%" >
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.nickname}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.bioData.nickname}" />
 	                                </p:column>
 	                            </p:row>
 	                            
@@ -67,13 +67,13 @@
 	                                    <p:outputLabel  value="#{appmsg['global.tempat_lahir']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 34%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.city.cityName}" />	                                    
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.bioData.city.cityName}" />	                                    
 	                                </p:column>
 	                                <p:column style="width: 16%;background-color: #e1f0f0 !important" >
 	                                    <p:outputLabel  value="#{appmsg['religion.religion']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 34%" >
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.religion.name}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.bioData.religion.name}" />
 	                                </p:column>
 	                            </p:row>
 	                            
@@ -82,7 +82,7 @@
 	                                    <p:outputLabel  value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_date']}" styleClass="label_hrm" />
 	                                </p:column>
 	                                <p:column style="width: 34%" >
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.dateOfBirth}">
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.bioData.dateOfBirth}">
 	                                		<f:convertDateTime pattern="dd-MMMM-yyyy" />
 	                                	</p:outputLabel>
 	                                </p:column>
@@ -90,7 +90,7 @@
 	                                    <p:outputLabel  value="#{appmsg['ras.ras']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 34%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.race.raceName}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.bioData.race.raceName}" />
 	                                </p:column>
 	                            </p:row>
 	                            
@@ -99,7 +99,7 @@
 	                                    <p:outputLabel  value="#{appmsg['global.gender']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 34%" >
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.gender}">
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.bioData.gender}">
 	                                		<f:converter converterId="genderConverter" />
 	                                	</p:outputLabel>
 	                                </p:column>
@@ -107,7 +107,7 @@
 	                                    <p:outputLabel  value="#{appmsg['dialect.dialect']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 34%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.dialect.dialectName}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.bioData.dialect.dialectName}" />
 	                                </p:column>
 	                            </p:row>
 	                            
@@ -116,13 +116,13 @@
 	                                    <p:outputLabel  value="#{appmsg['maritalstatus.detail_maritalstatus']}"  styleClass="label_hrm" />
 	                                </p:column>
 	                                <p:column style="width: 34%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.maritalStatus.name}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.bioData.maritalStatus.name}" />
 	                                </p:column>
 	                                <p:column style="width: 16%;background-color: #e1f0f0!important">
 	                                    <p:outputLabel  value="#{appmsg['biodata.citizen']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 34%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.nationality.nationalityName}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.bioData.nationality.nationalityName}" />
 	                                </p:column>
 	                            </p:row>
 	                            
@@ -131,13 +131,13 @@
 	                                    <p:outputLabel  value="#{appmsg['biodata.family_identification_number']}" styleClass="label_hrm" />
 	                                </p:column>
 	                                <p:column style="width: 34%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.noKK}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.bioData.noKK}" />
 	                                </p:column>
 	                                <p:column style="width: 16%;background-color: #e1f0f0!important">
 	                                    <p:outputLabel  value="#{appmsg['biodata.hp']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 34%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.mobilePhone}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.bioData.mobilePhone}" />
 	                                </p:column>
 	                            </p:row>
 	                            
@@ -146,7 +146,7 @@
 	                                    <p:outputLabel  value="#{appmsg['biodata.blood_type']}"  styleClass="label_hrm" />
 	                                </p:column>
 	                                <p:column style="width: 34%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.bloodType}">
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.bioData.bloodType}">
 	                                		<f:converter converterId="blodTypeConverter"/>
 	                                	</p:outputLabel>
 	                                </p:column>
@@ -154,7 +154,7 @@
 	                                    <p:outputLabel  value="#{appmsg['biodata.email_address']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 34%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.personalEmail}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.bioData.personalEmail}" />
 	                                </p:column>
 	                            </p:row>
 	                            
@@ -163,13 +163,13 @@
 	                                    <p:outputLabel  value="#{appmsg['biodata.jamsostek']}"  styleClass="label_hrm" />
 	                                </p:column>
 	                                <p:column style="width: 34%">
-	                               	 	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.jamsostek}" />
+	                               	 	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.bioData.jamsostek}" />
 	                                </p:column>
 	                                <p:column style="width: 16%;background-color: #e1f0f0!important">
 	                                    <p:outputLabel  value="#{appmsg['biodata.npwp']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 34%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.bioData.npwp}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.bioData.npwp}" />
 	                                </p:column>
 	                            </p:row>
 	                        </p:panelGrid>
@@ -182,7 +182,7 @@
 	                                    <p:outputLabel  value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_last']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.educationLevel.name}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.educationLevel.name}" />
 	                                </p:column>
 	                            </p:row>
 	                            <p:row>
@@ -190,7 +190,7 @@
 	                                    <p:outputLabel  value="#{appmsg['institutionEducation.institution_name']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.institutionEducation.institutionEducationName}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.institutionEducation.institutionEducationName}" />
 	                                </p:column>
 	                            </p:row>
 	                            <p:row>
@@ -198,9 +198,9 @@
 	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.final_score_from_scale']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.score}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.score}" />
 	                                	<p:outputLabel  value="&nbsp; / &nbsp;"/>
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.scale}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.scale}" />
 	                                </p:column>
 	                            </p:row>
 	                            <p:row>
@@ -208,9 +208,9 @@
 	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.start_year']} - #{appmsg['recruitment_applicant.end_year']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.educationStartYear}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.educationStartYear}" />
 	                                    <p:outputLabel  value="&nbsp; #{appmsg['global.to']} &nbsp;"/>
-	                                    <p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.educationEndYear}" />
+	                                    <p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.educationEndYear}" />
 	                                </p:column>
 	                            </p:row>
 	                            <p:row>
@@ -218,7 +218,7 @@
 	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.diploma_number']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.certificateNumber}" />	
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.certificateNumber}" />	
 	                                </p:column>
 	                            </p:row>
                             </p:panelGrid>
@@ -231,7 +231,7 @@
 	                                    <p:outputLabel  value="Fresh Graduate" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">
-                                        <p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.isFreshGraduate}">
+                                        <p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.isFreshGraduate}">
                                         	<f:converter converterId="booleanMessageConverter" />
                                         </p:outputLabel>                   	   
 	                                </p:column>
@@ -241,7 +241,7 @@
 	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.latest_company']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.lastWorkCompany}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.lastWorkCompany}" />
 	                                </p:column>
 	                            </p:row>
 	                            <p:row>
@@ -249,7 +249,7 @@
 	                                    <p:outputLabel  value="#{appmsg['businessType.businessType']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.businessType.name}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.businessType.name}" />
 	                                </p:column>
 	                            </p:row>
 	                            <p:row>
@@ -257,9 +257,9 @@
 	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.working_date_until']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.lastWorkSince}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.lastWorkSince}" />
 	                                    <p:outputLabel  value="&nbsp;&nbsp; #{appmsg['global.to']} &nbsp;&nbsp;"/>
-	                                    <p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.lastWorkEnd}" />
+	                                    <p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.lastWorkEnd}" />
 	                                </p:column>
 	                            </p:row>
 	                            <p:row>
@@ -267,7 +267,7 @@
 	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.latest_position']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.lastJabatan}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.lastJabatan}" />
 	                                </p:column>
 	                            </p:row>
 	                            <p:row>
@@ -275,7 +275,7 @@
 	                                    <p:outputLabel  value="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.klasifikasiKerja.name}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.klasifikasiKerja.name}" />
 	                                </p:column>
 	                            </p:row>
 	                            <p:row>
@@ -283,7 +283,7 @@
 	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.officiate_since']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.lastJabatanSince}" />
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.lastJabatanSince}" />
 	                                </p:column>
 	                            </p:row>
 	                        </p:panelGrid>    
@@ -296,15 +296,7 @@
 	                                    <p:outputLabel  value="#{appmsg['recruitment.vacancy_advertisement']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">
-		                                <p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.recruitVacancyAdvertisementDetail.vacancyAdvertisement.vacancyAdvCode} - #{recruitApplicantDetailController.selectedRecruitApplicant.recruitVacancyAdvertisementDetail.vacancyAdvertisement.advertisementMedia.name}" />
-		                            </p:column>
-		                         </p:row>
-		                         <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['global.detail']}" styleClass="label_hrm"/>
-	                                </p:column>
-	                                <p:column style="width: 84%">
-		                                <p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.recruitVacancyAdvertisementDetail.hireApply.reqHireCode} - #{recruitApplicantDetailController.selectedRecruitApplicant.recruitVacancyAdvertisementDetail.hireApply.jabatan.name}" />
+		                                <p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.recruitVacancyAdvertisement.vacancyAdvCode} - #{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.recruitVacancyAdvertisement.advertisementMedia.name}" />
 		                            </p:column>
 		                         </p:row>
                         		<p:row>
@@ -312,7 +304,7 @@
 	                                    <p:outputLabel  value="#{appmsg['global.active']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">
-                                        <p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.isActive}">
+                                        <p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.isActive}">
                                         	<f:converter converterId="booleanMessageConverter" />
                                         </p:outputLabel>                   	   
 	                                </p:column>
@@ -322,19 +314,19 @@
 	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.verified']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">
-	                                	<p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.isVerified}">
+	                                	<p:outputLabel  value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.isVerified}">
                                         	<f:converter converterId="booleanMessageConverter" />
                                         </p:outputLabel>
 	                                </p:column>
 	                            </p:row>
-	                            <p:row rendered="#{recruitApplicantDetailController.selectedRecruitApplicant.uploadPath != null}">
+	                            <p:row rendered="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.uploadPath != null}">
 	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
 	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.download_resource_from']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">
 	                                	<p:commandLink ajax="false" value="Download" title="Download" onclick="PrimeFaces.monitorDownload(start, stop);">
                                     		<p:fileDownload value="#{fileStreamerController.fileFromPath}" />
-                                        	<f:param name="path" value="#{recruitApplicantDetailController.selectedRecruitApplicant.uploadPath}"/>
+                                        	<f:param name="path" value="#{recruitSearchRecruitmentDetailController.selectedRecruitApplicant.uploadPath}"/>
                                         	<f:param name="fileName" value="applicant"/>
                                    		</p:commandLink>
 	                                </p:column>
@@ -343,7 +335,7 @@
                         </p:fieldset>
 	                	
 	                	<p:fieldset legend="#{appmsg['mppRecruitmentHist.work_specification']}" style="margin-bottom:15px">
-		                	<p:dataTable  id="tableId" var="data"  value="#{recruitApplicantDetailController.listJobsSpecification}" lazy="false" paginator="false" pageLinks="7"
+		                	<p:dataTable  id="tableId" var="data"  value="#{recruitSearchRecruitmentDetailController.listJobsSpecification}" lazy="false" paginator="false" pageLinks="7"
 		                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
 		                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
 		                                      rowIndexVar="no"> 
@@ -371,9 +363,8 @@
 	                	
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
-	                        <p:commandButton value="#{appmsg['global.edit']}" icon="ui-icon-zoomin" title="#{appmsg['global.edit']}" action="#{recruitApplicantDetailController.doUpdate()}" immediate="true"
-                                			 style="margin-right: 5px" styleClass="label_button"/>
-	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{recruitApplicantDetailController.doBack()}" immediate="true"
+	                        
+	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{recruitSearchRecruitmentDetailController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>
 	                    </div>
                     </div>

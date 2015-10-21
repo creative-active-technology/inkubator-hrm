@@ -25,7 +25,7 @@ import com.inkubator.hrm.web.model.ApplicantUploadBatchModel;
  */
 public class RecruitApplicantUploadReader implements ItemReader<ApplicantUploadBatchModel> {
 
-	private Long vacancyAdvertisementId;
+	private Long vacancyAdvertisementDetailId;
 	private String createdBy;
 	private Date createdOn;
 	private String uploadPath;
@@ -104,7 +104,7 @@ public class RecruitApplicantUploadReader implements ItemReader<ApplicantUploadB
 			
 		//kenapa di cek null, karena tanda batch process telah berakhir ialah read.process == null
 		if(model!= null){
-			model.setVacancyAdvertisementId(vacancyAdvertisementId);
+			model.setVacancyAdvertisementDetailId(vacancyAdvertisementDetailId);
 			model.setUploadPath(uploadPath);
 			model.setCreatedBy(createdBy);
 			model.setCreatedOn(createdOn);
@@ -146,12 +146,12 @@ public class RecruitApplicantUploadReader implements ItemReader<ApplicantUploadB
 		this.uploadPath = uploadPath;
 	}
 
-	public Long getVacancyAdvertisementId() {
-		return vacancyAdvertisementId;
+	public Long getVacancyAdvertisementDetailId() {
+		return vacancyAdvertisementDetailId;
 	}
 
-	public void setVacancyAdvertisementId(Long vacancyAdvertisementId) {
-		this.vacancyAdvertisementId = vacancyAdvertisementId;
-	}	
-	
+	public void setVacancyAdvertisementDetailId(Long vacancyAdvertisementDetailId) {
+		this.vacancyAdvertisementDetailId = vacancyAdvertisementDetailId;
+	}
+
 }

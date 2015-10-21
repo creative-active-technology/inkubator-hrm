@@ -111,11 +111,11 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.kredit}" />
                             </p:column>
-                            <p:column sortBy="#{data.permitDistribution.balance}" style="width: 12%">
+                            <p:column sortBy="#{data.saldo}" style="width: 12%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['costcenter.balance']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.permitDistribution.balance}" />
+                                <h:outputLabel value= "#{data.saldo}" />
                             </p:column>
 <!--                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
