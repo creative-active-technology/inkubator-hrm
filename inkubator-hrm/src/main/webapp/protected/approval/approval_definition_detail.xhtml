@@ -35,13 +35,17 @@
                                     <p:outputLabel  value="#{appmsg['approvaldefinition.approval_name']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.name}" />
+                                    <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.name}" >
+                                    	<f:converter converterId="approvalDefinitionConverter"/>
+                                    </p:outputLabel>
                                 </p:column>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important">
                                     <p:outputLabel  value="#{appmsg['approvaldefinition.process_name']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%">
-                                    <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.processType}" />
+                                    <p:outputLabel  value="#{approvalDefinitionDetilController.selectedApprovalDefinition.processType}" >
+                                    	<f:converter converterId="approvalDefinitionConverter"/>
+                                    </p:outputLabel>
                                 </p:column>
 
                             </p:row>
@@ -56,7 +60,9 @@
                                     <p:outputLabel  value="#{appmsg['approvaldefinition.approver_type']}" style="font-weight: bold"/>
                                 </p:column>
                                 <p:column style="width: 37%" >
-                                    <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.approverType}" />
+                                    <p:outputLabel value="#{approvalDefinitionDetilController.selectedApprovalDefinition.approverType}" >
+                                    	<f:converter converterId="approvalDefinitionConverter"/>
+                                    </p:outputLabel>
                                 </p:column>
                             </p:row>
                             <p:row>

@@ -229,6 +229,12 @@ public class EducationLevelServiceImpl extends IServiceImpl implements Education
         if (totalDuplicateCode > 0) {
             throw new BussinessException("educationlevel.error_duplicate_code");
         }
+        
+        //check duplicate level
+        long totalDuplicateLevel = educationLevelDao.getTotalByLevel(educationLevel.getLevel());
+        if(totalDuplicateLevel > 0){
+        	throw new BussinessException("educationlevel.level_could_not_be_same");
+        }
 
         educationLevel.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         educationLevel.setCreatedBy(UserInfoUtil.getUserName());
