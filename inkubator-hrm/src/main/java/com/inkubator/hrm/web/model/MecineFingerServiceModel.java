@@ -6,6 +6,8 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -28,6 +30,7 @@ public class MecineFingerServiceModel implements Serializable{
     private Integer protocolData;
     private String employeeBaseId;
     private String openProtocolPassword;
+    private List<FingerMatchEmpViewModel> listFingerMatchViewModels = new ArrayList<FingerMatchEmpViewModel>();
 
     public Long getId() {
         return id;
@@ -148,6 +151,14 @@ public class MecineFingerServiceModel implements Serializable{
     public void setHostIp(String hostIp) {
         this.hostIp = hostIp;
     }
+
+	public List<FingerMatchEmpViewModel> getListFingerMatchViewModels() {
+		return listFingerMatchViewModels;
+	}
+
+	public void setListFingerMatchViewModels(List<FingerMatchEmpViewModel> listFingerMatchViewModels) {
+		this.listFingerMatchViewModels = listFingerMatchViewModels;
+	}
     
     
 

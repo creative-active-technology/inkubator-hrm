@@ -9,8 +9,7 @@ import java.io.Serializable;
 public class FingerMatchEmpViewModel implements Serializable{
 
     private Long empDataId;
-    private String machineNik;
-    private String fingerIndexId;
+    private String machineNikOrFingerIndex;
     private Long machineFingerId;
     private String empDataNik;
     private String empFullName;
@@ -25,20 +24,12 @@ public class FingerMatchEmpViewModel implements Serializable{
 		this.empDataId = empDataId;
 	}
 
-	public String getMachineNik() {
-		return machineNik;
+	public String getMachineNikOrFingerIndex() {
+		return machineNikOrFingerIndex;
 	}
 
-	public void setMachineNik(String machineNik) {
-		this.machineNik = machineNik;
-	}
-
-	public String getFingerIndexId() {
-		return fingerIndexId;
-	}
-
-	public void setFingerIndexId(String fingerIndexId) {
-		this.fingerIndexId = fingerIndexId;
+	public void setMachineNikOrFingerIndex(String machineNikOrFingerIndex) {
+		this.machineNikOrFingerIndex = machineNikOrFingerIndex;
 	}
 
 	public Long getMachineFingerId() {

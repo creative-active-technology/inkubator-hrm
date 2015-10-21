@@ -55,6 +55,7 @@ public class LoanStatusViewController extends BaseController {
 		List<GolonganJabatan> listGolonganJabatan = golonganJabatanService.getAllData();
 		dualListDepartment.setSource(listDepartment);
 		dualListGolonganJabatan.setSource(listGolonganJabatan);
+		this.doSearch();
 	}
 	
 	public void doSearch(){
