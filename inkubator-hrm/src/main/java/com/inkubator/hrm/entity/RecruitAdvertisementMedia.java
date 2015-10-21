@@ -214,7 +214,7 @@ public class RecruitAdvertisementMedia implements java.io.Serializable {
 	@Transient
     public String getTipeMediaAsString(){
         String tipeMedia = "";
-        if(typeOfMedia == 1){
+        if(typeOfMedia == 0){
             tipeMedia = "Internal";
         }else{
             tipeMedia = "Eksternal";
