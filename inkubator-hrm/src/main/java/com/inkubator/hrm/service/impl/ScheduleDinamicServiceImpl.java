@@ -63,6 +63,8 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
     private JmsTemplate jmsTemplateAnnoucmentSendingNotif;
     @Autowired
     private JmsTemplate jmsTemplateDeleteMonitoringLog;
+    @Autowired
+    private JmsTemplate jmsTemplatePasswordComplexity;
 
 //    @Override
 //    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -428,7 +430,14 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                     }
                 });
                 break;
-
+            case "PASSWORD_COMPLEXITY_NOTIF":
+                jmsTemplatePasswordComplexity.send(new MessageCreator() {
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        return session.createTextMessage(String.valueOf(configId));
+                    }
+                });
+                break;
             default:
                 break;
 
