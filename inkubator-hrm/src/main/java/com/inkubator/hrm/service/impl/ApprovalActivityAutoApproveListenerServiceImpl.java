@@ -67,7 +67,7 @@ public class ApprovalActivityAutoApproveListenerServiceImpl extends BaseSchedule
             TextMessage textMessage = (TextMessage) msg;
             SchedulerLog schedulerLog = new SchedulerLog();
             schedulerLog.setSchedulerConfig(new SchedulerConfig(Long.parseLong(textMessage.getText())));
-            log = super.doSaveSchedulerLogSchedulerLog(schedulerLog);
+            log = super.doSaveSchedulerLogSchedulerLog(schedulerLog);      
             checkAutomaticApproval();
             log.setStatusMessages("FINISH");
             super.doUpdateSchedulerLogSchedulerLog(log);
@@ -100,7 +100,7 @@ public class ApprovalActivityAutoApproveListenerServiceImpl extends BaseSchedule
 
         //do autoApproval process
         for (ApprovalActivity approvalActivity : autoApprovals) {
-            try {
+//            try {
                 if (approvalActivity.getApprovalDefinition().getAutoApproveOnDelay()) {
                     //do Approved
                     switch (approvalActivity.getApprovalDefinition().getName()) {
@@ -178,9 +178,9 @@ public class ApprovalActivityAutoApproveListenerServiceImpl extends BaseSchedule
                             break;
                     }
                 }
-            } catch (Exception ex) {
-                LOGGER.error("Error on approvalActivity with ID : " + approvalActivity.getId(), ex);
-            }
+//            } catch (Exception ex) {
+//                LOGGER.error("Error on approvalActivity with ID : " + approvalActivity.getId(), ex);
+//            }
         }
     }
 
