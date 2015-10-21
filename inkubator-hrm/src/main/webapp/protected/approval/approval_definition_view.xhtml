@@ -89,19 +89,25 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.approval_name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{approvalDefinitionData.name}"/>
+                                <p:outputLabel value= "#{approvalDefinitionData.name}">
+                                	<f:converter converterId="approvalDefinitionConverter"/>
+                                </p:outputLabel>
                             </p:column>
-                            <p:column sortBy="#{approvalDefinitionData.processType}"  >
+                            <p:column sortBy="#{approvalDefinitionData.processType}">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.process_name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{approvalDefinitionData.processType}"/>
+                                <p:outputLabel value= "#{approvalDefinitionData.processType}">
+                                	<f:converter converterId="approvalDefinitionConverter"/>
+                                </p:outputLabel>
                             </p:column>
-                            <p:column sortBy="#{approvalDefinitionData.approverType}" style="width: 190px">
+                            <p:column sortBy="#{approvalDefinitionData.approverType}" style="width: 170px; text-align : center">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.approver_type']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{approvalDefinitionData.approverType}"/>
+                                <p:outputLabel value= "#{approvalDefinitionData.approverType}">
+                                	<f:converter converterId="approvalDefinitionConverter"/>
+                                </p:outputLabel>
                             </p:column>
                             <p:column sortBy="#{approvalDefinitionData.specificName}">
                                 <f:facet name="header">  
