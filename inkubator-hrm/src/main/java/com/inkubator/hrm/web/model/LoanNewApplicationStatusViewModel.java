@@ -1,6 +1,7 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 
 public class LoanNewApplicationStatusViewModel implements Serializable{
@@ -11,7 +12,7 @@ public class LoanNewApplicationStatusViewModel implements Serializable{
 	private Double nominalPrincipal;
 	private String approvalName;
 	private String purposeNote;
-	private Integer termin;
+	private BigInteger termin;
 	private Integer totalTermin;
 	private String activityNumber;
 	private Integer approvalStatus;
@@ -20,6 +21,7 @@ public class LoanNewApplicationStatusViewModel implements Serializable{
 	private Integer loanStatus;
 	private Date dibursmentDate;
 	private String approvalActivityNumber;
+	private Boolean isRendered;
 
 	public Integer getId() {
 		return id;
@@ -77,14 +79,14 @@ public class LoanNewApplicationStatusViewModel implements Serializable{
 		this.purposeNote = purposeNote;
 	}
 
-	public Integer getTermin() {
+	public BigInteger getTermin() {
 		if(termin == null){
-			termin = 0;
+			termin = new BigInteger("0");
 		}
 		return termin;
 	}
 
-	public void setTermin(Integer termin) {
+	public void setTermin(BigInteger termin) {
 		this.termin = termin;
 	}
 
@@ -150,6 +152,14 @@ public class LoanNewApplicationStatusViewModel implements Serializable{
 
 	public void setApprovalActivityNumber(String approvalActivityNumber) {
 		this.approvalActivityNumber = approvalActivityNumber;
+	}
+
+	public Boolean getIsRendered() {
+		return isRendered;
+	}
+
+	public void setIsRendered(Boolean isRendered) {
+		this.isRendered = isRendered;
 	}
 	
 	

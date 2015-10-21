@@ -25,6 +25,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  *
  * @author Deni
@@ -40,12 +42,14 @@ public class MecineFingerServiceFormController extends BaseController {
     private MecineFingerService mecineFingerService;
     private MecineFinger mecineFinger;
     private List<FingerMatchEmpViewModel> listFingerEmpMatchModel;
+    private Boolean isEmployeeBasedOnSelected;
     
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
         try {
+        	isEmployeeBasedOnSelected = Boolean.FALSE;
             String param = FacesUtil.getRequestParameter("execution");
             mecineFinger = mecineFingerService.getMecineFingerAndDetaiUploadByFK(Long.parseLong(param.substring(1)));
             mecineFingerServiceModel = new MecineFingerServiceModel();
@@ -70,6 +74,7 @@ public class MecineFingerServiceFormController extends BaseController {
 
             if (mecineFinger.getMatchBase() != null) {
                 mecineFingerServiceModel.setEmployeeBaseId(mecineFinger.getMatchBase());
+                isEmployeeBasedOnSelected = Boolean.TRUE;
             }
 
             if (mecineFinger.getServiceOpenProtocolPassword() != null) {
@@ -91,16 +96,22 @@ public class MecineFingerServiceFormController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
-        mecineFinger = null;
-        mecineFingerService = null;
-        mecineFingerServiceModel = null;
+        try {
+			mecineFinger = null;
+			mecineFingerService = null;
+			mecineFingerServiceModel = null;
+			
+			
+		} catch (Exception ex) {
+			LOGGER.error("Error", ex);
+		}
     }
 
     public String doSave() {
         try {
+        	mecineFingerServiceModel.setListFingerMatchViewModels(listFingerEmpMatchModel);
             mecineFingerService.saveMesineService(mecineFingerServiceModel);
-            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/working_time/mecine_finger_view.htm?faces-redirect=true";
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -110,11 +121,26 @@ public class MecineFingerServiceFormController extends BaseController {
     }
 
     public void doReset() {
-        cleanAndExit();
+    	try {
+			listFingerEmpMatchModel = new ArrayList<FingerMatchEmpViewModel>();
+			List<EmpData> listEmpDataWhichStillNotExistOnFingerEmpMatch = empDataService.getListEmpDataWhichNotExistOnFingerEmpMatch();
+
+			if(!listEmpDataWhichStillNotExistOnFingerEmpMatch.isEmpty()){
+				listFingerEmpMatchModel = convertListEmpToListFingerMatch(listEmpDataWhichStillNotExistOnFingerEmpMatch);
+			}
+		} catch (Exception ex) {
+			 LOGGER.error("Error", ex);
+		}
     }
 
     public String doBack() {
         return "/protected/working_time/mecine_finger_view.htm?faces-redirect=true";
+    }
+    
+    public void onChangeEmployeeBasedOn(){
+    	if(StringUtils.isNotBlank(mecineFingerServiceModel.getEmployeeBaseId())){
+    		isEmployeeBasedOnSelected = Boolean.TRUE;
+    	}
     }
     
     private List<FingerMatchEmpViewModel> convertListEmpToListFingerMatch(List<EmpData> listEmpData){
@@ -153,6 +179,14 @@ public class MecineFingerServiceFormController extends BaseController {
 
 	public void setListFingerEmpMatchModel(List<FingerMatchEmpViewModel> listFingerEmpMatchModel) {
 		this.listFingerEmpMatchModel = listFingerEmpMatchModel;
+	}
+
+	public Boolean getIsEmployeeBasedOnSelected() {
+		return isEmployeeBasedOnSelected;
+	}
+
+	public void setIsEmployeeBasedOnSelected(Boolean isEmployeeBasedOnSelected) {
+		this.isEmployeeBasedOnSelected = isEmployeeBasedOnSelected;
 	}
     
     

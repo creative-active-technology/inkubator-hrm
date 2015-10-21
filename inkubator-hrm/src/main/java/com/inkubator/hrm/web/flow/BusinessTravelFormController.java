@@ -14,13 +14,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.webflow.execution.RequestContext;
 
-import ch.lambdaj.Lambda;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.inkubator.common.util.DateTimeUtil;
-import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
@@ -46,6 +43,8 @@ import com.inkubator.hrm.web.model.BusinessTravelModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
+import ch.lambdaj.Lambda;
 
 /**
  *
@@ -274,7 +273,19 @@ public class BusinessTravelFormController implements Serializable{
 	public void doResetBusinessTravelForm(RequestContext context){
 		BusinessTravelModel model = (BusinessTravelModel) context.getFlowScope().get("businessTravelModel");
 		if(model.getId() == null){
-			model = new BusinessTravelModel();
+			if(model.getIsAdministator()){
+				model.setEmpData(null);
+			}
+			model.setDestination(null);
+			model.setProposeDate(null);
+			model.setTravelZoneId(null);
+			model.setTravelTypeId(null);
+			model.setStart(null);
+			model.setEnd(null);
+			model.setDescription(null);
+			model.setGolonganJabatanName(null);
+			model.setTotalAmount(null);
+			model.getBusinessTravelComponents().clear();
 		} else {
 			try {
 				BusinessTravel businessTravel = businessTravelService.getEntityByPkWithDetail(model.getId());
