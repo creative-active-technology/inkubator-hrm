@@ -104,14 +104,15 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="NIK" itemValue="NIK"/>
                                         <f:selectItem itemLabel="Index Mesin" itemValue="IDX"/>
+                                        <p:ajax listener="#{mecineFingerServiceFormController.onChangeEmployeeBasedOn()}" update="panelTableEmployee"/>
                                     </p:selectOneMenu>
                                     <p:message for="empIdBaseOn"/>
                                 </p:column>
                             </p:row>
 
                         </p:panelGrid>
-						<div>
-							 <p:dataTable  id="tableFingerEmpMatchId" var="data"  value="#{mecineFingerServiceFormController.listFingerEmpMatchModel}" lazy="false" paginator="true" pageLinks="7"
+						 <p:panel id="panelTableEmployee">
+							 <p:dataTable  id="tableFingerEmpMatchId" var="data" rendered="#{mecineFingerServiceFormController.isEmployeeBasedOnSelected}" value="#{mecineFingerServiceFormController.listFingerEmpMatchModel}" lazy="false" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no"> 
@@ -127,20 +128,33 @@
 		                                </f:facet>
 		                                <h:outputLabel value= "#{data.empDataNik}" />
 		                            </p:column>
-		                            <p:column style="text-align: center;width: 40%">
+		                            <p:column style="text-align: center;width: 30%">
 		                                <f:facet name="header">  
 		                                    <h:outputText value="#{appmsg['employee.employee_name']}"/>
 		                                </f:facet>
 		                                <h:outputLabel value= "#{data.empFullName}" />
 		                            </p:column>
-		                            <p:column style="text-align: center;width: 40%">
+		                            <p:column style="text-align: center;width: 30%">
 		                                <f:facet name="header">  
 		                                    <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
 		                                </f:facet>
 		                                <h:outputLabel value= "#{data.jabatanName}" />
 		                            </p:column>
+		                             <p:column  style="text-align: center;width: 20%">
+		                                <f:facet name="header">  
+		                                    <h:outputText value="#{mecineFingerServiceFormController.mecineFingerServiceModel.employeeBaseId eq 'NIK' ? appmsg['mechineFinger.nik_service'] : appmsg['mechineFinger.index_service']}"/>
+		                                </f:facet>
+		                                 <p:inputText value="#{data.machineNikOrFingerIndex}" styleClass="isitext_hrm" 
+		                                 		label="#{mecineFingerServiceFormController.mecineFingerServiceModel.employeeBaseId eq 'NIK' ? appmsg['mechineFinger.nik_service'] : appmsg['mechineFinger.index_service']}"
+                                                style="width: 75%" required="false"  />
+		                            </p:column>
+		                             <f:facet name="footer">
+		                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+		                                <p:outputLabel value="#{mecineFingerServiceFormController.listFingerEmpMatchModel.size()}"/>
+		                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+		                            </f:facet>
 		                        </p:dataTable>
-						</div>
+		                   </p:panel>
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
                             <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{mecineFingerServiceFormController.doSave()}"
@@ -154,6 +168,7 @@
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{mecineFingerServiceFormController.doBack()}"
                                              styleClass="label_button"/>
                         </div>
+                        
                     </div>
                 </h:form>
             </ui:define>
