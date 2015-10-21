@@ -1,5 +1,6 @@
 package com.inkubator.hrm.dao.impl;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -94,6 +95,30 @@ public class RecruitVacancyAdvertisementDetailDaoImpl extends IDAOImpl<RecruitVa
 		criteria.createAlias("hireApply", "hireApply", JoinType.INNER_JOIN);
 		criteria.add(Restrictions.eq("hireApply.id", recruitHireApplyId));
 		return (RecruitVacancyAdvertisementDetail) criteria.uniqueResult();
+	}
+
+	@Override
+	public List<RecruitVacancyAdvertisementDetail> getAllDataByVacancyAdvertisementIdWithDetail(Long vacancyAdvertisementId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());		
+		criteria.add(Restrictions.eq("vacancyAdvertisement.id", vacancyAdvertisementId));
+		criteria.setFetchMode("hireApply", FetchMode.JOIN);
+		criteria.setFetchMode("hireApply.jabatan", FetchMode.JOIN);
+        return criteria.list();
+	}
+
+	@Override
+	public void deleteAll(Collection<RecruitVacancyAdvertisementDetail> listEntity) {
+		for(RecruitVacancyAdvertisementDetail entity : listEntity){
+			this.delete(entity);
+		}		
+		getCurrentSession().flush();
+	}
+
+	@Override
+	public void saveAll(Collection<RecruitVacancyAdvertisementDetail> list) {
+		for(RecruitVacancyAdvertisementDetail entity : list){
+			this.save(entity);
+		}
 	}
 	
 }

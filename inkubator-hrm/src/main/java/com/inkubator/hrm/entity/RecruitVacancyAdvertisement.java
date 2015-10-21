@@ -156,7 +156,7 @@ public class RecruitVacancyAdvertisement implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "vacancyAdvertisement")
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "vacancyAdvertisement")
 	public Set<RecruitVacancyAdvertisementDetail> getRecruitVacancyAdvertisementDetails() {
 		return recruitVacancyAdvertisementDetails;
 	}

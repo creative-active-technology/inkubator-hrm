@@ -196,5 +196,7 @@ public interface EmpDataService extends IService<EmpData> {
     public List<RecruitAgreementNoticeViewModel> getAllEmployeeForRecruitAggrementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
     public Long getTotalAllEmployeeForRecruitAggrementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter) throws Exception;
+    
+    public List<EmpData> getListEmpDataWhichNotExistOnFingerEmpMatch() throws Exception;
         
 }

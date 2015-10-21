@@ -20,4 +20,6 @@ public interface RecruitVacancyAdvertisementDetailService extends IService<Recru
 
 	public RecruitVacancyAdvertisementDetail getEntityByPkWithDetail(Long id) throws Exception;
 	
+	public List<RecruitVacancyAdvertisementDetail> getAllDataByVacancyAdvertisementIdWithDetail(Long vacancyAdvertisementId) throws Exception;
+	
 }

@@ -32,6 +32,7 @@ import com.inkubator.hrm.service.OrgTypeOfSpecListService;
 import com.inkubator.hrm.service.OrgTypeOfSpecService;
 import com.inkubator.hrm.service.RaceService;
 import com.inkubator.hrm.service.RecruitApplicantService;
+import com.inkubator.hrm.service.RecruitVacancyAdvertisementDetailService;
 import com.inkubator.hrm.service.RecruitVacancyAdvertisementService;
 import com.inkubator.hrm.service.ReligionService;
 import com.inkubator.hrm.web.model.ApplicantModel;
@@ -80,6 +81,8 @@ public class RecruitApplicantFormController extends BaseController {
 	private OrgTypeOfSpecService orgTypeOfSpecService;
 	@ManagedProperty(value = "#{recruitVacancyAdvertisementService}")
 	private RecruitVacancyAdvertisementService recruitVacancyAdvertisementService;
+	@ManagedProperty(value = "#{recruitVacancyAdvertisementDetailService}")
+	private RecruitVacancyAdvertisementDetailService recruitVacancyAdvertisementDetailService;
 	
 	@PostConstruct
     @Override
@@ -100,7 +103,6 @@ public class RecruitApplicantFormController extends BaseController {
         	model.setSpecListDualModel(orgTypeOfSpecListService.getAllBySpectJabatan());
         	model.setSpecListName(orgTypeOfSpecListService.getOrgTypeSpecName());
         	
-        	
         	isUpdate = Boolean.FALSE;
         	String param = FacesUtil.getRequestParameter("execution");
 			if (StringUtils.isNotEmpty(param) && StringUtils.isNumeric(param.substring(1))) {
@@ -111,6 +113,7 @@ public class RecruitApplicantFormController extends BaseController {
 					
 					//untuk "edit/update applicant", tampilkan semua list iklan lowongan tanpa ada filter 
 					model.setListVacancyAdvertisement(recruitVacancyAdvertisementService.getAllData());
+					model.setListVacancyAdvertisementDetail(recruitVacancyAdvertisementDetailService.getAllDataByVacancyAdvertisementIdWithDetail(model.getVacancyAdvertisementId()));
 				}
 			} else {
 				//default value
@@ -148,6 +151,7 @@ public class RecruitApplicantFormController extends BaseController {
     	orgTypeOfSpecListService = null;
     	orgTypeOfSpecService = null;
     	recruitVacancyAdvertisementService = null;
+    	recruitVacancyAdvertisementDetailService = null;
     }
     
     public String doSave(){
@@ -189,8 +193,7 @@ public class RecruitApplicantFormController extends BaseController {
 	
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	private void getModelFromEntity(RecruitApplicant applicant) {
-    	
-    	
+    	System.out.println("eeeeeeeeeeeees");
 		model.setId(applicant.getId());
 		model.setEducationLevelId(applicant.getEducationLevel() != null ? applicant.getEducationLevel().getId() : null);
 		model.setInstitutionEducationId(applicant.getInstitutionEducation() != null ? applicant.getInstitutionEducation().getId() : null);
@@ -209,8 +212,8 @@ public class RecruitApplicantFormController extends BaseController {
 		model.setIsFreshGraduate(applicant.getIsFreshGraduate());
 		model.setIsActive(applicant.getIsActive());
 		model.setIsVerified(applicant.getIsVerified());
-		//model.setVacancyAdvertisementId();
-		//model.setVacancyAdvertisementId(applicant.getRecruitVacancyAdvertisement().getId());
+		model.setVacancyAdvertisementId(applicant.getRecruitVacancyAdvertisementDetail().getVacancyAdvertisement().getId());
+		model.setVacancyAdvertisementDetailId(applicant.getRecruitVacancyAdvertisementDetail().getId());
 		model.setUploadPath(applicant.getUploadPath());
 		
 		BioData bioData = applicant.getBioData();
@@ -249,15 +252,10 @@ public class RecruitApplicantFormController extends BaseController {
 	            int index = specListName.indexOf(orgTypeOfSpec.getName());
 
 	            if (index != -1) {
-	            	System.out.println("=========================");
 	            	List<OrgTypeOfSpecList> selectedSpecList = groupSelectedSpecList.find(key);
-	            	System.out.println("selected " + selectedSpecList.size());
 	                List<OrgTypeOfSpecList> availableSpecList = specListDualModel.get(index).getSource();
-	                System.out.println("available " + availableSpecList.size());
 	                availableSpecList.removeAll(selectedSpecList);
 
-	                System.out.println("selected " + selectedSpecList.size());
-	                System.out.println("available " + availableSpecList.size());
 	                specListDualModel.get(index).setTarget(selectedSpecList);
 	                specListDualModel.get(index).setSource(availableSpecList);
 	            }
@@ -268,6 +266,15 @@ public class RecruitApplicantFormController extends BaseController {
 			LOGGER.error("Error", ex);
 		}		
 	}
+    
+    public void onChangeVacancyAdvertisement() {
+        try {
+            model.getListVacancyAdvertisementDetail().clear();
+            model.setListVacancyAdvertisementDetail(recruitVacancyAdvertisementDetailService.getAllDataByVacancyAdvertisementIdWithDetail(model.getVacancyAdvertisementId()));
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
 
 	public ApplicantModel getModel() {
 		return model;
@@ -388,6 +395,15 @@ public class RecruitApplicantFormController extends BaseController {
 	public void setRecruitVacancyAdvertisementService(
 			RecruitVacancyAdvertisementService recruitVacancyAdvertisementService) {
 		this.recruitVacancyAdvertisementService = recruitVacancyAdvertisementService;
+	}
+
+	public RecruitVacancyAdvertisementDetailService getRecruitVacancyAdvertisementDetailService() {
+		return recruitVacancyAdvertisementDetailService;
+	}
+
+	public void setRecruitVacancyAdvertisementDetailService(
+			RecruitVacancyAdvertisementDetailService recruitVacancyAdvertisementDetailService) {
+		this.recruitVacancyAdvertisementDetailService = recruitVacancyAdvertisementDetailService;
 	}   
 	
 }

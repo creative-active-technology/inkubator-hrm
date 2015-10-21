@@ -90,7 +90,11 @@ public class SchedulerConfigNameConverter implements Converter {
             case HRMConstant.SCHEDULER_MONITORING_LOG_DELETE:
                 messages = resourceBundle.getString("scheduler_config.monitoring_log_delete");
                 break;
+            case HRMConstant.SCHEDULER_PASSWORD_COMPLEXITY:
+                messages = resourceBundle.getString("scheduler_config.password_complexity");
+                break;
             default:
+
                 break;
         }
 

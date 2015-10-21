@@ -18,6 +18,7 @@ import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
+import com.inkubator.hrm.web.model.FingerMatchEmpViewModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.model.RecruitAgreementNoticeViewModel;
@@ -166,7 +167,7 @@ public interface EmpDataDao extends IDAO<EmpData> {
 
     public List<RecruitAgreementNoticeViewModel> getAllEmployeeForRecruitAggrementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
     
-    
+    public List<EmpData> getListEmpDataWhichNotExistOnFingerEmpMatch();
     /**
      * get list
      *

@@ -5,17 +5,25 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import ch.lambdaj.Lambda;
+
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.DepartementUploadCaptureDao;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.FingerMatchEmpDao;
 import com.inkubator.hrm.dao.MacineFingerUploadDao;
 import com.inkubator.hrm.dao.MecineFingerDao;
 import com.inkubator.hrm.entity.DepartementUploadCapture;
 import com.inkubator.hrm.entity.Department;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.FingerMatchEmp;
 import com.inkubator.hrm.entity.MacineFingerUpload;
 import com.inkubator.hrm.entity.MecineFinger;
 import com.inkubator.hrm.service.MecineFingerService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.web.model.FingerMatchEmpViewModel;
 import com.inkubator.hrm.web.model.FingerUploadModel;
 import com.inkubator.hrm.web.model.MecineFingerQueryModel;
 import com.inkubator.hrm.web.model.MecineFingerServiceModel;
@@ -26,7 +34,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
 
+import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.Matchers;
+import org.hamcrest.text.SubstringMatcher;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -49,7 +63,11 @@ public class MecineFingerServiceImpl extends IServiceImpl implements MecineFinge
     private DepartementUploadCaptureDao departementUploadCaptureDao;
     @Autowired
     private MacineFingerUploadDao macineFingerUploadDao;
-
+    @Autowired
+    private FingerMatchEmpDao fingerMatchEmpDao;
+    @Autowired
+    private EmpDataDao empDataDao;
+    
     @Override
     public MecineFinger getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -293,8 +311,16 @@ public class MecineFingerServiceImpl extends IServiceImpl implements MecineFinge
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveMesineService(MecineFingerServiceModel serviceModel) throws Exception {
+    	
+    	//Dapatkan List FingerMatchEmpViewModel, dan filter hanya yang getMachineNikOrFingerIndex tidak null dan tidak empty yang akan di simpan.
+    	List<FingerMatchEmpViewModel> listFingerMatchEmpViewModel = serviceModel.getListFingerMatchViewModels();
+    	listFingerMatchEmpViewModel = Lambda.select(listFingerMatchEmpViewModel, Lambda.having(Lambda.on(FingerMatchEmpViewModel.class).getMachineNikOrFingerIndex(), Matchers.notNullValue()));
+    	listFingerMatchEmpViewModel = Lambda.select(listFingerMatchEmpViewModel, Lambda.having(Lambda.on(FingerMatchEmpViewModel.class).getMachineNikOrFingerIndex(), Matchers.not(StringUtils.EMPTY)));
+    	
         MecineFinger mecineFinger = this.mecineFingerDao.getEntiyByPK(serviceModel.getId());
         String hostIp = String.valueOf(serviceModel.getHost1()+"."+serviceModel.getHost2()+"."+serviceModel.getHost3()+"."+serviceModel.getHost4());
+        Boolean isUsingNikService = StringUtils.equals(serviceModel.getEmployeeBaseId(), "NIK");//Boolean flag apakah based on NIK atau Index
+        
         mecineFinger.setServiceHost(hostIp);
         mecineFinger.setServicePort(String.valueOf(serviceModel.getPort()));
         mecineFinger.setServiceType(serviceModel.getServiceData());
@@ -304,7 +330,37 @@ public class MecineFingerServiceImpl extends IServiceImpl implements MecineFinge
         mecineFinger.setUpdatedBy(UserInfoUtil.getUserName());
         mecineFinger.setUpdatedOn(new Date());
         mecineFingerDao.update(mecineFinger);
+        
+        if(null != listFingerMatchEmpViewModel){
+        	for(FingerMatchEmpViewModel fingerMatchModel : listFingerMatchEmpViewModel){
+        		FingerMatchEmp fingerMatchEmp = convertFingerMatchModelToEntity(fingerMatchModel, isUsingNikService);
+        		fingerMatchEmpDao.save(fingerMatchEmp);
+        	}
+        }
 
+    }
+    
+    private FingerMatchEmp convertFingerMatchModelToEntity(FingerMatchEmpViewModel fingerMatchModel, Boolean isUsingNik){
+    	FingerMatchEmp fingerMatchEmp = new FingerMatchEmp();
+    	EmpData empData = empDataDao.getEntiyByPK(fingerMatchModel.getEmpDataId());
+    	fingerMatchEmp.setEmpData(empData);
+    	
+    	if(isUsingNik){
+    		
+    		//Jika Based On NIK, set ke field nik, field fingerIndexId di random
+    		fingerMatchEmp.setNik(fingerMatchModel.getMachineNikOrFingerIndex());
+    		fingerMatchEmp.setFingerIndexId(RandomStringUtils.random(10, Boolean.FALSE, Boolean.TRUE));
+    		
+    	}else{
+    		
+    		//Jika Based On Index Mesin/Finger, set ke field fingerIndexId, field nik di random
+    		fingerMatchEmp.setNik(RandomStringUtils.random(5, Boolean.FALSE, Boolean.TRUE));
+    		fingerMatchEmp.setFingerIndexId(fingerMatchModel.getMachineNikOrFingerIndex());
+    	}
+    	
+    	fingerMatchEmp.setCreatedBy(HrmUserInfoUtil.getUserName());
+    	fingerMatchEmp.setCreatedOn(new Date());
+    	return fingerMatchEmp;
     }
 
     @Override

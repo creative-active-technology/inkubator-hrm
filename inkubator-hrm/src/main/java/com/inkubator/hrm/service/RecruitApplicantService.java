@@ -34,7 +34,10 @@ public interface RecruitApplicantService extends IService<RecruitApplicant> {
 	
 	public String commitDataInternalCareerCandidate(List<Long> listEmpDataId) throws Exception;
 
-        public List<RecruitApplicant> getByParamForReportSearchRecruitment(ReportSearchRecruitmentSearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
+	public Long getTotalByVacancyAdvertisementDetailId(Long vacancyAdvertisementDetailId);
+
+    public List<RecruitApplicant> getByParamForReportSearchRecruitment(ReportSearchRecruitmentSearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
         
-        public Long getTotalByParamforReportSearchRecruitment(ReportSearchRecruitmentSearchParameter searchParameter);
+    public Long getTotalByParamforReportSearchRecruitment(ReportSearchRecruitmentSearchParameter searchParameter);
+    
 }

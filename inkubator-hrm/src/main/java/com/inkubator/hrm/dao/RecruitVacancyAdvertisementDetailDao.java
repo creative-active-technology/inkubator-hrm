@@ -1,5 +1,6 @@
 package com.inkubator.hrm.dao;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -23,4 +24,11 @@ public interface RecruitVacancyAdvertisementDetailDao extends IDAO<RecruitVacanc
 	public RecruitVacancyAdvertisementDetail getEntityByPkWithDetail(Long id);
 	
 	public RecruitVacancyAdvertisementDetail getEntityByRecruitHireApplyId(Long recruitHireApplyId);
+
+	public List<RecruitVacancyAdvertisementDetail> getAllDataByVacancyAdvertisementIdWithDetail(Long vacancyAdvertisementId);
+
+	public void deleteAll(Collection<RecruitVacancyAdvertisementDetail> listEntity);
+
+	public void saveAll(Collection<RecruitVacancyAdvertisementDetail> list);
+	
 }

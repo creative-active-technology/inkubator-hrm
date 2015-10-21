@@ -4,19 +4,28 @@
  */
 package com.inkubator.hrm.web.workingtime;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.MecineFinger;
+import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.MecineFingerService;
+import com.inkubator.hrm.web.model.FingerMatchEmpViewModel;
 import com.inkubator.hrm.web.model.MecineFingerServiceModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -25,17 +34,22 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean(name = "mecineFingerServiceFormController")
 @ViewScoped
 public class MecineFingerServiceFormController extends BaseController {
-
+	
+	@ManagedProperty(value = "#{empDataService}")
+	private EmpDataService empDataService;
     private MecineFingerServiceModel mecineFingerServiceModel;
     @ManagedProperty(value = "#{mecineFingerService}")
     private MecineFingerService mecineFingerService;
     private MecineFinger mecineFinger;
-
+    private List<FingerMatchEmpViewModel> listFingerEmpMatchModel;
+    private Boolean isEmployeeBasedOnSelected;
+    
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
         try {
+        	isEmployeeBasedOnSelected = Boolean.FALSE;
             String param = FacesUtil.getRequestParameter("execution");
             mecineFinger = mecineFingerService.getMecineFingerAndDetaiUploadByFK(Long.parseLong(param.substring(1)));
             mecineFingerServiceModel = new MecineFingerServiceModel();
@@ -60,11 +74,20 @@ public class MecineFingerServiceFormController extends BaseController {
 
             if (mecineFinger.getMatchBase() != null) {
                 mecineFingerServiceModel.setEmployeeBaseId(mecineFinger.getMatchBase());
+                isEmployeeBasedOnSelected = Boolean.TRUE;
             }
 
             if (mecineFinger.getServiceOpenProtocolPassword() != null) {
                 mecineFingerServiceModel.setOpenProtocolPassword(mecineFinger.getServiceOpenProtocolPassword());
             }
+            
+            listFingerEmpMatchModel = new ArrayList<FingerMatchEmpViewModel>();
+            List<EmpData> listEmpDataWhichStillNotExistOnFingerEmpMatch = empDataService.getListEmpDataWhichNotExistOnFingerEmpMatch();
+
+            if(!listEmpDataWhichStillNotExistOnFingerEmpMatch.isEmpty()){
+            	listFingerEmpMatchModel = convertListEmpToListFingerMatch(listEmpDataWhichStillNotExistOnFingerEmpMatch);
+            }
+            
 
         } catch (Exception e) {
             LOGGER.error("Error", e);
@@ -73,16 +96,22 @@ public class MecineFingerServiceFormController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
-        mecineFinger = null;
-        mecineFingerService = null;
-        mecineFingerServiceModel = null;
+        try {
+			mecineFinger = null;
+			mecineFingerService = null;
+			mecineFingerServiceModel = null;
+			
+			
+		} catch (Exception ex) {
+			LOGGER.error("Error", ex);
+		}
     }
 
     public String doSave() {
         try {
+        	mecineFingerServiceModel.setListFingerMatchViewModels(listFingerEmpMatchModel);
             mecineFingerService.saveMesineService(mecineFingerServiceModel);
-            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/working_time/mecine_finger_view.htm?faces-redirect=true";
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -92,11 +121,40 @@ public class MecineFingerServiceFormController extends BaseController {
     }
 
     public void doReset() {
-        cleanAndExit();
+    	try {
+			listFingerEmpMatchModel = new ArrayList<FingerMatchEmpViewModel>();
+			List<EmpData> listEmpDataWhichStillNotExistOnFingerEmpMatch = empDataService.getListEmpDataWhichNotExistOnFingerEmpMatch();
+
+			if(!listEmpDataWhichStillNotExistOnFingerEmpMatch.isEmpty()){
+				listFingerEmpMatchModel = convertListEmpToListFingerMatch(listEmpDataWhichStillNotExistOnFingerEmpMatch);
+			}
+		} catch (Exception ex) {
+			 LOGGER.error("Error", ex);
+		}
     }
 
     public String doBack() {
         return "/protected/working_time/mecine_finger_view.htm?faces-redirect=true";
+    }
+    
+    public void onChangeEmployeeBasedOn(){
+    	if(StringUtils.isNotBlank(mecineFingerServiceModel.getEmployeeBaseId())){
+    		isEmployeeBasedOnSelected = Boolean.TRUE;
+    	}
+    }
+    
+    private List<FingerMatchEmpViewModel> convertListEmpToListFingerMatch(List<EmpData> listEmpData){
+    	List<FingerMatchEmpViewModel> listFingerMatchEmpViewModel = new ArrayList<FingerMatchEmpViewModel>();
+    	for(EmpData empData : listEmpData){
+    		FingerMatchEmpViewModel fingerMatchModel = new FingerMatchEmpViewModel();
+    		fingerMatchModel.setEmpDataId(empData.getId());
+    		fingerMatchModel.setEmpDataNik(empData.getNik());
+    		fingerMatchModel.setEmpFullName(empData.getBioData().getFullName());
+    		fingerMatchModel.setJabatanId(empData.getJabatanByJabatanId().getId());
+    		fingerMatchModel.setJabatanName(empData.getJabatanByJabatanId().getName());
+    		listFingerMatchEmpViewModel.add(fingerMatchModel);
+    	}
+    	return listFingerMatchEmpViewModel;
     }
 
     public MecineFingerServiceModel getMecineFingerServiceModel() {
@@ -110,5 +168,27 @@ public class MecineFingerServiceFormController extends BaseController {
     public void setMecineFingerService(MecineFingerService mecineFingerService) {
         this.mecineFingerService = mecineFingerService;
     }
+
+	public void setEmpDataService(EmpDataService empDataService) {
+		this.empDataService = empDataService;
+	}
+
+	public List<FingerMatchEmpViewModel> getListFingerEmpMatchModel() {
+		return listFingerEmpMatchModel;
+	}
+
+	public void setListFingerEmpMatchModel(List<FingerMatchEmpViewModel> listFingerEmpMatchModel) {
+		this.listFingerEmpMatchModel = listFingerEmpMatchModel;
+	}
+
+	public Boolean getIsEmployeeBasedOnSelected() {
+		return isEmployeeBasedOnSelected;
+	}
+
+	public void setIsEmployeeBasedOnSelected(Boolean isEmployeeBasedOnSelected) {
+		this.isEmployeeBasedOnSelected = isEmployeeBasedOnSelected;
+	}
+    
+    
 
 }

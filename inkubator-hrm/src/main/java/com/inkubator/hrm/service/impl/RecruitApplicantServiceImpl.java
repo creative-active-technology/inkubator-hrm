@@ -13,9 +13,7 @@ import org.primefaces.model.DualListModel;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
-import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.PieChartModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -66,7 +64,6 @@ import com.inkubator.hrm.entity.Race;
 import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.entity.RecruitApplicantSpecList;
 import com.inkubator.hrm.entity.RecruitHireApply;
-import com.inkubator.hrm.entity.RecruitVacancyAdvertisement;
 import com.inkubator.hrm.entity.RecruitVacancyAdvertisementDetail;
 import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.service.RecruitApplicantService;
@@ -471,11 +468,7 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 		KlasifikasiKerja klasifikasiKerja = klasifikasiKerjaDao.getEntiyByPK(model.getKlasifikasiKerjaId() != null ? model.getKlasifikasiKerjaId() : 0);
 		InstitutionEducation institutionEducation = institutionEducationDao.getEntiyByPK(model.getInstitutionEducationId());
 		EducationLevel educationLevel = educationLevelDao.getEntiyByPK(model.getEducationLevelId());
-		
-		List<RecruitVacancyAdvertisementDetail> listVacancyAdvertisementDetail = recruitVacancyAdvertisementDetailDao.getAllData();
-		
-		//RecruitVacancyAdvertisement vacancyAdvertisement = recruitVacancyAdvertisementDao.getEntiyByPK(model.getVacancyAdvertisementId());
-		
+		RecruitVacancyAdvertisementDetail vacancyAdvertisementDetail = recruitVacancyAdvertisementDetailDao.getEntiyByPK(model.getVacancyAdvertisementDetailId());
 		
 		applicant.setBusinessType(businessType);
 		applicant.setCertificateNumber(model.getCertificateNumber());
@@ -491,8 +484,7 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 		applicant.setLastWorkSince(model.getLastWorkSince());
 		applicant.setScale(model.getScale());
 		applicant.setScore(model.getScore());
-		//applicant.setRecruitVacancyAdvertisement(vacancyAdvertisement);
-		applicant.setRecruitVacancyAdvertisementDetail(listVacancyAdvertisementDetail.get(0));
+		applicant.setRecruitVacancyAdvertisementDetail(vacancyAdvertisementDetail);
 		applicant.setIsFreshGraduate(model.getIsFreshGraduate());
 		applicant.setIsActive(model.getIsActive());
 		applicant.setIsVerified(model.getIsVerified());
@@ -551,8 +543,7 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 			applicant.setScale(model.getScale());
 			applicant.setCertificateNumber(model.getCertificateNumber());
 			applicant.setUploadPath(model.getUploadPath());
-			//applicant.setRecruitVacancyAdvertisement(recruitVacancyAdvertisementDao.getEntiyByPK(model.getVacancyAdvertisementId()));
-			applicant.setRecruitVacancyAdvertisementDetail(recruitVacancyAdvertisementDetailDao.getAllData().get(0));
+			applicant.setRecruitVacancyAdvertisementDetail(recruitVacancyAdvertisementDetailDao.getEntiyByPK(model.getVacancyAdvertisementDetailId()));
 			applicant.setCreatedBy(model.getCreatedBy());
 			applicant.setCreatedOn(model.getCreatedOn());
 			recruitApplicantDao.save(applicant);
@@ -755,6 +746,12 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 		recruitApplicant.setCreatedBy(HrmUserInfoUtil.getUserName());
 		
 		return recruitApplicant;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByVacancyAdvertisementDetailId(Long vacancyAdvertisementDetailId) {
+		return recruitApplicantDao.getTotalByVacancyAdvertisementDetailId(vacancyAdvertisementDetailId);
 	}
 	
 	

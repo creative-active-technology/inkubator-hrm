@@ -296,7 +296,15 @@
 	                                    <p:outputLabel  value="#{appmsg['recruitment.vacancy_advertisement']}" styleClass="label_hrm"/>
 	                                </p:column>
 	                                <p:column style="width: 84%">
-		                                <p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.recruitVacancyAdvertisement.vacancyAdvCode} - #{recruitApplicantDetailController.selectedRecruitApplicant.recruitVacancyAdvertisement.advertisementMedia.name}" />
+		                                <p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.recruitVacancyAdvertisementDetail.vacancyAdvertisement.vacancyAdvCode} - #{recruitApplicantDetailController.selectedRecruitApplicant.recruitVacancyAdvertisementDetail.vacancyAdvertisement.advertisementMedia.name}" />
+		                            </p:column>
+		                         </p:row>
+		                         <p:row>
+	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
+	                                    <p:outputLabel  value="#{appmsg['global.detail']}" styleClass="label_hrm"/>
+	                                </p:column>
+	                                <p:column style="width: 84%">
+		                                <p:outputLabel  value="#{recruitApplicantDetailController.selectedRecruitApplicant.recruitVacancyAdvertisementDetail.hireApply.reqHireCode} - #{recruitApplicantDetailController.selectedRecruitApplicant.recruitVacancyAdvertisementDetail.hireApply.jabatan.name}" />
 		                            </p:column>
 		                         </p:row>
                         		<p:row>
