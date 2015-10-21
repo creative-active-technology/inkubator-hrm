@@ -846,6 +846,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
 	public List<LoanNewApplicationStatusViewModel> getAllDataLoanNewApplicationStatus(LoanStatusSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
 		List<LoanNewApplicationStatusViewModel> listAllData = loanNewApplicationDao.getAllDataLoanNewApplicationStatus(parameter, firstResult, maxResults, orderable);
 		for(LoanNewApplicationStatusViewModel loanNewApplicationStatusViewModel : listAllData){
+			loanNewApplicationStatusViewModel.setIsRendered(Boolean.FALSE);
 			//kondisi kalo ditunda
 			if(loanNewApplicationStatusViewModel.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL || loanNewApplicationStatusViewModel.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_REVISED){
 				if(loanNewApplicationStatusViewModel.getLoanSchemaName() == null){
@@ -855,14 +856,17 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
 	            	loanNewApplicationStatusViewModel.setNominalPrincipal(loanNewApplicationTemp.getNominalPrincipal());
 	            	loanNewApplicationStatusViewModel.setTotalTermin(loanNewApplicationTemp.getTermin());
 	            	loanNewApplicationStatusViewModel.setApprovalMessage(ResourceBundleUtil.getAsString("loanStatusMessage.pending"));
+	            	
 				}
 			}else if(loanNewApplicationStatusViewModel.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED){
-            	if(loanNewApplicationStatusViewModel.getLoanStatus() == HRMConstant.LOAN_DISBURSED && loanNewApplicationStatusViewModel.getTermin() != loanNewApplicationStatusViewModel.getTotalTermin()){
+            	if(loanNewApplicationStatusViewModel.getLoanStatus() == HRMConstant.LOAN_DISBURSED && !loanNewApplicationStatusViewModel.getTermin().equals(loanNewApplicationStatusViewModel.getTotalTermin())){
         			loanNewApplicationStatusViewModel.setApprovalMessage(ResourceBundleUtil.getAsString("loanStatusMessage.withdraw"));
-        		}else if(loanNewApplicationStatusViewModel.getLoanStatus() == HRMConstant.LOAN_DISBURSED && loanNewApplicationStatusViewModel.getTermin() == loanNewApplicationStatusViewModel.getTotalTermin()){
+        			loanNewApplicationStatusViewModel.setIsRendered(Boolean.TRUE);
+        		}else if(loanNewApplicationStatusViewModel.getLoanStatus() == HRMConstant.LOAN_DISBURSED && loanNewApplicationStatusViewModel.getTermin().equals(loanNewApplicationStatusViewModel.getTotalTermin())){
         			loanNewApplicationStatusViewModel.setApprovalMessage(ResourceBundleUtil.getAsString("loanStatusMessage.paid"));
         		}else if(loanNewApplicationStatusViewModel.getLoanStatus() == HRMConstant.LOAN_UNDISBURSED){
         			loanNewApplicationStatusViewModel.setApprovalMessage(ResourceBundleUtil.getAsString("loanStatusMessage.withdraw"));
+        			loanNewApplicationStatusViewModel.setIsRendered(Boolean.TRUE);
         		}
 			}else if(loanNewApplicationStatusViewModel.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED){
             	loanNewApplicationStatusViewModel.setApprovalMessage(ResourceBundleUtil.getAsString("loanStatusMessage.reject"));

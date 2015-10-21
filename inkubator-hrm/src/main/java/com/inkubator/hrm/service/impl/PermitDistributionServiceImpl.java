@@ -56,7 +56,7 @@ public class PermitDistributionServiceImpl extends IServiceImpl implements Permi
     @Autowired
     private EmpDataDao empDataDao;
     @Autowired
-    private PermitClassificationDao permitDao;
+    private PermitClassificationDao permitClassificationDao;
     @Autowired
     private NeracaPermitDao neracaPermitDao;
 	@Autowired
@@ -103,7 +103,8 @@ public class PermitDistributionServiceImpl extends IServiceImpl implements Permi
 				
 				Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 				PermitImplementation permitImplementation = gson.fromJson(appActivity.getPendingData(), PermitImplementation.class);
-				if(permitImplementation.getPermitClassification().getName().equals(name)){
+				PermitClassification getEntityByPk = permitClassificationDao.getEntiyByPK(permitImplementation.getPermitClassification().getId());
+				if(getEntityByPk.getName().equals(name)){
 					isAppliedOrPending = Boolean.TRUE;
 				}
 			}
@@ -142,7 +143,7 @@ public class PermitDistributionServiceImpl extends IServiceImpl implements Permi
     public void update(PermitDistribution newData) throws Exception {
         PermitDistribution oldData = permitDistributionDao.getEntiyByPK(newData.getId());
         oldData.setEmpData(empDataDao.getEntiyByPK(newData.getEmpData().getId()));
-        oldData.setPermitClassification(permitDao.getEntiyByPK(newData.getPermitClassification().getId()));
+        oldData.setPermitClassification(permitClassificationDao.getEntiyByPK(newData.getPermitClassification().getId()));
         //save neraca permit
         saveNeracaPermit(oldData.getBalance(), newData.getBalance(), oldData);
         oldData.setBalance(newData.getBalance());
@@ -307,7 +308,7 @@ public class PermitDistributionServiceImpl extends IServiceImpl implements Permi
     @Override
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public void saveMassPenempatanPermit(List<EmpData> data, long permitId, double startBalance) throws Exception {
-        PermitClassification permit = this.permitDao.getEntiyByPK(permitId);
+        PermitClassification permit = this.permitClassificationDao.getEntiyByPK(permitId);
         List<PermitDistribution> listDistribution = new ArrayList<>();
         List<NeracaPermit> listNeracaPermit = new ArrayList<>();
         

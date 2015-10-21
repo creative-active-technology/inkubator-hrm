@@ -5,19 +5,8 @@
  */
 package com.inkubator.hrm.dao.impl;
 
-import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.LoanNewApplicationDao;
-import com.inkubator.hrm.entity.LoanNewApplication;
-import com.inkubator.hrm.util.HrmUserInfoUtil;
-import com.inkubator.hrm.web.model.LoanHistoryViewModel;
-import com.inkubator.hrm.web.model.LoanNewApplicationBoxViewModel;
-import com.inkubator.hrm.web.model.LoanNewApplicationStatusViewModel;
-import com.inkubator.hrm.web.search.LoanNewApplicationBoxSearchParameter;
-import com.inkubator.hrm.web.search.LoanNewSearchParameter;
-import com.inkubator.hrm.web.search.LoanStatusSearchParameter;
-
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +22,18 @@ import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
+
+import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.dao.LoanNewApplicationDao;
+import com.inkubator.hrm.entity.LoanNewApplication;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.web.model.LoanHistoryViewModel;
+import com.inkubator.hrm.web.model.LoanNewApplicationBoxViewModel;
+import com.inkubator.hrm.web.model.LoanNewApplicationStatusViewModel;
+import com.inkubator.hrm.web.search.LoanNewApplicationBoxSearchParameter;
+import com.inkubator.hrm.web.search.LoanNewSearchParameter;
+import com.inkubator.hrm.web.search.LoanStatusSearchParameter;
 
 /**
  *
@@ -316,6 +317,7 @@ public class LoanNewApplicationDaoImpl extends IDAOImpl<LoanNewApplication> impl
 				"LEFT JOIN approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id " +
 				"LEFT JOIN hrm_user AS requester ON requester.user_id = approvalActivity.request_by " +
 				"LEFT JOIN emp_data AS empData ON requester.emp_data_id = empData.id " +
+				"INNER JOIN golongan_jabatan AS golonganJabatan ON empData.gol_jab_id = golonganJabatan.id " +
 				"INNER JOIN jabatan AS jabatan ON empData.jabatan_id = jabatan.id " +
 				"INNER JOIN department AS department ON jabatan.departement_id = department.id " +
 				"INNER JOIN company AS company ON department.company_id = company.id " +
@@ -324,6 +326,11 @@ public class LoanNewApplicationDaoImpl extends IDAOImpl<LoanNewApplication> impl
 				"LEFT JOIN loan_new_schema AS loanNewSchema ON loanNewApplication.loan_new_schema = loanNewSchema.id " +
 				"WHERE approvalDefinition.name = 'LOAN' " +
 				"AND (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number) ");    	
+
+		selectQuery.append(this.doSearchLoanNewApplicationStatus(parameter));
+		selectQuery.append(" ORDER BY " + orderable);
+		System.out.println(selectQuery.toString());
+
 		Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString()).setMaxResults(maxResults).setFirstResult(firstResult)
             	.setResultTransformer(Transformers.aliasToBean(LoanNewApplicationStatusViewModel.class));
 		//hbm = this.setValueQueryUndisbursedActivityByParam(hbm, parameter);
@@ -342,15 +349,59 @@ public class LoanNewApplicationDaoImpl extends IDAOImpl<LoanNewApplication> impl
 				"INNER JOIN jabatan AS jabatan ON empData.jabatan_id = jabatan.id " +
 				"INNER JOIN department AS department ON jabatan.departement_id = department.id " +
 				"INNER JOIN company AS company ON department.company_id = company.id " +
+				"INNER JOIN golongan_jabatan AS golonganJabatan ON empData.gol_jab_id = golonganJabatan.id " +
 				"LEFT JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id " +
 				"LEFT JOIN loan_new_application AS loanNewApplication ON approvalActivity.activity_number = loanNewApplication.approval_activity_number " +
 				"LEFT JOIN loan_new_schema AS loanNewSchema ON loanNewApplication.loan_new_schema = loanNewSchema.id " +
 				"WHERE approvalDefinition.name = 'LOAN' " +
 				"AND (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number)");    	
+		selectQuery.append(this.doSearchLoanNewApplicationStatus(parameter));
 		//selectQuery.append(this.setWhereQueryUndisbursedActivityByParam(parameter));    	
     	Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString());    	
     	//hbm = this.setValueQueryUndisbursedActivityByParam(hbm, parameter);
     	
         return Long.valueOf(hbm.uniqueResult().toString());
+	}
+	
+	public String doSearchLoanNewApplicationStatus(LoanStatusSearchParameter parameter){
+		StringBuffer searchQuery = new StringBuffer();  
+		
+		if(!parameter.getListDepartment().isEmpty()){
+			searchQuery.append(" AND department.id IN (");
+			int sizeDepartmentParameter = parameter.getListDepartment().size();
+			for(int i = 0; i < sizeDepartmentParameter; i++){
+				 if (i < (sizeDepartmentParameter - 1)) {
+					 searchQuery.append(parameter.getListDepartment().get(i).getId());
+					 searchQuery.append(", ");
+				 }else{
+					 searchQuery.append(parameter.getListDepartment().get(i).getId());
+				 }
+			 }
+			searchQuery.append(" )");
+		}
+		
+		if(!parameter.getListGolonganJabatan().isEmpty()){
+			searchQuery.append(" AND golonganJabatan.id IN (");
+			int sizeGolonganJabatanParameter = parameter.getListGolonganJabatan().size();
+			for(int i = 0; i < sizeGolonganJabatanParameter; i++){
+				 if (i < (sizeGolonganJabatanParameter - 1)) {
+					 searchQuery.append(parameter.getListGolonganJabatan().get(i).getId());
+					 searchQuery.append(", ");
+				 }else{
+					 searchQuery.append(parameter.getListGolonganJabatan().get(i).getId());
+				 }
+			 }
+			searchQuery.append(" )");
+		}
+		
+		if(parameter.getStartNominal() != null && parameter.getEndNominal() != null){
+			searchQuery.append(" AND loanNewApplication.nominal_principal BETWEEN " + parameter.getStartNominal() + " AND " + parameter.getEndNominal());
+		}
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		if(parameter.getStartDate() != null && parameter.getEndDate() != null){
+			searchQuery.append(" AND loanNewApplication.application_date BETWEEN '" + dateFormat.format(parameter.getStartDate()) + "' AND '" + dateFormat.format(parameter.getEndDate()) + "' ");
+		}
+		
+		return searchQuery.toString();
 	}
 }
