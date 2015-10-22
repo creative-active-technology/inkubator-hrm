@@ -88,14 +88,14 @@ public class PermitCronListenerServiceImpl extends BaseSchedulerDinamicListenerI
                     if (DateUtils.isSameDay(current.toDate(), startDate.toDate())) {
                         double debet = qty;
                         double balance = distribution.getBalance() + debet;
-                        
+
                         this.debetNeracaPermit(debet, balance, distribution);
                         this.savePermitDistribution(balance, distribution);
 
                     } else if (isLastDayOfStartMonth && isLastDayOfCurrentMonth) {
                         double debet = qty;
                         double balance = distribution.getBalance() + debet;
-                        
+
                         this.debetNeracaPermit(debet, balance, distribution);
                         this.savePermitDistribution(balance, distribution);
                     }
@@ -118,7 +118,7 @@ public class PermitCronListenerServiceImpl extends BaseSchedulerDinamicListenerI
                     if (DateUtils.isSameDay(current.toDate(), availabilityAtSpecificDate)) {
                         double debet = qty;
                         double balance = distribution.getBalance() + debet;
-                        
+
                         this.debetNeracaPermit(debet, balance, distribution);
                         this.savePermitDistribution(balance, distribution);
                     }
@@ -177,14 +177,12 @@ public class PermitCronListenerServiceImpl extends BaseSchedulerDinamicListenerI
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public void onMessage(Message msg) {
         SchedulerLog log = null;
         try {
             TextMessage textMessage = (TextMessage) msg;
-            SchedulerLog schedulerLog = new SchedulerLog();
-            schedulerLog.setSchedulerConfig(new SchedulerConfig(Long.parseLong(textMessage.getText())));
-            log = super.doSaveSchedulerLogSchedulerLog(schedulerLog);
+            log = schedulerLogDao.getEntiyByPK(Long.parseLong(textMessage.getText()));
             processAddingOfPermitBalance();
             log.setStatusMessages("FINISH");
             super.doUpdateSchedulerLogSchedulerLog(log);

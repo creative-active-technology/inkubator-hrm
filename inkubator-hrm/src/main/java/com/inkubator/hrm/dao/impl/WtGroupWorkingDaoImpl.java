@@ -72,6 +72,7 @@ public class WtGroupWorkingDaoImpl extends IDAOImpl<WtGroupWorking> implements W
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
         criteria.setFetchMode("wtScheduleShifts", FetchMode.JOIN);
+        criteria.setFetchMode("empDatas", FetchMode.JOIN);
         return (WtGroupWorking) criteria.uniqueResult();
     }
 

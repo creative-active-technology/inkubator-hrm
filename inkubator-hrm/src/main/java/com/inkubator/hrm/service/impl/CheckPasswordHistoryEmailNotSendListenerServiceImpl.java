@@ -49,21 +49,19 @@ public class CheckPasswordHistoryEmailNotSendListenerServiceImpl extends BaseSch
     private VelocityTemplateSender velocityTemplateSender;
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public void onMessage(Message msg) {
-        SchedulerLog log = null;
+        SchedulerLog schedulerLog = null;
         try {
             TextMessage textMessage = (TextMessage) msg;
-            SchedulerLog schedulerLog = new SchedulerLog();
-            schedulerLog.setSchedulerConfig(new SchedulerConfig(Long.parseLong(textMessage.getText())));
-            log = super.doSaveSchedulerLogSchedulerLog(schedulerLog);
+            schedulerLog = schedulerLogDao.getEntiyByPK(Long.parseLong(textMessage.getText()));
             checkPasswordHistoryEmailNotSend();
-            log.setStatusMessages("FINISH");
-            super.doUpdateSchedulerLogSchedulerLog(log);
+            schedulerLog.setStatusMessages("FINISH");
+            super.doUpdateSchedulerLogSchedulerLog(schedulerLog);
         } catch (Exception ex) {
-            if (log != null) {
-                log.setStatusMessages(ex.getMessage());
-                super.doUpdateSchedulerLogSchedulerLog(log);
+            if (schedulerLog != null) {
+                schedulerLog.setStatusMessages(ex.getMessage());
+                super.doUpdateSchedulerLogSchedulerLog(schedulerLog);
             }
             LOGGER.error(ex, ex);
         }
