@@ -59,7 +59,7 @@ public class WtPeriodEmpLazyDataModel extends LazyDataModel<WtPeriodEmpViewModel
             
         } else {
             try {
-                 listWtPeriodEmpViewModel = wtPeriodeService.getListWtPeriodEmpByParam(periodeSearchParameter, first, pageSize, Order.desc("wtPeriode.fromPeriode"));
+                 listWtPeriodEmpViewModel = wtPeriodeService.getListWtPeriodEmpByParam(periodeSearchParameter, first, pageSize, Order.desc("fromPeriode"));
                  jumlahData = Integer.parseInt(String.valueOf(wtPeriodeService.getTotalListWtPeriodEmpByParam(periodeSearchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);

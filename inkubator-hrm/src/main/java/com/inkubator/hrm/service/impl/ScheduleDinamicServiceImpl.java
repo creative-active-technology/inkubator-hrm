@@ -458,7 +458,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
         schedulerLog.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
         schedulerLog.setSchedulerConfig(schedulerConfigDao.getEntiyByPK(schedulerLog.getSchedulerConfig().getId()));
         schedulerLog.setStartExecution(new Date());
-        schedulerLog.setStatusMessages("PROCESS");
+        schedulerLog.setStatusMessages("PROCESS- IF STILL PROCESS-PLEASE SEE LOG FOR DETAILS");
         schedulerLogDao.save(schedulerLog);
         return schedulerLog;
     }

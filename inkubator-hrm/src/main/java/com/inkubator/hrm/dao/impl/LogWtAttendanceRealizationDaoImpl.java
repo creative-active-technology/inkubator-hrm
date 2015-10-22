@@ -62,6 +62,7 @@ public class LogWtAttendanceRealizationDaoImpl extends IDAOImpl<LogWtAttendanceR
         
         //filter by search param
         query.append(doSearchLogWtAttendanceCalculationByParam(searchParameter));
+        query.append("ORDER BY " + orderable);
         
         Query hbm = getCurrentSession().createQuery(query.toString())
         		.setParameter("wtPeriodId", wtPeriodId);

@@ -28,7 +28,6 @@ public class ApprovalActivityServiceImpl extends IServiceImpl implements Approva
 
     @Autowired
     private ApprovalActivityDao approvalActivityDao;
-    
 
     @Override
     public ApprovalActivity getEntiyByPK(String id) throws Exception {
@@ -154,7 +153,7 @@ public class ApprovalActivityServiceImpl extends IServiceImpl implements Approva
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(ApprovalActivity entity) throws Exception {
-       this.approvalActivityDao.delete(entity);
+        this.approvalActivityDao.delete(entity);
     }
 
     @Override
@@ -246,22 +245,23 @@ public class ApprovalActivityServiceImpl extends IServiceImpl implements Approva
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<ApprovalActivity> getAllDataWithAllRelation(ApprovalActivitySearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
         return approvalActivityDao.getAllDataWithAllRelation(searchParameter, firstResult, maxResults, order);
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public Long getTotalByParam(ApprovalActivitySearchParameter searchParameter) throws Exception {
         return approvalActivityDao.getTotalByParam(searchParameter);
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 30)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public ApprovalActivity getEntityByPkWithAllRelation(Long id) throws Exception {
         return approvalActivityDao.getEntityByPkWithAllRelation(id);
     }
+
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<ApprovalActivity> getReguestHistoryById(long id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -279,55 +279,55 @@ public class ApprovalActivityServiceImpl extends IServiceImpl implements Approva
         return this.approvalActivityDao.getPendingTask(userName);
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public ApprovalActivity getEntityByPkWithDetail(Long id) throws Exception {
-		return this.approvalActivityDao.getEntityByPkWithDetail(id);
-		
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public ApprovalActivity getEntityByPkWithDetail(Long id) throws Exception {
+        return this.approvalActivityDao.getEntityByPkWithDetail(id);
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<ApprovalActivity> getAllDataByActivityNumberWithDetail(String activityNumber) throws Exception {
-		return this.approvalActivityDao.getAllDataByActivityNumberWithDetail(activityNumber, Order.asc("sequence"));
-		
-	}
+    }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public ApprovalActivity getEntityByActivityNumberLastSequence(String activityNumber) throws Exception{
-		List<ApprovalActivity> approvalActivities = this.approvalActivityDao.getAllDataByActivityNumberWithDetail(activityNumber, Order.desc("sequence"));
-		ApprovalActivity lastApprovalActivity = null;
-		if(!approvalActivities.isEmpty()){
-			lastApprovalActivity = approvalActivities.get(0);
-		}
-		return lastApprovalActivity;
-	}
-	
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public ApprovalActivity getEntityByPreviousActivityNumberLastSequence(String previousActivityNumber) throws Exception{
-		List<ApprovalActivity> approvalActivities = this.approvalActivityDao.getAllDataByPreviousActivityNumber(previousActivityNumber, Order.desc("sequence"));
-		ApprovalActivity lastApprovalActivity = null;
-		if(!approvalActivities.isEmpty()){
-			lastApprovalActivity = approvalActivities.get(0);
-		}
-		return lastApprovalActivity;
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<ApprovalActivity> getAllDataByActivityNumberWithDetail(String activityNumber) throws Exception {
+        return this.approvalActivityDao.getAllDataByActivityNumberWithDetail(activityNumber, Order.asc("sequence"));
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public Boolean isStillHaveWaitingStatus(String activityNumber) throws Exception{
-		return this.approvalActivityDao.isStillHaveWaitingStatus(activityNumber);
-		
-	}
-        
-        @Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<ApprovalActivity> getByApprovalStatus(Integer approvalStatus) {
-		return this.approvalActivityDao.getByApprovalStatus(approvalStatus);
-		
-	}
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public ApprovalActivity getEntityByActivityNumberLastSequence(String activityNumber) throws Exception {
+        List<ApprovalActivity> approvalActivities = this.approvalActivityDao.getAllDataByActivityNumberWithDetail(activityNumber, Order.desc("sequence"));
+        ApprovalActivity lastApprovalActivity = null;
+        if (!approvalActivities.isEmpty()) {
+            lastApprovalActivity = approvalActivities.get(0);
+        }
+        return lastApprovalActivity;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public ApprovalActivity getEntityByPreviousActivityNumberLastSequence(String previousActivityNumber) throws Exception {
+        List<ApprovalActivity> approvalActivities = this.approvalActivityDao.getAllDataByPreviousActivityNumber(previousActivityNumber, Order.desc("sequence"));
+        ApprovalActivity lastApprovalActivity = null;
+        if (!approvalActivities.isEmpty()) {
+            lastApprovalActivity = approvalActivities.get(0);
+        }
+        return lastApprovalActivity;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public Boolean isStillHaveWaitingStatus(String activityNumber) throws Exception {
+        return this.approvalActivityDao.isStillHaveWaitingStatus(activityNumber);
+
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<ApprovalActivity> getByApprovalStatus(Integer approvalStatus) {
+        return this.approvalActivityDao.getByApprovalStatus(approvalStatus);
+
+    }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
@@ -335,18 +335,24 @@ public class ApprovalActivityServiceImpl extends IServiceImpl implements Approva
         return approvalActivityDao.getApprovalTimeByApprovalActivityNumber(activityNumber);
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public ApprovalActivity getEntityByActivityNumberAndSequence(String activityNumber, Integer sequence) throws Exception {
-		return approvalActivityDao.getEntityByActivityNumberAndSequence(activityNumber, sequence);
-		
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public ApprovalActivity getEntityByActivityNumberAndSequence(String activityNumber, Integer sequence) throws Exception {
+        return approvalActivityDao.getEntityByActivityNumberAndSequence(activityNumber, sequence);
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Boolean isAlreadyHaveApprovedStatus(String activityNumber) throws Exception {
-		return approvalActivityDao.isAlreadyHaveApprovedStatus(activityNumber);
-		
-	}
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Boolean isAlreadyHaveApprovedStatus(String activityNumber) throws Exception {
+        return approvalActivityDao.isAlreadyHaveApprovedStatus(activityNumber);
+
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<ApprovalActivity> getAllDataWaitingStatusApproval() throws Exception {
+        return approvalActivityDao.getAllDataWaitingStatusApproval();
+    }
 
 }
