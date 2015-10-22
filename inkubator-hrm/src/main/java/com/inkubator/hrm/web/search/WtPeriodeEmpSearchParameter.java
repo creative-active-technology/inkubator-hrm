@@ -7,6 +7,8 @@ package com.inkubator.hrm.web.search;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.inkubator.webcore.util.SearchParameter;
 
 /**
@@ -15,40 +17,30 @@ import com.inkubator.webcore.util.SearchParameter;
  */
 public class WtPeriodeEmpSearchParameter extends SearchParameter {
 	
-	private Date startPeriod;
-	private Date endPeriod;
-	private String absenStatus;
+	private Date searchDate;
 
 	public Date getStartPeriod() {
-		return startPeriod;
-	}
-
-	public void setStartPeriod(Date startPeriod) {
-		this.startPeriod = startPeriod;
+		Date result = null;
+		if (StringUtils.equalsIgnoreCase(getKeyParam(), "startPeriod")) {
+			result = this.searchDate;
+        }
+		return result;
 	}
 
 	public Date getEndPeriod() {
-		return endPeriod;
-	}
-
-	public void setEndPeriod(Date endPeriod) {
-		this.endPeriod = endPeriod;
-	}
-
-	public String getAbsenStatus() {
-	  if (getKeyParam() != null) {
-            if (getKeyParam().equalsIgnoreCase("absenStatus")) {
-            	absenStatus = getParameter();
-            }else{
-                absenStatus=null;
-            }
+		Date result = null;
+		if (StringUtils.equalsIgnoreCase(getKeyParam(), "endPeriod")) {
+			result = this.searchDate;
         }
-		return absenStatus;
+		return result;
 	}
 
-	public void setAbsenStatus(String absenStatus) {
-		this.absenStatus = absenStatus;
+	public Date getSearchDate() {
+		return searchDate;
 	}
 
-	
+	public void setSearchDate(Date searchDate) {
+		this.searchDate = searchDate;
+	}
+
 }

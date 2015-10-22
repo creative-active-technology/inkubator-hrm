@@ -168,27 +168,12 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
     private String doSearchWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter) {
     	StringBuilder query = new StringBuilder();
     	
-    	/*if(!StringsUtils.equals(searchParameter.getStartPeriod(), null)){
-    		query.append(" WHERE wtPeriode.from_periode = " + searchParameter.getStartPeriod() );
-    	}*/
     	if(searchParameter.getStartPeriod() != null){
     		query.append(" WHERE wtPeriode.from_periode = :startPeriod " );
     	}
     	if(searchParameter.getEndPeriod() != null){
     		query.append(" WHERE wtPeriode.until_periode = :endPeriod " );
     	}
-    	if(searchParameter.getAbsenStatus() != null){
-    		query.append(" WHERE wtPeriode.absen = :absenStatus " );
-    	}
-    	
-//    	if(!StringsUtils.equals(searchParameter.getEndPeriod(), null)){
-//    		query.append(" WHERE DATE_FORMAT(wtPeriode.until_periode, '%W %M %Y') LIKE :endPeriod ");
-//    	}
-//    	
-//    	if(!StringsUtils.equals(searchParameter.getAbsenStatus(), null)){
-//    		query.append(" WHERE wtPeriode.absen LIKE :absenStatus  ");
-//    	}    	
-    	
     	
     	return query.toString();
     }
@@ -199,9 +184,7 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
     			hbm.setParameter("startPeriod", parameter.getStartPeriod());
     		} else if(StringUtils.equals(param, "endPeriod")){
     			hbm.setParameter("endPeriod", parameter.getEndPeriod());
-    		} else if(StringUtils.equals(param, "absenStatus")){
-    			hbm.setParameter("absenStatus", "%" + parameter.getAbsenStatus() + "%");
-    		} 
+    		}
     	}    	
     	return hbm;
     }
