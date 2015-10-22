@@ -371,13 +371,15 @@
                                         <h:outputLabel value="#{data.percentage}%">
                                         </h:outputLabel>
                                     </p:column>
-                                    <p:column style="width: 29%; text-align: right;">
+                                    <p:column style="width: 29%; text-align: center;">
                                         <f:facet name="header">  
                                             <h:outputText value="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}"/>
                                         </f:facet>
-                                        <h:outputLabel value="#{data.nominal}">
-                                            <f:convertNumber pattern="###,###" type="currency" />
-                                        </h:outputLabel>
+                                        <div style="text-align: right;">
+	                                        <h:outputLabel value="#{data.nominal}">
+	                                            <f:convertNumber pattern="###,###" type="currency" />
+	                                        </h:outputLabel>
+                                        </div>
                                     </p:column>
                                     <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                         <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
