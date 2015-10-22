@@ -6,9 +6,11 @@
 package com.inkubator.hrm.service.impl;
 
 
+import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.notification.model.SMSSend;
 import com.inkubator.common.notification.model.VelocityTempalteModel;
 import com.inkubator.common.notification.service.VelocityTemplateSender;
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.JsonConverter;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.HrmUserDao;
@@ -33,6 +35,7 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 
 import org.apache.commons.lang3.StringUtils;
+import org.aspectj.apache.bcel.classfile.ConstantUtf8;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
@@ -102,7 +105,7 @@ public class CalculatePasswordComplexityCronListenerServiceImpl extends BaseSche
     	LOGGER.warn("List User with Expired Password, But Status still not update to Expired :  " + listUserWithPasswordToUpdateToExpired.size() + " user");
     	SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
-        String language = "en";
+        String language = "in";
         
         LOGGER.warn("passwordComplexity.getEmailNotification() :  " + passwordComplexity.getEmailNotification());
         LOGGER.warn("passwordComplexity.getSmsNotification() :  " + passwordComplexity.getSmsNotification());
@@ -208,7 +211,7 @@ public class CalculatePasswordComplexityCronListenerServiceImpl extends BaseSche
     	List<HrmUser> listUserWithPasswordAlmostExpired = hrmUserDao.getListUserWithPasswordAlmostExpired(numberOfMonthToExpired, notificationPeriod);
     	LOGGER.warn("List User with Password almost expired, :  " + listUserWithPasswordAlmostExpired.size() + " user");
     	SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
         String language = "in";
         
         LOGGER.warn("passwordComplexity.getEmailNotification() :  " + passwordComplexity.getEmailNotification());
@@ -219,7 +222,7 @@ public class CalculatePasswordComplexityCronListenerServiceImpl extends BaseSche
     		if(passwordComplexity.getEmailNotification()){
     			
     			LOGGER.warn("Begin Sending Email Password Almost Expired Notification to User :  " + user.getRealName());
-    			sendEmailPasswordAlmostExpiredNotification(user, dateFormat, timeFormat, language);
+    			sendEmailPasswordAlmostExpiredNotification(user, dateFormat, timeFormat, language, passwordComplexity);
     			LOGGER.warn("Finish Sending Email Password Almost Expired Notification to User :  " + user.getRealName());
     			
     		}
@@ -227,7 +230,7 @@ public class CalculatePasswordComplexityCronListenerServiceImpl extends BaseSche
     		if(passwordComplexity.getSmsNotification()){
     			
     			LOGGER.warn("Begin Sending SMS Password Almost Expired Notification to User :  " + user.getRealName());
-    			sendSmsPasswordAlmostExpiredNotification(user);
+    			sendSmsPasswordAlmostExpiredNotification(user, dateFormat, passwordComplexity);
     			LOGGER.warn("Finish Sending SMS Password Almost Expired Notification to User :  " + user.getRealName());
     		}
     		
@@ -237,11 +240,13 @@ public class CalculatePasswordComplexityCronListenerServiceImpl extends BaseSche
         
     }
     
-    private void sendEmailPasswordAlmostExpiredNotification(HrmUser hrmUser, SimpleDateFormat dateFormat, SimpleDateFormat timeFormat, String language) throws Exception{
+    private void sendEmailPasswordAlmostExpiredNotification(HrmUser hrmUser, SimpleDateFormat dateFormat, SimpleDateFormat timeFormat, String language, PasswordComplexity passwordComplexity) throws Exception{
     	VelocityTempalteModel vtm = new VelocityTempalteModel();
    	 	Map maptoSend = new HashMap();
         List<String> toSend = new ArrayList<>();
         List<String> toSentCC = new ArrayList<String>();
+        
+        Date expiredDate = DateTimeUtil.getDateFrom(hrmUser.getUpdatedOn(), passwordComplexity.getExpiredPeriod(), CommonUtilConstant.DATE_FORMAT_MONTH);
         
         toSentCC.add("amjadicky@gmail.com");
         toSentCC.add("deni.arianto24@yahoo.com");
@@ -261,13 +266,15 @@ public class CalculatePasswordComplexityCronListenerServiceImpl extends BaseSche
         case "in":
 			vtm.setSubject("Password Mendekati Kadaluwarsa");
 			vtm.setTemplatePath("email_password_almost_expired_notification.vm");
-	        maptoSend.put("headerInfo", "Masa berlaku Password akun pengguna anda pada Aplikasi " + applicationName + " mendekati kadaluarsa <br/>");
+	        maptoSend.put("headerInfo", "Masa berlaku Password akun pengguna anda pada Aplikasi " + applicationName + " mendekati kadaluarsa."
+	        		+ " Password anda akan kadaluarsa pada Tanggal " + dateFormat.format(expiredDate) + ". <br/>");
 			break;
 		
         case "en":
 			vtm.setSubject("Password Almost Expired");
 			vtm.setTemplatePath("email_password_almost_expired_notification_en.vm");
-	        maptoSend.put("headerInfo", "Validity period of your password account at Application " + applicationName + " almost expired <br/>");
+	        maptoSend.put("headerInfo", "Validity period of your password account at Application " + applicationName + " almost expired. "
+	        		+ " Your password will be expired on " + dateFormat.format(expiredDate) + "<br/>");
 			break;
 
         default:
@@ -282,13 +289,15 @@ public class CalculatePasswordComplexityCronListenerServiceImpl extends BaseSche
         velocityTemplateSender.sendMail(vtm, maptoSend);
     }
     
-    private void sendSmsPasswordAlmostExpiredNotification(final HrmUser hrmUser){
+    private void sendSmsPasswordAlmostExpiredNotification(final HrmUser hrmUser, SimpleDateFormat dateFormat, PasswordComplexity passwordComplexity){
+    	Date expiredDate = DateTimeUtil.getDateFrom(hrmUser.getUpdatedOn(), passwordComplexity.getExpiredPeriod(), CommonUtilConstant.DATE_FORMAT_MONTH);
     	
     	final SMSSend mSSend = new SMSSend();
         mSSend.setFrom(HRMConstant.SYSTEM_ADMIN);
         mSSend.setDestination(hrmUser.getPhoneNumber());
         mSSend.setContent("Dear " + hrmUser.getRealName() + " Password anda pada Aplikasi "
-      		+ applicationName + " mendekati Kadaluwarsa. Segera ubah password anda segera.");
+      		+ applicationName + " mendekati Kadaluwarsa. Password anda akan kadaluarsa pada tanggal " + dateFormat.format(expiredDate) 
+      		+ ". Segera ubah password anda segera, Terima Kasih.");
     	
         jmsTemplateSMS.send(new MessageCreator() {
             @Override
