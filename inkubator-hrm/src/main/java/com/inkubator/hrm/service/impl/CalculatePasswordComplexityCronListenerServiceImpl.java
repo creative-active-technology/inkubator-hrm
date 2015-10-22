@@ -39,22 +39,18 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class CalculatePasswordComplexityCronListenerServiceImpl extends BaseSchedulerDinamicListenerImpl implements MessageListener {
 
-
-
     public void calculatePasswordComplexity() throws Exception {
         LOGGER.warn("Begin Running Passwrod Complexity  ");
-     
+
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.REPEATABLE_READ, rollbackFor = Exception.class)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ, rollbackFor = Exception.class)
     public void onMessage(Message msg) {
         SchedulerLog log = null;
         try {
             TextMessage textMessage = (TextMessage) msg;
-            SchedulerLog schedulerLog = new SchedulerLog();
-            schedulerLog.setSchedulerConfig(new SchedulerConfig(Long.parseLong(textMessage.getText())));
-            log = super.doSaveSchedulerLogSchedulerLog(schedulerLog);
+            log = schedulerLogDao.getEntiyByPK(Long.parseLong(textMessage.getText()));
             calculatePasswordComplexity();
             log.setStatusMessages("FINISH");
             super.doUpdateSchedulerLogSchedulerLog(log);
@@ -66,6 +62,5 @@ public class CalculatePasswordComplexityCronListenerServiceImpl extends BaseSche
             LOGGER.error(ex, ex);
         }
     }
-
 
 }
