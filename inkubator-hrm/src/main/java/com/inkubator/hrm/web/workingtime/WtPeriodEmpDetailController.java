@@ -5,9 +5,7 @@
  */
 package com.inkubator.hrm.web.workingtime;
 
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.web.payroll.*;
-
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,6 +19,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
@@ -30,32 +29,23 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.PayTempKalkulasi;
-import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.FingerSwapCapturedService;
 import com.inkubator.hrm.service.LogWtAttendanceRealizationService;
-import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.service.TempAttendanceRealizationService;
 import com.inkubator.hrm.service.TempProcessReadFingerService;
 import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.web.lazymodel.LogWtAttendanceRealizationVmLazyDataModel;
-import com.inkubator.hrm.web.lazymodel.PaySalaryExecuteLazyDataModel;
 import com.inkubator.hrm.web.lazymodel.TempAttendanceRealizationVmLazyDataModel;
-import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.WtPeriodEmpViewModel;
-import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
 import com.inkubator.hrm.web.search.WtAttendanceCalculationSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-
-import java.text.SimpleDateFormat;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  *
