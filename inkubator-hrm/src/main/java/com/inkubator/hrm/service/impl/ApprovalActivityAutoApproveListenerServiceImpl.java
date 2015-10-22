@@ -6,16 +6,12 @@ import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
-import com.inkubator.hrm.entity.SchedulerConfig;
 import com.inkubator.hrm.entity.SchedulerLog;
 import com.inkubator.hrm.service.AnnouncementService;
+import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.service.ImplementationOfOverTimeService;
 import com.inkubator.hrm.service.LeaveImplementationService;
@@ -27,6 +23,7 @@ import com.inkubator.hrm.service.RecruitMppApplyService;
 import com.inkubator.hrm.service.RecruitVacancyAdvertisementService;
 import com.inkubator.hrm.service.RmbsApplicationService;
 import com.inkubator.hrm.service.RmbsDisbursementService;
+import com.inkubator.hrm.service.SchedulerLogService;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import com.inkubator.hrm.service.WtEmpCorrectionAttendanceService;
 import javax.jms.Message;
@@ -41,7 +38,7 @@ public class ApprovalActivityAutoApproveListenerServiceImpl extends BaseSchedule
 
 //    protected transient Logger LOGGER = Logger.getLogger(getClass());
     @Autowired
-    private ApprovalActivityDao approvalActivityDao;
+    private ApprovalActivityService approvalActivityService;
     @Autowired
     private LoanService loanService;
     @Autowired
@@ -70,22 +67,18 @@ public class ApprovalActivityAutoApproveListenerServiceImpl extends BaseSchedule
     private RecruitHireApplyService recruitHireApplyService;
     @Autowired
     private RecruitMppApplyService recruitMppApplyService;
+    @Autowired
+    private SchedulerLogService schedulerLogService;
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+//    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.REPEATABLE_READ, noRollbackFor = Exception.class)
     public void onMessage(Message msg) {
         SchedulerLog log = null;
+        TextMessage textMessage = null;
         try {
-            TextMessage textMessage = (TextMessage) msg;
-            log = schedulerLogDao.getEntiyByPK(Long.parseLong(textMessage.getText()));
-            checkAutomaticApproval();
-            log.setStatusMessages("FINISH");
-            super.doUpdateSchedulerLogSchedulerLog(log);
+            textMessage = (TextMessage) msg;
+            checkAutomaticApproval(textMessage.getText());
         } catch (Exception ex) {
-            if (log != null) {
-                log.setStatusMessages(ex.getMessage());
-                super.doUpdateSchedulerLogSchedulerLog(log);
-            }
             LOGGER.error(ex, ex);
         }
     }
@@ -93,14 +86,14 @@ public class ApprovalActivityAutoApproveListenerServiceImpl extends BaseSchedule
 //    @Override
 //    @Scheduled(cron = "${cron.check.automatic.approval}")
 //    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
-    private void checkAutomaticApproval() throws Exception {
+    private void checkAutomaticApproval(String log) throws Exception {
 
         LOGGER.warn(" Auto apporave is runnning +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=");
         List<ApprovalActivity> autoApprovals = new ArrayList<ApprovalActivity>();
         Date now = new Date();
 
         //filter based on createdTime +delayTime < nowDate
-        List<ApprovalActivity> waitingApprovals = approvalActivityDao.getAllDataWaitingStatusApproval();
+        List<ApprovalActivity> waitingApprovals = approvalActivityService.getAllDataWaitingStatusApproval();
         for (ApprovalActivity approvalActivity : waitingApprovals) {
             Date delayDate = DateUtils.addDays(approvalActivity.getCreatedTime(), approvalActivity.getApprovalDefinition().getDelayTime());
             if (now.after(delayDate)) {
@@ -108,114 +101,132 @@ public class ApprovalActivityAutoApproveListenerServiceImpl extends BaseSchedule
             }
         }
 
+        SchedulerLog schedulerLog;
         //do autoApproval process
         for (ApprovalActivity approvalActivity : autoApprovals) {
-//            try {
-            if (approvalActivity.getApprovalDefinition().getAutoApproveOnDelay()) {
-                //do Approved
-                switch (approvalActivity.getApprovalDefinition().getName()) {
-                    case HRMConstant.BUSINESS_TRAVEL:
-                        businessTravelService.approved(approvalActivity.getId(), null, null);
-                        break;
-                    case HRMConstant.LOAN:
-                        //loanService.approved(approvalActivity.getId(), null, null);
-                        loanNewApplicationService.approved(approvalActivity.getId(), null, null);
-                        break;
-                    case HRMConstant.REIMBURSEMENT:
-                        //reimbursmentService.approved(approvalActivity.getId(), null, null);
-                        rmbsApplicationService.approved(approvalActivity.getId(), null, null);
-                        break;
-                    case HRMConstant.REIMBURSEMENT_DISBURSEMENT:
-                        rmbsDisbursementService.approved(approvalActivity.getId(), null, null);
-                        break;
-                    case HRMConstant.SHIFT_SCHEDULE:
-                        tempJadwalKaryawanService.approved(approvalActivity.getId(), null, null);
-                        break;
-                    case HRMConstant.LEAVE:
-                        leaveImplementationService.approved(approvalActivity.getId(), null, null);
-                        break;
-                    case HRMConstant.LEAVE_CANCELLATION:
-                        leaveImplementationService.approved(approvalActivity.getId(), null, null);
-                        break;
-                    case HRMConstant.ANNOUNCEMENT:
-                        announcementService.approved(approvalActivity.getId(), null, null);
-                        break;
-                    case HRMConstant.EMP_CORRECTION_ATTENDANCE:
-                        wtEmpCorrectionAttendanceService.approved(approvalActivity.getId(), null, null);
-                        break;
-                    case HRMConstant.VACANCY_ADVERTISEMENT:
-                        recruitVacancyAdvertisementService.approved(approvalActivity.getId(), null, null);
-                        break;
-                    case HRMConstant.OVERTIME:
-                        implementationOfOverTimeService.approved(approvalActivity.getId(), null, null);
-                        break;
-                    case HRMConstant.PERMIT:
-                        permitImplementationService.approved(approvalActivity.getId(), null, null);
-                        break;
-                    case HRMConstant.RECRUITMENT_REQUEST:
-                        recruitHireApplyService.approved(approvalActivity.getId(), null, null);
-                        break;
-                    case HRMConstant.RECRUIT_MPP_APPLY:
-                        recruitMppApplyService.approved(approvalActivity.getId(), null, null);
-                        break;
-                    default:
-                        break;
+            LOGGER.warn("Jumlah :" + autoApprovals.size());
+            schedulerLog = schedulerLogService.saveLog(log, approvalActivity.getApprovalDefinition().getName() + ":APPROVAL ACTIVITY NUMBER :" + approvalActivity.getActivityNumber());
+            try {
+                if (approvalActivity.getApprovalDefinition().getAutoApproveOnDelay()) {
+                    //do Approved
+                    switch (approvalActivity.getApprovalDefinition().getName()) {
+                        case HRMConstant.BUSINESS_TRAVEL:
+                            businessTravelService.approved(approvalActivity.getId(), null, null);
+
+                            break;
+                        case HRMConstant.LOAN:
+                            //loanService.approved(approvalActivity.getId(), null, null);
+                            loanNewApplicationService.approved(approvalActivity.getId(), null, null);
+                            break;
+                        case HRMConstant.REIMBURSEMENT:
+                            //reimbursmentService.approved(approvalActivity.getId(), null, null);
+                            rmbsApplicationService.approved(approvalActivity.getId(), null, null);
+                            break;
+                        case HRMConstant.REIMBURSEMENT_DISBURSEMENT:
+                            rmbsDisbursementService.approved(approvalActivity.getId(), null, null);
+                            break;
+                        case HRMConstant.SHIFT_SCHEDULE:
+                            tempJadwalKaryawanService.approved(approvalActivity.getId(), null, null);
+                            break;
+                        case HRMConstant.LEAVE:
+                            leaveImplementationService.approved(approvalActivity.getId(), null, null);
+                            break;
+                        case HRMConstant.LEAVE_CANCELLATION:
+                            leaveImplementationService.approved(approvalActivity.getId(), null, null);
+                            break;
+                        case HRMConstant.ANNOUNCEMENT:
+                            announcementService.approved(approvalActivity.getId(), null, null);
+                            break;
+                        case HRMConstant.EMP_CORRECTION_ATTENDANCE:
+                            wtEmpCorrectionAttendanceService.approved(approvalActivity.getId(), null, null);
+                            break;
+                        case HRMConstant.VACANCY_ADVERTISEMENT:
+                            recruitVacancyAdvertisementService.approved(approvalActivity.getId(), null, null);
+                            break;
+                        case HRMConstant.OVERTIME:
+                            implementationOfOverTimeService.approved(approvalActivity.getId(), null, null);
+                            break;
+                        case HRMConstant.PERMIT:
+                            permitImplementationService.approved(approvalActivity.getId(), null, null);
+                            break;
+                        case HRMConstant.RECRUITMENT_REQUEST:
+                            recruitHireApplyService.approved(approvalActivity.getId(), null, null);
+                            break;
+                        case HRMConstant.RECRUIT_MPP_APPLY:
+                            recruitMppApplyService.approved(approvalActivity.getId(), null, null);
+                            break;
+                        default:
+                            break;
+                    }
+                } else if (approvalActivity.getApprovalDefinition().getEscalateOnDelay()) {
+                    //do Diverted
+                    switch (approvalActivity.getApprovalDefinition().getName()) {
+                        case HRMConstant.BUSINESS_TRAVEL:
+                            businessTravelService.diverted(approvalActivity.getId());
+                            break;
+                        case HRMConstant.LOAN:
+                            //loanService.diverted(approvalActivity.getId());
+                            loanNewApplicationService.diverted(approvalActivity.getId());
+                            break;
+                        case HRMConstant.REIMBURSEMENT:
+                            //reimbursmentService.diverted(approvalActivity.getId());
+                            rmbsApplicationService.diverted(approvalActivity.getId());
+                            break;
+                        case HRMConstant.REIMBURSEMENT_DISBURSEMENT:
+                            rmbsDisbursementService.diverted(approvalActivity.getId());
+                            break;
+                        case HRMConstant.SHIFT_SCHEDULE:
+                            tempJadwalKaryawanService.diverted(approvalActivity.getId());
+                            break;
+                        case HRMConstant.LEAVE:
+                            leaveImplementationService.diverted(approvalActivity.getId());
+                            break;
+                        case HRMConstant.LEAVE_CANCELLATION:
+                            leaveImplementationService.diverted(approvalActivity.getId());
+                            break;
+                        case HRMConstant.ANNOUNCEMENT:
+                            announcementService.diverted(approvalActivity.getId());
+                            break;
+                        case HRMConstant.EMP_CORRECTION_ATTENDANCE:
+                            wtEmpCorrectionAttendanceService.diverted(approvalActivity.getId());
+                            break;
+                        case HRMConstant.VACANCY_ADVERTISEMENT:
+                            recruitVacancyAdvertisementService.diverted(approvalActivity.getId());
+                            break;
+                        case HRMConstant.OVERTIME:
+                            implementationOfOverTimeService.diverted(approvalActivity.getId());
+                            break;
+                        case HRMConstant.PERMIT:
+                            permitImplementationService.diverted(approvalActivity.getId());
+                            break;
+                        case HRMConstant.RECRUITMENT_REQUEST:
+                            recruitHireApplyService.diverted(approvalActivity.getId());
+                            break;
+                        case HRMConstant.RECRUIT_MPP_APPLY:
+                            recruitMppApplyService.diverted(approvalActivity.getId());
+                            break;
+                        default:
+                            break;
+                    }
                 }
-            } else if (approvalActivity.getApprovalDefinition().getEscalateOnDelay()) {
-                //do Diverted
-                switch (approvalActivity.getApprovalDefinition().getName()) {
-                    case HRMConstant.BUSINESS_TRAVEL:
-                        businessTravelService.diverted(approvalActivity.getId());
-                        break;
-                    case HRMConstant.LOAN:
-                        //loanService.diverted(approvalActivity.getId());
-                        loanNewApplicationService.diverted(approvalActivity.getId());
-                        break;
-                    case HRMConstant.REIMBURSEMENT:
-                        //reimbursmentService.diverted(approvalActivity.getId());
-                        rmbsApplicationService.diverted(approvalActivity.getId());
-                        break;
-                    case HRMConstant.REIMBURSEMENT_DISBURSEMENT:
-                        rmbsDisbursementService.diverted(approvalActivity.getId());
-                        break;
-                    case HRMConstant.SHIFT_SCHEDULE:
-                        tempJadwalKaryawanService.diverted(approvalActivity.getId());
-                        break;
-                    case HRMConstant.LEAVE:
-                        leaveImplementationService.diverted(approvalActivity.getId());
-                        break;
-                    case HRMConstant.LEAVE_CANCELLATION:
-                        leaveImplementationService.diverted(approvalActivity.getId());
-                        break;
-                    case HRMConstant.ANNOUNCEMENT:
-                        announcementService.diverted(approvalActivity.getId());
-                        break;
-                    case HRMConstant.EMP_CORRECTION_ATTENDANCE:
-                        wtEmpCorrectionAttendanceService.diverted(approvalActivity.getId());
-                        break;
-                    case HRMConstant.VACANCY_ADVERTISEMENT:
-                        recruitVacancyAdvertisementService.diverted(approvalActivity.getId());
-                        break;
-                    case HRMConstant.OVERTIME:
-                        implementationOfOverTimeService.diverted(approvalActivity.getId());
-                        break;
-                    case HRMConstant.PERMIT:
-                        permitImplementationService.diverted(approvalActivity.getId());
-                        break;
-                    case HRMConstant.RECRUITMENT_REQUEST:
-                        recruitHireApplyService.diverted(approvalActivity.getId());
-                        break;
-                    case HRMConstant.RECRUIT_MPP_APPLY:
-                        recruitMppApplyService.diverted(approvalActivity.getId());
-                        break;
-                    default:
-                        break;
+                String messages = approvalActivity.getApprovalDefinition().getName() + ":APPROVAL ACTIVITY NUMBER :" + approvalActivity.getActivityNumber() + "FINISH";
+                schedulerLogService.updateLogAndStatus(String.valueOf(schedulerLog.getId()), messages);
+            } catch (Exception ex) {
+                if (schedulerLog != null) {
+//                    schedulerLog.setStatusMessages(ex.getMessage());
+                    String messages = approvalActivity.getApprovalDefinition().getName() + ":APPROVAL ACTIVITY NUMBER :" + approvalActivity.getActivityNumber() + " Error :" + ex.getMessage();
+                    schedulerLogService.updateLogAndStatus(String.valueOf(schedulerLog.getId()), messages);
                 }
+                LOGGER.error("Error on approvalActivity with ID : " + approvalActivity.getId(), ex);
+
             }
-//            } catch (Exception ex) {
-//                LOGGER.error("Error on approvalActivity with ID : " + approvalActivity.getId(), ex);
-//            }
         }
     }
 
+    public void updateLogError(String logId) throws Exception {
+        SchedulerLog log = schedulerLogDao.getEntiyByPK(Long.parseLong(logId));
+        log.setStatusMessages("FINISH");
+        log.setEndExecution(new Date());
+        schedulerLogDao.update(log);
+    }
 }

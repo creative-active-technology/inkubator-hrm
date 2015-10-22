@@ -24,4 +24,10 @@ public interface SchedulerLogService extends IService<SchedulerLog> {
     public Long getTotalByParam(SchedulerLogSearchParameter searchParameter) throws Exception;
 
     public void saveBeforeJobBatch() throws Exception;
+
+    public void updateLogError(String longId) throws Exception;
+
+    public void updateLogAndStatus(String longId, String status) throws Exception;
+    
+    public SchedulerLog saveLog(String longId, String pocessDetailname)throws  Exception;
 }
