@@ -5,30 +5,25 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import ch.lambdaj.Lambda;
-import com.inkubator.common.CommonUtilConstant;
-import com.inkubator.common.util.DateTimeUtil;
-import com.inkubator.common.util.RandomNumberUtil;
+
+import com.inkubator.common.util.JsonConverter;
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
-import com.inkubator.hrm.dao.WtHolidayDao;
-import com.inkubator.hrm.dao.WtWorkingHourDao;
-import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.dao.HrmUserDao;
+import com.inkubator.hrm.dao.PasswordComplexityDao;
+import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.entity.PasswordComplexity;
 import com.inkubator.hrm.entity.SchedulerConfig;
 import com.inkubator.hrm.entity.SchedulerLog;
-import com.inkubator.hrm.entity.TempJadwalKaryawan;
-import com.inkubator.hrm.entity.WtGroupWorking;
-import com.inkubator.hrm.entity.WtHoliday;
-import com.inkubator.hrm.entity.WtScheduleShift;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+
 import java.util.Date;
 import java.util.List;
+
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
-import org.joda.time.DateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,11 +34,27 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class CalculatePasswordComplexityCronListenerServiceImpl extends BaseSchedulerDinamicListenerImpl implements MessageListener {
 
+	@Autowired
+	private PasswordComplexityDao passwordComplexityDao;
+	@Autowired
+	private HrmUserDao hrmUserDao;
+	@Autowired
+    protected JmsTemplate jmsTemplatePasswordComplexity;
+	@Autowired
+	private JsonConverter jsonConverter;
+	
+	private String applicationUrl;
+    private String applicationName;
+    private String ownerEmail;
+    private String ownerCompany;
+    private String ownerAdministrator;
 
 
     public void calculatePasswordComplexity() throws Exception {
         LOGGER.warn("Begin Running Passwrod Complexity  ");
-     
+        updateSendExpiredPassword();
+        sendEmailPasswordPeriodAlmostExpired();
+        LOGGER.warn("Finish Running Passwrod Complexity  ");
     }
 
     @Override
@@ -67,5 +78,73 @@ public class CalculatePasswordComplexityCronListenerServiceImpl extends BaseSche
         }
     }
 
+    private void updateSendExpiredPassword() throws Exception{
+    	PasswordComplexity passwordComplexity = passwordComplexityDao.getAllData().get(0);
+    	Integer numberOfMonthToExpired = passwordComplexity.getExpiredPeriod();
+    	List<HrmUser> listUserWithPasswordToUpdateToExpired = hrmUserDao.getListUserWithExpiredPasswordButStatusStillNotUpdateToExpired(numberOfMonthToExpired);
+    	for(HrmUser user : listUserWithPasswordToUpdateToExpired){
+    		
+    		HrmUser hrmUserToUpdate = hrmUserDao.getEntiyByPK(user.getUserId());
+    		hrmUserToUpdate.setIsExpired(HRMConstant.EXPIRED);
+    		hrmUserToUpdate.setUpdatedOn(new Date());
+    		hrmUserToUpdate.setUpdatedBy(HRMConstant.INKUBA_SYSTEM);
+    		hrmUserDao.update(hrmUserToUpdate);
+    		
+    		if(passwordComplexity.getEmailNotification()){
+    			
+    		}
+    		
+    	}
+    }
+    
+    private void sendEmailPasswordExpiredNotification(HrmUser hrmUser){
+    	
+    }
+    
+    private void sendEmailPasswordPeriodAlmostExpired() throws Exception{
+    	
+    }
+
+	public String getApplicationUrl() {
+		return applicationUrl;
+	}
+
+	public void setApplicationUrl(String applicationUrl) {
+		this.applicationUrl = applicationUrl;
+	}
+
+	public String getApplicationName() {
+		return applicationName;
+	}
+
+	public void setApplicationName(String applicationName) {
+		this.applicationName = applicationName;
+	}
+
+	public String getOwnerEmail() {
+		return ownerEmail;
+	}
+
+	public void setOwnerEmail(String ownerEmail) {
+		this.ownerEmail = ownerEmail;
+	}
+
+	public String getOwnerCompany() {
+		return ownerCompany;
+	}
+
+	public void setOwnerCompany(String ownerCompany) {
+		this.ownerCompany = ownerCompany;
+	}
+
+	public String getOwnerAdministrator() {
+		return ownerAdministrator;
+	}
+
+	public void setOwnerAdministrator(String ownerAdministrator) {
+		this.ownerAdministrator = ownerAdministrator;
+	}
+    
+    
 
 }

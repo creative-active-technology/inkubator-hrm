@@ -5,14 +5,18 @@
  */
 package com.inkubator.hrm.dao.impl;
 
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.web.search.HrmUserSearchParameter;
 
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Disjunction;
@@ -175,6 +179,15 @@ public class HrmUserDaoImpl extends IDAOImpl<HrmUser> implements HrmUserDao {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("phoneNumber", phoneNumber));;
 		return (HrmUser) criteria.uniqueResult();
+	}
+
+	@Override
+	public List<HrmUser> getListUserWithExpiredPasswordButStatusStillNotUpdateToExpired(Integer numberOfMonthToExpired) {
+		Date limitLastUpdate = DateTimeUtil.getDateFrom(new Date(), -numberOfMonthToExpired,  CommonUtilConstant.DATE_FORMAT_MONTH);
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.le("updatedOn", limitLastUpdate));
+		criteria.add(Restrictions.ne("isExpired", HRMConstant.EXPIRED));
+		return criteria.list();
 	}
 
 }
