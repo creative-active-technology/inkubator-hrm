@@ -46,5 +46,7 @@ public interface HrmUserDao extends IDAO<HrmUser> {
     public HrmUser getEntityByPhoneNumber(String phoneNumber);
     
     public List<HrmUser> getListUserWithExpiredPasswordButStatusStillNotUpdateToExpired(Integer numberOfMonthToExpired);
+    
+    public List<HrmUser> getListUserWithPasswordAlmostExpired(Integer numberOfMonthToExpired, Integer notificationPeriod);
  
 }

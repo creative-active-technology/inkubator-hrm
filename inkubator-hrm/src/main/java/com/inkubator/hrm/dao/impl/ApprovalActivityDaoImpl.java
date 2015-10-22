@@ -312,6 +312,7 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
     public List<ApprovalActivity> getAllDataWaitingStatusApproval() {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL));
+        criteria.setFetchMode("approvalDefinition", FetchMode.JOIN);
         return criteria.list();
     }
 
