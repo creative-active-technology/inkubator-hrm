@@ -1,5 +1,5 @@
 package com.inkubator.hrm.entity;
-// Generated Oct 23, 2015 2:26:57 PM by Hibernate Tools 4.3.1
+// Generated Oct 23, 2015 2:42:06 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -24,7 +24,7 @@ import javax.persistence.Version;
 @Entity
 @Table(name="recruit_letters"
     ,catalog="hrm"
-    , uniqueConstraints = @UniqueConstraint(columnNames="letter_code") 
+    , uniqueConstraints = @UniqueConstraint(columnNames="code") 
 )
 public class RecruitLetters  implements java.io.Serializable {
 
@@ -35,7 +35,7 @@ public class RecruitLetters  implements java.io.Serializable {
      private Integer leterTypeId;
      private Boolean isActive;
      private String recruitLetterscol;
-     private String letterCode;
+     private String code;
      private String formatNumber;
      private Integer expiryDays;
      private String contentHtml;
@@ -54,13 +54,13 @@ public class RecruitLetters  implements java.io.Serializable {
     public RecruitLetters(long id) {
         this.id = id;
     }
-    public RecruitLetters(long id, EmpData empData, Integer leterTypeId, Boolean isActive, String recruitLetterscol, String letterCode, String formatNumber, Integer expiryDays, String contentHtml, Boolean smsNotif, Date createdOn, String createdBy, Date updatedOn, String updatedBy, Set<RecruitLetterSelection> recruitLetterSelections, Set<RecruitLetterComChannel> recruitLetterComChannels) {
+    public RecruitLetters(long id, EmpData empData, Integer leterTypeId, Boolean isActive, String recruitLetterscol, String code, String formatNumber, Integer expiryDays, String contentHtml, Boolean smsNotif, Date createdOn, String createdBy, Date updatedOn, String updatedBy, Set<RecruitLetterSelection> recruitLetterSelections, Set<RecruitLetterComChannel> recruitLetterComChannels) {
        this.id = id;
        this.empData = empData;
        this.leterTypeId = leterTypeId;
        this.isActive = isActive;
        this.recruitLetterscol = recruitLetterscol;
-       this.letterCode = letterCode;
+       this.code = code;
        this.formatNumber = formatNumber;
        this.expiryDays = expiryDays;
        this.contentHtml = contentHtml;
@@ -136,13 +136,13 @@ public class RecruitLetters  implements java.io.Serializable {
     }
 
     
-    @Column(name="letter_code", unique=true, length=45)
-    public String getLetterCode() {
-        return this.letterCode;
+    @Column(name="code", unique=true, length=45)
+    public String getCode() {
+        return this.code;
     }
     
-    public void setLetterCode(String letterCode) {
-        this.letterCode = letterCode;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     
