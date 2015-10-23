@@ -21,10 +21,7 @@
       
     </security:http>
     <bean id="myHandlerSuccessLogin" class="com.inkubator.hrm.util.CustomAuthenticationSuccessHandler" lazy-init="true">
-<!--         <property name="useReferer" value="true"/>
-         <property name="targetUrlParameter" value="spring-security-redirect" />-->
           <property name="defaultTargetUrl" value="/protected/home.htm" />
-          
     </bean> 
     <bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
         <constructor-arg index="0" value="/"/>
