@@ -325,7 +325,7 @@
                                         -
                                         <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
                                                          action="#{empDataDetilController.doUpdateBioEmploymentHistory()}" >
-                                            <f:setPropertyActionListener value="#{bioEmploymentHistoryData}" target="#{bioDataDetilController.selectedBioEmploymentHistory}" />
+                                            <f:setPropertyActionListener value="#{bioEmploymentHistoryData}" target="#{empDataDetilController.selectedBioEmploymentHistory}" />
                                             <p:ajax event="dialogReturn" listener="#{empDataDetilController.onDialogReturnBioEmploymentHistory}"  update="tableBioEmploymentHistoryId,:growlBioDetailFormId"/>
                                         </p:commandButton>
                                     </p:column>
@@ -704,7 +704,7 @@
                             </p:tab> 
                             
                             <p:tab id="businessTravelId" title="#{appmsg['biodata.business_travel_history']}">  
-                                <p:dataTable  id="tableBusinessTravelHistoryId" var="businessTravelHistoryData"  value="#{bioDataDetilController.businessTravelList}" lazy="false" paginator="false"
+                                <p:dataTable  id="tableBusinessTravelHistoryId" var="businessTravelHistoryData"  value="#{empDataDetilController.businessTravelList}" lazy="false" paginator="false"
                                               style="margin-top: 10px;margin-bottom: 10px"
                                               rowIndexVar="no">
                                     <f:facet name="header">  
@@ -775,7 +775,7 @@
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{empDataDetilController.doBack()}" styleClass="label_button"/>
                             <p:commandButton value="#{appmsg['biodata.card_name']}" icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" styleClass="label_button"
                                              update=":panelDialogBioAddressDetailId" 
-                                             action="#{empDataDetilController.doSelectEmpCardName()}" onclick="PF('statusDialog').show()"  oncomplete="dialogDetailBioAddress.show()">                        
+                                             action="#{empDataDetilController.doSelectEmpCardName()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailBioAddress').show()">                        
                                          <!--<f:setPropertyActionListener target="#{empDataDetilController.id}" value="#{empDataDetilController.selectedEmpData.bioData.id}" />-->
                             </p:commandButton>
                         </h:panelGrid>
@@ -833,7 +833,7 @@
                     <p:panelGrid id="panelDialogBioEmploymentHistoryDetailId" style="width:100%;margin:5px;">
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_year']}" styleClass="label_hrm"/></p:column>
-                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioEmploymentHistory.yearIn} - #{bioDataDetilController.selectedBioEmploymentHistory.yearOut}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{empDataDetilController.selectedBioEmploymentHistory.yearIn} - #{empDataDetilController.selectedBioEmploymentHistory.yearOut}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company']}" styleClass="label_hrm"/></p:column>
