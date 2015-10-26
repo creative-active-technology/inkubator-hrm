@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlOrganisasiLevelFormId" globalOnly="true" showDetail="true"/>                
+                <h:form id="offeringFormId">
+                    <p:focus context="offeringFormId"/>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="organisasi.png" height="36" width="36" cache="true" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="Formulir Penawaran Kerja" styleClass="header_big" />
+                                    <p:outputLabel value="Penwaran Kerja dari Perekrutan" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="codeId" value="Kode Surat" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="codeId" title="#{appmsg['selection_type.selection_type_template_code']}" value="#{offeringAndProhabitFormController.offeringAndProhabitModel.code}"
+                                                 required="true" maxlength="12" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:290px;" />
+                                    <p:message for="codeId"/>
+                                </p:column>
+                            </p:row> 
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="nomorId" value="Nomor Surat" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="nomorId" title="#{appmsg['selection_type.selection_type_template_code']}" validatorMessage="#{offeringAndProhabitFormController.offeringAndProhabitModel.letterNumber}"
+                                                 required="true" maxlength="60" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:290px;" />
+                                    <p:message for="nomorId"/>
+                                </p:column>
+                            </p:row> 
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="tipeSeleksiId" value="Nomor Surat" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:pickList  id="tipeSeleksiId" value="#{offeringAndProhabitFormController.dualListModel}" var="typeList" converter="selectionTypeConverter" itemValue="#{typeList}" required="true"
+                                                 itemLabel="#{typeList.name}"  addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}" styleClass="isitext_hrm"
+                                                 removeLabel="#{appmsg['global.remove']}"   style="margin-top: 10px;margin-bottom: 10px"/>
+                                    <p:message for="tipeSeleksiId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="expiredId" value="Masa Berlaku" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:spinner  size="3" min="1" max="100" styleClass="isitext_hrm" required="true" id="expiredId" value="#{offeringAndProhabitFormController.offeringAndProhabitModel.expiredTime}"/>
+                                    <p:message for="expiredId"/>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="contentId" value="Isi Surat" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:editor  id="contentId" width="800"  value="#{offeringAndProhabitFormController.offeringAndProhabitModel.content}"  required="true"/>
+                                    <!--<pe:ckEditor id="contentId" required="true" />-->
+                                    Keterangan :
+                                    {%ApplicantName%} : Nama pelamar {%LetterNumber%} : Nomor surat {%DateOfSelectionSchedulle%} : Tanggal Jadwal Seleksi {%DateOfSelectionEvaluation%} : Tanggal Evaluasi Seleksi {%PICName%} : Nama karyawan pemberi skor {%DateOfDocument%} : Tanggal Expired {%DateOfDocumentExpire%}
+                                    <p:message for="contentId"/>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="empId" value="Ditanda Tangani" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:autoComplete id="empId" title="#{appmsg['publicHolidayException.publicHolidayException_emp']}" 
+                                                    value="#{offeringAndProhabitFormController.offeringAndProhabitModel.empData}" 
+                                                    completeMethod="#{offeringAndProhabitFormController.completeEmpData}"
+                                                    var="employee" emptyMessage="#{appmsg['employee.employee_not_found']}"
+                                                    maxResults="8" itemValue="#{employee}"                                            
+                                                    itemLabel="#{employee.nik} #{employee.bioData.firstName} #{employee.bioData.lastName}"
+                                                    converter="empDataConverter" required="true" 
+                                                    requiredMessage="#{appmsg['publicHolidayException.publicHolidayException_emp_should_not_be_empty']}" 
+                                                    styleClass="isitext_hrm" size="28"  style="width:290px;" >
+                                       
+
+                                    </p:autoComplete>
+                                    <p:message for="empId"/>
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="comChanelId" value="Dikirim Melalui" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:pickList  id="comChanelId" value="#{offeringAndProhabitFormController.dualListModelCom}" var="comChanel" converter="recruitCommChannelsConverter" itemValue="#{comChanel}" required="true"
+                                                 itemLabel="#{comChanel.channelName}"  addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}" styleClass="isitext_hrm"
+                                                 removeLabel="#{appmsg['global.remove']}"   style="margin-top: 10px;margin-bottom: 10px"/>
+                                    <p:message for="comChanelId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="#{appmsg['user_form.is_active']}" styleClass="label_hrm" for="isActive"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectBooleanButton value="#{offeringAndProhabitFormController.offeringAndProhabitModel.isActive}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="isActive" styleClass="label_button" />
+                                    <p:message for="isActive"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="SMS" styleClass="label_hrm" for="isSms"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectBooleanButton value="#{offeringAndProhabitFormController.offeringAndProhabitModel.isSendingViaSMS}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                           offIcon="ui-icon-close"  id="isSms" styleClass="label_button" />
+                                    <p:message for="isSms"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <!--<p:panel style="margin: 10px">-->
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" partialSubmit="true"
+                                             action="#{offeringAndProhabitFormController.doSave()}" styleClass="label_button" update="offeringFormId"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                             icon="ui-icon-disk"
+                                             id="buttonSave" title="#{appmsg['global.save']}"/>
+                             <p:commandButton value="Tinjau Pdf" ajax="true" partialSubmit="true"
+                                             action="#{offeringAndProhabitFormController.doSave()}" styleClass="label_button" update="offeringFormId"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                             icon="ui-icon-zoomin"
+                                             id="tinjauButton" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" update="offeringFormId"
+                                             process="@this" icon="ui-icon-refresh" id="cleareId"   styleClass="label_button"  style="margin-right: 5px">  
+                                <p:resetInput target="offeringFormId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{offeringAndProhabitFormController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                            <!--</p:panel>-->
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
