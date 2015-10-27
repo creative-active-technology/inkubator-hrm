@@ -37,4 +37,6 @@ public interface RecruitMppApplyDetailDao extends IDAO<RecruitMppApplyDetail> {
     public List<RecruitMppApplyDetail> getListInSelectedMppPeriodIdWithApprovalStatus(Long recruitMppPeriodId, Integer approvalStatus);
     
     public Boolean isJabatanMppExistOnSelectedMppPeriod(Long jabatanId, Long recruitMppPeriodId);
+    
+    public List<RecruitMppApplyDetail> getAllDataJabatanByRecruitMppApplyId(Long recruitMppApplyId);
 }

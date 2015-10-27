@@ -75,10 +75,12 @@ import com.inkubator.hrm.web.model.ApplicantViewModel;
 import com.inkubator.hrm.web.model.RadarChartData;
 import com.inkubator.hrm.web.model.RadarDataset;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
+import com.inkubator.hrm.web.search.RecruitInitialSelectionSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
 
 import ch.lambdaj.Lambda;
+
 import com.inkubator.hrm.web.search.ReportSearchRecruitmentSearchParameter;
 
 /**
@@ -274,9 +276,9 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 	}
 
 	@Override
-	public List<RecruitApplicant> getAllData() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<RecruitApplicant> getAllData() throws Exception {
+		return recruitApplicantDao.getAllData();
 	}
 
 	@Override
@@ -752,6 +754,18 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalByVacancyAdvertisementDetailId(Long vacancyAdvertisementDetailId) {
 		return recruitApplicantDao.getTotalByVacancyAdvertisementDetailId(vacancyAdvertisementDetailId);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RecruitApplicant> getAllDataByParamWithDetail(RecruitInitialSelectionSearchParameter parameter, int firstResults, int maxResults, Order orderable) throws Exception {
+		return recruitApplicantDao.getAllDataByParamWithDetail(parameter, firstResults, maxResults, orderable);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalDataByParamWithDetail(RecruitInitialSelectionSearchParameter parameter) throws Exception {
+		return recruitApplicantDao.getTotalDataByParamWithDetail(parameter);
 	}
 	
 	

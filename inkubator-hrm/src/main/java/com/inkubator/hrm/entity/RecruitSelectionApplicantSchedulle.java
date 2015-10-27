@@ -30,7 +30,8 @@ public class RecruitSelectionApplicantSchedulle  implements java.io.Serializable
      private int id;
      private Integer version;
      private EmpData empData;
-     private Long hireApplyId;
+     private RecruitHireApply hireApply;
+     private RecruitmenSelectionSeries selectionSeries;
      private Integer totalRecrut;
      private Date createdOn;
      private String createdBy;
@@ -45,10 +46,10 @@ public class RecruitSelectionApplicantSchedulle  implements java.io.Serializable
     public RecruitSelectionApplicantSchedulle(int id) {
         this.id = id;
     }
-    public RecruitSelectionApplicantSchedulle(int id, EmpData empData, Long hireApplyId, Integer totalRecrut, Date createdOn, String createdBy, Date updatedOn, String updatedBy, Set<RecruitSelectionApplicantSchedulleDetail> recruitSelectionApplicantSchedulleDetails) {
+    public RecruitSelectionApplicantSchedulle(int id, EmpData empData, RecruitHireApply hireApply, Integer totalRecrut, Date createdOn, String createdBy, Date updatedOn, String updatedBy, Set<RecruitSelectionApplicantSchedulleDetail> recruitSelectionApplicantSchedulleDetails) {
        this.id = id;
        this.empData = empData;
-       this.hireApplyId = hireApplyId;
+       this.hireApply = hireApply;
        this.totalRecrut = totalRecrut;
        this.createdOn = createdOn;
        this.createdBy = createdBy;
@@ -79,7 +80,7 @@ public class RecruitSelectionApplicantSchedulle  implements java.io.Serializable
         this.version = version;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="coordinator_emp_id")
     public EmpData getEmpData() {
         return this.empData;
@@ -89,18 +90,27 @@ public class RecruitSelectionApplicantSchedulle  implements java.io.Serializable
         this.empData = empData;
     }
 
-    
-    @Column(name="hire_apply_id")
-    public Long getHireApplyId() {
-        return this.hireApplyId;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="hire_apply_id")
+    public RecruitHireApply getHireApply() {
+        return this.hireApply;
     }
     
-    public void setHireApplyId(Long hireApplyId) {
-        this.hireApplyId = hireApplyId;
+    public void setHireApply(RecruitHireApply hireApply) {
+        this.hireApply = hireApply;
     }
+    
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="selection_series_id")
+    public RecruitmenSelectionSeries getSelectionSeries() {
+		return selectionSeries;
+	}
 
-    
-    @Column(name="total_recrut")
+	public void setSelectionSeries(RecruitmenSelectionSeries selectionSeries) {
+		this.selectionSeries = selectionSeries;
+	}
+
+	@Column(name="total_recrut")
     public Integer getTotalRecrut() {
         return this.totalRecrut;
     }

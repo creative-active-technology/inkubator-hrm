@@ -151,11 +151,12 @@
                                 <h:outputLabel for="countryId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 70%">
-                                <p:selectOneMenu id="countryId" value="#{bioBankAccountFormController.bioBankAccountModel.countryId}" required="true" valueChangeListener="#{bioBankAccountFormController.countryChanged}" 
+                                <p:selectOneMenu id="countryId" value="#{bioBankAccountFormController.bioBankAccountModel.countryId}" required="true" 
                                                  style="width: 250px" filter="true" requiredMessage="#{appmsg['country.country_name_should_not_be_empty']}">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
                                     <f:selectItems value="#{bioBankAccountFormController.countrys}"  />
-                                    <p:ajax update="provinceIdA, provinceId" event="change" />
+                                    <!-- <p:ajax update="provinceIdA, provinceId" event="change" /> -->
+                                    <p:ajax listener="#{bioBankAccountFormController.onChangeCountries()}" update="provinceIdA"/>
                                 </p:selectOneMenu>
                             </p:column>                            
                         </p:row>
@@ -172,23 +173,23 @@
                                 <h:outputLabel for="provinceIdA" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 70%">
-                                <p:selectOneMenu id="provinceIdA" value="#{bioBankAccountFormController.bioBankAccountModel.provinceId}" required="true" valueChangeListener="#{bioBankAccountFormController.provinceChanged}"
+                                <p:selectOneMenu id="provinceIdA" value="#{bioBankAccountFormController.bioBankAccountModel.provinceId}" required="true" 
                                                  style="width: 250px" filter="true" requiredMessage="#{appmsg['city.province_should_not_be_empty']}" disabled="#{bioBankAccountFormController.disabledProvince}">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="" />
                                     <f:selectItems value="#{bioBankAccountFormController.provinces}"  />
-                                    <p:ajax update="cityIdA, cityId" event="change" />
+                                    <!-- <p:ajax update="cityIdA, cityId" event="change" /> -->
+                                    <p:ajax listener="#{bioBankAccountFormController.onChangeProvinces()}" update="cityIdA"/>
                                 </p:selectOneMenu>                                
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
-                                <p:message id="provinceId" for="provinceId"/>
                                 <p:message for="provinceIdA"/>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width: 29%">
-                                <p:outputLabel for="cityId" value="#{appmsg['institutionEducation.city_name']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="cityIdA" value="#{appmsg['institutionEducation.city_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="cityIdA" value=":" styleClass="label_hrm"/>
@@ -205,7 +206,6 @@
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
-                                <p:message id="cityId" for="cityId"/>
                                 <p:message for="cityIdA"/>
                             </p:column>
                         </p:row>
@@ -307,9 +307,8 @@
                                          action="#{bioBankAccountFormController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formBioBankAccountFormId"
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" action="#{bioBankAccountFormController.doReset()}" immediate="true" update="formBioBankAccountFormId"
                                          icon="ui-icon-refresh" styleClass="isitext_hrm" >  
-                            <p:resetInput target="formBioBankAccountFormId" />  
                         </p:commandButton>
                     </h:panelGrid>
                 </h:form>
