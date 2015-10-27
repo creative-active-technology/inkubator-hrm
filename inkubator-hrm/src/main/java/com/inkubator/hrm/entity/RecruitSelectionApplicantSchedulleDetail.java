@@ -29,6 +29,7 @@ public class RecruitSelectionApplicantSchedulleDetail  implements java.io.Serial
      private EmpData empData;
      private RecruitSelectionApplicantInitial recruitSelectionApplicantInitial;
      private RecruitSelectionApplicantSchedulle recruitSelectionApplicantSchedulle;
+     private RecruitmenSelectionSeriesDetail selectionSeriesDetail;
      private Date schdulleDate;
      private Date schdulleTimeStart;
      private Date schedulleTimeEnd;
@@ -84,7 +85,7 @@ public class RecruitSelectionApplicantSchedulleDetail  implements java.io.Serial
         this.version = version;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="pic_emp_id")
     public EmpData getEmpData() {
         return this.empData;
@@ -94,8 +95,8 @@ public class RecruitSelectionApplicantSchedulleDetail  implements java.io.Serial
         this.empData = empData;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="applicant_id")
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="initial_id")
     public RecruitSelectionApplicantInitial getRecruitSelectionApplicantInitial() {
         return this.recruitSelectionApplicantInitial;
     }
@@ -104,7 +105,7 @@ public class RecruitSelectionApplicantSchedulleDetail  implements java.io.Serial
         this.recruitSelectionApplicantInitial = recruitSelectionApplicantInitial;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="schedulle_id")
     public RecruitSelectionApplicantSchedulle getRecruitSelectionApplicantSchedulle() {
         return this.recruitSelectionApplicantSchedulle;
@@ -113,8 +114,18 @@ public class RecruitSelectionApplicantSchedulleDetail  implements java.io.Serial
     public void setRecruitSelectionApplicantSchedulle(RecruitSelectionApplicantSchedulle recruitSelectionApplicantSchedulle) {
         this.recruitSelectionApplicantSchedulle = recruitSelectionApplicantSchedulle;
     }
+    
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="selection_series_detail_id")
+    public RecruitmenSelectionSeriesDetail getSelectionSeriesDetail() {
+		return selectionSeriesDetail;
+	}
 
-    @Temporal(TemporalType.DATE)
+	public void setSelectionSeriesDetail(RecruitmenSelectionSeriesDetail selectionSeriesDetail) {
+		this.selectionSeriesDetail = selectionSeriesDetail;
+	}
+
+	@Temporal(TemporalType.DATE)
     @Column(name="schdulle_date", length=10)
     public Date getSchdulleDate() {
         return this.schdulleDate;
