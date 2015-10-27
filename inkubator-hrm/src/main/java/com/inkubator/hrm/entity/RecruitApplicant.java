@@ -55,12 +55,12 @@ public class RecruitApplicant implements Serializable {
 	private RecruitVacancyAdvertisementDetail recruitVacancyAdvertisementDetail;
 	private String uploadPath;
 	private Date createdOn;
-        private String createdBy;
-        private String updatedBy;    
-        private Date updatedOn;
-        private Set<RecruitApplicantSpecList> recruitApplicantSpecLists = new HashSet<RecruitApplicantSpecList>();
-        private Integer experience;
-        private Set<RecruitSelectionApplicantInitial> recruitSelectionApplicantInitials = new HashSet<RecruitSelectionApplicantInitial>(0);
+	private String createdBy;
+	private String updatedBy;
+	private Date updatedOn;
+	private Set<RecruitApplicantSpecList> recruitApplicantSpecLists = new HashSet<RecruitApplicantSpecList>();
+	private Integer experience;
+	private Set<RecruitSelectionApplicantInitial> recruitSelectionApplicantInitials = new HashSet<RecruitSelectionApplicantInitial>(0);
     
     public RecruitApplicant(){
     	

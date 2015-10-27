@@ -27,9 +27,9 @@ public class RecruitSelectionApplicantSchedulleDetail  implements java.io.Serial
      private long id;
      private Integer version;
      private EmpData empData;
-     private RecruitSelectionApplicantInitial recruitSelectionApplicantInitial;
+     private RecruitApplicant applicant;
      private RecruitSelectionApplicantSchedulle recruitSelectionApplicantSchedulle;
-     private RecruitmenSelectionSeriesDetail selectionSeriesDetail;
+     private RecruitSelectionType selectionType;
      private Date schdulleDate;
      private Date schdulleTimeStart;
      private Date schedulleTimeEnd;
@@ -39,6 +39,7 @@ public class RecruitSelectionApplicantSchedulleDetail  implements java.io.Serial
      private String updatedBy;
      private String room;
      private String notes;
+     private Integer selectionListOrder;
 
     public RecruitSelectionApplicantSchedulleDetail() {
     }
@@ -47,10 +48,10 @@ public class RecruitSelectionApplicantSchedulleDetail  implements java.io.Serial
     public RecruitSelectionApplicantSchedulleDetail(long id) {
         this.id = id;
     }
-    public RecruitSelectionApplicantSchedulleDetail(long id, EmpData empData, RecruitSelectionApplicantInitial recruitSelectionApplicantInitial, RecruitSelectionApplicantSchedulle recruitSelectionApplicantSchedulle, Date schdulleDate, Date schdulleTimeStart, Date schedulleTimeEnd, Date createdOn, String createdBy, Date updatedOn, String updatedBy, String room, String notes) {
+    public RecruitSelectionApplicantSchedulleDetail(long id, EmpData empData, RecruitApplicant applicant, RecruitSelectionApplicantSchedulle recruitSelectionApplicantSchedulle, Date schdulleDate, Date schdulleTimeStart, Date schedulleTimeEnd, Date createdOn, String createdBy, Date updatedOn, String updatedBy, String room, String notes) {
        this.id = id;
        this.empData = empData;
-       this.recruitSelectionApplicantInitial = recruitSelectionApplicantInitial;
+       this.applicant = applicant;
        this.recruitSelectionApplicantSchedulle = recruitSelectionApplicantSchedulle;
        this.schdulleDate = schdulleDate;
        this.schdulleTimeStart = schdulleTimeStart;
@@ -96,14 +97,14 @@ public class RecruitSelectionApplicantSchedulleDetail  implements java.io.Serial
     }
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="initial_id")
-    public RecruitSelectionApplicantInitial getRecruitSelectionApplicantInitial() {
-        return this.recruitSelectionApplicantInitial;
-    }
-    
-    public void setRecruitSelectionApplicantInitial(RecruitSelectionApplicantInitial recruitSelectionApplicantInitial) {
-        this.recruitSelectionApplicantInitial = recruitSelectionApplicantInitial;
-    }
+    @JoinColumn(name="applicant_id")
+    public RecruitApplicant getApplicant() {
+		return applicant;
+	}
+
+	public void setApplicant(RecruitApplicant applicant) {
+		this.applicant = applicant;
+	}
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="schedulle_id")
@@ -116,13 +117,13 @@ public class RecruitSelectionApplicantSchedulleDetail  implements java.io.Serial
     }
     
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="selection_series_detail_id")
-    public RecruitmenSelectionSeriesDetail getSelectionSeriesDetail() {
-		return selectionSeriesDetail;
+    @JoinColumn(name="selection_type_id")
+    public RecruitSelectionType getSelectionType() {
+		return selectionType;
 	}
 
-	public void setSelectionSeriesDetail(RecruitmenSelectionSeriesDetail selectionSeriesDetail) {
-		this.selectionSeriesDetail = selectionSeriesDetail;
+	public void setSelectionType(RecruitSelectionType selectionType) {
+		this.selectionType = selectionType;
 	}
 
 	@Temporal(TemporalType.DATE)
@@ -215,8 +216,14 @@ public class RecruitSelectionApplicantSchedulleDetail  implements java.io.Serial
         this.notes = notes;
     }
 
+    @Column(name="selection_list_order")
+	public Integer getSelectionListOrder() {
+		return selectionListOrder;
+	}
 
-
+	public void setSelectionListOrder(Integer selectionListOrder) {
+		this.selectionListOrder = selectionListOrder;
+	}
 
 }
 
