@@ -218,7 +218,17 @@ public class BusinessTravelFormController implements Serializable{
 	public void doResetBusinessTravelForm(RequestContext context){
 		BusinessTravelModel model = (BusinessTravelModel) context.getFlowScope().get("businessTravelModel");
 		if(model.getId() == null){
-			model = new BusinessTravelModel();
+			model.setEmpData(null);
+			model.setDestination(null);
+			model.setProposeDate(null);
+			model.setTravelZoneId(null);
+			model.setTravelTypeId(null);
+			model.setStart(null);
+			model.setEnd(null);
+			model.setDescription(null);
+			model.setGolonganJabatanName(null);
+			model.setTotalAmount(null);
+			model.getBusinessTravelComponents().clear();
 		} else {
 			try {
 				BusinessTravel businessTravel = businessTravelService.getEntityByPkWithDetail(model.getId());

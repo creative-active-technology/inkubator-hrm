@@ -172,7 +172,7 @@
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
 	                    	<p:commandButton value="#{appmsg['global.edit']}" icon="ui-icon-zoomin" title="#{appmsg['global.edit']}" action="#{loanDetailController.doUpdate()}" immediate="true"
-                                			 style="margin-right: 5px" styleClass="label_button"/>
+                                			 style="margin-right: 5px" styleClass="label_button" disabled="#{loanDetailController.selectedLoan.statusPencairan ne '0'}"/>
 	                        <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-contact"  title="#{appmsg['global.close']}" action="#{loanDetailController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>
 	                    </div>

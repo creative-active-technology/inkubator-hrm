@@ -113,14 +113,14 @@
                                     <f:setPropertyActionListener value="#{loanData}" target="#{loanViewController.selectedLoan}" />
                                 </p:commandButton>
                                 - 
-                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                              <!--   <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
                                 				 action="#{loanViewController.doSelectEntity()}" onclick="statusDialog.show()"  oncomplete="dialogConfirmLoan.show()">
                                     <f:setPropertyActionListener value="#{loanData}" target="#{loanViewController.selectedLoan}" />
                                 </p:commandButton>
-                                -
+                                - -->
                                 <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                 action="#{loanViewController.doUpdate()}" >
+                                                 action="#{loanViewController.doUpdate()}" disabled="#{loanData.statusPencairan ne '0'}">
                                     <f:setPropertyActionListener value="#{loanData}" target="#{loanViewController.selectedLoan}" />
                                 </p:commandButton>
                             </p:column>                        
