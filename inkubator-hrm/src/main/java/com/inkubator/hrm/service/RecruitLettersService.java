@@ -12,6 +12,7 @@ import com.inkubator.hrm.entity.RecruitLetters;
  *
  * @author denifahri
  */
-public interface RecruitLettersService extends IService<RecruitLetters>{
-    
+public interface RecruitLettersService extends IService<RecruitLetters> {
+
+    public RecruitLetters getByPkWithDetail(long id) throws Exception;
 }
