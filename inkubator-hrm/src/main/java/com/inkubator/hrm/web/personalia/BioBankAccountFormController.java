@@ -8,6 +8,7 @@ import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.City;
 import com.inkubator.hrm.entity.Country;
 import com.inkubator.hrm.entity.Currency;
+import com.inkubator.hrm.entity.EducationNonFormal;
 import com.inkubator.hrm.entity.Province;
 import com.inkubator.hrm.service.BankService;
 import com.inkubator.hrm.service.BioBankAccountService;
@@ -17,6 +18,7 @@ import com.inkubator.hrm.service.CurrencyService;
 import com.inkubator.hrm.service.ProvinceService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.BioBankAccountModel;
+import com.inkubator.hrm.web.model.EducationNonFormalModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -31,6 +33,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import org.apache.commons.lang3.StringUtils;
@@ -78,6 +81,8 @@ public class BioBankAccountFormController extends BaseController {
             String bioDataId = FacesUtil.getRequestParameter("bioDataId");
             bioBankAccountModel.setBioDataId(Long.parseLong(bioDataId));
 
+            
+            /* put bank list into map*/
             List<Bank> listBank = bankService.getAllData();
 
             for (Bank bank : listBank) {
@@ -86,11 +91,12 @@ public class BioBankAccountFormController extends BaseController {
                 }else{
                        banks.put(bank.getBank().getBankName()+" - "+bank.getBranchName(), bank.getId());
                 }
-//                banks.put(bank.getBankName(), bank.getId());
             }
 
             MapUtil.sortByValue(banks);
+            /****************************/
 
+            /*put currency list into map*/
             List<Currency> listCurrency = currencyService.getAllData();
 
             for (Currency currency : listCurrency) {
@@ -103,6 +109,8 @@ public class BioBankAccountFormController extends BaseController {
             disabledProvince = Boolean.TRUE;
             locale = FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString();
             messages = ResourceBundle.getBundle("Messages", new Locale(locale));
+            
+            /*put country list into map*/
             List<Country> listCountrys = countryService.getAllData();
 
             for (Country country : listCountrys) {
@@ -110,6 +118,7 @@ public class BioBankAccountFormController extends BaseController {
             }
 
             MapUtil.sortByValue(countrys);
+            /******************************/
 
             String bioBankAccountId = FacesUtil.getRequestParameter("bioBankAccountId");
             if (StringUtils.isNotEmpty(bioBankAccountId)) {
@@ -117,14 +126,18 @@ public class BioBankAccountFormController extends BaseController {
                 if (bioBankAccountId != null) {
                     disabledCity = Boolean.FALSE;
                     disabledProvince = Boolean.FALSE;
-                    bioBankAccountModel = getModelFromEntity(bioBankAccount);
+                    getModelFromEntity(bioBankAccount);
+                    
+                    /*put province list into map*/
                     List<Province> listProvinces = provinceService.getByCountryIdWithDetail(bioBankAccountModel.getCountryId());
                     for (Province province : listProvinces) {
                         provinces.put(province.getProvinceName(), province.getId());
                     }
 
                     MapUtil.sortByValue(provinces);
+                    /*********************************/
 
+                    /*put city list into map*/
                     List<City> listCities = cityService.getByProvinceIdWithDetail(bioBankAccountModel.getProvinceId());
 
                     for (City city : listCities) {
@@ -132,6 +145,7 @@ public class BioBankAccountFormController extends BaseController {
                     }
 
                     MapUtil.sortByValue(citys);
+                    /*************************/
 
                     isUpdate = Boolean.TRUE;
                 }
@@ -311,8 +325,8 @@ public class BioBankAccountFormController extends BaseController {
         return bioBankAccount;
     }
 
-    private BioBankAccountModel getModelFromEntity(BioBankAccount entity) {
-        BioBankAccountModel bioBankAccountModel = new BioBankAccountModel();
+    private void getModelFromEntity(BioBankAccount entity) {
+    	
         bioBankAccountModel.setId(entity.getId());
         bioBankAccountModel.setBioDataId(entity.getBioData().getId());
         bioBankAccountModel.setCountryId(entity.getCity().getProvince().getCountry().getId());
@@ -327,10 +341,10 @@ public class BioBankAccountFormController extends BaseController {
         bioBankAccountModel.setSavingType(entity.getSavingType());
         bioBankAccountModel.setSwiftCode(entity.getSwiftCode());
         bioBankAccountModel.setDefaultAccount(entity.getDefaultAccount());
-        return bioBankAccountModel;
+        
     }
 
-    public void countryChanged(ValueChangeEvent event) {
+    /**public void countryChanged(ValueChangeEvent event) {
         try {
            
 
@@ -339,9 +353,9 @@ public class BioBankAccountFormController extends BaseController {
             List<Province> listProvinces = provinceService.getByCountryIdWithDetail(Long.parseLong(String.valueOf(event.getNewValue())));
            
             if (listProvinces.isEmpty() || listProvinces == null) {
-                disabledProvince = Boolean.TRUE;
+              //  disabledProvince = Boolean.TRUE;
 
-                FacesContext.getCurrentInstance().addMessage("formBioBankAccountFormId:provinceId", new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), messages.getString("city.province_is_empty")));
+             //   FacesContext.getCurrentInstance().addMessage("formBioBankAccountFormId:provinceId", new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), messages.getString("city.province_is_empty")));
 
             } else {
                 disabledProvince = Boolean.FALSE;
@@ -357,8 +371,9 @@ public class BioBankAccountFormController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
-
-    public void provinceChanged(ValueChangeEvent event) {
+	**/
+    
+    /**public void provinceChanged(ValueChangeEvent event) {
         try {
             
 
@@ -367,9 +382,9 @@ public class BioBankAccountFormController extends BaseController {
             List<City> listCities = cityService.getByProvinceIdWithDetail(Long.parseLong(String.valueOf(event.getNewValue())));
 
             if (listCities.isEmpty() || listCities == null) {
-                disabledCity = Boolean.TRUE;
+                //disabledCity = Boolean.TRUE;
 
-                FacesContext.getCurrentInstance().addMessage("formBioBankAccountFormId:cityId", new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), messages.getString("city.province_is_empty")));
+               // FacesContext.getCurrentInstance().addMessage("formBioBankAccountFormId:cityId", new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), messages.getString("city.province_is_empty")));
 
             } else {
                 disabledCity = Boolean.FALSE;
@@ -385,5 +400,56 @@ public class BioBankAccountFormController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
+    **/
+    
+    public void onChangeCountries() {
+        try {
+        	System.out.println("masuk onChangeCountries");
+        	disabledProvince = Boolean.FALSE;
+            provinces.clear();
+            citys.clear();
+            List<Province> listProvinces = provinceService.getByCountryId(bioBankAccountModel.getCountryId());
+            for (Province province : listProvinces) {
+                provinces.put(province.getProvinceName(), province.getId());
+            }
 
+            MapUtil.sortByValue(provinces);
+         } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+
+    public void onChangeProvinces() {
+        try {
+        	disabledCity = Boolean.FALSE;
+            citys.clear();
+            List<City> listCities = cityService.getByProvinceId(bioBankAccountModel.getProvinceId());
+            for (City city : listCities) {
+                citys.put(city.getCityName(), city.getId());
+            }
+
+            MapUtil.sortByValue(citys);
+        } catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    
+    
+    public void doReset(){
+    	try {
+	    	if(isUpdate){
+	    		BioBankAccount bioBankAccount = bioBankAccountService.getEntityByPKWithDetail(bioBankAccountModel.getId());
+	    		this.getModelFromEntity(bioBankAccount);
+	    		this.onChangeCountries();
+	            this.onChangeProvinces();
+	    	}else {
+	    		bioBankAccountModel = new BioBankAccountModel();
+	    		citys.clear();	    		
+	    		provinces.clear();
+	    	}
+    	} catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
+    
 }
