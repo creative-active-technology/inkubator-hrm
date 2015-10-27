@@ -189,5 +189,11 @@
     <bean id="deleteLogMonitoringListenerServiceImpl" class="com.inkubator.hrm.service.impl.DeleteLogMonitoringListenerServiceImpl" lazy-init="true">
         <property name="difMonthLogMonitoringToDelete" value="${dif.number.month.log_monit.to.delete}"/>
     </bean>
-    <bean id="calculatePasswordComplexityCronListenerServiceImpl" class="com.inkubator.hrm.service.impl.CalculatePasswordComplexityCronListenerServiceImpl" lazy-init="true"/>
+    <bean id="calculatePasswordComplexityCronListenerServiceImpl" class="com.inkubator.hrm.service.impl.CalculatePasswordComplexityCronListenerServiceImpl" lazy-init="true" >
+    	<property name="applicationUrl" value="${email_param_application_url}"/>
+        <property name="applicationName" value="${email_param_application_name}"/>
+        <property name="ownerEmail" value="${email_param_owner_email}"/>
+        <property name="ownerCompany" value="${email_param_owner_company}"/>
+        <property name="ownerAdministrator" value="${email_param_owner_administrator}"/> 
+    </bean>
 </beans>

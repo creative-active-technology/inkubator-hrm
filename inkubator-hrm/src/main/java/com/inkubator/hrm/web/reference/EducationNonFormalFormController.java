@@ -180,6 +180,21 @@ public class EducationNonFormalFormController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
+    
+    public void doReset(){
+    	try {
+	    	if(isUpdate){
+	    		EducationNonFormal educationNonFormal = educationNonFormalService.getEntityByPkWithDetail(model.getId());
+	    		this.getModelFromEntity(educationNonFormal);
+	    	}else {
+	    		model = new EducationNonFormalModel();
+	    		cities.clear();	    		
+	    		provinces.clear();
+	    	}
+    	} catch (Exception e) {
+            LOGGER.error("Error", e);
+        }
+    }
 
     public void onChangeCountries() {
         try {
@@ -212,6 +227,9 @@ public class EducationNonFormalFormController extends BaseController {
         model.setPostalCode(educationNonFormal.getPostalCode());
         model.setOfficialPhoneNo(educationNonFormal.getOfficialPhoneNo());
         model.setOfficialEmail(educationNonFormal.getOfficialEmail());
+        
+        this.onChangeCountries();
+        this.onChangeProvinces();
     }
 
     private EducationNonFormal getEntityFromViewModel(EducationNonFormalModel model) {

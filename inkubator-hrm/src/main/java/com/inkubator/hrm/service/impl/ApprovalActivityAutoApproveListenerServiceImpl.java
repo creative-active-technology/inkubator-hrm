@@ -6,23 +6,24 @@ import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.ApprovalActivityDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
-import com.inkubator.hrm.entity.SchedulerConfig;
 import com.inkubator.hrm.entity.SchedulerLog;
 import com.inkubator.hrm.service.AnnouncementService;
+import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.BusinessTravelService;
+import com.inkubator.hrm.service.ImplementationOfOverTimeService;
 import com.inkubator.hrm.service.LeaveImplementationService;
 import com.inkubator.hrm.service.LoanNewApplicationService;
 import com.inkubator.hrm.service.LoanService;
+import com.inkubator.hrm.service.PermitImplementationService;
+import com.inkubator.hrm.service.RecruitHireApplyService;
+import com.inkubator.hrm.service.RecruitMppApplyService;
 import com.inkubator.hrm.service.RecruitVacancyAdvertisementService;
 import com.inkubator.hrm.service.RmbsApplicationService;
 import com.inkubator.hrm.service.RmbsDisbursementService;
+import com.inkubator.hrm.service.SchedulerLogService;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import com.inkubator.hrm.service.WtEmpCorrectionAttendanceService;
 import javax.jms.Message;
@@ -37,7 +38,7 @@ public class ApprovalActivityAutoApproveListenerServiceImpl extends BaseSchedule
 
 //    protected transient Logger LOGGER = Logger.getLogger(getClass());
     @Autowired
-    private ApprovalActivityDao approvalActivityDao;
+    private ApprovalActivityService approvalActivityService;
     @Autowired
     private LoanService loanService;
     @Autowired
@@ -58,24 +59,26 @@ public class ApprovalActivityAutoApproveListenerServiceImpl extends BaseSchedule
     private WtEmpCorrectionAttendanceService wtEmpCorrectionAttendanceService;
     @Autowired
     private RecruitVacancyAdvertisementService recruitVacancyAdvertisementService;
+    @Autowired
+    private ImplementationOfOverTimeService implementationOfOverTimeService;
+    @Autowired
+    private PermitImplementationService permitImplementationService;
+    @Autowired
+    private RecruitHireApplyService recruitHireApplyService;
+    @Autowired
+    private RecruitMppApplyService recruitMppApplyService;
+    @Autowired
+    private SchedulerLogService schedulerLogService;
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+//    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.REPEATABLE_READ, noRollbackFor = Exception.class)
     public void onMessage(Message msg) {
         SchedulerLog log = null;
+        TextMessage textMessage = null;
         try {
-            TextMessage textMessage = (TextMessage) msg;
-            SchedulerLog schedulerLog = new SchedulerLog();
-            schedulerLog.setSchedulerConfig(new SchedulerConfig(Long.parseLong(textMessage.getText())));
-            log = super.doSaveSchedulerLogSchedulerLog(schedulerLog);
-            checkAutomaticApproval();
-            log.setStatusMessages("FINISH");
-            super.doUpdateSchedulerLogSchedulerLog(log);
+            textMessage = (TextMessage) msg;
+            checkAutomaticApproval(textMessage.getText());
         } catch (Exception ex) {
-            if (log != null) {
-                log.setStatusMessages(ex.getMessage());
-                super.doUpdateSchedulerLogSchedulerLog(log);
-            }
             LOGGER.error(ex, ex);
         }
     }
@@ -83,14 +86,14 @@ public class ApprovalActivityAutoApproveListenerServiceImpl extends BaseSchedule
 //    @Override
 //    @Scheduled(cron = "${cron.check.automatic.approval}")
 //    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
-    private void checkAutomaticApproval() throws Exception {
+    private void checkAutomaticApproval(String log) throws Exception {
 
         LOGGER.warn(" Auto apporave is runnning +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=");
         List<ApprovalActivity> autoApprovals = new ArrayList<ApprovalActivity>();
         Date now = new Date();
 
         //filter based on createdTime +delayTime < nowDate
-        List<ApprovalActivity> waitingApprovals = approvalActivityDao.getAllDataWaitingStatusApproval();
+        List<ApprovalActivity> waitingApprovals = approvalActivityService.getAllDataWaitingStatusApproval();
         for (ApprovalActivity approvalActivity : waitingApprovals) {
             Date delayDate = DateUtils.addDays(approvalActivity.getCreatedTime(), approvalActivity.getApprovalDefinition().getDelayTime());
             if (now.after(delayDate)) {
@@ -98,14 +101,18 @@ public class ApprovalActivityAutoApproveListenerServiceImpl extends BaseSchedule
             }
         }
 
+        SchedulerLog schedulerLog;
         //do autoApproval process
         for (ApprovalActivity approvalActivity : autoApprovals) {
+            LOGGER.warn("Jumlah :" + autoApprovals.size());
+            schedulerLog = schedulerLogService.saveLog(log, approvalActivity.getApprovalDefinition().getName() + ":APPROVAL ACTIVITY NUMBER :" + approvalActivity.getActivityNumber());
             try {
                 if (approvalActivity.getApprovalDefinition().getAutoApproveOnDelay()) {
                     //do Approved
                     switch (approvalActivity.getApprovalDefinition().getName()) {
                         case HRMConstant.BUSINESS_TRAVEL:
                             businessTravelService.approved(approvalActivity.getId(), null, null);
+
                             break;
                         case HRMConstant.LOAN:
                             //loanService.approved(approvalActivity.getId(), null, null);
@@ -135,6 +142,18 @@ public class ApprovalActivityAutoApproveListenerServiceImpl extends BaseSchedule
                             break;
                         case HRMConstant.VACANCY_ADVERTISEMENT:
                             recruitVacancyAdvertisementService.approved(approvalActivity.getId(), null, null);
+                            break;
+                        case HRMConstant.OVERTIME:
+                            implementationOfOverTimeService.approved(approvalActivity.getId(), null, null);
+                            break;
+                        case HRMConstant.PERMIT:
+                            permitImplementationService.approved(approvalActivity.getId(), null, null);
+                            break;
+                        case HRMConstant.RECRUITMENT_REQUEST:
+                            recruitHireApplyService.approved(approvalActivity.getId(), null, null);
+                            break;
+                        case HRMConstant.RECRUIT_MPP_APPLY:
+                            recruitMppApplyService.approved(approvalActivity.getId(), null, null);
                             break;
                         default:
                             break;
@@ -174,14 +193,40 @@ public class ApprovalActivityAutoApproveListenerServiceImpl extends BaseSchedule
                         case HRMConstant.VACANCY_ADVERTISEMENT:
                             recruitVacancyAdvertisementService.diverted(approvalActivity.getId());
                             break;
+                        case HRMConstant.OVERTIME:
+                            implementationOfOverTimeService.diverted(approvalActivity.getId());
+                            break;
+                        case HRMConstant.PERMIT:
+                            permitImplementationService.diverted(approvalActivity.getId());
+                            break;
+                        case HRMConstant.RECRUITMENT_REQUEST:
+                            recruitHireApplyService.diverted(approvalActivity.getId());
+                            break;
+                        case HRMConstant.RECRUIT_MPP_APPLY:
+                            recruitMppApplyService.diverted(approvalActivity.getId());
+                            break;
                         default:
                             break;
                     }
                 }
+                String messages = approvalActivity.getApprovalDefinition().getName() + ":APPROVAL ACTIVITY NUMBER :" + approvalActivity.getActivityNumber() + "FINISH";
+                schedulerLogService.updateLogAndStatus(String.valueOf(schedulerLog.getId()), messages);
             } catch (Exception ex) {
+                if (schedulerLog != null) {
+//                    schedulerLog.setStatusMessages(ex.getMessage());
+                    String messages = approvalActivity.getApprovalDefinition().getName() + ":APPROVAL ACTIVITY NUMBER :" + approvalActivity.getActivityNumber() + " Error :" + ex.getMessage();
+                    schedulerLogService.updateLogAndStatus(String.valueOf(schedulerLog.getId()), messages);
+                }
                 LOGGER.error("Error on approvalActivity with ID : " + approvalActivity.getId(), ex);
+
             }
         }
     }
 
+    public void updateLogError(String logId) throws Exception {
+        SchedulerLog log = schedulerLogDao.getEntiyByPK(Long.parseLong(logId));
+        log.setStatusMessages("FINISH");
+        log.setEndExecution(new Date());
+        schedulerLogDao.update(log);
+    }
 }

@@ -94,6 +94,8 @@ public class EmpData implements java.io.Serializable {
     private Set<OhsaEmpInvolve> ohsaEmpInvolves = new HashSet<OhsaEmpInvolve>(0);
     private Set<RmbsSchemaListOfEmp> rmbsSchemaListOfEmps = new HashSet<RmbsSchemaListOfEmp>(0);
     private Set<TempAttendanceRealization> tempAttendanceRealizations = new HashSet<TempAttendanceRealization>(0);
+    private Set<RecruitSelectionApplicantSchedulleDetail> recruitSelectionApplicantSchedulleDetails = new HashSet<RecruitSelectionApplicantSchedulleDetail>(0);
+    private Set<RecruitSelectionApplicantSchedulle> recruitSelectionApplicantSchedulles = new HashSet<RecruitSelectionApplicantSchedulle>(0);
     public EmpData() {
     }
 
@@ -638,6 +640,24 @@ public class EmpData implements java.io.Serializable {
 
     public void setListBioEducationHistory(List<BioEducationHistory> listBioEducationHistory) {
         this.listBioEducationHistory = listBioEducationHistory;
+    }
+    
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="empData")
+    public Set<RecruitSelectionApplicantSchedulleDetail> getRecruitSelectionApplicantSchedulleDetails() {
+        return this.recruitSelectionApplicantSchedulleDetails;
+    }
+    
+    public void setRecruitSelectionApplicantSchedulleDetails(Set<RecruitSelectionApplicantSchedulleDetail> recruitSelectionApplicantSchedulleDetails) {
+        this.recruitSelectionApplicantSchedulleDetails = recruitSelectionApplicantSchedulleDetails;
+    }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="empData")
+    public Set<RecruitSelectionApplicantSchedulle> getRecruitSelectionApplicantSchedulles() {
+        return this.recruitSelectionApplicantSchedulles;
+    }
+    
+    public void setRecruitSelectionApplicantSchedulles(Set<RecruitSelectionApplicantSchedulle> recruitSelectionApplicantSchedulles) {
+        this.recruitSelectionApplicantSchedulles = recruitSelectionApplicantSchedulles;
     }
 
     @Transient

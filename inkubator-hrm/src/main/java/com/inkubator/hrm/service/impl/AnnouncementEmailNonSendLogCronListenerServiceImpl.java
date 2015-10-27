@@ -109,14 +109,12 @@ public class AnnouncementEmailNonSendLogCronListenerServiceImpl extends BaseSche
    
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public void onMessage(Message msg) {
         SchedulerLog log = null;
         try {
             TextMessage textMessage = (TextMessage) msg;
-            SchedulerLog schedulerLog = new SchedulerLog();
-            schedulerLog.setSchedulerConfig(new SchedulerConfig(Long.parseLong(textMessage.getText())));
-            log = super.doSaveSchedulerLogSchedulerLog(schedulerLog);
+            log = schedulerLogDao.getEntiyByPK(Long.parseLong(textMessage.getText()));
             processingAllEmailNotSent();
             log.setStatusMessages("FINISH");
             super.doUpdateSchedulerLogSchedulerLog(log);

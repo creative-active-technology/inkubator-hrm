@@ -56,7 +56,7 @@ public class AnnouncementGenerateLogCronListenerServiceImpl extends BaseSchedule
 //    @Scheduled(cron = "${cron.generating.announcement.log}")
 //    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public void generatingAnnouncementLog() throws Exception {
-          LOGGER.warn("Proseccc Generate Annoucment Log Running ===========================================================");
+        LOGGER.warn("Proseccc Generate Annoucment Log Running ===========================================================");
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         Date planExecutionDate = DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH);
 
@@ -94,7 +94,6 @@ public class AnnouncementGenerateLogCronListenerServiceImpl extends BaseSchedule
 //            }
 //        });
 //    }
-
 //    @Override
 //    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 //    public void executeBatchSendingEmail(AnnouncementLog announcementLog) throws Exception {
@@ -128,7 +127,6 @@ public class AnnouncementGenerateLogCronListenerServiceImpl extends BaseSchedule
 //            announcementLogDao.update(announcementLog);
 //        }
 //    }
-
     public String getApplicationUrl() {
         return applicationUrl;
     }
@@ -170,14 +168,12 @@ public class AnnouncementGenerateLogCronListenerServiceImpl extends BaseSchedule
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public void onMessage(Message msg) {
         SchedulerLog log = null;
         try {
             TextMessage textMessage = (TextMessage) msg;
-            SchedulerLog schedulerLog = new SchedulerLog();
-            schedulerLog.setSchedulerConfig(new SchedulerConfig(Long.parseLong(textMessage.getText())));
-            log = super.doSaveSchedulerLogSchedulerLog(schedulerLog);
+            log = schedulerLogDao.getEntiyByPK(Long.parseLong(textMessage.getText()));
             generatingAnnouncementLog();
             log.setStatusMessages("FINISH");
             super.doUpdateSchedulerLogSchedulerLog(log);

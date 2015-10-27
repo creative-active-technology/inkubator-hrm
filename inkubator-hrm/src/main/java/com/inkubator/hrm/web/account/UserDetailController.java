@@ -38,8 +38,6 @@ public class UserDetailController extends BaseController {
     public void setSelectedHrmUser(HrmUser selectedHrmUser) {
         this.selectedHrmUser = selectedHrmUser;
     }
-    
-    
 
     @PostConstruct
     @Override
@@ -47,6 +45,7 @@ public class UserDetailController extends BaseController {
         try {
             super.initialization();
             String userId = FacesUtil.getRequestParameter("execution");
+            System.out.println(" Niai nya juga guery" + FacesUtil.getRequest().getQueryString());
             selectedHrmUser = hrmUserService.getEntiyByPkWithDetail(Long.parseLong(userId.substring(1)));
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -64,7 +63,7 @@ public class UserDetailController extends BaseController {
 
     @PreDestroy
     public void cleanAndExit() {
-       selectedHrmUser=null;
-       hrmUserService=null;
+        selectedHrmUser = null;
+        hrmUserService = null;
     }
 }

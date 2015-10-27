@@ -53,6 +53,7 @@ public class RecruitHireApply implements java.io.Serializable {
     private Integer applicationStatus;
     private Set<RecruitHireApplyDetail> recruitHireApplyDetails = new HashSet<RecruitHireApplyDetail>(0);
     private Set<RecruitVacancyAdvertisementDetail> recruitVacancyAdvertisementDetails = new HashSet<RecruitVacancyAdvertisementDetail>(0);
+    private Set<RecruitSelectionApplicantInitial> recruitSelectionApplicantInitials = new HashSet<RecruitSelectionApplicantInitial>(0);
 
     public RecruitHireApply() {
     }
@@ -358,6 +359,15 @@ public class RecruitHireApply implements java.io.Serializable {
 
     public void setApprovalActivityNumber(String approvalActivityNumber) {
         this.approvalActivityNumber = approvalActivityNumber;
+    }
+    
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="recruitHireApply")
+    public Set<RecruitSelectionApplicantInitial> getRecruitSelectionApplicantInitials() {
+        return this.recruitSelectionApplicantInitials;
+    }
+    
+    public void setRecruitSelectionApplicantInitials(Set<RecruitSelectionApplicantInitial> recruitSelectionApplicantInitials) {
+        this.recruitSelectionApplicantInitials = recruitSelectionApplicantInitials;
     }
 
 }

@@ -117,7 +117,7 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         String[] var = {"tanggalWaktuKerja", "empData"};
         criteria.add(Subqueries.propertiesIn(var, data));
-        criteria.add(Restrictions.eq("tanggalWaktuKerja", date));
+        criteria.add(Restrictions.le("tanggalWaktuKerja", date));
         return criteria.list();
 
     }

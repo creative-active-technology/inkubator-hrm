@@ -16,7 +16,7 @@
                 Home
             </ui:define>
             <ui:define name="center">
-            	<pe:importConstants className="com.inkubator.hrm.HRMConstant" var="hrmConstant" />
+                <pe:importConstants className="com.inkubator.hrm.HRMConstant" var="hrmConstant" />
                 <div id="box_bg" style="margin: 10px">                    
                     <h:panelGrid style="margin-bottom: 5px" columns="2">
                         <p:graphicImage library="images" name="bank.png" height="36" width="36" cache="true"/>
@@ -41,7 +41,7 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.name']}" itemValue="name"/>
                                     </p:selectOneMenu>
-                                     <p:selectOneMenu id="scheduleSearchName"  styleClass="isitext_hrm"  value="#{schedulerConfigViewController.searchParameter.parameter}" filter="true"  filterMatchMode="contains" required="true">
+                                    <p:selectOneMenu id="scheduleSearchName"  styleClass="isitext_hrm"  value="#{schedulerConfigViewController.searchParameter.parameter}" filter="true"  filterMatchMode="contains" required="true">
 
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.user_password_notification_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_USER_PASSWORD_NOTIFICATION}" />
@@ -58,7 +58,8 @@
                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.employee_attendance_calculation_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_ATTENDANCE_CALCULATE}" />
                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.create_notification_log_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_ANNOUNCMENT_GENERATING_LOG}" />
                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.notification_broadcast_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_ANNOUNCMENT_SENDING_NOTIF}" />
-                                          <f:selectItem itemLabel="#{appmsg['scheduler_config.monitoring_log_delete']}" itemValue="#{hrmConstant.SCHEDULER_MONITORING_LOG_DELETE}" />
+                                        <f:selectItem itemLabel="#{appmsg['scheduler_config.monitoring_log_delete']}" itemValue="#{hrmConstant.SCHEDULER_MONITORING_LOG_DELETE}" />
+                                        <f:selectItem itemLabel="#{appmsg['scheduler_config.password_complexity']}" itemValue="#{hrmConstant.SCHEDULER_PASSWORD_COMPLEXITY}" />
                                     </p:selectOneMenu>
                                     <!-- <p:inputText id="searchId" value="#{schedulerConfigViewController.searchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/> -->
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{schedulerConfigViewController.doSearch()}" update="tableSchedulerConfigId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -96,7 +97,7 @@
                                     <h:outputText value="#{appmsg['scheduler_config.name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}" >
-                                	<f:converter converterId="schedulerConfigNameConverter" />
+                                    <f:converter converterId="schedulerConfigNameConverter" />
                                 </h:outputLabel>
                             </p:column>
 
@@ -105,7 +106,7 @@
                                     <h:outputText value="#{appmsg['scheduler_config.scheduler_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.schedullerType}">
-                                	<f:converter converterId="schedulerSchedTypeConverter"/>
+                                    <f:converter converterId="schedulerSchedTypeConverter"/>
                                 </h:outputLabel>
                             </p:column>
 
@@ -114,10 +115,10 @@
                                     <h:outputText value="#{appmsg['scheduler_config.repeate_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.repeateType}">
-                                	<f:converter converterId="schedulerRepeatTypeConverter"/>
+                                    <f:converter converterId="schedulerRepeatTypeConverter"/>
                                 </h:outputLabel>
                             </p:column> 
-                            <p:column sortBy="#{data.repeateNumber}"  >
+                            <p:column sortBy="#{data.dateStartExecution}"  >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['scheduler_config.start_date']}"/>
                                 </f:facet>
@@ -125,7 +126,7 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </p:outputLabel>
                             </p:column> 
-                            <p:column sortBy="#{data.repeateNumber}"  style="width: 50px">
+                            <p:column sortBy="#{data.isTimeDiv}"  style="width: 50px">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['scheduler_config.time_range']}"/>
                                 </f:facet>
@@ -138,7 +139,7 @@
                                     <h:outputText value="Last Execution"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{data.lastExecution}" rendered="#{data.isTimeDiv}">
-                                    <f:convertDateTime pattern="dd MMMM yyyy HH:mm" />
+                                    <f:convertDateTime pattern="dd MMMM yyyy HH:mm:ss" />
                                 </p:outputLabel>
                             </p:column>
 

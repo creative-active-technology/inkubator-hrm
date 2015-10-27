@@ -6,6 +6,8 @@
 package com.inkubator.hrm.entity;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -14,6 +16,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -36,6 +39,8 @@ public class RecruitSelectionApplicantInitial  implements java.io.Serializable {
      private RecruitHireApply recruitHireApply;
      private Date createdOn;
      private String createdBy;
+     private Set<RecruitSelectionApplicantSchedulleDetail> recruitSelectionApplicantSchedulleDetails = new HashSet<RecruitSelectionApplicantSchedulleDetail>(0);
+
 
     public RecruitSelectionApplicantInitial() {
     }
@@ -118,7 +123,15 @@ public class RecruitSelectionApplicantInitial  implements java.io.Serializable {
         this.createdBy = createdBy;
     }
 
-
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="recruitSelectionApplicantInitial")
+    public Set<RecruitSelectionApplicantSchedulleDetail> getRecruitSelectionApplicantSchedulleDetails() {
+        return this.recruitSelectionApplicantSchedulleDetails;
+    }
+    
+    public void setRecruitSelectionApplicantSchedulleDetails(Set<RecruitSelectionApplicantSchedulleDetail> recruitSelectionApplicantSchedulleDetails) {
+        this.recruitSelectionApplicantSchedulleDetails = recruitSelectionApplicantSchedulleDetails;
+    }
 
 
 }
+

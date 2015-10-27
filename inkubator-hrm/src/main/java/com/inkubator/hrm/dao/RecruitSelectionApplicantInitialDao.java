@@ -10,8 +10,8 @@ import com.inkubator.hrm.entity.RecruitSelectionApplicantInitial;
 
 /**
  *
- * @author Deni
+ * @author Deni, Ahmad Mudzakkir Amal
  */
 public interface RecruitSelectionApplicantInitialDao extends IDAO<RecruitSelectionApplicantInitial>{
-    
+
 }

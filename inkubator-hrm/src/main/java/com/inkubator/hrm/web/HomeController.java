@@ -6,7 +6,6 @@
 package com.inkubator.hrm.web;
 
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
@@ -14,13 +13,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.AnnouncementLog;
@@ -36,10 +32,8 @@ import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 
-import org.apache.commons.lang3.StringUtils;
-
-
-
+import javax.faces.application.ViewHandler;
+import javax.faces.component.UIViewRoot;
 
 /**
  *
@@ -67,8 +61,8 @@ public class HomeController extends BaseController {
 //        String role = authorities.toString();
 //        role = role.replace("[", "");
 //        role = role.replace("]", "");
-        roleUser=HrmUserInfoUtil.getRolesString();
-        roleUser=StringsUtils.substringBefore(roleUser, ",");
+        roleUser = HrmUserInfoUtil.getRolesString();
+        roleUser = StringsUtils.substringBefore(roleUser, ",");
         /**
          * saving process of User Access History
          */
@@ -81,6 +75,7 @@ public class HomeController extends BaseController {
 //        if (!FacesContext.getCurrentInstance().isPostback()) {
 //            RequestContext.getCurrentInstance().execute("bar.show()");
 //        }
+
         try {
             riwayatAksesService.doSaveAccess(akses);
         } catch (Exception ex) {
@@ -129,19 +124,18 @@ public class HomeController extends BaseController {
             LOGGER.error(ex, ex);
         }
     }
-    
-	public String doChangeLanguageSession() {
-		try {
-			String languange = FacesUtil.getRequestParameter("languange");
-			FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, languange);
-			ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-			ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
-		} catch (Exception ex) {
-			LOGGER.error(ex, ex);
-		}
 
-		return null;
-	}
+    public String doChangeLanguageSession() {
+        try {
+            String languange = FacesUtil.getRequestParameter("languange");
+            FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, languange);
+            FacesUtil.getExternalContext().redirect(((HttpServletRequest) FacesUtil.getRequest()).getHeader("Referer"));
+        } catch (Exception ex) {
+            LOGGER.error(ex, ex);
+        }
+
+        return null;
+    }
 
     public void setRiwayatAksesService(RiwayatAksesService riwayatAksesService) {
         this.riwayatAksesService = riwayatAksesService;
@@ -190,7 +184,5 @@ public class HomeController extends BaseController {
     public void setRoleUser(String roleUser) {
         this.roleUser = roleUser;
     }
-    
-    
 
 }

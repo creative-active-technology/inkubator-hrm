@@ -59,6 +59,7 @@
                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.create_notification_log_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_ANNOUNCMENT_GENERATING_LOG}" />
                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.notification_broadcast_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_ANNOUNCMENT_SENDING_NOTIF}" />
                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.monitoring_log_delete']}" itemValue="#{hrmConstant.SCHEDULER_MONITORING_LOG_DELETE}" />
+                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.password_complexity']}" itemValue="#{hrmConstant.SCHEDULER_PASSWORD_COMPLEXITY}" />
                                     </p:selectOneMenu>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{schedulerLogViewController.doSearch()}" update="tableSchedulerConfigId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>

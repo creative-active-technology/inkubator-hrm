@@ -7,9 +7,12 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.SchedulerConfigDao;
+import com.inkubator.hrm.dao.SchedulerLogDao;
 import com.inkubator.hrm.entity.SchedulerConfig;
+import com.inkubator.hrm.entity.SchedulerLog;
 import com.inkubator.hrm.service.ScheduleDinamicService;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -65,7 +68,8 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
     private JmsTemplate jmsTemplateDeleteMonitoringLog;
     @Autowired
     private JmsTemplate jmsTemplatePasswordComplexity;
-
+    @Autowired
+    protected SchedulerLogDao schedulerLogDao;
 //    @Override
 //    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 //    public void initMethode() throws Exception {
@@ -81,8 +85,9 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
 ////            }
 ////        }
 //    }
-    @Scheduled(cron = "${cron.dinamic.scheduler}")// Harus REQUARED NEW
-    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+
+    @Scheduled(cron = "${cron.dinamic.scheduler}")
+    @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void doDinamicCheck() throws Exception {
         LOGGER.info(" Eksekusi pada :" + new SimpleDateFormat("dd MMMM yyyy HH:mm:ss").format(new Date()));
@@ -161,6 +166,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                         }
                     }
                 } else {
+                    LOGGER.info("===========================PROSES SCHEDULER JEDA WAKTU===============================================");
                     String currentDateStringTime = new SimpleDateFormat("HH:mm:ss").format(new Date());
                     Date currentDateTime = new SimpleDateFormat("HH:mm:ss").parse(currentDateStringTime);
                     if (currentDateTime.getTime() == config.getSchedullerTime().getTime()) {
@@ -304,12 +310,15 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
 
     private void executionSchedullerViaMessaging(SchedulerConfig config) {
         final long configId = config.getId();
+        SchedulerLog schedulerLog = new SchedulerLog();
+        schedulerLog.setSchedulerConfig(new SchedulerConfig(configId));
+        final SchedulerLog log = saveLog(schedulerLog);
         switch (config.getName()) {
             case "USER_PASSWORD_NOTIFICATION":
                 jmsTemplateUserPassNotif.send(new MessageCreator() {
                     @Override
                     public Message createMessage(Session session) throws JMSException {
-                        return session.createTextMessage(String.valueOf(configId));
+                        return session.createTextMessage(String.valueOf(log.getId()));
                     }
                 });
                 break;
@@ -317,7 +326,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                 jmsTemplateApprovalNotif.send(new MessageCreator() {
                     @Override
                     public Message createMessage(Session session) throws JMSException {
-                        return session.createTextMessage(String.valueOf(configId));
+                        return session.createTextMessage(String.valueOf(log.getId()));
                     }
                 });
                 break;
@@ -325,7 +334,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                 jmsTemplateDelAccessHis.send(new MessageCreator() {
                     @Override
                     public Message createMessage(Session session) throws JMSException {
-                        return session.createTextMessage(String.valueOf(configId));
+                        return session.createTextMessage(String.valueOf(log.getId()));
                     }
                 });
                 break;
@@ -333,7 +342,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                 jmsTemplateDelLogHis.send(new MessageCreator() {
                     @Override
                     public Message createMessage(Session session) throws JMSException {
-                        return session.createTextMessage(String.valueOf(configId));
+                        return session.createTextMessage(String.valueOf(log.getId()));
                     }
                 });
                 break;
@@ -341,7 +350,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                 jmsTemplateHolidayUpdate.send(new MessageCreator() {
                     @Override
                     public Message createMessage(Session session) throws JMSException {
-                        return session.createTextMessage(String.valueOf(configId));
+                        return session.createTextMessage(String.valueOf(log.getId()));
                     }
                 });
                 break;
@@ -349,7 +358,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                 jmsTemplateScheduleWork.send(new MessageCreator() {
                     @Override
                     public Message createMessage(Session session) throws JMSException {
-                        return session.createTextMessage(String.valueOf(configId));
+                        return session.createTextMessage(String.valueOf(log.getId()));
                     }
                 });
                 break;
@@ -357,7 +366,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                 jmsTemplateDelTempScheduleWork.send(new MessageCreator() {
                     @Override
                     public Message createMessage(Session session) throws JMSException {
-                        return session.createTextMessage(String.valueOf(configId));
+                        return session.createTextMessage(String.valueOf(log.getId()));
                     }
                 });
                 break;
@@ -365,7 +374,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                 jmsTemplateAutoApprovalMat.send(new MessageCreator() {
                     @Override
                     public Message createMessage(Session session) throws JMSException {
-                        return session.createTextMessage(String.valueOf(configId));
+                        return session.createTextMessage(String.valueOf(log.getId()));
                     }
                 });
                 break;
@@ -373,7 +382,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                 jmsTemplateAddBalanceLeave.send(new MessageCreator() {
                     @Override
                     public Message createMessage(Session session) throws JMSException {
-                        return session.createTextMessage(String.valueOf(configId));
+                        return session.createTextMessage(String.valueOf(log.getId()));
                     }
                 });
                 break;
@@ -382,7 +391,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                 jmsTemplateAddBalancePermit.send(new MessageCreator() {
                     @Override
                     public Message createMessage(Session session) throws JMSException {
-                        return session.createTextMessage(String.valueOf(configId));
+                        return session.createTextMessage(String.valueOf(log.getId()));
                     }
                 });
                 break;
@@ -391,7 +400,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                 jmsTemplateCompanyPolicySend.send(new MessageCreator() {
                     @Override
                     public Message createMessage(Session session) throws JMSException {
-                        return session.createTextMessage(String.valueOf(configId));
+                        return session.createTextMessage(String.valueOf(log.getId()));
                     }
                 });
                 break;
@@ -400,7 +409,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                 jmsTemplateAttendaceCalculatte.send(new MessageCreator() {
                     @Override
                     public Message createMessage(Session session) throws JMSException {
-                        return session.createTextMessage(String.valueOf(configId));
+                        return session.createTextMessage(String.valueOf(log.getId()));
                     }
                 });
                 break;
@@ -409,7 +418,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                 jmsTemplateAnnoucmentGeneratingLog.send(new MessageCreator() {
                     @Override
                     public Message createMessage(Session session) throws JMSException {
-                        return session.createTextMessage(String.valueOf(configId));
+                        return session.createTextMessage(String.valueOf(log.getId()));
                     }
                 });
                 break;
@@ -418,7 +427,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                 jmsTemplateAnnoucmentSendingNotif.send(new MessageCreator() {
                     @Override
                     public Message createMessage(Session session) throws JMSException {
-                        return session.createTextMessage(String.valueOf(configId));
+                        return session.createTextMessage(String.valueOf(log.getId()));
                     }
                 });
                 break;
@@ -426,7 +435,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                 jmsTemplateDeleteMonitoringLog.send(new MessageCreator() {
                     @Override
                     public Message createMessage(Session session) throws JMSException {
-                        return session.createTextMessage(String.valueOf(configId));
+                        return session.createTextMessage(String.valueOf(log.getId()));
                     }
                 });
                 break;
@@ -434,7 +443,7 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                 jmsTemplatePasswordComplexity.send(new MessageCreator() {
                     @Override
                     public Message createMessage(Session session) throws JMSException {
-                        return session.createTextMessage(String.valueOf(configId));
+                        return session.createTextMessage(String.valueOf(log.getId()));
                     }
                 });
                 break;
@@ -445,4 +454,12 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
 
     }
 
+    private SchedulerLog saveLog(SchedulerLog schedulerLog) {
+        schedulerLog.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+        schedulerLog.setSchedulerConfig(schedulerConfigDao.getEntiyByPK(schedulerLog.getSchedulerConfig().getId()));
+        schedulerLog.setStartExecution(new Date());
+        schedulerLog.setStatusMessages("PROCESS- IF STILL PROCESS-PLEASE SEE LOG FOR DETAILS");
+        schedulerLogDao.save(schedulerLog);
+        return schedulerLog;
+    }
 }

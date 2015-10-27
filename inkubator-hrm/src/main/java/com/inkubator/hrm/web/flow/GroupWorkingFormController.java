@@ -56,6 +56,11 @@ public class GroupWorkingFormController implements Serializable {
             Long id = Long.parseLong(context.getFlowScope().get("param").toString());
             try {
                 WtGroupWorking groupWorking = this.wtGroupWorkingService.getByPKIdWithDetail(id);
+                if (groupWorking.getEmpDatas().size() > 0) {
+                    groupWorkingModel.setIsDisableForm(Boolean.TRUE);
+                } else {
+                    groupWorkingModel.setIsDisableForm(Boolean.FALSE);
+                }
                 groupWorkingModel.setBeginTime(groupWorking.getBeginTime());
                 groupWorkingModel.setCode(groupWorking.getCode());
                 List<WtScheduleShift> getWtScheduleShifts = new ArrayList<>(groupWorking.getWtScheduleShifts());
@@ -106,7 +111,7 @@ public class GroupWorkingFormController implements Serializable {
         try {
 
             GroupWorkingModel groupWorkingModel = (GroupWorkingModel) context.getFlowScope().get("groupWorkingModel");
-            if (groupWorkingModel.getKondisiSchedule()==0) {
+            if (groupWorkingModel.getKondisiSchedule() == 0) {
                 Date endTime = DateTimeUtil.getDateFrom(groupWorkingModel.getEndTime(), 1, CommonUtilConstant.DATE_FORMAT_DAY);
                 String beginTimeDay = new SimpleDateFormat("EEEE").format(groupWorkingModel.getBeginTime());
                 String endTimeDay = new SimpleDateFormat("EEEE").format(endTime);
@@ -136,7 +141,7 @@ public class GroupWorkingFormController implements Serializable {
     private GroupWorkingModel onEditCondition(GroupWorkingModel workingModel) throws Exception {
         Date beginDate = workingModel.getBeginTime();
         Date endDate = workingModel.getEndTime();
-        
+
         List<ScheduleShiftModel> dataShiftModels = workingModel.getDataShiftModels();
         List<ScheduleShiftModel> dataToShow = new ArrayList<>();
         int jumlahTotalDay = DateTimeUtil.getTotalDay(beginDate, endDate);
@@ -263,7 +268,7 @@ public class GroupWorkingFormController implements Serializable {
 //             if (workingModel.getPageNumber() >= sisaBagi + 1) {
 //                workingModel.setIsDisable(Boolean.FALSE);
 //            }
-            
+
             workingModel.setDataToShow(dataToShow);
             context.getFlashScope().put("groupWorkingModel", workingModel);
 
@@ -277,7 +282,7 @@ public class GroupWorkingFormController implements Serializable {
     public void doBackTable(RequestContext requestContext) {
         GroupWorkingModel workingModel = (GroupWorkingModel) requestContext.getFlowScope().get("groupWorkingModel");
         int page = workingModel.getPageNumber();
-        
+
         if (page > 1) {
             workingModel.setPageNumber(page - 2);
             List<ScheduleShiftModel> dataShiftModels = workingModel.getDataShiftModels();
@@ -300,7 +305,7 @@ public class GroupWorkingFormController implements Serializable {
             workingModel.setDataToShow(dataToShow);
             requestContext.getFlashScope().put("groupWorkingModel", workingModel);
         } else {
-            
+
             workingModel.setPageNumber(page);
             workingModel.setIsDisable(Boolean.FALSE);
         }
@@ -332,7 +337,7 @@ public class GroupWorkingFormController implements Serializable {
 //                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 //            return "no";
 //        }
-        } catch (BussinessException ex) { 
+        } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "no";
         } catch (Exception ex) {
