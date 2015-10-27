@@ -186,7 +186,19 @@ public class HrmUserDaoImpl extends IDAOImpl<HrmUser> implements HrmUserDao {
 		Date limitLastUpdate = DateTimeUtil.getDateFrom(new Date(), -numberOfMonthToExpired,  CommonUtilConstant.DATE_FORMAT_MONTH);
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.le("updatedOn", limitLastUpdate));
-		criteria.add(Restrictions.ne("isExpired", HRMConstant.EXPIRED));
+		criteria.add(Restrictions.eq("isExpired", HRMConstant.NOTEXPIRED));
+		return criteria.list();
+	}
+
+	@Override
+	public List<HrmUser> getListUserWithPasswordAlmostExpired(Integer numberOfMonthToExpired, Integer notificationPeriod) {
+		Date lastUpdateExpiredLimit = DateTimeUtil.getDateFrom(new Date(), -numberOfMonthToExpired,  CommonUtilConstant.DATE_FORMAT_MONTH);
+		Date expiredPeriodWarningLimit = DateTimeUtil.getDateFrom(lastUpdateExpiredLimit, notificationPeriod,  CommonUtilConstant.DATE_FORMAT_MONTH);
+		
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.le("updatedOn", expiredPeriodWarningLimit));
+		criteria.add(Restrictions.ge("updatedOn", DateTimeUtil.getDateFrom(lastUpdateExpiredLimit, 1,  CommonUtilConstant.DATE_FORMAT_DAY)));
+		criteria.add(Restrictions.eq("isExpired", HRMConstant.NOTEXPIRED));
 		return criteria.list();
 	}
 

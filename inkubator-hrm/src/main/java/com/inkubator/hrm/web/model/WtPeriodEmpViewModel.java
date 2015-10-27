@@ -1,6 +1,7 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
@@ -11,7 +12,7 @@ import java.util.Date;
 public class WtPeriodEmpViewModel implements Serializable {
 
     private BigInteger wtPeriodId;
-    private BigInteger totalEmpData;
+    private BigDecimal totalEmpData;
     private BigInteger totalWorkingGroup;
     private Date fromPeriode;
     private Date untilPeriode;
@@ -25,23 +26,23 @@ public class WtPeriodEmpViewModel implements Serializable {
         this.wtPeriodId = wtPeriodId;
     }
 
-    public BigInteger getTotalEmpData() {
-        return totalEmpData;
-    }
+    public BigDecimal getTotalEmpData() {
+		return totalEmpData;
+	}
 
-    public void setTotalEmpData(BigInteger totalEmpData) {
-        this.totalEmpData = totalEmpData;
-    }
+	public void setTotalEmpData(BigDecimal totalEmpData) {
+		this.totalEmpData = totalEmpData;
+	}
 
-    public BigInteger getTotalWorkingGroup() {
-        return totalWorkingGroup;
-    }
+	public BigInteger getTotalWorkingGroup() {
+		return totalWorkingGroup;
+	}
 
-    public void setTotalWorkingGroup(BigInteger totalWorkingGroup) {
-        this.totalWorkingGroup = totalWorkingGroup;
-    }
+	public void setTotalWorkingGroup(BigInteger totalWorkingGroup) {
+		this.totalWorkingGroup = totalWorkingGroup;
+	}
 
-    public Date getFromPeriode() {
+	public Date getFromPeriode() {
         return fromPeriode;
     }
 
@@ -57,8 +58,6 @@ public class WtPeriodEmpViewModel implements Serializable {
         this.untilPeriode = untilPeriode;
     }
 
-    
-
     public String getStatus() {
         return status;
     }
@@ -66,7 +65,7 @@ public class WtPeriodEmpViewModel implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
-    
-    
-    
+
+	
+
 }

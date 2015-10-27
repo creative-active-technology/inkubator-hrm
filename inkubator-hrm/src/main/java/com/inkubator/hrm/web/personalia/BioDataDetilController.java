@@ -246,6 +246,7 @@ public class BioDataDetilController extends BaseController {
             userId = FacesUtil.getRequestParameter("execution");
        
             selectedBioData = bioDataService.getEntityByPKWithDetail(Long.parseLong(userId.substring(1)));
+            System.out.println(" nilai serveri nya "+selectedBioData);
             selectedEmpData = empDataService.getByEmpDataByBioDataId(selectedBioData.getId());
             bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioData.getId());
             bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedBioData.getId());
