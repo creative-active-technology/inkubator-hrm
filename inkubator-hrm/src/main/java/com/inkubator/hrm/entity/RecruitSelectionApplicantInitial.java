@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
 /**
@@ -22,7 +23,7 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name="recruit_selection_applicant_initial"
-    ,catalog="hrm"
+    ,catalog="hrm", uniqueConstraints = @UniqueConstraint(columnNames = {"applicant_id", "hire_apply_id"})
 )
 public class RecruitSelectionApplicantInitial  implements java.io.Serializable {
 
@@ -33,7 +34,6 @@ public class RecruitSelectionApplicantInitial  implements java.io.Serializable {
      private RecruitHireApply recruitHireApply;
      private Date createdOn;
      private String createdBy;
-     private Set<RecruitSelectionApplicantSchedulleDetail> recruitSelectionApplicantSchedulleDetails = new HashSet<RecruitSelectionApplicantSchedulleDetail>(0);
 
     public RecruitSelectionApplicantInitial() {
     }
@@ -44,13 +44,12 @@ public class RecruitSelectionApplicantInitial  implements java.io.Serializable {
         this.recruitApplicant = recruitApplicant;
         this.recruitHireApply = recruitHireApply;
     }
-    public RecruitSelectionApplicantInitial(long id, RecruitApplicant recruitApplicant, RecruitHireApply recruitHireApply, Date createdOn, String createdBy, Set<RecruitSelectionApplicantSchedulleDetail> recruitSelectionApplicantSchedulleDetails) {
+    public RecruitSelectionApplicantInitial(long id, RecruitApplicant recruitApplicant, RecruitHireApply recruitHireApply, Date createdOn, String createdBy) {
        this.id = id;
        this.recruitApplicant = recruitApplicant;
        this.recruitHireApply = recruitHireApply;
        this.createdOn = createdOn;
        this.createdBy = createdBy;
-       this.recruitSelectionApplicantSchedulleDetails = recruitSelectionApplicantSchedulleDetails;
     }
    
      @Id 
@@ -114,18 +113,6 @@ public class RecruitSelectionApplicantInitial  implements java.io.Serializable {
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
-
-@OneToMany(fetch=FetchType.LAZY, mappedBy="recruitSelectionApplicantInitial")
-    public Set<RecruitSelectionApplicantSchedulleDetail> getRecruitSelectionApplicantSchedulleDetails() {
-        return this.recruitSelectionApplicantSchedulleDetails;
-    }
-    
-    public void setRecruitSelectionApplicantSchedulleDetails(Set<RecruitSelectionApplicantSchedulleDetail> recruitSelectionApplicantSchedulleDetails) {
-        this.recruitSelectionApplicantSchedulleDetails = recruitSelectionApplicantSchedulleDetails;
-    }
-
-
-
 
 }
 

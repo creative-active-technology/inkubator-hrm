@@ -1,6 +1,7 @@
 package com.inkubator.hrm.dao.impl;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,6 +28,7 @@ import com.inkubator.hrm.entity.RecruitSelectionApplicantInitial;
 import com.inkubator.hrm.web.model.ApplicantAgeViewModel;
 import com.inkubator.hrm.web.model.ApplicantViewModel;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
+import com.inkubator.hrm.web.search.RecruitSelectionApplicantRealizationSearchParameter;
 import com.inkubator.hrm.web.search.RecruitInitialSelectionSearchParameter;
 import com.inkubator.hrm.web.search.ReportSearchRecruitmentSearchParameter;
 
@@ -284,6 +286,18 @@ public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implement
         criteria.add(Restrictions.isNotNull("id"));
         
     }
+
+	@Override
+	public List<RecruitApplicant> getSelectionApplicantRealizationByParam( RecruitSelectionApplicantRealizationSearchParameter parameter, int firstResults, int maxResults, Order orderable) {
+
+		return new ArrayList<>();
+	}
+
+	@Override
+	public Long getTotalSelectionApplicantRealizationByParam(RecruitSelectionApplicantRealizationSearchParameter parameter) {
+
+		return 0L;
+	}
 
 	@Override
 	public RecruitApplicant getEntityByPkWithHireApplyDetail(Long id) {
