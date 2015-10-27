@@ -28,6 +28,7 @@ public class OfferingAndProhabitModel implements Serializable {
     private Boolean isActive;
     private Boolean IsSendingViaSMS;
     private EmpData empData;
+    private int leterTypeId;
     public Long getId() {
         return id;
     }
@@ -107,6 +108,14 @@ public class OfferingAndProhabitModel implements Serializable {
 
     public void setEmpData(EmpData empData) {
         this.empData = empData;
+    }
+
+    public int getLeterTypeId() {
+        return leterTypeId;
+    }
+
+    public void setLeterTypeId(int leterTypeId) {
+        this.leterTypeId = leterTypeId;
     }
 
 

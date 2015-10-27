@@ -34,7 +34,7 @@ public class RecruitLetters  implements java.io.Serializable {
      private EmpData empData;
      private Integer leterTypeId;
      private Boolean isActive;
-     private String recruitLetterscol;
+//     private String recruitLetterscol;
      private String code;
      private String formatNumber;
      private Integer expiryDays;
@@ -59,7 +59,7 @@ public class RecruitLetters  implements java.io.Serializable {
        this.empData = empData;
        this.leterTypeId = leterTypeId;
        this.isActive = isActive;
-       this.recruitLetterscol = recruitLetterscol;
+//       this.recruitLetterscol = recruitLetterscol;
        this.code = code;
        this.formatNumber = formatNumber;
        this.expiryDays = expiryDays;
@@ -126,14 +126,14 @@ public class RecruitLetters  implements java.io.Serializable {
     }
 
     
-    @Column(name="recruit_letterscol", length=45)
-    public String getRecruitLetterscol() {
-        return this.recruitLetterscol;
-    }
-    
-    public void setRecruitLetterscol(String recruitLetterscol) {
-        this.recruitLetterscol = recruitLetterscol;
-    }
+//    @Column(name="recruit_letterscol", length=45)
+//    public String getRecruitLetterscol() {
+//        return this.recruitLetterscol;
+//    }
+//    
+//    public void setRecruitLetterscol(String recruitLetterscol) {
+//        this.recruitLetterscol = recruitLetterscol;
+//    }
 
     
     @Column(name="code", unique=true, length=45)
