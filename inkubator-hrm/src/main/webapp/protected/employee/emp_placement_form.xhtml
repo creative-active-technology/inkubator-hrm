@@ -202,7 +202,7 @@
                                              styleClass="isitext_hrm" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}" update="empDataFormId,:growlEmpDataFormId"
                                              icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="empDataFormId" action="#{jabatanFormController.doReset()}"
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="empDataFormId" immediate="true" action="#{empDataFormController.doReset()}"
                                              icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
                                 <p:resetInput target="empDataFormId" />  
                             </p:commandButton>

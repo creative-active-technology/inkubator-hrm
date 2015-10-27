@@ -77,6 +77,7 @@ public class EmpDataFormController extends BaseController {
     @ManagedProperty(value = "#{golonganJabatanService}")
     private GolonganJabatanService golonganJabatanService;
     private String formData;
+    private String empId;
 //
 //    public void setHrmUserService(HrmUserService hrmUserService) {
 //        this.hrmUserService = hrmUserService;
@@ -90,7 +91,7 @@ public class EmpDataFormController extends BaseController {
         try {
             super.initialization();
             empDataModel = new EmpDataModel();
-            String empId = FacesUtil.getRequestParameter("execution");
+            empId = FacesUtil.getRequestParameter("execution");
             List<GolonganJabatan> golJabatans = golonganJabatanService.getAllWithDetail();
             formData = FacesUtil.getRequestParameter("from");
             for (GolonganJabatan golonganJabatan : golJabatans) {
@@ -226,8 +227,16 @@ public class EmpDataFormController extends BaseController {
     public void setMapPaySalary(Map<String, Long> mapPaySalary) {
         this.mapPaySalary = mapPaySalary;
     }
+    
+    public String getEmpId() {
+		return empId;
+	}
 
-    public void doChangeDepartement() {
+	public void setEmpId(String empId) {
+		this.empId = empId;
+	}
+
+	public void doChangeDepartement() {
         try {
             List<Jabatan> jabatanas = jabatanService.getByDepartementId(empDataModel.getDepartementId());
             mapJabatans = new HashMap();
@@ -393,5 +402,45 @@ public class EmpDataFormController extends BaseController {
         empDataService = null;
         golonganJabatanService = null;
 
+    }
+    
+    public void doReset() throws  Exception {
+    	
+    	if(empId == null){
+    		isEdit = Boolean.FALSE;
+    		empDataModel = new EmpDataModel();
+    	} else{
+    		isEdit = Boolean.TRUE;
+    		EmpData empData = empDataService.getByEmpIdWithDetail(Long.parseLong(empId.substring(1)));
+            String basicSalaryDecript = empData.getBasicSalaryDecrypted();
+            empDataModel.setBasicSalary(new BigDecimal(basicSalaryDecript));
+            empDataModel.setBioDataId(empData.getBioData().getId());
+            empDataModel.setBioDataName(empData.getBioData().getFullName());
+            empDataModel.setBirthDate(empData.getBioData().getDateOfBirth());
+            empDataModel.setDepartementId(empData.getJabatanByJabatanId().getDepartment().getId());
+            empDataModel.setEmployeeTypeId(empData.getEmployeeType().getId());
+            empDataModel.setGolonganJabatan(empData.getGolonganJabatan().getId());
+            empDataModel.setHeatlyPremi(empData.getHeatlyPremi());
+            empDataModel.setId(empData.getId());
+            empDataModel.setInsentifStatus(empData.getInsentifStatus());
+            empDataModel.setIsFinger(empData.getIsFinger());
+            empDataModel.setJabatanByJabatanGajiId(empData.getJabatanByJabatanGajiId().getId());
+            empDataModel.setJabatanByJabatanId(empData.getJabatanByJabatanId().getId());
+            empDataModel.setJoinDate(empData.getJoinDate());
+            empDataModel.setNik(empData.getNik());
+            empDataModel.setPaySalaryGradeId(empData.getPaySalaryGrade().getId());
+            empDataModel.setPpip(empData.getPpip());
+            empDataModel.setPpmp(empData.getPpmp());
+            empDataModel.setPtkpNumber(empData.getPtkpNumber());
+            empDataModel.setPtkpStatus(empData.getPtkpStatus());
+            empDataModel.setNoSk(empData.getNoSk());
+            if (empData.getWtGroupWorking() != null) {
+                empDataModel.setWorkingGroupId(empData.getWtGroupWorking().getId());
+            }
+            if (empData.getRotasiDate() != null) {
+                empDataModel.setRotasiDate(empData.getRotasiDate());
+            }
+    	} 
+    	
     }
 }
