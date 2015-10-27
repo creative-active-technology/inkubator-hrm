@@ -3,13 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.RecruitSelectionApplicantInitialDao;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantInitial;
-
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -25,5 +23,4 @@ public class RecruitSelectionApplicantInitialDaoImpl extends IDAOImpl<RecruitSel
     public Class<RecruitSelectionApplicantInitial> getEntityClass() {
         return RecruitSelectionApplicantInitial.class;
     }
-
 }
