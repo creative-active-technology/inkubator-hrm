@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.RecruitApplicantDao;
 import com.inkubator.hrm.dao.RecruitHireApplyDao;
@@ -47,7 +48,7 @@ public class RecruitSelectionApplicantInitialServiceImpl extends IServiceImpl im
     	for(Long recruitApplicantId : listApplicantId){
     		RecruitApplicant recruitApplicant = recruitApplicantDao.getEntityByPkWithHireApplyDetail(recruitApplicantId);
     		 dataToSave = new RecruitSelectionApplicantInitial();
-    		 dataToSave.setId(new RecruitSelectionApplicantInitialId(recruitApplicant.getId(), recruitApplicant.getRecruitVacancyAdvertisementDetail().getHireApply().getId()));
+    		 dataToSave.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
     		 dataToSave.setRecruitApplicant(recruitApplicant);
     		 dataToSave.setRecruitHireApply(recruitApplicant.getRecruitVacancyAdvertisementDetail().getHireApply());
     		 dataToSave.setCreatedBy(UserInfoUtil.getUserName());

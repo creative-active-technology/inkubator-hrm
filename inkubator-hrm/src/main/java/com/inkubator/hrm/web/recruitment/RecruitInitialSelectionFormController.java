@@ -74,7 +74,7 @@ public class RecruitInitialSelectionFormController extends BaseController {
         try{
         	recruitInitialSelectionModel = new RecruitInitialSelectionModel();
         	searchParameter = new RecruitInitialSelectionSearchParameter();
-            List<RecruitMppApply> listRecruitHireApply = new ArrayList<RecruitMppApply>();
+        	List<RecruitMppApply> listRecruitHireApply = new ArrayList<RecruitMppApply>();
             listRecruitHireApply = recruitMppApplyService.getAllData();
             for(RecruitMppApply recruitMppApply : listRecruitHireApply){
             	dropDownRecruitHireApply.put(recruitMppApply.getRecruitMppApplyName(), recruitMppApply.getId());
@@ -114,7 +114,6 @@ public class RecruitInitialSelectionFormController extends BaseController {
     
     public void doCheckOrUnCheck(Boolean isCheck, Boolean isUncheck) throws Exception{
 
-    	System.out.println(recruitInitialSelectionModel.getSelectedIds().size());
     	List<RecruitApplicant> listDataApplicant = recruitApplicantService.getAllData();
     	Map<Long, Boolean> selectedIds =  new HashMap<Long, Boolean>();
     	for(RecruitApplicant recruitApplicant : listDataApplicant){
@@ -131,10 +130,10 @@ public class RecruitInitialSelectionFormController extends BaseController {
     
     public void doSave() throws Exception{
     	try {
-            
     		recruitSelectionApplicantInitialService.save(recruitInitialSelectionModel.getListRecruitApplicantId());
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            /*lazyDataModel = null;*/
     } catch (Exception ex) {
         LOGGER.error("Error", ex);
     }
@@ -142,6 +141,7 @@ public class RecruitInitialSelectionFormController extends BaseController {
     }
     
     public void doChangeJabatanDropDown() throws Exception{
+    	dropDownJabatan.clear();
     	List<RecruitMppApplyDetail> listRecruitMppApplyDetail = recruitMppApplyDetailService.getAllDataJabatanByRecruitMppApplyId(searchParameter.getRecruitMppApplyId());
     	for(RecruitMppApplyDetail recruitMppApplyDetail : listRecruitMppApplyDetail){
     		dropDownJabatan.put(recruitMppApplyDetail.getJabatan().getName(), recruitMppApplyDetail.getJabatan().getId());
@@ -149,7 +149,6 @@ public class RecruitInitialSelectionFormController extends BaseController {
     }
     
     public void doSearch(){
-    	System.out.println(searchParameter.getJabatanId() + " jabatanyeuhh");
     	lazyDataModel = null;
     }
     

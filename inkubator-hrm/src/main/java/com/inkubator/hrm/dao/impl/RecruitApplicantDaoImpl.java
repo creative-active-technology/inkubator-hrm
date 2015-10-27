@@ -82,15 +82,17 @@ public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implement
 		DetachedCriteria listRecruitApplicant = DetachedCriteria.forClass(RecruitSelectionApplicantInitial.class)
                 .setProjection(Property.forName("recruitApplicant.id"));
 		criteria.add(Property.forName("id").notIn(listRecruitApplicant));
-		
 		criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
 		criteria.createAlias("educationLevel", "educationLevel", JoinType.LEFT_OUTER_JOIN);
 		criteria.createAlias("recruitVacancyAdvertisementDetail", "recruitVacancyAdvertisementDetail", JoinType.LEFT_OUTER_JOIN);
 		criteria.createAlias("recruitVacancyAdvertisementDetail.hireApply", "hireApply", JoinType.LEFT_OUTER_JOIN);
 		criteria.createAlias("hireApply.jabatan", "jabatan", JoinType.LEFT_OUTER_JOIN);
-		if(parameter.getJabatanId() != null){
-			System.out.println(parameter.getJabatanId() + " dari dao");
+		if(parameter.getJabatanId() != null && parameter.getJabatanId() != 0){
 			criteria.add(Restrictions.eq("jabatan.id", parameter.getJabatanId()));
+		}
+		
+		if(parameter.getKandidatId() != null && parameter.getKandidatId() != 0){
+			criteria.add(Restrictions.eq("careerCandidate", parameter.getKandidatId()));
 		}
 	}
 	
