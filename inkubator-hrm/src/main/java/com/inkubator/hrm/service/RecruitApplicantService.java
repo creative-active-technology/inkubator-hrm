@@ -10,6 +10,7 @@ import com.inkubator.hrm.web.model.ApplicantModel;
 import com.inkubator.hrm.web.model.ApplicantStatisticViewModel;
 import com.inkubator.hrm.web.model.ApplicantUploadBatchModel;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
+import com.inkubator.hrm.web.search.RecruitInitialSelectionSearchParameter;
 import com.inkubator.hrm.web.search.ReportSearchRecruitmentSearchParameter;
 
 /**
@@ -40,4 +41,7 @@ public interface RecruitApplicantService extends IService<RecruitApplicant> {
         
     public Long getTotalByParamforReportSearchRecruitment(ReportSearchRecruitmentSearchParameter searchParameter);
     
+    public List<RecruitApplicant> getAllDataByParamWithDetail(RecruitInitialSelectionSearchParameter parameter, int firstResults, int maxResults, Order orderable) throws Exception;
+
+	public Long getTotalDataByParamWithDetail(RecruitInitialSelectionSearchParameter parameter) throws Exception;
 }

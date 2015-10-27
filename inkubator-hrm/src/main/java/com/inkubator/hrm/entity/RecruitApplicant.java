@@ -19,6 +19,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Formula;
+
 /**
  *
  * @author rizkykojek
@@ -53,11 +55,12 @@ public class RecruitApplicant implements Serializable {
 	private RecruitVacancyAdvertisementDetail recruitVacancyAdvertisementDetail;
 	private String uploadPath;
 	private Date createdOn;
-    private String createdBy;
-    private String updatedBy;    
-    private Date updatedOn;
-    private Set<RecruitApplicantSpecList> recruitApplicantSpecLists = new HashSet<RecruitApplicantSpecList>();
-    private Set<RecruitSelectionApplicantInitial> recruitSelectionApplicantInitials = new HashSet<RecruitSelectionApplicantInitial>(0);
+        private String createdBy;
+        private String updatedBy;    
+        private Date updatedOn;
+        private Set<RecruitApplicantSpecList> recruitApplicantSpecLists = new HashSet<RecruitApplicantSpecList>();
+        private Integer experience;
+        private Set<RecruitSelectionApplicantInitial> recruitSelectionApplicantInitials = new HashSet<RecruitSelectionApplicantInitial>(0);
     
     public RecruitApplicant(){
     	
@@ -346,6 +349,15 @@ public class RecruitApplicant implements Serializable {
 
 	public void setWorkingExperiences(Integer workingExperiences) {
             this.workingExperiences = workingExperiences;
+	}
+
+	@Formula(value = "last_work_end - last_work_since")
+	public Integer getExperience() {
+		return experience;
+	}
+
+	public void setExperience(Integer experience) {
+		this.experience = experience;
 	}    
 	
 	
