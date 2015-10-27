@@ -331,5 +331,11 @@ public class RecruitMppApplyDetailServiceImpl extends IServiceImpl implements Re
 	public Boolean isJabatanMppExistOnSelectedMppPeriod(Long jabatanId,	Long recruitMppPeriodId) throws Exception {
 		return recruitMppApplyDetailDao.isJabatanMppExistOnSelectedMppPeriod(jabatanId, recruitMppPeriodId);
 	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RecruitMppApplyDetail> getAllDataJabatanByRecruitMppApplyId(Long recruitMppApplyId) throws Exception {
+		return recruitMppApplyDetailDao.getAllDataJabatanByRecruitMppApplyId(recruitMppApplyId);
+	}
     
 }

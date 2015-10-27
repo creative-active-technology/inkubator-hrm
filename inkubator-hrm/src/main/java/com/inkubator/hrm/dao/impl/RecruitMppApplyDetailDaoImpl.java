@@ -222,4 +222,13 @@ public class RecruitMppApplyDetailDaoImpl extends IDAOImpl<RecruitMppApplyDetail
 		return criteria.list().size() > 0;
 	}
 
+	@Override
+	public List<RecruitMppApplyDetail> getAllDataJabatanByRecruitMppApplyId(Long recruitMppApplyId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("recruitMppApply", "recruitMppApply", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("recruitMppApply.id", recruitMppApplyId));
+		criteria.setFetchMode("jabatan", FetchMode.JOIN);
+		return criteria.list();
+	}
+
 }
