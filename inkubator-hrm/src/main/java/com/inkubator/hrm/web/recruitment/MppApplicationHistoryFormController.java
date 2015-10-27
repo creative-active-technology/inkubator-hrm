@@ -7,28 +7,16 @@ package com.inkubator.hrm.web.recruitment;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.Currency;
-import com.inkubator.hrm.entity.LoanNewType;
-import com.inkubator.hrm.entity.LoanType;
 import com.inkubator.hrm.entity.RecruitMppApplyDetail;
 import com.inkubator.hrm.entity.RecruitMppApplyDetailTime;
-import com.inkubator.hrm.service.CurrencyService;
 import com.inkubator.hrm.service.EmpDataService;
-import com.inkubator.hrm.service.LoanNewTypeService;
-import com.inkubator.hrm.service.LoanTypeService;
 import com.inkubator.hrm.service.RecruitMppApplyDetailService;
 import com.inkubator.hrm.service.RecruitMppApplyDetailTimeService;
-import com.inkubator.hrm.web.model.LoanNewTypeModel;
-import com.inkubator.hrm.web.model.LoanTypeModel;
 import com.inkubator.hrm.web.model.MppApplicationHistoryFormModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;

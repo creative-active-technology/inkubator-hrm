@@ -6,12 +6,20 @@
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.RecruitLettersDao;
 import com.inkubator.hrm.entity.RecruitLetters;
 import com.inkubator.hrm.service.RecruitLettersService;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -19,7 +27,10 @@ import org.springframework.stereotype.Service;
  */
 @Service(value = "recruitLettersService")
 @Lazy
-public class RecruitLettersServiceImpl extends IServiceImpl implements RecruitLettersService{
+public class RecruitLettersServiceImpl extends IServiceImpl implements RecruitLettersService {
+
+    @Autowired
+    private RecruitLettersDao recruitLettersDao;
 
     @Override
     public RecruitLetters getEntiyByPK(String id) throws Exception {
@@ -37,8 +48,15 @@ public class RecruitLettersServiceImpl extends IServiceImpl implements RecruitLe
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(RecruitLetters entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        long totalDuplicates = recruitLettersDao.getTotalByCode(entity.getCode());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("race.error_duplicate_race_code");
+        }
+        entity.setCreatedBy(UserInfoUtil.getUserName());
+        entity.setCreatedOn(new Date());
+        recruitLettersDao.save(entity);
     }
 
     @Override
@@ -180,5 +198,11 @@ public class RecruitLettersServiceImpl extends IServiceImpl implements RecruitLe
     public List<RecruitLetters> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public RecruitLetters getByPkWithDetail(long id) throws Exception {
+        return recruitLettersDao.getByPkWithDetail(id);
+    }
+
 }

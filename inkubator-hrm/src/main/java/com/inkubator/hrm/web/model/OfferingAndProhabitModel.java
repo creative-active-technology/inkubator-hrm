@@ -21,8 +21,8 @@ public class OfferingAndProhabitModel implements Serializable {
     private Long id;
     private List<RecruitSelectionType> listSelectionTypes;
     private String code;
-    private String letterNumber;
-    private int expiredTime;
+    private String formatLetterNumber;
+    private int expiryDays;
     private String content;
     private List<RecruitCommChannels> lsitSendingType;
     private Boolean isActive;
@@ -53,20 +53,20 @@ public class OfferingAndProhabitModel implements Serializable {
         this.code = code;
     }
 
-    public String getLetterNumber() {
-        return letterNumber;
+    public String getFormatLetterNumber() {
+        return formatLetterNumber;
     }
 
-    public void setLetterNumber(String letterNumber) {
-        this.letterNumber = letterNumber;
+    public void setFormatLetterNumber(String formatLetterNumber) {
+        this.formatLetterNumber = formatLetterNumber;
     }
 
-    public int getExpiredTime() {
-        return expiredTime;
+    public int getExpiryDays() {
+        return expiryDays;
     }
 
-    public void setExpiredTime(int expiredTime) {
-        this.expiredTime = expiredTime;
+    public void setExpiryDays(int expiryDays) {
+        this.expiryDays = expiryDays;
     }
 
     public String getContent() {
