@@ -13,5 +13,5 @@ import com.inkubator.hrm.entity.RecruitLetters;
  * @author denifahri
  */
 public interface RecruitLettersDao extends IDAO<RecruitLetters>{
-    
+       public RecruitLetters getByPkWithDetail(long id) ;
 }

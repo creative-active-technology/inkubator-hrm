@@ -26,7 +26,7 @@ import javax.persistence.UniqueConstraint;
 public class RecruitCommChannels  implements java.io.Serializable {
 
 
-     private int id;
+     private long id;
      private String channelName;
      private Date createdOn;
      private String createdBy;
@@ -36,10 +36,10 @@ public class RecruitCommChannels  implements java.io.Serializable {
     }
 
 	
-    public RecruitCommChannels(int id) {
+    public RecruitCommChannels(long id) {
         this.id = id;
     }
-    public RecruitCommChannels(int id, String channelName, Date createdOn, String createdBy, Set<RecruitLetterComChannel> recruitLetterComChannels) {
+    public RecruitCommChannels(long id, String channelName, Date createdOn, String createdBy, Set<RecruitLetterComChannel> recruitLetterComChannels) {
        this.id = id;
        this.channelName = channelName;
        this.createdOn = createdOn;
@@ -51,11 +51,11 @@ public class RecruitCommChannels  implements java.io.Serializable {
 
     
     @Column(name="id", unique=true, nullable=false)
-    public int getId() {
+    public long getId() {
         return this.id;
     }
     
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -97,7 +97,6 @@ public class RecruitCommChannels  implements java.io.Serializable {
     public void setRecruitLetterComChannels(Set<RecruitLetterComChannel> recruitLetterComChannels) {
         this.recruitLetterComChannels = recruitLetterComChannels;
     }
-
 
 
 

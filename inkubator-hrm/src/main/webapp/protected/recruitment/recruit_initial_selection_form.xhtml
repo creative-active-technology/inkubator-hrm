@@ -38,7 +38,7 @@
                                     <p:outputLabel  value="#{appmsg['recruitSelectionVacancy.rekrutment']}"  for="recruitHireApplyId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="recruitHireApplyId" value="#{recruitInitialSelectionFormController.searchParameter.recruitMppApplyId}" style="width: 150px;margin-right: 3px" required="true">
+                                    <p:selectOneMenu id="recruitHireApplyId" value="#{recruitInitialSelectionFormController.searchParameter.recruitMppApplyId}" style="width: 150px;margin-right: 3px">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{recruitInitialSelectionFormController.dropDownRecruitHireApply}"/>
                                     	<p:ajax update="jabatanId" process="@this" listener="#{recruitInitialSelectionFormController.doChangeJabatanDropDown()}"/>
@@ -52,7 +52,7 @@
                                     <p:outputLabel  value="#{appmsg['companyRelation.jabatan']}"  for="jabatanId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="jabatanId" value="#{recruitInitialSelectionFormController.searchParameter.jabatanId}" style="width: 150px;margin-right: 3px" required="true">
+                                    <p:selectOneMenu id="jabatanId" value="#{recruitInitialSelectionFormController.searchParameter.jabatanId}" style="width: 150px;margin-right: 3px">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{recruitInitialSelectionFormController.dropDownJabatan}"/>
                                     </p:selectOneMenu>
@@ -64,9 +64,8 @@
                                     <p:outputLabel  value="#{appmsg['recruitInitialSelection.candidate']}"  for="kandidatId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="kandidatId" value="#{recruitInitialSelectionFormController.searchParameter.kandidatId}" style="width: 150px;margin-right: 3px" required="true">
+                                    <p:selectOneMenu id="kandidatId" value="#{recruitInitialSelectionFormController.searchParameter.kandidatId}" style="width: 150px;margin-right: 3px">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="Semua" itemValue="2"/>
                                         <f:selectItem itemLabel="Internal" itemValue="1"/>
                                         <f:selectItem itemLabel="Eksternal" itemValue="0"/>
                                     </p:selectOneMenu>
@@ -96,8 +95,7 @@
                                              styleClass="isitext_hrm" immediate="true" rendered="#{recruitInitialSelectionFormController.isCheckAll}"
                                              style="margin-right: 5px" label="Uncheck All" update="formId"
                                              icon="ui-icon-disk" title="Uncheck All"/>
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{religionViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
-                                </h:panelGrid>
+                                    </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
                         <p:dataTable  var="data"  value="#{recruitInitialSelectionFormController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
@@ -127,15 +125,15 @@
                                 	<f:converter converterId="recruitApplicantInternalOrExternalConverter"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="#{data.bioData.dateOfBirth}" style="width: 10%">
+                            <p:column sortBy="#{data.bioData.dateOfBirth}" style="width: 8%; text-align: center">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_date']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{data.bioData.dateOfBirth}" >
-                                	<f:convertDateTime pattern="dd-MMMM-yyyy"/>
+                                	<f:convertDateTime pattern="dd-MM-yyyy"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="#{data.bioData.gender}" style="width: 10%">
+                            <p:column sortBy="#{data.bioData.gender}" style="width: 8%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.gender']}"/>
                                 </f:facet>
@@ -161,13 +159,13 @@
                                 </f:facet>
                                 <h:outputLabel value="#{data.educationLevel.name}" />
                             </p:column>
-                            <p:column sortBy="#{data.score}" style="width: 8%">
+                            <p:column sortBy="#{data.score}" style="width: 8%; text-align: center">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['educationhistory.score']} / #{appmsg['global.scale']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{data.score} / #{data.scale}" />
                             </p:column>
-                            <p:column style="width: 5%">
+                            <p:column style="width: 6%">
 					            <f:facet name="header">
                                      <h:outputText value="#{appmsg['global.action']}" />
 					            </f:facet>
@@ -190,11 +188,11 @@
                         <div style="margin-bottom: 5px">
                             <p:commandButton value="#{appmsg['global.save']}" ajax="true" action="#{recruitInitialSelectionFormController.doSave()}"
                                              styleClass="isitext_hrm" 
-                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="formId"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" update="formId, growlId"
                                              icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
                             
-                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{recruitmentTypeFormController.doBack()}"
-                                             styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{religionViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                
                         </div>
                     </div>
                 </h:form>

@@ -46,7 +46,6 @@ public class RecruitInitialLazyDataModel extends LazyDataModel<RecruitApplicant>
             LOGGER.error("Failed Load Lazy data Model");
             LOGGER.error("Error = ", ex);
         }
-
         setPageSize(pageSize);
         setRowCount(total);
         return list;
