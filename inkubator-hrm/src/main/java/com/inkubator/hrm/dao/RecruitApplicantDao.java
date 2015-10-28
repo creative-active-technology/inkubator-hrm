@@ -9,7 +9,7 @@ import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.web.model.ApplicantAgeViewModel;
 import com.inkubator.hrm.web.model.ApplicantViewModel;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
-import com.inkubator.hrm.web.search.RecruitSelectionApplicantRealizationSearchParameter;
+import com.inkubator.hrm.web.search.SelectionApplicantRealizationSearchParameter;
 import com.inkubator.hrm.web.search.RecruitInitialSelectionSearchParameter;
 import com.inkubator.hrm.web.search.ReportSearchRecruitmentSearchParameter;
 
@@ -47,8 +47,8 @@ public interface RecruitApplicantDao extends IDAO<RecruitApplicant> {
         
     public Long getTotalByParamforReportSearchRecruitment(ReportSearchRecruitmentSearchParameter searchParameter);
     
-    public List<RecruitApplicant> getSelectionApplicantRealizationByParam(RecruitSelectionApplicantRealizationSearchParameter parameter, int firstResults, int maxResults, Order orderable);
+    public List<RecruitApplicant> getSelectionApplicantRealizationByParam(SelectionApplicantRealizationSearchParameter parameter, int firstResults, int maxResults, Order orderable);
 
-	public Long getTotalSelectionApplicantRealizationByParam(RecruitSelectionApplicantRealizationSearchParameter parameter);
+	public Long getTotalSelectionApplicantRealizationByParam(SelectionApplicantRealizationSearchParameter parameter);
 }
  

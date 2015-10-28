@@ -28,7 +28,7 @@ import com.inkubator.hrm.entity.RecruitSelectionApplicantInitial;
 import com.inkubator.hrm.web.model.ApplicantAgeViewModel;
 import com.inkubator.hrm.web.model.ApplicantViewModel;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
-import com.inkubator.hrm.web.search.RecruitSelectionApplicantRealizationSearchParameter;
+import com.inkubator.hrm.web.search.SelectionApplicantRealizationSearchParameter;
 import com.inkubator.hrm.web.search.RecruitInitialSelectionSearchParameter;
 import com.inkubator.hrm.web.search.ReportSearchRecruitmentSearchParameter;
 
@@ -286,17 +286,47 @@ public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implement
     }
 
 	@Override
-	public List<RecruitApplicant> getSelectionApplicantRealizationByParam( RecruitSelectionApplicantRealizationSearchParameter parameter, int firstResults, int maxResults, Order orderable) {
-
-		return new ArrayList<>();
+	public List<RecruitApplicant> getSelectionApplicantRealizationByParam(SelectionApplicantRealizationSearchParameter parameter, int firstResults, int maxResults, Order orderable) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		this.doSearchSelectionApplicantRealizationByParam(parameter, criteria);
+        criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResults);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
 	}
 
 	@Override
-	public Long getTotalSelectionApplicantRealizationByParam(RecruitSelectionApplicantRealizationSearchParameter parameter) {
-
-		return 0L;
+	public Long getTotalSelectionApplicantRealizationByParam(SelectionApplicantRealizationSearchParameter parameter) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		this.doSearchSelectionApplicantRealizationByParam(parameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 
+	public void doSearchSelectionApplicantRealizationByParam(SelectionApplicantRealizationSearchParameter searchParameter, Criteria criteria){
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("recruitSelectionApplicantInitials", "recruitSelectionApplicantInitials", JoinType.INNER_JOIN);
+        criteria.createAlias("recruitSelectionApplicantInitials.recruitHireApply", "recruitHireApply", JoinType.INNER_JOIN);
+        criteria.createAlias("recruitHireApply.jabatan", "jabatanApply", JoinType.INNER_JOIN);
+        
+        if(StringUtils.isEmpty(searchParameter.getName())){
+            criteria.add(Restrictions.like("bioData.combineName", searchParameter.getName()));
+        }
+        
+        if(StringUtils.isEmpty(searchParameter.getPhone())){
+            criteria.add(Restrictions.like("bioData.mobilePhone", searchParameter.getPhone()));
+        }
+        
+        if(StringUtils.isEmpty(searchParameter.getJabatanApply())){
+            criteria.add(Restrictions.like("jabatanApply.name", searchParameter.getJabatanApply()));
+        }
+        
+        if(StringUtils.isEmpty(searchParameter.getJabatanLast())){
+            criteria.add(Restrictions.like("lastJabatan", searchParameter.getJabatanLast()));
+        }
+        
+        criteria.add(Restrictions.isNotNull("id"));
+        
+    }
 	@Override
 	public RecruitApplicant getEntityByPkWithHireApplyDetail(Long id) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
