@@ -7,12 +7,13 @@ import org.hibernate.criterion.Order;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.web.model.ApplicantModel;
+import com.inkubator.hrm.web.model.ApplicantRealizationViewModel;
 import com.inkubator.hrm.web.model.ApplicantStatisticViewModel;
 import com.inkubator.hrm.web.model.ApplicantUploadBatchModel;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
 import com.inkubator.hrm.web.search.RecruitInitialSelectionSearchParameter;
-import com.inkubator.hrm.web.search.SelectionApplicantRealizationSearchParameter;
 import com.inkubator.hrm.web.search.ReportSearchRecruitmentSearchParameter;
+import com.inkubator.hrm.web.search.SelectionApplicantRealizationSearchParameter;
 
 /**
  *
@@ -46,7 +47,7 @@ public interface RecruitApplicantService extends IService<RecruitApplicant> {
 
 	public Long getTotalDataByParamWithDetail(RecruitInitialSelectionSearchParameter parameter) throws Exception;
 	
-	public List<RecruitApplicant> getSelectionApplicantRealizationByParam(SelectionApplicantRealizationSearchParameter parameter, int firstResults, int maxResults, Order orderable);
+	public List<ApplicantRealizationViewModel> getSelectionApplicantRealizationByParam(SelectionApplicantRealizationSearchParameter parameter, int firstResults, int maxResults, Order orderable);
 
 	public Long getTotalSelectionApplicantRealizationByParam(SelectionApplicantRealizationSearchParameter parameter);
 	

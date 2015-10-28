@@ -11,6 +11,7 @@ import org.primefaces.model.LazyDataModel;
 import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.service.RecruitApplicantService;
 import com.inkubator.hrm.web.lazymodel.SelectionApplicantRealizationLazyDataModel;
+import com.inkubator.hrm.web.model.ApplicantRealizationViewModel;
 import com.inkubator.hrm.web.search.SelectionApplicantRealizationSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 
@@ -23,7 +24,7 @@ import com.inkubator.webcore.controller.BaseController;
 public class SelectionApplicantRealizationViewController extends BaseController {
 
     private SelectionApplicantRealizationSearchParameter parameter;
-    private LazyDataModel<RecruitApplicant> lazyData;
+    private LazyDataModel<ApplicantRealizationViewModel> lazyData;
     private RecruitApplicant selected;
     @ManagedProperty(value = "#{recruitApplicantService}")
     private RecruitApplicantService recruitApplicantService;
@@ -67,14 +68,14 @@ public class SelectionApplicantRealizationViewController extends BaseController 
 		this.parameter = parameter;
 	}
 
-	public LazyDataModel<RecruitApplicant> getLazyData() {
+	public LazyDataModel<ApplicantRealizationViewModel> getLazyData() {
 		if(lazyData == null){
 			lazyData = new SelectionApplicantRealizationLazyDataModel(parameter, recruitApplicantService);
 		}
 		return lazyData;
 	}
 
-	public void setLazyData(LazyDataModel<RecruitApplicant> lazyData) {
+	public void setLazyData(LazyDataModel<ApplicantRealizationViewModel> lazyData) {
 		this.lazyData = lazyData;
 	}
 

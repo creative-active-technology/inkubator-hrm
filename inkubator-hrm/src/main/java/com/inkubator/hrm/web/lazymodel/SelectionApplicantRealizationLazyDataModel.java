@@ -10,8 +10,8 @@ import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
-import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.service.RecruitApplicantService;
+import com.inkubator.hrm.web.model.ApplicantRealizationViewModel;
 import com.inkubator.hrm.web.search.SelectionApplicantRealizationSearchParameter;
 
 
@@ -19,12 +19,12 @@ import com.inkubator.hrm.web.search.SelectionApplicantRealizationSearchParameter
 *
 * @author rizkykojek
 */
-public class SelectionApplicantRealizationLazyDataModel extends LazyDataModel<RecruitApplicant> implements Serializable {
+public class SelectionApplicantRealizationLazyDataModel extends LazyDataModel<ApplicantRealizationViewModel> implements Serializable {
 
 	private static final Logger LOGGER = Logger.getLogger(SelectionApplicantRealizationLazyDataModel.class);
     private final SelectionApplicantRealizationSearchParameter parameter;
     private final RecruitApplicantService recruitApplicantService;
-    private List<RecruitApplicant> list = new ArrayList<>();
+    private List<ApplicantRealizationViewModel> list = new ArrayList<>();
     private Integer total;
 
     public SelectionApplicantRealizationLazyDataModel(SelectionApplicantRealizationSearchParameter parameter, RecruitApplicantService recruitApplicantService) {
@@ -33,14 +33,14 @@ public class SelectionApplicantRealizationLazyDataModel extends LazyDataModel<Re
     }
 
     @Override
-    public List<RecruitApplicant> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+    public List<ApplicantRealizationViewModel> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");        
         try {
         	Order orderable = null;
 	        if (sortField != null) {
 	            orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
 	        } else {
-	        	orderable = Order.desc("createdOn");
+	        	orderable = Order.desc("name");
 	        }
 	        
 	        list = recruitApplicantService.getSelectionApplicantRealizationByParam(parameter, first, pageSize, orderable);
@@ -58,14 +58,14 @@ public class SelectionApplicantRealizationLazyDataModel extends LazyDataModel<Re
     }
 
     @Override
-    public Object getRowKey(RecruitApplicant entity) {
-        return entity.getId();
+    public Object getRowKey(ApplicantRealizationViewModel entity) {
+        return entity.getApplicantId();
     }
 
     @Override
-    public RecruitApplicant getRowData(String id) {
-        for (RecruitApplicant entity : list) {
-            if (id.equals(String.valueOf(entity.getId()))) {
+    public ApplicantRealizationViewModel getRowData(String id) {
+        for (ApplicantRealizationViewModel entity : list) {
+            if (id.equals(String.valueOf(entity.getApplicantId()))) {
                 return entity;
             }
         }

@@ -69,6 +69,7 @@ import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.service.RecruitApplicantService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.ApplicantModel;
+import com.inkubator.hrm.web.model.ApplicantRealizationViewModel;
 import com.inkubator.hrm.web.model.ApplicantStatisticViewModel;
 import com.inkubator.hrm.web.model.ApplicantUploadBatchModel;
 import com.inkubator.hrm.web.model.ApplicantViewModel;
@@ -76,13 +77,12 @@ import com.inkubator.hrm.web.model.RadarChartData;
 import com.inkubator.hrm.web.model.RadarDataset;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
 import com.inkubator.hrm.web.search.RecruitInitialSelectionSearchParameter;
+import com.inkubator.hrm.web.search.ReportSearchRecruitmentSearchParameter;
 import com.inkubator.hrm.web.search.SelectionApplicantRealizationSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
 
 import ch.lambdaj.Lambda;
-
-import com.inkubator.hrm.web.search.ReportSearchRecruitmentSearchParameter;
 
 /**
  *
@@ -771,7 +771,7 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<RecruitApplicant> getSelectionApplicantRealizationByParam(SelectionApplicantRealizationSearchParameter parameter, int firstResults, int maxResults, Order orderable) {
+	public List<ApplicantRealizationViewModel> getSelectionApplicantRealizationByParam(SelectionApplicantRealizationSearchParameter parameter, int firstResults, int maxResults, Order orderable) {
 		
 		return recruitApplicantDao.getSelectionApplicantRealizationByParam(parameter, firstResults, maxResults, orderable);
 	}

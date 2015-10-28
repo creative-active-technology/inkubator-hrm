@@ -71,18 +71,30 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="#{data.bioData.firstName}"  style="width: 10%">
+                            <p:column sortBy="#{data.name}"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.bioData.fullName}"/>
+                                <h:outputLabel value="#{data.name}"/>
                             </p:column>
-                            <p:column sortBy="#{data.bioData.mobilePhone}"  style="width: 10%">
+                            <p:column sortBy="#{data.phone}"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.phone']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.bioData.mobilePhone}"/>
-                            </p:column> 
+                                <h:outputLabel value="#{data.phone}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.positionApply}"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['applicant_realization.apply_position']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.positionApply}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.positionLast}"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['applicant_realization.last_position']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.positionLast}"/>
+                            </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.evaluate']}" label="#{appmsg['global.evaluate']}" 
                                 				 style="font-size: 10px!important" action="#{selectionApplicantRealizationViewController.doEvaluate()}">                        

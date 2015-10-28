@@ -7,11 +7,12 @@ import org.hibernate.criterion.Order;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.web.model.ApplicantAgeViewModel;
+import com.inkubator.hrm.web.model.ApplicantRealizationViewModel;
 import com.inkubator.hrm.web.model.ApplicantViewModel;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
-import com.inkubator.hrm.web.search.SelectionApplicantRealizationSearchParameter;
 import com.inkubator.hrm.web.search.RecruitInitialSelectionSearchParameter;
 import com.inkubator.hrm.web.search.ReportSearchRecruitmentSearchParameter;
+import com.inkubator.hrm.web.search.SelectionApplicantRealizationSearchParameter;
 
 /**
  *
@@ -47,7 +48,7 @@ public interface RecruitApplicantDao extends IDAO<RecruitApplicant> {
         
     public Long getTotalByParamforReportSearchRecruitment(ReportSearchRecruitmentSearchParameter searchParameter);
     
-    public List<RecruitApplicant> getSelectionApplicantRealizationByParam(SelectionApplicantRealizationSearchParameter parameter, int firstResults, int maxResults, Order orderable);
+    public List<ApplicantRealizationViewModel> getSelectionApplicantRealizationByParam(SelectionApplicantRealizationSearchParameter parameter, int firstResults, int maxResults, Order orderable);
 
 	public Long getTotalSelectionApplicantRealizationByParam(SelectionApplicantRealizationSearchParameter parameter);
 }
