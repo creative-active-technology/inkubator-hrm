@@ -24,8 +24,8 @@
                             <p:graphicImage library="images" name="organisasi.png" height="36" width="36" cache="true" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Formulir Penawaran Kerja" styleClass="header_big" />
-                                    <p:outputLabel value="Penwaran Kerja dari Perekrutan" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['offering_module.form_title']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['offering_module.form_title_lowwer']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -34,10 +34,10 @@
                         <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="codeId" value="Kode Surat" styleClass="label_hrm"/>
+                                    <p:outputLabel for="codeId" value="#{appmsg['offering_module.letter_code']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:inputText id="codeId" title="#{appmsg['selection_type.selection_type_template_code']}" value="#{offeringAndProhabitFormController.offeringAndProhabitModel.code}"
+                                    <p:inputText id="codeId" title="#{appmsg['offering_module.letter_code']}" value="#{offeringAndProhabitFormController.offeringAndProhabitModel.code}"
                                                  required="true" maxlength="12" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:290px;" />
                                     <p:message for="codeId"/>
                                 </p:column>
@@ -45,10 +45,10 @@
 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="nomorId" value="Format Nomor Surat" styleClass="label_hrm"/>
+                                    <p:outputLabel for="nomorId" value="#{appmsg['offering_module.letter_number_format']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:inputText id="nomorId" title="#{appmsg['selection_type.selection_type_template_code']}" placeholder="RECRUIT-[YY][MM]-[NNNN]"
+                                    <p:inputText id="nomorId" title="#{appmsg['offering_module.letter_number_format']}" placeholder="RECRUIT-[YY][MM]-[NNNN]"
                                                  value="#{offeringAndProhabitFormController.offeringAndProhabitModel.formatLetterNumber}"
                                                  required="true" maxlength="60" onkeyup="this.value = this.value.toUpperCase();" styleClass="isitext_hrm" style="width:290px;" />
                                     <p:message for="nomorId"/>
@@ -56,23 +56,23 @@
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="letterTypeId" value="Jenis Surat" styleClass="label_hrm"/>
+                                    <p:outputLabel for="letterTypeId" value="#{appmsg['offering_module.letter_type']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:selectOneMenu id="letterTypeId" style="margin-right: 3px"  filter="true" required="true" label="#{appmsg['global.tempat_lahir']}"
+                                    <p:selectOneMenu id="letterTypeId" style="margin-right: 3px"  filter="true" required="true" label="#{appmsg['offering_module.letter_type']}"
                                                      value="#{offeringAndProhabitFormController.offeringAndProhabitModel.leterTypeId}" >
                                         <!--<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>-->
-                                        <f:selectItem itemLabel="Penawaran Kerja" itemValue="0" />
-                                        <f:selectItem itemLabel="Masa Percobaan" itemValue="1" />
-                                        <f:selectItem itemLabel="Penolakan Lamaran Kerja" itemValue="2" />
-                                        <f:selectItem itemLabel="Penjadwalan Ulang Test" itemValue="3" />
+                                        <f:selectItem itemLabel="#{appmsg['offering_module.offer']}" itemValue="0" />
+                                        <f:selectItem itemLabel="#{appmsg['offering_module.probation']}" itemValue="1" />
+                                        <f:selectItem itemLabel="#{appmsg['offering_module.reject']}" itemValue="2" />
+                                        <f:selectItem itemLabel="#{appmsg['offering_module.reschedule']}" itemValue="3" />
                                     </p:selectOneMenu>
                                     <p:message for="letterTypeId"/>
                                 </p:column>
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="tipeSeleksiId" value="Tipe Seleksi" styleClass="label_hrm"/>
+                                    <p:outputLabel for="tipeSeleksiId" value="#{appmsg['offering_module.selection_type']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:pickList  id="tipeSeleksiId" value="#{offeringAndProhabitFormController.dualListModel}" var="typeList" converter="selectionTypeConverter" itemValue="#{typeList}" required="true"
@@ -83,28 +83,28 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="expiredId" value="Masa Berlaku" styleClass="label_hrm"/>
+                                    <p:outputLabel for="expiredId" value="#{appmsg['offering_module.time_expired']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:spinner  size="3" min="1" max="100" styleClass="isitext_hrm" required="true" id="expiredId" value="#{offeringAndProhabitFormController.offeringAndProhabitModel.expiryDays}"/>
-                                    <p:outputLabel value="#{appmsg['global.day']}" />
+                                    <p:spinner  size="3" min="1" max="100" styleClass="isitext_hrm" required="true" id="expiredId" value="#{offeringAndProhabitFormController.offeringAndProhabitModel.expiryDays}" label="#{appmsg['offering_module.time_expired']}"/>
+                                    <p:outputLabel value="#{appmsg['global.day']}" style="margin-left: 3px"/>
                                     <p:message for="expiredId"/>
                                 </p:column>
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="contentId" value="Isi Surat" styleClass="label_hrm"/>
+                                    <p:outputLabel for="contentId" value="#{appmsg['offering_module.letter_content']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:editor  id="contentId" width="800"  value="#{offeringAndProhabitFormController.offeringAndProhabitModel.content}"  required="true"/>
+                                    <p:editor  id="contentId" width="800"  value="#{offeringAndProhabitFormController.offeringAndProhabitModel.content}"  required="true" />
                                     <!--<pe:ckEditor id="contentId" required="true" />-->
-                                    <p:commandButton value="Bantuan"  style="margin-top: 5px" onclick="PF('statusDialog').show()" oncomplete="PF('dialogHelper').show()"/>
+                                    <p:commandButton value="#{appmsg['global.help']}"  style="margin-top: 5px" onclick="PF('statusDialog').show()" oncomplete="PF('dialogHelper').show()"/>
                                     <p:message for="contentId"/>
                                 </p:column>
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="empId" value="Ditanda Tangani" styleClass="label_hrm"/>
+                                    <p:outputLabel for="empId" value="#{appmsg['offering_module.signature']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:autoComplete id="empId" title="#{appmsg['publicHolidayException.publicHolidayException_emp']}" 
@@ -122,7 +122,7 @@
                             </p:row> 
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="comChanelId" value="Dikirim Melalui" styleClass="label_hrm"/>
+                                    <p:outputLabel for="comChanelId" value="#{appmsg['offering_module.send_by']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:pickList  id="comChanelId" value="#{offeringAndProhabitFormController.dualListModelCom}" var="comChanel" converter="recruitCommChannelsConverter" itemValue="#{comChanel}" required="true"
@@ -143,7 +143,7 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel  value="SMS" styleClass="label_hrm" for="isSms"/>
+                                    <p:outputLabel  value="#{appmsg['approvaldefinition.sms_notification']}" styleClass="label_hrm" for="isSms"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:selectBooleanButton value="#{offeringAndProhabitFormController.offeringAndProhabitModel.isSendingViaSMS}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
@@ -160,7 +160,7 @@
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="Tinjau Pdf" ajax="true" partialSubmit="true"
+                            <p:commandButton value="#{appmsg['offering_module.see_pdf']}" ajax="true" partialSubmit="true"
                                              action="#{offeringAndProhabitFormController.doSave()}" styleClass="label_button" update="offeringFormId"
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-zoomin"
@@ -177,28 +177,28 @@
                         <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                             <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                         </p:dialog>
-                        <p:dialog widgetVar="dialogHelper" header="Bantuan Isi Surat" modal="false" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
+                        <p:dialog widgetVar="dialogHelper" header="#{appmsg['global.help']}" modal="false" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                                   appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                             <h:panelGrid columns="3" >
-                                <p:outputLabel value="Nama pelamar" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['offering_module.applicant_name']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":" styleClass="label_hrm"/>
                                 <p:outputLabel value="{%ApplicantName%}" />
-                                <p:outputLabel value="Nomor surat" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['offering_module.letter_number']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":" styleClass="label_hrm"/>
                                 <p:outputLabel value="{%LetterNumber%}" />
-                                <p:outputLabel value="Tanggal Jadwal Seleksi" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['offering_module.selection_date']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":" styleClass="label_hrm"/>
                                 <p:outputLabel value="{%DateOfSelectionSchedulle%}" />
-                                <p:outputLabel value="Tanggal Evaluasi Seleksi" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['offering_module.evaluation_date']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":" styleClass="label_hrm"/>
                                 <p:outputLabel value="{%DateOfSelectionEvaluation%}" />
-                                <p:outputLabel value="Nama karyawan pemberi skor" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['offering_module.pic_name']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":" styleClass="label_hrm"/>
                                 <p:outputLabel value="{%PICName%}" />
-                                <p:outputLabel value="Tanggal surat tergenerate" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['offering_module.date_generated']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":" styleClass="label_hrm"/>
                                 <p:outputLabel value="{%DateOfDocument%}" />
-                                <p:outputLabel value="Sesuai tanggal berapa hari masa berlakunya" styleClass="label_hrm"/>
+                                <p:outputLabel value="#{appmsg['offering_module.expired_date_document']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":" styleClass="label_hrm"/>
                                 <p:outputLabel value="{%DateOfDocumentExpire%}" />
                             </h:panelGrid>
