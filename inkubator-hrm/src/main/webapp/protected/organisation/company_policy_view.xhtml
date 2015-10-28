@@ -70,7 +70,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="#{companyPolicyData.subjectTitle}" style="text-align: center;width: 30%">
+                            <p:column sortBy="#{companyPolicyData.subjectTitle}" style="width: 30%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['companypolicy.subject']}"/>
                                 </f:facet>
@@ -80,9 +80,11 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['companypolicy.effective_date']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{companyPolicyData.effectiveDate}"/>
+                                <h:outputLabel value= "#{companyPolicyData.effectiveDate}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy"/>
+                                </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="#{companyPolicyData.department.departmentName}" style="text-align: center;width: 30%">
+                            <p:column sortBy="#{companyPolicyData.department.departmentName}" style="width: 30%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['department.department']}"/>
                                 </f:facet>
