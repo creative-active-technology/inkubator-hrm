@@ -4,6 +4,7 @@ package com.inkubator.hrm.entity;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,7 +27,7 @@ import javax.persistence.UniqueConstraint;
 public class RecruitCommChannels  implements java.io.Serializable {
 
 
-     private int id;
+     private long id;
      private String channelName;
      private Date createdOn;
      private String createdBy;
@@ -36,10 +37,10 @@ public class RecruitCommChannels  implements java.io.Serializable {
     }
 
 	
-    public RecruitCommChannels(int id) {
+    public RecruitCommChannels(long id) {
         this.id = id;
     }
-    public RecruitCommChannels(int id, String channelName, Date createdOn, String createdBy, Set<RecruitLetterComChannel> recruitLetterComChannels) {
+    public RecruitCommChannels(long id, String channelName, Date createdOn, String createdBy, Set<RecruitLetterComChannel> recruitLetterComChannels) {
        this.id = id;
        this.channelName = channelName;
        this.createdOn = createdOn;
@@ -51,11 +52,11 @@ public class RecruitCommChannels  implements java.io.Serializable {
 
     
     @Column(name="id", unique=true, nullable=false)
-    public int getId() {
+    public long getId() {
         return this.id;
     }
     
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -98,6 +99,39 @@ public class RecruitCommChannels  implements java.io.Serializable {
         this.recruitLetterComChannels = recruitLetterComChannels;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 59 * hash + Objects.hashCode(this.channelName);
+        hash = 59 * hash + Objects.hashCode(this.createdOn);
+        hash = 59 * hash + Objects.hashCode(this.createdBy);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final RecruitCommChannels other = (RecruitCommChannels) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.channelName, other.channelName)) {
+            return false;
+        }
+        if (!Objects.equals(this.createdOn, other.createdOn)) {
+            return false;
+        }
+        if (!Objects.equals(this.createdBy, other.createdBy)) {
+            return false;
+        }
+        return true;
+    }
 
 
 

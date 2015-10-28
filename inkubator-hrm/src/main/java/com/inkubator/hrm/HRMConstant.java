@@ -513,5 +513,13 @@ public class HRMConstant {
     /* Constant for Recruit Applicant */
     public static final Integer RECRUIT_APPLICANT_CAREER_CANDIDATE_EXTERNAL = 0;
     public static final Integer RECRUIT_APPLICANT_CAREER_CANDIDATE_INTERNAL = 1;
+    public static final Integer RECRUIT_APPLICANT_CAREER_CANDIDATE_INTERNAL_AND_EXTERNAL = 2;
     /* END */
+
+    /*OFFERING Letter Constant*/
+    public static final Integer LETTER_TYPE_OFFERING = 0;
+    public static final Integer LETTER_TYPE_PROBATION = 1;
+    public static final Integer LETTER_TYPE_REJECT = 2;
+    public static final Integer LETTER_TYPE_RESCHEDULE = 3;
+
 }

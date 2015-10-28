@@ -6,12 +6,12 @@
 package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
-import com.inkubator.hrm.entity.RecruitSelectionApplicantInitial;
+import com.inkubator.hrm.entity.RecruitLetterSelection;
 
 /**
  *
- * @author Deni, Ahmad Mudzakkir Amal
+ * @author denifahri
  */
-public interface RecruitSelectionApplicantInitialDao extends IDAO<RecruitSelectionApplicantInitial>{
-
+public interface RecruitLetterSelectionDao extends IDAO<RecruitLetterSelection>{
+    
 }
