@@ -61,6 +61,7 @@ public class RecruitApplicant implements Serializable {
 	private Set<RecruitApplicantSpecList> recruitApplicantSpecLists = new HashSet<RecruitApplicantSpecList>();
 	private Integer experience;
 	private Set<RecruitSelectionApplicantInitial> recruitSelectionApplicantInitials = new HashSet<RecruitSelectionApplicantInitial>(0);
+	private Set<RecruitSelectionApplicantSchedulleDetail> recruitSelectionApplicantSchedulleDetails = new HashSet<RecruitSelectionApplicantSchedulleDetail>(0);
     
     public RecruitApplicant(){
     	
@@ -340,6 +341,16 @@ public class RecruitApplicant implements Serializable {
     public void setRecruitSelectionApplicantInitials(Set<RecruitSelectionApplicantInitial> recruitSelectionApplicantInitials) {
         this.recruitSelectionApplicantInitials = recruitSelectionApplicantInitials;
     }
+    
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="applicant")
+	public Set<RecruitSelectionApplicantSchedulleDetail> getRecruitSelectionApplicantSchedulleDetails() {
+		return recruitSelectionApplicantSchedulleDetails;
+	}
+
+	public void setRecruitSelectionApplicantSchedulleDetails(
+			Set<RecruitSelectionApplicantSchedulleDetail> recruitSelectionApplicantSchedulleDetails) {
+		this.recruitSelectionApplicantSchedulleDetails = recruitSelectionApplicantSchedulleDetails;
+	}
 
 	@Transient
 	public Integer getWorkingExperiences() {
