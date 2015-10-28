@@ -25,9 +25,7 @@ import javax.faces.bean.ViewScoped;
 public class OfferingAndProhabitDetilController extends BaseController {
 
     @ManagedProperty(value = "#{recruitLettersService}")
-    private RecruitLettersService recruitLettersService;
-    @ManagedProperty(value = "#{empDataService}")
-    private EmpDataService empDataService;
+    private RecruitLettersService recruitLettersService;;
     private RecruitLetters selectedRecruitLetters;
 
     @PostConstruct
@@ -59,8 +57,7 @@ public class OfferingAndProhabitDetilController extends BaseController {
         this.recruitLettersService = recruitLettersService;
     }
 
-    public void setEmpDataService(EmpDataService empDataService) {
-        this.empDataService = empDataService;
-    }
-
+   public String doEdit(){
+        return "/protected/recruitment/offering_prohabit_form.htm?faces-redirect=true&execution=e" + selectedRecruitLetters.getId();
+   }
 }

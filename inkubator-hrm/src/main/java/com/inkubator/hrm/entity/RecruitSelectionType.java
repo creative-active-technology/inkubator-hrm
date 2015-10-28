@@ -4,6 +4,7 @@ package com.inkubator.hrm.entity;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -174,6 +175,64 @@ public class RecruitSelectionType  implements java.io.Serializable {
     
     public void setRecruitSelectionTypeFields(Set<RecruitSelectionTypeField> recruitSelectionTypeFields) {
         this.recruitSelectionTypeFields = recruitSelectionTypeFields;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 67 * hash + Objects.hashCode(this.version);
+        hash = 67 * hash + Objects.hashCode(this.code);
+        hash = 67 * hash + Objects.hashCode(this.name);
+        hash = 67 * hash + Objects.hashCode(this.cost);
+        hash = 67 * hash + Objects.hashCode(this.useLibrary);
+        hash = 67 * hash + Objects.hashCode(this.createdBy);
+        hash = 67 * hash + Objects.hashCode(this.createdOn);
+        hash = 67 * hash + Objects.hashCode(this.updatedBy);
+        hash = 67 * hash + Objects.hashCode(this.updatedOn);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final RecruitSelectionType other = (RecruitSelectionType) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.version, other.version)) {
+            return false;
+        }
+        if (!Objects.equals(this.code, other.code)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.cost, other.cost)) {
+            return false;
+        }
+        if (!Objects.equals(this.useLibrary, other.useLibrary)) {
+            return false;
+        }
+        if (!Objects.equals(this.createdBy, other.createdBy)) {
+            return false;
+        }
+        if (!Objects.equals(this.createdOn, other.createdOn)) {
+            return false;
+        }
+        if (!Objects.equals(this.updatedBy, other.updatedBy)) {
+            return false;
+        }
+        if (!Objects.equals(this.updatedOn, other.updatedOn)) {
+            return false;
+        }
+        return true;
     }
 
 

@@ -8,6 +8,7 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.RecruitLettersDao;
 import com.inkubator.hrm.entity.RecruitLetters;
+import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Restrictions;
@@ -38,6 +39,19 @@ public class RecruitLettersDaoImpl extends IDAOImpl<RecruitLetters> implements R
         criteria.setFetchMode("recruitLetterComChannels", FetchMode.JOIN);
         criteria.setFetchMode("recruitLetterComChannels.recruitCommChannels", FetchMode.JOIN);
         return (RecruitLetters) criteria.uniqueResult();
+    }
+
+    @Override
+    public List<RecruitLetters> getAllWithSpecificLetterType(int type) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("leterTypeId", type));
+        return criteria.list();
+    }
+
+    @Override
+    public void saveAndMerge(RecruitLetters letters) {
+        getCurrentSession().update(letters);
+        getCurrentSession().flush();
     }
 
 }
