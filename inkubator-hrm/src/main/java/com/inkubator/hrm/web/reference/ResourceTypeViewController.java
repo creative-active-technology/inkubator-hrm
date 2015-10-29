@@ -90,7 +90,7 @@ public class ResourceTypeViewController extends BaseController{
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 400);
+        options.put("contentWidth", 420);
         options.put("contentHeight", 250);
         RequestContext.getCurrentInstance().openDialog("resource_type_form", options, params);
     }

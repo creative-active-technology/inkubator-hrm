@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class ApplicantRealizationViewModel implements Serializable {
 
 	private Long applicantId;
+	private Long selectionScheduleId;
 	private String name;
 	private String phone;
 	private String positionApply;
@@ -20,6 +21,12 @@ public class ApplicantRealizationViewModel implements Serializable {
 	}
 	public void setApplicantId(Long applicantId) {
 		this.applicantId = applicantId;
+	}	
+	public Long getSelectionScheduleId() {
+		return selectionScheduleId;
+	}
+	public void setSelectionScheduleId(Long selectionScheduleId) {
+		this.selectionScheduleId = selectionScheduleId;
 	}
 	public String getName() {
 		return name;

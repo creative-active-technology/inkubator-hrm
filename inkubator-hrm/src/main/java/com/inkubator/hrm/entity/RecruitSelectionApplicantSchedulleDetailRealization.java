@@ -34,7 +34,7 @@ public class RecruitSelectionApplicantSchedulleDetailRealization  implements jav
      private String notes;
      private Date scoringDate;
      private Double scoringPoint;
-     private EmpData scoringByEmpId;
+     private EmpData scoringByEmpData;
      private String status;
      private Date createdOn;
      private String createdBy;
@@ -48,7 +48,7 @@ public class RecruitSelectionApplicantSchedulleDetailRealization  implements jav
     public RecruitSelectionApplicantSchedulleDetailRealization(long id) {
         this.id = id;
     }
-    public RecruitSelectionApplicantSchedulleDetailRealization(long id, RecruitSelectionApplicantSchedulleDetail recruitSelectionApplicantSchedulleDetail, Date realizationDate, Date realizationTimeStart, Date realizationTimeEnd, String realizationRoom, String notes, Date scoringDate, Double scoringPoint, EmpData scoringByEmpId, Date createdOn, String createdBy, Date updatedOn, String updatedBy) {
+    public RecruitSelectionApplicantSchedulleDetailRealization(long id, RecruitSelectionApplicantSchedulleDetail recruitSelectionApplicantSchedulleDetail, Date realizationDate, Date realizationTimeStart, Date realizationTimeEnd, String realizationRoom, String notes, Date scoringDate, Double scoringPoint, EmpData scoringByEmpData, Date createdOn, String createdBy, Date updatedOn, String updatedBy) {
        this.id = id;
        this.recruitSelectionApplicantSchedulleDetail = recruitSelectionApplicantSchedulleDetail;
        this.realizationDate = realizationDate;
@@ -58,7 +58,7 @@ public class RecruitSelectionApplicantSchedulleDetailRealization  implements jav
        this.notes = notes;
        this.scoringDate = scoringDate;
        this.scoringPoint = scoringPoint;
-       this.scoringByEmpId = scoringByEmpId;
+       this.scoringByEmpData = scoringByEmpData;
        this.createdOn = createdOn;
        this.createdBy = createdBy;
        this.updatedOn = updatedOn;
@@ -170,12 +170,12 @@ public class RecruitSelectionApplicantSchedulleDetailRealization  implements jav
     
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="scoring_by_emp_id")
-    public EmpData getScoringByEmpId() {
-        return this.scoringByEmpId;
+    public EmpData getScoringByEmpData() {
+        return this.scoringByEmpData;
     }
     
-    public void setScoringByEmpId(EmpData scoringByEmpId) {
-        this.scoringByEmpId = scoringByEmpId;
+    public void setScoringByEmpData(EmpData scoringByEmpData) {
+        this.scoringByEmpData = scoringByEmpData;
     }
     
     @Column(name="status", nullable = false)
