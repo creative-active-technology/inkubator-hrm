@@ -33,6 +33,7 @@ import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.search.ImplementationOfOvertimeSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.util.FacesUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -419,6 +420,8 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
             jsonObj.put("overTimeDate", dateFormat.format(implementationOfOverTime.getImplementationDate()));
             jsonObj.put("implementationNumber", implementationOfOverTime.getCode());
             jsonObj.put("empName", implementationOfOverTime.getEmpData().getBioData().getFirstName() + " " + implementationOfOverTime.getEmpData().getBioData().getLastName());
+            jsonObj.put("urlLinkToApprove", FacesUtil.getRequest().getContextPath() + "" + HRMConstant.OVERTIME_APPROVAL_PAGE + "" +"?faces-redirect=true&execution=e" + appActivity.getId());
+
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);
         }
@@ -444,13 +447,16 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         if (selisihWaktu > 0) {
         	System.out.println(selisihWaktu + " > " + selectTedWtOverTime.getBatasMaju() );
             if (selisihWaktu > selectTedWtOverTime.getBatasMaju()) {
+            	System.out.println("masuk if >");
                 throw new BussinessException("implementOt.implementation_date_outofrange");
             }
         }
         
         if (selisihWaktu < 0) {
             selisihWaktu=selisihWaktu*(-1);
+            System.out.println(selisihWaktu + " > " + selectTedWtOverTime.getBatasMaju() );
             if (selisihWaktu >selectTedWtOverTime.getBatasMudur()) {
+            	System.out.println("masuk if <");
                 throw new BussinessException("implementOt.implementation_date_outofrange");
             }
         }
@@ -489,6 +495,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
                 throw new BussinessException("implementationovertime.time_is_in_your_working_hours");
             }
         } else {
+        	System.out.println("masuk jadwalKaryawan == null");
             throw new BussinessException("implementationovertime.your_implementation_date_far");
         }
 

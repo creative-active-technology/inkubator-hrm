@@ -147,16 +147,16 @@
                           showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['interesttype.name']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{interestTypeController.selected.name}"/> </p:column>
+                            <p:column style="color: #003366; width : 45%"><p:outputLabel value="#{appmsg['interesttype.name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width : 55%"><p:outputLabel value="#{interestTypeController.selected.name}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['interesttype.weight']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{interestTypeController.selected.weightInterest}"/> </p:column>
+                            <p:column style="color: #003366;width : 45%"><p:outputLabel value="#{appmsg['interesttype.weight']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width : 45%"><p:outputLabel value="#{interestTypeController.selected.weightInterest}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{interestTypeController.selected.description}"/> </p:column>
+                            <p:column style="color: #003366;width : 45%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="width : 45%"><p:outputLabel value="#{interestTypeController.selected.description}"/> </p:column>
                         </p:row>
                         <f:facet name="footer">
                             <p:row>

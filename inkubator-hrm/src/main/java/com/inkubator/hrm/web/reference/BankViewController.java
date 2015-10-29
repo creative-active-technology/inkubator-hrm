@@ -41,6 +41,7 @@ public class BankViewController extends BaseController {
     @PostConstruct
     @Override
     public void initialization() {
+    	System.out.println(FacesUtil.getRequest().getContextPath());
         super.initialization();
         searchParameter = new BankSearchParameter();
     }

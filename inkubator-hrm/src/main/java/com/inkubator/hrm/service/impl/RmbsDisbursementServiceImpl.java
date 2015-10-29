@@ -50,6 +50,7 @@ import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.RmbsDisbursementService;
 import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -379,6 +380,7 @@ public class RmbsDisbursementServiceImpl extends BaseApprovalServiceImpl impleme
             jsonObj.put("proposeDate", dateFormat.format(disbursement.getCreatedOn()));
             Date deadline = DateUtils.addDays(appActivity.getCreatedTime(), appActivity.getApprovalDefinition().getDelayTime());  
             jsonObj.put("deadline", dateFormat.format(deadline));
+    		jsonObj.put("urlLinkToApprove", FacesUtil.getRequest().getContextPath() + "" + HRMConstant.REIMBURSMENT_DISBURSEMENT_APPROVAL_PAGE + "" +"?faces-redirect=true&execution=e" + appActivity.getId());
 
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);

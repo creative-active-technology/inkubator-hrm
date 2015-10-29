@@ -7,7 +7,9 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.RecruitLetters;
+import com.inkubator.hrm.web.search.RecrutimentLetterSearchParameter;
 import java.util.List;
+import org.hibernate.criterion.Order;
 
 /**
  *
@@ -18,6 +20,11 @@ public interface RecruitLettersDao extends IDAO<RecruitLetters> {
     public RecruitLetters getByPkWithDetail(long id);
 
     public List<RecruitLetters> getAllWithSpecificLetterType(int type);
-    
+
     public void saveAndMerge(RecruitLetters letters);
+
+    public List<RecruitLetters> getByParam(RecrutimentLetterSearchParameter parameter, int firstResult, int maxResults, Order orderable);
+
+    public Long getTotalByParam(RecrutimentLetterSearchParameter parameter);
+
 }

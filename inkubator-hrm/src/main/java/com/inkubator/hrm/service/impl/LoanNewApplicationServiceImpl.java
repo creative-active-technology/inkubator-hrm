@@ -83,6 +83,7 @@ import com.inkubator.hrm.web.search.LoanNewApplicationBoxSearchParameter;
 import com.inkubator.hrm.web.search.LoanNewSearchParameter;
 import com.inkubator.hrm.web.search.LoanStatusSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
@@ -363,6 +364,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
             jsonObj.put("nominalInstallment", decimalFormat.format(nominalInstallment));
             jsonObj.put("interestInstallment", decimalFormat.format(interestInstallment));
             jsonObj.put("totalNominalInstallment", decimalFormat.format(totalNominalInstallment));
+            jsonObj.put("urlLinkToApprove", FacesUtil.getRequest().getContextPath() + "" + HRMConstant.LOAN_NEW_APPROVAL_PAGE + "" +"?faces-redirect=true&execution=e" + appActivity.getId());
 
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);

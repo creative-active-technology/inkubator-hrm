@@ -13,10 +13,12 @@
             <br />
             Pada tanggal ${proposeDate}, karyawan ${nik}/${requesterName} mengajukan permohonan untuk pencairan pengantian biaya.<br /><br />
 			
-            Adapun informasi lebih lanjut dapat di lihat pada:  <a href="${applicationUrl}" target="_blank">${applicationUrl}</a><br/><br/>
-            Harapan kami agar saudara(i) dapat menindaklanjuti permohonan ini, dan apabila tidak ada respon persetujuan hingga tanggal ${deadline}, maka dianggap menyetujui permohonan yang bersangkutan.
             <br />
+           Anda bisa melakukan persetujuan pada: <a href="${urlLinkToApprove}" target="_blank" style="-webkit-appearance: button;-moz-appearance: button;appearance:button;text-decoration: none;color: initial; padding: 2px 4px 2px 4px; background-color: #72b9d7; color:white;">Lakukan Persetujuan</a>
  			<br />
+ 			Harapan kami agar saudara(i) dapat menindaklanjuti permohonan ini, dan apabila tidak ada respon persetujuan hingga tanggal ${deadline}, maka dianggap menyetujui permohonan yang bersangkutan.
+            <br />
+            <br />
             Demikian pemberitahuan ini disampaikan, atas perhatian dan kerjasamanya disampaikan terima kasih.
 			<br />
  			<br />
