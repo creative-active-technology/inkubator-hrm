@@ -20,7 +20,7 @@
 			Deskripsi : ${description}<br />
 			<br />
             <br />
-           Anda bisa melakukan persetujuan pada: <a href="${urlLinkToApprove}" target="_blank" style="border: 1px solid black; padding: 2px 4px 2px 4px; text-decoration: none; color: black; background-color: #E6E6E6;border-radius: 2px;">Lakukan Persetujuan</a>
+           Anda bisa melakukan persetujuan pada: <a href="${urlLinkToApprove}" target="_blank" style="-webkit-appearance: button;-moz-appearance: button;appearance:button;text-decoration: none;color: initial; padding: 2px 4px 2px 4px; background-color: #72b9d7; color:white;">Lakukan Persetujuan</a>
  			<br />
  			Harapan kami agar saudara(i) dapat menindaklanjuti permohonan ini, dan apabila tidak ada respon persetujuan hingga tanggal ${deadline}, maka dianggap menyetujui permohonan yang bersangkutan.
             <br />
