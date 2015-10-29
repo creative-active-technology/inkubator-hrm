@@ -19,9 +19,10 @@
 			Tanggal Pengajuan : ${fillingDate}<br />
 			Pekerjaan yang ditinggalkan : ${materialJobsAbandoned}<br />
 			<br />
-			
-            Adapun informasi lebih lanjut dapat di lihat pada:  <a href="${applicationUrl}" target="_blank">${applicationUrl}</a>
-            <br />
+			<br />
+           Anda bisa melakukan persetujuan pada: <a href="${urlLinkToApprove}" target="_blank" style="border: 1px solid black; padding: 2px 4px 2px 4px; text-decoration: none; color: black; background-color: #E6E6E6;border-radius: 2px;">Lakukan Persetujuan</a>
+ 			<br />
+ 			<br />
  			<br />
             Demikian pemberitahuan ini disampaikan, atas perhatian dan kerjasamanya disampaikan terima kasih.
 			<br />

@@ -521,5 +521,20 @@ public class HRMConstant {
     public static final Integer LETTER_TYPE_PROBATION = 1;
     public static final Integer LETTER_TYPE_REJECT = 2;
     public static final Integer LETTER_TYPE_RESCHEDULE = 3;
-
+    
+    /*CONSTANT FOR EMAIL DIRECT TO PAGE APPROVAL*/
+    public static final String REIMBURSMENT_APPROVAL_PAGE = "/protected/reimbursement/rmbs_application_approval_form.htm";
+    public static final String LOAN_NEW_APPROVAL_PAGE = "/protected/personalia/loan_new_approval_form.htm";
+    public static final String BUSINESS_TRAVEL_APPROVAL_PAGE = "/protected/personalia/business_travel_appr_form.htm";
+    public static final String LEAVE_APPROVAL_PAGE = "/protected/working_time/leave_impl_appr_form.htm";
+    public static final String PERMIT_APPROVAL_PAGE = "/protected/working_time/permit_impl_approval.htm";
+    public static final String RECRUIT_MPP_APPLY_APPROVAL_PAGE = "/protected/recruitment/recruit_mpp_apply_approval_form.htm";
+    public static final String REIMBURSMENT_DISBURSEMENT_APPROVAL_PAGE = "/protected/reimbursment/rmbs_disbursement_approval_form.htm";
+    public static final String EMP_WORK_SCHEDULE_APPROVAL_PAGE = "/protected/personalia/schedule_approval_form.htm";
+    public static final String OVERTIME_APPROVAL_PAGE = "/protected/employee/ot_impl_approval.htm";
+    public static final String LEAVE_CANCELLATION_APPROVAL_PAGE = "/protected/working_time/leave_impl_appr_form.htm";
+    public static final String ANNOUNCEMENT_APPROVAL_PAGE = "/protected/organisation/announcement_approval_form.htm";
+    public static final String RECRUITMENT_REQUEST_APPROVAL_PAGE = "/protected/recruitment/recruitment_req_approval_form.htm";
+    public static final String EMP_CORRECTION_ATTENDANCE_APPROVAL_PAGE = "/protected/working_time/emp_correction_attendance_approval_form.htm";
+    public static final String VACANCY_ADVERTISEMENT_APPROVAL_PAGE = "/protected/recruitment/vacancy_advertisement_approval_form.htm";
 }

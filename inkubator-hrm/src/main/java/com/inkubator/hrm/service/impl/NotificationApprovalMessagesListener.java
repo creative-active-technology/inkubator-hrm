@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.faces.context.ExternalContext;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
@@ -40,6 +41,7 @@ import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.WtEmpCorrectionAttendanceDetail;
 import com.inkubator.hrm.json.util.DateJsonDeserializer;
 import com.inkubator.hrm.json.util.JsonUtil;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -48,6 +50,7 @@ import com.inkubator.hrm.json.util.JsonUtil;
 public class NotificationApprovalMessagesListener extends IServiceImpl implements MessageListener {
     
     private String applicationUrl;
+    private String serverName;
     private String applicationName;
     private String ownerEmail;
     private String ownerCompany;
@@ -101,7 +104,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
              toSentCC.add(el.getAsString());
              }
              }*/
-            toSend.add("deni.arianto24@yahoo.com");
+            toSend.add("deni.arianto1606@gmail.com");
             toSend.add("rizal2_dhfr@yahoo.com");
             toSend.add("yosa.mareta@gmail.com");
             toSend.add("guntur@incubatechnology.com");
@@ -150,6 +153,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("description", jsonObject.get("description").getAsString());
                             maptoSend.put("totalAmount", jsonObject.get("totalAmount").getAsString());
                             maptoSend.put("deadline", jsonObject.get("deadline").getAsString());
+                            
                             break;
                         
                         case HRMConstant.REIMBURSEMENT:
@@ -163,6 +167,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("nominal", jsonObject.get("nominal").getAsString());
                             maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
                             maptoSend.put("deadline", jsonObject.get("deadline").getAsString());
+                            
                             break;
                             
                         case HRMConstant.REIMBURSEMENT_DISBURSEMENT:
@@ -244,6 +249,11 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             break;
                             
                         case HRMConstant.ANNOUNCEMENT:
+                        	TypeToken<List<String>> token = new TypeToken<List<String>>() {};
+                            List<String> dataGolonganJabatan = gson.fromJson(jsonObject.get("listGolonganJabatan"), token.getType());
+                            List<String> dataUnitKerja = gson.fromJson(jsonObject.get("listUnitKerja"), token.getType());
+                            List<String> dataEmployeeType = gson.fromJson(jsonObject.get("listEmployeeType"), token.getType());
+                            
                             vtm.setSubject("Pengajuan Pengumuman");
                             vtm.setTemplatePath("email_announcement_waiting_approval.vm");
                             maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
@@ -253,7 +263,9 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("subjek", jsonObject.get("subjek").getAsString());
                             maptoSend.put("content", jsonObject.get("content").getAsString());
                             maptoSend.put("company", jsonObject.get("company").getAsString());
-
+                            maptoSend.put("listEmployeeType", dataEmployeeType);
+                            maptoSend.put("listUnitKerja", dataUnitKerja);
+                            maptoSend.put("listGolonganJabatan", dataGolonganJabatan);
                             break;
                         case HRMConstant.PERMIT:
                         	vtm.setSubject("Permohonan Izin");
@@ -282,8 +294,8 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("candidateCountRequest", jsonObject.get("candidateCountRequest").getAsString());
                             break;
                         case HRMConstant.RECRUIT_MPP_APPLY:
-                        	TypeToken<List<String>> token = new TypeToken<List<String>>() {};
-                        	List<String> listNamaJabatan = gson.fromJson(jsonObject.get("listNamaJabatan"), token.getType());
+                        	TypeToken<List<String>> token2 = new TypeToken<List<String>>() {};
+                        	List<String> listNamaJabatan = gson.fromJson(jsonObject.get("listNamaJabatan"), token2.getType());
                             
                             vtm.setSubject("PERSETUJUAN RENCANA KETENAGAKERJAAN");
                             vtm.setTemplatePath("email_mpp_apply_waiting_approval.vm");
@@ -586,6 +598,13 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                     }
                 }
                 
+                if(jsonObject.get("urlLinkToApprove").getAsString() != null){
+                	String urlLinkToApprove = serverName + "" + jsonObject.get("urlLinkToApprove").getAsString();
+                    maptoSend.put("urlLinkToApprove", urlLinkToApprove);
+                }else{
+                	maptoSend.put("urlLinkToApprove", applicationUrl);
+                }
+                
                 maptoSend.put("ownerAdministrator", ownerAdministrator);
                 maptoSend.put("ownerCompany", ownerCompany);
                 maptoSend.put("applicationUrl", applicationUrl);
@@ -643,7 +662,16 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
         this.ownerAdministrator = ownerAdministrator;
     }
     
-    private String getStatusDesc(Integer approvalStatus, String locale) {
+    
+    public String getServerName() {
+		return serverName;
+	}
+
+	public void setServerName(String serverName) {
+		this.serverName = serverName;
+	}
+
+	private String getStatusDesc(Integer approvalStatus, String locale) {
         String statusDesc = StringUtils.EMPTY;
         
         if (StringUtils.equals(locale, "en")) {
