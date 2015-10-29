@@ -171,7 +171,8 @@ public class OfferingAndProhabitFormController extends BaseController {
         recruitLetters.setExpiryDays(model.getExpiryDays());
         recruitLetters.setFormatNumber(model.getFormatLetterNumber());
         recruitLetters.setIsActive(model.getIsActive());
-        recruitLetters.setLeterTypeId(model.getLeterTypeId());
+        recruitLetters.setLeterTypeId(Integer.parseInt(model.getLeterTypeId()));
+        System.out.println(" Ini adlaah jenis suranya " + model.getLeterTypeId());
         recruitLetters.setSmsNotif(model.getIsActive());
         recruitLetters.setSmsNotif(model.getIsSendingViaSMS());
         return recruitLetters;
@@ -268,11 +269,11 @@ public class OfferingAndProhabitFormController extends BaseController {
         model.setId(letters.getId());
         model.setIsActive(letters.getIsActive());
         model.setIsSendingViaSMS(letters.getSmsNotif());
-        model.setLeterTypeId(letters.getLeterTypeId());
+        model.setLeterTypeId(String.valueOf(letters.getLeterTypeId()));
         return model;
     }
-    
-    public String doBack(){
-        return null;
+
+    public String doBack() {
+     return "/protected/recruitment/offering_letter_view.htm?faces-redirect=true";
     }
 }
