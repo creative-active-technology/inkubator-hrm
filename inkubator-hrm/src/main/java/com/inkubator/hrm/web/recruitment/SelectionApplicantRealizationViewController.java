@@ -8,7 +8,6 @@ import javax.faces.bean.ViewScoped;
 
 import org.primefaces.model.LazyDataModel;
 
-import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.service.RecruitApplicantService;
 import com.inkubator.hrm.web.lazymodel.SelectionApplicantRealizationLazyDataModel;
 import com.inkubator.hrm.web.model.ApplicantRealizationViewModel;
@@ -25,7 +24,7 @@ public class SelectionApplicantRealizationViewController extends BaseController 
 
     private SelectionApplicantRealizationSearchParameter parameter;
     private LazyDataModel<ApplicantRealizationViewModel> lazyData;
-    private RecruitApplicant selected;
+    private ApplicantRealizationViewModel selected;
     @ManagedProperty(value = "#{recruitApplicantService}")
     private RecruitApplicantService recruitApplicantService;
 
@@ -49,15 +48,7 @@ public class SelectionApplicantRealizationViewController extends BaseController 
     }
     
     public String doEvaluate() {
-    	return "/protected/recruitment/selection_applicant_realization_form.htm?faces-redirect=true&execution=e" + selected.getId();
-    }
-
-    public void doSelectEntity() {
-        try {
-            selected = this.recruitApplicantService.getEntityByPkWithDetail(selected.getId());
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
+    	return "/protected/recruitment/selection_applicant_realization_form.htm?faces-redirect=true&execution=e" + selected.getApplicantId()+"&schedule=e"+selected.getSelectionScheduleId();
     }
 
 	public SelectionApplicantRealizationSearchParameter getParameter() {
@@ -79,11 +70,11 @@ public class SelectionApplicantRealizationViewController extends BaseController 
 		this.lazyData = lazyData;
 	}
 
-	public RecruitApplicant getSelected() {
+	public ApplicantRealizationViewModel getSelected() {
 		return selected;
 	}
 
-	public void setSelected(RecruitApplicant selected) {
+	public void setSelected(ApplicantRealizationViewModel selected) {
 		this.selected = selected;
 	}
 
