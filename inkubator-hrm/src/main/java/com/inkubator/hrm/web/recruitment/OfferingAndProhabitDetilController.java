@@ -58,6 +58,6 @@ public class OfferingAndProhabitDetilController extends BaseController {
     }
 
    public String doEdit(){
-        return "/protected/recruitment/offering_prohabit_form.htm?faces-redirect=true&execution=e" + selectedRecruitLetters.getId();
+        return "/protected/recruitment/offering_letter_form.htm?faces-redirect=true&execution=e" + selectedRecruitLetters.getId();
    }
 }

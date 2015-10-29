@@ -271,4 +271,8 @@ public class OfferingAndProhabitFormController extends BaseController {
         model.setLeterTypeId(letters.getLeterTypeId());
         return model;
     }
+    
+    public String doBack(){
+        return null;
+    }
 }
