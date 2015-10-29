@@ -290,6 +290,7 @@ public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implement
 	public List<ApplicantRealizationViewModel> getSelectionApplicantRealizationByParam(SelectionApplicantRealizationSearchParameter parameter, int firstResults, int maxResults, Order orderable) {
 		StringBuffer selectQuery = new StringBuffer(
     			"SELECT DISTINCT recruitApplicant.id AS applicantId, "
+    			+ "recruitSelectionApplicantSchedulle.id AS selectionScheduleId, "
     			+ "bioData.combineName AS name, "
     			+ "bioData.mobilePhone AS phone, "
     			+ "jabatanApply.name AS positionApply, "

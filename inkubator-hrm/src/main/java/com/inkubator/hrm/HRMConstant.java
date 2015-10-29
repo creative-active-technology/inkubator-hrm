@@ -515,6 +515,13 @@ public class HRMConstant {
     public static final Integer RECRUIT_APPLICANT_CAREER_CANDIDATE_INTERNAL = 1;
     public static final Integer RECRUIT_APPLICANT_CAREER_CANDIDATE_INTERNAL_AND_EXTERNAL = 2;
     /* END */
+    
+    /* Constant for Selection Applicant */
+    public static final String SELECTION_APPLICANT_STATUS_NEW = "NEW";
+    public static final String SELECTION_APPLICANT_STATUS_IN_PROGRESS = "IN_PROGRESS";
+    public static final String SELECTION_APPLICANT_STATUS_PASS = "PASS";
+    public static final String SELECTION_APPLICANT_STATUS_FAILED = "FAILED";
+    /* END */
 
     /*OFFERING Letter Constant*/
     public static final Integer LETTER_TYPE_OFFERING = 0;

@@ -193,7 +193,6 @@ public class RecruitApplicantFormController extends BaseController {
 	
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	private void getModelFromEntity(RecruitApplicant applicant) {
-    	System.out.println("eeeeeeeeeeeees");
 		model.setId(applicant.getId());
 		model.setEducationLevelId(applicant.getEducationLevel() != null ? applicant.getEducationLevel().getId() : null);
 		model.setInstitutionEducationId(applicant.getInstitutionEducation() != null ? applicant.getInstitutionEducation().getId() : null);
