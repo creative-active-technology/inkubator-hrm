@@ -9,4 +9,6 @@ import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulle;
  */
 public interface RecruitSelectionApplicantSchedulleService extends IService<RecruitSelectionApplicantSchedulle> {
 
+	public RecruitSelectionApplicantSchedulle getEntityByPkWithDetail(Long id);
+
 }
