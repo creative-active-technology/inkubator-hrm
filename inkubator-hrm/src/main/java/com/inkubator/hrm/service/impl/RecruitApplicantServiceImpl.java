@@ -144,9 +144,9 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public RecruitApplicant getEntiyByPK(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return recruitApplicantDao.getEntiyByPK(id);
 	}
 
 	@Override

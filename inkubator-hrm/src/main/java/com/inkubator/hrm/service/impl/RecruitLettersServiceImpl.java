@@ -16,6 +16,7 @@ import com.inkubator.hrm.entity.RecruitLetterSelection;
 import com.inkubator.hrm.entity.RecruitLetters;
 import com.inkubator.hrm.entity.RecruitSelectionType;
 import com.inkubator.hrm.service.RecruitLettersService;
+import com.inkubator.hrm.web.search.RecrutimentLetterSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,29 +37,29 @@ import org.springframework.transaction.annotation.Transactional;
 @Service(value = "recruitLettersService")
 @Lazy
 public class RecruitLettersServiceImpl extends IServiceImpl implements RecruitLettersService {
-    
+
     @Autowired
     private RecruitLettersDao recruitLettersDao;
     @Autowired
     private RecruitLetterSelectionDao recruitLetterSelectionDao;
     @Autowired
     private RecruitLetterComChannelDao recruitLetterComChannelDao;
-    
+
     @Override
     public RecruitLetters getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public RecruitLetters getEntiyByPK(Integer id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public RecruitLetters getEntiyByPK(Long id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(RecruitLetters entity) throws Exception {
@@ -73,12 +74,12 @@ public class RecruitLettersServiceImpl extends IServiceImpl implements RecruitLe
                 recruitLettersDao.update(recruitLetters);
             }
         }
-        
+
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         recruitLettersDao.save(entity);
     }
-    
+
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(RecruitLetters entity) throws Exception {
@@ -117,144 +118,145 @@ public class RecruitLettersServiceImpl extends IServiceImpl implements RecruitLe
             recruitLetterComChannel.setRecruitLetters(recruitLetters);
             recruitLetterComChannelDao.save(recruitLetterComChannel);
         }
-        
+
     }
-    
+
     @Override
     public void saveOrUpdate(RecruitLetters enntity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public RecruitLetters saveData(RecruitLetters entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public RecruitLetters updateData(RecruitLetters entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public RecruitLetters saveOrUpdateData(RecruitLetters entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public RecruitLetters getEntityByPkIsActive(String id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public RecruitLetters getEntityByPkIsActive(String id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public RecruitLetters getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public RecruitLetters getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public RecruitLetters getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public RecruitLetters getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public RecruitLetters getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public RecruitLetters getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public RecruitLetters getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
+    @Transactional(readOnly = false , isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(RecruitLetters entity) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       this.recruitLettersDao.delete(entity);
     }
-    
+
     @Override
     public void softDelete(RecruitLetters entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public Long getTotalData() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public Long getTotalDataIsActive(Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public Long getTotalDataIsActive(Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public Long getTotalDataIsActive(Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<RecruitLetters> getAllData() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<RecruitLetters> getAllData(Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<RecruitLetters> getAllData(Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<RecruitLetters> getAllData(Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<RecruitLetters> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<RecruitLetters> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Boolean isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<RecruitLetters> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Integer isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<RecruitLetters> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public RecruitLetters getByPkWithDetail(long id) throws Exception {
@@ -273,5 +275,17 @@ public class RecruitLettersServiceImpl extends IServiceImpl implements RecruitLe
         recruitLetters.setRecruitCommChannelss(recruitCommChannelss);
         return recruitLetters;
     }
-    
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS, isolation = Isolation.REPEATABLE_READ, timeout = 50)
+    public List<RecruitLetters> getByParam(RecrutimentLetterSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+        return recruitLettersDao.getByParam(parameter, firstResult, maxResults, orderable);
+    }
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, timeout = 30)
+    public Long getTotalByParam(RecrutimentLetterSearchParameter parameter) throws Exception {
+        return recruitLettersDao.getTotalByParam(parameter);
+    }
+
 }

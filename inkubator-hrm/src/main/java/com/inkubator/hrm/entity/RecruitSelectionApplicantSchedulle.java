@@ -27,7 +27,7 @@ import javax.persistence.Version;
 public class RecruitSelectionApplicantSchedulle  implements java.io.Serializable {
 
 
-     private int id;
+     private Long id;
      private Integer version;
      private EmpData empData;
      private RecruitHireApply hireApply;
@@ -43,10 +43,10 @@ public class RecruitSelectionApplicantSchedulle  implements java.io.Serializable
     }
 
 	
-    public RecruitSelectionApplicantSchedulle(int id) {
+    public RecruitSelectionApplicantSchedulle(Long id) {
         this.id = id;
     }
-    public RecruitSelectionApplicantSchedulle(int id, EmpData empData, RecruitHireApply hireApply, Integer totalRecrut, Date createdOn, String createdBy, Date updatedOn, String updatedBy, Set<RecruitSelectionApplicantSchedulleDetail> recruitSelectionApplicantSchedulleDetails) {
+    public RecruitSelectionApplicantSchedulle(Long id, EmpData empData, RecruitHireApply hireApply, Integer totalRecrut, Date createdOn, String createdBy, Date updatedOn, String updatedBy, Set<RecruitSelectionApplicantSchedulleDetail> recruitSelectionApplicantSchedulleDetails) {
        this.id = id;
        this.empData = empData;
        this.hireApply = hireApply;
@@ -62,11 +62,11 @@ public class RecruitSelectionApplicantSchedulle  implements java.io.Serializable
 
     
     @Column(name="id", unique=true, nullable=false)
-    public int getId() {
+    public Long getId() {
         return this.id;
     }
     
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

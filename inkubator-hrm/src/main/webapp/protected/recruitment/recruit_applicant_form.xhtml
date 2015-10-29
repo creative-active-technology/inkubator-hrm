@@ -13,459 +13,459 @@
     <h:body>
         <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
-				Home
+                Home
             </ui:define>
             <ui:define name="center">
                 <p:growl id="growlId" globalOnly="true" showDetail="true"/>                
                 <h:form id="formId">
-                	<p:focus context="formId"/>
-                	<div id="box_bg" style="margin: 10px">
-	                    <h:panelGrid  columns="2">
-	                        <p:graphicImage library="images" name="biodata_ico.png" height="36" width="36" />
-	                        <h:panelGroup layout="block">
-	                            <h:panelGrid>
-	                                <p:outputLabel value="#{appmsg['recruitment_applicant.form_applicant_upload']}" styleClass="header_big" />
-	                                <p:outputLabel value="#{appmsg['recruitment_applicant.applicant_upload_from_recruitment']}" styleClass="header_small_no_bold" />
-	                            </h:panelGrid>
-	                        </h:panelGroup>
-	                    </h:panelGrid>
-	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-	                    <p:fieldset legend="#{appmsg['recruitment_applicant.personal_data']}" style="margin-bottom:10px">
+                    <p:focus context="formId"/>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="biodata_ico.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['recruitment_applicant.form_applicant_upload']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['recruitment_applicant.applicant_upload_from_recruitment']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <p:fieldset legend="#{appmsg['recruitment_applicant.personal_data']}" style="margin-bottom:10px">
                             <p:panelGrid style="width: 100%;" styleClass="grid_border3"  >
-	                            <p:row id="panelName">
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['biodata.front_name']}"  for="firstNameId" styleClass="label_hrm" />
-	                                </p:column>
-	                                <p:column style="width: 34%">
-	                                    <p:inputText id="firstNameId" value="#{recruitApplicantFormController.model.firstName}" styleClass="isitext_hrm" label="#{appmsg['biodata.front_name']}"
-	                                                 style="width: 75%" required="true"/>
-	                                    <p:message for="firstNameId"/>
-	                                </p:column>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important">
-	                                    <p:outputLabel  value="#{appmsg['biodata.title']}" styleClass="label_hrm" for="titleId"/>
-	                                </p:column>
-	                                <p:column style="width: 34%">
-	                                    <p:inputText id="titleId" value="#{recruitApplicantFormController.model.title}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['biodata.title']}"
-	                                                 required="false"/>
-	                                    <p:message for="titleId"/>
-	                                </p:column>
-	                            </p:row>
-	                            
-	                            <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['biodata.last_name']}" styleClass="label_hrm" for="lastNameId"/>
-	                                </p:column>
-	                                <p:column style="width: 34%">
-	                                    <p:inputText id="lastNameId" value="#{recruitApplicantFormController.model.lastName}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['biodata.last_name']}"
-	                                                 required="false"/>
-	                                    <p:message for="lastNameId"/>
-	                                </p:column>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['biodata.nickname']}" styleClass="label_hrm" for="nickNameId"/>
-	                                </p:column>
-	                                <p:column style="width: 34%" >
-	                                    <p:inputText id="nickNameId" value="#{recruitApplicantFormController.model.nickname}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['biodata.nickname']}"
-	                                                 required="false" />
-	                                    <p:message for="nickNameId"/>
-	                                </p:column>
-	                            </p:row>
-	                            
-	                            <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['global.tempat_lahir']}" styleClass="label_hrm" for="placeOfBirthId"/>
-	                                </p:column>
-	                                <p:column style="width: 34%">
-	                                    <p:selectOneMenu id="placeOfBirthId" style="margin-right: 3px;width: 77%"  filter="true" required="false" label="#{appmsg['global.tempat_lahir']}"
-	                                                     value="#{recruitApplicantFormController.model.cityOfBirthId}">
-	                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-	                                        <f:selectItems value="#{recruitApplicantFormController.model.listCity}" var="city" itemValue="#{city.id}" itemLabel="#{city.cityName}" />
-	                                    </p:selectOneMenu>
-	                                    <p:message for="placeOfBirthId"/>
-	                                </p:column>
-	                                <p:column style="width: 16%;background-color: #e1f0f0 !important" >
-	                                    <p:outputLabel  value="#{appmsg['religion.religion']}" styleClass="label_hrm" for="religionId"/>
-	                                </p:column>
-	                                <p:column style="width: 34%" >
-	                                    <p:selectOneMenu id="religionId" style="margin-right: 3px;width: 77%"  filter="true" value="#{recruitApplicantFormController.model.religionId}"
-	                                                     required="true" label="#{appmsg['religion.religion']}">
-	                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-	                                        <f:selectItems value="#{recruitApplicantFormController.model.listReligion}" var="religion" itemValue="#{religion.id}" itemLabel="#{religion.name}"  />
-	                                    </p:selectOneMenu>
-	                                    <p:message for="religionId"/>
-	                                </p:column>
-	                            </p:row>
-	                            
-	                            <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_date']}" styleClass="label_hrm" for="birthDateId" />
-	                                </p:column>
-	                                <p:column style="width: 34%" >
-	                                    <p:calendar id="birthDateId" pattern="dd MMMM yyyy" label="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_date']}" value="#{recruitApplicantFormController.model.dateOfBirth}"
-	                                                required="true" navigator="true">
-	                                        <f:validator validatorId="birthDateValidator"  />
-	                                        <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
-	                                    </p:calendar>
-	                                    <p:message for="birthDateId"/>
-	                                </p:column>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['ras.ras']}" styleClass="label_hrm" for="raceId"/>
-	                                </p:column>
-	                                <p:column style="width: 34%">
-	                                    <p:selectOneMenu id="raceId" style="margin-right: 3px;width: 77%"  filter="true" required="true" value="#{recruitApplicantFormController.model.raceId}"
-	                                                     label="#{appmsg['ras.ras']}">
-	                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-	                                        <f:selectItems value="#{recruitApplicantFormController.model.listRace}" var="race" itemValue="#{race.id}" itemLabel="#{race.raceName}" />
-	                                    </p:selectOneMenu>
-	                                    <p:message for="raceId"/>
-	                                </p:column>
-	                            </p:row>
-	                            
-	                            <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['global.gender']}" styleClass="label_hrm" for="genderId"/>
-	                                </p:column>
-	                                <p:column style="width: 34%" >
-	                                    <p:selectOneRadio id="genderId" styleClass="isitext_hrm" required="true" value="#{recruitApplicantFormController.model.gender}" label="#{appmsg['global.gender']}">
-	                                        <!--Cek HRM Constanta..-->
-	                                        <f:selectItem itemLabel="#{appmsg['global_male']}" itemValue="1" />
-	                                        <f:selectItem itemLabel="#{appmsg['global_female']}" itemValue="0" />
-	                                    </p:selectOneRadio>
-	                                    <p:message for="genderId"/>
-	                                </p:column>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['dialect.dialect']}" styleClass="label_hrm" for="dialectId"/>
-	                                </p:column>
-	                                <p:column style="width: 34%">
-	                                    <p:selectOneMenu id="dialectId" style="margin-right: 3px;width: 77%"  filter="true" value="#{recruitApplicantFormController.model.dialectId}"
-	                                                     required="true" label="#{appmsg['dialect.dialect']}">
-	                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-	                                        <f:selectItems value="#{recruitApplicantFormController.model.listDialect}" var="dialect" itemValue="#{dialect.id}" itemLabel="#{dialect.dialectName}"  />
-	                                    </p:selectOneMenu>
-	                                    <p:message for="dialectId"/>
-	                                </p:column>
-	                            </p:row>
-	                            
-	                            <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['maritalstatus.detail_maritalstatus']}"  for="maritalId" styleClass="label_hrm" />
-	                                </p:column>
-	                                <p:column style="width: 34%">
-	                                    <p:selectOneMenu id="maritalId" style="margin-right: 3px;width: 77%" filter="true" required="true" value="#{recruitApplicantFormController.model.maritalStatusId}"
-	                                                     label="#{appmsg['maritalstatus.detail_maritalstatus']}">
-	                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-	                                        <f:selectItems value="#{recruitApplicantFormController.model.listMaritalStatus}" var="maritalStatus" itemValue="#{maritalStatus.id}" itemLabel="#{maritalStatus.name}"  />
-	                                    </p:selectOneMenu>
-	                                    <p:message for="maritalId"/>
-	                                </p:column>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important">
-	                                    <p:outputLabel  value="#{appmsg['biodata.citizen']}" styleClass="label_hrm" for="nationalityId"/>
-	                                </p:column>
-	                                <p:column style="width: 34%">
-	                                    <p:selectOneMenu  style="margin-right: 3px;width: 77%" id="nationalityId" filter="true" label="#{appmsg['biodata.citizen']}" required="true" value="#{recruitApplicantFormController.model.nationalityId}" >
-	                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-	                                        <f:selectItems value="#{recruitApplicantFormController.model.listNationality}" var="nationality" itemValue="#{nationality.id}" itemLabel="#{nationality.nationalityName}" />
-	                                    </p:selectOneMenu>
-	                                    <p:message for="nationalityId"/>
-	                                </p:column>
-	                            </p:row>
-	                            
-	                            <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['biodata.family_identification_number']}"  for="noKKId" styleClass="label_hrm" />
-	                                </p:column>
-	                                <p:column style="width: 34%">
-	                                    <p:inputText value="#{recruitApplicantFormController.model.noKK}" styleClass="isitext_hrm" label="#{appmsg['biodata.family_identification_number']}"
-	                                                 style="width: 75%" required="false" id="noKKId" />
-	                                    <p:message for="noKKId"/>
-	                                </p:column>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important">
-	                                    <p:outputLabel  value="#{appmsg['biodata.hp']}" styleClass="label_hrm" for="mobilePhoneId"/>
-	                                </p:column>
-	                                <p:column style="width: 34%">
-	                                    <p:inputText id="mobilePhoneId" value="#{recruitApplicantFormController.model.phoneNumber}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['biodata.hp']}" 
-	                                    			 required="true"/>
-	                                    <p:message for="mobilePhoneId"/>
-	                                </p:column>
-	                            </p:row>
-	                            
-	                            <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['biodata.blood_type']}"  for="bloodId" styleClass="label_hrm" />
-	                                </p:column>
-	                                <p:column style="width: 34%">
-	                                    <p:selectOneRadio id="bloodId" styleClass="isitext_hrm" required="false" value="#{recruitApplicantFormController.model.bloodType}" label="#{appmsg['biodata.blood_type']}">	
-	                                        <f:selectItem itemLabel="A" itemValue="1" />
-	                                        <f:selectItem itemLabel="B" itemValue="2" />
-	                                        <f:selectItem itemLabel="AB" itemValue="3" />
-	                                        <f:selectItem itemLabel="O" itemValue="4" />
-	                                    </p:selectOneRadio>
-	                                    <p:message for="bloodId"/>
-	                                </p:column>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important">
-	                                    <p:outputLabel  value="#{appmsg['biodata.email_address']}" styleClass="label_hrm" for="emailId"/>
-	                                </p:column>
-	                                <p:column style="width: 34%">
-	                                    <p:inputText id="emailId" value="#{recruitApplicantFormController.model.emailAddress}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['biodata.email_address']}"
-	                                                 required="false"/>
-	                                    <p:message for="emailId"/>
-	                                </p:column>
-	                            </p:row>
-	                            
-	                            <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['biodata.jamsostek']}"  for="jamsostekId" styleClass="label_hrm" />
-	                                </p:column>
-	                                <p:column style="width: 34%">
-	                                    <p:inputText id="jamsostekId" value="#{recruitApplicantFormController.model.jamsostek}" styleClass="isitext_hrm" label="#{appmsg['biodata.jamsostek']}"
-	                                                 style="width: 75%" required="false"/>
-	                                    <p:message for="jamsostekId"/>
-	                                </p:column>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important">
-	                                    <p:outputLabel  value="#{appmsg['biodata.npwp']}" styleClass="label_hrm" for="npwpID"/>
-	                                </p:column>
-	                                <p:column style="width: 34%">
-	                                    <p:inputText id="npwpID" value="#{recruitApplicantFormController.model.npwp}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['biodata.npwp']}"
-	                                                 required="false"/>
-	                                    <p:message for="npwpID"/>
-	                                </p:column>
-	                            </p:row>
-	                        </p:panelGrid>
+                                <p:row id="panelName">
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['biodata.front_name']}"  for="firstNameId" styleClass="label_hrm" />
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                        <p:inputText id="firstNameId" value="#{recruitApplicantFormController.model.firstName}" styleClass="isitext_hrm" label="#{appmsg['biodata.front_name']}"
+                                                     style="width: 75%" required="true"/>
+                                        <p:message for="firstNameId"/>
+                                    </p:column>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important">
+                                        <p:outputLabel  value="#{appmsg['biodata.title']}" styleClass="label_hrm" for="titleId"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                        <p:inputText id="titleId" value="#{recruitApplicantFormController.model.title}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['biodata.title']}"
+                                                     required="false"/>
+                                        <p:message for="titleId"/>
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['biodata.last_name']}" styleClass="label_hrm" for="lastNameId"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                        <p:inputText id="lastNameId" value="#{recruitApplicantFormController.model.lastName}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['biodata.last_name']}"
+                                                     required="false"/>
+                                        <p:message for="lastNameId"/>
+                                    </p:column>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['biodata.nickname']}" styleClass="label_hrm" for="nickNameId"/>
+                                    </p:column>
+                                    <p:column style="width: 34%" >
+                                        <p:inputText id="nickNameId" value="#{recruitApplicantFormController.model.nickname}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['biodata.nickname']}"
+                                                     required="false" />
+                                        <p:message for="nickNameId"/>
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['global.tempat_lahir']}" styleClass="label_hrm" for="placeOfBirthId"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                        <p:selectOneMenu id="placeOfBirthId" style="margin-right: 3px;width: 77%"  filter="true" required="false" label="#{appmsg['global.tempat_lahir']}"
+                                                         value="#{recruitApplicantFormController.model.cityOfBirthId}">
+                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                            <f:selectItems value="#{recruitApplicantFormController.model.listCity}" var="city" itemValue="#{city.id}" itemLabel="#{city.cityName}" />
+                                        </p:selectOneMenu>
+                                        <p:message for="placeOfBirthId"/>
+                                    </p:column>
+                                    <p:column style="width: 16%;background-color: #e1f0f0 !important" >
+                                        <p:outputLabel  value="#{appmsg['religion.religion']}" styleClass="label_hrm" for="religionId"/>
+                                    </p:column>
+                                    <p:column style="width: 34%" >
+                                        <p:selectOneMenu id="religionId" style="margin-right: 3px;width: 77%"  filter="true" value="#{recruitApplicantFormController.model.religionId}"
+                                                         required="true" label="#{appmsg['religion.religion']}">
+                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                            <f:selectItems value="#{recruitApplicantFormController.model.listReligion}" var="religion" itemValue="#{religion.id}" itemLabel="#{religion.name}"  />
+                                        </p:selectOneMenu>
+                                        <p:message for="religionId"/>
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_date']}" styleClass="label_hrm" for="birthDateId" />
+                                    </p:column>
+                                    <p:column style="width: 34%" >
+                                        <p:calendar id="birthDateId" pattern="dd MMMM yyyy" label="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_date']}" value="#{recruitApplicantFormController.model.dateOfBirth}"
+                                                    required="true" navigator="true">
+                                            <f:validator validatorId="birthDateValidator"  />
+                                            <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
+                                        </p:calendar>
+                                        <p:message for="birthDateId"/>
+                                    </p:column>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['ras.ras']}" styleClass="label_hrm" for="raceId"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                        <p:selectOneMenu id="raceId" style="margin-right: 3px;width: 77%"  filter="true" required="true" value="#{recruitApplicantFormController.model.raceId}"
+                                                         label="#{appmsg['ras.ras']}">
+                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                            <f:selectItems value="#{recruitApplicantFormController.model.listRace}" var="race" itemValue="#{race.id}" itemLabel="#{race.raceName}" />
+                                        </p:selectOneMenu>
+                                        <p:message for="raceId"/>
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['global.gender']}" styleClass="label_hrm" for="genderId"/>
+                                    </p:column>
+                                    <p:column style="width: 34%" >
+                                        <p:selectOneRadio id="genderId" styleClass="isitext_hrm" required="true" value="#{recruitApplicantFormController.model.gender}" label="#{appmsg['global.gender']}">
+                                            <!--Cek HRM Constanta..-->
+                                            <f:selectItem itemLabel="#{appmsg['global_male']}" itemValue="1" />
+                                            <f:selectItem itemLabel="#{appmsg['global_female']}" itemValue="0" />
+                                        </p:selectOneRadio>
+                                        <p:message for="genderId"/>
+                                    </p:column>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['dialect.dialect']}" styleClass="label_hrm" for="dialectId"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                        <p:selectOneMenu id="dialectId" style="margin-right: 3px;width: 77%"  filter="true" value="#{recruitApplicantFormController.model.dialectId}"
+                                                         required="true" label="#{appmsg['dialect.dialect']}">
+                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                            <f:selectItems value="#{recruitApplicantFormController.model.listDialect}" var="dialect" itemValue="#{dialect.id}" itemLabel="#{dialect.dialectName}"  />
+                                        </p:selectOneMenu>
+                                        <p:message for="dialectId"/>
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['maritalstatus.detail_maritalstatus']}"  for="maritalId" styleClass="label_hrm" />
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                        <p:selectOneMenu id="maritalId" style="margin-right: 3px;width: 77%" filter="true" required="true" value="#{recruitApplicantFormController.model.maritalStatusId}"
+                                                         label="#{appmsg['maritalstatus.detail_maritalstatus']}">
+                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                            <f:selectItems value="#{recruitApplicantFormController.model.listMaritalStatus}" var="maritalStatus" itemValue="#{maritalStatus.id}" itemLabel="#{maritalStatus.name}"  />
+                                        </p:selectOneMenu>
+                                        <p:message for="maritalId"/>
+                                    </p:column>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important">
+                                        <p:outputLabel  value="#{appmsg['biodata.citizen']}" styleClass="label_hrm" for="nationalityId"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                        <p:selectOneMenu  style="margin-right: 3px;width: 77%" id="nationalityId" filter="true" label="#{appmsg['biodata.citizen']}" required="true" value="#{recruitApplicantFormController.model.nationalityId}" >
+                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                            <f:selectItems value="#{recruitApplicantFormController.model.listNationality}" var="nationality" itemValue="#{nationality.id}" itemLabel="#{nationality.nationalityName}" />
+                                        </p:selectOneMenu>
+                                        <p:message for="nationalityId"/>
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['biodata.family_identification_number']}"  for="noKKId" styleClass="label_hrm" />
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                        <p:inputText value="#{recruitApplicantFormController.model.noKK}" styleClass="isitext_hrm" label="#{appmsg['biodata.family_identification_number']}"
+                                                     style="width: 75%" required="false" id="noKKId" />
+                                        <p:message for="noKKId"/>
+                                    </p:column>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important">
+                                        <p:outputLabel  value="#{appmsg['biodata.hp']}" styleClass="label_hrm" for="mobilePhoneId"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                        <p:inputText id="mobilePhoneId" value="#{recruitApplicantFormController.model.phoneNumber}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['biodata.hp']}" 
+                                                     required="true"/>
+                                        <p:message for="mobilePhoneId"/>
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['biodata.blood_type']}"  for="bloodId" styleClass="label_hrm" />
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                        <p:selectOneRadio id="bloodId" styleClass="isitext_hrm" required="false" value="#{recruitApplicantFormController.model.bloodType}" label="#{appmsg['biodata.blood_type']}">	
+                                            <f:selectItem itemLabel="A" itemValue="1" />
+                                            <f:selectItem itemLabel="B" itemValue="2" />
+                                            <f:selectItem itemLabel="AB" itemValue="3" />
+                                            <f:selectItem itemLabel="O" itemValue="4" />
+                                        </p:selectOneRadio>
+                                        <p:message for="bloodId"/>
+                                    </p:column>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important">
+                                        <p:outputLabel  value="#{appmsg['biodata.email_address']}" styleClass="label_hrm" for="emailId"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                        <p:inputText id="emailId" value="#{recruitApplicantFormController.model.emailAddress}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['biodata.email_address']}"
+                                                     required="false"/>
+                                        <p:message for="emailId"/>
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['biodata.jamsostek']}"  for="jamsostekId" styleClass="label_hrm" />
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                        <p:inputText id="jamsostekId" value="#{recruitApplicantFormController.model.jamsostek}" styleClass="isitext_hrm" label="#{appmsg['biodata.jamsostek']}"
+                                                     style="width: 75%" required="false"/>
+                                        <p:message for="jamsostekId"/>
+                                    </p:column>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important">
+                                        <p:outputLabel  value="#{appmsg['biodata.npwp']}" styleClass="label_hrm" for="npwpID"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                        <p:inputText id="npwpID" value="#{recruitApplicantFormController.model.npwp}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['biodata.npwp']}"
+                                                     required="false"/>
+                                        <p:message for="npwpID"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
                         </p:fieldset> 
-                        
+
                         <p:fieldset legend="#{appmsg['recruitment_applicant.latest_education_data']}" style="margin-bottom:10px">
                             <p:panelGrid style="width: 100%;" styleClass="grid_border3"  >
-                            	<p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_last']}" styleClass="label_hrm" for="educationLevelId"/>
-	                                </p:column>
-	                                <p:column style="width: 84%">
-	                                    <p:selectOneMenu id="educationLevelId" style="width: 31%"  filter="true" required="true" 
-	                                                     value="#{recruitApplicantFormController.model.educationLevelId}">
-	                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-	                                        <f:selectItems value="#{recruitApplicantFormController.model.listEducationLevel}" var="educationLevel" itemValue="#{educationLevel.id}" itemLabel="#{educationLevel.name}" />
-	                                    </p:selectOneMenu>
-	                                    <p:message for="educationLevelId"/>
-	                                </p:column>
-	                            </p:row>
-	                            <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['institutionEducation.institution_name']}" styleClass="label_hrm" for="institutionEducationId"/>
-	                                </p:column>
-	                                <p:column style="width: 84%">
-	                                    <p:selectOneMenu id="institutionEducationId" style="width: 31%"  filter="true" required="true"
-	                                                     value="#{recruitApplicantFormController.model.institutionEducationId}">
-	                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-	                                        <f:selectItems value="#{recruitApplicantFormController.model.listInstitutionEducation}" var="institutionEducation" itemValue="#{institutionEducation.id}" itemLabel="#{institutionEducation.institutionEducationName}" />
-	                                    </p:selectOneMenu>
-	                                    <p:message for="institutionEducationId"/>
-	                                </p:column>
-	                            </p:row>
-	                            <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.final_score_from_scale']}" styleClass="label_hrm" for="scoreId"/>
-	                                </p:column>
-	                                <p:column style="width: 84%">
-	                                	<pe:inputNumber id="scoreId"  label="#{appmsg['recruitment_applicant.final_score_from_scale']}" value="#{recruitApplicantFormController.model.score}" 
-	                                					decimalPlaces="2" required="true" styleClass="isitext_hrm" size="7">
-	                                		<f:validator validatorId="doubleNumberBetweenValidator"  />
-		                                    <f:attribute name="endNumberDouble" value="#{scaleId}"/>
-		                                    <f:attribute name="validatorConstraint" value="GREATER_THAN"/>
-		                                    <f:attribute name="validatorMessage" value="#{appmsg['recruitment_applicant.error_final_score_bigger_thank_scale']}"/>
-	                                	</pe:inputNumber>
-	                                	<p:outputLabel  value="&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp;" styleClass="label_hrm"/>
-	                                	<pe:inputNumber id="scaleId" binding="#{scaleId}" label="#{appmsg['recruitment_applicant.final_score_from_scale']}" value="#{recruitApplicantFormController.model.scale}" 
-	                                					decimalPlaces="0" required="true" styleClass="isitext_hrm" size="7"/>			                                
-	                                    <p:message for="scoreId"/>
-	                                    <p:message for="scaleId"/>
-	                                </p:column>
-	                            </p:row>
-	                            <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.start_year']} - #{appmsg['recruitment_applicant.end_year']}" styleClass="label_hrm" for="educationStartYearId"/>
-	                                </p:column>
-	                                <p:column style="width: 84%">
-	                               		<p:spinner id="educationStartYearId" value="#{recruitApplicantFormController.model.educationStartYear}" size="4" max="2050" min="1950" 
-	                                		   	   styleClass="isitext_hrm" required="true" label="#{appmsg['recruitment_applicant.start_year']}">
-	                                		<f:validator validatorId="integerNumberBetweenValidator"  />
-			                                <f:attribute name="endNumberInteger" value="#{educationEndYearId}"/>
-			                                <f:attribute name="validatorConstraint" value="GREATER_THAN"/>
-			                                <f:attribute name="validatorMessage" value="#{appmsg['global.DateIn_validator']}"/>
-	                               		</p:spinner>
-	                                    <p:outputLabel  value="&nbsp;&nbsp; #{appmsg['global.to']} &nbsp;&nbsp;" styleClass="label_hrm"/>
-	                                    <p:spinner id="educationEndYearId" binding="#{educationEndYearId}" value="#{recruitApplicantFormController.model.educationEndYear}" size="4" max="2050" min="1950" 
-	                                		   	   styleClass="isitext_hrm" required="true" label="#{appmsg['recruitment_applicant.end_year']}"/>
-                                    	<p:message for="educationStartYearId"/>
-	                                    <p:message for="educationEndYearId"/>
-	                                </p:column>
-	                            </p:row>
-	                            <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.diploma_number']}" styleClass="label_hrm" for="certificateNumberId"/>
-	                                </p:column>
-	                                <p:column style="width: 84%">
-	                                	<p:inputText id="certificateNumberId" value="#{recruitApplicantFormController.model.certificateNumber}" styleClass="isitext_hrm" style="width: 30%" 
-	                                    			 required="true"/>
-	                                    <p:message for="certificateNumberId"/>		
-	                                </p:column>
-	                            </p:row>
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_last']}" styleClass="label_hrm" for="educationLevelId"/>
+                                    </p:column>
+                                    <p:column style="width: 84%">
+                                        <p:selectOneMenu id="educationLevelId" style="width: 31%"  filter="true" required="true" 
+                                                         value="#{recruitApplicantFormController.model.educationLevelId}">
+                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                            <f:selectItems value="#{recruitApplicantFormController.model.listEducationLevel}" var="educationLevel" itemValue="#{educationLevel.id}" itemLabel="#{educationLevel.name}" />
+                                        </p:selectOneMenu>
+                                        <p:message for="educationLevelId"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['institutionEducation.institution_name']}" styleClass="label_hrm" for="institutionEducationId"/>
+                                    </p:column>
+                                    <p:column style="width: 84%">
+                                        <p:selectOneMenu id="institutionEducationId" style="width: 31%"  filter="true" required="true"
+                                                         value="#{recruitApplicantFormController.model.institutionEducationId}">
+                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                            <f:selectItems value="#{recruitApplicantFormController.model.listInstitutionEducation}" var="institutionEducation" itemValue="#{institutionEducation.id}" itemLabel="#{institutionEducation.institutionEducationName}" />
+                                        </p:selectOneMenu>
+                                        <p:message for="institutionEducationId"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['recruitment_applicant.final_score_from_scale']}" styleClass="label_hrm" for="scoreId"/>
+                                    </p:column>
+                                    <p:column style="width: 84%">
+                                        <pe:inputNumber id="scoreId"  label="#{appmsg['recruitment_applicant.final_score_from_scale']}" value="#{recruitApplicantFormController.model.score}" 
+                                                        decimalPlaces="2" required="true" styleClass="isitext_hrm" size="7">
+                                            <f:validator validatorId="doubleNumberBetweenValidator"  />
+                                            <f:attribute name="endNumberDouble" value="#{scaleId}"/>
+                                            <f:attribute name="validatorConstraint" value="GREATER_THAN"/>
+                                            <f:attribute name="validatorMessage" value="#{appmsg['recruitment_applicant.error_final_score_bigger_thank_scale']}"/>
+                                        </pe:inputNumber>
+                                        <p:outputLabel  value="&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp;" styleClass="label_hrm"/>
+                                        <pe:inputNumber id="scaleId" binding="#{scaleId}" label="#{appmsg['recruitment_applicant.final_score_from_scale']}" value="#{recruitApplicantFormController.model.scale}" 
+                                                        decimalPlaces="0" required="true" styleClass="isitext_hrm" size="7"/>			                                
+                                        <p:message for="scoreId"/>
+                                        <p:message for="scaleId"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['recruitment_applicant.start_year']} - #{appmsg['recruitment_applicant.end_year']}" styleClass="label_hrm" for="educationStartYearId"/>
+                                    </p:column>
+                                    <p:column style="width: 84%">
+                                        <p:spinner id="educationStartYearId" value="#{recruitApplicantFormController.model.educationStartYear}" size="4" max="2050" min="1950" 
+                                                   styleClass="isitext_hrm" required="true" label="#{appmsg['recruitment_applicant.start_year']}">
+                                            <f:validator validatorId="integerNumberBetweenValidator"  />
+                                            <f:attribute name="endNumberInteger" value="#{educationEndYearId}"/>
+                                            <f:attribute name="validatorConstraint" value="GREATER_THAN"/>
+                                            <f:attribute name="validatorMessage" value="#{appmsg['global.DateIn_validator']}"/>
+                                        </p:spinner>
+                                        <p:outputLabel  value="&nbsp;&nbsp; #{appmsg['global.to']} &nbsp;&nbsp;" styleClass="label_hrm"/>
+                                        <p:spinner id="educationEndYearId" binding="#{educationEndYearId}" value="#{recruitApplicantFormController.model.educationEndYear}" size="4" max="2050" min="1950" 
+                                                   styleClass="isitext_hrm" required="true" label="#{appmsg['recruitment_applicant.end_year']}"/>
+                                        <p:message for="educationStartYearId"/>
+                                        <p:message for="educationEndYearId"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['recruitment_applicant.diploma_number']}" styleClass="label_hrm" for="certificateNumberId"/>
+                                    </p:column>
+                                    <p:column style="width: 84%">
+                                        <p:inputText id="certificateNumberId" value="#{recruitApplicantFormController.model.certificateNumber}" styleClass="isitext_hrm" style="width: 30%" 
+                                                     required="true"/>
+                                        <p:message for="certificateNumberId"/>		
+                                    </p:column>
+                                </p:row>
                             </p:panelGrid>
-                      	</p:fieldset>
-                      	
+                        </p:fieldset>
+
                         <p:fieldset legend="#{appmsg['recruitment_applicant.latest_working_data']}" style="margin-bottom:10px">
                             <p:panelGrid style="width: 100%;" styleClass="grid_border3">
-                            	<p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="Fresh Graduate" styleClass="label_hrm"/>
-	                                </p:column>
-	                                <p:column style="width: 84%">
-	                                	<p:selectBooleanButton value="#{recruitApplicantFormController.model.isFreshGraduate}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
-                                                           	   offIcon="ui-icon-close" styleClass="label_button">
-                                        	<p:ajax listener="#{recruitApplicantFormController.onChangeFreshGraduate()}"
-                                        			update="lastWorkCompanyId,businessTypeId,lastWorkSinceId,lastWorkEndId,lastJabatanId,klasifikasiKerjaId,lastJabatanSinceId" />
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="Fresh Graduate" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 84%">
+                                        <p:selectBooleanButton value="#{recruitApplicantFormController.model.isFreshGraduate}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                               offIcon="ui-icon-close" styleClass="label_button">
+                                            <p:ajax listener="#{recruitApplicantFormController.onChangeFreshGraduate()}"
+                                                    update="lastWorkCompanyId,businessTypeId,lastWorkSinceId,lastWorkEndId,lastJabatanId,klasifikasiKerjaId,lastJabatanSinceId" />
                                         </p:selectBooleanButton>
-	                                </p:column>
-	                            </p:row>
-                            	<p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.latest_company']}" styleClass="label_hrm" for="lastWorkCompanyId"/>
-	                                </p:column>
-	                                <p:column style="width: 84%">
-	                                    <p:inputText id="lastWorkCompanyId" value="#{recruitApplicantFormController.model.lastWorkCompany}" styleClass="isitext_hrm" style="width: 30%" 
-	                                    			 required="true" disabled="#{recruitApplicantFormController.model.isFreshGraduate}"/>
-	                                    <p:message for="lastWorkCompanyId"/>
-	                                </p:column>
-	                            </p:row>
-	                            <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['businessType.businessType']}" styleClass="label_hrm" for="businessTypeId"/>
-	                                </p:column>
-	                                <p:column style="width: 84%">
-	                                    <p:selectOneMenu id="businessTypeId" style="width: 31%"  filter="true" required="true"
-	                                                     value="#{recruitApplicantFormController.model.businessTypeId}" disabled="#{recruitApplicantFormController.model.isFreshGraduate}">
-	                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-	                                        <f:selectItems value="#{recruitApplicantFormController.model.listBusinessType}" var="businessType" itemValue="#{businessType.id}" itemLabel="#{businessType.name}" />
-	                                    </p:selectOneMenu>
-	                                    <p:message for="businessTypeId"/>
-	                                </p:column>
-	                            </p:row>
-	                            <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.working_date_until']}" styleClass="label_hrm" for="lastWorkSinceId"/>
-	                                </p:column>
-	                                <p:column style="width: 84%">
-	                               		<p:spinner id="lastWorkSinceId" value="#{recruitApplicantFormController.model.lastWorkSince}" size="4" max="2050" min="1950" 
-	                                		   	   styleClass="isitext_hrm" required="true" label="#{appmsg['recruitment_applicant.start_year']}" disabled="#{recruitApplicantFormController.model.isFreshGraduate}">
-	                                		<f:validator validatorId="integerNumberBetweenValidator"  />
-			                                <f:attribute name="endNumberInteger" value="#{lastWorkEndId}"/>
-			                                <f:attribute name="validatorConstraint" value="GREATER_THAN"/>
-			                                <f:attribute name="validatorMessage" value="#{appmsg['global.DateIn_validator']}"/>
-	                                	</p:spinner>
-	                                    <p:outputLabel  value="&nbsp;&nbsp; #{appmsg['global.to']} &nbsp;&nbsp;" styleClass="label_hrm"/>
-	                                    <p:spinner id="lastWorkEndId" binding="${lastWorkEndId}" value="#{recruitApplicantFormController.model.lastWorkEnd}" size="4" max="2050" min="1950" disabled="#{recruitApplicantFormController.model.isFreshGraduate}"
-	                                		   	   styleClass="isitext_hrm" required="true" label="#{appmsg['recruitment_applicant.end_year']}"/>
-                                    	<p:message for="lastWorkSinceId"/>
-	                                    <p:message for="lastWorkEndId"/>
-	                                </p:column>
-	                            </p:row>
-	                            <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.latest_position']}" styleClass="label_hrm" for="lastJabatanId"/>
-	                                </p:column>
-	                                <p:column style="width: 84%">
-	                                    <p:inputText id="lastJabatanId" value="#{recruitApplicantFormController.model.lastJabatan}" styleClass="isitext_hrm" style="width: 30%" 
-	                                    			 required="true" disabled="#{recruitApplicantFormController.model.isFreshGraduate}"/>
-	                                    <p:message for="lastJabatanId"/>
-	                                </p:column>
-	                            </p:row>
-	                            <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" styleClass="label_hrm" for="klasifikasiKerjaId"/>
-	                                </p:column>
-	                                <p:column style="width: 84%">
-	                                    <p:selectOneMenu id="klasifikasiKerjaId" style="width: 31%"  filter="true" required="true"
-	                                                     value="#{recruitApplicantFormController.model.klasifikasiKerjaId}" disabled="#{recruitApplicantFormController.model.isFreshGraduate}">
-	                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-	                                        <f:selectItems value="#{recruitApplicantFormController.model.listKlasifikasiKerja}" var="klasifikasiKerja" itemValue="#{klasifikasiKerja.id}" itemLabel="#{klasifikasiKerja.name}" />
-	                                    </p:selectOneMenu>
-	                                    <p:message for="klasifikasiKerjaId"/>
-	                                </p:column>
-	                            </p:row>
-	                            <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.officiate_since']}" styleClass="label_hrm" for="lastJabatanSinceId"/>
-	                                </p:column>
-	                                <p:column style="width: 84%">
-	                               		<p:spinner id="lastJabatanSinceId" value="#{recruitApplicantFormController.model.lastJabatanSince}" size="4" max="2050" min="1950" 
-	                                		   	   styleClass="isitext_hrm" required="true" disabled="#{recruitApplicantFormController.model.isFreshGraduate}"/>
-	                                    <p:message for="lastJabatanSinceId"/>
-	                                </p:column>
-	                            </p:row>
-	                        </p:panelGrid>    
-	                	</p:fieldset>
-	                	
-	                	<p:fieldset legend="#{appmsg['recruitment_applicant.other_data']}" style="margin-bottom:10px">
-                        	<p:panelGrid style="width: 100%;" styleClass="grid_border3">
-                        		<p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['recruitment.vacancy_advertisement']}" styleClass="label_hrm" for="vacancyAdvertisementId"/>
-	                                </p:column>
-	                                <p:column style="width: 84%">
-		                            	<p:selectOneMenu id="vacancyAdvertisementId" style="width: 31%"  filter="true" required="true"
-		                                                 value="#{recruitApplicantFormController.model.vacancyAdvertisementId}">
-		                                	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-		                                    <f:selectItems value="#{recruitApplicantFormController.model.listVacancyAdvertisement}" var="vacancy" itemValue="#{vacancy.id}" itemLabel="#{vacancy.vacancyAdvCode} - #{vacancy.advertisementMedia.name}" />
-		                                    <p:ajax listener="#{recruitApplicantFormController.onChangeVacancyAdvertisement()}" update="vacancyAdvertisementDetailId"/>
-		                             	</p:selectOneMenu>
-		                                <p:message for="vacancyAdvertisementId"/>
-		                            </p:column>
-		                         </p:row>
-		                         <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['global.detail']}" styleClass="label_hrm" for="vacancyAdvertisementDetailId"/>
-	                                </p:column>
-	                                <p:column style="width: 84%">
-		                            	<p:selectOneMenu id="vacancyAdvertisementDetailId" style="width: 31%"  filter="true" required="true"
-		                                                 value="#{recruitApplicantFormController.model.vacancyAdvertisementDetailId}">
-		                                	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-		                                    <f:selectItems value="#{recruitApplicantFormController.model.listVacancyAdvertisementDetail}" var="detail" itemValue="#{detail.id}" itemLabel="#{detail.hireApply.reqHireCode} - #{detail.hireApply.jabatan.name}" />
-		                             	</p:selectOneMenu>
-		                                <p:message for="vacancyAdvertisementDetailId"/>
-		                            </p:column>
-		                         </p:row>
-                        		<p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['global.active']}" styleClass="label_hrm"/>
-	                                </p:column>
-	                                <p:column style="width: 84%">
-	                                	<p:selectBooleanButton value="#{recruitApplicantFormController.model.isActive}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
-                                                           	   offIcon="ui-icon-close" styleClass="label_button"/>
-	                                </p:column>
-	                            </p:row>
-	                            <p:row>
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.verified']}" styleClass="label_hrm"/>
-	                                </p:column>
-	                                <p:column style="width: 84%">
-	                                	<p:selectBooleanButton value="#{recruitApplicantFormController.model.isVerified}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
-                                                           	   offIcon="ui-icon-close" styleClass="label_button"/>
-	                                </p:column>
-	                            </p:row>
-	                            <p:row rendered="#{recruitApplicantFormController.model.uploadPath != null}">
-	                                <p:column style="width: 16%;background-color: #e1f0f0!important" >
-	                                    <p:outputLabel  value="#{appmsg['recruitment_applicant.download_resource_from']}" styleClass="label_hrm"/>
-	                                </p:column>
-	                                <p:column style="width: 84%">
-	                                	<p:commandLink ajax="false" value="Download" title="Download" onclick="PrimeFaces.monitorDownload(start, stop);" immediate="true">
-                                    		<p:fileDownload value="#{fileStreamerController.fileFromPath}" />
-                                        	<f:param name="path" value="#{recruitApplicantFormController.model.uploadPath}"/>
-                                        	<f:param name="fileName" value="applicant"/>
-                                   		</p:commandLink>
-	                                </p:column>
-	                            </p:row>
-                        	</p:panelGrid>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['recruitment_applicant.latest_company']}" styleClass="label_hrm" for="lastWorkCompanyId"/>
+                                    </p:column>
+                                    <p:column style="width: 84%">
+                                        <p:inputText id="lastWorkCompanyId" value="#{recruitApplicantFormController.model.lastWorkCompany}" styleClass="isitext_hrm" style="width: 30%" 
+                                                     required="true" disabled="#{recruitApplicantFormController.model.isFreshGraduate}"/>
+                                        <p:message for="lastWorkCompanyId"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['businessType.businessType']}" styleClass="label_hrm" for="businessTypeId"/>
+                                    </p:column>
+                                    <p:column style="width: 84%">
+                                        <p:selectOneMenu id="businessTypeId" style="width: 31%"  filter="true" required="true"
+                                                         value="#{recruitApplicantFormController.model.businessTypeId}" disabled="#{recruitApplicantFormController.model.isFreshGraduate}">
+                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                            <f:selectItems value="#{recruitApplicantFormController.model.listBusinessType}" var="businessType" itemValue="#{businessType.id}" itemLabel="#{businessType.name}" />
+                                        </p:selectOneMenu>
+                                        <p:message for="businessTypeId"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['recruitment_applicant.working_date_until']}" styleClass="label_hrm" for="lastWorkSinceId"/>
+                                    </p:column>
+                                    <p:column style="width: 84%">
+                                        <p:spinner id="lastWorkSinceId" value="#{recruitApplicantFormController.model.lastWorkSince}" size="4" max="2050" min="1950" 
+                                                   styleClass="isitext_hrm" required="true" label="#{appmsg['recruitment_applicant.start_year']}" disabled="#{recruitApplicantFormController.model.isFreshGraduate}">
+                                            <f:validator validatorId="integerNumberBetweenValidator"  />
+                                            <f:attribute name="endNumberInteger" value="#{lastWorkEndId}"/>
+                                            <f:attribute name="validatorConstraint" value="GREATER_THAN"/>
+                                            <f:attribute name="validatorMessage" value="#{appmsg['global.DateIn_validator']}"/>
+                                        </p:spinner>
+                                        <p:outputLabel  value="&nbsp;&nbsp; #{appmsg['global.to']} &nbsp;&nbsp;" styleClass="label_hrm"/>
+                                        <p:spinner id="lastWorkEndId" binding="${lastWorkEndId}" value="#{recruitApplicantFormController.model.lastWorkEnd}" size="4" max="2050" min="1950" disabled="#{recruitApplicantFormController.model.isFreshGraduate}"
+                                                   styleClass="isitext_hrm" required="true" label="#{appmsg['recruitment_applicant.end_year']}"/>
+                                        <p:message for="lastWorkSinceId"/>
+                                        <p:message for="lastWorkEndId"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['recruitment_applicant.latest_position']}" styleClass="label_hrm" for="lastJabatanId"/>
+                                    </p:column>
+                                    <p:column style="width: 84%">
+                                        <p:inputText id="lastJabatanId" value="#{recruitApplicantFormController.model.lastJabatan}" styleClass="isitext_hrm" style="width: 30%" 
+                                                     required="true" disabled="#{recruitApplicantFormController.model.isFreshGraduate}"/>
+                                        <p:message for="lastJabatanId"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" styleClass="label_hrm" for="klasifikasiKerjaId"/>
+                                    </p:column>
+                                    <p:column style="width: 84%">
+                                        <p:selectOneMenu id="klasifikasiKerjaId" style="width: 31%"  filter="true" required="true"
+                                                         value="#{recruitApplicantFormController.model.klasifikasiKerjaId}" disabled="#{recruitApplicantFormController.model.isFreshGraduate}">
+                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                            <f:selectItems value="#{recruitApplicantFormController.model.listKlasifikasiKerja}" var="klasifikasiKerja" itemValue="#{klasifikasiKerja.id}" itemLabel="#{klasifikasiKerja.name}" />
+                                        </p:selectOneMenu>
+                                        <p:message for="klasifikasiKerjaId"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['recruitment_applicant.officiate_since']}" styleClass="label_hrm" for="lastJabatanSinceId"/>
+                                    </p:column>
+                                    <p:column style="width: 84%">
+                                        <p:spinner id="lastJabatanSinceId" value="#{recruitApplicantFormController.model.lastJabatanSince}" size="4" max="2050" min="1950" 
+                                                   styleClass="isitext_hrm" required="true" disabled="#{recruitApplicantFormController.model.isFreshGraduate}"/>
+                                        <p:message for="lastJabatanSinceId"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>    
                         </p:fieldset>
-	                	
-	                	<p:fieldset legend="#{appmsg['mppRecruitmentHist.work_specification']}" style="margin-bottom:10px">
+
+                        <p:fieldset legend="#{appmsg['recruitment_applicant.other_data']}" style="margin-bottom:10px">
+                            <p:panelGrid style="width: 100%;" styleClass="grid_border3">
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['recruitment.vacancy_advertisement']}" styleClass="label_hrm" for="vacancyAdvertisementId"/>
+                                    </p:column>
+                                    <p:column style="width: 84%">
+                                        <p:selectOneMenu id="vacancyAdvertisementId" style="width: 31%"  filter="true" required="true"
+                                                         value="#{recruitApplicantFormController.model.vacancyAdvertisementId}">
+                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                            <f:selectItems value="#{recruitApplicantFormController.model.listVacancyAdvertisement}" var="vacancy" itemValue="#{vacancy.id}" itemLabel="#{vacancy.vacancyAdvCode} - #{vacancy.advertisementMedia.name}" />
+                                            <p:ajax listener="#{recruitApplicantFormController.onChangeVacancyAdvertisement()}" update="vacancyAdvertisementDetailId"/>
+                                        </p:selectOneMenu>
+                                        <p:message for="vacancyAdvertisementId"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['global.detail']}" styleClass="label_hrm" for="vacancyAdvertisementDetailId"/>
+                                    </p:column>
+                                    <p:column style="width: 84%">
+                                        <p:selectOneMenu id="vacancyAdvertisementDetailId" style="width: 31%"  filter="true" required="true"
+                                                         value="#{recruitApplicantFormController.model.vacancyAdvertisementDetailId}">
+                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                            <f:selectItems value="#{recruitApplicantFormController.model.listVacancyAdvertisementDetail}" var="detail" itemValue="#{detail.id}" itemLabel="#{detail.hireApply.reqHireCode} - #{detail.hireApply.jabatan.name}" />
+                                        </p:selectOneMenu>
+                                        <p:message for="vacancyAdvertisementDetailId"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['global.active']}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 84%">
+                                        <p:selectBooleanButton value="#{recruitApplicantFormController.model.isActive}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                               offIcon="ui-icon-close" styleClass="label_button"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['recruitment_applicant.verified']}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 84%">
+                                        <p:selectBooleanButton value="#{recruitApplicantFormController.model.isVerified}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                                               offIcon="ui-icon-close" styleClass="label_button"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row rendered="#{recruitApplicantFormController.model.uploadPath != null}">
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['recruitment_applicant.download_resource_from']}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 84%">
+                                        <p:commandLink ajax="false" value="Download" title="Download" onclick="PrimeFaces.monitorDownload(start, stop);" immediate="true">
+                                            <p:fileDownload value="#{fileStreamerController.fileFromPath}" />
+                                            <f:param name="path" value="#{recruitApplicantFormController.model.uploadPath}"/>
+                                            <f:param name="fileName" value="applicant"/>
+                                        </p:commandLink>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:fieldset>
+
+                        <p:fieldset legend="#{appmsg['mppRecruitmentHist.work_specification']}" style="margin-bottom:10px">
                             <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
                                 <c:forEach   var="data" items="#{recruitApplicantFormController.model.specListDualModel}" begin="0" end="#{recruitApplicantFormController.model.specListDualModel.size()-1}" varStatus="loop"  >                                
                                     <p:row>
@@ -483,20 +483,20 @@
 
                             </p:panelGrid>
                         </p:fieldset>
-	                	
-	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
-	                    <div style="margin-bottom: 5px">
-	                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
-	                                         action="#{recruitApplicantFormController.doSave()}" styleClass="isitext_hrm"
-	                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
-	                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
-	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId"
-                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
-                            	<p:resetInput target="formId" />  
-                        	</p:commandButton>
-	                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{recruitApplicantFormController.doBack()}" immediate="true"
-	                                      	 styleClass="label_button"/>
-	                    </div>
+
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
+                                             action="#{recruitApplicantFormController.doSave()}" styleClass="isitext_hrm"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                                <p:resetInput target="formId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{recruitApplicantFormController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                        </div>
                     </div>
                 </h:form>
             </ui:define>

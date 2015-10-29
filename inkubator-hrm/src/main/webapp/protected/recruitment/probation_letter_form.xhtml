@@ -61,11 +61,7 @@
                                 <p:column  style="width: 80%">
                                     <p:selectOneMenu id="letterTypeId" style="margin-right: 3px"  filter="true" required="true" label="#{appmsg['offering_module.letter_type']}" 
                                                      value="#{offeringAndProhabitFormController.offeringAndProhabitModel.leterTypeId}" >
-                                        <!--<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>-->
-                                        <f:selectItem itemLabel="#{appmsg['offering_module.offer']}" itemValue="0" />
-<!--                                        <f:selectItem itemLabel="#{appmsg['offering_module.probation']}" itemValue="1" />
-                                        <f:selectItem itemLabel="#{appmsg['offering_module.reject']}" itemValue="2" />
-                                        <f:selectItem itemLabel="#{appmsg['offering_module.reschedule']}" itemValue="3" />-->
+                                        <f:selectItem itemLabel="#{appmsg['offering_module.probation']}" itemValue="1" />
                                     </p:selectOneMenu>
                                     <p:message for="letterTypeId"/>
                                 </p:column>

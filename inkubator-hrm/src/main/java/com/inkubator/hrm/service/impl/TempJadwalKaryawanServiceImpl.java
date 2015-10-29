@@ -472,6 +472,7 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
             jsonObj.put("ccEmailAddresses", ccEmailAddresses);
             jsonObj.put("locale", appActivity.getLocale());
             jsonObj.put("proposeDate", new SimpleDateFormat("dd-MMMM-yyyy").format(createdOn));
+    		jsonObj.put("urlLinkToApprove", FacesUtil.getRequest().getContextPath() + "" + HRMConstant.EMP_WORK_SCHEDULE_APPROVAL_PAGE + "" +"?faces-redirect=true&execution=e" + appActivity.getId());
 
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);

@@ -69,6 +69,7 @@ import com.inkubator.hrm.web.search.RecruitHireApplySearchParameter;
 import com.inkubator.hrm.web.search.RecruitReqHistorySearchParameter;
 import com.inkubator.hrm.web.search.RecruitmentScheduleSettingSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -573,6 +574,8 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
             jsonObj.put("salaryMin", recruitHireApply.getSalaryMin());
             jsonObj.put("salaryMax", recruitHireApply.getSalaryMax());
             jsonObj.put("candidateCountRequest", recruitHireApply.getCandidateCountRequest());
+            jsonObj.put("urlLinkToApprove", FacesUtil.getRequest().getContextPath() + "" + HRMConstant.RECRUITMENT_REQUEST + "" +"?faces-redirect=true&execution=e" + appActivity.getId());
+
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);
         }

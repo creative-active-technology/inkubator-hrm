@@ -71,6 +71,7 @@ import com.inkubator.hrm.web.search.PermitImplementationSearchParameter;
 import com.inkubator.hrm.web.search.ReportPermitHistorySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -682,6 +683,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
             jsonObj.put("endDate", dateFormat.format(permitImplementation.getEndDate()));
             jsonObj.put("fillingDate", dateFormat.format(permitImplementation.getFillingDate()));
             jsonObj.put("permitClassification", permit.getName());
+            jsonObj.put("urlLinkToApprove", FacesUtil.getRequest().getContextPath() + "" + HRMConstant.PERMIT_APPROVAL_PAGE + "" +"?faces-redirect=true&execution=e" + appActivity.getId());
 
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);

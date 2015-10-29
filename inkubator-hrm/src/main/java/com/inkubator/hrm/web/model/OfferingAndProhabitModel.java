@@ -28,7 +28,7 @@ public class OfferingAndProhabitModel implements Serializable {
     private Boolean isActive;
     private Boolean IsSendingViaSMS;
     private EmpData empData;
-    private int leterTypeId;
+    private String leterTypeId;
     public Long getId() {
         return id;
     }
@@ -110,11 +110,11 @@ public class OfferingAndProhabitModel implements Serializable {
         this.empData = empData;
     }
 
-    public int getLeterTypeId() {
+    public String getLeterTypeId() {
         return leterTypeId;
     }
 
-    public void setLeterTypeId(int leterTypeId) {
+    public void setLeterTypeId(String leterTypeId) {
         this.leterTypeId = leterTypeId;
     }
 

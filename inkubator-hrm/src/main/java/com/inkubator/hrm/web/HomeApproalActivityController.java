@@ -1,5 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
+  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -174,32 +174,34 @@ public class HomeApproalActivityController extends BaseController {
                     //redirect = "/protected/personalia/loan_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     redirect = "/protected/personalia/loan_new_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
-                case HRMConstant.SHIFT_SCHEDULE:
-                    redirect = "/protected/personalia/schedule_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
-                    break;
                 case HRMConstant.LEAVE:
                     redirect = "/protected/working_time/leave_impl_appr_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
-                    break;
-                case HRMConstant.LEAVE_CANCELLATION:
-                    redirect = "/protected/working_time/leave_impl_appr_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
-                    break;
-                case HRMConstant.OVERTIME:
-                    redirect = "/protected/employee/ot_impl_approval.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
-                    break;
-                case HRMConstant.ANNOUNCEMENT:
-                    redirect = "/protected/organisation/announcement_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
-                    break;
-                case HRMConstant.RECRUITMENT_REQUEST:
-                    redirect = "/protected/recruitment/recruitment_req_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
-                    break;
-                case HRMConstant.EMP_CORRECTION_ATTENDANCE:                    
-                    redirect = "/protected/working_time/emp_correction_attendance_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.RECRUIT_MPP_APPLY:
                     redirect = "/protected/recruitment/recruit_mpp_apply_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.PERMIT:
                     redirect = "/protected/working_time/permit_impl_approval.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getId();
+                    break;
+                case HRMConstant.SHIFT_SCHEDULE:
+                    redirect = "/protected/personalia/schedule_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
+                case HRMConstant.OVERTIME:
+                    redirect = "/protected/employee/ot_impl_approval.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
+                case HRMConstant.LEAVE_CANCELLATION:
+                    redirect = "/protected/working_time/leave_impl_appr_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
+                case HRMConstant.ANNOUNCEMENT:
+                    redirect = "/protected/organisation/announcement_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
+                    
+                    
+                case HRMConstant.RECRUITMENT_REQUEST:
+                    redirect = "/protected/recruitment/recruitment_req_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
+                case HRMConstant.EMP_CORRECTION_ATTENDANCE:                    
+                    redirect = "/protected/working_time/emp_correction_attendance_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 case HRMConstant.VACANCY_ADVERTISEMENT:                    
                 	redirect = "/protected/recruitment/vacancy_advertisement_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
