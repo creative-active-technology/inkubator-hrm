@@ -19,7 +19,7 @@ import com.inkubator.hrm.service.RecruitSelectionApplicantSchedulleDetailService
  *
  * @author rizkykojek
  */
-@Service(value = "recruitSelectionApplicantSchedulleDetailRealizationService")
+@Service(value = "recruitSelectionApplicantSchedulleDetailService")
 @Lazy
 public class RecruitSelectionApplicantSchedulleDetailServiceImpl extends IServiceImpl
 		implements RecruitSelectionApplicantSchedulleDetailService {
