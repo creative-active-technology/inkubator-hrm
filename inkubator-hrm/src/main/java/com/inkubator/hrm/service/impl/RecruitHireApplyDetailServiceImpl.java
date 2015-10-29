@@ -9,7 +9,9 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.RecruitHireApplyDetailDao;
 import com.inkubator.hrm.entity.RecruitHireApplyDetail;
 import com.inkubator.hrm.service.RecruitHireApplyDetailService;
+
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -194,5 +196,7 @@ public class RecruitHireApplyDetailServiceImpl extends IServiceImpl implements R
     public List<RecruitHireApplyDetail> getAllDataPageAbleIsActive(int i, int i1, Order order, Byte b) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+	
     
 }
