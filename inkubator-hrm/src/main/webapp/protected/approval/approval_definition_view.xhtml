@@ -40,13 +40,40 @@
                                         <f:selectItem itemLabel="#{appmsg['approvaldefinition.approval_name']}" itemValue="approvalName"/>
                                         <f:selectItem itemLabel="#{appmsg['approvaldefinition.process_name']}" itemValue="processName"/>
                                         <f:selectItem itemLabel="#{appmsg['approvaldefinition.approver_type']}" itemValue="approverType" />
-                                        <f:selectItem itemLabel="#{appmsg['approvalActivity.approverPosition']}" itemValue="approverPosition" />
-                                        <f:selectItem itemLabel="#{appmsg['approvalActivity.approverIndividual']}" itemValue="approverIndividual" />
-                                        <f:selectItem itemLabel="#{appmsg['approvalActivity.onBehalfPosition']}" itemValue="onBehalfApproverPosition" />
-                                        <f:selectItem itemLabel="#{appmsg['approvalActivity.onBehalfIndividual']}" itemValue="onBehaltAppriverIndividual" />
+                                        <p:ajax update="groupSearchId"/>
                                     </p:selectOneMenu>
-                                    <p:inputText value="#{approvalDefinitionViewController.approvalDefinitionSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
-                                                 label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/>
+                                    <h:panelGroup id="groupSearchId">
+                                    
+                                    	<!-- <p:inputText rendered="#{approvalDefinitionViewController.approvalDefinitionSearchParameter.keyParam != ''}" value="#{approvalDefinitionViewController.approvalDefinitionSearchParameter.parameter}" style="width: 250px" id="pencarianId" styleClass="isitext_hrm" 
+                                                 label="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}"/> -->
+                                        <p:selectOneMenu id="searchComboId" rendered="#{approvalDefinitionViewController.approvalDefinitionSearchParameter.keyParam == null}" value="#{approvalDefinitionViewController.approvalDefinitionSearchParameter.parameter}" style="width: 150px;margin-right : 3px"> 
+                                    		<f:selectItem itemLabel="" itemValue=""/>
+                                    	</p:selectOneMenu>         
+                                                 
+                                    	<p:selectOneMenu id="searchApprovalNameId" rendered="#{approvalDefinitionViewController.approvalDefinitionSearchParameter.keyParam == 'approvalName'}" value="#{approvalDefinitionViewController.approvalDefinitionSearchParameter.parameter}" style="width: 150px;margin-right : 3px"> 
+                                    		<f:selectItem itemLabel="#{appmsg['businesstravel.business_travel']}" itemValue="BUSINESS_TRAVEL"/>
+                                    		<f:selectItem itemLabel="#{appmsg['emp_correction_attendance.correction_attendance']}" itemValue="EMP_CORRECTION_ATTENDANCE"/>
+                                    		<f:selectItem itemLabel="#{appmsg['global.leave']}" itemValue="LEAVE"/>
+                                    		<f:selectItem itemLabel="#{appmsg['loan.loan']}" itemValue="LOAN"/>
+                                    		<f:selectItem itemLabel="#{appmsg['global.overtime']}" itemValue="OVERTIME"/>
+                                    		<f:selectItem itemLabel="#{appmsg['global.permit']}" itemValue="PERMIT"/>
+                                    		<f:selectItem itemLabel="#{appmsg['approvaldefinition.recruit_mpp_apply']}" itemValue="RECRUIT_MPP_APPLY"/>
+                                    		<f:selectItem itemLabel="#{appmsg['recruitment.recruitment_request']}" itemValue="RECRUITMENT_REQUEST"/>
+                                    		<f:selectItem itemLabel="#{appmsg['reimbursment.reimbursment']}" itemValue="REIMBURSEMENT"/>
+                                    		<f:selectItem itemLabel="#{appmsg['global.schedule_shift']}" itemValue="SHIFT_SCHEDULE"/>
+                                    	</p:selectOneMenu>
+                                    	
+                                    	<p:selectOneMenu id="searchProcessNameId" rendered="#{approvalDefinitionViewController.approvalDefinitionSearchParameter.keyParam == 'processName'}" value="#{approvalDefinitionViewController.approvalDefinitionSearchParameter.parameter}" style="width: 150px;margin-right : 3px"> 
+                                    		<f:selectItem itemLabel="#{appmsg['approvaldefinition.approval_process']}" itemValue="APPROVAL_PROCESS"/>
+                                    	</p:selectOneMenu>
+                                    	
+                                    	<p:selectOneMenu id="searchApproverTypeId" rendered="#{approvalDefinitionViewController.approvalDefinitionSearchParameter.keyParam == 'approverType'}" value="#{approvalDefinitionViewController.approvalDefinitionSearchParameter.parameter}" style="width: 150px;margin-right : 3px"> 
+                                    		<f:selectItem itemLabel="#{appmsg['department.department']}" itemValue="APPROVAL_TYPE_DEPARTMENT"/>
+                                    		<f:selectItem itemLabel="#{appmsg['global.individual']}" itemValue="APPROVAL_TYPE_INDIVIDUAL"/>
+                                    		<f:selectItem itemLabel="#{appmsg['position.position']}" itemValue="APPROVAL_TYPE_POSITION"/>
+                                    	</p:selectOneMenu>
+                                                 
+                                    </h:panelGroup>
                                     <p:commandButton value="#{appmsg['global.search']}" action="#{approvalDefinitionViewController.doSearch()}" style="width: 75px" update="tableApprovalDevId" icon="ui-icon-search"
                                                      styleClass="label_button" title="#{appmsg['global.search']}" id="btnPencarianId" />
                                 </h:panelGrid>
@@ -70,7 +97,7 @@
                             </p:toolbarGroup>
 
                         </p:toolbar>
-                        <p:focus for="pencarianId" />
+                        <!-- <p:focus for="pencarianId" /> -->
 
                         <p:dataTable  var="approvalDefinitionData"  value="#{approvalDefinitionViewController.lazyDataModelApprovalDefinition}" lazy="true" paginator="true" pageLinks="7" 
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"

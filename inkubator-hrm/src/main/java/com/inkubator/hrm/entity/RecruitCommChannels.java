@@ -4,6 +4,7 @@ package com.inkubator.hrm.entity;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -96,6 +97,40 @@ public class RecruitCommChannels  implements java.io.Serializable {
     
     public void setRecruitLetterComChannels(Set<RecruitLetterComChannel> recruitLetterComChannels) {
         this.recruitLetterComChannels = recruitLetterComChannels;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 59 * hash + Objects.hashCode(this.channelName);
+        hash = 59 * hash + Objects.hashCode(this.createdOn);
+        hash = 59 * hash + Objects.hashCode(this.createdBy);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final RecruitCommChannels other = (RecruitCommChannels) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.channelName, other.channelName)) {
+            return false;
+        }
+        if (!Objects.equals(this.createdOn, other.createdOn)) {
+            return false;
+        }
+        if (!Objects.equals(this.createdBy, other.createdBy)) {
+            return false;
+        }
+        return true;
     }
 
 

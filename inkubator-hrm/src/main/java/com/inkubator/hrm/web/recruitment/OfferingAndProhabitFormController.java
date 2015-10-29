@@ -65,13 +65,28 @@ public class OfferingAndProhabitFormController extends BaseController {
     public void initialization() {
         try {
             super.initialization();
-            isEdit = Boolean.FALSE;
-            offeringAndProhabitModel = new OfferingAndProhabitModel();
-            offeringAndProhabitModel.setExpiryDays(1);
             List<RecruitSelectionType> sourceDualLis = recruitSelectionTypeService.getAllData();
             List<RecruitCommChannels> sourceDualLisCom = recruitCommChannelsService.getAllData();
-            dualListModel.setSource(sourceDualLis);
-            dualListModelCom.setSource(sourceDualLisCom);
+
+            String offeringLetterId = FacesUtil.getRequestParameter("execution");
+            if (offeringLetterId != null) {
+                isEdit = Boolean.TRUE;
+                RecruitLetters recruitLetters = recruitLettersService.getByPkWithDetail(Long.parseLong(offeringLetterId.substring(1)));
+                offeringAndProhabitModel = getModelFromEntity(recruitLetters);
+                List<RecruitSelectionType> targetSelectionType = recruitLetters.getRecruitSelectionTypes();
+                List<RecruitCommChannels> recruitCommChannelss = recruitLetters.getRecruitCommChannelss();
+                sourceDualLis.removeAll(targetSelectionType);
+                sourceDualLisCom.removeAll(recruitCommChannelss);
+                dualListModel = new DualListModel<>(sourceDualLis, targetSelectionType);
+                dualListModelCom = new DualListModel<>(sourceDualLisCom, recruitCommChannelss);
+            } else {
+                isEdit = Boolean.FALSE;
+                offeringAndProhabitModel = new OfferingAndProhabitModel();
+                offeringAndProhabitModel.setExpiryDays(1);
+                dualListModel.setSource(sourceDualLis);
+                dualListModelCom.setSource(sourceDualLisCom);
+            }
+
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }
@@ -81,6 +96,13 @@ public class OfferingAndProhabitFormController extends BaseController {
     private void cleanAndExit() {
         dualListModel = null;
         offeringAndProhabitModel = null;
+        recruitSelectionTypeService = null;
+        recruitCommChannelsService = null;
+        recruitLettersService = null;
+        dualListModelCom = null;
+        empDataService = null;
+        isEdit = null;
+
     }
 
     public OfferingAndProhabitModel getOfferingAndProhabitModel() {
@@ -149,7 +171,8 @@ public class OfferingAndProhabitFormController extends BaseController {
         recruitLetters.setExpiryDays(model.getExpiryDays());
         recruitLetters.setFormatNumber(model.getFormatLetterNumber());
         recruitLetters.setIsActive(model.getIsActive());
-        recruitLetters.setLeterTypeId(model.getLeterTypeId());
+        recruitLetters.setLeterTypeId(Integer.parseInt(model.getLeterTypeId()));
+        System.out.println(" Ini adlaah jenis suranya " + model.getLeterTypeId());
         recruitLetters.setSmsNotif(model.getIsActive());
         recruitLetters.setSmsNotif(model.getIsSendingViaSMS());
         return recruitLetters;
@@ -199,6 +222,36 @@ public class OfferingAndProhabitFormController extends BaseController {
     }
 
     private String doUpdate(RecruitLetters letters) {
+        Set<RecruitLetterSelection> recruitLetterSelections = new HashSet<>();
+        List<RecruitSelectionType> sourceDSelectType = dualListModel.getTarget();
+        for (RecruitSelectionType rst : sourceDSelectType) {
+            RecruitLetterSelection recruitLetterSelection = new RecruitLetterSelection();
+            recruitLetterSelection.setId(new RecruitLetterSelectionId(letters.getId(), rst.getId()));
+            recruitLetterSelection.setRecruitLetters(letters);
+            recruitLetterSelection.setRecruitSelectionType(rst);
+            recruitLetterSelections.add(recruitLetterSelection);
+        }
+        letters.setRecruitLetterSelections(recruitLetterSelections);
+        Set<RecruitLetterComChannel> recruitLetterComChannels = new HashSet<>();
+        List<RecruitCommChannels> targetRecrutiCom = dualListModelCom.getTarget();
+        for (RecruitCommChannels channels : targetRecrutiCom) {
+            RecruitLetterComChannel comChannel = new RecruitLetterComChannel();
+            comChannel.setId(new RecruitLetterComChannelId(channels.getId(), letters.getId()));
+            comChannel.setRecruitCommChannels(channels);
+            comChannel.setRecruitLetters(letters);
+            recruitLetterComChannels.add(comChannel);
+        }
+        letters.setRecruitLetterComChannels(recruitLetterComChannels);
+        try {
+            recruitLettersService.update(letters);
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            return "/protected/recruitment/offering_prohabit_detail.htm?faces-redirect=true&execution=e" + letters.getId();
+        } catch (BussinessException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
         return null;
     }
 
@@ -206,4 +259,21 @@ public class OfferingAndProhabitFormController extends BaseController {
         this.recruitLettersService = recruitLettersService;
     }
 
+    private OfferingAndProhabitModel getModelFromEntity(RecruitLetters letters) {
+        OfferingAndProhabitModel model = new OfferingAndProhabitModel();
+        model.setCode(letters.getCode());
+        model.setContent(letters.getContentHtml());
+        model.setEmpData(letters.getEmpData());
+        model.setExpiryDays(letters.getExpiryDays());
+        model.setFormatLetterNumber(letters.getFormatNumber());
+        model.setId(letters.getId());
+        model.setIsActive(letters.getIsActive());
+        model.setIsSendingViaSMS(letters.getSmsNotif());
+        model.setLeterTypeId(String.valueOf(letters.getLeterTypeId()));
+        return model;
+    }
+
+    public String doBack() {
+     return "/protected/recruitment/offering_letter_view.htm?faces-redirect=true";
+    }
 }

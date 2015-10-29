@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.recruitment;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.RecruitLetters;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.RecruitLettersService;
@@ -26,8 +27,7 @@ public class OfferingAndProhabitDetilController extends BaseController {
 
     @ManagedProperty(value = "#{recruitLettersService}")
     private RecruitLettersService recruitLettersService;
-    @ManagedProperty(value = "#{empDataService}")
-    private EmpDataService empDataService;
+    ;
     private RecruitLetters selectedRecruitLetters;
 
     @PostConstruct
@@ -59,8 +59,22 @@ public class OfferingAndProhabitDetilController extends BaseController {
         this.recruitLettersService = recruitLettersService;
     }
 
-    public void setEmpDataService(EmpDataService empDataService) {
-        this.empDataService = empDataService;
+    public String doEdit() {
+        if (selectedRecruitLetters.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_OFFERING)) {
+            return "/protected/recruitment/offering_letter_form.htm?faces-redirect=true&execution=e" + selectedRecruitLetters.getId();
+        }
+
+        if (selectedRecruitLetters.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_PROBATION)) {
+            return "/protected/recruitment/probation_letter_form.htm?faces-redirect=true&execution=e" + selectedRecruitLetters.getId();
+        }
+
+        if (selectedRecruitLetters.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_REJECT)) {
+            return "/protected/recruitment/reject_letter_form.htm?faces-redirect=true&execution=e" + selectedRecruitLetters.getId();
+        }
+        return null;
     }
 
+    public String doBack() {
+        return "/protected/recruitment/offering_letter_view.htm?faces-redirect=true";
+    }
 }

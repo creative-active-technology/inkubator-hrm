@@ -1,8 +1,6 @@
 package com.inkubator.hrm.dao.impl;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -26,11 +24,12 @@ import com.inkubator.hrm.dao.RecruitApplicantDao;
 import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantInitial;
 import com.inkubator.hrm.web.model.ApplicantAgeViewModel;
+import com.inkubator.hrm.web.model.ApplicantRealizationViewModel;
 import com.inkubator.hrm.web.model.ApplicantViewModel;
 import com.inkubator.hrm.web.search.RecruitApplicantSearchParameter;
-import com.inkubator.hrm.web.search.RecruitSelectionApplicantRealizationSearchParameter;
 import com.inkubator.hrm.web.search.RecruitInitialSelectionSearchParameter;
 import com.inkubator.hrm.web.search.ReportSearchRecruitmentSearchParameter;
+import com.inkubator.hrm.web.search.SelectionApplicantRealizationSearchParameter;
 
 /**
  *
@@ -288,16 +287,98 @@ public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implement
     }
 
 	@Override
-	public List<RecruitApplicant> getSelectionApplicantRealizationByParam( RecruitSelectionApplicantRealizationSearchParameter parameter, int firstResults, int maxResults, Order orderable) {
-
-		return new ArrayList<>();
+	public List<ApplicantRealizationViewModel> getSelectionApplicantRealizationByParam(SelectionApplicantRealizationSearchParameter parameter, int firstResults, int maxResults, Order orderable) {
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT DISTINCT recruitApplicant.id AS applicantId, "
+    			+ "recruitSelectionApplicantSchedulle.id AS selectionScheduleId, "
+    			+ "bioData.combineName AS name, "
+    			+ "bioData.mobilePhone AS phone, "
+    			+ "jabatanApply.name AS positionApply, "
+    			+ "recruitApplicant.lastJabatan AS positionLast "
+    			+ "FROM RecruitApplicant recruitApplicant "
+    			+ "JOIN recruitApplicant.bioData bioData "
+    			+ "JOIN recruitApplicant.recruitSelectionApplicantSchedulleDetails recruitSelectionApplicantSchedulleDetails "
+    			+ "JOIN recruitSelectionApplicantSchedulleDetails.recruitSelectionApplicantSchedulle recruitSelectionApplicantSchedulle "
+    			+ "JOIN recruitSelectionApplicantSchedulle.hireApply hireApply "
+    			+ "JOIN hireApply.jabatan jabatanApply ");    	
+    	selectQuery.append(this.getWhereQuerySelectionApplicantRealizationByParam(parameter));
+    	selectQuery.append("ORDER BY " + orderable);
+        
+    	Query hbm = getCurrentSession().createQuery(selectQuery.toString()).setMaxResults(maxResults).setFirstResult(firstResults)
+                	.setResultTransformer(Transformers.aliasToBean(ApplicantRealizationViewModel.class));
+    	hbm = this.setValueQuerySelectionApplicantRealizationByParam(hbm, parameter);
+    	
+    	return hbm.list();
 	}
 
 	@Override
-	public Long getTotalSelectionApplicantRealizationByParam(RecruitSelectionApplicantRealizationSearchParameter parameter) {
-
-		return 0L;
+	public Long getTotalSelectionApplicantRealizationByParam(SelectionApplicantRealizationSearchParameter parameter) {
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT COUNT(DISTINCT recruitApplicant.id) "
+    			+ "FROM RecruitApplicant recruitApplicant "
+    	    	+ "JOIN recruitApplicant.bioData bioData "
+    	    	+ "JOIN recruitApplicant.recruitSelectionApplicantSchedulleDetails recruitSelectionApplicantSchedulleDetails "
+    	    	+ "JOIN recruitSelectionApplicantSchedulleDetails.recruitSelectionApplicantSchedulle recruitSelectionApplicantSchedulle "
+    	    	+ "JOIN recruitSelectionApplicantSchedulle.hireApply hireApply "
+    	    	+ "JOIN hireApply.jabatan jabatanApply ");     	
+    	selectQuery.append(this.getWhereQuerySelectionApplicantRealizationByParam(parameter));
+    	
+    	Query hbm = getCurrentSession().createQuery(selectQuery.toString());    	
+    	hbm = this.setValueQuerySelectionApplicantRealizationByParam(hbm, parameter);
+    	
+        return Long.valueOf(hbm.uniqueResult().toString());
 	}
+	
+	private String getWhereQuerySelectionApplicantRealizationByParam(SelectionApplicantRealizationSearchParameter parameter) {
+    	StringBuffer whereQuery = new StringBuffer();
+    	
+    	if (StringUtils.isNotEmpty(parameter.getName())) {
+    		if(StringUtils.isNotEmpty(whereQuery)){
+    			whereQuery.append("AND ");
+    		}
+    		whereQuery.append("bioData.combineName LIKE :empName ");
+        }
+    	
+        if (StringUtils.isNotEmpty(parameter.getPhone())) {
+        	if(StringUtils.isNotEmpty(whereQuery)){
+    			whereQuery.append("AND ");
+    		}
+        	whereQuery.append("bioData.mobilePhone LIKE :phone ");
+        }
+        
+        if (StringUtils.isNotEmpty(parameter.getJabatanApply())) {
+        	if(StringUtils.isNotEmpty(whereQuery)){
+    			whereQuery.append("AND ");
+    		}
+        	whereQuery.append("jabatanApply.name LIKE :positionApply ");
+        }
+        
+        if (StringUtils.isNotEmpty(parameter.getJabatanLast())) {
+        	if(StringUtils.isNotEmpty(whereQuery)){
+    			whereQuery.append("AND ");
+    		}
+        	whereQuery.append("recruitApplicant.lastJabatan LIKE :positionLast ");
+        }
+        
+        return StringUtils.isNotEmpty(whereQuery) ? "WHERE " + whereQuery.toString() : whereQuery.toString();
+    }
+    
+    private Query setValueQuerySelectionApplicantRealizationByParam(Query hbm, SelectionApplicantRealizationSearchParameter parameter){
+    	
+    	for(String param : hbm.getNamedParameters()){
+    		if(StringUtils.equals(param, "empName")){
+    			hbm.setParameter("empName", "%" + parameter.getName() + "%");
+    		} else if(StringUtils.equals(param, "phone")){
+    			hbm.setParameter("phone", "%" + parameter.getPhone() + "%");
+    		} else if(StringUtils.equals(param, "positionApply")){
+    			hbm.setParameter("positionApply", "%" + parameter.getJabatanApply() + "%");
+    		} else if(StringUtils.equals(param, "positionLast")){
+    			hbm.setParameter("positionLast", "%" + parameter.getJabatanLast() + "%");
+    		} 
+    	}
+    	
+    	return hbm;
+    }
 
 	@Override
 	public RecruitApplicant getEntityByPkWithHireApplyDetail(Long id) {

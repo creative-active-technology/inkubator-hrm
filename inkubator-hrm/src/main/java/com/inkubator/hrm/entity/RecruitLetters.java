@@ -1,8 +1,10 @@
 package com.inkubator.hrm.entity;
 // Generated Oct 23, 2015 2:42:06 PM by Hibernate Tools 4.3.1
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -41,8 +44,10 @@ public class RecruitLetters implements java.io.Serializable {
     private String createdBy;
     private Date updatedOn;
     private String updatedBy;
-    private Set<RecruitLetterSelection> recruitLetterSelections = new HashSet<RecruitLetterSelection>(0);
-    private Set<RecruitLetterComChannel> recruitLetterComChannels = new HashSet<RecruitLetterComChannel>(0);
+    private Set<RecruitLetterSelection> recruitLetterSelections = new HashSet<>(0);
+    private Set<RecruitLetterComChannel> recruitLetterComChannels = new HashSet<>(0);
+    private List<RecruitSelectionType> recruitSelectionTypes = new ArrayList<>();
+    private List<RecruitCommChannels> recruitCommChannelss = new ArrayList<>();
 
     public RecruitLetters() {
     }
@@ -226,6 +231,24 @@ public class RecruitLetters implements java.io.Serializable {
 
     public void setRecruitLetterComChannels(Set<RecruitLetterComChannel> recruitLetterComChannels) {
         this.recruitLetterComChannels = recruitLetterComChannels;
+    }
+
+    @Transient
+    public List<RecruitSelectionType> getRecruitSelectionTypes() {
+        return recruitSelectionTypes;
+    }
+
+    public void setRecruitSelectionTypes(List<RecruitSelectionType> recruitSelectionTypes) {
+        this.recruitSelectionTypes = recruitSelectionTypes;
+    }
+
+    @Transient
+    public List<RecruitCommChannels> getRecruitCommChannelss() {
+        return recruitCommChannelss;
+    }
+
+    public void setRecruitCommChannelss(List<RecruitCommChannels> recruitCommChannelss) {
+        this.recruitCommChannelss = recruitCommChannelss;
     }
 
 }

@@ -8,9 +8,16 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.RecruitLettersDao;
 import com.inkubator.hrm.entity.RecruitLetters;
+import com.inkubator.hrm.util.StringsUtils;
+import com.inkubator.hrm.web.search.RecrutimentLetterSearchParameter;
+import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -38,6 +45,57 @@ public class RecruitLettersDaoImpl extends IDAOImpl<RecruitLetters> implements R
         criteria.setFetchMode("recruitLetterComChannels", FetchMode.JOIN);
         criteria.setFetchMode("recruitLetterComChannels.recruitCommChannels", FetchMode.JOIN);
         return (RecruitLetters) criteria.uniqueResult();
+    }
+
+    @Override
+    public List<RecruitLetters> getAllWithSpecificLetterType(int type) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("leterTypeId", type));
+        return criteria.list();
+    }
+
+    @Override
+    public void saveAndMerge(RecruitLetters letters) {
+        getCurrentSession().update(letters);
+        getCurrentSession().flush();
+    }
+
+    @Override
+    public List<RecruitLetters> getByParam(RecrutimentLetterSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchRecruitLettersByParam(parameter, criteria);
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.addOrder(orderable);
+        criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalByParam(RecrutimentLetterSearchParameter parameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchRecruitLettersByParam(parameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    private void doSearchRecruitLettersByParam(RecrutimentLetterSearchParameter parameter, Criteria criteria) {
+        if (StringsUtils.isNotEmpty(parameter.getSelectionType())) {
+            criteria.createAlias("recruitLetterSelections", "rs", JoinType.INNER_JOIN);
+            criteria.createAlias("rs.recruitSelectionType", "se", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("se.name", parameter.getSelectionType(), MatchMode.ANYWHERE));
+
+        }
+        if (StringsUtils.isNotEmpty(parameter.getLetterType())) {
+            criteria.add(Restrictions.eq("leterTypeId", Integer.parseInt(parameter.getLetterType())));
+        }
+        if (StringsUtils.isNotEmpty(parameter.getSenderBy())) {
+            criteria.createAlias("recruitLetterComChannels", "rc", JoinType.INNER_JOIN);
+            criteria.createAlias("rc.recruitCommChannels", "rcom", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.like("rcom.channelName", parameter.getSenderBy(), MatchMode.ANYWHERE));
+        }
+        criteria.add(Restrictions.isNotNull("id"));
     }
 
 }
