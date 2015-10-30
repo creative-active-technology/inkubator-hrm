@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.faces.context.ExternalContext;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
@@ -78,6 +79,7 @@ import com.inkubator.hrm.web.model.RmbsHistoryViewModel;
 import com.inkubator.hrm.web.search.RmbsApplicationUndisbursedSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -501,6 +503,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
             jsonObj.put("nominal", decimalFormat.format(application.getNominal()));
             Date deadline = DateUtils.addDays(appActivity.getCreatedTime(), appActivity.getApprovalDefinition().getDelayTime());  
             jsonObj.put("deadline", dateFormat.format(deadline));
+            jsonObj.put("urlLinkToApprove", FacesUtil.getRequest().getContextPath() + "" + HRMConstant.REIMBURSMENT_APPROVAL_PAGE + "" +"?faces-redirect=true&execution=e" + appActivity.getId());
 
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);

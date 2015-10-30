@@ -8,9 +8,12 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.RecruitHireApplyDetailDao;
 import com.inkubator.hrm.entity.RecruitHireApplyDetail;
+
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -36,5 +39,5 @@ public class RecruitHireApplyDetailDaoImpl extends IDAOImpl<RecruitHireApplyDeta
         criteria.add(Restrictions.eq("recruitHireApply.id", recruitHireApplyId));       
         return criteria.list();
     }
-    
+
 }

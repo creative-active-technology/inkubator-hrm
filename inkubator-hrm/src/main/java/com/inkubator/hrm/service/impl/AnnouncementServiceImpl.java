@@ -67,6 +67,7 @@ import com.inkubator.hrm.web.model.AnnouncementJsonModel;
 import com.inkubator.hrm.web.search.AnnouncementSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -338,6 +339,7 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
             jsonObj.put("listEmployeeType", listEmployeeType);
             jsonObj.put("listUnitKerja", listUnitKerja);
             jsonObj.put("listGolonganJabatan", listGolonganJabatan);
+    		jsonObj.put("urlLinkToApprove", FacesUtil.getRequest().getContextPath() + "" + HRMConstant.ANNOUNCEMENT_APPROVAL_PAGE + "" +"?faces-redirect=true&execution=e" + appActivity.getId());
 
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);

@@ -3,6 +3,8 @@ package com.inkubator.hrm.web.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.inkubator.hrm.entity.EmpData;
+
 /**
  *
  * @author rizkykojek
@@ -11,6 +13,7 @@ public class SelectionApplicantSchedulleDetailRealizationModel implements Serial
 
 	private Long id;
     private Long selectionApplicantSchedulleDetailId;
+    private String selectionTypeName;
     private Date realizationDate;
     private Date realizationTimeStart;
     private Date realizationTimeEnd;
@@ -18,7 +21,7 @@ public class SelectionApplicantSchedulleDetailRealizationModel implements Serial
     private String notes;
     private Date scoringDate;
     private Double scoringPoint;
-    private Long scoringByEmpDataId;
+    private EmpData scoringByEmpData;
     private String status;
     
 	public Long getId() {
@@ -32,6 +35,12 @@ public class SelectionApplicantSchedulleDetailRealizationModel implements Serial
 	}
 	public void setSelectionApplicantSchedulleDetailId(Long selectionApplicantSchedulleDetailId) {
 		this.selectionApplicantSchedulleDetailId = selectionApplicantSchedulleDetailId;
+	}
+	public String getSelectionTypeName() {
+		return selectionTypeName;
+	}
+	public void setSelectionTypeName(String selectionTypeName) {
+		this.selectionTypeName = selectionTypeName;
 	}
 	public Date getRealizationDate() {
 		return realizationDate;
@@ -75,11 +84,11 @@ public class SelectionApplicantSchedulleDetailRealizationModel implements Serial
 	public void setScoringPoint(Double scoringPoint) {
 		this.scoringPoint = scoringPoint;
 	}
-	public Long getScoringByEmpDataId() {
-		return scoringByEmpDataId;
+	public EmpData getScoringByEmpData() {
+		return scoringByEmpData;
 	}
-	public void setScoringByEmpDataId(Long scoringByEmpDataId) {
-		this.scoringByEmpDataId = scoringByEmpDataId;
+	public void setScoringByEmpData(EmpData scoringByEmpData) {
+		this.scoringByEmpData = scoringByEmpData;
 	}
 	public String getStatus() {
 		return status;

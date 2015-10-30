@@ -62,6 +62,7 @@ import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.model.BusinessTravelViewModel;
 import com.inkubator.hrm.web.search.BusinessTravelSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -633,7 +634,8 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
             jsonObj.put("totalAmount", new DecimalFormat("###,###").format(totalAmount));
             Date deadline = DateUtils.addDays(appActivity.getCreatedTime(), appActivity.getApprovalDefinition().getDelayTime());  
             jsonObj.put("deadline", dateFormat.format(deadline));
-            
+            jsonObj.put("urlLinkToApprove", FacesUtil.getRequest().getContextPath() + "" + HRMConstant.BUSINESS_TRAVEL_APPROVAL_PAGE + "" +"?faces-redirect=true&execution=e" + appActivity.getId());
+
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);
         }
