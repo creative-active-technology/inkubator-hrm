@@ -65,25 +65,25 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['leave.list_of_leave']}"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 3%">
+                            <p:column style="width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="code"  style="text-align: center;width: 10%">
+                            <p:column sortBy="code"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['leave.leave_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{leaveData.code}"/>
                             </p:column>   
-                            <p:column sortBy="name"  style="text-align: center;width: 40%">
+                            <p:column sortBy="name"  style="width: 40%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['leave.leave_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{leaveData.name}"/>
                             </p:column> 
-                            <p:column sortBy="dayType"  style="text-align: center;width: 35%">
+                            <p:column sortBy="dayType"  style="width: 35%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['leave.type_of_day']}"/>
                                 </f:facet>
