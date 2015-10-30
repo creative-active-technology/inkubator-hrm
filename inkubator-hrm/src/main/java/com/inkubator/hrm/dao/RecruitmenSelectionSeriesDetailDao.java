@@ -33,5 +33,5 @@ public interface RecruitmenSelectionSeriesDetailDao extends IDAO<RecruitmenSelec
     
     public RecruitmenSelectionSeriesDetail getEntityByRecruitSelectionTypeAndRecruitmenSelectionSeries(Long recruitSelectionType, Long recruitSelectionSeries);
     
-    public List<RecruitmenSelectionSeriesDetail> getEntityBySelectionSeriesId(Long id);
+    public List<RecruitmenSelectionSeriesDetail> getListBySelectionSeriesId(Long id);
 }
