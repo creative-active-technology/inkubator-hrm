@@ -55,6 +55,7 @@ import com.inkubator.hrm.service.WtEmpCorrectionAttendanceService;
 import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.search.EmpCorrectionAttendanceSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -398,6 +399,7 @@ public class WtEmpCorrectionAttendanceServiceImpl extends BaseApprovalServiceImp
             jsonObj.put("startDate", dateFormat.format(entity.getStartDate()));
             jsonObj.put("endDate", dateFormat.format(entity.getEndDate()));
             jsonObj.put("listCorrectionAttendance", jsonObject.get("listDetail").getAsString());
+            jsonObj.put("urlLinkToApprove", FacesUtil.getRequest().getContextPath() + "" + HRMConstant.EMP_CORRECTION_ATTENDANCE_APPROVAL_PAGE + "" +"?faces-redirect=true&execution=e" + appActivity.getId());
 
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);

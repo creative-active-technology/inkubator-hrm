@@ -24,6 +24,7 @@ public class RecruitMppApplyViewModel implements Serializable {
     private String activityNumber;
     private Integer approvalStatus;
     private String jsonData;
+    private String createdBy;
 
     public BigInteger getRecruitMppApplyId() {
         return recruitMppApplyId;
@@ -100,6 +101,14 @@ public class RecruitMppApplyViewModel implements Serializable {
     public void setJsonData(String jsonData) {
         this.jsonData = jsonData;
     }
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
     
     
 }

@@ -225,4 +225,11 @@ public class RecruitSelectionApplicantSchedulleServiceImpl extends IServiceImpl
 		return null;
 	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public RecruitSelectionApplicantSchedulle getEntityByPkWithDetail(Long id) {
+		
+		return recruitSelectionApplicantSchedulleDao.getEntityByPkWithDetail(id);
+	}
+
 }

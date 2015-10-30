@@ -46,6 +46,7 @@ import com.inkubator.hrm.dao.OrgTypeOfSpecListDao;
 import com.inkubator.hrm.dao.RecruitHireApplyDao;
 import com.inkubator.hrm.dao.RecruitHireApplyDetailDao;
 import com.inkubator.hrm.dao.RecruitMppPeriodDao;
+import com.inkubator.hrm.dao.RecruitSelectionApplicantInitialDao;
 import com.inkubator.hrm.dao.TransactionCodeficationDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.ApprovalDefinition;
@@ -63,9 +64,12 @@ import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.RecruitHireApplyService;
 import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.model.RecruitReqHistoryViewModel;
+import com.inkubator.hrm.web.model.RecruitmentScheduleSettingViewModel;
 import com.inkubator.hrm.web.search.RecruitHireApplySearchParameter;
 import com.inkubator.hrm.web.search.RecruitReqHistorySearchParameter;
+import com.inkubator.hrm.web.search.RecruitmentScheduleSettingSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -110,6 +114,9 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
 
     @Autowired
     private OrgTypeOfSpecListDao orgTypeOfSpecListDao;
+    
+    @Autowired
+    private RecruitSelectionApplicantInitialDao recruitSelectionApplicantInitialDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -567,6 +574,8 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
             jsonObj.put("salaryMin", recruitHireApply.getSalaryMin());
             jsonObj.put("salaryMax", recruitHireApply.getSalaryMax());
             jsonObj.put("candidateCountRequest", recruitHireApply.getCandidateCountRequest());
+            jsonObj.put("urlLinkToApprove", FacesUtil.getRequest().getContextPath() + "" + HRMConstant.RECRUITMENT_REQUEST + "" +"?faces-redirect=true&execution=e" + appActivity.getId());
+
         } catch (JSONException e) {
             LOGGER.error("Error when create json Object ", e);
         }
@@ -794,4 +803,6 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
 	public List<RecruitHireApply> getAllDataWithDetail() throws Exception {
 		return recruitHireApplyDao.getAllDataWithDetail();
 	}
+	
+	
 }

@@ -19,6 +19,8 @@ import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulleDetailRealizat
 import com.inkubator.hrm.service.RecruitSelectionApplicantSchedulleDetailRealizationService;
 import com.inkubator.hrm.web.model.SelectionApplicantSchedulleDetailRealizationModel;
 
+import ch.lambdaj.Lambda;
+
 /**
  *
  * @author rizkykojek
@@ -256,13 +258,25 @@ public class RecruitSelectionApplicantSchedulleDetailRealizationServiceImpl exte
 		
 		List<RecruitSelectionApplicantSchedulleDetailRealization> listRealization = recruitSelectionApplicantSchedulleDetailRealizationDao.
     			getAllDataByApplicantIdAndSelectionApplicantSchedulleId(applicantId, selectionApplicantSchedulleId);
-    	if(listRealization.isEmpty()){	     
-    		List<RecruitSelectionApplicantSchedulleDetail> listSchedule = recruitSelectionApplicantSchedulleDetailDao.
-    				getAllDataByApplicantIdAndSelectionApplicantSchedulleId(applicantId, selectionApplicantSchedulleId);
-    		listModel = this.getModelFromListSchedule(listSchedule);
+    	
+		/** jika list dari selection schedule realizationnya masih empty (artinya belum pernah di execute prosesnya, masih NEW), 
+		 *  berarti dapatkan listnya dari selection schedule default nya (detail) */
+		if(!listRealization.isEmpty()){
+			/** sorting by urutan tahapan seleksi */
+			listRealization = Lambda.sort(listRealization, Lambda.on(RecruitSelectionApplicantSchedulleDetailRealization.class).getRecruitSelectionApplicantSchedulleDetail().getSelectionListOrder());
+    		
+			/** convert to list model */
+			listModel = this.getModelFromListRealization(listRealization);
     		
     	} else {
-    		listModel = this.getModelFromListRealization(listRealization);
+    		List<RecruitSelectionApplicantSchedulleDetail> listSchedule = recruitSelectionApplicantSchedulleDetailDao.
+    				getAllDataByApplicantIdAndSelectionApplicantSchedulleId(applicantId, selectionApplicantSchedulleId);
+    		
+    		/** sorting by urutan tahapan seleksi */
+    		listSchedule = Lambda.sort(listSchedule, Lambda.on(RecruitSelectionApplicantSchedulleDetail.class).getSelectionListOrder());
+    		
+    		/** convert to list model */
+    		listModel = this.getModelFromListSchedule(listSchedule);
     		
     	}
     	
@@ -275,6 +289,7 @@ public class RecruitSelectionApplicantSchedulleDetailRealizationServiceImpl exte
     		SelectionApplicantSchedulleDetailRealizationModel model = new SelectionApplicantSchedulleDetailRealizationModel();
     		model.setId(realization.getId());
     		model.setSelectionApplicantSchedulleDetailId(realization.getRecruitSelectionApplicantSchedulleDetail().getId());
+    		model.setSelectionTypeName(realization.getRecruitSelectionApplicantSchedulleDetail().getSelectionType().getName());
     		model.setRealizationDate(realization.getRealizationDate());
     		model.setRealizationTimeStart(realization.getRealizationTimeStart());
     		model.setRealizationTimeEnd(realization.getRealizationTimeEnd());
@@ -282,7 +297,7 @@ public class RecruitSelectionApplicantSchedulleDetailRealizationServiceImpl exte
     		model.setNotes(realization.getNotes());
     		model.setScoringDate(realization.getScoringDate());
     		model.setScoringPoint(realization.getScoringPoint());
-    		model.setScoringByEmpDataId(realization.getScoringByEmpData().getId());
+    		model.setScoringByEmpData(realization.getScoringByEmpData());
     		model.setStatus(realization.getStatus());
     		list.add(model);
     	}
@@ -294,12 +309,13 @@ public class RecruitSelectionApplicantSchedulleDetailRealizationServiceImpl exte
     	List<SelectionApplicantSchedulleDetailRealizationModel> list =  new ArrayList<SelectionApplicantSchedulleDetailRealizationModel>();
     	for(RecruitSelectionApplicantSchedulleDetail schedule : listSchedule){
     		SelectionApplicantSchedulleDetailRealizationModel model = new SelectionApplicantSchedulleDetailRealizationModel();
+    		model.setSelectionTypeName(schedule.getSelectionType().getName());
     		model.setSelectionApplicantSchedulleDetailId(schedule.getId());
     		model.setRealizationDate(schedule.getSchdulleDate());
     		model.setRealizationTimeStart(schedule.getSchdulleTimeStart());
     		model.setRealizationTimeEnd(schedule.getSchedulleTimeEnd());
     		model.setRealizationRoom(schedule.getRoom());
-    		model.setScoringByEmpDataId(schedule.getEmpData().getId());
+    		model.setScoringByEmpData(schedule.getEmpData());
     		list.add(model);
     	}    	
     	

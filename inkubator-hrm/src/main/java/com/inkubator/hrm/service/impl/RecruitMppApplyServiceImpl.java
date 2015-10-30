@@ -72,6 +72,7 @@ import com.inkubator.hrm.web.model.RecruitMppApplyViewModel;
 import com.inkubator.hrm.web.search.RecruitMppApplySearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesIO;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -544,6 +545,7 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
 		jsonObj.put("endDate", dateFormat.format(recruitMppApply.getRecruitMppPeriod().getPeriodeEnd()));
 		jsonObj.put("startDate", dateFormat.format(recruitMppApply.getRecruitMppPeriod().getPeriodeStart()));
 		jsonObj.put("listNamaJabatan", listNamaJabatan);
+		jsonObj.put("urlLinkToApprove", FacesUtil.getRequest().getContextPath() + "" + HRMConstant.RECRUIT_MPP_APPLY_APPROVAL_PAGE + "" +"?faces-redirect=true&execution=e" + appActivity.getId());
 
         //send messaging, to trigger sending email
         super.jmsTemplateApproval.send(new MessageCreator() {

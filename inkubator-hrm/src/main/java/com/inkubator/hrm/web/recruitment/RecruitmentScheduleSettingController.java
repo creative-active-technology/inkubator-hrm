@@ -5,15 +5,21 @@
  */
 package com.inkubator.hrm.web.recruitment;
 
+import ch.lambdaj.Lambda;
+
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.RecruitAdvertisementMedia;
-import com.inkubator.hrm.service.RecruitAdvertisementMediaService;
+import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.entity.RecruitMppApply;
+import com.inkubator.hrm.entity.RecruitMppApplyDetail;
+import com.inkubator.hrm.service.RecruitHireApplyDetailService;
+import com.inkubator.hrm.service.RecruitHireApplyService;
+import com.inkubator.hrm.service.RecruitMppApplyDetailService;
 import com.inkubator.hrm.service.RecruitMppApplyService;
-import com.inkubator.hrm.web.lazymodel.RecruitAdvertisementMediaLazyDataModel;
-import com.inkubator.hrm.web.search.RecruitAdvertisementMediaSearchParameter;
+import com.inkubator.hrm.service.RecruitSelectionApplicantInitialService;
+import com.inkubator.hrm.web.lazymodel.RecruitmentScheduleSettingLazyDataModel;
+import com.inkubator.hrm.web.model.RecruitmentScheduleSettingViewModel;
+import com.inkubator.hrm.web.search.RecruitmentScheduleSettingSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,136 +47,123 @@ import org.springframework.dao.DataIntegrityViolationException;
 @ViewScoped
 public class RecruitmentScheduleSettingController extends BaseController {
 
-    @ManagedProperty(value = "#{recruitAdvertisementMediaService}")
-    private RecruitAdvertisementMediaService service;
+ 
     @ManagedProperty(value = "#{recruitMppApplyService}")
     private RecruitMppApplyService recruitMppApplyService;
-    private RecruitAdvertisementMediaSearchParameter searchParameter;
-    private LazyDataModel<RecruitAdvertisementMedia> lazyDataModel;
-    private RecruitAdvertisementMedia selected;
-
+    @ManagedProperty(value = "#{recruitMppApplyDetailService}")
+    private RecruitMppApplyDetailService recruitMppApplyDetailService;
+    @ManagedProperty(value = "#{recruitSelectionApplicantInitialService}")
+    private RecruitSelectionApplicantInitialService recruitSelectionApplicantInitialService;
+    private RecruitmentScheduleSettingSearchParameter searchParameter;
+    private LazyDataModel<RecruitmentScheduleSettingViewModel> lazyDataModel;
+    private RecruitmentScheduleSettingViewModel selected;
+    private Map<String, Long> mapRecruitPlan = new HashMap<>();
+    
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
-        searchParameter = new RecruitAdvertisementMediaSearchParameter();
+        try {
+			searchParameter = new RecruitmentScheduleSettingSearchParameter();
+			List<RecruitMppApply> listRecruitMppApplies = recruitMppApplyService.getListWithDetailByApprovalStatus(HRMConstant.APPROVAL_STATUS_APPROVED);
+			for(RecruitMppApply recruitMppApply : listRecruitMppApplies){
+				mapRecruitPlan.put(recruitMppApply.getRecruitMppApplyName(), recruitMppApply.getId());
+			}
+		} catch (Exception e) {
+			LOGGER.error("Error", e);
+		}
     }
 
     @PreDestroy
     private void cleanAndExit() {
         searchParameter = null;
         lazyDataModel = null;
-        service = null;
+        recruitMppApplyService = null;
         selected = null;
-
     }
 
     public void doSearch() {
-        //resetLazy();
+    	try{
+    		
+    		if(searchParameter.getRecruitMppApplyId() != null){
+    			List<RecruitMppApplyDetail> listRecruitMppApplyDetail = recruitMppApplyDetailService.getListWithDetailByRecruitMppApplyId(searchParameter.getRecruitMppApplyId());
+    			List<Long> listJabatanId = Lambda.extract(listRecruitMppApplyDetail, Lambda.on(RecruitMppApplyDetail.class).getJabatan().getId());
+    			searchParameter.setListJabatanOnSelectedMppApply(listJabatanId);
+    		}
+    		
+    		lazyDataModel = null;
+    		
+    	}catch(Exception ex){
+    		LOGGER.error("Error", ex);
+    	}
     }
 
     public void doSelectEntity() {
         try {
-            selected = this.service.getEntityByPkWithDetail(selected.getId());
+            //selected = this.service.getEntityByPkWithDetail(selected.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
     }
 
-    public void doDelete() {
-        try {
-            this.service.delete(selected);
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-
-        } catch (ConstraintViolationException | DataIntegrityViolationException ex) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            LOGGER.error("Error", ex);
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
-    }
-
-    public void showDialog(Map<String, List<String>> params) {
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        options.put("draggable", true);
-        options.put("resizable", false);
-        options.put("contentWidth", 500);
-        options.put("contentHeight", 530);
-        RequestContext.getCurrentInstance().openDialog("recruitment_media_form", options, params);
-    }
-
-    public void doAdd() {
-        showDialog(null);
-    }
-
-    public void doEdit() {
-        Map<String, List<String>> dataToSend = new HashMap<>();
-        List<String> dataIsi = new ArrayList<>();
-        dataIsi.add(String.valueOf(selected.getId()));
-        dataToSend.put("recruitmentId", dataIsi);
-        showDialog(dataToSend);
-    }
-
-    @Override
-    public void onDialogReturn(SelectEvent event) {
-        resetLazy();
-        super.onDialogReturn(event);
-
+    public void setSchedule(){
+    	
     }
 
     public void resetLazy(){
         lazyDataModel = null;
     }
     
-    public void onDelete() {
-        try {
-            selected = this.service.getEntiyByPK(selected.getId());
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
-    }
-
-    public RecruitAdvertisementMediaService getService() {
-        return service;
-    }
-
-    public void setService(RecruitAdvertisementMediaService service) {
-        this.service = service;
-    }
-
-    public RecruitAdvertisementMediaSearchParameter getSearchParameter() {
+    public RecruitmentScheduleSettingSearchParameter getSearchParameter() {
         return searchParameter;
     }
 
-    public void setSearchParameter(RecruitAdvertisementMediaSearchParameter searchParameter) {
+    public void setSearchParameter(RecruitmentScheduleSettingSearchParameter searchParameter) {
         this.searchParameter = searchParameter;
     }
 
-    public LazyDataModel<RecruitAdvertisementMedia> getLazyDataModel() {
+    public LazyDataModel<RecruitmentScheduleSettingViewModel> getLazyDataModel() {
         if(lazyDataModel == null){
-            lazyDataModel = new RecruitAdvertisementMediaLazyDataModel(searchParameter, service);
+            lazyDataModel = new RecruitmentScheduleSettingLazyDataModel(searchParameter, recruitSelectionApplicantInitialService);
         }
         return lazyDataModel;
     }
 
-    public void setLazyDataModel(LazyDataModel<RecruitAdvertisementMedia> lazyDataModel) {
+    public void setLazyDataModel(LazyDataModel<RecruitmentScheduleSettingViewModel> lazyDataModel) {
         this.lazyDataModel = lazyDataModel;
     }
 
-    public RecruitAdvertisementMedia getSelected() {
+    public RecruitmentScheduleSettingViewModel getSelected() {
         return selected;
     }
 
-    public void setSelected(RecruitAdvertisementMedia selected) {
+    public void setSelected(RecruitmentScheduleSettingViewModel selected) {
         this.selected = selected;
     }
 
 	public void setRecruitMppApplyService(RecruitMppApplyService recruitMppApplyService) {
 		this.recruitMppApplyService = recruitMppApplyService;
 	}
-    
+
+	public Map<String, Long> getMapRecruitPlan() {
+		return mapRecruitPlan;
+	}
+
+	public void setMapRecruitPlan(Map<String, Long> mapRecruitPlan) {
+		this.mapRecruitPlan = mapRecruitPlan;
+	}
+
+	public void setRecruitMppApplyDetailService(RecruitMppApplyDetailService recruitMppApplyDetailService) {
+		this.recruitMppApplyDetailService = recruitMppApplyDetailService;
+	}
+
+	public void setRecruitSelectionApplicantInitialService(RecruitSelectionApplicantInitialService recruitSelectionApplicantInitialService) {
+		this.recruitSelectionApplicantInitialService = recruitSelectionApplicantInitialService;
+	}
+
+	
+	
+	
+
     
 }

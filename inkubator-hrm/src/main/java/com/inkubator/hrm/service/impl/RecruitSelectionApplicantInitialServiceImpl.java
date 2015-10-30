@@ -25,6 +25,8 @@ import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantInitial;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantInitialId;
 import com.inkubator.hrm.service.RecruitSelectionApplicantInitialService;
+import com.inkubator.hrm.web.model.RecruitmentScheduleSettingViewModel;
+import com.inkubator.hrm.web.search.RecruitmentScheduleSettingSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
@@ -216,5 +218,18 @@ public class RecruitSelectionApplicantInitialServiceImpl extends IServiceImpl im
     public List<RecruitSelectionApplicantInitial> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RecruitmentScheduleSettingViewModel> getByParamForRecruitmentScheduleSetting(RecruitmentScheduleSettingSearchParameter searchParameter,
+			int firstResult, int maxResults, Order orderable) throws Exception {
+		return recruitSelectionApplicantInitialDao.getByParamForRecruitmentScheduleSetting(searchParameter, firstResult, maxResults, orderable);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByParamforRecruitmentScheduleSetting(RecruitmentScheduleSettingSearchParameter searchParameter)	throws Exception {
+		return recruitSelectionApplicantInitialDao.getTotalByParamforRecruitmentScheduleSetting(searchParameter);
+	}
     
 }
