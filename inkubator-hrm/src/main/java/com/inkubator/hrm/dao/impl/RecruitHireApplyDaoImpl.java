@@ -28,8 +28,10 @@ import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.web.model.RecruitReqHistoryViewModel;
+import com.inkubator.hrm.web.model.RecruitmentScheduleSettingViewModel;
 import com.inkubator.hrm.web.search.RecruitHireApplySearchParameter;
 import com.inkubator.hrm.web.search.RecruitReqHistorySearchParameter;
+import com.inkubator.hrm.web.search.RecruitmentScheduleSettingSearchParameter;
 
 import java.util.ArrayList;
 
@@ -239,4 +241,5 @@ public class RecruitHireApplyDaoImpl extends IDAOImpl<RecruitHireApply> implemen
 		criteria.setFetchMode("jabatan", FetchMode.JOIN);
 		return criteria.list();
 	}
+	
 }
