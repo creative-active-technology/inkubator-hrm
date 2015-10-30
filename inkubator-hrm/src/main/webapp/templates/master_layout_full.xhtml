@@ -230,11 +230,11 @@
                     <div id="art-main">
                         <div style="float:left">
                             <h:panelGrid style="margin-left: 50px;padding-top: 8px" columns="2">
-                                <!-- <p:commandLink >
+                                 <p:commandLink >
                                     <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="22" width="22" cache="false" style="border:  1px solid #ffffff !important; border-radius: 4px !important" >
                                         <f:param name="id" value="#{BIODATA_ID}"/>
                                     </p:graphicImage>  
-                                </p:commandLink> -->
+                                </p:commandLink> 
                                 <h:panelGroup>
                                     <p:outputLabel value="#{realName} : " style="color: #ff9933 !important;font-weight: bold!important"  styleClass="label_welcome_header" />
                                     <p:outputLabel value="#{appmsg['global.login_as']} #{homeController.roleUser}" styleClass="label_welcome_header" />
@@ -340,6 +340,7 @@
                                                 <p:menuitem value="#{appmsg['passwordhistory.password_config']}"  style="color: #003366" title="#{appmsg['passwordhistory.password_config']}" url="/protected/account/password_configuration.htm" icon="img-password-config"/>  
                                                 <p:menuitem value="#{appmsg['passwordhistory.password_history']}"  style="color: #003366" title="#{appmsg['passwordhistory.password_history']}" url="/protected/account/password_history.htm" icon="img-password-history" /> 
                                                 <p:menuitem value="#{appmsg['loginhistory.login_history']}"  style="color: #003366" title="#{appmsg['loginhistory.login_history']}" url="/protected/account/login_history.htm" icon="img-login-history" />
+                                                <p:menuitem value="#{appmsg['accesshistory.access_history']}"  style="color: #003366" title="#{appmsg['accesshistory.access_history']}" url="/protected/account/access_history_view.htm" icon="img-login-history" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['menu.miscellaneous']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['ipPermit.ipPermit']}"  style="color: #003366" title="#{appmsg['ipPermit.ipPermit']}" url="/protected/account/ip_permit_view.htm" icon="img-login-history" />  

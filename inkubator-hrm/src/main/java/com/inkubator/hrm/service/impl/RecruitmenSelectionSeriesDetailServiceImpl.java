@@ -88,8 +88,8 @@ public class RecruitmenSelectionSeriesDetailServiceImpl extends IServiceImpl imp
         entity.setId(new RecruitmenSelectionSeriesDetailId(entity.getRecruitmenSelectionSeries().getId(), entity.getRecruitSelectionType().getId()));
         entity.setRecruitSelectionType(recruitSelectionTypeDao.getEntiyByPK(entity.getRecruitSelectionType().getId()));
         entity.setRecruitmenSelectionSeries(recruitmenSelectionSeriesDao.getEntiyByPK(entity.getRecruitmenSelectionSeries().getId()));
-        entity.setSystemLetterReferenceByAcceptLetterId(systemLetterReferenceDao.getEntiyByPK(entity.getSystemLetterReferenceByAcceptLetterId().getId()));
-        entity.setSystemLetterReferenceByRejectLetterId(systemLetterReferenceDao.getEntiyByPK(entity.getSystemLetterReferenceByRejectLetterId().getId()));
+//        entity.setSystemLetterReferenceByAcceptLetterId(systemLetterReferenceDao.getEntiyByPK(entity.getSystemLetterReferenceByAcceptLetterId().getId()));
+//        entity.setSystemLetterReferenceByRejectLetterId(systemLetterReferenceDao.getEntiyByPK(entity.getSystemLetterReferenceByRejectLetterId().getId()));
         entity.setNote(entity.getNote());
         entity.setListOrder(lastIndex);
         entity.setCreatedBy(UserInfoUtil.getUserName());
@@ -101,8 +101,8 @@ public class RecruitmenSelectionSeriesDetailServiceImpl extends IServiceImpl imp
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(RecruitmenSelectionSeriesDetail entity) throws Exception {
         RecruitmenSelectionSeriesDetail update = recruitmenSelectionSeriesDetailDao.getEntityByPk(new RecruitmenSelectionSeriesDetailId(entity.getRecruitmenSelectionSeries().getId(), entity.getRecruitSelectionType().getId()));
-        update.setSystemLetterReferenceByAcceptLetterId(systemLetterReferenceDao.getEntiyByPK(entity.getSystemLetterReferenceByAcceptLetterId().getId()));
-        update.setSystemLetterReferenceByRejectLetterId(systemLetterReferenceDao.getEntiyByPK(entity.getSystemLetterReferenceByRejectLetterId().getId()));
+//        update.setSystemLetterReferenceByAcceptLetterId(systemLetterReferenceDao.getEntiyByPK(entity.getSystemLetterReferenceByAcceptLetterId().getId()));
+//        update.setSystemLetterReferenceByRejectLetterId(systemLetterReferenceDao.getEntiyByPK(entity.getSystemLetterReferenceByRejectLetterId().getId()));
         update.setNote(entity.getNote());
         update.setUpdatedBy(new Date());
         update.setUpdatedOn(UserInfoUtil.getUserName());

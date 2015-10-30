@@ -82,6 +82,7 @@ public class RecruitMppApplyDaoImpl extends IDAOImpl<RecruitMppApply> implements
                 + "mpp.id AS recruitMppApplyId, "
                 + "mpp.recruit_mpp_apply_code AS recruitMppApplyCode, "
                 + "mpp.recruit_mpp_apply_name AS recruitMppApplyName,  "
+                + "approvalActivity.request_by AS createdBy,  "
                 + "approvalActivity.approval_status AS approvalStatus, "
                 + "approvalActivity.pending_data AS jsonData  "
                 + "FROM approval_activity approvalActivity "
@@ -89,8 +90,10 @@ public class RecruitMppApplyDaoImpl extends IDAOImpl<RecruitMppApply> implements
                 + "LEFT JOIN recruit_mpp_apply AS mpp ON approvalActivity.activity_number = mpp.approval_activity_number  "
                 + "LEFT JOIN hrm_user AS requester ON requester.user_id = approvalActivity.request_by "
                 + "WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number) "
-                + "AND approvalDefinition.name = :appDefinitionName "
-                + "AND requester.user_id = :userId ");
+                + "AND approvalDefinition.name = :appDefinitionName ");
+        		
+        		// dicomment untuk task Evaluation #1518 - tampilkan semua data pada halaman rencana perekrutan tenaga kerja (MASTER)
+                /*+ "AND requester.user_id = :userId ");*/
 
         selectQuery.append(this.setWhereQueryUndisbursedActivityByParam(parameter));
         selectQuery.append("GROUP BY approvalActivity.activity_number ");
@@ -140,8 +143,9 @@ public class RecruitMppApplyDaoImpl extends IDAOImpl<RecruitMppApply> implements
                 + "LEFT JOIN recruit_mpp_apply AS mpp ON approvalActivity.activity_number = mpp.approval_activity_number  "
                 + "LEFT JOIN hrm_user AS requester ON requester.user_id = approvalActivity.request_by "
                 + "WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number) "
-                + "AND approvalDefinition.name = :appDefinitionName "
-                + "AND requester.user_id = :userId ");
+                + "AND approvalDefinition.name = :appDefinitionName ");
+        // dicomment untuk task Evaluation #1518 - tampilkan semua data pada halaman rencana perekrutan tenaga kerja (MASTER)
+        //        + "AND requester.user_id = :userId ");
         selectQuery.append(this.setWhereQueryUndisbursedActivityByParam(parameter));
 
         Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString());
