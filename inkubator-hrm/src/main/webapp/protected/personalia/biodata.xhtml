@@ -734,11 +734,11 @@
                         </p:dataTable>
                         <p:separator/>
                         <h:panelGrid columns="4" style="margin-bottom: 5px;float: left">
-                            <p:commandButton value="Data Priadi Lainnya"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{bioDataController.doOtherData()}" styleClass="label_button"/>
-                            <p:commandButton value="Data Kekaryawanan"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{bioDataController.doDemployeeDetail()}" styleClass="label_button"/>
-                            <p:commandButton value="Data Latar Belakang"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{bioDataController.doBackGround()}" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['biodata.other_personal_data']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{bioDataController.doOtherData()}" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['employee.employee_list']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{bioDataController.doDemployeeDetail()}" styleClass="label_button"/>
+                            <p:commandButton value="#{appmsg['biodata.background_history']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{bioDataController.doBackGround()}" styleClass="label_button"/>
                             <p:commandButton value="#{appmsg['global.close']}"  icon="ui-icon-contact"  title="#{appmsg['global.close']}" action="#{bioDataController.doClose()}" styleClass="label_button"/>
-
+		
 
                         </h:panelGrid>
                         <div style="clear: both"/>
@@ -849,23 +849,23 @@
                     <p:panelGrid id="panelDialogBioContactDetailId" style="width:100%;margin:5px;">
 
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="Nama Contact" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['bioaddress.contact_name']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataController.selectedBioEmergencyContact.contactName}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="No. Telepon" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['biodata.hp']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataController.selectedBioEmergencyContact.phoneNumber}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="Alamat" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.address']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataController.selectedBioEmergencyContact.address}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="Kota" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['hospital.city_name']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataController.selectedBioEmergencyContact.city.cityName}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width:30%"><p:outputLabel value="Hubungan Keluarga" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:30%"><p:outputLabel value="#{appmsg['family_relation.family']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{bioDataController.selectedBioEmergencyContact.familyRelation.relasiName}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <f:facet name="footer">
