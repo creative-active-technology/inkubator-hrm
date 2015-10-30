@@ -104,8 +104,8 @@ public class RecruitmenSelectionSeriesDetailFormController extends BaseControlle
         RecruitmenSelectionSeriesDetailModel model = new RecruitmenSelectionSeriesDetailModel();
         model.setRecruitmenSelectionSeriesId(entity.getRecruitmenSelectionSeries().getId());
         model.setRecruitSelectionTypeId(entity.getRecruitSelectionType().getId());
-        model.setSystemLetterReferenceByAcceptLetterId(entity.getSystemLetterReferenceByAcceptLetterId().getId());
-        model.setSystemLetterReferenceByRejectLetterId(entity.getSystemLetterReferenceByRejectLetterId().getId());
+//        model.setSystemLetterReferenceByAcceptLetterId(entity.getSystemLetterReferenceByAcceptLetterId().getId());
+//        model.setSystemLetterReferenceByRejectLetterId(entity.getSystemLetterReferenceByRejectLetterId().getId());
         model.setNote(entity.getNote());
         return model;
     }
@@ -114,8 +114,8 @@ public class RecruitmenSelectionSeriesDetailFormController extends BaseControlle
         RecruitmenSelectionSeriesDetail recruitmenSelectionSeriesDetail = new RecruitmenSelectionSeriesDetail();
         recruitmenSelectionSeriesDetail.setRecruitmenSelectionSeries(new RecruitmenSelectionSeries(model.getRecruitmenSelectionSeriesId()));
         recruitmenSelectionSeriesDetail.setRecruitSelectionType(new RecruitSelectionType(model.getRecruitSelectionTypeId()));
-        recruitmenSelectionSeriesDetail.setSystemLetterReferenceByAcceptLetterId(new SystemLetterReference(model.getSystemLetterReferenceByAcceptLetterId()));
-        recruitmenSelectionSeriesDetail.setSystemLetterReferenceByRejectLetterId(new SystemLetterReference(model.getSystemLetterReferenceByRejectLetterId()));
+//        recruitmenSelectionSeriesDetail.setSystemLetterReferenceByAcceptLetterId(new SystemLetterReference(model.getSystemLetterReferenceByAcceptLetterId()));
+//        recruitmenSelectionSeriesDetail.setSystemLetterReferenceByRejectLetterId(new SystemLetterReference(model.getSystemLetterReferenceByRejectLetterId()));
         recruitmenSelectionSeriesDetail.setNote(model.getNote());
         return recruitmenSelectionSeriesDetail;
     }
