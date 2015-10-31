@@ -22,6 +22,8 @@ public interface RecruitLettersDao extends IDAO<RecruitLetters> {
     public List<RecruitLetters> getAllWithSpecificLetterType(int type);
 
     public void saveAndMerge(RecruitLetters letters);
+    
+    public RecruitLetters sanvAndFlus(RecruitLetters letters);
 
     public List<RecruitLetters> getByParam(RecrutimentLetterSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 

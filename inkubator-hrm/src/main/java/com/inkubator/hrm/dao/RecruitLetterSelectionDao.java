@@ -7,11 +7,13 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.RecruitLetterSelection;
+import com.inkubator.hrm.entity.RecruitSelectionType;
+import java.util.List;
 
 /**
  *
  * @author denifahri
  */
 public interface RecruitLetterSelectionDao extends IDAO<RecruitLetterSelection>{
-    
+   
 }

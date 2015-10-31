@@ -515,7 +515,7 @@ public class HRMConstant {
     public static final Integer RECRUIT_APPLICANT_CAREER_CANDIDATE_INTERNAL = 1;
     public static final Integer RECRUIT_APPLICANT_CAREER_CANDIDATE_INTERNAL_AND_EXTERNAL = 2;
     /* END */
-    
+
     /* Constant for Selection Applicant */
     public static final String SELECTION_APPLICANT_STATUS_NEW = "NEW";
     public static final String SELECTION_APPLICANT_STATUS_IN_PROGRESS = "IN_PROGRESS";
@@ -528,7 +528,7 @@ public class HRMConstant {
     public static final Integer LETTER_TYPE_PROBATION = 1;
     public static final Integer LETTER_TYPE_REJECT = 2;
     public static final Integer LETTER_TYPE_RESCHEDULE = 3;
-    
+
     /*CONSTANT FOR EMAIL DIRECT TO PAGE APPROVAL*/
     public static final String REIMBURSMENT_APPROVAL_PAGE = "/protected/reimbursement/rmbs_application_approval_form.htm";
     public static final String LOAN_NEW_APPROVAL_PAGE = "/protected/personalia/loan_new_approval_form.htm";

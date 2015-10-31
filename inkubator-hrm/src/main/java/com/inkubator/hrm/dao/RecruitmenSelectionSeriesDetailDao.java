@@ -7,6 +7,7 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.PaySalaryGrade;
+import com.inkubator.hrm.entity.RecruitSelectionType;
 import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetail;
 import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetailId;
 import java.util.List;
@@ -34,4 +35,6 @@ public interface RecruitmenSelectionSeriesDetailDao extends IDAO<RecruitmenSelec
     public RecruitmenSelectionSeriesDetail getEntityByRecruitSelectionTypeAndRecruitmenSelectionSeries(Long recruitSelectionType, Long recruitSelectionSeries);
     
     public List<RecruitmenSelectionSeriesDetail> getEntityBySelectionSeriesId(Long id);
+    
+      public List<RecruitmenSelectionSeriesDetail>getAllByRecruitRecruitSelectionTypeId(long id);
 }
