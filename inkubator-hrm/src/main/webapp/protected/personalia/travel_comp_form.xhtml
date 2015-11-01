@@ -53,13 +53,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 42%">
+                            <p:column style="width: 45%">
                                 <p:outputLabel for="nameId" value="#{appmsg['travelComponent.travelComponent_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 63%">
+                            <p:column  style="width: 60%">
                                 <p:inputText id="nameId" title="#{appmsg['travelComponent.travelComponent_name']}" value="#{travelComponentFormController.travelComponentModel.name}" 
                                              required="true" requiredMessage="#{appmsg['travelComponent.travelComponent_name_should_not_be_empty']}" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />
 
@@ -71,13 +71,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 42%">
+                            <p:column style="width: 45%">
                                 <p:outputLabel for="measurementId" value="#{appmsg['travelComponent.travelComponent_measurement']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="measurementId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 63%">
+                            <p:column  style="width: 60%">
                                 <p:selectOneRadio id="measurementId" styleClass="isitext_hrm" required="true" value="#{travelComponentFormController.travelComponentModel.measurement}" label="#{appmsg['travelComponent.travelComponent_measurement']}">
                                     <!--Cek HRM Constanta..-->
                                     <f:selectItem itemLabel="#{appmsg['travelComponent.travelComponent_measurement_pack']}" itemValue="0" />
@@ -93,26 +93,26 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 42%">
+                            <p:column style="width: 45%">
                                 <p:outputLabel for="descriptionId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="descriptionId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 63%">
+                            <p:column  style="width: 60%">
                                 <p:inputTextarea id="descriptionId" title="#{appmsg['global.description']}" value="#{travelComponentFormController.travelComponentModel.description}" 
                                                  required="false" maxlength="500" counter="counter" counterTemplate="#{appmsg['global.remaining']}" styleClass="isitext_hrm" style="width:250px;" />
 
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 42%;" >
+                            <p:column style="width: 45%;" >
                                 <p:outputLabel  for="counter" styleClass="label_hrm" />
                             </p:column>
                             <p:column style="width: 1%;" >
                                 <p:outputLabel  for="counter" styleClass="label_hrm" />
                             </p:column>
-                            <p:column style="width: 63%">
+                            <p:column style="width: 60%">
                                 <h:outputText id="counter" />
                             </p:column>
                         </p:row>

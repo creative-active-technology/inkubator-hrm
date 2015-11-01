@@ -118,10 +118,11 @@
                                 <h:outputLabel value= "#{data.candidateCountRequest}" />
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
-                                <p:commandButton  icon="ui-icon-calendar" value="#{appmsg['recruitment.set_schedule']}" title="#{appmsg['recruitment.set_schedule']}" label="#{appmsg['recruitment.set_schedule']}" style="font-size: 10px!important" ajax="true"
-                                                  action="#{recruitmentScheduleSettingController.setSchedule()}" >
+                            
+                            	 <p:commandButton icon="ui-icon-calendar" title="#{appmsg['recruitment.set_schedule']}" label="#{appmsg['recruitment.set_schedule']}" style="font-size: 10px!important" 
+                                                 action="#{recruitmentScheduleSettingController.doSetupSchedule()}" immediate="true" >
                                     <f:setPropertyActionListener value="#{data}" target="#{recruitmentScheduleSettingController.selected}" />
-                                </p:commandButton> 
+                                </p:commandButton>
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>

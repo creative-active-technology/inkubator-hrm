@@ -169,7 +169,7 @@ public class RecruitVacancySelectionFormController implements Serializable {
 		 * else = for update / edit data
 		 */
 		if(recruitVacancySelectionModel.getId() == null && recruitVacancySelectionModel.getExistingRecruitSelectionSeriesId() == null){
-			List<RecruitmenSelectionSeriesDetail> listVacancySelectionDetail = recruitmenSelectionSeriesDetailService.getEntityBySelectionSeriesId(recruitVacancySelectionModel.getRecruitSelectionSeriesId());
+			List<RecruitmenSelectionSeriesDetail> listVacancySelectionDetail = recruitmenSelectionSeriesDetailService.getListBySelectionSeriesId(recruitVacancySelectionModel.getRecruitSelectionSeriesId());
 			RecruitVacancySelectionDetailModel recruitVacancySelectionDetailModel;
 			for (RecruitmenSelectionSeriesDetail recruitmenSelectionSeriesDetail : listVacancySelectionDetail) {
 				recruitVacancySelectionDetailModel = new RecruitVacancySelectionDetailModel();
@@ -184,7 +184,7 @@ public class RecruitVacancySelectionFormController implements Serializable {
 			 * else = for update data with same recruitSelectionSeries
 			 */
 			if(!recruitVacancySelectionModel.getExistingRecruitSelectionSeriesId().equals(recruitVacancySelectionModel.getRecruitSelectionSeriesId())){
-				List<RecruitmenSelectionSeriesDetail> listVacancySelectionDetail = recruitmenSelectionSeriesDetailService.getEntityBySelectionSeriesId(recruitVacancySelectionModel.getRecruitSelectionSeriesId());
+				List<RecruitmenSelectionSeriesDetail> listVacancySelectionDetail = recruitmenSelectionSeriesDetailService.getListBySelectionSeriesId(recruitVacancySelectionModel.getRecruitSelectionSeriesId());
 				RecruitVacancySelectionDetailModel recruitVacancySelectionDetailModel;
 				for (RecruitmenSelectionSeriesDetail recruitmenSelectionSeriesDetail : listVacancySelectionDetail) {
 					recruitVacancySelectionDetailModel = new RecruitVacancySelectionDetailModel();

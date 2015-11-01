@@ -3,13 +3,10 @@ package com.inkubator.hrm.entity;
 
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -41,8 +38,8 @@ public class SystemLetterReference  implements java.io.Serializable {
      private String updatedBy;
      private Date effectiveDate;
      private Boolean isActive;
-     private Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForRejectLetterId = new HashSet<RecruitmenSelectionSeriesDetail>(0);
-     private Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForAcceptLetterId = new HashSet<RecruitmenSelectionSeriesDetail>(0);
+//     private Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForRejectLetterId = new HashSet<RecruitmenSelectionSeriesDetail>(0);
+//     private Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForAcceptLetterId = new HashSet<RecruitmenSelectionSeriesDetail>(0);
 
     public SystemLetterReference() {
     }
@@ -67,8 +64,8 @@ public class SystemLetterReference  implements java.io.Serializable {
        this.createdBy = createdBy;
        this.updatedOn = updatedOn;
        this.updatedBy = updatedBy;
-       this.recruitmenSelectionSeriesDetailsForRejectLetterId = recruitmenSelectionSeriesDetailsForRejectLetterId;
-       this.recruitmenSelectionSeriesDetailsForAcceptLetterId = recruitmenSelectionSeriesDetailsForAcceptLetterId;
+//       this.recruitmenSelectionSeriesDetailsForRejectLetterId = recruitmenSelectionSeriesDetailsForRejectLetterId;
+//       this.recruitmenSelectionSeriesDetailsForAcceptLetterId = recruitmenSelectionSeriesDetailsForAcceptLetterId;
     }
    
      @Id 
@@ -183,23 +180,23 @@ public class SystemLetterReference  implements java.io.Serializable {
         this.updatedBy = updatedBy;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="systemLetterReferenceByRejectLetterId")
-    public Set<RecruitmenSelectionSeriesDetail> getRecruitmenSelectionSeriesDetailsForRejectLetterId() {
-        return this.recruitmenSelectionSeriesDetailsForRejectLetterId;
-    }
-    
-    public void setRecruitmenSelectionSeriesDetailsForRejectLetterId(Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForRejectLetterId) {
-        this.recruitmenSelectionSeriesDetailsForRejectLetterId = recruitmenSelectionSeriesDetailsForRejectLetterId;
-    }
+//@OneToMany(fetch=FetchType.LAZY, mappedBy="systemLetterReferenceByRejectLetterId")
+//    public Set<RecruitmenSelectionSeriesDetail> getRecruitmenSelectionSeriesDetailsForRejectLetterId() {
+//        return this.recruitmenSelectionSeriesDetailsForRejectLetterId;
+//    }
+//    
+//    public void setRecruitmenSelectionSeriesDetailsForRejectLetterId(Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForRejectLetterId) {
+//        this.recruitmenSelectionSeriesDetailsForRejectLetterId = recruitmenSelectionSeriesDetailsForRejectLetterId;
+//    }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="systemLetterReferenceByAcceptLetterId")
-    public Set<RecruitmenSelectionSeriesDetail> getRecruitmenSelectionSeriesDetailsForAcceptLetterId() {
-        return this.recruitmenSelectionSeriesDetailsForAcceptLetterId;
-    }
-    
-    public void setRecruitmenSelectionSeriesDetailsForAcceptLetterId(Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForAcceptLetterId) {
-        this.recruitmenSelectionSeriesDetailsForAcceptLetterId = recruitmenSelectionSeriesDetailsForAcceptLetterId;
-    }
+//@OneToMany(fetch=FetchType.LAZY, mappedBy="systemLetterReferenceByAcceptLetterId")
+//    public Set<RecruitmenSelectionSeriesDetail> getRecruitmenSelectionSeriesDetailsForAcceptLetterId() {
+//        return this.recruitmenSelectionSeriesDetailsForAcceptLetterId;
+//    }
+//    
+//    public void setRecruitmenSelectionSeriesDetailsForAcceptLetterId(Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForAcceptLetterId) {
+//        this.recruitmenSelectionSeriesDetailsForAcceptLetterId = recruitmenSelectionSeriesDetailsForAcceptLetterId;
+//    }
 
     @Temporal(TemporalType.DATE)
     @Column(name = "effective_date", length = 10)

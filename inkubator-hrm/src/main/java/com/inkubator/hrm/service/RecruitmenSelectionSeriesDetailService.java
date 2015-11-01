@@ -26,5 +26,5 @@ public interface RecruitmenSelectionSeriesDetailService extends IService<Recruit
     
     public RecruitmenSelectionSeriesDetail getEntityByPk(RecruitmenSelectionSeriesDetailId id) throws Exception;
 
-    public List<RecruitmenSelectionSeriesDetail> getEntityBySelectionSeriesId(Long id) throws Exception;
+    public List<RecruitmenSelectionSeriesDetail> getListBySelectionSeriesId(Long id) throws Exception;
 }

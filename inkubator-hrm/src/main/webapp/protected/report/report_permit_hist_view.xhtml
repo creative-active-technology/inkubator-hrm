@@ -88,13 +88,13 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['permitimplementation.list_of_permit_implementation']}"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 3%">
+                            <p:column style="width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="#{startDate}"  style="text-align: center;width: 10%">
+                            <p:column sortBy="#{startDate}"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.start_date']}"/>
                                 </f:facet>
@@ -102,7 +102,7 @@
                                     <f:convertDateTime pattern="dd-MMMM-yyyy" />
                                 </h:outputLabel>
                             </p:column> 
-                            <p:column sortBy="#{endDate}"  style="text-align: center;width: 10%">
+                            <p:column sortBy="#{endDate}"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.end_date']}"/>
                                 </f:facet>
@@ -110,25 +110,25 @@
                                     <f:convertDateTime pattern="dd-MMMM-yyyy" />
                                 </h:outputLabel>
                             </p:column>                            
-                            <p:column sortBy="#{permitImplementation.permitClassification.name}"  style="text-align: center;width: 15%">
+                            <p:column sortBy="#{permitImplementation.permitClassification.name}"  style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['permitClassification.permitClassification']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{permitImplementationData.permitClassification}"/>
                             </p:column>  
-                            <p:column sortBy="#{empData.bioData.firstName}"  style="text-align: center;width: 20%">
+                            <p:column sortBy="#{empData.bioData.firstName}"  style="width: 20%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{permitImplementationData.nikWithFullName}"/>
                             </p:column>
-                            <p:column sortBy="#{numberFilling}"  style="text-align: center;width: 10%">
+                            <p:column sortBy="#{numberFilling}"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['permitimplementation.filling_number']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{permitImplementationData.numberFilling}"/>
                             </p:column>
-                            <p:column style="text-align: center;width: 15%">
+                            <p:column style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.approverIndividual']}"/>
                                 </f:facet>

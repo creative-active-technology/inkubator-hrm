@@ -302,5 +302,8 @@ public class OrgTypeOfSpecListFormController extends BaseController{
 		this.klasifikasiKerjaService = klasifikasiKerjaService;
 	}
     
+	public String doBack(){
+		return "/protected/organisation/org_typespec_list_view.htm?faces-redirect=true";
+	}
     
 }

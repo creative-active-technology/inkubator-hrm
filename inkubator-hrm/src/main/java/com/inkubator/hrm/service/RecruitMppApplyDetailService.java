@@ -32,4 +32,6 @@ public interface RecruitMppApplyDetailService extends IService<RecruitMppApplyDe
     public Boolean isJabatanMppExistOnSelectedMppPeriod(Long jabatanId, Long recruitMppPeriodId) throws Exception;
     
     public List<RecruitMppApplyDetail> getAllDataJabatanByRecruitMppApplyId(Long recruitMppApplyId) throws Exception;
+    
+    public List<RecruitMppApplyDetail> getListByJabatanIdAndMppPeriodId(Long jabatanId, Long recruitMppPeriodId) throws Exception;
 }
