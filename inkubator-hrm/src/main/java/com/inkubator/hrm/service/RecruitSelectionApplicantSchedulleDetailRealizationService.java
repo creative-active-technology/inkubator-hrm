@@ -12,8 +12,10 @@ import com.inkubator.hrm.web.model.SelectionApplicantSchedulleDetailRealizationM
  */
 public interface RecruitSelectionApplicantSchedulleDetailRealizationService extends IService<RecruitSelectionApplicantSchedulleDetailRealization> {
 
-	public List<RecruitSelectionApplicantSchedulleDetailRealization> getAllDataByApplicantIdAndSelectionApplicantSchedulleId(Long applicantId, Long selectionApplicantSchedulleId);
+	public List<RecruitSelectionApplicantSchedulleDetailRealization> getAllDataByApplicantIdAndSelectionApplicantSchedulleId(Long applicantId, Long selectionApplicantSchedulleId) throws Exception;
 	
-	public List<SelectionApplicantSchedulleDetailRealizationModel> getAllDataSelectionScheduleRealization(Long applicantId, Long selectionApplicantSchedulleId);
+	public List<SelectionApplicantSchedulleDetailRealizationModel> getAllDataSelectionScheduleRealization(Long applicantId, Long selectionApplicantSchedulleId) throws Exception;
+	
+	public void saveOrUpdate(List<SelectionApplicantSchedulleDetailRealizationModel> listModel) throws Exception;
 	
 }

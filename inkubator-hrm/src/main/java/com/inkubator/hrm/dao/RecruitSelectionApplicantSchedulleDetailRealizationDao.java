@@ -14,4 +14,6 @@ public interface RecruitSelectionApplicantSchedulleDetailRealizationDao extends 
 	public List<RecruitSelectionApplicantSchedulleDetailRealization> getAllDataByApplicantIdAndSelectionApplicantSchedulleId(
 			Long applicantId, Long selectionApplicantSchedulleId);
 
+	public RecruitSelectionApplicantSchedulleDetailRealization getEntityBySelectionApplicantSchedulleDetailId(Long selectionApplicantSchedulleDetailId);
+	
 }

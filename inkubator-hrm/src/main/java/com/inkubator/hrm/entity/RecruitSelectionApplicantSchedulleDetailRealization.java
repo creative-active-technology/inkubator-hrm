@@ -24,7 +24,7 @@ import javax.persistence.Version;
 public class RecruitSelectionApplicantSchedulleDetailRealization  implements java.io.Serializable {
 
 
-     private long id;
+     private Long id;
      private Integer version;
      private RecruitSelectionApplicantSchedulleDetail recruitSelectionApplicantSchedulleDetail;
      private Date realizationDate;
@@ -45,10 +45,10 @@ public class RecruitSelectionApplicantSchedulleDetailRealization  implements jav
     }
 
 	
-    public RecruitSelectionApplicantSchedulleDetailRealization(long id) {
+    public RecruitSelectionApplicantSchedulleDetailRealization(Long id) {
         this.id = id;
     }
-    public RecruitSelectionApplicantSchedulleDetailRealization(long id, RecruitSelectionApplicantSchedulleDetail recruitSelectionApplicantSchedulleDetail, Date realizationDate, Date realizationTimeStart, Date realizationTimeEnd, String realizationRoom, String notes, Date scoringDate, Double scoringPoint, EmpData scoringByEmpData, Date createdOn, String createdBy, Date updatedOn, String updatedBy) {
+    public RecruitSelectionApplicantSchedulleDetailRealization(Long id, RecruitSelectionApplicantSchedulleDetail recruitSelectionApplicantSchedulleDetail, Date realizationDate, Date realizationTimeStart, Date realizationTimeEnd, String realizationRoom, String notes, Date scoringDate, Double scoringPoint, EmpData scoringByEmpData, Date createdOn, String createdBy, Date updatedOn, String updatedBy) {
        this.id = id;
        this.recruitSelectionApplicantSchedulleDetail = recruitSelectionApplicantSchedulleDetail;
        this.realizationDate = realizationDate;
@@ -69,11 +69,11 @@ public class RecruitSelectionApplicantSchedulleDetailRealization  implements jav
 
     
     @Column(name="id", unique=true, nullable=false)
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
     
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
