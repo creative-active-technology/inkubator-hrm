@@ -2,59 +2,44 @@ package com.inkubator.hrm.web.flow;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.hamcrest.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.webflow.execution.RequestContext;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
-import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.ApprovalActivity;
-import com.inkubator.hrm.entity.BusinessTravel;
-import com.inkubator.hrm.entity.BusinessTravelComponent;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.entity.RecruitHireApply;
 import com.inkubator.hrm.entity.RecruitMppApplyDetail;
+import com.inkubator.hrm.entity.RecruitSelectionApplicantInitial;
+import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulle;
+import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulleDetail;
+import com.inkubator.hrm.entity.RecruitSelectionType;
 import com.inkubator.hrm.entity.RecruitmenSelectionSeries;
 import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetail;
-import com.inkubator.hrm.entity.TransactionCodefication;
-import com.inkubator.hrm.entity.TravelComponentCostRate;
-import com.inkubator.hrm.entity.TravelType;
-import com.inkubator.hrm.entity.TravelZone;
-import com.inkubator.hrm.json.util.JsonUtil;
-import com.inkubator.hrm.service.ApprovalActivityService;
-import com.inkubator.hrm.service.BusinessTravelComponentService;
-import com.inkubator.hrm.service.BusinessTravelService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.RecruitHireApplyService;
 import com.inkubator.hrm.service.RecruitMppApplyDetailService;
 import com.inkubator.hrm.service.RecruitMppApplyService;
+import com.inkubator.hrm.service.RecruitSelectionApplicantInitialService;
+import com.inkubator.hrm.service.RecruitSelectionApplicantSchedulleDetailService;
+import com.inkubator.hrm.service.RecruitSelectionApplicantSchedulleService;
 import com.inkubator.hrm.service.RecruitmenSelectionSeriesDetailService;
 import com.inkubator.hrm.service.RecruitmenSelectionSeriesService;
-import com.inkubator.hrm.service.TransactionCodeficationService;
-import com.inkubator.hrm.service.TravelComponentCostRateService;
-import com.inkubator.hrm.service.TravelTypeService;
-import com.inkubator.hrm.service.TravelZoneService;
-import com.inkubator.hrm.util.HrmUserInfoUtil;
-import com.inkubator.hrm.util.KodefikasiUtil;
 import com.inkubator.hrm.web.model.BusinessTravelModel;
 import com.inkubator.hrm.web.model.RecruitScheduleSettingModel;
-import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.hrm.web.model.RecruitSelectionApplicantScheduleDetailViewModel;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-
-import ch.lambdaj.Lambda;
 
 /**
  *
@@ -78,6 +63,12 @@ public class RecruitmentScheduleSettingFormController implements Serializable{
 	private RecruitmenSelectionSeriesService recruitSelectionSeriesService;
 	@Autowired
 	private RecruitmenSelectionSeriesDetailService recruitmenSelectionSeriesDetailService;
+	@Autowired
+	private RecruitSelectionApplicantInitialService recruitSelectionApplicantInitialService;
+	@Autowired
+	private RecruitSelectionApplicantSchedulleService recruitSelectionApplicantSchedulleService;
+	@Autowired
+	private RecruitSelectionApplicantSchedulleDetailService recruitSelectionApplicantSchedulleDetailService;
 	
 	public void initRecruitmentScheduleSettingProcessFlow(RequestContext context){
 		try {			
@@ -85,7 +76,6 @@ public class RecruitmentScheduleSettingFormController implements Serializable{
 			//binding travel zone list
 			List<RecruitmenSelectionSeries> listRecruitSelectionSeries = recruitSelectionSeriesService.getAllData();
 			context.getFlowScope().put("listRecruitSelectionSeries", listRecruitSelectionSeries);
-			
 			
 			//binding value to model
 			RecruitScheduleSettingModel model = new RecruitScheduleSettingModel();
@@ -117,6 +107,29 @@ public class RecruitmentScheduleSettingFormController implements Serializable{
 			model.setSelectionSeriesName(recruitmenSelectionSeries.getName());
 			
 			List<RecruitmenSelectionSeriesDetail> listRecruitmenSelectionSeriesDetails = recruitmenSelectionSeriesDetailService.getListBySelectionSeriesId(model.getSelectionSeriesId());
+			model.setListSelectionSeriesDetails(listRecruitmenSelectionSeriesDetails);
+			List<RecruitSelectionApplicantInitial> listRecruitSelectionApplicantInitials = recruitSelectionApplicantInitialService.getListByRecruitHireApplyId(model.getRecruitHireApplyId());
+			Map<Long, List<RecruitSelectionApplicantScheduleDetailViewModel>> mapSelectionScheduleDetail = new HashMap<Long, List<RecruitSelectionApplicantScheduleDetailViewModel>>();
+			
+			for(RecruitmenSelectionSeriesDetail selectionDetail : listRecruitmenSelectionSeriesDetails){
+				
+				List<RecruitSelectionApplicantScheduleDetailViewModel> listScheduleDetailPerSelSeriesDetail = new ArrayList<RecruitSelectionApplicantScheduleDetailViewModel>();
+				if(listRecruitSelectionApplicantInitials.isEmpty()){
+					
+					mapSelectionScheduleDetail.put(selectionDetail.getId().getSelectionTypeId(), listScheduleDetailPerSelSeriesDetail);
+					
+				}else{
+					
+					for(RecruitSelectionApplicantInitial applicantInitial : listRecruitSelectionApplicantInitials){
+						RecruitSelectionApplicantScheduleDetailViewModel scheduleDetailViewModel = convertApplicantInitialToScheduleDetailViewModel(applicantInitial, selectionDetail.getRecruitSelectionType());
+						listScheduleDetailPerSelSeriesDetail.add(scheduleDetailViewModel);
+					}
+					
+					mapSelectionScheduleDetail.put(selectionDetail.getId().getSelectionTypeId(), listScheduleDetailPerSelSeriesDetail);
+				}
+			}
+			
+			model.setMapSelectionApplicantSchedule(mapSelectionScheduleDetail);
 			
 		} catch (Exception ex) {
 			LOGGER.error("Error", ex);
@@ -125,58 +138,42 @@ public class RecruitmentScheduleSettingFormController implements Serializable{
 		return model;
 	}
 	
-	public void doCalculateQuantity(RequestContext context){
-		BusinessTravelModel model = (BusinessTravelModel) context.getFlowScope().get("businessTravelModel");
-		if(model.getBusinessTravelComponents().size() > 0){
-			try {
-				//get default quantity based on range start and end date
-				int defaultQuantity = DateTimeUtil.getTotalDay(model.getStart(), model.getEnd());
-				
-				//re-set quantity based on default value
-				List<BusinessTravelComponent> businessTravelComponents = model.getBusinessTravelComponents();
-				Lambda.forEach(businessTravelComponents).setQuantity(defaultQuantity);
-				model.setBusinessTravelComponents(businessTravelComponents);
-				
-				//re-calculate total amount
-				double totalAmount = calculateTotalAmount(businessTravelComponents);
-				model.setTotalAmount(totalAmount);
-				
-				context.getFlowScope().put("businessTravelModel", model);
-			} catch (Exception ex) {
-				LOGGER.error("Error", ex);
-			}
-		}
+	private RecruitSelectionApplicantScheduleDetailViewModel convertApplicantInitialToScheduleDetailViewModel(RecruitSelectionApplicantInitial applicantInitial, RecruitSelectionType selectionType){
+		RecruitSelectionApplicantScheduleDetailViewModel scheduleDetailModel = new RecruitSelectionApplicantScheduleDetailViewModel();
+		scheduleDetailModel.setApplicantId(applicantInitial.getRecruitApplicant().getId());
+		scheduleDetailModel.setApplicantName(applicantInitial.getRecruitApplicant().getBioData().getFullName());
+		scheduleDetailModel.setSelectionTypeId(selectionType.getId());
+		scheduleDetailModel.setSelectionTypeName(selectionType.getName());
+		scheduleDetailModel.setCandidateStatus("Eksternal");
+		return scheduleDetailModel;
 	}
+	
+	
 	
 	public String doSave(RequestContext context) {
 		String message = "error";
 		
-		/*BusinessTravelModel model = (BusinessTravelModel) context.getFlowScope().get("businessTravelModel");
-		BusinessTravel businessTravel = this.getEntityFromModel(model);
+		RecruitScheduleSettingModel model = (RecruitScheduleSettingModel) context.getFlowScope().get("recruitScheduleSettingModel");
+		RecruitSelectionApplicantSchedulle schedule = convertModelToRecruitSelectionApplicantSchedulle(model);
+		List<RecruitSelectionApplicantSchedulleDetail> listSchedulleDetail = convertListScheduleViewModelToListScheduleDetail(model);
 		
 		try {
-			if(businessTravel.getId() == null) {
-				message = businessTravelService.saveWithApproval(businessTravel, model.getBusinessTravelComponents());
+			
+			if(model.getId() == null) {
 				
-				if (StringUtils.equals(message, "success_need_approval")) {
-					MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-				}else if (StringUtils.equals(message, "success_without_approval")) {
-					MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-					
-					//set id to modelFlow
-					model.setId(businessTravel.getId());
-					context.getFlowScope().put("businessTravelModel", model);
-				}
-			} else {
+				message = recruitSelectionApplicantSchedulleService.saveData(schedule, listSchedulleDetail);
+				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+				context.getFlowScope().put("recruitScheduleSettingModel", model);
+				
+			} /*else {
 				businessTravelService.update(businessTravel, model.getBusinessTravelComponents());
 				message = "success_without_approval";
-			}
+			}*/
 		} catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
-        }*/
-		
+        }
 		
 		return message;
 	}
@@ -190,12 +187,6 @@ public class RecruitmentScheduleSettingFormController implements Serializable{
 			LOGGER.error("Error", e);
 		}
 		return empDatas;
-	}
-	
-	public void doResetTravelComponentList(RequestContext context){
-		BusinessTravelModel model = (BusinessTravelModel) context.getFlowScope().get("businessTravelModel");
-		model.getBusinessTravelComponents().clear();
-		context.getFlowScope().put("businessTravelModel", model);
 	}
 	
 	public void doResetRecruitmentSchduleForm(RequestContext context){
@@ -227,43 +218,6 @@ public class RecruitmentScheduleSettingFormController implements Serializable{
 		context.getFlowScope().put("businessTravelModel", model);
 	}
 	
-	public void doResetBusinessTravelComponentForm(RequestContext context){
-		BusinessTravelModel model = (BusinessTravelModel) context.getFlowScope().get("businessTravelModel");
-		try {
-			//set travel components list of quantity and earnedPerQuantity to default
-			double totalAmount = 0;
-			int defaultQuantity = DateTimeUtil.getTotalDay(model.getStart(), model.getEnd());
-			List<BusinessTravelComponent> listBusinessTravelComponent = new ArrayList<BusinessTravelComponent>();
-			for(BusinessTravelComponent btc : model.getBusinessTravelComponents()){
-				btc.setQuantity(defaultQuantity);
-				btc.setEarnedPerQuantity(btc.getDefaultRate());
-				totalAmount = totalAmount + btc.getPayByAmount();
-				listBusinessTravelComponent.add(btc);
-			}
-			model.setTotalAmount(totalAmount);
-			model.setBusinessTravelComponents(listBusinessTravelComponent);
-		} catch (Exception e) {
-			LOGGER.error("Error", e);
-		}
-		
-		context.getFlowScope().put("businessTravelModel", model);
-	}
-	
-	public void doAdjustPayByAmount(RequestContext context){
-		BusinessTravelModel model = (BusinessTravelModel) context.getFlowScope().get("businessTravelModel");
-		double totalAmount = calculateTotalAmount(model.getBusinessTravelComponents());
-		model.setTotalAmount(totalAmount);
-		context.getFlowScope().put("businessTravelModel", model);
-	}
-	
-	private double calculateTotalAmount(List<BusinessTravelComponent> businessTravelComponents){
-		double totalAmount = 0;
-		for(BusinessTravelComponent btc: businessTravelComponents){
-			totalAmount = totalAmount + btc.getPayByAmount();
-		}
-		return totalAmount;
-	}
-	
 	private RecruitScheduleSettingModel getModelFromEntity(RecruitHireApply recruitHireApply) throws Exception{
 		
 		List<RecruitMppApplyDetail> listMppDetail = recruitMppApplyDetailService.getListByJabatanIdAndMppPeriodId(recruitHireApply.getJabatan().getId(), recruitHireApply.getRecruitMppPeriod().getId());
@@ -289,5 +243,55 @@ public class RecruitmentScheduleSettingFormController implements Serializable{
 		return model;
 	}
 	
+	private RecruitSelectionApplicantSchedulle convertModelToRecruitSelectionApplicantSchedulle(RecruitScheduleSettingModel model){
+		RecruitSelectionApplicantSchedulle schedule = new RecruitSelectionApplicantSchedulle();
+		if(model.getId() != null){
+			schedule.setId(model.getId());
+		}
+		
+		schedule.setHireApply(new RecruitHireApply(model.getRecruitHireApplyId()));
+		schedule.setEmpData(new EmpData(model.getEmpCoordinatorId()));
+		schedule.setSelectionSeries(new RecruitmenSelectionSeries(model.getSelectionSeriesId()));
+		schedule.setTotalRecrut(model.getTotalRecruitment());
+		
+		return schedule;
+	}
 	
+	private List<RecruitSelectionApplicantSchedulleDetail> convertListScheduleViewModelToListScheduleDetail(RecruitScheduleSettingModel model){
+		List<RecruitSelectionApplicantSchedulleDetail> listScheduleDetail = new ArrayList<RecruitSelectionApplicantSchedulleDetail>();
+		List<RecruitmenSelectionSeriesDetail> listSelectionSeriesDetail = model.getListSelectionSeriesDetails();
+		Map<Long, List<RecruitSelectionApplicantScheduleDetailViewModel>> mapScheduleDetailViewModel = model.getMapSelectionApplicantSchedule();
+		
+		for(RecruitmenSelectionSeriesDetail selectionSeriesDetail : listSelectionSeriesDetail){
+			List<RecruitSelectionApplicantScheduleDetailViewModel> listScheduleDetailModel = mapScheduleDetailViewModel.get(selectionSeriesDetail.getRecruitSelectionType().getId());
+			if(null != listScheduleDetailModel){
+				for(RecruitSelectionApplicantScheduleDetailViewModel scheduleDetailModel : listScheduleDetailModel){
+					RecruitSelectionApplicantSchedulleDetail scheduleDetail = convertScheduleDetailModelToScheduleDetail(scheduleDetailModel, selectionSeriesDetail);
+					listScheduleDetail.add(scheduleDetail);
+				}
+			}
+		}
+		
+		return listScheduleDetail;
+	}
+	
+	private RecruitSelectionApplicantSchedulleDetail convertScheduleDetailModelToScheduleDetail(RecruitSelectionApplicantScheduleDetailViewModel scheduleDetailModel, RecruitmenSelectionSeriesDetail selectionSeriesDetail){
+		
+		RecruitSelectionApplicantSchedulleDetail scheduleDetail = new RecruitSelectionApplicantSchedulleDetail();
+		if(scheduleDetailModel.getId() != null){
+			scheduleDetail.setId(scheduleDetailModel.getId());
+		}
+		
+		scheduleDetail.setApplicant(new RecruitApplicant(scheduleDetailModel.getApplicantId()));
+		scheduleDetail.setEmpData(new EmpData(scheduleDetailModel.getEmpDataPicId()));
+		scheduleDetail.setNotes(scheduleDetailModel.getNotes());
+		scheduleDetail.setRoom(scheduleDetailModel.getRoom());
+		scheduleDetail.setSchdulleDate(scheduleDetailModel.getScheduleDate());
+		scheduleDetail.setSchdulleTimeStart(scheduleDetailModel.getScheduleStartTime());
+		scheduleDetail.setSchedulleTimeEnd(scheduleDetailModel.getScheduleEndTime());
+		scheduleDetail.setSelectionListOrder(selectionSeriesDetail.getListOrder());
+		scheduleDetail.setSelectionType(new RecruitSelectionType(selectionSeriesDetail.getRecruitSelectionType().getId()));
+		
+		return scheduleDetail;
+	}
 }

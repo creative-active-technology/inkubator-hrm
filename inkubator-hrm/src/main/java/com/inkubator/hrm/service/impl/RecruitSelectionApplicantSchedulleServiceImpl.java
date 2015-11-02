@@ -1,5 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -10,10 +11,26 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.RecruitApplicantDao;
+import com.inkubator.hrm.dao.RecruitHireApplyDao;
 import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDao;
+import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDetailDao;
+import com.inkubator.hrm.dao.RecruitSelectionTypeDao;
+import com.inkubator.hrm.dao.RecruitmenSelectionSeriesDao;
+import com.inkubator.hrm.dao.RecruitmenSelectionSeriesDetailDao;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.RecruitApplicant;
+import com.inkubator.hrm.entity.RecruitHireApply;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulle;
+import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulleDetail;
+import com.inkubator.hrm.entity.RecruitSelectionType;
+import com.inkubator.hrm.entity.RecruitmenSelectionSeries;
 import com.inkubator.hrm.service.RecruitSelectionApplicantSchedulleService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.web.model.RecruitScheduleSettingModel;
 
 /**
  *
@@ -21,11 +38,24 @@ import com.inkubator.hrm.service.RecruitSelectionApplicantSchedulleService;
  */
 @Service(value = "recruitSelectionApplicantSchedulleService")
 @Lazy
-public class RecruitSelectionApplicantSchedulleServiceImpl extends IServiceImpl
-		implements RecruitSelectionApplicantSchedulleService {
+public class RecruitSelectionApplicantSchedulleServiceImpl extends IServiceImpl	implements RecruitSelectionApplicantSchedulleService {
 
 	@Autowired
 	private RecruitSelectionApplicantSchedulleDao recruitSelectionApplicantSchedulleDao;
+	@Autowired
+	private RecruitSelectionApplicantSchedulleDetailDao recruitSelectionApplicantSchedulleDetailDao;
+	@Autowired
+	private RecruitHireApplyDao recruitHireApplyDao;
+	@Autowired
+	private EmpDataDao empDataDao;
+	@Autowired
+	private RecruitmenSelectionSeriesDao recruitmenSelectionSeriesDao;
+	@Autowired
+	private RecruitmenSelectionSeriesDetailDao recruitmenSelectionSeriesDetailDao;
+	@Autowired
+	private RecruitApplicantDao recruitApplicantDao;
+	@Autowired
+	private RecruitSelectionTypeDao recruitSelectionTypeDao;
 	
 	@Override
 	public RecruitSelectionApplicantSchedulle getEntiyByPK(String id) throws Exception {
@@ -230,6 +260,51 @@ public class RecruitSelectionApplicantSchedulleServiceImpl extends IServiceImpl
 	public RecruitSelectionApplicantSchedulle getEntityByPkWithDetail(Long id) {
 		
 		return recruitSelectionApplicantSchedulleDao.getEntityByPkWithDetail(id);
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public String saveData(RecruitSelectionApplicantSchedulle recruitSelectionchedulle, List<RecruitSelectionApplicantSchedulleDetail> listRecruitSelectionScheduleDetail)	throws Exception {
+		
+		String result = "error";
+		String createBy = HrmUserInfoUtil.getUserName();
+		Date createOn = new Date(); 
+		
+		recruitSelectionchedulle.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		recruitSelectionchedulle.setCreatedBy(createBy);
+		recruitSelectionchedulle.setCreatedOn(createOn);
+		
+		RecruitHireApply recruitHireApply = recruitHireApplyDao.getEntiyByPK(recruitSelectionchedulle.getHireApply().getId());
+		EmpData empData = empDataDao.getEntiyByPK(recruitSelectionchedulle.getEmpData().getId());
+		RecruitmenSelectionSeries recruitmenSelectionSeries = recruitmenSelectionSeriesDao.getEntiyByPK(recruitSelectionchedulle.getSelectionSeries().getId());
+		
+		recruitSelectionchedulle.setHireApply(recruitHireApply);
+		recruitSelectionchedulle.setEmpData(empData);
+		recruitSelectionchedulle.setSelectionSeries(recruitmenSelectionSeries);
+		recruitSelectionApplicantSchedulleDao.save(recruitSelectionchedulle);
+		
+		for(RecruitSelectionApplicantSchedulleDetail scheduleDetail : listRecruitSelectionScheduleDetail){
+			
+			scheduleDetail.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+			scheduleDetail.setCreatedBy(createBy);
+			scheduleDetail.setCreatedOn(createOn);
+			
+			RecruitApplicant recruitApplicant = recruitApplicantDao.getEntiyByPK(scheduleDetail.getApplicant().getId());
+			EmpData empDataScheduleDetail = empDataDao.getEntiyByPK(scheduleDetail.getEmpData().getId());
+			RecruitSelectionType recruitSelectionType = recruitSelectionTypeDao.getEntiyByPK(scheduleDetail.getSelectionType().getId());
+			
+			scheduleDetail.setApplicant(recruitApplicant);
+			scheduleDetail.setEmpData(empDataScheduleDetail);
+			scheduleDetail.setRecruitSelectionApplicantSchedulle(recruitSelectionchedulle);
+			scheduleDetail.setSelectionType(recruitSelectionType);
+			
+			recruitSelectionApplicantSchedulleDetailDao.save(scheduleDetail);
+			
+		}
+		
+		result = "success";
+		
+		return result;
 	}
 
 }
