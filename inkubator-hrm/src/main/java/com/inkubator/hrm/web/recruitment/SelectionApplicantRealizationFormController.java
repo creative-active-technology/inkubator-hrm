@@ -5,12 +5,18 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.Matchers;
+import org.primefaces.event.RowEditEvent;
 
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulle;
@@ -21,6 +27,9 @@ import com.inkubator.hrm.service.RecruitSelectionApplicantSchedulleService;
 import com.inkubator.hrm.web.model.SelectionApplicantSchedulleDetailRealizationModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
+
+import ch.lambdaj.Lambda;
 
 /**
  *
@@ -33,6 +42,7 @@ public class SelectionApplicantRealizationFormController extends BaseController 
 	private RecruitApplicant applicant;
 	private RecruitSelectionApplicantSchedulle selectionApplicantSchedulle;
 	private List<SelectionApplicantSchedulleDetailRealizationModel> listModel;
+	private List<SelectionApplicantSchedulleDetailRealizationModel> copyListModel;
 	
 	@ManagedProperty(value = "#{recruitSelectionApplicantSchedulleDetailRealizationService}")
     private RecruitSelectionApplicantSchedulleDetailRealizationService recruitSelectionApplicantSchedulleDetailRealizationService;
@@ -56,6 +66,10 @@ public class SelectionApplicantRealizationFormController extends BaseController 
 	        	applicant = recruitApplicantService.getEntityByPkWithDetail(Long.parseLong(applicantId.substring(1)));
 	        	selectionApplicantSchedulle = recruitSelectionApplicantSchedulleService.getEntityByPkWithDetail(Long.parseLong(selectionScheduleId.substring(1)));
 	        	listModel = recruitSelectionApplicantSchedulleDetailRealizationService.getAllDataSelectionScheduleRealization(applicant.getId(), selectionApplicantSchedulle.getId());
+	        	copyListModel = new ArrayList<>();
+	        	for(SelectionApplicantSchedulleDetailRealizationModel model : listModel){
+	        		copyListModel.add((SelectionApplicantSchedulleDetailRealizationModel) model.clone());
+	        	}
 	        }
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
@@ -64,7 +78,14 @@ public class SelectionApplicantRealizationFormController extends BaseController 
 
     @PreDestroy
     public void cleanAndExit() {
-    	
+    	applicant = null;
+    	selectionApplicantSchedulle = null;
+    	listModel = null;
+    	copyListModel = null;
+    	recruitSelectionApplicantSchedulleDetailRealizationService = null;
+    	empDataService = null;
+    	recruitApplicantService = null;
+    	recruitSelectionApplicantSchedulleService = null;
     }
     
     public String doBack(){
@@ -72,8 +93,51 @@ public class SelectionApplicantRealizationFormController extends BaseController 
     }
     
     public String doSave(){
+    	try {
+    		recruitSelectionApplicantSchedulleDetailRealizationService.saveOrUpdate(listModel);
+    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+    		return "/protected/recruitment/selection_applicant_realization_view.htm?faces-redirect=true";
+    	} catch (BussinessException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+        return null;
+    }
+    
+    public void onRowEdit(RowEditEvent event) throws CloneNotSupportedException {
+    	SelectionApplicantSchedulleDetailRealizationModel model = (SelectionApplicantSchedulleDetailRealizationModel) event.getObject();
+    	Boolean isValidationFailed = Boolean.FALSE;
     	
-    	return "";
+    	if(StringUtils.equals(model.getStatus(), HRMConstant.SELECTION_APPLICANT_STATUS_NEW)){
+    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "applicant_realization.error_status_selection_stages_should_not_new", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+    		isValidationFailed = Boolean.TRUE;
+    	} else if(model.getRealizationDate() == null || model.getRealizationTimeStart() == null || model.getRealizationTimeEnd() == null || 
+    			StringUtils.isEmpty(model.getRealizationRoom()) || model.getScoringByEmpData() == null || model.getScoringDate() == null) {
+    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "applicant_realization.error_field_should_not_be_empty", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+    		isValidationFailed = Boolean.TRUE;		
+    	} else if(model.getRealizationDate().after(model.getScoringDate())){
+    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "applicant_realization.error_execution_date_smaller_than_assessed_date", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+    		isValidationFailed = Boolean.TRUE;
+    	} else if(model.getRealizationTimeStart().after(model.getRealizationTimeEnd())){
+    		MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "applicant_realization.error_execution_time_start_smaller_than_execution_time_end", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+    		isValidationFailed = Boolean.TRUE;
+    	} 
+    	
+    	if(isValidationFailed){
+    		FacesContext.getCurrentInstance().validationFailed();
+    	} else {
+    		SelectionApplicantSchedulleDetailRealizationModel replaceModel = Lambda.selectFirst(copyListModel, Lambda.having(Lambda.on(SelectionApplicantSchedulleDetailRealizationModel.class).getSelectionTypeName(), Matchers.equalTo(model.getSelectionTypeName())));
+    		int indexOf = copyListModel.indexOf(replaceModel);
+    		copyListModel.set(indexOf, (SelectionApplicantSchedulleDetailRealizationModel) model.clone());
+    	}
+    }
+    
+    public void onRowCancel(RowEditEvent event) throws CloneNotSupportedException {    	
+    	SelectionApplicantSchedulleDetailRealizationModel model = ((SelectionApplicantSchedulleDetailRealizationModel) event.getObject());
+    	SelectionApplicantSchedulleDetailRealizationModel resetModel = Lambda.selectFirst(copyListModel, Lambda.having(Lambda.on(SelectionApplicantSchedulleDetailRealizationModel.class).getSelectionTypeName(), Matchers.equalTo(model.getSelectionTypeName())));
+    	int indexOf = listModel.indexOf(model);
+    	listModel.set(indexOf, (SelectionApplicantSchedulleDetailRealizationModel) resetModel.clone());
     }
     
     public List<EmpData> doAutoCompleteEmployee(String param){

@@ -46,4 +46,15 @@ public class RecruitSelectionApplicantSchedulleDetailRealizationDaoImpl extends 
 		return criteria.list();
 	}
 
+	@Override
+	public RecruitSelectionApplicantSchedulleDetailRealization getEntityBySelectionApplicantSchedulleDetailId(Long selectionApplicantSchedulleDetailId) {
+		
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.setFetchMode("scoringByEmpData", FetchMode.JOIN);
+		criteria.setFetchMode("scoringByEmpData.bioData", FetchMode.JOIN);
+		criteria.add(Restrictions.eq("recruitSelectionApplicantSchedulleDetail.id", selectionApplicantSchedulleDetailId));
+		
+		return (RecruitSelectionApplicantSchedulleDetailRealization) criteria.uniqueResult();
+	}
+
 }

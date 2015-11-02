@@ -20,7 +20,9 @@ import com.inkubator.hrm.web.lazymodel.RecruitmentScheduleSettingLazyDataModel;
 import com.inkubator.hrm.web.model.RecruitmentScheduleSettingViewModel;
 import com.inkubator.hrm.web.search.RecruitmentScheduleSettingSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +34,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
@@ -98,16 +101,14 @@ public class RecruitmentScheduleSettingController extends BaseController {
     	}
     }
 
-    public void doSelectEntity() {
-        try {
-            //selected = this.service.getEntityByPkWithDetail(selected.getId());
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }
-    }
 
-    public void setSchedule(){
-    	
+    public void doSetupSchedule(){
+    	try {
+            ExternalContext red = FacesUtil.getExternalContext();
+            red.redirect(red.getRequestContextPath() + "/flow-protected/recruitment_schedule_setting?id=" + selected.getId());
+        } catch (IOException ex) {
+          LOGGER.error("Erorr", ex);
+        }
     }
 
     public void resetLazy(){

@@ -18,23 +18,27 @@ import org.hibernate.criterion.Order;
  * @author Deni
  */
 public interface RecruitmenSelectionSeriesDetailDao extends IDAO<RecruitmenSelectionSeriesDetail> {
+
     public List<RecruitmenSelectionSeriesDetail> getByParam(int firstResult, int maxResults, Order order);
-    
+
     public List<RecruitmenSelectionSeriesDetail> getAllDataBySelectionSeriesId(Long id, int firstResult, int maxResults, Order order);
 
     public Integer getLastIndexBySelectionSeriesId(Long id);
-    
+
     public Long getTotalBySelectionSeriesId(Long id);
-    
+
     public RecruitmenSelectionSeriesDetail getByListOrderAndRecSelectionSeriesId(Integer number, Long id);
-    
+
     public RecruitmenSelectionSeriesDetail getEntityByPk(RecruitmenSelectionSeriesDetailId id);
-    
+
     public Long getTotalByPk(RecruitmenSelectionSeriesDetailId id);
-    
+
     public RecruitmenSelectionSeriesDetail getEntityByRecruitSelectionTypeAndRecruitmenSelectionSeries(Long recruitSelectionType, Long recruitSelectionSeries);
-    
+
     public List<RecruitmenSelectionSeriesDetail> getEntityBySelectionSeriesId(Long id);
-    
-      public List<RecruitmenSelectionSeriesDetail>getAllByRecruitRecruitSelectionTypeId(long id);
+
+    public List<RecruitmenSelectionSeriesDetail> getAllByRecruitRecruitSelectionTypeId(long id);
+
+    public List<RecruitmenSelectionSeriesDetail> getListBySelectionSeriesId(Long id);
+
 }
