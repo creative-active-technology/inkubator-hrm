@@ -814,7 +814,7 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 				/** Kalau status masih empty setelah melewati proses checking/validation di atas, 
 				 *  Ini artinya sudah lulus/pass semua proses */
 				if(StringUtils.isEmpty(status)){
-					status = bundle.getString("global.pas");
+					status = bundle.getString("global.pass");
 				}
 			}
 			
