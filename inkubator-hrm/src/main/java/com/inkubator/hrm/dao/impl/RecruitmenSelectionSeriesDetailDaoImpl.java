@@ -50,8 +50,8 @@ public class RecruitmenSelectionSeriesDetailDaoImpl extends IDAOImpl<RecruitmenS
         criteria.add(Restrictions.eq("recruitmenSelectionSeries.id", id));
         criteria.setFetchMode("recruitmenSelectionSeries", FetchMode.JOIN);
         criteria.setFetchMode("recruitSelectionType", FetchMode.JOIN);
-        criteria.setFetchMode("systemLetterReferenceByRejectLetterId", FetchMode.JOIN);
-        criteria.setFetchMode("systemLetterReferenceByAcceptLetterId", FetchMode.JOIN);
+        criteria.setFetchMode("recruitLettersByAcceptLetterId", FetchMode.JOIN);
+        criteria.setFetchMode("recruitLettersByRejectLetterId", FetchMode.JOIN);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -117,5 +117,18 @@ public class RecruitmenSelectionSeriesDetailDaoImpl extends IDAOImpl<RecruitmenS
         criteria.add(Restrictions.eq("recruitmenSelectionSeries.id", recruitSelectionSeries));
         return (RecruitmenSelectionSeriesDetail) criteria.uniqueResult();
 	}
+
+    @Override
+    public List<RecruitmenSelectionSeriesDetail> getAllByRecruitRecruitSelectionTypeId(long id) {
+          Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+          criteria.createAlias("recruitSelectionType", "rs", JoinType.INNER_JOIN);
+          criteria.add(Restrictions.eq("rs.id", id));
+          return criteria.list();
+    }
+
+    @Override
+    public List<RecruitmenSelectionSeriesDetail> getEntityBySelectionSeriesId(Long id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

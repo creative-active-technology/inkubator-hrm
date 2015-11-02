@@ -253,7 +253,7 @@ public class RecruitLetters implements java.io.Serializable {
         this.recruitCommChannelss = recruitCommChannelss;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitLettersByAcceptLetterId")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "recruitLettersByAcceptLetterId", orphanRemoval = true)
     public Set<RecruitmenSelectionSeriesDetail> getRecruitmenSelectionSeriesDetailsForAcceptLetterId() {
         return this.recruitmenSelectionSeriesDetailsForAcceptLetterId;
     }
@@ -262,7 +262,7 @@ public class RecruitLetters implements java.io.Serializable {
         this.recruitmenSelectionSeriesDetailsForAcceptLetterId = recruitmenSelectionSeriesDetailsForAcceptLetterId;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitLettersByRejectLetterId")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "recruitLettersByRejectLetterId", orphanRemoval = true)
     public Set<RecruitmenSelectionSeriesDetail> getRecruitmenSelectionSeriesDetailsForRejectLetterId() {
         return this.recruitmenSelectionSeriesDetailsForRejectLetterId;
     }

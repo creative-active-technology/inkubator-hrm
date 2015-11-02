@@ -7,6 +7,7 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.PaySalaryGrade;
+import com.inkubator.hrm.entity.RecruitSelectionType;
 import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetail;
 import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetailId;
 import java.util.List;
@@ -17,21 +18,27 @@ import org.hibernate.criterion.Order;
  * @author Deni
  */
 public interface RecruitmenSelectionSeriesDetailDao extends IDAO<RecruitmenSelectionSeriesDetail> {
+
     public List<RecruitmenSelectionSeriesDetail> getByParam(int firstResult, int maxResults, Order order);
-    
+
     public List<RecruitmenSelectionSeriesDetail> getAllDataBySelectionSeriesId(Long id, int firstResult, int maxResults, Order order);
 
     public Integer getLastIndexBySelectionSeriesId(Long id);
-    
+
     public Long getTotalBySelectionSeriesId(Long id);
-    
+
     public RecruitmenSelectionSeriesDetail getByListOrderAndRecSelectionSeriesId(Integer number, Long id);
-    
+
     public RecruitmenSelectionSeriesDetail getEntityByPk(RecruitmenSelectionSeriesDetailId id);
-    
+
     public Long getTotalByPk(RecruitmenSelectionSeriesDetailId id);
-    
+
     public RecruitmenSelectionSeriesDetail getEntityByRecruitSelectionTypeAndRecruitmenSelectionSeries(Long recruitSelectionType, Long recruitSelectionSeries);
-    
+
+    public List<RecruitmenSelectionSeriesDetail> getEntityBySelectionSeriesId(Long id);
+
+    public List<RecruitmenSelectionSeriesDetail> getAllByRecruitRecruitSelectionTypeId(long id);
+
     public List<RecruitmenSelectionSeriesDetail> getListBySelectionSeriesId(Long id);
+
 }
