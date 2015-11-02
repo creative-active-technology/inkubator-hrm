@@ -126,4 +126,9 @@ public class RecruitmenSelectionSeriesDetailDaoImpl extends IDAOImpl<RecruitmenS
           return criteria.list();
     }
 
+    @Override
+    public List<RecruitmenSelectionSeriesDetail> getEntityBySelectionSeriesId(Long id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
