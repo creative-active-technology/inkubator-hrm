@@ -1,5 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +18,7 @@ import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.PieChartModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -43,6 +45,8 @@ import com.inkubator.hrm.dao.RaceDao;
 import com.inkubator.hrm.dao.RecruitApplicantDao;
 import com.inkubator.hrm.dao.RecruitApplicantSpecListDao;
 import com.inkubator.hrm.dao.RecruitHireApplyDao;
+import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDetailDao;
+import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDetailRealizationDao;
 import com.inkubator.hrm.dao.RecruitVacancyAdvertisementDao;
 import com.inkubator.hrm.dao.RecruitVacancyAdvertisementDetailDao;
 import com.inkubator.hrm.dao.ReligionDao;
@@ -64,6 +68,8 @@ import com.inkubator.hrm.entity.Race;
 import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.entity.RecruitApplicantSpecList;
 import com.inkubator.hrm.entity.RecruitHireApply;
+import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulleDetail;
+import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulleDetailRealization;
 import com.inkubator.hrm.entity.RecruitVacancyAdvertisementDetail;
 import com.inkubator.hrm.entity.Religion;
 import com.inkubator.hrm.service.RecruitApplicantService;
@@ -130,6 +136,10 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 	private RecruitHireApplyDao recruitHireApplyDao;
 	@Autowired
 	private RecruitVacancyAdvertisementDetailDao recruitVacancyAdvertisementDetailDao;
+	@Autowired
+	private RecruitSelectionApplicantSchedulleDetailRealizationDao recruitSelectionApplicantSchedulleDetailRealizationDao;
+	@Autowired
+	private RecruitSelectionApplicantSchedulleDetailDao recruitSelectionApplicantSchedulleDetailDao;
 	
 	@Override
 	public RecruitApplicant getEntiyByPK(String id) throws Exception {
@@ -772,8 +782,48 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<ApplicantRealizationViewModel> getSelectionApplicantRealizationByParam(SelectionApplicantRealizationSearchParameter parameter, int firstResults, int maxResults, Order orderable) {
+		ResourceBundle bundle = ResourceBundle.getBundle("Messages", LocaleContextHolder.getLocale());
 		
-		return recruitApplicantDao.getSelectionApplicantRealizationByParam(parameter, firstResults, maxResults, orderable);
+		List<ApplicantRealizationViewModel> listModel = recruitApplicantDao.getSelectionApplicantRealizationByParam(parameter, firstResults, maxResults, orderable);
+		for(ApplicantRealizationViewModel model : listModel) {
+			String status = StringUtils.EMPTY;
+			
+			if(recruitSelectionApplicantSchedulleDetailRealizationDao.
+					getAllDataByApplicantIdAndSelectionApplicantSchedulleId(model.getApplicantId(), model.getSelectionScheduleId()).isEmpty()) {
+				status = bundle.getString("global.new");
+			} else {
+				/** sorting by urutan tahapan seleksi */
+				List<RecruitSelectionApplicantSchedulleDetail> listSchedule = recruitSelectionApplicantSchedulleDetailDao.
+						getAllDataByApplicantIdAndSelectionApplicantSchedulleId(model.getApplicantId(), model.getSelectionScheduleId());
+				listSchedule = Lambda.sort(listSchedule, Lambda.on(RecruitSelectionApplicantSchedulleDetail.class).getSelectionListOrder());
+				
+				for(RecruitSelectionApplicantSchedulleDetail schedule : listSchedule){
+					RecruitSelectionApplicantSchedulleDetailRealization realization = recruitSelectionApplicantSchedulleDetailRealizationDao.
+							getEntityBySelectionApplicantSchedulleDetailId(schedule.getId());
+					if(realization == null){
+						Object[] parameters = new Object[]{schedule.getSelectionType().getName()};
+						status = MessageFormat.format(bundle.getString("applicant_realization.process_of"), parameters);
+						break;
+					} else if(StringUtils.equals(realization.getStatus(), HRMConstant.SELECTION_APPLICANT_STATUS_FAILED)){
+						Object[] parameters = new Object[]{schedule.getSelectionType().getName()};
+						status = MessageFormat.format(bundle.getString("applicant_realization.failed_on"), parameters);
+						break;
+					} 
+				}
+				
+				/** Kalau status masih empty setelah melewati proses checking/validation di atas, 
+				 *  Ini artinya sudah lulus/pass semua proses */
+				if(StringUtils.isEmpty(status)){
+					status = bundle.getString("global.pas");
+				}
+			}
+			
+			model.setStatus(status);
+			
+			
+			
+		}
+		return listModel;
 	}
 
 	@Override
