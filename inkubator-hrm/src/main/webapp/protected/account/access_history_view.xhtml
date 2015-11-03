@@ -59,30 +59,35 @@
                                       id="tableAccessHistoryId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['employee_access_history_data.access_history_list']}"/>
+                                <h:outputText value="#{appmsg['accesshistory.access_history_list']}"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 5%">
+                            <p:column style="text-align: center;width:20px">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="#{data.userId}"  style="width: 30%">
+                            <p:column sortBy="#{data.userId}"  style="width: 100px">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.user_id']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.userId}"/>
                             </p:column>
-                            <p:column sortBy="#{data.pathUrl}" style="width: 32%">
+                            <p:column sortBy="#{data.pathUrl}"  style="width: 200px">
                                 <f:facet name="header">
-                                    <h:outputText value="Path"/>
+                                    <h:outputText value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_name']}"/>
                                 </f:facet>
-                                <!--<h:outputLabel value= "#{data.pathUrl}"/>-->
                                 <h:outputLink value="#{data.contextPath}#{data.hrmMenu.urlName}" title="#{data.hrmMenu.nameByResourceBundle}">
                                     <p:outputLabel value="#{data.hrmMenu.nameByResourceBundle}" styleClass="isitext_hrm" style="cursor: pointer"/>
                                 </h:outputLink>
                             </p:column>
-                            <p:column sortBy="#{data.dateAccess}" style="width: 33%;text-align:center">
+                            <p:column sortBy="#{data.pathUrl}">
+                                <f:facet name="header">
+                                    <h:outputText value="URL"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.pathUrl}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.dateAccess}" style="width: 170px">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['accesshistory.access_date']}"/>
                                 </f:facet>
