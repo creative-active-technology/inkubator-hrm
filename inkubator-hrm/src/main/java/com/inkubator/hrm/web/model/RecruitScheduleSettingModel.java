@@ -1,7 +1,13 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetail;
 
 /**
  *
@@ -25,6 +31,8 @@ public class RecruitScheduleSettingModel implements Serializable {
 	private Date startDateMppPeriod;
 	private Date endDateMppPeriod;
 	private Integer totalRecruitment;
+	private List<RecruitmenSelectionSeriesDetail> listSelectionSeriesDetails = new ArrayList<RecruitmenSelectionSeriesDetail>();
+	private Map<Long, List<RecruitSelectionApplicantScheduleDetailViewModel>> mapSelectionApplicantSchedule = new HashMap<Long, List<RecruitSelectionApplicantScheduleDetailViewModel>>();
 	
 	public Long getId() {
 		return id;
@@ -121,6 +129,20 @@ public class RecruitScheduleSettingModel implements Serializable {
 	}
 	public void setSelectionSeriesName(String selectionSeriesName) {
 		this.selectionSeriesName = selectionSeriesName;
+	}
+	public List<RecruitmenSelectionSeriesDetail> getListSelectionSeriesDetails() {
+		return listSelectionSeriesDetails;
+	}
+	public void setListSelectionSeriesDetails(
+			List<RecruitmenSelectionSeriesDetail> listSelectionSeriesDetails) {
+		this.listSelectionSeriesDetails = listSelectionSeriesDetails;
+	}
+	public Map<Long, List<RecruitSelectionApplicantScheduleDetailViewModel>> getMapSelectionApplicantSchedule() {
+		return mapSelectionApplicantSchedule;
+	}
+	public void setMapSelectionApplicantSchedule(
+			Map<Long, List<RecruitSelectionApplicantScheduleDetailViewModel>> mapSelectionApplicantSchedule) {
+		this.mapSelectionApplicantSchedule = mapSelectionApplicantSchedule;
 	}
 	
 	

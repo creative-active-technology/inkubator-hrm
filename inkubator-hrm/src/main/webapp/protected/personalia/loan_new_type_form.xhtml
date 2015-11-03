@@ -103,6 +103,7 @@
                                 <p:focus for ="interestMethod">
                                     <p:selectOneMenu id="interestMethod" value="#{loanNewTypeFormController.loanNewTypeModel.interestMethod}"
                                                  style="width: 90%;" required="true" requiredMessage="#{appmsg['loantype.interest_method_should_not_be_empty']}"> 
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['loanschema.flat']}" itemValue="1"/>
                                         <f:selectItem itemLabel="#{appmsg['loanschema.annuity']}" itemValue="0"/>
                                         <f:selectItem itemLabel="#{appmsg['loanschema.floating']}" itemValue="2"/>                                                                                                                      
