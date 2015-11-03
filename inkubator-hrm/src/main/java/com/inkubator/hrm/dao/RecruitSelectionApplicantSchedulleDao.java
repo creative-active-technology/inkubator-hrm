@@ -2,8 +2,13 @@ package com.inkubator.hrm.dao;
 
 
 
+import java.util.List;
+
+import org.hibernate.criterion.Order;
+
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulle;
+import com.inkubator.hrm.web.model.SelectionPositionPassedViewModel;
 
 /**
 *
@@ -16,5 +21,9 @@ public interface RecruitSelectionApplicantSchedulleDao extends IDAO<RecruitSelec
 	public Boolean isHireApplyAlreadyHaveSelectionSchedulle(Long hireApplyId);
 	
 	public RecruitSelectionApplicantSchedulle getEntityWithDetailByHireApplyId(Long hireApplyId);
+
+	public List<SelectionPositionPassedViewModel> getSelectionPositionPassedByParam(String parameter, int firstResults, int maxResults, Order orderable);
+	
+	public Long getTotalSelectionPositionPassedByParam(String parameter);
 
 }

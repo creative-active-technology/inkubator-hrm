@@ -45,10 +45,7 @@ public class BioDataDaoImpl extends IDAOImpl<BioData> implements BioDataDao {
         doSearchBioDataByParam(parameter, criteria);
         criteria.setFetchMode("religion", FetchMode.JOIN);
         criteria.setFetchMode("maritalStatus", FetchMode.JOIN);
-        
-        criteria.createAlias("religion", "religion", JoinType.INNER_JOIN);
-        criteria.createAlias("maritalStatus", "maritalStatus", JoinType.INNER_JOIN);
-        
+
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -69,7 +66,10 @@ public class BioDataDaoImpl extends IDAOImpl<BioData> implements BioDataDao {
 //            disjunction.add(Restrictions.like("firstName", parameter.getName(), MatchMode.ANYWHERE));
 //            disjunction.add(Restrictions.like("lastName", parameter.getName(), MatchMode.ANYWHERE));
 //            criteria.add(disjunction);
-            criteria.add(Restrictions.ilike("combineName", parameter.getName().toLowerCase(),MatchMode.ANYWHERE));
+
+            criteria.createAlias("religion", "religion", JoinType.INNER_JOIN);
+            criteria.createAlias("maritalStatus", "maritalStatus", JoinType.INNER_JOIN);
+            criteria.add(Restrictions.ilike("combineName", parameter.getName().toLowerCase(), MatchMode.ANYWHERE));
         }
 
         if (parameter.getEmailAddress() != null) {
@@ -184,5 +184,5 @@ public class BioDataDaoImpl extends IDAOImpl<BioData> implements BioDataDao {
         criteria.add(Restrictions.ne("id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
-    
+
 }

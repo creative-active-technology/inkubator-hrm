@@ -41,4 +41,7 @@ public interface RecruitmenSelectionSeriesDetailDao extends IDAO<RecruitmenSelec
 
     public List<RecruitmenSelectionSeriesDetail> getListBySelectionSeriesId(Long id);
 
+    public List<RecruitmenSelectionSeriesDetail>getAllWithLetterSpesific(Integer letterType);
+    public void saveAndMerge(RecruitmenSelectionSeriesDetail detail);
+    
 }
