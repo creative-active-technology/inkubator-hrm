@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">                    
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="biodata_ico.png" height="36" width="36" cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['recruitment.selection_stage_result']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['applicant_passed.selection_stage_result_from_recruitment']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                    <p:separator/>
+                    <p:growl id="growlId" globalOnly="true" showDetail="true" />
+
+                    <h:form id="formId">
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                    <p:inputText id="searchId" value="#{selectionApplicantPassedViewController.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{selectionApplicantPassedViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="4" >
+                                    <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Position"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{selectionApplicantPassedViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:focus for="searchId" />
+
+                        <p:dataTable  id="tableId" var="data"  value="#{selectionApplicantPassedViewController.lazyData}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['applicant_passed.list_position']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="#{data.positionName}"  style="width: 30%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['applicant_realization.applicant_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.positionName}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.candidateRequest}"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['applicant_passed.recruit']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.candidateRequest}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.candidatePassed}"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['applicant_passed.candidate_pass']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.candidatePassed}"/>
+                            </p:column>
+                            <p:column style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['applicant_passed.higher_average']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.avgMaxScore}"/>
+                            </p:column>
+                            <p:column style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['applicant_passed.lower_average']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.avgMinScore}"/>
+                            </p:column>
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                				 style="font-size: 10px!important" action="#{selectionApplicantPassedViewController.doDetail()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{selectionApplicantPassedViewController.selected}" />
+                                </p:commandButton>
+                            </p:column>                        
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{selectionApplicantPassedViewController.lazyData.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formId" trigger="tableId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>
+
