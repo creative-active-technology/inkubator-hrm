@@ -30,6 +30,7 @@ import com.inkubator.hrm.entity.RecruitSelectionType;
 import com.inkubator.hrm.entity.RecruitmenSelectionSeries;
 import com.inkubator.hrm.service.RecruitSelectionApplicantSchedulleService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.web.model.SelectionApplicantPassedViewModel;
 import com.inkubator.hrm.web.model.SelectionPositionPassedViewModel;
 
 /**
@@ -319,6 +320,21 @@ public class RecruitSelectionApplicantSchedulleServiceImpl extends IServiceImpl	
 		result = "success";
 		
 		return result;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<SelectionApplicantPassedViewModel> getSelectionApplicantPassedByParam(Long scheduleId, int firstResults,
+			int maxResults, Order orderable) throws Exception {
+
+		return recruitSelectionApplicantSchedulleDao.getSelectionApplicantPassedByParam(scheduleId, firstResults, maxResults, orderable);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalSelectionApplicantPassedByParam(Long scheduleId) throws Exception {
+		
+		return recruitSelectionApplicantSchedulleDao.getTotalSelectionApplicantPassedByParam(scheduleId);
 	}
 
 }

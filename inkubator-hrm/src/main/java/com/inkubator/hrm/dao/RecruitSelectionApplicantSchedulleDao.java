@@ -8,6 +8,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulle;
+import com.inkubator.hrm.web.model.SelectionApplicantPassedViewModel;
 import com.inkubator.hrm.web.model.SelectionPositionPassedViewModel;
 
 /**
@@ -21,5 +22,9 @@ public interface RecruitSelectionApplicantSchedulleDao extends IDAO<RecruitSelec
 	public List<SelectionPositionPassedViewModel> getSelectionPositionPassedByParam(String parameter, int firstResults, int maxResults, Order orderable);
 	
 	public Long getTotalSelectionPositionPassedByParam(String parameter);
+
+	public List<SelectionApplicantPassedViewModel> getSelectionApplicantPassedByParam(Long scheduleId, int firstResults, int maxResults, Order orderable);
+
+	public Long getTotalSelectionApplicantPassedByParam(Long scheduleId);
 
 }

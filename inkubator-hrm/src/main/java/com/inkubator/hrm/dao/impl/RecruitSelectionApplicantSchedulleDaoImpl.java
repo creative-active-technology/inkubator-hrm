@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDao;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulle;
+import com.inkubator.hrm.web.model.SelectionApplicantPassedViewModel;
 import com.inkubator.hrm.web.model.SelectionPositionPassedViewModel;
 
 /**
@@ -85,6 +86,61 @@ public class RecruitSelectionApplicantSchedulleDaoImpl extends IDAOImpl<RecruitS
     			+ "GROUP BY scheduleDetail.applicant_id "
     			+ ") AS temp "
     			+ "GROUP BY positionId ");				    	
+    	
+    	Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString());   
+    	
+    	BigInteger total = (BigInteger) hbm.uniqueResult();
+    	return total != null ? total.longValue() : 0L; 
+	}
+	
+	@Override
+	public List<SelectionApplicantPassedViewModel> getSelectionApplicantPassedByParam(Long scheduleId, int firstResults, int maxResults, Order orderable) {
+		
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT * "
+    			+ "FROM ( "
+    			+ "SELECT recruitApplicant.id AS applicantId "
+    			+ "ltrim(concat(concat(bioData.first_name, ' '), bioDatalast_name)) AS applicantName, "
+    			+ "recruitApplicant.career_candidate AS applicantCareerCandidate, "
+    			+ "CASE WHEN SUM(CASE WHEN scheduleRealization.id IS NULL OR scheduleRealization.status!='PASS' THEN 1 ELSE 0 END) = 0 THEN 'PASS' ELSE 'FAILED' END AS status, "
+    			+ "MAX(scheduleRealization.scoring_point) AS maxScore, "
+    			+ "MIN(scheduleRealization.scoring_point) AS minScore "
+    			+ "FROM recruit_selection_applicant_schedulle AS schedule "
+    			+ "LEFT JOIN recruit_selection_applicant_schedulle_detail AS scheduleDetail ON scheduleDetail.schedulle_id = schedule.id "
+    			+ "LEFT JOIN recruit_applicant AS recruitApplicant ON recruitApplicant.id = scheduleDetail.applicant_id "
+    			+ "LEFT JOIN bio_data AS bioData ON bioData.id = recruitApplicant.bio_data_id "
+    			+ "LEFT JOIN recruit_selection_applicant_schedulle_detail_realization AS scheduleRealization ON scheduleRealization.schedulle_detail_id = scheduleDetail.id "
+    			+ "WHERE schedule.id= " + scheduleId + " "
+    			+ "GROUP BY scheduleDetail.applicant_id "
+    			+ ") AS temp "
+    			+ "WHERE status = 'PASS' "
+    			+ "ORDER BY " + orderable);
+        
+    	Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString()).setMaxResults(maxResults).setFirstResult(firstResults)
+    			.setResultTransformer(Transformers.aliasToBean(SelectionApplicantPassedViewModel.class));
+    	return hbm.list(); 
+	}
+
+	@Override
+	public Long getTotalSelectionApplicantPassedByParam(Long scheduleId) {
+		StringBuffer selectQuery = new StringBuffer(
+    			"SELECT count(*) "
+    			+ "FROM ( "
+    	    	+ "SELECT recruitApplicant.id AS applicantId "
+    	    	+ "ltrim(concat(concat(bioData.first_name, ' '), bioDatalast_name)) AS applicantName, "
+    	    	+ "recruitApplicant.career_candidate AS applicantCareerCandidate, "
+    	    	+ "CASE WHEN SUM(CASE WHEN scheduleRealization.id IS NULL OR scheduleRealization.status!='PASS' THEN 1 ELSE 0 END) = 0 THEN 'PASS' ELSE 'FAILED' END AS status, "
+    	    	+ "MAX(scheduleRealization.scoring_point) AS maxScore, "
+    	    	+ "MIN(scheduleRealization.scoring_point) AS minScore "
+    	    	+ "FROM recruit_selection_applicant_schedulle AS schedule "
+    	    	+ "LEFT JOIN recruit_selection_applicant_schedulle_detail AS scheduleDetail ON scheduleDetail.schedulle_id = schedule.id "
+    	    	+ "LEFT JOIN recruit_applicant AS recruitApplicant ON recruitApplicant.id = scheduleDetail.applicant_id "
+    	    	+ "LEFT JOIN bio_data AS bioData ON bioData.id = recruitApplicant.bio_data_id "
+    	    	+ "LEFT JOIN recruit_selection_applicant_schedulle_detail_realization AS scheduleRealization ON scheduleRealization.schedulle_detail_id = scheduleDetail.id "
+    	    	+ "WHERE schedule.id= " + scheduleId + " "
+    	    	+ "GROUP BY scheduleDetail.applicant_id "
+    	    	+ ") AS temp "
+    	    	+ "WHERE status = 'PASS' ");				    	
     	
     	Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString());   
     	
