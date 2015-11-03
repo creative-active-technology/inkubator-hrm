@@ -57,4 +57,12 @@ public class RecruitSelectionApplicantSchedulleDetailRealizationDaoImpl extends 
 		return (RecruitSelectionApplicantSchedulleDetailRealization) criteria.uniqueResult();
 	}
 
+	@Override
+	public Boolean isSchedulleDetailHaveBeenRealized(Long recruitSelectionApplicantScheduleDetailId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("recruitSelectionApplicantSchedulleDetail", "schedulleDetail", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("schedulleDetail.id", recruitSelectionApplicantScheduleDetailId));
+		return !criteria.list().isEmpty();
+	}
+
 }

@@ -3,6 +3,7 @@ package com.inkubator.hrm.dao.impl;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +28,25 @@ public class RecruitSelectionApplicantSchedulleDaoImpl extends IDAOImpl<RecruitS
 	public RecruitSelectionApplicantSchedulle getEntityByPkWithDetail(Long id) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("id", id));
+		criteria.setFetchMode("selectionSeries", FetchMode.JOIN);
+		return (RecruitSelectionApplicantSchedulle) criteria.uniqueResult();
+	}
+
+	@Override
+	public Boolean isHireApplyAlreadyHaveSelectionSchedulle(Long hireApplyId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("hireApply", "hireApply", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("hireApply.id", hireApplyId));
+		return !criteria.list().isEmpty();
+	}
+
+	@Override
+	public RecruitSelectionApplicantSchedulle getEntityWithDetailByHireApplyId(Long hireApplyId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("hireApply", "hireApply", JoinType.INNER_JOIN);
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+		criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("hireApply.id", hireApplyId));
 		criteria.setFetchMode("selectionSeries", FetchMode.JOIN);
 		return (RecruitSelectionApplicantSchedulle) criteria.uniqueResult();
 	}

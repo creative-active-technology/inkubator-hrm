@@ -18,4 +18,6 @@ public interface RecruitSelectionApplicantSchedulleDetailRealizationService exte
 	
 	public void saveOrUpdate(List<SelectionApplicantSchedulleDetailRealizationModel> listModel) throws Exception;
 	
+	public Boolean isSchedulleDetailHaveBeenRealized(Long recruitSelectionApplicantScheduleDetailId) throws Exception;
+	
 }

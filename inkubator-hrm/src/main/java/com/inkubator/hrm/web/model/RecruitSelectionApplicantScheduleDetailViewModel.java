@@ -3,6 +3,8 @@ package com.inkubator.hrm.web.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.inkubator.hrm.entity.EmpData;
+
 /**
 *
 * @author Ahmad Mudzakkir Amal
@@ -13,8 +15,7 @@ public class RecruitSelectionApplicantScheduleDetailViewModel implements Seriali
 	private Long scheduleId;
 	private Long applicantId;
 	private String applicantName;
-	private Long empDataPicId;
-	private String empDataPicName;
+	private EmpData empDataPic;
 	private Date scheduleDate;
 	private Date scheduleStartTime;
 	private Date scheduleEndTime;
@@ -23,6 +24,7 @@ public class RecruitSelectionApplicantScheduleDetailViewModel implements Seriali
 	private Long selectionTypeId;
 	private String selectionTypeName;
 	private String candidateStatus;
+	private Boolean isHaveBeenRealized;
 	
 	public Long getId() {
 		return id;
@@ -48,20 +50,15 @@ public class RecruitSelectionApplicantScheduleDetailViewModel implements Seriali
 	public void setApplicantName(String applicantName) {
 		this.applicantName = applicantName;
 	}
-	public Long getEmpDataPicId() {
-		return empDataPicId;
-	}
-	public void setEmpDataPicId(Long empDataPicId) {
-		this.empDataPicId = empDataPicId;
-	}
-	public String getEmpDataPicName() {
-		return empDataPicName;
-	}
-	public void setEmpDataPicName(String empDataPicName) {
-		this.empDataPicName = empDataPicName;
-	}
+	
 	public Date getScheduleDate() {
 		return scheduleDate;
+	}
+	public EmpData getEmpDataPic() {
+		return empDataPic;
+	}
+	public void setEmpDataPic(EmpData empDataPic) {
+		this.empDataPic = empDataPic;
 	}
 	public void setScheduleDate(Date scheduleDate) {
 		this.scheduleDate = scheduleDate;
@@ -108,6 +105,14 @@ public class RecruitSelectionApplicantScheduleDetailViewModel implements Seriali
 	public void setCandidateStatus(String candidateStatus) {
 		this.candidateStatus = candidateStatus;
 	}
+	public Boolean getIsHaveBeenRealized() {
+		return isHaveBeenRealized;
+	}
+	public void setIsHaveBeenRealized(Boolean isHaveBeenRealized) {
+		this.isHaveBeenRealized = isHaveBeenRealized;
+	}
+	
+	
 	
 	
 }

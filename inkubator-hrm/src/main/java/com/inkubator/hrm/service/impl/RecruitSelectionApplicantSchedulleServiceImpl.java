@@ -307,4 +307,56 @@ public class RecruitSelectionApplicantSchedulleServiceImpl extends IServiceImpl	
 		return result;
 	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Boolean isHireApplyAlreadyHaveSelectionSchedulle(Long hireApplyId) throws Exception {
+		return recruitSelectionApplicantSchedulleDao.isHireApplyAlreadyHaveSelectionSchedulle(hireApplyId);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public RecruitSelectionApplicantSchedulle getEntityWithDetailByHireApplyId(Long hireApplyId) throws Exception {
+		return recruitSelectionApplicantSchedulleDao.getEntityWithDetailByHireApplyId(hireApplyId);
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public String updateData(RecruitSelectionApplicantSchedulle recruitSelectionchedulle, List<RecruitSelectionApplicantSchedulleDetail> listRecruitSelectionScheduleDetail) throws Exception {
+		
+		String result = "error";
+		String updateBy = HrmUserInfoUtil.getUserName();
+		Date updateOn = new Date(); 
+		
+		RecruitSelectionApplicantSchedulle recruitSheduleToUpdate = recruitSelectionApplicantSchedulleDao.getEntiyByPK(recruitSelectionchedulle.getId());
+		EmpData empData = empDataDao.getEntiyByPK(recruitSelectionchedulle.getEmpData().getId());
+		
+		recruitSheduleToUpdate.setEmpData(empData);
+		recruitSheduleToUpdate.setUpdatedBy(updateBy);
+		recruitSheduleToUpdate.setUpdatedOn(updateOn);
+		recruitSelectionApplicantSchedulleDao.update(recruitSheduleToUpdate);
+		
+		for(RecruitSelectionApplicantSchedulleDetail scheduleDetail : listRecruitSelectionScheduleDetail){
+			
+			RecruitSelectionApplicantSchedulleDetail scheduleDetailToUpdate = recruitSelectionApplicantSchedulleDetailDao.getEntiyByPK(scheduleDetail.getId());
+			EmpData empDataScheduleDetail = empDataDao.getEntiyByPK(scheduleDetail.getEmpData().getId());
+			
+			scheduleDetailToUpdate.setEmpData(empDataScheduleDetail);
+			scheduleDetailToUpdate.setNotes(scheduleDetail.getNotes());
+			scheduleDetailToUpdate.setRoom(scheduleDetail.getRoom());
+			scheduleDetailToUpdate.setSchdulleDate(scheduleDetail.getSchdulleDate());
+			scheduleDetailToUpdate.setSchdulleTimeStart(scheduleDetail.getSchdulleTimeStart());
+			scheduleDetailToUpdate.setSchedulleTimeEnd(scheduleDetail.getSchedulleTimeEnd());
+			scheduleDetailToUpdate.setSelectionListOrder(scheduleDetail.getSelectionListOrder());
+			scheduleDetailToUpdate.setUpdatedBy(updateBy);
+			scheduleDetailToUpdate.setUpdatedOn(updateOn);
+			
+			recruitSelectionApplicantSchedulleDetailDao.update(scheduleDetailToUpdate);
+			
+		}
+		
+		result = "success";
+		return result;
+		
+	}
+
 }
