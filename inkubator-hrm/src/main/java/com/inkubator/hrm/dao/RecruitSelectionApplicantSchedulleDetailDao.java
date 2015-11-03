@@ -15,5 +15,6 @@ public interface RecruitSelectionApplicantSchedulleDetailDao extends IDAO<Recrui
 
 	public List<RecruitSelectionApplicantSchedulleDetail> getAllDataByApplicantIdAndSelectionApplicantSchedulleId(
 			Long applicantId, Long selectionApplicantSchedulleId);
-
+	
+	public List<RecruitSelectionApplicantSchedulleDetail> getListByRecruitSelectionApplicantSchedulleId(Long recruitSelectionApplicantSchedulleId);
 }

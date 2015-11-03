@@ -16,4 +16,6 @@ public interface RecruitSelectionApplicantSchedulleDetailRealizationDao extends 
 
 	public RecruitSelectionApplicantSchedulleDetailRealization getEntityBySelectionApplicantSchedulleDetailId(Long selectionApplicantSchedulleDetailId);
 	
+	public Boolean isSchedulleDetailHaveBeenRealized(Long recruitSelectionApplicantScheduleDetailId);
+	
 }

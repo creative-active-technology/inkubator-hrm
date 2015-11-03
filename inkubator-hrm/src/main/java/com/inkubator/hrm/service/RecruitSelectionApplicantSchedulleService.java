@@ -27,5 +27,11 @@ public interface RecruitSelectionApplicantSchedulleService extends IService<Recr
 	public List<SelectionApplicantPassedViewModel> getSelectionApplicantPassedByParam(Long scheduleId, int firstResults, int maxResults, Order orderable) throws Exception;
 
 	public Long getTotalSelectionApplicantPassedByParam(Long scheduleId) throws Exception;
+	
+	public String updateData(RecruitSelectionApplicantSchedulle recruitSelectionchedulle, List<RecruitSelectionApplicantSchedulleDetail> listRecruitSelectionScheduleDetail) throws Exception;
+	
+	public Boolean isHireApplyAlreadyHaveSelectionSchedulle(Long hireApplyId) throws Exception;
+	
+	public RecruitSelectionApplicantSchedulle getEntityWithDetailByHireApplyId(Long hireApplyId) throws Exception;
 
 }

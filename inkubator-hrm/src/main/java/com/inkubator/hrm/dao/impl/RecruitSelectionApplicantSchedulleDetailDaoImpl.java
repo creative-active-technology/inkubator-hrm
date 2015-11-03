@@ -34,12 +34,27 @@ public class RecruitSelectionApplicantSchedulleDetailDaoImpl extends IDAOImpl<Re
 		
 		criteria.setFetchMode("empData", FetchMode.JOIN);
 		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+		criteria.setFetchMode("selectionType", FetchMode.JOIN);
 		
 		criteria.createAlias("applicant", "applicant", JoinType.INNER_JOIN);
 		criteria.createAlias("recruitSelectionApplicantSchedulle", "recruitSelectionApplicantSchedulle", JoinType.INNER_JOIN);
 		
 		criteria.add(Restrictions.eq("applicant.id", applicantId));
 		criteria.add(Restrictions.eq("recruitSelectionApplicantSchedulle.id", selectionApplicantSchedulleId));
+		return criteria.list();
+	}
+
+	@Override
+	public List<RecruitSelectionApplicantSchedulleDetail> getListByRecruitSelectionApplicantSchedulleId(Long recruitSelectionApplicantSchedulleId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		
+		criteria.setFetchMode("empData", FetchMode.JOIN);
+		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+		criteria.setFetchMode("applicant", FetchMode.JOIN);
+		criteria.setFetchMode("applicant.bioData", FetchMode.JOIN);
+		criteria.setFetchMode("selectionType", FetchMode.JOIN);
+		criteria.createAlias("recruitSelectionApplicantSchedulle", "recruitSelectionApplicantSchedulle", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("recruitSelectionApplicantSchedulle.id", recruitSelectionApplicantSchedulleId));
 		return criteria.list();
 	}
 

@@ -8,6 +8,7 @@ import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -39,6 +40,25 @@ public class RecruitSelectionApplicantSchedulleDaoImpl extends IDAOImpl<RecruitS
 		return (RecruitSelectionApplicantSchedulle) criteria.uniqueResult();
 	}
 
+	@Override
+	public Boolean isHireApplyAlreadyHaveSelectionSchedulle(Long hireApplyId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("hireApply", "hireApply", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("hireApply.id", hireApplyId));
+		return !criteria.list().isEmpty();
+	}
+
+	@Override
+	public RecruitSelectionApplicantSchedulle getEntityWithDetailByHireApplyId(Long hireApplyId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("hireApply", "hireApply", JoinType.INNER_JOIN);
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+		criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("hireApply.id", hireApplyId));
+		criteria.setFetchMode("selectionSeries", FetchMode.JOIN);
+		return (RecruitSelectionApplicantSchedulle) criteria.uniqueResult();
+	}
+	
 	@Override
 	public List<SelectionPositionPassedViewModel> getSelectionPositionPassedByParam(String parameter, int firstResults, int maxResults, Order orderable) {
 		

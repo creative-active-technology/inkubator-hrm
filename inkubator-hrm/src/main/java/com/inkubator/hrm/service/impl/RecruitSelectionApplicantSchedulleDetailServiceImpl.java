@@ -21,8 +21,7 @@ import com.inkubator.hrm.service.RecruitSelectionApplicantSchedulleDetailService
  */
 @Service(value = "recruitSelectionApplicantSchedulleDetailService")
 @Lazy
-public class RecruitSelectionApplicantSchedulleDetailServiceImpl extends IServiceImpl
-		implements RecruitSelectionApplicantSchedulleDetailService {
+public class RecruitSelectionApplicantSchedulleDetailServiceImpl extends IServiceImpl implements RecruitSelectionApplicantSchedulleDetailService {
 
 	@Autowired
 	private RecruitSelectionApplicantSchedulleDetailDao recruitSelectionApplicantSchedulleDetailDao;
@@ -233,9 +232,15 @@ public class RecruitSelectionApplicantSchedulleDetailServiceImpl extends IServic
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<RecruitSelectionApplicantSchedulleDetail> getAllDataByApplicantIdAndSelectionApplicantSchedulleId(
-			Long applicantId, Long selectionApplicantSchedulleId) {
+			Long applicantId, Long selectionApplicantSchedulleId) throws Exception {
 
 		return recruitSelectionApplicantSchedulleDetailDao.getAllDataByApplicantIdAndSelectionApplicantSchedulleId(applicantId, selectionApplicantSchedulleId);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RecruitSelectionApplicantSchedulleDetail> getListByRecruitSelectionApplicantSchedulleId(Long recruitSelectionApplicantSchedulleId) throws Exception {
+		return recruitSelectionApplicantSchedulleDetailDao.getListByRecruitSelectionApplicantSchedulleId(recruitSelectionApplicantSchedulleId);
 	}
 
 }

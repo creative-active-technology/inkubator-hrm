@@ -66,11 +66,13 @@
 	                                <p:outputLabel value="#{appmsg['recruitment_applicant.test_coordinator']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
+	                            	
 	                            	<p:autoComplete id="employeeId" title="#{appmsg['recruitment_applicant.test_coordinator']}" 
-                                                value="#{recruitScheduleSettingModel.empCoordinatorId}"
+                                                value="#{recruitScheduleSettingModel.empData}" 
                                                 completeMethod="#{recruitmentScheduleSettingFormController.doAutoCompleteEmployeeCoordinator}"                                                
                                                 var="empData"
-                                                itemValue="#{empData.id}"
+                                                itemValue="#{empData}"
+                                                converter="empDataConverter"
                                                 itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
                                                 required="true" styleClass="isitext_hrm" size="46">
                                     	<!-- <p:ajax event="itemSelect" listener="#{businessTravelFormController.doResetTravelComponentList(flowRequestContext)}" /> -->
@@ -81,18 +83,20 @@
 	                        
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="selectionSeriesId" value="#{appmsg['recruitSelectionSeriesView.recruit_selection_series']}" styleClass="label_hrm"/>
+	                                <p:outputLabel  value="#{appmsg['recruitSelectionSeriesView.recruit_selection_series']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                                <p:selectOneMenu id="selectionSeriesId" styleClass="isitext_hrm" required="true"  value="#{recruitScheduleSettingModel.selectionSeriesId}" style="width:290px;">
+	                            
+	                                <p:selectOneMenu id="selectionSeriesId" rendered="#{not recruitScheduleSettingModel.isAlreadyHaveSelectionScheduleSeries}" styleClass="isitext_hrm" required="true"  value="#{recruitScheduleSettingModel.selectionSeriesId}" style="width:290px;">
 	                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                    <f:selectItems value="#{listRecruitSelectionSeries}" var="selectionSeries" itemValue="#{selectionSeries.id}" itemLabel="#{selectionSeries.name}"/>
 	                                    <!-- <p:ajax listener="#{businessTravelFormController.doResetTravelComponentList(flowRequestContext)}" /> -->
 	                                </p:selectOneMenu>
-	                                <p:message for="selectionSeriesId"/>
+	                                <p:message  rendered="#{not recruitScheduleSettingModel.isAlreadyHaveSelectionScheduleSeries}" for="selectionSeriesId"/>
+	                                
+	                                <p:outputLabel rendered="#{recruitScheduleSettingModel.isAlreadyHaveSelectionScheduleSeries}" value="#{recruitScheduleSettingModel.selectionSeriesName}" styleClass="label_hrm"  />
 	                            </p:column>
 	                        </p:row>
-	                       
 	                                             	                             
 	                 	</p:panelGrid>	                    
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
@@ -100,12 +104,11 @@
 	                    	<p:commandButton value="#{appmsg['global.next']}" label="#{appmsg['global.next']}" title="#{appmsg['global.next']}" 
 	                    					 icon="ui-icon-arrow-1-e" styleClass="isitext_hrm" style="margin-right: 5px" 
 	                    					 ajax="true" action="next" update="formRecruitSelectionScheduleId"/>
-	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formRecruitSelectionScheduleId" action="#{recruitmentScheduleSettingFormController.doResetRecruitmentSchduleForm(flowRequestContext)}"
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formRecruitSelectionScheduleId" action="#{recruitmentScheduleSettingFormController.doResetRecruitmentScheduleForm(flowRequestContext)}"
                                                  icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
 	                            <p:resetInput target="formRecruitSelectionScheduleId" />  
 	                        </p:commandButton>
-	                        <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" icon="ui-icon-contact" 
-	                        				 action="end" immediate="true"/>
+	                        <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" icon="ui-icon-contact"  action="end" immediate="true"/>
 	                    </div>
                     </div>
                 </h:form>

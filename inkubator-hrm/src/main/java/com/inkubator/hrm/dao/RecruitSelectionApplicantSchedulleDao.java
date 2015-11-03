@@ -19,6 +19,10 @@ public interface RecruitSelectionApplicantSchedulleDao extends IDAO<RecruitSelec
 
 	public RecruitSelectionApplicantSchedulle getEntityByPkWithDetail(Long id);
 	
+	public Boolean isHireApplyAlreadyHaveSelectionSchedulle(Long hireApplyId);
+	
+	public RecruitSelectionApplicantSchedulle getEntityWithDetailByHireApplyId(Long hireApplyId);
+
 	public List<SelectionPositionPassedViewModel> getSelectionPositionPassedByParam(String parameter, int firstResults, int maxResults, Order orderable);
 	
 	public Long getTotalSelectionPositionPassedByParam(String parameter);

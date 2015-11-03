@@ -75,9 +75,9 @@
 	                                <p:outputLabel value="#{appmsg['recruitment_applicant.test_coordinator']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{recruitScheduleSettingModel.empCoordinatorNik}" />
+	                            	<p:outputLabel value="#{recruitScheduleSettingModel.empData.nik}" />
 	                            	-
-	                            	<p:outputLabel value="#{recruitScheduleSettingModel.empCoordinatorFullName}" />
+	                            	<p:outputLabel value="#{recruitScheduleSettingModel.empData.bioData.fullName}" />
 	                            </p:column>
 	                        </p:row>
 	                         <p:row>
@@ -121,15 +121,16 @@
 	                                <f:facet name="header">  
 	                                    <h:outputText value="#{appmsg['recruitment.pic']}"/>
 	                                </f:facet>
-	                                <p:autoComplete  title="#{appmsg['recruitment_applicant.test_coordinator']}" 
-                                                value="#{data.empDataPicId}"
+	                                <p:autoComplete  title="#{appmsg['recruitment_applicant.test_coordinator']}" rendered="#{not data.isHaveBeenRealized}"
+                                                value="#{data.empDataPic}"
                                                 completeMethod="#{recruitmentScheduleSettingFormController.doAutoCompleteEmployeeCoordinator}"                                                
                                                 var="empData"
-                                                itemValue="#{empData.id}"
+                                                itemValue="#{empData}"
                                                 itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                converter="empDataConverter"
                                                 required="true" styleClass="isitext_hrm" >
-                                    	<!-- <p:ajax event="itemSelect" listener="#{businessTravelFormController.doResetTravelComponentList(flowRequestContext)}" /> -->
                                     </p:autoComplete>
+                                    <h:outputLabel value="#{data.empDataPic.nik} - #{data.empDataPic.bioData.fullName}" rendered="#{data.isHaveBeenRealized}" />
 	                            </p:column>
 	                            
 	                            <p:column style="text-align: center;width: 15%">
@@ -137,8 +138,11 @@
 	                                    <h:outputText value="#{appmsg['applicant_realization.execution_date']}"/>
 	                                </f:facet>
 	                                <p:calendar pattern="dd MMMM yyyy" label="#{appmsg['applicant_realization.execution_date']}" value="#{data.scheduleDate}"
-                                                 required="true" navigator="true" >
+                                                 required="true" navigator="true" rendered="#{not data.isHaveBeenRealized}" >
                                     </p:calendar>
+                                    <h:outputLabel value="#{data.scheduleDate}" rendered="#{data.isHaveBeenRealized}" >
+                                    	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </h:outputLabel>
 	                            </p:column>
 	                             
                                  <p:column style="text-align: center;width: 17%">
@@ -146,9 +150,15 @@
 	                                    <h:outputText value="#{appmsg['applicant_realization.execution_time']}"/>
 	                                </f:facet>
 	                                 <div>
-	                                	<pe:timePicker mode="popup" value="#{data.scheduleStartTime}" label="#{appmsg['applicant_realization.execution_time']}"  styleClass="isitext_hrm"  required="true"/>
+	                                	<pe:timePicker rendered="#{not data.isHaveBeenRealized}" mode="popup" value="#{data.scheduleStartTime}" label="#{appmsg['applicant_realization.execution_time']}"  styleClass="isitext_hrm"  required="true"/>
+	                                	 <h:outputLabel value="#{data.scheduleStartTime}" rendered="#{data.isHaveBeenRealized}" >
+                                    		<f:convertDateTime pattern="HH:mm" />
+                                    	</h:outputLabel>
                                     	<p:outputLabel style="margin-left: 5px;margin-right: 5px" value="#{appmsg['global.to']}" />
-	                               		<pe:timePicker  mode="popup" value="#{data.scheduleEndTime}" label="#{appmsg['applicant_realization.execution_time']}"  styleClass="isitext_hrm"  required="true"/>
+                                    	<h:outputLabel value="#{data.scheduleEndTime}" rendered="#{data.isHaveBeenRealized}" >
+                                    		<f:convertDateTime pattern="HH:mm" />
+                                    	</h:outputLabel>
+	                               		<pe:timePicker rendered="#{not data.isHaveBeenRealized}"  mode="popup" value="#{data.scheduleEndTime}" label="#{appmsg['applicant_realization.execution_time']}"  styleClass="isitext_hrm"  required="true"/>
 	                                </div>
 	                            </p:column>
 	                            
@@ -156,14 +166,16 @@
 	                                <f:facet name="header">  
 	                                    <h:outputText value="#{appmsg['applicant_realization.room']}"/>
 	                                </f:facet>
-	                               	<p:inputText value="#{data.room}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['applicant_realization.room']}" required="true"   />
+	                               	<p:inputText rendered="#{not data.isHaveBeenRealized}" value="#{data.room}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['applicant_realization.room']}" required="true"   />
+	                               	<h:outputLabel value="#{data.room}" rendered="#{data.isHaveBeenRealized}" />
                                  </p:column>
                                  <p:column style="text-align: center;width: 20%">
 	                              <f:facet name="header">  
 	                                  <h:outputText value="#{appmsg['applicationInformation.note']}"/>
 	                              </f:facet>
-                                 <p:inputTextarea  rows="2"   maxlength="225" value="#{data.notes}" autoResize="true" required="false"
+                                  <p:inputTextarea rendered="#{not data.isHaveBeenRealized}"  rows="2"   maxlength="225" value="#{data.notes}" autoResize="true" required="false"
                                       label="#{appmsg['applicationInformation.note']}" title="#{appmsg['applicationInformation.note']}" />
+                                  <h:outputLabel value="#{data.notes}" rendered="#{data.isHaveBeenRealized}" />
                                  </p:column>
 	                    	</p:dataTable>
                             </p:tab>
