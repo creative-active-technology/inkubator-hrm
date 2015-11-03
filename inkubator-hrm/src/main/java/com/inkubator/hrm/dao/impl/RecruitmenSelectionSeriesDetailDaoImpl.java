@@ -6,6 +6,7 @@
 package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.RecruitmenSelectionSeriesDetailDao;
 import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetail;
@@ -106,29 +107,50 @@ public class RecruitmenSelectionSeriesDetailDaoImpl extends IDAOImpl<RecruitmenS
         return criteria.list();
     }
 
-	@Override
-	public RecruitmenSelectionSeriesDetail getEntityByRecruitSelectionTypeAndRecruitmenSelectionSeries(
-			Long recruitSelectionType, Long recruitSelectionSeries) {
-		
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.createAlias("recruitSelectionType", "recruitSelectionType", JoinType.INNER_JOIN);
-		criteria.createAlias("recruitmenSelectionSeries", "recruitmenSelectionSeries", JoinType.INNER_JOIN);
+    @Override
+    public RecruitmenSelectionSeriesDetail getEntityByRecruitSelectionTypeAndRecruitmenSelectionSeries(
+            Long recruitSelectionType, Long recruitSelectionSeries) {
+
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("recruitSelectionType", "recruitSelectionType", JoinType.INNER_JOIN);
+        criteria.createAlias("recruitmenSelectionSeries", "recruitmenSelectionSeries", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("recruitSelectionType.id", recruitSelectionType));
         criteria.add(Restrictions.eq("recruitmenSelectionSeries.id", recruitSelectionSeries));
         return (RecruitmenSelectionSeriesDetail) criteria.uniqueResult();
-	}
+    }
 
     @Override
     public List<RecruitmenSelectionSeriesDetail> getAllByRecruitRecruitSelectionTypeId(long id) {
-          Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-          criteria.createAlias("recruitSelectionType", "rs", JoinType.INNER_JOIN);
-          criteria.add(Restrictions.eq("rs.id", id));
-          return criteria.list();
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("recruitSelectionType", "rs", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("rs.id", id));
+        return criteria.list();
     }
 
     @Override
     public List<RecruitmenSelectionSeriesDetail> getEntityBySelectionSeriesId(Long id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void saveAndMerge(RecruitmenSelectionSeriesDetail detail) {
+        getCurrentSession().update(detail);
+        getCurrentSession().flush();
+    }
+
+    @Override
+    public List<RecruitmenSelectionSeriesDetail> getAllWithLetterSpesific(Integer letterType) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        if (letterType.equals(HRMConstant.LETTER_TYPE_OFFERING)) {
+            criteria.createAlias("recruitLettersByAcceptLetterId", "ra");
+            criteria.add(Restrictions.eq("ra.leterTypeId", letterType));
+        }
+        if (letterType.equals(HRMConstant.LETTER_TYPE_REJECT)) {
+            criteria.createAlias("recruitLettersByRejectLetterId", "rj");
+            criteria.add(Restrictions.eq("rj.leterTypeId", letterType));
+        }
+
+        return criteria.list();
     }
 
 }

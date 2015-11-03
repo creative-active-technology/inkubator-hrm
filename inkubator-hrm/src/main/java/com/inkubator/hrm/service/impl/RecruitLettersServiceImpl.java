@@ -82,23 +82,16 @@ public class RecruitLettersServiceImpl extends IServiceImpl implements RecruitLe
 
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
-        RecruitLetters res = recruitLettersDao.sanvAndFlus(entity);
-        RecruitLetters resSave = recruitLettersDao.getEntiyByPK(res.getId());
-
+        recruitLettersDao.save(entity);
         List<RecruitSelectionType> recruitSelectionTypes = new ArrayList<>();
-        Set<RecruitLetterSelection> recruitLetterSelections = resSave.getRecruitLetterSelections();
+        Set<RecruitLetterSelection> recruitLetterSelections = entity.getRecruitLetterSelections();
         for (RecruitLetterSelection recruitLetterSelection : recruitLetterSelections) {
             recruitSelectionTypes.add(recruitLetterSelection.getRecruitSelectionType());
         }
-        System.out.println(" Ukuran nya " + recruitSelectionTypes.size());
+
         for (RecruitSelectionType recruitSelectionType : recruitSelectionTypes) {
-            System.out.println(" Ukuran nya " + recruitSelectionTypes.size());
             List<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetails = recruitmenSelectionSeriesDetailDao.getAllByRecruitRecruitSelectionTypeId(recruitSelectionType.getId());
             for (RecruitmenSelectionSeriesDetail recruitmenSelectionSeriesDetail : recruitmenSelectionSeriesDetails) {
-                System.out.println("  sdfsdfsdfsdfsdfdsfdsf "+recruitmenSelectionSeriesDetail.getId().getSelectionTypeId());
-//                recruitmenSelectionSeriesDetail.setRecruitLettersByAcceptLetterId(new RecruitLetters());
-//                recruitmenSelectionSeriesDetail.setRecruitLettersByRejectLetterId(new RecruitLetters());
-//                recruitmenSelectionSeriesDetailDao.update(recruitmenSelectionSeriesDetail);
                 if (entity.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_REJECT)) {
                     recruitmenSelectionSeriesDetail.setRecruitLettersByRejectLetterId(entity);
                     recruitmenSelectionSeriesDetail.setUpdatedBy(new Date());
@@ -373,6 +366,39 @@ public class RecruitLettersServiceImpl extends IServiceImpl implements RecruitLe
                 }
             }
         }
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void doDistributionRescruitLetter(RecruitLetters letters) throws Exception {
+
+        List<RecruitmenSelectionSeriesDetail> dataToSetNull = recruitmenSelectionSeriesDetailDao.getAllWithLetterSpesific(letters.getLeterTypeId());
+        System.out.println(" Ukuran nya yang akan di delete adalah " + dataToSetNull.size());
+        System.out.println(" Jenis Suratnya " + letters.getLeterTypeId());
+        for (RecruitmenSelectionSeriesDetail dataToSetNull1 : dataToSetNull) {
+            if (letters.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_OFFERING)) {
+                dataToSetNull1.setRecruitLettersByAcceptLetterId(null);
+            }
+            if (letters.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_REJECT)) {
+                dataToSetNull1.setRecruitLettersByRejectLetterId(null);
+            }
+
+            recruitmenSelectionSeriesDetailDao.update(dataToSetNull1);
+        }
+        List<RecruitSelectionType> data = letters.getRecruitSelectionTypes();
+        for (RecruitSelectionType recruitSelectionType : data) {
+            List<RecruitmenSelectionSeriesDetail> dataToSave = recruitmenSelectionSeriesDetailDao.getAllByRecruitRecruitSelectionTypeId(recruitSelectionType.getId());
+            for (RecruitmenSelectionSeriesDetail dataToSave1 : dataToSave) {
+                if (letters.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_OFFERING)) {
+                    dataToSave1.setRecruitLettersByAcceptLetterId(letters);
+                }
+                if (letters.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_REJECT)) {
+                    dataToSave1.setRecruitLettersByRejectLetterId(letters);
+                }
+                recruitmenSelectionSeriesDetailDao.save(dataToSave1);
+            }
+        }
+
     }
 
 }

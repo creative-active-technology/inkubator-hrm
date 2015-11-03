@@ -131,4 +131,14 @@ public class RecruitSelectionApplicantInitialDaoImpl extends IDAOImpl<RecruitSel
 	    	}    	
 	    	return hbm;
 	    }
+
+		@Override
+		public List<RecruitSelectionApplicantInitial> getListByRecruitHireApplyId(Long recruitHireApplyId) {
+			Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+	        criteria.createAlias("recruitHireApply", "recruitHireApply", JoinType.INNER_JOIN);
+			criteria.createAlias("recruitApplicant", "recruitApplicant", JoinType.INNER_JOIN);
+	        criteria.createAlias("recruitApplicant.bioData", "bioData", JoinType.INNER_JOIN);
+	        criteria.add(Restrictions.eq("recruitHireApply.id", recruitHireApplyId));
+	        return criteria.list();
+		}
 }

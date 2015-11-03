@@ -25,4 +25,6 @@ public interface RecruitSelectionApplicantInitialDao extends IDAO<RecruitSelecti
 			int firstResult, int maxResults, Order orderable);
     
     public Long getTotalByParamforRecruitmentScheduleSetting(RecruitmentScheduleSettingSearchParameter searchParameter);
+    
+    public List<RecruitSelectionApplicantInitial> getListByRecruitHireApplyId(Long recruitHireApplyId);
 }
