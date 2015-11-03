@@ -19,36 +19,37 @@ import com.inkubator.hrm.web.search.AccessHistorySearchParameter;
 
 @Repository(value = "accessHistoryDao")
 @Lazy
-public class AccessHistoryDaoImpl extends IDAOImpl<RiwayatAkses> implements AccessHistoryDao{
-	
-	@Override
-	public Class<RiwayatAkses> getEntityClass() {
-		return RiwayatAkses.class;
-	}
+public class AccessHistoryDaoImpl extends IDAOImpl<RiwayatAkses> implements AccessHistoryDao {
 
-	@Override
-	public List<RiwayatAkses> getByParam(AccessHistorySearchParameter searchParameter, int firstResult, int maxResults,
-			Order order) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		doSearch(searchParameter, criteria);
-		criteria.addOrder(order);
-		criteria.setFirstResult(firstResult);
-		criteria.setMaxResults(maxResults);
-		criteria.setFetchMode("hrmMenu", FetchMode.JOIN);
-		return criteria.list();
-	}
+    @Override
+    public Class<RiwayatAkses> getEntityClass() {
+        return RiwayatAkses.class;
+    }
 
-	@Override
-	public Long getTotalByParam(AccessHistorySearchParameter searchParameter) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		doSearch(searchParameter, criteria);
-		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-	}
-	
-	private void doSearch(AccessHistorySearchParameter searchParameter, Criteria criteria){
-		if(searchParameter.getUserId()!= null){
-            criteria.add(Restrictions.like("userId", searchParameter.getUserId(), MatchMode.START));
+    @Override
+    public List<RiwayatAkses> getByParam(AccessHistorySearchParameter searchParameter, int firstResult, int maxResults,
+            Order order) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearch(searchParameter, criteria);
+        criteria.addOrder(order);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+//        criteria.setFetchMode("hrmMenu", FetchMode.JOIN);
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalByParam(AccessHistorySearchParameter searchParameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearch(searchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    private void doSearch(AccessHistorySearchParameter searchParameter, Criteria criteria) {
+        criteria.createAlias("hrmMenu", "hr",JoinType.LEFT_OUTER_JOIN);
+        if (searchParameter.getUserId() != null) {
+            criteria.add(Restrictions.like("userId", searchParameter.getUserId(), MatchMode.ANYWHERE));
         }
-		criteria.add(Restrictions.isNotNull("id"));
-	}
+        criteria.add(Restrictions.isNotNull("id"));
+    }
 }
