@@ -39,7 +39,7 @@ public class SelectionApplicantPassedLazyDataModel extends LazyDataModel<Selecti
 	        if (sortField != null) {
 	            orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
 	        } else {
-	        	orderable = Order.desc("positionName");
+	        	orderable = Order.desc("applicantName");
 	        }
 	        
 	        list = recruitSelectionApplicantSchedulleService.getSelectionApplicantPassedByParam(scheduleId, first, pageSize, orderable);

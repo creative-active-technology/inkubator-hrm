@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
@@ -34,6 +35,8 @@ public class RecruitSelectionApplicantSchedulleDetailRealizationDaoImpl extends 
 		
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		
+		criteria.setFetchMode("recruitSelectionApplicantSchedulleDetail", FetchMode.JOIN);
+		criteria.setFetchMode("recruitSelectionApplicantSchedulleDetail.selectionType", FetchMode.JOIN);
 		criteria.setFetchMode("scoringByEmpData", FetchMode.JOIN);
 		criteria.setFetchMode("scoringByEmpData.bioData", FetchMode.JOIN);
 		
@@ -43,6 +46,8 @@ public class RecruitSelectionApplicantSchedulleDetailRealizationDaoImpl extends 
 		
 		criteria.add(Restrictions.eq("applicant.id", applicantId));
 		criteria.add(Restrictions.eq("recruitSelectionApplicantSchedulle.id", selectionApplicantSchedulleId));
+		
+		criteria.addOrder(Order.asc("recruitSelectionApplicantSchedulleDetail.selectionListOrder"));
 		return criteria.list();
 	}
 
@@ -63,6 +68,23 @@ public class RecruitSelectionApplicantSchedulleDetailRealizationDaoImpl extends 
 		criteria.createAlias("recruitSelectionApplicantSchedulleDetail", "schedulleDetail", JoinType.INNER_JOIN);
 		criteria.add(Restrictions.eq("schedulleDetail.id", recruitSelectionApplicantScheduleDetailId));
 		return !criteria.list().isEmpty();
+	}
+
+	@Override
+	public List<RecruitSelectionApplicantSchedulleDetailRealization> getAllDataByApplicantIdAndSelectionApplicantSchedulleIdAndScore(
+			Long applicantId, Long selectionApplicantSchedulleId, Double score) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+				
+		criteria.createAlias("recruitSelectionApplicantSchedulleDetail", "recruitSelectionApplicantSchedulleDetail", JoinType.INNER_JOIN);
+		criteria.createAlias("recruitSelectionApplicantSchedulleDetail.applicant", "applicant", JoinType.INNER_JOIN);
+		criteria.createAlias("recruitSelectionApplicantSchedulleDetail.recruitSelectionApplicantSchedulle", "recruitSelectionApplicantSchedulle", JoinType.INNER_JOIN);
+		
+		criteria.add(Restrictions.eq("applicant.id", applicantId));
+		criteria.add(Restrictions.eq("recruitSelectionApplicantSchedulle.id", selectionApplicantSchedulleId));
+		criteria.add(Restrictions.eq("scoringPoint", score));
+		
+		criteria.addOrder(Order.asc("recruitSelectionApplicantSchedulleDetail.selectionListOrder"));
+		return criteria.list();
 	}
 
 }

@@ -48,7 +48,7 @@ public class SelectionApplicantPassedViewController extends BaseController {
     }
     
     public String doDetail() {
-    	return "/protected/recruitment/selection_applicant_passed_detail.htm?faces-redirect=true&execution=e" + selected.getPositionId();
+    	return "/protected/recruitment/selection_applicant_passed_form.htm?faces-redirect=true&execution=e" + selected.getScheduleId();
     }
 
 	public String getParameter() {

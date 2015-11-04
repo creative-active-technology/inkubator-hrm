@@ -10,6 +10,7 @@ import java.math.RoundingMode;
  * @author rizkykojek
  */
 public class SelectionPositionPassedViewModel implements Serializable {
+	private BigInteger scheduleId;
 	private BigInteger positionId;
 	private String positionName;
 	private Integer candidateRequest;
@@ -19,6 +20,12 @@ public class SelectionPositionPassedViewModel implements Serializable {
 	private Double totalMaxScore;
 	private Double totalMinScore;
 	
+	public BigInteger getScheduleId() {
+		return scheduleId;
+	}
+	public void setScheduleId(BigInteger scheduleId) {
+		this.scheduleId = scheduleId;
+	}
 	public BigInteger getPositionId() {
 		return positionId;
 	}

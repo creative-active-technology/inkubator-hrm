@@ -11,8 +11,9 @@ import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulleDetailRealizat
  */
 public interface RecruitSelectionApplicantSchedulleDetailRealizationDao extends IDAO<RecruitSelectionApplicantSchedulleDetailRealization> {
 
-	public List<RecruitSelectionApplicantSchedulleDetailRealization> getAllDataByApplicantIdAndSelectionApplicantSchedulleId(
-			Long applicantId, Long selectionApplicantSchedulleId);
+	public List<RecruitSelectionApplicantSchedulleDetailRealization> getAllDataByApplicantIdAndSelectionApplicantSchedulleId(Long applicantId, Long selectionApplicantSchedulleId);
+	
+	public List<RecruitSelectionApplicantSchedulleDetailRealization> getAllDataByApplicantIdAndSelectionApplicantSchedulleIdAndScore(Long applicantId, Long selectionApplicantSchedulleId, Double score);
 
 	public RecruitSelectionApplicantSchedulleDetailRealization getEntityBySelectionApplicantSchedulleDetailId(Long selectionApplicantSchedulleDetailId);
 	

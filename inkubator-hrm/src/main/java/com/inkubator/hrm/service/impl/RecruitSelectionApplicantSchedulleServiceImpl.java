@@ -18,14 +18,15 @@ import com.inkubator.hrm.dao.RecruitApplicantDao;
 import com.inkubator.hrm.dao.RecruitHireApplyDao;
 import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDao;
 import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDetailDao;
+import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDetailRealizationDao;
 import com.inkubator.hrm.dao.RecruitSelectionTypeDao;
 import com.inkubator.hrm.dao.RecruitmenSelectionSeriesDao;
-import com.inkubator.hrm.dao.RecruitmenSelectionSeriesDetailDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.entity.RecruitHireApply;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulle;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulleDetail;
+import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulleDetailRealization;
 import com.inkubator.hrm.entity.RecruitSelectionType;
 import com.inkubator.hrm.entity.RecruitmenSelectionSeries;
 import com.inkubator.hrm.service.RecruitSelectionApplicantSchedulleService;
@@ -52,11 +53,11 @@ public class RecruitSelectionApplicantSchedulleServiceImpl extends IServiceImpl	
 	@Autowired
 	private RecruitmenSelectionSeriesDao recruitmenSelectionSeriesDao;
 	@Autowired
-	private RecruitmenSelectionSeriesDetailDao recruitmenSelectionSeriesDetailDao;
-	@Autowired
 	private RecruitApplicantDao recruitApplicantDao;
 	@Autowired
 	private RecruitSelectionTypeDao recruitSelectionTypeDao;
+	@Autowired
+	private RecruitSelectionApplicantSchedulleDetailRealizationDao recruitSelectionApplicantSchedulleDetailRealizationDao;
 	
 	@Override
 	public RecruitSelectionApplicantSchedulle getEntiyByPK(String id) throws Exception {
@@ -324,16 +325,43 @@ public class RecruitSelectionApplicantSchedulleServiceImpl extends IServiceImpl	
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<SelectionApplicantPassedViewModel> getSelectionApplicantPassedByParam(Long scheduleId, int firstResults,
-			int maxResults, Order orderable) throws Exception {
-
-		return recruitSelectionApplicantSchedulleDao.getSelectionApplicantPassedByParam(scheduleId, firstResults, maxResults, orderable);
+	public List<SelectionApplicantPassedViewModel> getSelectionApplicantPassedByParam(Long scheduleId, int firstResults, int maxResults, Order orderable) throws Exception {
+		StringBuffer selectionTypeOfMaxScore = new StringBuffer();
+		StringBuffer selectionTypeOfMinScore = new StringBuffer();
+		
+		List<SelectionApplicantPassedViewModel> listViewModel = recruitSelectionApplicantSchedulleDao.getSelectionApplicantPassedByParam(scheduleId, firstResults, maxResults, orderable);
+		for(SelectionApplicantPassedViewModel model : listViewModel) {
+			/** looping untuk mendapatkan nama proses rangkaian seleksi yang mempunyai nilai yang sama */
+			List<RecruitSelectionApplicantSchedulleDetailRealization> listMaxScore = recruitSelectionApplicantSchedulleDetailRealizationDao.getAllDataByApplicantIdAndSelectionApplicantSchedulleIdAndScore(model.getApplicantId().longValue(), scheduleId, model.getMaxScore());
+			List<RecruitSelectionApplicantSchedulleDetailRealization> listMinScore = recruitSelectionApplicantSchedulleDetailRealizationDao.getAllDataByApplicantIdAndSelectionApplicantSchedulleIdAndScore(model.getApplicantId().longValue(), scheduleId, model.getMinScore());
+			
+			selectionTypeOfMaxScore.setLength(0);
+			selectionTypeOfMinScore.setLength(0);
+			
+			for(RecruitSelectionApplicantSchedulleDetailRealization realization : listMaxScore){
+				if(selectionTypeOfMaxScore.length() > 0){
+					selectionTypeOfMaxScore.append(", ");
+				}
+				selectionTypeOfMaxScore.append(realization.getRecruitSelectionApplicantSchedulleDetail().getSelectionType().getName());				
+			}
+			
+			for(RecruitSelectionApplicantSchedulleDetailRealization realization : listMinScore){
+				if(selectionTypeOfMinScore.length() > 0){
+					selectionTypeOfMinScore.append(", ");
+				}
+				selectionTypeOfMinScore.append(realization.getRecruitSelectionApplicantSchedulleDetail().getSelectionType().getName());				
+			}
+			
+			model.setSelectionTypeOfMaxScore(selectionTypeOfMaxScore.toString());
+			model.setSelectionTypeOfMinScore(selectionTypeOfMinScore.toString());
+		}
+		
+		return listViewModel;
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalSelectionApplicantPassedByParam(Long scheduleId) throws Exception {
-		
+	public Long getTotalSelectionApplicantPassedByParam(Long scheduleId) throws Exception {		
 		return recruitSelectionApplicantSchedulleDao.getTotalSelectionApplicantPassedByParam(scheduleId);
 	}
 

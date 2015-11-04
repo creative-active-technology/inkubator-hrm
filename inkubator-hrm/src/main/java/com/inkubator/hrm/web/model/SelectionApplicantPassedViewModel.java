@@ -13,6 +13,8 @@ public class SelectionApplicantPassedViewModel implements Serializable {
 	private Integer applicantCareerCandidate;
 	private Double maxScore;
 	private Double minScore;
+	private String selectionTypeOfMaxScore;
+	private String selectionTypeOfMinScore;
 	
 	public BigInteger getApplicantId() {
 		return applicantId;
@@ -44,5 +46,17 @@ public class SelectionApplicantPassedViewModel implements Serializable {
 	public void setMinScore(Double minScore) {
 		this.minScore = minScore;
 	}
-	
+	public String getSelectionTypeOfMaxScore() {
+		return selectionTypeOfMaxScore;
+	}
+	public void setSelectionTypeOfMaxScore(String selectionTypeOfMaxScore) {
+		this.selectionTypeOfMaxScore = selectionTypeOfMaxScore;
+	}
+	public String getSelectionTypeOfMinScore() {
+		return selectionTypeOfMinScore;
+	}
+	public void setSelectionTypeOfMinScore(String selectionTypeOfMinScore) {
+		this.selectionTypeOfMinScore = selectionTypeOfMinScore;
+	}
+		
 }

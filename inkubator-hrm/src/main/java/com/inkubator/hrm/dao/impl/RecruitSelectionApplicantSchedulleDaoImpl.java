@@ -37,6 +37,9 @@ public class RecruitSelectionApplicantSchedulleDaoImpl extends IDAOImpl<RecruitS
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("id", id));
 		criteria.setFetchMode("selectionSeries", FetchMode.JOIN);
+		criteria.setFetchMode("hireApply", FetchMode.JOIN);
+		criteria.setFetchMode("hireApply.jabatan", FetchMode.JOIN);
+		criteria.setFetchMode("hireApply.recruitMppPeriod", FetchMode.JOIN); 
 		return (RecruitSelectionApplicantSchedulle) criteria.uniqueResult();
 	}
 
@@ -63,12 +66,12 @@ public class RecruitSelectionApplicantSchedulleDaoImpl extends IDAOImpl<RecruitS
 	public List<SelectionPositionPassedViewModel> getSelectionPositionPassedByParam(String parameter, int firstResults, int maxResults, Order orderable) {
 		
 		StringBuffer selectQuery = new StringBuffer(
-    			"SELECT positionId, positionName, candidateRequest, "
+    			"SELECT scheduleId, positionId, positionName, candidateRequest, "
     			+ "SUM(CASE WHEN status='PASS' THEN 1 ELSE 0 END) AS candidatePassed, "
     			+ "SUM(CASE WHEN status='PASS' THEN maxScore ELSE 0 END) AS totalMaxScore, "
     			+ "SUM(CASE WHEN status='PASS' THEN minScore ELSE 0 END) AS totalMinScore "
     			+ "FROM ( "
-    			+ "SELECT jabatan.id AS positionId, jabatan.name AS positionName, hireApply.candidate_count_request AS candidateRequest, "
+    			+ "SELECT schedule.id AS scheduleId, jabatan.id AS positionId, jabatan.name AS positionName, hireApply.candidate_count_request AS candidateRequest, "
     			+ "CASE WHEN SUM(CASE WHEN scheduleRealization.id IS NULL OR scheduleRealization.status!='PASS' THEN 1 ELSE 0 END) = 0 THEN 'PASS' ELSE 'FAILED' END AS status, "
     			+ "MAX(scheduleRealization.scoring_point) AS maxScore, "
     			+ "MIN(scheduleRealization.scoring_point) AS minScore "
@@ -117,10 +120,10 @@ public class RecruitSelectionApplicantSchedulleDaoImpl extends IDAOImpl<RecruitS
 	public List<SelectionApplicantPassedViewModel> getSelectionApplicantPassedByParam(Long scheduleId, int firstResults, int maxResults, Order orderable) {
 		
 		StringBuffer selectQuery = new StringBuffer(
-    			"SELECT * "
+    			"SELECT applicantId, applicantName, applicantCareerCandidate, maxScore, minScore "
     			+ "FROM ( "
-    			+ "SELECT recruitApplicant.id AS applicantId "
-    			+ "ltrim(concat(concat(bioData.first_name, ' '), bioDatalast_name)) AS applicantName, "
+    			+ "SELECT recruitApplicant.id AS applicantId, "
+    			+ "ltrim(concat(concat(bioData.first_name, ' '), bioData.last_name)) AS applicantName, "
     			+ "recruitApplicant.career_candidate AS applicantCareerCandidate, "
     			+ "CASE WHEN SUM(CASE WHEN scheduleRealization.id IS NULL OR scheduleRealization.status!='PASS' THEN 1 ELSE 0 END) = 0 THEN 'PASS' ELSE 'FAILED' END AS status, "
     			+ "MAX(scheduleRealization.scoring_point) AS maxScore, "
@@ -146,8 +149,8 @@ public class RecruitSelectionApplicantSchedulleDaoImpl extends IDAOImpl<RecruitS
 		StringBuffer selectQuery = new StringBuffer(
     			"SELECT count(*) "
     			+ "FROM ( "
-    	    	+ "SELECT recruitApplicant.id AS applicantId "
-    	    	+ "ltrim(concat(concat(bioData.first_name, ' '), bioDatalast_name)) AS applicantName, "
+    	    	+ "SELECT recruitApplicant.id AS applicantId, "
+    	    	+ "ltrim(concat(concat(bioData.first_name, ' '), bioData.last_name)) AS applicantName, "
     	    	+ "recruitApplicant.career_candidate AS applicantCareerCandidate, "
     	    	+ "CASE WHEN SUM(CASE WHEN scheduleRealization.id IS NULL OR scheduleRealization.status!='PASS' THEN 1 ELSE 0 END) = 0 THEN 'PASS' ELSE 'FAILED' END AS status, "
     	    	+ "MAX(scheduleRealization.scoring_point) AS maxScore, "

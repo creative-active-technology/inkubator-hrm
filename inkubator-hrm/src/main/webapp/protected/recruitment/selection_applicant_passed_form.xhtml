@@ -1,0 +1,178 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:o="http://omnifaces.org/ui"
+	  xmlns:of="http://omnifaces.org/functions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+				Home
+            </ui:define>
+            <ui:define name="center">    
+            	<p:growl id="growlId" globalOnly="true" showDetail="true"/>            
+                <h:form id="formId">
+                	<div id="box_bg" style="margin: 10px">
+	                    <h:panelGrid columns="2">
+	                        <p:graphicImage library="images" name="biodata_ico.png" height="36" width="36" />
+	                        <h:panelGroup layout="block">
+	                            <h:panelGrid>
+	                                <p:outputLabel value="#{appmsg['applicant_passed.form_selection_stage_result']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['applicant_passed.selection_stage_result_from_recruitment']}" styleClass="header_small_no_bold" />
+	                            </h:panelGrid>
+	                        </h:panelGroup>
+	                    </h:panelGrid>
+	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['recruitment.recruitment_plan']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{selectionApplicantPassedFormController.mppApplyDetail.recruitMppApply.recruitMppApplyName}"/>
+	                            </p:column>
+	                        </p:row>   
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{selectionApplicantPassedFormController.selectionApplicantSchedulle.hireApply.jabatan.name}"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['mppRecruitmentHist.mpp_period']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{selectionApplicantPassedFormController.selectionApplicantSchedulle.hireApply.recruitMppPeriod.periodeStart}">
+	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
+	                            	</p:outputLabel>
+	                            	<p:outputLabel value="&nbsp; - &nbsp;"/>
+	                            	<p:outputLabel value="#{selectionApplicantPassedFormController.selectionApplicantSchedulle.hireApply.recruitMppPeriod.periodeEnd}">
+	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
+	                            	</p:outputLabel>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['applicant_passed.recruit']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{selectionApplicantPassedFormController.selectionApplicantSchedulle.hireApply.candidateCountRequest}"/>
+	                            </p:column>
+	                        </p:row>
+	                 	</p:panelGrid>	     
+                        
+						<p:dataTable  id="tableId" var="data"  value="#{selectionApplicantPassedFormController.lazyData}" lazy="true" paginator="true" pageLinks="7" paginatorPosition="bottom"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="1,5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no" >
+							<f:facet name="header">  
+                                <h:outputText value="#{appmsg['recruitment_applicant.list_applicant']}"/>
+                            </f:facet>
+							<p:column style="text-align: center;width: 5%">
+								<f:facet name="header">
+									<h:outputText value="#{appmsg['global.number']}" />
+								</f:facet>
+								<h:outputLabel value="#{no+1}." />
+							</p:column>
+							<p:column sortBy="#{data.applicantName}" style="width: 20%">
+								<f:facet name="header">
+									<h:outputText value="#{appmsg['applicant_realization.applicant_name']}" />
+								</f:facet>
+								<h:outputLabel value="#{data.applicantName}" />
+							</p:column>
+							<p:column sortBy="#{data.applicantCareerCandidate}" style="width: 10%">
+								<f:facet name="header">
+									<h:outputText value="#{appmsg['global.status']}" />
+								</f:facet>
+								<h:outputLabel value="#{data.applicantCareerCandidate}">
+									<f:converter converterId="recruitApplicantInternalOrExternalConverter"/>
+								</h:outputLabel>
+							</p:column>
+							<p:column sortBy="#{data.maxScore}" style="width: 25%">
+								<f:facet name="header">
+									<h:outputText value="#{appmsg['applicant_passed.highest_score']}" />
+								</f:facet>
+								<h:outputLabel value="#{data.maxScore} - #{data.selectionTypeOfMaxScore}" />
+							</p:column>
+							<p:column sortBy="#{data.minScore}" style="width: 25%">
+								<f:facet name="header">
+									<h:outputText value="#{appmsg['applicant_passed.lowest_score']}" />
+								</f:facet>
+								<h:outputLabel value="#{data.minScore} - #{data.selectionTypeOfMinScore}" />
+							</p:column>
+							<p:column headerText="#{appmsg['global.action']}" style="width: 15%;text-align: center" exportable="false">
+                                <p:commandButton action="#{selectionApplicantPassedFormController.doGenerateCV}" value="CV" title="CV" label="CV" style="font-size: 10px!important">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{selectionApplicantPassedFormController.selected}" />
+                                </p:commandButton>
+                                
+                                <p:commandButton value="#{appmsg['recruitSelectionSeriesView.recruit_selection_series']}" title="#{appmsg['recruitSelectionSeriesView.recruit_selection_series']}" label="#{appmsg['recruitSelectionSeriesView.recruit_selection_series']}" 
+                                				 action="#{selectionApplicantPassedFormController.doViewDetailScore()}" update=":formSelectionSeriesId:tableSelectionSeriesId" 
+                                				 onclick="PF('statusDialog').show()" oncomplete="PF('dialogSelectionSeries').show()" style="font-size: 10px!important" >                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{selectionApplicantPassedFormController.selected}" />
+                                </p:commandButton>
+                            </p:column>
+							<f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{selectionApplicantPassedFormController.lazyData.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formId" trigger="tableId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+
+						<p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                    	<p:commandButton value="#{appmsg['recruitment.offering_letter']}" icon="ui-icon-zoomin" title="#{appmsg['recruitment.offering_letter']}" action="#{selectionApplicantPassedFormController.doSave()}" update=":formId,:growlId"
+                                			 style="margin-right: 5px" styleClass="label_button"/>
+	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{selectionApplicantPassedFormController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	                    </div>
+                    </div>
+                </h:form>
+                
+                <p:dialog widgetVar="dialogSelectionSeries" header="#{appmsg['applicant_passed.data_selection_series']}" styleClass="header_small_no_bold" width="700" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
+                    <h:form id="formSelectionSeriesId">
+                    	<p:dataTable id="tableSelectionSeriesId" var="dataSeries" value="#{selectionApplicantPassedFormController.listDetailRealization}"
+									 lazy="true" paginator="false" style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+                        	<p:column style="text-align: center;width: 10%">
+								<f:facet name="header">
+									<h:outputText value="#{appmsg['global.number']}" />
+								</f:facet>
+								<h:outputLabel value="#{no+1}." />
+							</p:column>
+							<p:column style="width: 60%">
+								<f:facet name="header">
+									<h:outputText value="#{appmsg['recruitSelectionSeriesView.recruit_selection_series']}" />
+								</f:facet>
+								<h:outputLabel value="#{dataSeries.recruitSelectionApplicantSchedulleDetail.selectionType.name}" />
+							</p:column>
+							<p:column style="width: 30%">
+								<f:facet name="header">
+									<h:outputText value="#{appmsg['specAbility.score']}" />
+								</f:facet>
+								<h:outputLabel value="#{dataSeries.scoringPoint}" />
+							</p:column>                        
+                        </p:dataTable>
+                    </h:form>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
