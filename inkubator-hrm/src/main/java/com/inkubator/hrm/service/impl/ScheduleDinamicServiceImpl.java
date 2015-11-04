@@ -449,15 +449,17 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                     }
                 });
                 break;
-                 case "RECRUITMENT_CONFIG_EMP":
+            case "RECRUITMENT_CONFIG_EMP":
                 jmsTemplateRecruitmetConfigEmp.send(new MessageCreator() {
+
                     @Override
                     public Message createMessage(Session session) throws JMSException {
+                        System.out.println(" Jsms trigerereddd");
                         return session.createTextMessage(String.valueOf(log.getId()));
                     }
                 });
                 break;
-                
+
             default:
                 break;
 
