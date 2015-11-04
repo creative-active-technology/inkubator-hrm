@@ -508,6 +508,7 @@ public class HRMConstant {
     public static final String SCHEDULER_CONFIG_NAME_ANNOUNCMENT_SENDING_NOTIF = "ANNOUNCMENT_SENDING_NOTIF";
     public static final String SCHEDULER_MONITORING_LOG_DELETE = "MONITORING_SCHEDULE_LOG_DELETE";
     public static final String SCHEDULER_PASSWORD_COMPLEXITY = "PASSWORD_COMPLEXITY_NOTIF";
+    public static final String SCHEDULER_RECRUITMENT_CONFIG_EMP = "RECRUITMENT_CONFIG_EMP";
     /* END */
 
     /* Constant for Recruit Applicant */
