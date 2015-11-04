@@ -273,7 +273,7 @@ public class RecruitHireApplyFormController extends BaseController {
         try {
             Long totalActual = empDataService.getTotalKaryawanByJabatanId(model.getJabatanId());
             model.setActual(totalActual);
-            if (model.getRecruitMppId() != null) {
+            if (model.getRecruitMppPeriodId() != null) {
 
                 Long totalMpp = recruitMppApplyDetailService.getRecruitPlanByJabatanIdAndMppPeriodId(model.getJabatanId(), model.getRecruitMppPeriodId());
                 if (null != totalMpp) {
