@@ -242,4 +242,13 @@ public class RecruitMppApplyDetailDaoImpl extends IDAOImpl<RecruitMppApplyDetail
         return criteria.list();
 	}
 
+	@Override
+	public List<RecruitMppApplyDetail> getAllDataWithDetail() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("jabatan", FetchMode.JOIN);
+        criteria.setFetchMode("recruitMppApply", FetchMode.JOIN);
+        criteria.setFetchMode("recruitMppApply.recruitMppPeriod", FetchMode.JOIN);
+		return criteria.list();
+	}
+
 }
