@@ -90,6 +90,7 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public BioDataModel getEmpNameWithNearestBirthDate();
     
     public EmpData getEmpDataWithBioDataAndMaritalStatusById(long id);
+    
 
     /**
      * get pageable/paging
