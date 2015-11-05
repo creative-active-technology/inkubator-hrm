@@ -17,8 +17,9 @@
             <ui:define name="windowTitle">
 				Home
             </ui:define>
-            <ui:define name="center">               
-                <h:form id="formLeaveDetailId">
+            <ui:define name="center">    
+            	<p:growl id="growlId" globalOnly="true" showDetail="true"/>            
+                <h:form id="formId">
                 	<div id="box_bg" style="margin: 10px">
 	                    <h:panelGrid columns="2">
 	                        <p:graphicImage library="images" name="biodata_ico.png" height="36" width="36" />
@@ -82,14 +83,18 @@
 	                 	</p:panelGrid>	     
                         
 						<p:dataTable var="data" value="#{selectionApplicantRealizationFormController.listModel}"
-									 lazy="true" paginator="false" id="tableApprovalDevId" style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
-							<p:column style="text-align: center;width: 25px">
+									 editable="true" lazy="true" paginator="false" id="tableApprovalDevId" style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+							
+							<p:ajax event="rowEdit" listener="#{selectionApplicantRealizationFormController.onRowEdit}" update=":growlId" />
+							<p:ajax event="rowEditCancel" listener="#{selectionApplicantRealizationFormController.onRowCancel}" />
+							
+							<p:column style="text-align: center;width: 15px">
 								<f:facet name="header">
 									<h:outputText value="#{appmsg['global.number']}" />
 								</f:facet>
 								<h:outputLabel value="#{no+1}." />
 							</p:column>
-							<p:column style="width: 10%">
+							<p:column style="width: 12%">
 								<f:facet name="header">
 									<h:outputText value="#{appmsg['applicant_realization.selection_stage']}" />
 								</f:facet>
@@ -99,66 +104,150 @@
 								<f:facet name="header">
 									<h:outputText value="#{appmsg['applicant_realization.execution_date']}" />
 								</f:facet>
-								<p:calendar pattern="dd MMM yyyy" value="#{data.realizationDate}" size="10"/>
+								<p:cellEditor>
+	                                <f:facet name="output">
+	                                	<h:outputLabel value= "#{data.realizationDate}">
+	                                		<f:convertDateTime pattern="dd MMM yyyy" />
+	                                	</h:outputLabel>
+	                                </f:facet>
+	                                <f:facet name="input">
+	                                	<p:calendar id="realizationDate" value="#{data.realizationDate}"  
+	                                				pattern="dd MMM yyyy" size="10" style="margin-left:10px;"/>
+	                                	<p:message for="realizationDate" />
+	                                </f:facet>
+                                </p:cellEditor>
 							</p:column>
-							<p:column style="width: 15%">
+							<p:column style="width: 12%">
 								<f:facet name="header">
 									<h:outputText value="#{appmsg['applicant_realization.execution_time']}" />
 								</f:facet>
-								<pe:timePicker value="#{data.realizationTimeStart}" mode="spinner" styleClass="isitext_hrm"/>
-								<h:outputText value="&nbsp;-&nbsp;" />
-								<pe:timePicker value="#{data.realizationTimeEnd}" mode="spinner" styleClass="isitext_hrm"/>
+								<p:cellEditor>
+	                                <f:facet name="output">
+	                                	<h:outputLabel value= "#{data.realizationTimeStart}">
+	                                		<f:convertDateTime pattern="HH:mm" />
+	                                	</h:outputLabel>
+	                                	<h:outputText value="&nbsp;-&nbsp;" />
+	                                	<h:outputLabel value= "#{data.realizationTimeEnd}">
+	                                		<f:convertDateTime pattern="HH:mm" />
+	                                	</h:outputLabel>
+	                                </f:facet>
+	                                <f:facet name="input">
+	                                	<pe:timePicker id="realizationTimeStart" value="#{data.realizationTimeStart}"
+	                                				   mode="spinner" styleClass="isitext_hrm" style="width:50px;margin-left:5px;"/>
+										<h:outputText value="&nbsp;-&nbsp;" />
+										<pe:timePicker id="realizationTimeEnd" value="#{data.realizationTimeEnd}" 
+													   mode="spinner" styleClass="isitext_hrm" style="width:50px;"/>
+										<p:message for="realizationTimeStart" />
+										<p:message for="realizationTimeEnd" />
+	                                </f:facet>
+                                </p:cellEditor>
 							</p:column>
 							<p:column style="width: 12%">
 								<f:facet name="header">
 									<h:outputText value="#{appmsg['applicant_realization.room']}" />
 								</f:facet>
-								<p:inputText value="#{data.realizationRoom}" maxlength="100" size="15" styleClass="isitext_hrm"/>
+								<p:cellEditor>
+	                                <f:facet name="output">
+	                                	<h:outputLabel value="#{data.realizationRoom}"/>
+	                                </f:facet>
+	                                <f:facet name="input">
+	                                	<p:inputText id="realizationRoom" value="#{data.realizationRoom}"
+	                                				 maxlength="100" size="17" style="margin-left:5px;" styleClass="isitext_hrm"/>
+	                                	<p:message for="realizationRoom" />
+	                                </f:facet>
+                                </p:cellEditor>
 							</p:column>
-							<p:column style="width: 15%">
+							<p:column style="width: 12%">
 								<f:facet name="header">
 									<h:outputText value="#{appmsg['applicant_realization.assessed_by']}" />
 								</f:facet>
-								<p:autoComplete value="#{data.scoringByEmpData}"
+								<p:cellEditor>
+	                                <f:facet name="output">
+	                                	<h:outputLabel value= "#{data.scoringByEmpData.bioData.fullName}"/>
+	                                </f:facet>
+	                                <f:facet name="input">
+	                                	<p:autoComplete id="scoringByEmpData" value="#{data.scoringByEmpData}"
                                                 completeMethod="#{selectionApplicantRealizationFormController.doAutoCompleteEmployee}"                                                
-                                                var="empData"
-                                                itemValue="#{empData}"
+                                                var="empData" itemValue="#{empData}"
                                                 itemLabel="#{empData.bioData.firstName} #{empData.bioData.lastName}"
-                                                converter="empDataConverter" styleClass="isitext_hrm" size="20"/>
+                                                converter="empDataConverter" style="margin-left:5px;" styleClass="isitext_hrm" size="17"/>
+                                     	<p:message for="scoringByEmpData" />
+	                                </f:facet>
+                                </p:cellEditor>
 							</p:column>
 							<p:column style="width: 10%">
 								<f:facet name="header">
 									<h:outputText value="#{appmsg['applicant_realization.assessed_on']}" />
 								</f:facet>
-								<p:calendar pattern="dd MMM yyyy" value="#{data.scoringDate}" size="10"/>
+								<p:cellEditor>
+	                                <f:facet name="output">
+	                                	<h:outputLabel value= "#{data.scoringDate}">
+	                                		<f:convertDateTime pattern="dd MMM yyyy" />
+	                                	</h:outputLabel>
+	                                </f:facet>
+	                                <f:facet name="input">
+	                                	<p:calendar id="scoringDate" value="#{data.scoringDate}"
+	                                				pattern="dd MMM yyyy" size="10" style="margin-left:10px;"/>
+	                                	<p:message for="scoringDate" />
+	                                </f:facet>
+                                </p:cellEditor>
 							</p:column>
-							<p:column style="width: 7%">
+							<p:column style="width: 5%">
 								<f:facet name="header">
 									<h:outputText value="#{appmsg['biodata.score']}" />
 								</f:facet>
-								<p:spinner value="#{data.scoringPoint}" stepFactor="1" size="2" min="0" max="100" styleClass="isitext_hrm"/>
+								<p:cellEditor>
+	                                <f:facet name="output">
+	                                	<h:outputLabel value= "#{data.scoringPoint}"/>
+	                                </f:facet>
+	                                <f:facet name="input">
+	                                	<p:spinner id="scoringPoint" value="#{data.scoringPoint}" 
+	                                			   stepFactor="1" size="2" min="0" max="100" styleClass="isitext_hrm"/>
+	                                	<p:message for="scoringPoint" />
+	                                </f:facet>
+                                </p:cellEditor>
 							</p:column>
 							<p:column style="width: 10%">
 								<f:facet name="header">
 									<h:outputText value="status" />
 								</f:facet>
-								<p:selectOneMenu value="#{data.status}" style="width:100px;" >
-                                    <f:selectItem itemLabel="#{appmsg['global.new']}" itemValue="NEW"/>
-                                    <f:selectItem itemLabel="#{appmsg['global.pass']}" itemValue="PASS"/>
-                                    <f:selectItem itemLabel="#{appmsg['global.failed']}" itemValue="FAILED"/>
-                               	</p:selectOneMenu>
+								<p:cellEditor>
+									<f:facet name="output">
+	                                	<h:outputLabel value= "#{data.status}">
+	                                		<f:converter converterId="selectionApplicantRealizationStatusConverter" />
+	                                	</h:outputLabel>
+	                                </f:facet>
+	                                <f:facet name="input">
+	                                	<p:selectOneMenu value="#{data.status}" style="width:100%;">
+		                                    <f:selectItem itemLabel="#{appmsg['global.new']}" itemValue="NEW"/>
+		                                    <f:selectItem itemLabel="#{appmsg['global.pass']}" itemValue="PASS"/>
+		                                    <f:selectItem itemLabel="#{appmsg['global.failed']}" itemValue="FAILED"/>
+		                               	</p:selectOneMenu>
+	                                </f:facet>
+	                         	</p:cellEditor>
 							</p:column>
 							<p:column style="width: 12%">
 								<f:facet name="header">
 									<h:outputText value="#{appmsg['global.notes']}" />
 								</f:facet>
-								<p:inputText value="#{data.notes}" maxlength="500" size="15" styleClass="isitext_hrm"/>
+								<p:cellEditor>
+									<f:facet name="output">
+	                                	<h:outputLabel value= "#{data.notes}"/>
+	                                </f:facet>
+	                                <f:facet name="input">
+	                                	<p:inputText value="#{data.notes}" maxlength="500" size="17" style="margin-left:5px;" styleClass="isitext_hrm"/>
+	                                </f:facet>
+	                         	</p:cellEditor>
+								
 							</p:column>
+							<p:column style="width: 5%">
+                                <p:rowEditor/>
+                            </p:column> 
 						</p:dataTable>
 
 						<p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
-	                    	<p:commandButton value="#{appmsg['global.save']}" icon="ui-icon-zoomin" title="#{appmsg['global.save']}" action="#{selectionApplicantRealizationFormController.doSave()}" immediate="true"
+	                    	<p:commandButton value="#{appmsg['global.save']}" icon="ui-icon-zoomin" title="#{appmsg['global.save']}" action="#{selectionApplicantRealizationFormController.doSave()}" update=":formId,:growlId"
                                 			 style="margin-right: 5px" styleClass="label_button"/>
 	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{selectionApplicantRealizationFormController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>

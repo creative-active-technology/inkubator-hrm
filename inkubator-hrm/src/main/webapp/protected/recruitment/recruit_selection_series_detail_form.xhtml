@@ -41,7 +41,7 @@
                                 <h:outputLabel for="selectionTypeId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu disabled="#{recruitmenSelectionSeriesDetailFormController.isUpdate}" id="selectionTypeId" value="#{recruitmenSelectionSeriesDetailFormController.model.recruitSelectionTypeId}" style="width: 150px;margin-right: 3px" required="true">
+                                <p:selectOneMenu disabled="#{recruitmenSelectionSeriesDetailFormController.isUpdate}" id="selectionTypeId" value="#{recruitmenSelectionSeriesDetailFormController.model.recruitSelectionTypeId}" style="width: 96%;margin-right: 3px" required="true">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                     <f:selectItems value="#{recruitmenSelectionSeriesDetailFormController.dropDownSelectionType}"/>
                                 </p:selectOneMenu>
@@ -53,7 +53,7 @@
                             </p:column>
                         </p:row>
 
-                        <p:row>
+<!--                        <p:row>
                             <p:column style="width: 40%">
                                 <p:outputLabel for="acceptLetterId" value="#{appmsg['recruitSelectionSeriesView.accept_letter']}" styleClass="label_hrm"/>
                             </p:column>
@@ -66,13 +66,13 @@
                                     <f:selectItems value="#{recruitmenSelectionSeriesDetailFormController.dropDownAcceptAndRejectLetter}"/>
                                 </p:selectOneMenu>
                             </p:column>
-                        </p:row>
-                        <p:row>
+                        </p:row>-->
+<!--                        <p:row>
                             <p:column colspan="3">
                                 <p:message for="acceptLetterId"/>
                             </p:column>
-                        </p:row>
-                        <p:row>
+                        </p:row>-->
+<!--                        <p:row>
                             <p:column style="width: 40%">
                                 <p:outputLabel for="rejectLetterId" value="#{appmsg['recruitSelectionSeriesView.reject_letter']}" styleClass="label_hrm"/>
                             </p:column>
@@ -90,7 +90,7 @@
                             <p:column colspan="3">
                                 <p:message for="rejectLetterId"/>
                             </p:column>
-                        </p:row>
+                        </p:row>-->
                         <p:row>
                             <p:column style="width: 37%">
                                 <p:outputLabel for="description" value="#{appmsg['recruitSelectionSeriesView.note']}" styleClass="label_hrm"/>

@@ -98,4 +98,11 @@ public class RecruitLettersDaoImpl extends IDAOImpl<RecruitLetters> implements R
         criteria.add(Restrictions.isNotNull("id"));
     }
 
+    @Override
+    public RecruitLetters sanvAndFlus(RecruitLetters letters) {
+        getCurrentSession().save(letters);
+        getCurrentSession().flush();
+        return letters;
+    }
+
 }

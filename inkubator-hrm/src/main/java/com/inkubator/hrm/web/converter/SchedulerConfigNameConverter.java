@@ -93,6 +93,9 @@ public class SchedulerConfigNameConverter implements Converter {
             case HRMConstant.SCHEDULER_PASSWORD_COMPLEXITY:
                 messages = resourceBundle.getString("scheduler_config.password_complexity");
                 break;
+            case HRMConstant.SCHEDULER_RECRUITMENT_CONFIG_EMP:
+                messages = resourceBundle.getString("scheduler_config.recruitment_config_emp");
+                break;
             default:
 
                 break;

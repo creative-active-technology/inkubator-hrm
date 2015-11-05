@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+      	http://www.springframework.org/schema/webflow
+      	http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd"
+	start-state="add_selection_schedule">
+      	
+      	
+    <on-start>
+    	<set name="flowScope.id" value="requestParameters.id" type="java.lang.Long" />
+      	<evaluate expression="recruitmentScheduleSettingFormController.initRecruitmentScheduleSettingProcessFlow(flowRequestContext)"/>
+	</on-start>
+
+    <view-state id="add_selection_schedule" view="recruitment_selection_schedule_form.xhtml">
+
+		<transition on="next" to="add_selection_schedule_detail">
+			<evaluate expression="recruitmentScheduleSettingFormController.setRecruitSelectionScheduleDetail(flowRequestContext)" result="flowScope.recruitScheduleSettingModel"/> 
+		</transition>
+		<transition on="end" to="end"/>
+    </view-state>
+    
+    <view-state id="add_selection_schedule_detail" view="recruitment_selection_schedule_detail_form.xhtml">
+    
+    	<transition on="back" to="add_selection_schedule"/>
+    	<transition on="save" to="save_verification"/>
+    	<transition on="end" to="end"/>
+    </view-state>
+
+	<action-state id="save_verification">
+        <evaluate expression="recruitmentScheduleSettingFormController.doSave(flowRequestContext)"/>
+        <transition on="success" to="end"/>
+        <transition on="error" to="add_selection_schedule_detail"/>
+    </action-state >
+    
+    <end-state id="end" view="externalRedirect:contextRelative:/protected/recruitment/recruitment_schedule_setting.htm" />
+    
+</flow>

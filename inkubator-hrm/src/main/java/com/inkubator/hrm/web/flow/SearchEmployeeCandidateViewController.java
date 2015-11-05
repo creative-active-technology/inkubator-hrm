@@ -9,27 +9,20 @@ import ch.lambdaj.Lambda;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EducationLevel;
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.Jabatan;
-import com.inkubator.hrm.entity.RecruitHireApply;
+import com.inkubator.hrm.entity.RecruitMppApplyDetail;
 import com.inkubator.hrm.entity.Religion;
-import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.EducationLevelService;
 import com.inkubator.hrm.service.EmpDataService;
-import com.inkubator.hrm.service.EmployeeTypeService;
-import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.hrm.service.RecruitApplicantService;
 import com.inkubator.hrm.service.RecruitHireApplyService;
+import com.inkubator.hrm.service.RecruitMppApplyDetailService;
 import com.inkubator.hrm.service.ReligionService;
 import com.inkubator.hrm.web.lazymodel.SearchEmployeeCandidateLazyDataModel;
-import com.inkubator.hrm.web.lazymodel.SearchEmployeeLazyDataModel;
 import com.inkubator.hrm.web.model.SearchEmployeeCandidateModel;
 import com.inkubator.hrm.web.model.SearchEmployeeCandidateViewModel;
-import com.inkubator.hrm.web.model.SearchEmployeeModel;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 
@@ -70,7 +63,8 @@ public class SearchEmployeeCandidateViewController implements Serializable {
     @Autowired
     private RecruitApplicantService recruitApplicantService;
     @Autowired
-    private RecruitHireApplyService recruitHireApplyService;
+    private RecruitMppApplyDetailService recruitMppApplyDetailService;
+
 
     public SearchEmployeeCandidateModel initSearchEmployeeCandidateFormFlow(RequestContext context) throws Exception {
         //deklarasi variable
@@ -79,10 +73,9 @@ public class SearchEmployeeCandidateViewController implements Serializable {
         DualListModel<Religion> dualListModelReligion = new DualListModel<>();
 
         //get data
-        //List<Jabatan> listJabatan = jabatanService.getAllData();
-        List<RecruitHireApply> listRecruitHireApplies = recruitHireApplyService.getAllDataWithDetail();
-        listRecruitHireApplies = Lambda.select(listRecruitHireApplies, Lambda.having(Lambda.on(RecruitHireApply.class).getApplicationStatus(), Matchers.equalTo(HRMConstant.APPROVAL_STATUS_APPROVED)));
-        List<Jabatan> listJabatan = Lambda.extract(listRecruitHireApplies, Lambda.on(RecruitHireApply.class).getJabatan());
+        List<RecruitMppApplyDetail> listMppDetail = recruitMppApplyDetailService.getAllDataWithDetail();
+        listMppDetail = Lambda.select(listMppDetail, Lambda.having(Lambda.on(RecruitMppApplyDetail.class).getRecruitMppApply().getApplicationStatus(), Matchers.equalTo(HRMConstant.APPROVAL_STATUS_APPROVED)));
+        List<Jabatan> listJabatan = Lambda.extract(listMppDetail, Lambda.on(RecruitMppApplyDetail.class).getJabatan());
         listJabatan = new ArrayList<Jabatan>(Lambda.selectDistinct(listJabatan));//Di Filter supaya tidak duplikat
         List<Religion> listReligion = religionService.getAllData();
 

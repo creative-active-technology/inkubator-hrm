@@ -1,38 +1,10 @@
 package com.inkubator.hrm.service.impl;
 
-import ch.lambdaj.Lambda;
-import ch.lambdaj.group.Group;
-
-import com.inkubator.common.util.DateTimeUtil;
-import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.dao.BankDao;
-import com.inkubator.hrm.dao.BankGroupDao;
-import com.inkubator.hrm.dao.EmpDataDao;
-import com.inkubator.hrm.dao.JabatanDao;
-import com.inkubator.hrm.dao.RecruitMppApplyDao;
-import com.inkubator.hrm.dao.RecruitMppApplyDetailDao;
-import com.inkubator.hrm.dao.RecruitMppPeriodDao;
-import com.inkubator.hrm.entity.Bank;
-import com.inkubator.hrm.entity.Jabatan;
-import com.inkubator.hrm.entity.RecruitMppApplyDetail;
-import com.inkubator.hrm.entity.RecruitMppPeriod;
-import com.inkubator.hrm.service.BankService;
-import com.inkubator.hrm.service.RecruitMppApplyDetailService;
-import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
-import com.inkubator.hrm.web.model.RecruitMppApplyDetailViewModel;
-import com.inkubator.hrm.web.search.BankSearchParameter;
-import com.inkubator.hrm.web.search.RecruitMppApplyDetailSearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.time.DateUtils;
-import org.exolab.castor.types.DateTime;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -40,6 +12,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.JabatanDao;
+import com.inkubator.hrm.dao.RecruitMppApplyDao;
+import com.inkubator.hrm.dao.RecruitMppApplyDetailDao;
+import com.inkubator.hrm.dao.RecruitMppPeriodDao;
+import com.inkubator.hrm.entity.RecruitMppApplyDetail;
+import com.inkubator.hrm.entity.RecruitMppPeriod;
+import com.inkubator.hrm.service.RecruitMppApplyDetailService;
+import com.inkubator.hrm.web.model.RecruitMppApplyDetailViewModel;
+import com.inkubator.hrm.web.search.RecruitMppApplyDetailSearchParameter;
 
 /**
  *
@@ -336,6 +320,24 @@ public class RecruitMppApplyDetailServiceImpl extends IServiceImpl implements Re
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<RecruitMppApplyDetail> getAllDataJabatanByRecruitMppApplyId(Long recruitMppApplyId) throws Exception {
 		return recruitMppApplyDetailDao.getAllDataJabatanByRecruitMppApplyId(recruitMppApplyId);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RecruitMppApplyDetail> getListByJabatanIdAndMppPeriodId(Long jabatanId, Long recruitMppPeriodId) throws Exception {
+		return recruitMppApplyDetailDao.getListByJabatanIdAndMppPeriodId(jabatanId, recruitMppPeriodId);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public RecruitMppApplyDetail getEntityByJabatanIdAndMppPeriodId(Long jabatanId, Long mppPeriodId) throws Exception {
+		return recruitMppApplyDetailDao.getEntityByJabatanIdAndMppPeriodId(jabatanId, mppPeriodId);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RecruitMppApplyDetail> getAllDataWithDetail() throws Exception {
+		return recruitMppApplyDetailDao.getAllDataWithDetail();
 	}
     
 }

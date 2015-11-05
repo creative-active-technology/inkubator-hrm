@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+				Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlRecruitSelectionScheduleId" globalOnly="true" showDetail="true"/>                
+                <h:form id="formRecruitSelectionScheduleId">
+                	<p:focus context="formRecruitSelectionScheduleId"/>
+                	<div id="box_bg" style="margin: 10px">
+	                    <h:panelGrid  columns="2">
+	                        <p:graphicImage library="images" name="business_travel.png" height="36" width="36" />
+	                        <h:panelGroup layout="block">
+	                            <h:panelGrid>
+	                                <p:outputLabel value="#{appmsg['recruitment.recruitment_selection_schedule_form']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['recruitment.recruitment_selection_schedule_data_from_recruitment']}" styleClass="header_small_no_bold" />
+	                            </h:panelGrid>
+	                        </h:panelGroup>
+	                    </h:panelGrid>
+	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['recruitment.recruitment_plan']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{recruitScheduleSettingModel.recruitMppApplyName}" />
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{recruitScheduleSettingModel.jabatanName}" />
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['mppRecruitmentHist.mpp_period']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{recruitScheduleSettingModel.startDateMppPeriod}" >
+	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
+	                            	</p:outputLabel>
+	                            	-
+	                            	<p:outputLabel value="#{recruitScheduleSettingModel.endDateMppPeriod}" >
+	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
+	                            	</p:outputLabel>
+	                            </p:column>
+	                        </p:row> 	                        
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['recruitment_applicant.test_coordinator']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	
+	                            	<p:autoComplete id="employeeId" title="#{appmsg['recruitment_applicant.test_coordinator']}" 
+                                                value="#{recruitScheduleSettingModel.empData}" 
+                                                completeMethod="#{recruitmentScheduleSettingFormController.doAutoCompleteEmployeeCoordinator}"                                                
+                                                var="empData"
+                                                itemValue="#{empData}"
+                                                converter="empDataConverter"
+                                                itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                required="true" styleClass="isitext_hrm" size="46">
+                                    	<!-- <p:ajax event="itemSelect" listener="#{businessTravelFormController.doResetTravelComponentList(flowRequestContext)}" /> -->
+                                    </p:autoComplete>
+                              		<p:message for="employeeId"/>
+	                        	</p:column>
+	                        </p:row>
+	                        
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel  value="#{appmsg['recruitSelectionSeriesView.recruit_selection_series']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            
+	                                <p:selectOneMenu id="selectionSeriesId" rendered="#{not recruitScheduleSettingModel.isAlreadyHaveSelectionScheduleSeries}" styleClass="isitext_hrm" required="true"  value="#{recruitScheduleSettingModel.selectionSeriesId}" style="width:290px;">
+	                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                                    <f:selectItems value="#{listRecruitSelectionSeries}" var="selectionSeries" itemValue="#{selectionSeries.id}" itemLabel="#{selectionSeries.name}"/>
+	                                    <!-- <p:ajax listener="#{businessTravelFormController.doResetTravelComponentList(flowRequestContext)}" /> -->
+	                                </p:selectOneMenu>
+	                                <p:message  rendered="#{not recruitScheduleSettingModel.isAlreadyHaveSelectionScheduleSeries}" for="selectionSeriesId"/>
+	                                
+	                                <p:outputLabel rendered="#{recruitScheduleSettingModel.isAlreadyHaveSelectionScheduleSeries}" value="#{recruitScheduleSettingModel.selectionSeriesName}" styleClass="label_hrm"  />
+	                            </p:column>
+	                        </p:row>
+	                                             	                             
+	                 	</p:panelGrid>	                    
+	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                    	<p:commandButton value="#{appmsg['global.next']}" label="#{appmsg['global.next']}" title="#{appmsg['global.next']}" 
+	                    					 icon="ui-icon-arrow-1-e" styleClass="isitext_hrm" style="margin-right: 5px" 
+	                    					 ajax="true" action="next" update="formRecruitSelectionScheduleId"/>
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formRecruitSelectionScheduleId" action="#{recruitmentScheduleSettingFormController.doResetRecruitmentScheduleForm(flowRequestContext)}"
+                                                 icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+	                            <p:resetInput target="formRecruitSelectionScheduleId" />  
+	                        </p:commandButton>
+	                        <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" icon="ui-icon-contact"  action="end" immediate="true"/>
+	                    </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

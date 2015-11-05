@@ -7,14 +7,17 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.RecruitLetterComChannelDao;
 import com.inkubator.hrm.dao.RecruitLetterSelectionDao;
 import com.inkubator.hrm.dao.RecruitLettersDao;
+import com.inkubator.hrm.dao.RecruitmenSelectionSeriesDetailDao;
 import com.inkubator.hrm.entity.RecruitCommChannels;
 import com.inkubator.hrm.entity.RecruitLetterComChannel;
 import com.inkubator.hrm.entity.RecruitLetterSelection;
 import com.inkubator.hrm.entity.RecruitLetters;
 import com.inkubator.hrm.entity.RecruitSelectionType;
+import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetail;
 import com.inkubator.hrm.service.RecruitLettersService;
 import com.inkubator.hrm.web.search.RecrutimentLetterSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -44,6 +47,8 @@ public class RecruitLettersServiceImpl extends IServiceImpl implements RecruitLe
     private RecruitLetterSelectionDao recruitLetterSelectionDao;
     @Autowired
     private RecruitLetterComChannelDao recruitLetterComChannelDao;
+    @Autowired
+    private RecruitmenSelectionSeriesDetailDao recruitmenSelectionSeriesDetailDao;
 
     @Override
     public RecruitLetters getEntiyByPK(String id) throws Exception {
@@ -61,7 +66,7 @@ public class RecruitLettersServiceImpl extends IServiceImpl implements RecruitLe
     }
 
     @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public void save(RecruitLetters entity) throws Exception {
         long totalDuplicates = recruitLettersDao.getTotalByCode(entity.getCode());
         if (totalDuplicates > 0) {
@@ -78,6 +83,31 @@ public class RecruitLettersServiceImpl extends IServiceImpl implements RecruitLe
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         recruitLettersDao.save(entity);
+        List<RecruitSelectionType> recruitSelectionTypes = new ArrayList<>();
+        Set<RecruitLetterSelection> recruitLetterSelections = entity.getRecruitLetterSelections();
+        for (RecruitLetterSelection recruitLetterSelection : recruitLetterSelections) {
+            recruitSelectionTypes.add(recruitLetterSelection.getRecruitSelectionType());
+        }
+
+        for (RecruitSelectionType recruitSelectionType : recruitSelectionTypes) {
+            List<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetails = recruitmenSelectionSeriesDetailDao.getAllByRecruitRecruitSelectionTypeId(recruitSelectionType.getId());
+            for (RecruitmenSelectionSeriesDetail recruitmenSelectionSeriesDetail : recruitmenSelectionSeriesDetails) {
+                if (entity.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_REJECT)) {
+                    recruitmenSelectionSeriesDetail.setRecruitLettersByRejectLetterId(entity);
+                    recruitmenSelectionSeriesDetail.setUpdatedBy(new Date());
+                    recruitmenSelectionSeriesDetail.setUpdatedOn(UserInfoUtil.getUserName());
+                    recruitmenSelectionSeriesDetailDao.update(recruitmenSelectionSeriesDetail);
+                }
+//
+                if (entity.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_OFFERING)) {
+                    recruitmenSelectionSeriesDetail.setRecruitLettersByAcceptLetterId(entity);
+                    recruitmenSelectionSeriesDetail.setUpdatedBy(new Date());
+                    recruitmenSelectionSeriesDetail.setUpdatedOn(UserInfoUtil.getUserName());
+                    recruitmenSelectionSeriesDetailDao.update(recruitmenSelectionSeriesDetail);
+                }
+            }
+        }
+
     }
 
     @Override
@@ -187,9 +217,9 @@ public class RecruitLettersServiceImpl extends IServiceImpl implements RecruitLe
     }
 
     @Override
-    @Transactional(readOnly = false , isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(RecruitLetters entity) throws Exception {
-       this.recruitLettersDao.delete(entity);
+        this.recruitLettersDao.delete(entity);
     }
 
     @Override
@@ -286,6 +316,89 @@ public class RecruitLettersServiceImpl extends IServiceImpl implements RecruitLe
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS, isolation = Isolation.READ_COMMITTED, timeout = 30)
     public Long getTotalByParam(RecrutimentLetterSearchParameter parameter) throws Exception {
         return recruitLettersDao.getTotalByParam(parameter);
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void saveWithSelectionType(RecruitLetters entity, List<Long> data) throws Exception {
+//        long totalDuplicates = recruitLettersDao.getTotalByCode(entity.getCode());
+//        if (totalDuplicates > 0) {
+//            throw new BussinessException("race.error_duplicate_race_code");
+//        }
+//        if (entity.getIsActive()) {
+//            List<RecruitLetters> dataToUpdateIsActive = recruitLettersDao.getAllWithSpecificLetterType(entity.getLeterTypeId());
+//            for (RecruitLetters recruitLetters : dataToUpdateIsActive) {
+//                recruitLetters.setIsActive(Boolean.FALSE);
+//                recruitLettersDao.update(recruitLetters);
+//            }
+//        }
+//
+//        entity.setCreatedBy(UserInfoUtil.getUserName());
+//        entity.setCreatedOn(new Date());
+//        recruitLettersDao.sanvAndFlus(entity);
+
+//        List<RecruitSelectionType> recruitSelectionTypes = new ArrayList<>();
+//        Set<RecruitLetterSelection> recruitLetterSelections = resSave.getRecruitLetterSelections();
+//        for (RecruitLetterSelection recruitLetterSelection : recruitLetterSelections) {
+//            recruitSelectionTypes.add(recruitLetterSelection.getRecruitSelectionType());
+//        }
+//        System.out.println(" Ukuran nya " + recruitSelectionTypes.size());
+        for (Long selectionTypeId : data) {
+//            System.out.println(" Data nya adalah "+recruitSelectionType.getId());
+//            System.out.println(" Ukuran nya " + recruitSelectionTypes.size());
+            List<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetails = recruitmenSelectionSeriesDetailDao.getAllByRecruitRecruitSelectionTypeId(selectionTypeId);
+            for (RecruitmenSelectionSeriesDetail recruitmenSelectionSeriesDetail : recruitmenSelectionSeriesDetails) {
+                recruitmenSelectionSeriesDetail.setRecruitLettersByAcceptLetterId(new RecruitLetters());
+                recruitmenSelectionSeriesDetail.setRecruitLettersByRejectLetterId(new RecruitLetters());
+//                recruitmenSelectionSeriesDetailDao.update(recruitmenSelectionSeriesDetail);
+                if (entity.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_REJECT)) {
+                    recruitmenSelectionSeriesDetail.setRecruitLettersByRejectLetterId(entity);
+                    recruitmenSelectionSeriesDetail.setUpdatedBy(new Date());
+                    recruitmenSelectionSeriesDetail.setUpdatedOn(UserInfoUtil.getUserName());
+//                    recruitmenSelectionSeriesDetailDao.update(recruitmenSelectionSeriesDetail);
+                }
+
+                if (entity.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_OFFERING)) {
+                    recruitmenSelectionSeriesDetail.setRecruitLettersByAcceptLetterId(entity);
+                    recruitmenSelectionSeriesDetail.setUpdatedBy(new Date());
+                    recruitmenSelectionSeriesDetail.setUpdatedOn(UserInfoUtil.getUserName());
+//                    recruitmenSelectionSeriesDetailDao.update(recruitmenSelectionSeriesDetail);
+                }
+            }
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void doDistributionRescruitLetter(RecruitLetters letters) throws Exception {
+
+        List<RecruitmenSelectionSeriesDetail> dataToSetNull = recruitmenSelectionSeriesDetailDao.getAllWithLetterSpesific(letters.getLeterTypeId());
+        System.out.println(" Ukuran nya yang akan di delete adalah " + dataToSetNull.size());
+        System.out.println(" Jenis Suratnya " + letters.getLeterTypeId());
+        for (RecruitmenSelectionSeriesDetail dataToSetNull1 : dataToSetNull) {
+            if (letters.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_OFFERING)) {
+                dataToSetNull1.setRecruitLettersByAcceptLetterId(null);
+            }
+            if (letters.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_REJECT)) {
+                dataToSetNull1.setRecruitLettersByRejectLetterId(null);
+            }
+
+            recruitmenSelectionSeriesDetailDao.update(dataToSetNull1);
+        }
+        List<RecruitSelectionType> data = letters.getRecruitSelectionTypes();
+        for (RecruitSelectionType recruitSelectionType : data) {
+            List<RecruitmenSelectionSeriesDetail> dataToSave = recruitmenSelectionSeriesDetailDao.getAllByRecruitRecruitSelectionTypeId(recruitSelectionType.getId());
+            for (RecruitmenSelectionSeriesDetail dataToSave1 : dataToSave) {
+                if (letters.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_OFFERING)) {
+                    dataToSave1.setRecruitLettersByAcceptLetterId(letters);
+                }
+                if (letters.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_REJECT)) {
+                    dataToSave1.setRecruitLettersByRejectLetterId(letters);
+                }
+                recruitmenSelectionSeriesDetailDao.save(dataToSave1);
+            }
+        }
+
     }
 
 }

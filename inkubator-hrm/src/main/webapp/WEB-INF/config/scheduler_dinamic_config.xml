@@ -120,7 +120,11 @@
         <property name="defaultDestinationName" value="passwordComplexity"/>
     </bean>
     
-    
+    <bean id="jmsTemplateRecruitmetConfigEmp" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
+        <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
+        <property name="sessionTransacted" value="true"/>
+        <property name="defaultDestinationName" value="recruitmetConfigEmp"/>
+    </bean>
     
     <jms:listener-container container-type="default" connection-factory="connectionFactoryComsume" acknowledge="transacted" 
                             transaction-manager="jsmTransaction"   >
@@ -140,6 +144,7 @@
         <jms:listener destination="scheduleWork" ref="calculateScheduleWorkCronListenerServiceImpl" method="onMessage"  /> 
         <jms:listener destination="deleteMonitoringLog" ref="deleteLogMonitoringListenerServiceImpl" method="onMessage"  /> 
         <jms:listener destination="passwordComplexity" ref="calculatePasswordComplexityCronListenerServiceImpl" method="onMessage"  /> 
+        <jms:listener destination="recruitmetConfigEmp" ref="rectruitmentEmpConfigListenerServiceImpl" method="onMessage"  /> 
         
     </jms:listener-container>
     <!--================== List dari semua listener scheduller... di sini ==========================-->
@@ -190,10 +195,12 @@
         <property name="difMonthLogMonitoringToDelete" value="${dif.number.month.log_monit.to.delete}"/>
     </bean>
     <bean id="calculatePasswordComplexityCronListenerServiceImpl" class="com.inkubator.hrm.service.impl.CalculatePasswordComplexityCronListenerServiceImpl" lazy-init="true" >
-    	<property name="applicationUrl" value="${email_param_application_url}"/>
+        <property name="applicationUrl" value="${email_param_application_url}"/>
         <property name="applicationName" value="${email_param_application_name}"/>
         <property name="ownerEmail" value="${email_param_owner_email}"/>
         <property name="ownerCompany" value="${email_param_owner_company}"/>
         <property name="ownerAdministrator" value="${email_param_owner_administrator}"/> 
     </bean>
+    <bean id="rectruitmentEmpConfigListenerServiceImpl" class="com.inkubator.hrm.service.impl.RectruitmentEmpConfigListenerServiceImpl" lazy-init="true" />
+    
 </beans>

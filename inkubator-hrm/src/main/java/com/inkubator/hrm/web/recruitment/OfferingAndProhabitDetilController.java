@@ -11,8 +11,12 @@ import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.RecruitLettersService;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -27,7 +31,7 @@ public class OfferingAndProhabitDetilController extends BaseController {
 
     @ManagedProperty(value = "#{recruitLettersService}")
     private RecruitLettersService recruitLettersService;
-    ;
+
     private RecruitLetters selectedRecruitLetters;
 
     @PostConstruct
@@ -76,5 +80,17 @@ public class OfferingAndProhabitDetilController extends BaseController {
 
     public String doBack() {
         return "/protected/recruitment/offering_letter_view.htm?faces-redirect=true";
+    }
+
+    public String doDistribution() {
+        try {
+            recruitLettersService.doDistributionRescruitLetter(selectedRecruitLetters);
+            MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.info", "offering_module.distributin_selection_success",
+                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            return "/protected/recruitment/offering_letter_view.htm?faces-redirect=true";
+        } catch (Exception ex) {
+            LOGGER.error(ex, ex);
+        }
+        return null;
     }
 }

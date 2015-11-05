@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.recruitment;
 
+import ch.lambdaj.Lambda;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
@@ -25,6 +26,7 @@ import com.inkubator.hrm.web.model.OfferingAndProhabitModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -176,7 +178,6 @@ public class OfferingAndProhabitFormController extends BaseController {
         recruitLetters.setFormatNumber(model.getFormatLetterNumber());
         recruitLetters.setIsActive(model.getIsActive());
         recruitLetters.setLeterTypeId(Integer.parseInt(model.getLeterTypeId()));
-        System.out.println(" Ini adlaah jenis suranya " + model.getLeterTypeId());
         recruitLetters.setSmsNotif(model.getIsActive());
         recruitLetters.setSmsNotif(model.getIsSendingViaSMS());
         return recruitLetters;
@@ -195,12 +196,15 @@ public class OfferingAndProhabitFormController extends BaseController {
             letters.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
             Set<RecruitLetterSelection> recruitLetterSelections = new HashSet<>();
             List<RecruitSelectionType> sourceDSelectType = dualListModel.getTarget();
+            List<Long> data = new ArrayList<>();
+
             for (RecruitSelectionType rst : sourceDSelectType) {
                 RecruitLetterSelection recruitLetterSelection = new RecruitLetterSelection();
                 recruitLetterSelection.setId(new RecruitLetterSelectionId(letters.getId(), rst.getId()));
                 recruitLetterSelection.setRecruitLetters(letters);
                 recruitLetterSelection.setRecruitSelectionType(rst);
                 recruitLetterSelections.add(recruitLetterSelection);
+                data.add(rst.getId());
             }
             letters.setRecruitLetterSelections(recruitLetterSelections);
             Set<RecruitLetterComChannel> recruitLetterComChannels = new HashSet<>();
@@ -213,6 +217,7 @@ public class OfferingAndProhabitFormController extends BaseController {
                 recruitLetterComChannels.add(comChannel);
             }
             letters.setRecruitLetterComChannels(recruitLetterComChannels);
+
             recruitLettersService.save(letters);
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
@@ -278,6 +283,6 @@ public class OfferingAndProhabitFormController extends BaseController {
     }
 
     public String doBack() {
-     return "/protected/recruitment/offering_letter_view.htm?faces-redirect=true";
+        return "/protected/recruitment/offering_letter_view.htm?faces-redirect=true";
     }
 }

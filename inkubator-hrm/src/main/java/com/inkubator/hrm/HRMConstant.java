@@ -508,6 +508,7 @@ public class HRMConstant {
     public static final String SCHEDULER_CONFIG_NAME_ANNOUNCMENT_SENDING_NOTIF = "ANNOUNCMENT_SENDING_NOTIF";
     public static final String SCHEDULER_MONITORING_LOG_DELETE = "MONITORING_SCHEDULE_LOG_DELETE";
     public static final String SCHEDULER_PASSWORD_COMPLEXITY = "PASSWORD_COMPLEXITY_NOTIF";
+    public static final String SCHEDULER_RECRUITMENT_CONFIG_EMP = "RECRUITMENT_CONFIG_EMP";
     /* END */
 
     /* Constant for Recruit Applicant */
@@ -515,7 +516,7 @@ public class HRMConstant {
     public static final Integer RECRUIT_APPLICANT_CAREER_CANDIDATE_INTERNAL = 1;
     public static final Integer RECRUIT_APPLICANT_CAREER_CANDIDATE_INTERNAL_AND_EXTERNAL = 2;
     /* END */
-    
+
     /* Constant for Selection Applicant */
     public static final String SELECTION_APPLICANT_STATUS_NEW = "NEW";
     public static final String SELECTION_APPLICANT_STATUS_IN_PROGRESS = "IN_PROGRESS";
@@ -528,7 +529,7 @@ public class HRMConstant {
     public static final Integer LETTER_TYPE_PROBATION = 1;
     public static final Integer LETTER_TYPE_REJECT = 2;
     public static final Integer LETTER_TYPE_RESCHEDULE = 3;
-    
+
     /*CONSTANT FOR EMAIL DIRECT TO PAGE APPROVAL*/
     public static final String REIMBURSMENT_APPROVAL_PAGE = "/protected/reimbursement/rmbs_application_approval_form.htm";
     public static final String LOAN_NEW_APPROVAL_PAGE = "/protected/personalia/loan_new_approval_form.htm";
@@ -544,4 +545,10 @@ public class HRMConstant {
     public static final String RECRUITMENT_REQUEST_APPROVAL_PAGE = "/protected/recruitment/recruitment_req_approval_form.htm";
     public static final String EMP_CORRECTION_ATTENDANCE_APPROVAL_PAGE = "/protected/working_time/emp_correction_attendance_approval_form.htm";
     public static final String VACANCY_ADVERTISEMENT_APPROVAL_PAGE = "/protected/recruitment/vacancy_advertisement_approval_form.htm";
+    
+    /* Constant for Selection Applicant Passed */
+    public static final String SELECTION_APPLICANT_PASSED_STATUS_PENDING = "PENDING";
+    public static final String SELECTION_APPLICANT_PASSED_STATUS_EMPLOYEMENT = "EMPLOYEMENT";
+    public static final String SELECTION_APPLICANT_PASSED_STATUS_OFFERING_REJECT = "OFFERING_REJECT";
+    /* END */
 }

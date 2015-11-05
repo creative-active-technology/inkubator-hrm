@@ -231,4 +231,35 @@ public class RecruitMppApplyDetailDaoImpl extends IDAOImpl<RecruitMppApplyDetail
 		return criteria.list();
 	}
 
+	@Override
+	public List<RecruitMppApplyDetail> getListByJabatanIdAndMppPeriodId(Long jabatanId, Long recruitMppPeriodId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("jabatan", "jabatan", JoinType.INNER_JOIN);
+        criteria.createAlias("recruitMppApply", "recruitMppApply", JoinType.INNER_JOIN);
+        criteria.createAlias("recruitMppApply.recruitMppPeriod", "recruitMppPeriod", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("jabatan.id", jabatanId));
+        criteria.add(Restrictions.eq("recruitMppPeriod.id", recruitMppPeriodId));
+        return criteria.list();
+	}
+
+	@Override
+	public RecruitMppApplyDetail getEntityByJabatanIdAndMppPeriodId(Long jabatanId, Long mppPeriodId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("jabatan", "jabatan", JoinType.INNER_JOIN);
+        criteria.createAlias("recruitMppApply", "recruitMppApply", JoinType.INNER_JOIN);
+        criteria.createAlias("recruitMppApply.recruitMppPeriod", "recruitMppPeriod", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("jabatan.id", jabatanId));
+        criteria.add(Restrictions.eq("recruitMppPeriod.id", mppPeriodId));
+        return (RecruitMppApplyDetail) criteria.uniqueResult();
+	}
+
+	@Override
+	public List<RecruitMppApplyDetail> getAllDataWithDetail() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("jabatan", FetchMode.JOIN);
+        criteria.setFetchMode("recruitMppApply", FetchMode.JOIN);
+        criteria.setFetchMode("recruitMppApply.recruitMppPeriod", FetchMode.JOIN);
+		return criteria.list();
+	}
+
 }

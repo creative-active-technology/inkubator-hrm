@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <!--<p:panel style="margin: 10px" >-->
+                    <h:form id="formAccessHistoryId">
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="login_history_1.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['accesshistory.access_history']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['accesshistory.employee_access_history_data']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                    <p:selectOneMenu value="#{accessHistoryViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['global.user_id']}" itemValue="userId"/>
+                                    </p:selectOneMenu>
+                                    <p:inputText id="searchId" value="#{accessHistoryViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{accessHistoryViewController.doSearch()}" update="tableAccessHistoryId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="2">
+                                    <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableAccessHistoryId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Access_History"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{accessHistoryViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:focus for="searchId" />
+
+                        <p:dataTable  var="data"  value="#{accessHistoryViewController.lazy}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableAccessHistoryId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['accesshistory.access_history_list']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width:20px">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="#{data.userId}"  style="width: 100px">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.user_id']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.userId}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.pathUrl}"  style="width: 200px">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_name']}"/>
+                                </f:facet>
+                                <h:outputLink value="#{data.contextPath}#{data.hrmMenu.urlName}" title="#{data.hrmMenu.nameByResourceBundle}">
+                                    <p:outputLabel value="#{data.hrmMenu.nameByResourceBundle}" styleClass="isitext_hrm" style="cursor: pointer"/>
+                                </h:outputLink>
+                            </p:column>
+                            <p:column sortBy="#{data.pathUrl}">
+                                <f:facet name="header">
+                                    <h:outputText value="URL"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.pathUrl}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.dateAccess}" style="width: 170px">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['accesshistory.access_date']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.dateAccess}">
+                                    <f:convertDateTime pattern ="dd-MMMM-yyyy  HH:mm:ss" timeZone="GMT+7"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{accessHistoryViewController.lazy.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formAccessHistoryId" trigger="tableAccessHistoryId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                    <!--</p:panel>-->
+                </div>
+<!--                 <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                </p:dialog>-->
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>
+
