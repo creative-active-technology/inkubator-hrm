@@ -11,14 +11,14 @@ import javax.persistence.Embeddable;
 public class RecruitSelectionApplicantPassedId implements java.io.Serializable {
 
 	private long applicantId;
-	private long jabatanId;
+	private long hireApplyId;
 
 	public RecruitSelectionApplicantPassedId() {
 	}
 
-	public RecruitSelectionApplicantPassedId(long jabatanId, long applicantId) {
+	public RecruitSelectionApplicantPassedId(long hireApplyId, long applicantId) {
 		this.applicantId = applicantId;
-		this.jabatanId = jabatanId;
+		this.hireApplyId = hireApplyId;
 	}
 
 	@Column(name = "applicant_id", nullable = false)
@@ -30,13 +30,13 @@ public class RecruitSelectionApplicantPassedId implements java.io.Serializable {
 		this.applicantId = applicantId;
 	}
 
-	@Column(name = "jabatan_id", nullable = false)
-	public long getJabatanId() {
-		return jabatanId;
+	@Column(name = "hire_apply_id", nullable = false)
+	public long getHireApplyId() {
+		return hireApplyId;
 	}
 
-	public void setJabatanId(long jabatanId) {
-		this.jabatanId = jabatanId;
+	public void setHireApplyId(long hireApplyId) {
+		this.hireApplyId = hireApplyId;
 	}
 
 	public boolean equals(Object other) {
@@ -49,14 +49,14 @@ public class RecruitSelectionApplicantPassedId implements java.io.Serializable {
 		RecruitSelectionApplicantPassedId castOther = (RecruitSelectionApplicantPassedId) other;
 
 		return (this.getApplicantId() == castOther.getApplicantId())
-				&& (this.getJabatanId() == castOther.getJabatanId());
+				&& (this.getHireApplyId() == castOther.getHireApplyId());
 	}
 
 	public int hashCode() {
 		int result = 17;
 
 		result = 37 * result + (int) this.getApplicantId();
-		result = 37 * result + (int) this.getJabatanId();
+		result = 37 * result + (int) this.getHireApplyId();
 		return result;
 	}
 
