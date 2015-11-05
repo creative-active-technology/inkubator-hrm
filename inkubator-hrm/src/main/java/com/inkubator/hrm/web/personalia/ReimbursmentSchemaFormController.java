@@ -53,7 +53,7 @@ public class ReimbursmentSchemaFormController extends BaseController{
     @ManagedProperty(value = "#{employeeTypeService}")
     private EmployeeTypeService employeeTypeService;
     //Dropdown
-    private Map<String, Long> dropDownCostCenter = new TreeMap<String, Long>();;
+    private Map<String, Long> dropDownCostCenter = new TreeMap<String, Long>();
     private List<CostCenter> listCostCenter = new ArrayList<>();
     private DualListModel<EmployeeType> dualListModel = new DualListModel<>();
     private Boolean isNominalLimit;
