@@ -162,6 +162,10 @@ public class OfferingAndProhabitFormController extends BaseController {
         }
     }
 
+    public void doGetValue(){
+    	System.out.println(offeringAndProhabitModel.getCode() + " hahihuheho");
+    }
+    
     private RecruitLetters getEntityFromViewModel(OfferingAndProhabitModel model) {
         RecruitLetters recruitLetters = new RecruitLetters();
         if (model.getId() != null) {

@@ -3,6 +3,9 @@
  */
 package com.inkubator.hrm.web;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,22 +18,25 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 
+import net.sf.jasperreports.engine.JRException;
+
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
+import com.inkubator.hrm.entity.Company;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.service.BioDataService;
+import com.inkubator.hrm.service.CompanyService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.LogMonthEndPayrollService;
 import com.inkubator.hrm.service.LogMonthEndTaxesService;
 import com.inkubator.hrm.service.LogUnregPayrollService;
 import com.inkubator.hrm.util.CommonReportUtil;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.search.ReportSalaryNoteSearchParameter;
 import com.inkubator.hrm.web.search.UnregPayrollSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
-
-import net.sf.jasperreports.engine.JRException;
 
 /**
  *
@@ -50,6 +56,8 @@ public class ReportStreamController extends BaseController {
     private LogMonthEndTaxesService logMonthEndTaxesService;
     @ManagedProperty(value = "#{logUnregPayrollService}")
     private LogUnregPayrollService logUnregPayrollService;
+    @ManagedProperty(value = "#{companyService}")
+    private CompanyService companyService;
 
     @PostConstruct
     @Override
@@ -119,6 +127,23 @@ public class ReportStreamController extends BaseController {
     	return file;
     }
 
+    public StreamedContent getOfferingLetter() throws JRException, SQLException, Exception{
+    	Map<String, Object> params = new HashMap<>();
+    	FacesContext context = FacesUtil.getFacesContext();
+    	StreamedContent file = new DefaultStreamedContent();
+    	String contentSurat = context.getExternalContext().getRequestParameterMap().get("contentSurat");
+    	String penandaTangan = context.getExternalContext().getRequestParameterMap().get("penandaTangan");
+    	String signature = context.getExternalContext().getRequestParameterMap().get("signature");
+    	System.out.println(signature);
+    	// parameter
+    	params.put("companyId", HrmUserInfoUtil.getCompanyId());
+    	params.put("contentSurat", contentSurat);
+    	params.put("penandaTangan", penandaTangan);
+    	params.put("signature", signature);
+        file = CommonReportUtil.exportReportToPDFStream("offering_letter_report.jasper", params, "Test.pdf");
+        return file;
+    }
+    
     public StreamedContent getFilePph() {
     
         FacesContext context = FacesUtil.getFacesContext();
@@ -237,4 +262,15 @@ public class ReportStreamController extends BaseController {
 		this.logUnregPayrollService = logUnregPayrollService;
 	}
 
+	public CompanyService getCompanyService() {
+		return companyService;
+	}
+
+	public void setCompanyService(CompanyService companyService) {
+		this.companyService = companyService;
+	}
+
+	
+
+	
 }
