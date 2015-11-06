@@ -9,18 +9,27 @@ import java.math.BigInteger;
  */
 public class SelectionApplicantPassedViewModel implements Serializable {
 	private BigInteger applicantId;
+	private BigInteger hireApplyId;
 	private String applicantName;
 	private Integer applicantCareerCandidate;
 	private Double maxScore;
 	private Double minScore;
 	private String selectionTypeOfMaxScore;
 	private String selectionTypeOfMinScore;
+	private String placementStatus;
+	
 	
 	public BigInteger getApplicantId() {
 		return applicantId;
 	}
 	public void setApplicantId(BigInteger applicantId) {
 		this.applicantId = applicantId;
+	}
+	public BigInteger getHireApplyId() {
+		return hireApplyId;
+	}
+	public void setHireApplyId(BigInteger hireApplyId) {
+		this.hireApplyId = hireApplyId;
 	}
 	public String getApplicantName() {
 		return applicantName;
@@ -57,6 +66,12 @@ public class SelectionApplicantPassedViewModel implements Serializable {
 	}
 	public void setSelectionTypeOfMinScore(String selectionTypeOfMinScore) {
 		this.selectionTypeOfMinScore = selectionTypeOfMinScore;
+	}
+	public String getPlacementStatus() {
+		return placementStatus;
+	}
+	public void setPlacementStatus(String placementStatus) {
+		this.placementStatus = placementStatus;
 	}
 		
 }

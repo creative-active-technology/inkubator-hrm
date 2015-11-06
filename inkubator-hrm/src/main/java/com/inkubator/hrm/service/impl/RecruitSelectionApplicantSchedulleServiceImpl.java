@@ -16,6 +16,7 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.RecruitApplicantDao;
 import com.inkubator.hrm.dao.RecruitHireApplyDao;
+import com.inkubator.hrm.dao.RecruitSelectionApplicantPassedDao;
 import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDao;
 import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDetailDao;
 import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDetailRealizationDao;
@@ -24,6 +25,8 @@ import com.inkubator.hrm.dao.RecruitmenSelectionSeriesDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.entity.RecruitHireApply;
+import com.inkubator.hrm.entity.RecruitSelectionApplicantPassed;
+import com.inkubator.hrm.entity.RecruitSelectionApplicantPassedId;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulle;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulleDetail;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulleDetailRealization;
@@ -58,6 +61,8 @@ public class RecruitSelectionApplicantSchedulleServiceImpl extends IServiceImpl	
 	private RecruitSelectionTypeDao recruitSelectionTypeDao;
 	@Autowired
 	private RecruitSelectionApplicantSchedulleDetailRealizationDao recruitSelectionApplicantSchedulleDetailRealizationDao;
+	@Autowired
+	private RecruitSelectionApplicantPassedDao recruitSelectionApplicantPassedDao;
 	
 	@Override
 	public RecruitSelectionApplicantSchedulle getEntiyByPK(String id) throws Exception {
@@ -335,6 +340,7 @@ public class RecruitSelectionApplicantSchedulleServiceImpl extends IServiceImpl	
 			List<RecruitSelectionApplicantSchedulleDetailRealization> listMaxScore = recruitSelectionApplicantSchedulleDetailRealizationDao.getAllDataByApplicantIdAndSelectionApplicantSchedulleIdAndScore(model.getApplicantId().longValue(), scheduleId, model.getMaxScore());
 			List<RecruitSelectionApplicantSchedulleDetailRealization> listMinScore = recruitSelectionApplicantSchedulleDetailRealizationDao.getAllDataByApplicantIdAndSelectionApplicantSchedulleIdAndScore(model.getApplicantId().longValue(), scheduleId, model.getMinScore());
 			
+			//clear buffer
 			selectionTypeOfMaxScore.setLength(0);
 			selectionTypeOfMinScore.setLength(0);
 			
