@@ -173,9 +173,9 @@ public class RecruitMppApplyDetailTimeServiceImpl extends IServiceImpl implement
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
 	public RecruitMppApplyDetailTime getEntiyByPK(Long arg0) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return recruitMppApplyDetailTimeDao.getEntiyByPK(arg0);
 	}
 
 	@Override
@@ -248,20 +248,32 @@ public class RecruitMppApplyDetailTimeServiceImpl extends IServiceImpl implement
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void saveDataAndUpdateMppApplyDetail(RecruitMppApplyDetailTime entity) throws Exception {
+	public void updateActualAndDifferenceListMppDetailTimeBasedOnSelectedEntity(RecruitMppApplyDetailTime entity) throws Exception {
+		RecruitMppApplyDetailTime mppDetailToUpdate = recruitMppApplyDetailTimeDao.getEntiyByPK(entity.getId());
+		Date mppMonthApplyOfSelectedEntity = mppDetailToUpdate.getMppMonthApply();
+		Integer difference = entity.getDifference();
 		
-		RecruitMppApplyDetail mppApplyDetail = recruitMppApplyDetailDao.getEntiyByPK(entity.getRecruitMppApplyDetail().getId());
-		mppApplyDetail.setRecruitPlan(entity.getPlanningPerson());
-		recruitMppApplyDetailDao.update(mppApplyDetail);
+		mppDetailToUpdate.setActual(entity.getActual());
+		mppDetailToUpdate.setPlanningPerson(entity.getPlanningPerson());
+		mppDetailToUpdate.setDifference(entity.getDifference());
+		recruitMppApplyDetailTimeDao.update(mppDetailToUpdate);
 		
-		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-		entity.setRecruitMppApplyDetail(mppApplyDetail);
-		entity.setCreatedBy(HrmUserInfoUtil.getUserName());
-		entity.setCreatedOn(new Date());
-		recruitMppApplyDetailTimeDao.save(entity);
+		List<RecruitMppApplyDetailTime> listMppDetailTime = recruitMppApplyDetailTimeDao.getListWithMppMonthApplyLaterThanParam(entity.getRecruitMppApplyDetail().getId(), mppMonthApplyOfSelectedEntity);
+		
+		for(RecruitMppApplyDetailTime mppApplyDetailTime : listMppDetailTime){
+			RecruitMppApplyDetailTime mppApplyDetailTimeLaterToUpdate = recruitMppApplyDetailTimeDao.getEntiyByPK(mppApplyDetailTime.getId());
+			
+			mppApplyDetailTimeLaterToUpdate.setActual(difference);
+			difference = mppApplyDetailTimeLaterToUpdate.getPlanningPerson() == mppApplyDetailTimeLaterToUpdate.getActual() ? 0 : 
+				mppApplyDetailTimeLaterToUpdate.getPlanningPerson() > mppApplyDetailTimeLaterToUpdate.getActual() ? 
+						(mppApplyDetailTimeLaterToUpdate.getPlanningPerson() - mppApplyDetailTimeLaterToUpdate.getActual()) :
+							(mppApplyDetailTimeLaterToUpdate.getActual() - mppApplyDetailTimeLaterToUpdate.getPlanningPerson());
+						
+			mppApplyDetailTimeLaterToUpdate.setDifference(difference);
+			recruitMppApplyDetailTimeDao.update(mppApplyDetailTimeLaterToUpdate);
+		}
+		
 	}
-
-	
 
 
 }

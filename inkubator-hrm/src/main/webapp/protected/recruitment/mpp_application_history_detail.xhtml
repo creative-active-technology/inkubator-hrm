@@ -105,7 +105,7 @@
                            </p:column>  
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
-                                                 action="#{mppApplicationHistoryDetailController.doUpdateRecruitMppApplyDetail()}" disabled="#{data.id eq null}" > 
+                                                 action="#{mppApplicationHistoryDetailController.doUpdateRecruitMppApplyDetail()}" disabled="#{data.difference le 0}" > 
                                     <f:setPropertyActionListener value="#{data}" target="#{mppApplicationHistoryDetailController.selectedDataList}" />
                                     <p:ajax event="dialogReturn" listener="#{mppApplicationHistoryDetailController.onDialogReturnDataList}"  update="tableMppApplyDetailId,:growlBenefitGroupFormlId"/>
                                 </p:commandButton>

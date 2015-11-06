@@ -37,7 +37,7 @@
 	                                <p:outputLabel value="#{appmsg['recruitment.recruitment_plan']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{selectionApplicantPassedFormController.mppApplyDetail.recruitMppApply.recruitMppApplyName}"/>
+	                            	<p:outputLabel value="#{selectionApplicantPassedFormController.model.mppApplyDetail.recruitMppApply.recruitMppApplyName}"/>
 	                            </p:column>
 	                        </p:row>   
 	                        <p:row>
@@ -45,7 +45,7 @@
 	                                <p:outputLabel value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{selectionApplicantPassedFormController.selectionApplicantSchedulle.hireApply.jabatan.name}"/>
+	                            	<p:outputLabel value="#{selectionApplicantPassedFormController.model.selectionApplicantSchedulle.hireApply.jabatan.name}"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -53,11 +53,11 @@
 	                                <p:outputLabel value="#{appmsg['mppRecruitmentHist.mpp_period']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{selectionApplicantPassedFormController.selectionApplicantSchedulle.hireApply.recruitMppPeriod.periodeStart}">
+	                            	<p:outputLabel value="#{selectionApplicantPassedFormController.model.selectionApplicantSchedulle.hireApply.recruitMppPeriod.periodeStart}">
 	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
 	                            	</p:outputLabel>
 	                            	<p:outputLabel value="&nbsp; - &nbsp;"/>
-	                            	<p:outputLabel value="#{selectionApplicantPassedFormController.selectionApplicantSchedulle.hireApply.recruitMppPeriod.periodeEnd}">
+	                            	<p:outputLabel value="#{selectionApplicantPassedFormController.model.selectionApplicantSchedulle.hireApply.recruitMppPeriod.periodeEnd}">
 	                            		<f:convertDateTime pattern="dd MMMM yyyy" />
 	                            	</p:outputLabel>
 	                            </p:column>
@@ -67,7 +67,7 @@
 	                                <p:outputLabel value="#{appmsg['applicant_passed.recruit']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{selectionApplicantPassedFormController.selectionApplicantSchedulle.hireApply.candidateCountRequest}"/>
+	                            	<p:outputLabel value="#{selectionApplicantPassedFormController.model.selectionApplicantSchedulle.hireApply.candidateCountRequest}"/>
 	                            </p:column>
 	                        </p:row>
 	                 	</p:panelGrid>	     
@@ -85,7 +85,7 @@
 								</f:facet>
 								<h:outputLabel value="#{no+1}." />
 							</p:column>
-							<p:column sortBy="#{data.applicantName}" style="width: 20%">
+							<p:column sortBy="#{data.applicantName}" style="width: 15%">
 								<f:facet name="header">
 									<h:outputText value="#{appmsg['applicant_realization.applicant_name']}" />
 								</f:facet>
@@ -111,15 +111,24 @@
 								</f:facet>
 								<h:outputLabel value="#{data.minScore} - #{data.selectionTypeOfMinScore}" />
 							</p:column>
-							<p:column headerText="#{appmsg['global.action']}" style="width: 15%;text-align: center" exportable="false">
+							<p:column style="width: 7%">
+								<f:facet name="header">
+									<h:outputText value="#{appmsg['global.select']}" />
+								</f:facet>
+								<p:selectBooleanButton value="#{selectionApplicantPassedFormController.model.selectedIds[data.applicantId]}" styleClass="label_button"
+					            					   rendered="#{data.placementStatus == null}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" offIcon="ui-icon-close">
+					            </p:selectBooleanButton>
+					      		<h:outputLabel value="#{data.placementStatus}"  rendered="#{data.placementStatus != null}"/>
+							</p:column>
+							<p:column headerText="#{appmsg['global.action']}" style="width: 13%;text-align: center" exportable="false">
                                 <p:commandButton action="#{selectionApplicantPassedFormController.doGenerateCV}" value="CV" title="CV" label="CV" style="font-size: 10px!important">                        
-                                    <f:setPropertyActionListener value="#{data}" target="#{selectionApplicantPassedFormController.selected}" />
+                                    <f:setPropertyActionListener value="#{data}" target="#{selectionApplicantPassedFormController.selectedApplicant}" />
                                 </p:commandButton>
                                 
                                 <p:commandButton value="#{appmsg['recruitSelectionSeriesView.recruit_selection_series']}" title="#{appmsg['recruitSelectionSeriesView.recruit_selection_series']}" label="#{appmsg['recruitSelectionSeriesView.recruit_selection_series']}" 
-                                				 action="#{selectionApplicantPassedFormController.doViewDetailScore()}" update=":formSelectionSeriesId:tableSelectionSeriesId" 
+                                				 action="#{selectionApplicantPassedFormController.doViewSeriesDetailScore()}" update=":formSelectionSeriesId:tableSelectionSeriesId" 
                                 				 onclick="PF('statusDialog').show()" oncomplete="PF('dialogSelectionSeries').show()" style="font-size: 10px!important" >                        
-                                    <f:setPropertyActionListener value="#{data}" target="#{selectionApplicantPassedFormController.selected}" />
+                                    <f:setPropertyActionListener value="#{data}" target="#{selectionApplicantPassedFormController.selectedApplicant}" />
                                 </p:commandButton>
                             </p:column>
 							<f:facet name="footer">
@@ -148,7 +157,7 @@
                 <p:dialog widgetVar="dialogSelectionSeries" header="#{appmsg['applicant_passed.data_selection_series']}" styleClass="header_small_no_bold" width="700" modal="true" resizable="false" hideEffect="puff" 
                           showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
                     <h:form id="formSelectionSeriesId">
-                    	<p:dataTable id="tableSelectionSeriesId" var="dataSeries" value="#{selectionApplicantPassedFormController.listDetailRealization}"
+                    	<p:dataTable id="tableSelectionSeriesId" var="dataSeries" value="#{selectionApplicantPassedFormController.listSelectionDetailRealization}"
 									 lazy="true" paginator="false" style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
                         	<p:column style="text-align: center;width: 10%">
 								<f:facet name="header">
