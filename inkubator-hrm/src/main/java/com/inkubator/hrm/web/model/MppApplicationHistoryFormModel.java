@@ -15,6 +15,7 @@ public class MppApplicationHistoryFormModel implements Serializable {
     private Long mpp;
     private Long difference;
     private Date periodeStart;
+    private Long maxMpp;
     
 	public Long getId() {
 		return id;
@@ -59,5 +60,13 @@ public class MppApplicationHistoryFormModel implements Serializable {
 	public void setPeriodeStart(Date periodeStart) {
 		this.periodeStart = periodeStart;
 	}
+	public Long getMaxMpp() {
+		return maxMpp;
+	}
+	public void setMaxMpp(Long maxMpp) {
+		this.maxMpp = maxMpp;
+	}
+	
+	
    
 }

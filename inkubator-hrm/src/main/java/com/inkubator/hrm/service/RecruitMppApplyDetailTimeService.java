@@ -9,6 +9,6 @@ import com.inkubator.hrm.entity.RecruitMppApplyDetailTime;
  */
 public interface RecruitMppApplyDetailTimeService extends IService<RecruitMppApplyDetailTime> {
 	
-	public void saveDataAndUpdateMppApplyDetail(RecruitMppApplyDetailTime entity) throws Exception;
+	public void updateActualAndDifferenceListMppDetailTimeBasedOnSelectedEntity(RecruitMppApplyDetailTime entity) throws Exception;
 	
 }

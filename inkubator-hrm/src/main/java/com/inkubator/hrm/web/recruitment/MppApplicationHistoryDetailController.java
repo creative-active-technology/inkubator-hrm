@@ -71,7 +71,8 @@ public class MppApplicationHistoryDetailController extends BaseController {
     public void doUpdateRecruitMppApplyDetail() {
 
         Map<String, List<String>> dataToSend = new HashMap<>();
-        dataToSend.put("mppApplyDetailId", Arrays.asList(String.valueOf(selectedDataList.getId())));
+        dataToSend.put("mppApplyDetailId", Arrays.asList(String.valueOf(selected.getId())));
+        dataToSend.put("idMppDetailTime", Arrays.asList(String.valueOf(selectedDataList.getId())));
         showDialogRecruitMppApplyDetailHistory(dataToSend);
 
     }
