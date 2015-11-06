@@ -27,7 +27,9 @@ public class RecruitMppApplyDetailTime  implements java.io.Serializable {
      private long id;
      private RecruitMppApplyDetail recruitMppApplyDetail;
      private Date mppMonthApply;
+     private Integer actual;
      private Integer planningPerson;
+     private Integer difference;
      private String createdBy;
      private Date createdOn;
 
@@ -76,9 +78,26 @@ public class RecruitMppApplyDetailTime  implements java.io.Serializable {
     public void setMppMonthApply(Date mppMonthApply) {
         this.mppMonthApply = mppMonthApply;
     }
-
     
-    @Column(name="planning_person")
+    @Column(name="actual")
+    public Integer getActual() {
+		return actual;
+	}
+
+	public void setActual(Integer actual) {
+		this.actual = actual;
+	}
+	
+	@Column(name="difference")
+	public Integer getDifference() {
+		return difference;
+	}
+
+	public void setDifference(Integer difference) {
+		this.difference = difference;
+	}
+
+	@Column(name="planning_person")
     public Integer getPlanningPerson() {
         return this.planningPerson;
     }
