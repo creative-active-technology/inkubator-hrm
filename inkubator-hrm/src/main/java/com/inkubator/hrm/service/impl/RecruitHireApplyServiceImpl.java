@@ -379,21 +379,10 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
         }
     }
 
-//   private List<RecruitReqHistoryViewModel> filterComplexData(List<RecruitReqHistoryViewModel> listRecruitReqHistoryViewModels, RecruitReqHistorySearchParameter parameter ) {
-//        List<RecruitReqHistoryViewModel> listData = listRecruitReqHistoryViewModels;
-//        if(StringUtils.isNotEmpty(parameter.getJabatanName())){
-//            listData = Lambda.select(listData, Lambda.having(Lambda.on(RecruitReqHistoryViewModel.class).getJabatanName(),Matchers.containsString(parameter.getJabatanName())));
-//        }
-//        
-//        if(StringUtils.isNotEmpty(parameter.getFormCode())){
-//            listData = Lambda.select(listData, Lambda.having(Lambda.on(RecruitReqHistoryViewModel.class).getRecHireCode(),Matchers.containsString(parameter.getFormCode())));
-//        }
-//        return listData;
-//    }
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String saveRecruitHireWithApproval(RecruitHireApply recruitHireApply) throws Exception {
-    	String message = "";
+    	String result = StringUtils.EMPTY;
     	Long totalRecruitApprovalDef = approvalDefinitionDao.getTotalApprovalExistWithSequenceOne(HRMConstant.RECRUITMENT_REQUEST);
         String reqHireCode = "RCRQ-" + RandomNumberUtil.getRandomNumber(6);
         
@@ -407,48 +396,77 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
             reqHireCode = "RCRQ-" + RandomNumberUtil.getRandomNumber(6);
         }
         
+        List<RecruitHireApplyDetail> listRecruitHireApplyDetails = new ArrayList<RecruitHireApplyDetail>(recruitHireApply.getRecruitHireApplyDetails());
         String createdBy = StringUtils.isEmpty(recruitHireApply.getCreatedBy()) ? UserInfoUtil.getUserName() : recruitHireApply.getCreatedBy();
         Date createdOn = recruitHireApply.getCreatedOn() == null ? new Date() : recruitHireApply.getCreatedOn();
         
-        /*recruitHireApply.setReqHireCode(reqHireCode);
         recruitHireApply.setCreatedBy(createdBy);
-        recruitHireApply.setCreatedOn(createdOn);*/
-        //parsing recruitHireApply to json 
-/*        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-        JsonParser parser = new JsonParser();
-        JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(recruitHireApply));
-        JsonArray jsonDetailRecruitHireApply = (JsonArray) parser.parse(gson.toJson(recruitHireApply.getRecruitHireApplyDetails()));
-        jsonObject.add("listDetailRecruitHireApply", jsonDetailRecruitHireApply);
-        String jsonPendingData = gson.toJson(jsonObject);*/
-        ////set json pendingData and save activity
-        ApprovalActivity approvalActivity = super.checkApprovalProcess(HRMConstant.RECRUITMENT_REQUEST, createdBy);
-        /*approvalActivity.setPendingData(jsonPendingData);*/
-    	recruitHireApply.setCreatedBy(createdBy);
         recruitHireApply.setCreatedOn(createdOn);
     	recruitHireApply.setReqHireCode(reqHireCode);
-    	recruitHireApply.setCurrency(currencyDao.getEntiyByPK(recruitHireApply.getCurrency().getId()));
-    	recruitHireApply.setJabatan(jabatanDao.getEntiyByPK(recruitHireApply.getJabatan().getId()));
-    	recruitHireApply.setEmployeeType(employeeTypeDao.getEntiyByPK(recruitHireApply.getEmployeeType().getId()));
-        recruitHireApply.setRecruitMppPeriod(recruitMppPeriodDao.getEntiyByPK(recruitHireApply.getRecruitMppPeriod().getId()));
+    	
+    	result = save(recruitHireApply, listRecruitHireApplyDetails, Boolean.FALSE);
+        return result;
+     
+    }
+    
+    private String save(RecruitHireApply entity, List<RecruitHireApplyDetail> listRecruitHireApplyDetails, Boolean isBypassApprovalChecking ) throws Exception{
+    	String result = "error";
+    	
+    	String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
+        Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
         
-        if(approvalActivity == null){
-        	recruitHireApplyDao.save(recruitHireApply);
-            message = "save_without_approval";
-        }else{
-            Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-            JsonParser parser = new JsonParser();
-            JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(recruitHireApply));
-            JsonArray jsonDetailRecruitHireApply = (JsonArray) parser.parse(gson.toJson(recruitHireApply.getRecruitHireApplyDetails()));
-            jsonObject.add("listDetailRecruitHireApply", jsonDetailRecruitHireApply);
-            String jsonPendingData = gson.toJson(jsonObject);
-        	approvalActivity.setPendingData(jsonPendingData);
-            approvalActivityDao.save(approvalActivity);
-            
-            //sending email notification
-            this.sendingApprovalNotification(approvalActivity);
-            message = "success_need_approval";
-        }
-        return message;
+        try {
+        	
+			entity.setCreatedBy(createdBy);
+			entity.setCreatedOn(createdOn);
+			entity.setApplicationStatus(HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL);
+			ApprovalActivity approvalActivity = isBypassApprovalChecking ? null : super.checkApprovalProcess(HRMConstant.RECRUITMENT_REQUEST, createdBy);
+			
+			if(approvalActivity == null){
+				
+				entity.setReqHireCode(this.generateRecruitmentRequestNumber());
+				entity.setCurrency(currencyDao.getEntiyByPK(entity.getCurrency().getId()));
+				entity.setJabatan(jabatanDao.getEntiyByPK(entity.getJabatan().getId()));
+				entity.setEmployeeType(employeeTypeDao.getEntiyByPK(entity.getEmployeeType().getId()));
+				entity.setRecruitMppPeriod(recruitMppPeriodDao.getEntiyByPK(entity.getRecruitMppPeriod().getId()));
+				recruitHireApplyDao.save(entity);
+				
+				for(RecruitHireApplyDetail hireApplyDetail : listRecruitHireApplyDetails){
+					hireApplyDetail.setCreatedBy(createdBy);
+					hireApplyDetail.setCreatedOn(createdOn);
+					hireApplyDetail.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+					hireApplyDetail.setOrgTypeOfSpecList(orgTypeOfSpecListDao.getEntiyByPK(hireApplyDetail.getOrgTypeOfSpecList().getId()));
+					hireApplyDetail.setRecruitHireApply(entity);
+					recruitHireApplyDetailDao.save(hireApplyDetail);
+				}
+				
+			    result = "save_without_approval";
+				
+			}else{
+				
+				approvalActivity.setPendingData(convertToJsonData(entity, listRecruitHireApplyDetails));
+			 	approvalActivityDao.save(approvalActivity);
+			 	
+			 	//sending email notification
+			    this.sendingApprovalNotification(approvalActivity);
+			    result = "success_need_approval";
+			    
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        
+    	return result;
+    }
+    
+    private String convertToJsonData(RecruitHireApply entity, List<RecruitHireApplyDetail> listHireApplyDetails){
+    	 Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+         JsonParser parser = new JsonParser();
+         JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
+         JsonArray jsonDetailRecruitHireApply = (JsonArray) parser.parse(gson.toJson(listHireApplyDetails));
+         jsonObject.add("listDetailRecruitHireApply", jsonDetailRecruitHireApply);
+         String pendingData = gson.toJson(jsonObject);
+         return pendingData;
     }
 
     @Override
@@ -466,33 +484,15 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
         if (approvalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) {
             throw new BussinessException("mpp_recruitment.error_activity_already_approved");
         }
-
-        // parse pending data to get reqHireCode, user Created, and date created
-        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-        JsonParser parser = new JsonParser();
-        JsonObject jsonObject = (JsonObject) parser.parse(approvalActivity.getPendingData());
-        RecruitHireApply recruitHireApplyOld = gson.fromJson(jsonObject, RecruitHireApply.class);
-
-        String reqHireCode = recruitHireApplyOld.getReqHireCode();
-        String createdBy = StringUtils.isEmpty(recruitHireApplyOld.getCreatedBy()) ? UserInfoUtil.getUserName() : recruitHireApplyOld.getCreatedBy();
-        Date createdOn = recruitHireApplyOld.getCreatedOn() == null ? new Date() : recruitHireApplyOld.getCreatedOn();
-        String updatedBy = StringUtils.isEmpty(recruitHireApply.getUpdatedBy()) ? UserInfoUtil.getUserName() : recruitHireApply.getUpdatedBy();
+        
+        String updatedBy = UserInfoUtil.getUserName();
         Date updatedOn = new Date();
-
-        recruitHireApply.setReqHireCode(reqHireCode);
-        recruitHireApply.setCreatedBy(createdBy);
-        recruitHireApply.setCreatedOn(createdOn);
         recruitHireApply.setUpdatedBy(updatedBy);
         recruitHireApply.setUpdatedOn(updatedOn);
+        recruitHireApply.setApplicationStatus(HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL);
+        List<RecruitHireApplyDetail> listHireApplyDetails = new ArrayList<RecruitHireApplyDetail>(recruitHireApply.getRecruitHireApplyDetails());
+        approvalActivity.setPendingData(convertToJsonData(recruitHireApply, listHireApplyDetails));
 
-        //parsing recruitHireApply to json        
-        JsonObject jsonObjectNewRecruitHireApply = (JsonObject) parser.parse(gson.toJson(recruitHireApply));
-        JsonArray jsonDetailRecruitHireApply = (JsonArray) parser.parse(gson.toJson(recruitHireApply.getRecruitHireApplyDetails()));
-        jsonObjectNewRecruitHireApply.add("listDetailRecruitHireApply", jsonDetailRecruitHireApply);
-        String jsonPendingData = gson.toJson(jsonObjectNewRecruitHireApply);
-
-        //update json pendingData and update activity
-        approvalActivity.setPendingData(jsonPendingData);
         approvalActivityDao.update(approvalActivity);
     }
 
@@ -549,26 +549,30 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
 		//initialization
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
-        DecimalFormat decimalFormat = new DecimalFormat("###,###");
 
         //get all sendCC email address on status approve OR reject
         List<String> ccEmailAddresses = new ArrayList<String>();
         if ((appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)) {
-            ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
+            try {
+				ccEmailAddresses = super.getCcEmailAddressesOnApproveOrReject(appActivity);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
 
         //parsing object data to json, for email purpose
         RecruitHireApply recruitHireApply = gson.fromJson(appActivity.getPendingData(), RecruitHireApply.class);
-
+        RecruitMppPeriod recruitMppPeriod = recruitMppPeriodDao.getEntiyByPK(recruitHireApply.getRecruitMppPeriod().getId());
 
         final JSONObject jsonObj = new JSONObject();
         try {
             jsonObj.put("approvalActivityId", appActivity.getId());
             jsonObj.put("ccEmailAddresses", ccEmailAddresses);
             jsonObj.put("locale", appActivity.getLocale());
-            jsonObj.put("proposeDate", dateFormat.format(recruitHireApply.getCreatedOn()));
-            jsonObj.put("periodeStart", dateFormat.format(recruitHireApply.getRecruitMppPeriod().getPeriodeStart()));
-            jsonObj.put("periodeEnd", dateFormat.format(recruitHireApply.getRecruitMppPeriod().getPeriodeEnd()));
+            jsonObj.put("proposeDate", dateFormat.format(recruitHireApply.getProposeDate()));
+            jsonObj.put("periodeStart", dateFormat.format(recruitMppPeriod.getPeriodeStart()));
+            jsonObj.put("periodeEnd", dateFormat.format(recruitMppPeriod.getPeriodeEnd()));
             jsonObj.put("jabatan", recruitHireApply.getJabatan().getName());
             jsonObj.put("mppName", recruitHireApply.getRecruitMppPeriod().getName());
             jsonObj.put("salaryMin", recruitHireApply.getSalaryMin());
@@ -600,39 +604,12 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
              * berarti langsung insert ke database
              */
             RecruitHireApply entity = this.convertJsonToEntity(appActivity.getPendingData());
-
-            String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
-            Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
-
-            Currency currency = currencyDao.getEntiyByPK(entity.getCurrency().getId());
-            EmployeeType employeeType = employeeTypeDao.getEntiyByPK(entity.getEmployeeType().getId());
-            Jabatan jabatan = jabatanDao.getEntiyByPK(entity.getJabatan().getId());
-            RecruitMppPeriod recruitMppPeriod = recruitMppPeriodDao.getEntiyByPK(entity.getRecruitMppPeriod().getId());
-
-            entity.setCurrency(currency);
-            entity.setEmployeeType(employeeType);
-            entity.setJabatan(jabatan);
-            entity.setRecruitMppPeriod(recruitMppPeriod);
-
-            //Set codefication at field reqHireCode
-            entity.setReqHireCode(this.generateRecruitmentRequestNumber());
-            entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-            entity.setCreatedOn(createdOn);
             entity.setApprovalActivityNumber(appActivity.getActivityNumber());
             entity.setApplicationStatus(HRMConstant.APPROVAL_STATUS_APPROVED);
 
             List<RecruitHireApplyDetail> listDetail = new ArrayList<>(entity.getRecruitHireApplyDetails());
+            this.save(entity, listDetail, Boolean.TRUE);
 
-            entity = recruitHireApplyDao.saveData(entity);
-            for (RecruitHireApplyDetail detail : listDetail) {
-                OrgTypeOfSpecList orgTypeOfSpecList = orgTypeOfSpecListDao.getEntiyByPK(detail.getOrgTypeOfSpecList().getId());
-                detail.setOrgTypeOfSpecList(orgTypeOfSpecList);
-                detail.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-                detail.setRecruitHireApply(entity);
-                detail.setCreatedBy(createdBy);
-                detail.setCreatedOn(createdOn);
-                recruitHireApplyDetailDao.save(detail);
-            }
         }
         
         this.sendingApprovalNotification(appActivity);
@@ -650,40 +627,12 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
              * berarti langsung insert ke database
              */
             RecruitHireApply entity = this.convertJsonToEntity(appActivity.getPendingData());
-
-            String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
-            Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
-
-            Currency currency = currencyDao.getEntiyByPK(entity.getCurrency().getId());
-            EmployeeType employeeType = employeeTypeDao.getEntiyByPK(entity.getEmployeeType().getId());
-            Jabatan jabatan = jabatanDao.getEntiyByPK(entity.getJabatan().getId());
-            RecruitMppPeriod recruitMppPeriod = recruitMppPeriodDao.getEntiyByPK(entity.getRecruitMppPeriod().getId());
-
-            entity.setCurrency(currency);
-            entity.setEmployeeType(employeeType);
-            entity.setJabatan(jabatan);
-            entity.setRecruitMppPeriod(recruitMppPeriod);
-
-            //Set codefication at field reqHireCode
-            entity.setReqHireCode(this.generateRecruitmentRequestNumber());
-            entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-            entity.setCreatedOn(createdOn);
             entity.setApprovalActivityNumber(appActivity.getActivityNumber());
             entity.setApplicationStatus(HRMConstant.APPROVAL_STATUS_REJECTED);
 
             List<RecruitHireApplyDetail> listDetail = new ArrayList<>(entity.getRecruitHireApplyDetails());
-
-            entity = recruitHireApplyDao.saveData(entity);
-
-            for (RecruitHireApplyDetail detail : listDetail) {
-                OrgTypeOfSpecList orgTypeOfSpecList = orgTypeOfSpecListDao.getEntiyByPK(detail.getOrgTypeOfSpecList().getId());
-                detail.setOrgTypeOfSpecList(orgTypeOfSpecList);
-                detail.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-                detail.setRecruitHireApply(entity);
-                detail.setCreatedBy(createdBy);
-                detail.setCreatedOn(createdOn);
-                recruitHireApplyDetailDao.save(detail);
-            }
+            this.save(entity, listDetail, Boolean.TRUE);
+           
         }
         this.sendingApprovalNotification(appActivity);
     }
@@ -707,39 +656,12 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
              * berarti langsung insert ke database
              */
             RecruitHireApply entity = this.convertJsonToEntity(appActivity.getPendingData());
-
-            String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
-            Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
-
-            Currency currency = currencyDao.getEntiyByPK(entity.getCurrency().getId());
-            EmployeeType employeeType = employeeTypeDao.getEntiyByPK(entity.getEmployeeType().getId());
-            Jabatan jabatan = jabatanDao.getEntiyByPK(entity.getJabatan().getId());
-            RecruitMppPeriod recruitMppPeriod = recruitMppPeriodDao.getEntiyByPK(entity.getRecruitMppPeriod().getId());
-
-            entity.setCurrency(currency);
-            entity.setEmployeeType(employeeType);
-            entity.setJabatan(jabatan);
-            entity.setRecruitMppPeriod(recruitMppPeriod);
-
-            //Set codefication at field reqHireCode
-            entity.setReqHireCode(this.generateRecruitmentRequestNumber());
-            entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-            entity.setCreatedOn(createdOn);
             entity.setApprovalActivityNumber(appActivity.getActivityNumber());
             entity.setApplicationStatus(HRMConstant.APPROVAL_STATUS_APPROVED);
 
             List<RecruitHireApplyDetail> listDetail = new ArrayList<>(entity.getRecruitHireApplyDetails());
-
-            entity = recruitHireApplyDao.saveData(entity);
-            for (RecruitHireApplyDetail detail : listDetail) {
-                OrgTypeOfSpecList orgTypeOfSpecList = orgTypeOfSpecListDao.getEntiyByPK(detail.getOrgTypeOfSpecList().getId());
-                detail.setOrgTypeOfSpecList(orgTypeOfSpecList);
-                detail.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-                detail.setRecruitHireApply(entity);
-                detail.setCreatedBy(createdBy);
-                detail.setCreatedOn(createdOn);
-                recruitHireApplyDetailDao.save(detail);
-            }
+            this.save(entity, listDetail, Boolean.TRUE);
+            
         }
         
         this.sendingApprovalNotification(appActivity);

@@ -154,6 +154,7 @@ public class RecruitHireApplyFormController extends BaseController {
                     if (selectedApprovalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_APPROVED) {
                         model = convertJsonToModel(selectedApprovalActivity.getPendingData());
                     }
+                    
                 }
             } else {
                 HrmUser user = hrmUserService.getUserWithDetail(UserInfoUtil.getUserName());
@@ -320,11 +321,10 @@ public class RecruitHireApplyFormController extends BaseController {
 
         Long totalMpp = recruitMppApplyDetailService.getRecruitPlanByJabatanIdAndMppPeriodId(recruitHireApplyModel.getJabatanId(), recruitHireApplyModel.getRecruitMppId());
         if (null != totalMpp) {
-            model.setMpp(totalMpp);
+        	recruitHireApplyModel.setMpp(totalMpp);
         } else {
-            model.setMpp(0l);
+        	recruitHireApplyModel.setMpp(0l);
         }
-        
         
         return recruitHireApplyModel;
     }
@@ -366,7 +366,7 @@ public class RecruitHireApplyFormController extends BaseController {
         JsonObject jsonObject = (JsonObject) parser.parse(jsonData);
         RecruitHireApply recruitHireApply = gson.fromJson(jsonObject, RecruitHireApply.class);
         model = getModelFromEntity(recruitHireApply);
-
+        
         JsonArray arrayDetailRecruitmentRequest = jsonObject.getAsJsonArray("listDetailRecruitHireApply");
         List<OrgTypeOfSpecList> listTypeOfSpec = new ArrayList<>();
 
