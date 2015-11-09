@@ -18,11 +18,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.inkubator.hrm.entity.Announcement;
 import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.RecruitAgreementNotice;
 import com.inkubator.hrm.entity.RmbsApplication;
 import com.inkubator.hrm.entity.SystemLetterReference;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.AnnouncementService;
 import com.inkubator.hrm.service.ApprovalActivityService;
+import com.inkubator.hrm.service.RecruitAgreementNoticeService;
 import com.inkubator.hrm.service.RmbsApplicationService;
 import com.inkubator.hrm.service.SystemLetterReferenceService;
 import com.inkubator.webcore.controller.BaseController;
@@ -45,6 +47,8 @@ public class FileStreamerController extends BaseController {
     private ApprovalActivityService approvalActivityService;
     @ManagedProperty(value = "#{systemLetterReferenceService}")
     private SystemLetterReferenceService systemLetterReferenceService;
+    @ManagedProperty(value = "#{recruitAgreementNoticeService}")
+    private RecruitAgreementNoticeService recruitAgreementNoticeService;
     @ManagedProperty(value = "#{facesIO}")
     private FacesIO facesIO;
 
@@ -83,6 +87,34 @@ public class FileStreamerController extends BaseController {
                     InputStream is = new ByteArrayInputStream(entity.getReceiptAttachment());
                     streamedContent = new DefaultStreamedContent(is, null, entity.getReceiptAttachmentName());
                 }
+            } catch (Exception ex) {
+                LOGGER.error("Error", ex);
+            }
+        }
+
+        return streamedContent;
+    }
+    
+    public StreamedContent getFileCv() throws NumberFormatException, Exception{
+    	System.out.println("hahahihihuhuhehehoho");
+    	FacesContext context = FacesUtil.getFacesContext();
+        String bioDataId = context.getExternalContext().getRequestParameterMap().get("bioDataId");
+        System.out.println(bioDataId + " bioData dari fielStreamerController");
+        StreamedContent streamedContent = new DefaultStreamedContent();
+        RecruitAgreementNotice entity = recruitAgreementNoticeService.getEntityByBioDataId(Long.parseLong(bioDataId));
+        
+        System.out.println(entity.getUploadedCv() + " file CV");
+        String fileName = "";
+        if (entity != null) {
+            try {
+        		//get file name from path uploadedCv without extension file, ex: test/testFolder/file.docx
+            	fileName = StringUtils.substringAfterLast(entity.getUploadedCv(), "/");
+            	//get extension file (docx) from path uploadedCv without extension file, ex: test/testFolder/file.docx
+            	String extension = StringUtils.substringAfterLast(entity.getUploadedCv(), ".");
+                //combine from file to make name file.docx from variable fileName and extension
+            	fileName = fileName+"."+extension;
+                InputStream is = facesIO.getInputStreamFromURL(entity.getUploadedCv());
+                streamedContent = new DefaultStreamedContent(is, null, fileName);                
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }
@@ -206,6 +238,15 @@ public class FileStreamerController extends BaseController {
     public void setSystemLetterReferenceService(SystemLetterReferenceService systemLetterReferenceService) {
         this.systemLetterReferenceService = systemLetterReferenceService;
     }
+
+	public RecruitAgreementNoticeService getRecruitAgreementNoticeService() {
+		return recruitAgreementNoticeService;
+	}
+
+	public void setRecruitAgreementNoticeService(
+			RecruitAgreementNoticeService recruitAgreementNoticeService) {
+		this.recruitAgreementNoticeService = recruitAgreementNoticeService;
+	}
 
     
     

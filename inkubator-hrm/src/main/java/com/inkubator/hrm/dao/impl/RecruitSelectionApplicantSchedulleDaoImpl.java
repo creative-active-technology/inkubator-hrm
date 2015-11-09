@@ -120,9 +120,11 @@ public class RecruitSelectionApplicantSchedulleDaoImpl extends IDAOImpl<RecruitS
 	public List<SelectionApplicantPassedViewModel> getSelectionApplicantPassedByParam(Long scheduleId, int firstResults, int maxResults, Order orderable) {
 		
 		StringBuffer selectQuery = new StringBuffer(
-    			"SELECT applicantId, applicantName, applicantCareerCandidate, maxScore, minScore "
+    			"SELECT applicantId, applicantName, placementStatus, applicantCareerCandidate, maxScore, minScore "
     			+ "FROM ( "
     			+ "SELECT recruitApplicant.id AS applicantId, "
+    			+ "schedule.hire_apply_id AS hireApplyId, "
+    			+ "applicantPassed.placement_status AS placementStatus, "
     			+ "ltrim(concat(concat(bioData.first_name, ' '), bioData.last_name)) AS applicantName, "
     			+ "recruitApplicant.career_candidate AS applicantCareerCandidate, "
     			+ "CASE WHEN SUM(CASE WHEN scheduleRealization.id IS NULL OR scheduleRealization.status!='PASS' THEN 1 ELSE 0 END) = 0 THEN 'PASS' ELSE 'FAILED' END AS status, "
@@ -133,6 +135,7 @@ public class RecruitSelectionApplicantSchedulleDaoImpl extends IDAOImpl<RecruitS
     			+ "LEFT JOIN recruit_applicant AS recruitApplicant ON recruitApplicant.id = scheduleDetail.applicant_id "
     			+ "LEFT JOIN bio_data AS bioData ON bioData.id = recruitApplicant.bio_data_id "
     			+ "LEFT JOIN recruit_selection_applicant_schedulle_detail_realization AS scheduleRealization ON scheduleRealization.schedulle_detail_id = scheduleDetail.id "
+    			+ "LEFT JOIN recruit_selection_applicant_passed AS applicantPassed ON applicantPassed.applicant_id=recruitApplicant.id AND applicantPassed.hire_apply_id=schedule.hire_apply_id "
     			+ "WHERE schedule.id= " + scheduleId + " "
     			+ "GROUP BY scheduleDetail.applicant_id "
     			+ ") AS temp "
@@ -150,6 +153,8 @@ public class RecruitSelectionApplicantSchedulleDaoImpl extends IDAOImpl<RecruitS
     			"SELECT count(*) "
     			+ "FROM ( "
     	    	+ "SELECT recruitApplicant.id AS applicantId, "
+    	    	+ "schedule.hire_apply_id AS hireApplyId, "
+    			+ "applicantPassed.placement_status AS placementStatus, "
     	    	+ "ltrim(concat(concat(bioData.first_name, ' '), bioData.last_name)) AS applicantName, "
     	    	+ "recruitApplicant.career_candidate AS applicantCareerCandidate, "
     	    	+ "CASE WHEN SUM(CASE WHEN scheduleRealization.id IS NULL OR scheduleRealization.status!='PASS' THEN 1 ELSE 0 END) = 0 THEN 'PASS' ELSE 'FAILED' END AS status, "
@@ -160,6 +165,7 @@ public class RecruitSelectionApplicantSchedulleDaoImpl extends IDAOImpl<RecruitS
     	    	+ "LEFT JOIN recruit_applicant AS recruitApplicant ON recruitApplicant.id = scheduleDetail.applicant_id "
     	    	+ "LEFT JOIN bio_data AS bioData ON bioData.id = recruitApplicant.bio_data_id "
     	    	+ "LEFT JOIN recruit_selection_applicant_schedulle_detail_realization AS scheduleRealization ON scheduleRealization.schedulle_detail_id = scheduleDetail.id "
+    	    	+ "LEFT JOIN recruit_selection_applicant_passed AS applicantPassed ON applicantPassed.applicant_id=recruitApplicant.id AND applicantPassed.hire_apply_id=schedule.hire_apply_id "
     	    	+ "WHERE schedule.id= " + scheduleId + " "
     	    	+ "GROUP BY scheduleDetail.applicant_id "
     	    	+ ") AS temp "

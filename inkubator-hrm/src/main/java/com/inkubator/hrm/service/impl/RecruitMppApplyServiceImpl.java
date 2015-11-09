@@ -343,7 +343,6 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
 
         String createdBy = StringUtils.isEmpty(entity.getCreatedBy()) ? UserInfoUtil.getUserName() : entity.getCreatedBy();
         Date createdOn = entity.getCreatedOn() == null ? new Date() : entity.getCreatedOn();
-        System.out.println("createBy : " + createdBy);
         entity.setCreatedBy(createdBy);
         entity.setCreatedOn(createdOn);
         entity.setApplicationStatus(HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL);

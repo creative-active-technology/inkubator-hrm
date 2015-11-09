@@ -2297,13 +2297,13 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 			query.append(" INNER JOIN bio_education_history beh ON el.id = beh.pendidikan_level_id");
 			query.append(" INNER JOIN bio_data bio2 ON bio2.id = beh.biodata_id");
 			query.append(" WHERE beh.biodata_id = bio.id ORDER by el.name DESC LIMIT 1 ) as lastEducationLevel");
-			query.append(" FROM emp_data emp ");
-			query.append(" INNER JOIN bio_data bio ON bio.id = emp.bio_data_id");
+			query.append(" FROM bio_data bio ");
+			query.append(" LEFT JOIN emp_data emp ON bio.id = emp.bio_data_id");
 /*			query.append(" INNER JOIN bio_education_history beh ON beh.biodata_id = bio.id");
 			query.append(" INNER JOIN education_level el ON el.id = beh.pendidikan_level_id");*/
-			query.append(" INNER JOIN jabatan jabatan ON emp.jabatan_id = jabatan.id");
-			query.append(" INNER JOIN golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
-			query.append(" INNER JOIN pangkat pangkat ON goljab.pangkat_id = pangkat.id");
+			query.append(" LEFT JOIN jabatan jabatan ON emp.jabatan_id = jabatan.id");
+			query.append(" LEFT JOIN golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
+			query.append(" LEFT JOIN pangkat pangkat ON goljab.pangkat_id = pangkat.id");
 			//query for action searching
 			doSearchEmployeeForRecruitAgreementNoticeWithNativeQuery(searchParameter, query);
 			//order query base on orderable
@@ -2342,11 +2342,11 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 		query.append(" INNER JOIN bio_education_history beh ON el.id = beh.pendidikan_level_id");
 		query.append(" INNER JOIN bio_data bio2 ON bio2.id = beh.biodata_id");
 		query.append(" WHERE beh.biodata_id = bio.id ORDER by el.name DESC LIMIT 1 ) as lastEducationLevel");		
-		query.append(" FROM emp_data emp ");
-		query.append(" INNER JOIN bio_data bio ON bio.id = emp.bio_data_id");
-		query.append(" INNER JOIN jabatan jabatan ON emp.jabatan_id = jabatan.id");
-		query.append(" INNER JOIN golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
-		query.append(" INNER JOIN pangkat pangkat ON goljab.pangkat_id = pangkat.id");
+		query.append(" FROM bio_data bio ");
+		query.append(" LEFT JOIN emp_data emp ON bio.id = emp.bio_data_id");
+		query.append(" LEFT JOIN jabatan jabatan ON emp.jabatan_id = jabatan.id");
+		query.append(" LEFT JOIN golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
+		query.append(" LEFT JOIN pangkat pangkat ON goljab.pangkat_id = pangkat.id");
 		//query for action searching
 		doSearchEmployeeForRecruitAgreementNoticeWithNativeQuery(searchParameter, query);
 		query.append(" ) as totalRows");
