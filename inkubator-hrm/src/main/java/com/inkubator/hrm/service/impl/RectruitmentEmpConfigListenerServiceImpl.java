@@ -65,24 +65,9 @@ public class RectruitmentEmpConfigListenerServiceImpl extends BaseSchedulerDinam
         LOGGER.warn("---------------  Check Recruitmet Emp Config =====================");
         List<RecruitSelectionApplicantPassed> thatPendings = recruitSelectionApplicantPassedDao.getAllWithPlacementStatus(HRMConstant.SELECTION_APPLICANT_PASSED_STATUS_PENDING);
         for (RecruitSelectionApplicantPassed thatPending : thatPendings) {
-            List<RecruitSelectionApplicantSchedulleDetail> selectionDetailGroupByAplicantUdAndMaxOrder = recruitSelectionApplicantSchedulleDetailDao.getAllByApplicatIdAndMaxListOrder(thatPending.getApplicant().getId());
-            for (RecruitSelectionApplicantSchedulleDetail detail : selectionDetailGroupByAplicantUdAndMaxOrder) {
-                Long selectionTypeId = detail.getSelectionType().getId();
-                Long scheduleid = detail.getRecruitSelectionApplicantSchedulle().getId();
-                RecruitSelectionApplicantSchedulle applicantSchedulle = recruitSelectionApplicantSchedulleDao.getEntiyByPK(scheduleid);
-                Long selectionSeriesId = applicantSchedulle.getSelectionSeries().getId();
-                RecruitmenSelectionSeriesDetail target = recruitmenSelectionSeriesDetailDao.getEntityByPk(new RecruitmenSelectionSeriesDetailId(selectionSeriesId, selectionTypeId));
-                RecruitLetters accept = target.getRecruitLettersByAcceptLetterId();
-                Integer expiryDays = null;
-                if (accept != null) {
-                    expiryDays = accept.getExpiryDays();
-                    Date expiredDate = DateTimeUtil.getDateFrom(thatPending.getCreatedOn(), expiryDays, CommonUtilConstant.DATE_FORMAT_DAY);
-                    Date now = DateUtils.truncate(new Date(), Calendar.DATE);
-                    if (expiredDate.before(now) || expiredDate.equals(now)) {
-                        recruitSelectionApplicantPassedDao.delete(thatPending);
-                    }
-                }
-                
+          Date now = DateUtils.truncate(new Date(), Calendar.DATE);
+            if(thatPending.getLetterExpired().equals(now)||thatPending.getLetterExpired().before(now)){
+                  recruitSelectionApplicantPassedDao.delete(thatPending);
             }
         }
     }
