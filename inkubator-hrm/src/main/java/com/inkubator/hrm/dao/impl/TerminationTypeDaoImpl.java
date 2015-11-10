@@ -7,6 +7,7 @@ import com.inkubator.hrm.web.search.TerminationTypeSearchParameter;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -34,6 +35,7 @@ public class TerminationTypeDaoImpl extends IDAOImpl<TerminationType> implements
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
+        criteria.setFetchMode("systemLetterReference", FetchMode.JOIN);
         return criteria.list();
     }
 

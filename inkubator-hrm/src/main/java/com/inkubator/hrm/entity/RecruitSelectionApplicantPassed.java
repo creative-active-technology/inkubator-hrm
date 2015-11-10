@@ -33,9 +33,9 @@ public class RecruitSelectionApplicantPassed implements java.io.Serializable {
     private Date letterExpired;
     private String placementStatus;
     private Date createdOn;
-	private String createdBy;
-	private String updatedBy;
-	private Date updatedOn;
+    private String createdBy;
+    private String updatedBy;
+    private Date updatedOn;
 
     public RecruitSelectionApplicantPassed() {
     }
@@ -57,7 +57,7 @@ public class RecruitSelectionApplicantPassed implements java.io.Serializable {
     public void setId(RecruitSelectionApplicantPassedId id) {
         this.id = id;
     }
-    
+
     @Version
     @Column(name = "version")
     public Integer getVersion() {
@@ -67,67 +67,67 @@ public class RecruitSelectionApplicantPassed implements java.io.Serializable {
     public void setVersion(Integer version) {
         this.version = version;
     }
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "applicant_id", nullable = false, insertable = false, updatable = false)
     public RecruitApplicant getApplicant() {
-		return applicant;
-	}
+        return applicant;
+    }
 
-	public void setApplicant(RecruitApplicant applicant) {
-		this.applicant = applicant;
-	}
+    public void setApplicant(RecruitApplicant applicant) {
+        this.applicant = applicant;
+    }
 
-	@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hire_apply_id", nullable = false, insertable = false, updatable = false)
-	public RecruitHireApply getHireApply() {
-		return hireApply;
-	}
+    public RecruitHireApply getHireApply() {
+        return hireApply;
+    }
 
-	public void setHireApply(RecruitHireApply hireApply) {
-		this.hireApply = hireApply;
-	}
-	
-	@Temporal(TemporalType.DATE)
+    public void setHireApply(RecruitHireApply hireApply) {
+        this.hireApply = hireApply;
+    }
+
+    @Temporal(TemporalType.DATE)
     @Column(name = "latest_test_date", length = 19)
-	public Date getLatestTestDate() {
-		return latestTestDate;
-	}
+    public Date getLatestTestDate() {
+        return latestTestDate;
+    }
 
-	public void setLatestTestDate(Date latestTestDate) {
-		this.latestTestDate = latestTestDate;
-	}
-	
-	@Temporal(TemporalType.DATE)
+    public void setLatestTestDate(Date latestTestDate) {
+        this.latestTestDate = latestTestDate;
+    }
+
+    @Temporal(TemporalType.DATE)
     @Column(name = "letter_expired", length = 19)
-	public Date getLetterExpired() {
-		return letterExpired;
-	}
+    public Date getLetterExpired() {
+        return letterExpired;
+    }
 
-	public void setLetterExpired(Date letterExpired) {
-		this.letterExpired = letterExpired;
-	}
+    public void setLetterExpired(Date letterExpired) {
+        this.letterExpired = letterExpired;
+    }
 
-	@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_status_id")
-	public EmployeeType getEmployeeType() {
-		return employeeType;
-	}
+    public EmployeeType getEmployeeType() {
+        return employeeType;
+    }
 
-	public void setEmployeeType(EmployeeType employeeType) {
-		this.employeeType = employeeType;
-	}
+    public void setEmployeeType(EmployeeType employeeType) {
+        this.employeeType = employeeType;
+    }
 
-	@Column(name = "placement_status", nullable = false)
-	public String getPlacementStatus() {
-		return placementStatus;
-	}
+    @Column(name = "placement_status", nullable = false)
+    public String getPlacementStatus() {
+        return placementStatus;
+    }
 
-	public void setPlacementStatus(String placementStatus) {
-		this.placementStatus = placementStatus;
-	}
-	
-	@Temporal(TemporalType.TIMESTAMP)
+    public void setPlacementStatus(String placementStatus) {
+        this.placementStatus = placementStatus;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_on", length = 19)
     public Date getCreatedOn() {
         return this.createdOn;
