@@ -33,6 +33,8 @@ import org.springframework.beans.factory.config.SetFactoryBean;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
+import ch.lambdaj.Lambda;
+
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
@@ -61,6 +63,7 @@ import com.inkubator.hrm.web.search.RecruitAgreementNoticeSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
+import com.inkubator.hrm.web.search.SearchEmployeeCandidateParameter;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 
 /**
@@ -1763,158 +1766,101 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
-    public List<SearchEmployeeCandidateViewModel> getAllDataEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge,
-            List<Integer> listJoinDate, Double gpa, Long educationLevelId, String gender, int firstResult, int maxResults, Order order) {
-
+    public List<SearchEmployeeCandidateViewModel> getAllDataEmpCandidateByParamWithDetail(SearchEmployeeCandidateParameter searchEmployeeCandidateParameter) {
+        
+    	String listEducationId = Lambda.join(searchEmployeeCandidateParameter.getListEducationlevelId(), "','");
         StringBuffer selectQuery = new StringBuffer(
-                "SELECT empData.id AS empDataId, empData.nik AS nik, "
-                + " bioData.firstName AS firstName, bioData.lastName AS lastName, "
-                + " jabatan.id AS idJabatan, jabatan.name AS jabatanName, "
-                + " religion.id AS idReligion, religion.name AS religionName "
-                + " FROM EmpData as empData "
-                + " INNER JOIN empData.jabatanByJabatanId AS jabatan "
-                + " INNER JOIN jabatan.department AS department "
-                + " INNER JOIN department.company AS company "
-                + " LEFT OUTER JOIN empData.bioData AS  bioData "
-                + " INNER JOIN bioData.religion AS  religion "
-                + " WHERE company.id = :companyId  "
-                + " AND :educationLevelId in ( "
-                + " SELECT edu.id FROM BioEducationHistory bioEdu INNER JOIN bioEdu.educationLevel edu "
-                + " INNER JOIN bioEdu.biodata bioDataInner "
-                + " WHERE bioDataInner.id = bioData.id ) "
-                + " AND  EXISTS(SELECT bioEduGpa.score FROM BioEducationHistory bioEduGpa INNER JOIN bioEduGpa.educationLevel eduGpa "
-                + " INNER JOIN bioEduGpa.biodata bioDataInnerGpa  "
-                + " WHERE bioDataInnerGpa.id = bioData.id AND eduGpa.id = :educationLevelId AND bioEduGpa.score > :gpa  ) ");
-                /*+ " WHERE bioDataInnerGpa.id = bioData.id AND eduGpa.id = :educationLevelId ) > :gpa  ");*/
-
-        //Filter by gender
-        if (!StringUtils.equals("Any", gender)) {
-            if (StringUtils.equals("Male", gender)) {
-                selectQuery.append("AND bioData.gender = 1 ");
-            } else if (StringUtils.equals("Female", gender)) {
-                selectQuery.append("AND bioData.gender = 0 ");
-            }
-        }
-
-        //filter by ages range
-        if (!listAge.isEmpty()) {
-            selectQuery.append("AND umur(bioData.dateOfBirth , NOW()) in (:listAge) ");
-        }
-
-        //filter by jabatan range
-        if (!listJabatanId.isEmpty()) {
-            selectQuery.append("AND jabatan.id IN (:listJabatanId) ");
-        }
-
-        //filter by religion range
-        if (!listReligionId.isEmpty()) {
-            selectQuery.append("AND religion.id IN (:listReligionId) ");
-        }
-
-        //filter by joinDate (convert to total working in years) range
-        if (listJoinDate.get(0) != 0) {
-            selectQuery.append(" AND DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(empData.joinDate)), '%Y')+0 in ( :listJoinDate ) ");
-
-        }
-
-        Query hbm = getCurrentSession().createQuery(selectQuery.toString())
-                .setParameter("gpa", gpa)
-                .setParameter("educationLevelId", educationLevelId)
-                .setParameter("companyId", HrmUserInfoUtil.getCompanyId());
-
-        if (!listJabatanId.isEmpty()) {
-            hbm.setParameterList("listJabatanId", listJabatanId);
-        }
-        if (!listReligionId.isEmpty()) {
-            hbm.setParameterList("listReligionId", listReligionId);
-        }
-        if (!listAge.isEmpty()) {
-            hbm.setParameterList("listAge", listAge);
-        }
-
-        if (!listJoinDate.isEmpty() && listJoinDate.get(0) != 0) {
-            hbm.setParameterList("listJoinDate", listJoinDate);
-        }
-
-        return hbm.setMaxResults(maxResults)
-                .setFirstResult(firstResult)
-                .setResultTransformer(Transformers.aliasToBean(SearchEmployeeCandidateViewModel.class))
-                .list();
+        		 			  " SELECT empData.id AS empDataId, empData.nik AS nik, "
+        	                + " bioData.first_name AS firstName, bioData.last_name AS lastName, "
+        	                + " jabatan.id AS idJabatan, jabatan.name AS jabatanName, "
+        	                + "  (	SELECT educationLevelInner.id FROM bio_education_history bioEduInner "
+        	                + "  	INNER JOIN education_level educationLevelInner ON bioEduInner.pendidikan_level_id =  educationLevelInner.id "
+        	                + " 	INNER JOIN bio_data bioDataInner ON bioEduInner.biodata_id = bioDataInner.id  "
+        	                + " 	WHERE bioDataInner.id = bioData.id "
+        	                + "		AND educationLevelInner.id IN ('" + listEducationId + "') "
+        	                + " 	AND bioEduInner.score > " + searchEmployeeCandidateParameter.getGpa() + "  LIMIT 1 "
+        	                + "  ) 	AS lastEducationLevelId, "
+        	                + " religion.id AS idReligion, religion.name AS religionName "
+        	                + " FROM emp_data empData "
+        	                + " INNER JOIN  jabatan jabatan ON empData.jabatan_id = jabatan.id "
+        	                + " INNER JOIN department department ON jabatan.departement_id = department.id "
+        	                + " INNER JOIN company company  ON department.company_id = company.id "
+        	                + " LEFT OUTER JOIN bio_data bioData ON empData.bio_data_id = bioData.id "
+        	                + " INNER JOIN religion religion ON bioData.agama_id = religion.id "
+        	                + " WHERE company.id = '" + HrmUserInfoUtil.getCompanyId() + "' " );
+        
+        selectQuery.append(setQueryParamForEmpCandidateSearchQuery(searchEmployeeCandidateParameter));
+        Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString());
+        return hbm.setResultTransformer(Transformers.aliasToBean(SearchEmployeeCandidateViewModel.class)).list();
 
     }
-
+    
     @Override
-    public Long getTotalEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId, String gender) {
+    public Long getTotalEmpCandidateByParamWithDetail(SearchEmployeeCandidateParameter searchEmployeeCandidateParameter) {
 
         StringBuffer selectQuery = new StringBuffer(
-                " SELECT COUNT(*) "
-                + " FROM EmpData as empData "
-                + " INNER JOIN empData.jabatanByJabatanId as jabatan  "
-                + " INNER JOIN jabatan.department AS department "
-                + " INNER JOIN department.company AS company "
-                + " LEFT OUTER JOIN empData.bioData AS  bioData "
-                + " INNER JOIN bioData.religion AS  religion "
-                + " WHERE company.id = :companyId  "
-                + " AND :educationLevelId in ( "
-                + " SELECT edu.id FROM BioEducationHistory bioEdu INNER JOIN bioEdu.educationLevel edu "
-                + " INNER JOIN bioEdu.biodata bioDataInner "
-                + " WHERE bioDataInner.id = bioData.id ) "
-                + " AND  EXISTS(SELECT bioEduGpa.score FROM BioEducationHistory bioEduGpa INNER JOIN bioEduGpa.educationLevel eduGpa "
-                + " INNER JOIN bioEduGpa.biodata bioDataInnerGpa  "
-                + " WHERE bioDataInnerGpa.id = bioData.id AND eduGpa.id = :educationLevelId AND bioEduGpa.score > :gpa  ) ");
+                " SELECT COUNT(*) FROM "
+                + " (SELECT empData.id FROM emp_data  empData "
+                + " INNER JOIN  jabatan jabatan ON empData.jabatan_id = jabatan.id "
+                + " INNER JOIN department department ON jabatan.departement_id = department.id "
+                + " INNER JOIN company company  ON department.company_id = company.id "
+                + " LEFT OUTER JOIN bio_data bioData ON empData.bio_data_id = bioData.id "
+                + " INNER JOIN religion religion ON bioData.agama_id = religion.id "
+                + " WHERE company.id = '" + HrmUserInfoUtil.getCompanyId() + "' ");
         
-//                + " WHERE bioDataInnerGpa.id = bioData.id AND eduGpa.id = :educationLevelId ) > :gpa  ");
-
-        //Filter by gender
-        if (!StringUtils.equals("Any", gender)) {
-            if (StringUtils.equals("Male", gender)) {
-                selectQuery.append("AND bioData.gender = 1 ");
-            } else if (StringUtils.equals("Female", gender)) {
-                selectQuery.append("AND bioData.gender = 0 ");
+        selectQuery.append(setQueryParamForEmpCandidateSearchQuery(searchEmployeeCandidateParameter));
+        selectQuery.append(" ) as totalRows");
+        Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString());
+        return Long.valueOf(hbm.uniqueResult().toString());
+    }
+    
+    private String setQueryParamForEmpCandidateSearchQuery(SearchEmployeeCandidateParameter searchEmployeeCandidateParameter){
+    	
+    	StringBuffer stringBuffer =  new StringBuffer();
+    	String listEducationlevelId = Lambda.join(searchEmployeeCandidateParameter.getListEducationlevelId(), "','");
+    	String listAges = Lambda.join(searchEmployeeCandidateParameter.getListAge(), "','");
+    	String listJabatanId = Lambda.join(searchEmployeeCandidateParameter.getListJabatanId(), "','");
+    	String listReligionId = Lambda.join(searchEmployeeCandidateParameter.getListReligionId(), "','");
+    	String listJoinDate = Lambda.join(searchEmployeeCandidateParameter.getListJoinDate(), "','");
+    	
+    	stringBuffer.append( " AND  EXISTS "
+            + " 	( SELECT bioEduGpa.score FROM bio_education_history bioEduGpa "
+            + " 	  INNER JOIN education_level eduGpa ON bioEduGpa.pendidikan_level_id = eduGpa.id  "
+            + " 	  INNER JOIN bio_data bioDataInnerGpa ON bioEduGpa.biodata_id = bioDataInnerGpa.id "
+            + " 	  WHERE bioDataInnerGpa.id = bioData.id AND eduGpa.id IN ( '" + listEducationlevelId + "' ) "
+            + "       AND bioEduGpa.score > " + searchEmployeeCandidateParameter.getGpa()
+            + "     ) ");
+    	  
+    	//Filter by gender
+        if (!StringUtils.equals("Any", searchEmployeeCandidateParameter.getGender())) {
+            if (StringUtils.equals("Male", searchEmployeeCandidateParameter.getGender())) {
+            	stringBuffer.append("AND bioData.gender =  " + HRMConstant.GLOBAL_MALE);
+            } else if (StringUtils.equals("Female", searchEmployeeCandidateParameter.getGender())) {
+            	stringBuffer.append("AND bioData.gender = " + HRMConstant.GLOBAL_FEMALE);
             }
         }
-
+    	
         //filter by ages range
-        if (!listAge.isEmpty()) {
-            selectQuery.append("AND umur(bioData.dateOfBirth , NOW()) in (:listAge) ");
+        if (!searchEmployeeCandidateParameter.getListAge().isEmpty()) {
+        	stringBuffer.append("AND umur(bioData.date_of_birth , NOW()) in ( '" + listAges + "' ) ");
         }
-
+        
         //filter by jabatan range
-        if (!listJabatanId.isEmpty()) {
-            selectQuery.append("AND jabatan.id IN (:listJabatanId) ");
+        if (!searchEmployeeCandidateParameter.getListJabatanId().isEmpty()) {
+        	stringBuffer.append("AND jabatan.id IN ( '" + listJabatanId + "' ) ");
         }
-
+        
         //filter by religion range
-        if (!listReligionId.isEmpty()) {
-            selectQuery.append("AND religion.id IN (:listReligionId) ");
+        if (!searchEmployeeCandidateParameter.getListReligionId().isEmpty()) {
+        	stringBuffer.append("AND religion.id IN ( '" + listReligionId + "' ) ");
         }
 
         //filter by joinDate (convert to total working in years) range
-        if (listJoinDate.get(0) != 0) {
-            selectQuery.append(" AND DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(empData.joinDate)), '%Y')+0 in ( :listJoinDate ) ");
-
+        if (searchEmployeeCandidateParameter.getListJoinDate().get(0) != 0) {
+        	stringBuffer.append(" AND DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(empData.join_date)), '%Y')+0 in ( '" + listJoinDate + "' ) ");
         }
-
-        Query hbm = getCurrentSession().createQuery(selectQuery.toString())
-                .setParameter("gpa", gpa)
-                .setParameter("educationLevelId", educationLevelId)
-                .setParameter("companyId", HrmUserInfoUtil.getCompanyId());
-
-        if (!listJabatanId.isEmpty()) {
-            hbm.setParameterList("listJabatanId", listJabatanId);
-        }
-        if (!listReligionId.isEmpty()) {
-            hbm.setParameterList("listReligionId", listReligionId);
-        }
-        if (!listAge.isEmpty()) {
-            hbm.setParameterList("listAge", listAge);
-        }
-
-        if (!listJoinDate.isEmpty() && listJoinDate.get(0) != 0) {
-            hbm.setParameterList("listJoinDate", listJoinDate);
-        }
-
-        return Long.valueOf(hbm.uniqueResult().toString());
+        
+    	return stringBuffer.toString();
     }
 
     @Override
