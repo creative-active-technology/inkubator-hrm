@@ -64,12 +64,12 @@ public class RectruitmentEmpConfigListenerServiceImpl extends BaseSchedulerDinam
     private void doCheckRectruitmentEmpConfig() throws Exception {
         LOGGER.warn("---------------  Check Recruitmet Emp Config =====================");
         List<RecruitSelectionApplicantPassed> thatPendings = recruitSelectionApplicantPassedDao.getAllWithPlacementStatus(HRMConstant.SELECTION_APPLICANT_PASSED_STATUS_PENDING);
-        for (RecruitSelectionApplicantPassed thatPending : thatPendings) {
-          Date now = DateUtils.truncate(new Date(), Calendar.DATE);
-            if(thatPending.getLetterExpired().equals(now)||thatPending.getLetterExpired().before(now)){
-                  recruitSelectionApplicantPassedDao.delete(thatPending);
+        thatPendings.stream().forEach((thatPending) -> {
+            Date now = DateUtils.truncate(new Date(), Calendar.DATE);
+            if (thatPending.getLetterExpired().equals(now)||thatPending.getLetterExpired().before(now)) {
+                recruitSelectionApplicantPassedDao.delete(thatPending);
             }
-        }
+        });
     }
     
 }

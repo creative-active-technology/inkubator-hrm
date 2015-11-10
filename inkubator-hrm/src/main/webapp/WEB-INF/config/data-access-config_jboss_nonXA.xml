@@ -23,7 +23,7 @@
     <!--Activasi Anotasi dan Transaksi Management-->
     <aop:aspectj-autoproxy/>
     <tx:annotation-driven transaction-manager="transactionManager"/>
-    <tx:jta-transaction-manager id="transactionManager"/>
+    
     
     <bean class="org.springframework.orm.hibernate4.HibernateTransactionManager" id="transactionManager" lazy-init="true">
         <property name="sessionFactory" ref="sessionFactory"/>
