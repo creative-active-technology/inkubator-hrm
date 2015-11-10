@@ -504,6 +504,7 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
         user.setRealName(u.getRealName());
         user.setPhoneNumber(u.getPhoneNumber());
         user.setEmailAddress(u.getEmailAddress());
+        user.setPhoneCode(u.getPhoneCode());
         user.setUpdatedBy(userBy);
         user.setUpdatedOn(now);
         hrmUserDao.update(user);

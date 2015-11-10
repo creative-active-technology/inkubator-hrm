@@ -120,11 +120,12 @@ public class RecruitSelectionApplicantSchedulleDaoImpl extends IDAOImpl<RecruitS
 	public List<SelectionApplicantPassedViewModel> getSelectionApplicantPassedByParam(Long scheduleId, int firstResults, int maxResults, Order orderable) {
 		
 		StringBuffer selectQuery = new StringBuffer(
-    			"SELECT applicantId, applicantName, placementStatus, applicantCareerCandidate, maxScore, minScore "
+    			"SELECT applicantId, bioDataId, applicantName, placementStatus, applicantCareerCandidate, maxScore, minScore "
     			+ "FROM ( "
     			+ "SELECT recruitApplicant.id AS applicantId, "
     			+ "schedule.hire_apply_id AS hireApplyId, "
     			+ "applicantPassed.placement_status AS placementStatus, "
+    			+ "bioData.id AS bioDataId, "
     			+ "ltrim(concat(concat(bioData.first_name, ' '), bioData.last_name)) AS applicantName, "
     			+ "recruitApplicant.career_candidate AS applicantCareerCandidate, "
     			+ "CASE WHEN SUM(CASE WHEN scheduleRealization.id IS NULL OR scheduleRealization.status!='PASS' THEN 1 ELSE 0 END) = 0 THEN 'PASS' ELSE 'FAILED' END AS status, "

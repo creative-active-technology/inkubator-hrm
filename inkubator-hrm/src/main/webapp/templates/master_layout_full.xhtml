@@ -102,7 +102,8 @@
             </h:panelGrid>   
             <p:separator/>
             <h:panelGrid columns="1" style="margin-bottom: 15px;">
-                <p:outputLabel id="changeUserInfoId" value="#{appmsg['master_layout.user_information_attention']}" styleClass="label_hrm"/>
+                <!-- <p:outputLabel id="changeUserInfoId" value="#{appmsg['master_layout.user_information_attention']}" styleClass="label_hrm"/> -->
+                <p:outputLabel id="changeUserInfoIdAttention" value="#{appmsg['master_layout.user_information_sms_and_email']}" styleClass="label_hrm"/>
                 <p:outputLabel id="changePasswordId" value="#{appmsg['master_layout.user_password_attention']}" styleClass="label_hrm" />
             </h:panelGrid>
             <p:tabView id="tabViewUserInfoId" onTabChange="handleViewTabUserInfo(index)" styleClass="tabview_hrm">
@@ -145,14 +146,23 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width:30%">
-                                    <p:outputLabel for="phoneNumber" value="#{appmsg['master_layout.phone_number']}" styleClass="label_hrm"/>
+                                    <p:outputLabel for="phone" value="#{appmsg['master_layout.phone_number']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 1%">
                                     <h:outputLabel value=":" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width:60%;">
-                                    <p:inputText id="phoneNumber" value="#{userInfoController.userModel.phoneNumber}" required="true" style="width:250px;"/>
-                                    <p:message for="phoneNumber"/>
+                                    <!-- <p:inputText id="phoneNumber" value="#{userInfoController.userModel.phoneNumber}" required="true" style="width:250px;"/>
+                                    <p:message for="phoneNumber"/> -->
+                                    <p:inputText  value="#{userInfoController.userModel.countryPhoneCode}" styleClass="isitext_hrm" style="width: 50px;margin-right: 3px" label="#{appmsg['user_form.phone_number']}"
+                                                  required="true" id="countryPhoneCode">
+                                        <p:clientValidator/>
+                                    </p:inputText>
+                                    <p:inputText value="#{userInfoController.userModel.phoneNumber}" styleClass="isitext_hrm" style="width: 186px;" label="#{appmsg['user_form.phone_number']}"
+                                                  required="true" id="phone" >
+                                    </p:inputText>
+                                    <p:message for="countryPhoneCode"/>
+                                    <p:message for="phone"/>
                                 </p:column>
                             </p:row>
                         </p:panelGrid>
@@ -160,7 +170,8 @@
                         <p:commandButton value="#{appmsg['global.edit']}" update="formUserInfoTab,:mainGrowl" ajax="true" title="#{appmsg['global.edit']}" action="#{userInfoController.doUpdateUserInfo()}" 
                                          styleClass="isitext_hrm" icon="ui-icon-locked" oncomplete="handleDoUpdateUserInfo(args)"/>
                         <p:watermark for="emailAddress" value="some_one@some_where.com"/>
-                        <p:watermark for="phoneNumber" value="+62000000000"/>
+                        <p:watermark for="phone" value="080000000000"/>
+                        <p:watermark for="countryPhoneCode" value="+62"/>
                     </h:form>
                 </p:tab>
                 <p:tab title="#{appmsg['master_layout.change_password']}">
@@ -935,10 +946,12 @@
         <script type="text/javascript">
             function handleViewTabUserInfo(idx) {
                 if (idx === 0) {
-                    $('#changeUserInfoId').show();
+                    /* $('#changeUserInfoId').show(); */
+                    $('#changeUserInfoIdAttention').show();
                     $('#changePasswordId').hide();
                 } else {
-                    $('#changeUserInfoId').hide();
+                    /* $('#changeUserInfoId').hide(); */
+                    $('#changeUserInfoIdAttention').hide();
                     $('#changePasswordId').show();
                 }
             }
