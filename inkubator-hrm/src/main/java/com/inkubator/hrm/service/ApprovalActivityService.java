@@ -37,4 +37,6 @@ public interface ApprovalActivityService extends IService<ApprovalActivity> {
 	public Boolean isStillHaveWaitingStatus(String activityNumber) throws Exception;
         
         public List<ApprovalActivity> getByApprovalStatus(Integer approvalStatus) throws Exception;
+        
+        public ApprovalActivity getApprovalTimeByApprovalActivityNumber(String activityNumber) throws Exception;
 }

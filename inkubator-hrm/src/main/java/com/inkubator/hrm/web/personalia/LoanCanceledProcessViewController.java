@@ -88,8 +88,8 @@ public class LoanCanceledProcessViewController extends BaseController {
         lazyDataLoan = null;
     }
 
-    public String doDetail() {
-        return "/protected/personalia/loan_detail.htm?faces-redirect=true&execution=e" + selectedLoan.getId();
+    public String doCanceled() {
+        return "/protected/personalia/loan_canceled_form.htm?faces-redirect=true&execution=e" + selectedLoan.getId();
     }
 
     public void doSelectEntity() {
