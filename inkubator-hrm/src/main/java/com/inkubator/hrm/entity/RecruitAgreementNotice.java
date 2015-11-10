@@ -107,7 +107,7 @@ public class RecruitAgreementNotice  implements java.io.Serializable {
     }
 
     
-    @Column(name="uploaded_cv", length=45)
+    @Column(name="uploaded_cv", length=255)
     public String getUploadedCv() {
         return this.uploadedCv;
     }

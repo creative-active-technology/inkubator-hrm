@@ -12,6 +12,7 @@ public class TerminationTypeModel implements Serializable {
     private String code;
     private String name;
     private String description;
+    private Long reffLetterId;
 
     public Long getId() {
         return id;
@@ -45,6 +46,14 @@ public class TerminationTypeModel implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getReffLetterId() {
+        return reffLetterId;
+    }
+
+    public void setReffLetterId(Long reffLetterId) {
+        this.reffLetterId = reffLetterId;
     }
     
     
