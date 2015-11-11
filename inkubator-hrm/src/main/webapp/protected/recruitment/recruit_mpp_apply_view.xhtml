@@ -35,8 +35,9 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{recruitMppApplyViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['mpp_recruitment.mpp_recruitment_code']}" itemValue="recruitMppApplyCode"/>
-                                        <f:selectItem itemLabel="#{appmsg['mpp_recruitment.mpp_recruitment_name']}" itemValue="recruitMppApplyName"/>
+                                       <!--  <f:selectItem itemLabel="#{appmsg['mpp_recruitment.mpp_recruitment_code']}" itemValue="recruitMppApplyCode"/>
+                                        <f:selectItem itemLabel="#{appmsg['mpp_recruitment.mpp_recruitment_name']}" itemValue="recruitMppApplyName"/> -->
+                                        <f:selectItem itemLabel="#{appmsg['mpp_recruitment.requester']}" itemValue="requester"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{recruitMppApplyViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{recruitMppApplyViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
