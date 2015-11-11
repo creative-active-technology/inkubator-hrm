@@ -404,5 +404,11 @@ public class RecruitMppApplyDetailServiceImpl extends IServiceImpl implements Re
 	public List<RecruitMppApplyDetail> getAllDataWithDetail() throws Exception {
 		return recruitMppApplyDetailDao.getAllDataWithDetail();
 	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RecruitMppApplyDetail> getListByMppPeriodIdWithApprovalStatusAndHaveNotBeenRecruited(Long recruitMppPeriodId, Integer approvalStatus) throws Exception {
+		return recruitMppApplyDetailDao.getListByMppPeriodIdWithApprovalStatusAndHaveNotBeenRecruited(recruitMppPeriodId, approvalStatus);
+	}
     
 }

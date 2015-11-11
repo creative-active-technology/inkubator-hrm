@@ -46,4 +46,5 @@ public interface RecruitMppApplyDetailDao extends IDAO<RecruitMppApplyDetail> {
     
     public List<RecruitMppApplyDetail> getAllDataWithDetail();
     
+    public List<RecruitMppApplyDetail> getListByMppPeriodIdWithApprovalStatusAndHaveNotBeenRecruited(Long recruitMppPeriodId, Integer approvalStatus);
 }
