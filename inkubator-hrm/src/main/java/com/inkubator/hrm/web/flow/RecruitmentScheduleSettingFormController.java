@@ -59,8 +59,6 @@ public class RecruitmentScheduleSettingFormController implements Serializable{
 	@Autowired
 	private RecruitHireApplyService recruitHireApplyService;
 	@Autowired
-	private RecruitMppApplyService recruitMppApplyService;
-	@Autowired
 	private RecruitMppApplyDetailService recruitMppApplyDetailService;
 	@Autowired
 	private RecruitmenSelectionSeriesService recruitSelectionSeriesService;
