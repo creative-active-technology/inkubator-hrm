@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -41,6 +42,7 @@ import com.inkubator.hrm.service.RecruitmenSelectionSeriesDetailService;
 import com.inkubator.hrm.service.RecruitmenSelectionSeriesService;
 import com.inkubator.hrm.web.model.RecruitScheduleSettingModel;
 import com.inkubator.hrm.web.model.RecruitSelectionApplicantScheduleDetailViewModel;
+import com.inkubator.hrm.web.model.SelectionSeriesDetailInitialParameterModel;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 
@@ -100,7 +102,7 @@ public class RecruitmentScheduleSettingFormController implements Serializable{
 		RecruitScheduleSettingModel model = (RecruitScheduleSettingModel) context.getFlowScope().get("recruitScheduleSettingModel");
 		
 		try {
-			
+
 			RecruitmenSelectionSeries recruitmenSelectionSeries = recruitSelectionSeriesService.getEntiyByPK(model.getSelectionSeriesId());
 			model.setSelectionSeriesName(recruitmenSelectionSeries.getName());
 			Map<Long, List<RecruitSelectionApplicantScheduleDetailViewModel>> mapSelectionScheduleDetail = new HashMap<Long, List<RecruitSelectionApplicantScheduleDetailViewModel>>();
@@ -136,12 +138,18 @@ public class RecruitmentScheduleSettingFormController implements Serializable{
 				
 				for(RecruitmenSelectionSeriesDetail selectionDetail : listRecruitmenSelectionSeriesDetails){
 					
+					SelectionSeriesDetailInitialParameterModel seriesParam = Lambda.selectFirst(model.getListSeriesInitialParam(), 
+							Lambda.having(Lambda.on(SelectionSeriesDetailInitialParameterModel.class).getRecruitSelectionTypeId(),
+									Matchers.equalTo(new Long(selectionDetail.getRecruitSelectionType().getId()))));
+					
 					List<RecruitSelectionApplicantScheduleDetailViewModel> listScheduleDetailViewModelPerSelSeriesDetail = new ArrayList<RecruitSelectionApplicantScheduleDetailViewModel>();
+					
 					if(listRecruitSelectionApplicantInitials.isEmpty()){
 						mapSelectionScheduleDetail.put(selectionDetail.getId().getSelectionTypeId(), listScheduleDetailViewModelPerSelSeriesDetail);
 					}else{
 						for(RecruitSelectionApplicantInitial applicantInitial : listRecruitSelectionApplicantInitials){
-							RecruitSelectionApplicantScheduleDetailViewModel scheduleDetailViewModel = convertApplicantInitialToScheduleDetailViewModel(applicantInitial, selectionDetail.getRecruitSelectionType());
+							RecruitSelectionApplicantScheduleDetailViewModel scheduleDetailViewModel = convertApplicantInitialToScheduleDetailViewModel(applicantInitial, 
+									selectionDetail.getRecruitSelectionType(), Boolean.FALSE, seriesParam);
 							listScheduleDetailViewModelPerSelSeriesDetail.add(scheduleDetailViewModel);
 						}
 						mapSelectionScheduleDetail.put(selectionDetail.getId().getSelectionTypeId(), listScheduleDetailViewModelPerSelSeriesDetail);
@@ -158,7 +166,8 @@ public class RecruitmentScheduleSettingFormController implements Serializable{
 		return model;
 	}
 	
-	private RecruitSelectionApplicantScheduleDetailViewModel convertApplicantInitialToScheduleDetailViewModel(RecruitSelectionApplicantInitial applicantInitial, RecruitSelectionType selectionType){
+	private RecruitSelectionApplicantScheduleDetailViewModel convertApplicantInitialToScheduleDetailViewModel(RecruitSelectionApplicantInitial applicantInitial, 
+			RecruitSelectionType selectionType, Boolean isAlreadySetup, SelectionSeriesDetailInitialParameterModel selectionSeriesInitialParam){
 		RecruitSelectionApplicantScheduleDetailViewModel scheduleDetailModel = new RecruitSelectionApplicantScheduleDetailViewModel();
 		scheduleDetailModel.setIsHaveBeenRealized(Boolean.FALSE);
 		scheduleDetailModel.setApplicantId(applicantInitial.getRecruitApplicant().getId());
@@ -170,6 +179,16 @@ public class RecruitmentScheduleSettingFormController implements Serializable{
 		}else if(applicantInitial.getRecruitApplicant().getCareerCandidate() == HRMConstant.RECRUIT_APPLICANT_CAREER_CANDIDATE_INTERNAL){
 			scheduleDetailModel.setCandidateStatus("Internal");
 		}
+		
+		if(!isAlreadySetup){
+			scheduleDetailModel.setEmpDataPic(selectionSeriesInitialParam.getEmpDataPic());
+			scheduleDetailModel.setScheduleDate(selectionSeriesInitialParam.getScheduleDate());
+			scheduleDetailModel.setScheduleStartTime(selectionSeriesInitialParam.getScheduleStartTime());
+			scheduleDetailModel.setScheduleEndTime(selectionSeriesInitialParam.getScheduleEndTime());
+			scheduleDetailModel.setRoom(selectionSeriesInitialParam.getRoom());
+			scheduleDetailModel.setNotes(selectionSeriesInitialParam.getNotes());
+		}
+		
 		return scheduleDetailModel;
 	}
 	
@@ -242,6 +261,22 @@ public class RecruitmentScheduleSettingFormController implements Serializable{
 		return empDatas;
 	}
 	
+	public void doGenerateListSeriesInitParam(RequestContext context){
+		RecruitScheduleSettingModel model = (RecruitScheduleSettingModel) context.getFlowScope().get("recruitScheduleSettingModel");
+		List<SelectionSeriesDetailInitialParameterModel> listSeriesParam = new ArrayList<SelectionSeriesDetailInitialParameterModel>();
+		try {
+			List<RecruitmenSelectionSeriesDetail> listRecSeriesDetail = recruitmenSelectionSeriesDetailService.getListBySelectionSeriesId(model.getSelectionSeriesId());
+			for(RecruitmenSelectionSeriesDetail selectionSeriesDetail : listRecSeriesDetail){
+				SelectionSeriesDetailInitialParameterModel seriesInitParamModel = convertSeriesDetailtoSeriesDetailParamModel(selectionSeriesDetail);
+				listSeriesParam.add(seriesInitParamModel);
+			}
+			model.setListSeriesInitialParam(listSeriesParam);
+			context.getFlowScope().put("recruitScheduleSettingModel", model);
+		} catch (Exception ex) {
+			LOGGER.error("Error", ex);
+		}
+	}
+	
 	public void doResetRecruitmentScheduleForm(RequestContext context){
 		
 		RecruitScheduleSettingModel model = (RecruitScheduleSettingModel) context.getFlowScope().get("recruitScheduleSettingModel");
@@ -261,6 +296,14 @@ public class RecruitmentScheduleSettingFormController implements Serializable{
 		}
 		
 		context.getFlowScope().put("recruitScheduleSettingModel", model);
+	}
+	
+	private SelectionSeriesDetailInitialParameterModel convertSeriesDetailtoSeriesDetailParamModel(RecruitmenSelectionSeriesDetail seriesDetail){
+		SelectionSeriesDetailInitialParameterModel seriesParamModel = new SelectionSeriesDetailInitialParameterModel();
+		seriesParamModel.setSelectionSeriesDetailName(seriesDetail.getRecruitSelectionType().getName());
+		seriesParamModel.setSelectionSeriesId(seriesDetail.getId().getRecruitmenSelectionSeriesId());
+		seriesParamModel.setRecruitSelectionTypeId(seriesDetail.getRecruitSelectionType().getId());
+		return seriesParamModel;
 	}
 	
 	private RecruitScheduleSettingModel getModelFromEntity(RecruitHireApply recruitHireApply) throws Exception{
