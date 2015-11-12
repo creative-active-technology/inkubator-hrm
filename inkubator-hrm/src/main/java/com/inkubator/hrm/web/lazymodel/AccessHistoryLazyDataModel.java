@@ -33,7 +33,7 @@ public class AccessHistoryLazyDataModel extends LazyDataModel<RiwayatAkses> impl
 			if(sortField != null){
 				order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
 			} else {
-				order = Order.desc("userId");
+				order = Order.desc("dateAccess");
 			}
 			riwayatAksesList = service.getByParam(searchParameter, first, pageSize, order);
 			total = Integer.parseInt(String.valueOf(service.getTotalByParam(searchParameter)));
@@ -41,6 +41,7 @@ public class AccessHistoryLazyDataModel extends LazyDataModel<RiwayatAkses> impl
 			LOGGER.error("Error", ex);
 		}
 		LOGGER.info("Success load lazy data model");
+		System.out.println("Total ================================ " + total + "==========" + riwayatAksesList.size());
 		
 		setPageSize(pageSize);
 		setRowCount(total);
