@@ -71,7 +71,7 @@
         <param-name>primefaces.UPLOADER</param-name>
         <param-value>commons</param-value>
     </context-param>
-      <context-param>
+    <context-param>
         <param-name>primefaces.FONT_AWESOME</param-name>
         <param-value>true</param-value>
     </context-param>
@@ -178,7 +178,7 @@
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
+        <load-on-startup>2</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
@@ -193,17 +193,17 @@
             <param-name>contextConfigLocation</param-name>
             <param-value></param-value>
         </init-param>
-        <load-on-startup>2</load-on-startup>
+        <load-on-startup>3</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>appServlet</servlet-name>
         <url-pattern>/flow-protected/*</url-pattern>
-         <url-pattern>/REST/*</url-pattern>
+        <url-pattern>/REST/*</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>Push Servlet</servlet-name>
         <servlet-class>org.primefaces.push.PushServlet</servlet-class>
-       
+    
         <!--        <init-param>
             <param-name>org.atmosphere.useNative</param-name>
             <param-value>true</param-value>
@@ -238,6 +238,7 @@
             <param-name>org.atmosphere.cpr.packages</param-name>
             <param-value>com.inkubator.hrm.push</param-value>
         </init-param>
+        <load-on-startup>1</load-on-startup>
         <async-supported>true</async-supported>
     </servlet>
     <servlet-mapping>
@@ -295,7 +296,7 @@
         <mime-type>text/xml</mime-type>
     </mime-mapping>
     
-     <error-page>
+    <error-page>
         <error-code>403</error-code>
         <location>/error/error.htm</location>
     </error-page>

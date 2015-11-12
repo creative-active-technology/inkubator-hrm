@@ -10,7 +10,7 @@
     <security:http auto-config="false" use-expressions="true">
         <security:form-login login-page="/" authentication-success-handler-ref="myHandlerSuccessLogin" 
                              authentication-failure-url="/?login_error=1" always-use-default-target="true"/>
-        <security:intercept-url pattern="/protected/*" access="isAuthenticated()"/>
+        <security:intercept-url pattern="/protected/*" access="isAuthenticated()" />
         <security:intercept-url pattern="/flow-protected/**" access="hasAnyRole('ADMINISTRATOR_ROLE','ROLE_USER_HRM','BASIC_USER','SUPERVISOR_FINANCE_ROLE')"/>
         <security:intercept-url pattern="/protected/**" access="hasAnyRole('ADMINISTRATOR_ROLE','ROLE_USER_HRM','BASIC_USER','SUPERVISOR_FINANCE_ROLE')"/>
         <security:session-management>
