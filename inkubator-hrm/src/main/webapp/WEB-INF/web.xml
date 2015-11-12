@@ -17,7 +17,7 @@
     </context-param>
     <context-param>
         <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-        <param-value>client</param-value>
+        <param-value>server</param-value>
     </context-param>
     <context-param>
         <param-name>org.omnifaces.CACHE_SETTING_SESSION_MAX_CAPACITY</param-name>
@@ -111,10 +111,10 @@
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>INCLUDE</dispatcher>
     </filter-mapping>
-    <filter-mapping>
+<!--    <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/monitoring/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping>-->
     <!--    <filter>
         <description>Filer untuk monitoring Java Melody</description>
         <filter-name>javamelodyFilter</filter-name>
@@ -201,7 +201,7 @@
         <url-pattern>/REST/*</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>Push Servlet</servlet-name>
+        <servlet-name>PrimePushServlet</servlet-name>
         <servlet-class>org.primefaces.push.PushServlet</servlet-class>
     
         <!--        <init-param>
@@ -216,7 +216,7 @@
             <param-name>org.atmosphere.useWebSocket</param-name>
             <param-value>true</param-value>
         </init-param>-->
-        <!--        <init-param>
+        <!--                <init-param>
                     <param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name>
                     <param-value>org.atmosphere.cache.HeaderBroadcasterCache</param-value>
                 </init-param>
@@ -242,7 +242,7 @@
         <async-supported>true</async-supported>
     </servlet>
     <servlet-mapping>
-        <servlet-name>Push Servlet</servlet-name>
+        <servlet-name>PrimePushServlet</servlet-name>
         <url-pattern>/primepush/*</url-pattern>
     </servlet-mapping>
     
