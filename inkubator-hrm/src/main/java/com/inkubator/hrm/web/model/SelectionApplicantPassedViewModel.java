@@ -10,6 +10,7 @@ import java.math.BigInteger;
 public class SelectionApplicantPassedViewModel implements Serializable {
 	private BigInteger applicantId;
 	private BigInteger hireApplyId;
+	private BigInteger bioDataId;
 	private String applicantName;
 	private Integer applicantCareerCandidate;
 	private Double maxScore;
@@ -73,5 +74,12 @@ public class SelectionApplicantPassedViewModel implements Serializable {
 	public void setPlacementStatus(String placementStatus) {
 		this.placementStatus = placementStatus;
 	}
+	public BigInteger getBioDataId() {
+		return bioDataId;
+	}
+	public void setBioDataId(BigInteger bioDataId) {
+		this.bioDataId = bioDataId;
+	}
 		
+	
 }

@@ -100,11 +100,14 @@ public class UserInfoController extends BaseController {
         Boolean isUpdateSucceed = Boolean.FALSE;
         RequestContext context = FacesUtil.getRequestContext();
         try {
+        	String phoneNumber = userModel.getCountryPhoneCode()+""+userModel.getPhoneNumber().substring(1);
             HrmUser user = new HrmUser();
             user.setUserId(UserInfoUtil.getUserName());
             user.setRealName(userModel.getRealName());
             user.setEmailAddress(userModel.getEmailAddress());
-            user.setPhoneNumber(userModel.getPhoneNumber());
+            //user.setPhoneNumber(userModel.getPhoneNumber());
+            user.setPhoneNumber(phoneNumber);
+            user.setPhoneCode(userModel.getCountryPhoneCode());
             userService.updateUserInfo(user);
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                     FacesUtil.getSessionAttribute(WebCoreConstant.BAHASA_ACTIVE).toString());
@@ -122,7 +125,13 @@ public class UserInfoController extends BaseController {
         try {
             HrmUser user = userService.getByUserId(UserInfoUtil.getUserName());
             userModel.setEmailAddress(user.getEmailAddress());
-            userModel.setPhoneNumber(user.getPhoneNumber());
+            //userModel.setPhoneNumber(user.getPhoneNumber());
+            if(user.getPhoneNumber() != null && user.getPhoneCode() != null){
+    	    	String phoneWithCode = user.getPhoneNumber();
+    	    	String phoneNumberWithoutCode = phoneWithCode.substring(user.getPhoneCode().length(), user.getPhoneNumber().length());
+    	    	userModel.setPhoneNumber("0"+phoneNumberWithoutCode);
+    	    	userModel.setCountryPhoneCode(user.getPhoneCode());
+        	}
             userModel.setRealName(user.getRealName());
             userModel.setUserId(user.getUserId());
 

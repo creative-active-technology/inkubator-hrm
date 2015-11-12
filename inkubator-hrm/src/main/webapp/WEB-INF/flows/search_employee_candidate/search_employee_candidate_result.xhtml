@@ -41,7 +41,7 @@
                             </p:toolbarGroup>
                         </p:toolbar>
 
-                        <p:dataTable  var="data"  value="#{searchEmployeeCandidateModel.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                        <p:dataTable  var="data"  value="#{searchEmployeeCandidateModel.listCandidate}" lazy="false" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
@@ -89,7 +89,7 @@
                             </p:column>
 							
 							  <p:column headerText="#{appmsg['empCandidateSearch.commit']}" style="width: 8%;text-align: center" exportable="false">                               
-                                	<p:selectBooleanButton value="#{searchEmployeeCandidateModel.selectedIds[data.empDataId]}" styleClass="label_button"
+                                	<p:selectBooleanButton value="#{searchEmployeeCandidateModel.selectedIds[(data.empDataId.longValue())]}" styleClass="label_button"
 									onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" offIcon="ui-icon-close"/>
                             </p:column>    
                             <p:column style="text-align: center;width: 13%"> 
@@ -113,7 +113,7 @@
                             </p:column>
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{searchEmployeeCandidateModel.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="#{searchEmployeeCandidateModel.listCandidate.size()}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet> 
                         </p:dataTable>  
