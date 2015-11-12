@@ -1,7 +1,14 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetail;
 
 /**
  *
@@ -14,9 +21,11 @@ public class RecruitScheduleSettingModel implements Serializable {
 	private String recruitHireApplyCode;
 	private Long recruitMppApplyId;
 	private String recruitMppApplyName;
-	private Long empCoordinatorId;
+	private Long recruitSelectionApplicantSchedulleId;
+	/*private Long empCoordinatorId;
 	private String empCoordinatorNik;
-	private String empCoordinatorFullName;
+	private String empCoordinatorFullName;*/
+	private EmpData empData;
 	private Long selectionSeriesId;
 	private String selectionSeriesName;
 	private Long jabatanId;
@@ -25,6 +34,9 @@ public class RecruitScheduleSettingModel implements Serializable {
 	private Date startDateMppPeriod;
 	private Date endDateMppPeriod;
 	private Integer totalRecruitment;
+	private List<RecruitmenSelectionSeriesDetail> listSelectionSeriesDetails = new ArrayList<RecruitmenSelectionSeriesDetail>();
+	private Map<Long, List<RecruitSelectionApplicantScheduleDetailViewModel>> mapSelectionApplicantSchedule = new HashMap<Long, List<RecruitSelectionApplicantScheduleDetailViewModel>>();
+	private Boolean isAlreadyHaveSelectionScheduleSeries;
 	
 	public Long getId() {
 		return id;
@@ -38,12 +50,12 @@ public class RecruitScheduleSettingModel implements Serializable {
 	public void setRecruitHireApplyId(Long recruitHireApplyId) {
 		this.recruitHireApplyId = recruitHireApplyId;
 	}
-	public Long getEmpCoordinatorId() {
+	/*public Long getEmpCoordinatorId() {
 		return empCoordinatorId;
 	}
 	public void setEmpCoordinatorId(Long empCoordinatorId) {
 		this.empCoordinatorId = empCoordinatorId;
-	}
+	}*/
 	public Long getSelectionSeriesId() {
 		return selectionSeriesId;
 	}
@@ -104,7 +116,7 @@ public class RecruitScheduleSettingModel implements Serializable {
 	public void setRecruitMppApplyName(String recruitMppApplyName) {
 		this.recruitMppApplyName = recruitMppApplyName;
 	}
-	public String getEmpCoordinatorNik() {
+	/*public String getEmpCoordinatorNik() {
 		return empCoordinatorNik;
 	}
 	public void setEmpCoordinatorNik(String empCoordinatorNik) {
@@ -115,15 +127,49 @@ public class RecruitScheduleSettingModel implements Serializable {
 	}
 	public void setEmpCoordinatorFullName(String empCoordinatorFullName) {
 		this.empCoordinatorFullName = empCoordinatorFullName;
-	}
+	}*/
+	
+	
 	public String getSelectionSeriesName() {
 		return selectionSeriesName;
+	}
+	public EmpData getEmpData() {
+		return empData;
+	}
+	public void setEmpData(EmpData empData) {
+		this.empData = empData;
 	}
 	public void setSelectionSeriesName(String selectionSeriesName) {
 		this.selectionSeriesName = selectionSeriesName;
 	}
-	
-	
+	public List<RecruitmenSelectionSeriesDetail> getListSelectionSeriesDetails() {
+		return listSelectionSeriesDetails;
+	}
+	public void setListSelectionSeriesDetails(
+			List<RecruitmenSelectionSeriesDetail> listSelectionSeriesDetails) {
+		this.listSelectionSeriesDetails = listSelectionSeriesDetails;
+	}
+	public Map<Long, List<RecruitSelectionApplicantScheduleDetailViewModel>> getMapSelectionApplicantSchedule() {
+		return mapSelectionApplicantSchedule;
+	}
+	public void setMapSelectionApplicantSchedule(
+			Map<Long, List<RecruitSelectionApplicantScheduleDetailViewModel>> mapSelectionApplicantSchedule) {
+		this.mapSelectionApplicantSchedule = mapSelectionApplicantSchedule;
+	}
+	public Boolean getIsAlreadyHaveSelectionScheduleSeries() {
+		return isAlreadyHaveSelectionScheduleSeries;
+	}
+	public void setIsAlreadyHaveSelectionScheduleSeries(
+			Boolean isAlreadyHaveSelectionScheduleSeries) {
+		this.isAlreadyHaveSelectionScheduleSeries = isAlreadyHaveSelectionScheduleSeries;
+	}
+	public Long getRecruitSelectionApplicantSchedulleId() {
+		return recruitSelectionApplicantSchedulleId;
+	}
+	public void setRecruitSelectionApplicantSchedulleId(
+			Long recruitSelectionApplicantSchedulleId) {
+		this.recruitSelectionApplicantSchedulleId = recruitSelectionApplicantSchedulleId;
+	}
 	
 	
 }

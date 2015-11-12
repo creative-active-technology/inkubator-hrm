@@ -123,15 +123,12 @@ public class EmpCareerHistoryDaoImpl extends IDAOImpl<EmpCareerHistory> implemen
     public Long getTotalEmpCareerHistoryDataByParamReport(ReportEmpMutationParameter searchParameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchEmpRotasiByParamReport(searchParameter, criteria);
-        
         DetachedCriteria maxTglPengangkatanQuery = DetachedCriteria.forClass(getEntityClass());
         ProjectionList proj = Projections.projectionList();
         proj.add(Projections.max("tglPenganngkatan"));
         proj.add(Projections.groupProperty("nik"));
         maxTglPengangkatanQuery.setProjection(proj);
-       
         criteria.add(Subqueries.propertiesIn(new String[] {"tglPenganngkatan","nik"}, maxTglPengangkatanQuery));
-        
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 

@@ -156,11 +156,15 @@
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-disk"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>
-                            <p:commandButton value="#{appmsg['offering_module.see_pdf']}" ajax="true" partialSubmit="true"
+                            <!-- <p:commandButton value="#{appmsg['offering_module.see_pdf']}" ajax="true" partialSubmit="true"
                                              action="#{offeringAndProhabitFormController.doSave()}" styleClass="label_button" update="offeringFormId"
                                              style="margin-right: 5px" label="#{appmsg['global.save']}"
                                              icon="ui-icon-zoomin"
-                                             id="tinjauButton" title="#{appmsg['global.save']}"/>
+                                             id="tinjauButton" title="#{appmsg['global.save']}"/> -->
+                            <p:commandButton value="#{appmsg['offering_module.see_pdf']}" icon="ui-icon-zoomin" title="#{appmsg['offering_module.see_pdf']}" label="#{appmsg['offering_module.see_pdf']}" styleClass="label_button"
+                                             update="panelDialogOfferingLetterReport"
+                                             onclick="PF('statusDialog').show()"  oncomplete="PF('dialogOfferingLetter').show()">                        
+                            </p:commandButton>
                             <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" update="offeringFormId"
                                              process="@this" icon="ui-icon-refresh" id="cleareId"   styleClass="label_button"  style="margin-right: 5px">  
                                 <p:resetInput target="offeringFormId" />  
@@ -173,6 +177,28 @@
                         <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
                             <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
                         </p:dialog>
+                        <p:dialog widgetVar="dialogOfferingLetter" header="#{appmsg['bioaddress.detail_address']}" styleClass="header_small_no_bold" height="300" width="700" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
+	                    <p:panelGrid id="panelDialogOfferingLetterReport" style="width:100%;margin:5px;">
+	
+	                        <p:row>
+	                            <!--<p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{empDataDetilController.id}" styleClass="label_hrm"/></p:column>-->
+	                            <p:column>
+	                                <p:media value="#{reportStreamController.offeringLetter}" player="pdf" width="700px" height="300px" cache="false">
+	                                	<f:param name="code" value="#{offeringAndProhabitFormController.offeringAndProhabitModel.code}" />
+	                                	<f:param name="contentSurat" value="#{offeringAndProhabitFormController.offeringAndProhabitModel.content}" />
+	                                	<f:param name="penandaTangan" value="#{offeringAndProhabitFormController.offeringAndProhabitModel.empData.bioData.firstName} #{offeringAndProhabitFormController.offeringAndProhabitModel.empData.bioData.lastName}" />
+	                                	<f:param name="signature" value="#{offeringAndProhabitFormController.offeringAndProhabitModel.empData.bioData.pathSignature}" />
+	                                </p:media>
+	                            </p:column>
+	                        </p:row>
+	                        <f:facet name="footer">
+	                            <p:row>
+	                                <p:column colspan="4"><p:outputLabel value="#{appmsg['menu.personalia']} - #{appmsg['global.address']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+	                            </p:row>
+	                        </f:facet>
+	                    </p:panelGrid>
+                </p:dialog>
                         <p:dialog widgetVar="dialogHelper" header="#{appmsg['global.help']}" modal="false" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
                                   appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
                             <h:panelGrid columns="3" >

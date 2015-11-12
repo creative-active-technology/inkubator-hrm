@@ -54,7 +54,9 @@
                                 <h:outputLabel for="mppId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">                                
-                                <p:spinner id="mppId" label="#{appmsg['mpp_recruitment.mpp']}"  required="true" value="#{mppApplicationHistoryFormController.model.mpp}" size="2" min="0" stepFactor="1" max="100" styleClass="isitext_hrm" />                                
+                                <p:spinner id="mppId" label="#{appmsg['mpp_recruitment.mpp']}"  required="true" value="#{mppApplicationHistoryFormController.model.mpp}" size="2" min="0" stepFactor="1" max="#{mppApplicationHistoryFormController.model.maxMpp}" styleClass="isitext_hrm" >
+                                	<p:ajax listener="#{mppApplicationHistoryFormController.onChangeMpp()}"  update="labelActual,labelDifference"/>
+                                </p:spinner>                                
                             </p:column>
                           
                         </p:row>
@@ -73,7 +75,7 @@
                                 <h:outputLabel  value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 59%">
-                               <p:outputLabel value="#{mppApplicationHistoryFormController.model.actual}" />             
+                               <p:outputLabel id="labelActual" value="#{mppApplicationHistoryFormController.model.actual}" />             
                             </p:column>
                         </p:row>
                         
@@ -85,7 +87,7 @@
                                 <h:outputLabel  value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 59%">
-                               <p:outputLabel value="#{mppApplicationHistoryFormController.model.difference}" />             
+                               <p:outputLabel id="labelDifference" value="#{mppApplicationHistoryFormController.model.difference}" />             
                             </p:column>
                         </p:row>
                         

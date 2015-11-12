@@ -31,6 +31,7 @@ import com.inkubator.hrm.web.search.RecruitAgreementNoticeSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
+import com.inkubator.hrm.web.search.SearchEmployeeCandidateParameter;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 
 /**
@@ -90,6 +91,7 @@ public interface EmpDataDao extends IDAO<EmpData> {
     public BioDataModel getEmpNameWithNearestBirthDate();
     
     public EmpData getEmpDataWithBioDataAndMaritalStatusById(long id);
+    
 
     /**
      * get pageable/paging
@@ -151,9 +153,9 @@ public interface EmpDataDao extends IDAO<EmpData> {
 
     public Long getTotalSalaryConfirmationByParam(SalaryConfirmationParameter param);
 
-    public List<SearchEmployeeCandidateViewModel> getAllDataEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId, String gender, int firstResult, int maxResults, Order order);
+    public List<SearchEmployeeCandidateViewModel> getAllDataEmpCandidateByParamWithDetail(SearchEmployeeCandidateParameter searchEmployeeCandidateParameter);
 
-    public Long getTotalEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId, String gender);
+    public Long getTotalEmpCandidateByParamWithDetail(SearchEmployeeCandidateParameter searchEmployeeCandidateParameter);
 
     public List<EmpData> getAllDataByParamForOnlyEmployee(Long companyId, EmpDataSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 

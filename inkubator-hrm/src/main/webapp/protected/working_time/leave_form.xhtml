@@ -301,13 +301,17 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.process_name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{approvalDefinitionData.processType}"/>
+                                <h:outputLabel value= "#{approvalDefinitionData.processType}">
+                                	<f:converter converterId="approvalDefinitionConverter"/>
+                                </h:outputLabel>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.approver_type']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{approvalDefinitionData.approverType}"/>
+                                <h:outputLabel value= "#{approvalDefinitionData.approverType}">
+                                	<f:converter converterId="approvalDefinitionConverter"/>
+                                </h:outputLabel>
                             </p:column>
                             <p:column style="text-align: center">
                                 <f:facet name="header">  

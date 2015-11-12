@@ -109,11 +109,15 @@ public class RecruitMppApplyDaoImpl extends IDAOImpl<RecruitMppApply> implements
     private String setWhereQueryUndisbursedActivityByParam(RecruitMppApplySearchParameter parameter) {
         StringBuffer whereQuery = new StringBuffer();
 
-        if (StringUtils.isNotEmpty(parameter.getRecruitMppApplyCode())) {
+        /*if (StringUtils.isNotEmpty(parameter.getRecruitMppApplyCode())) {
             whereQuery.append("AND mpp.recruit_mpp_apply_code LIKE :recruitMppApplyCode ");
         }
         if (StringUtils.isNotEmpty(parameter.getRecruitMppApplyName())) {
             whereQuery.append("AND mpp.recruit_mpp_apply_name LIKE :recruitMppApplyName ");
+        }*/
+        
+        if (StringUtils.isNotEmpty(parameter.getRequester())) {
+            whereQuery.append("AND requester.user_id LIKE :userId ");
         }
 
         return whereQuery.toString();
@@ -121,14 +125,14 @@ public class RecruitMppApplyDaoImpl extends IDAOImpl<RecruitMppApply> implements
 
     private Query setValueQueryUndisbursedActivityByParam(Query hbm, RecruitMppApplySearchParameter parameter) {
         for (String param : hbm.getNamedParameters()) {
-            if (StringUtils.equals(param, "recruitMppApplyCode")) {
+            /*if (StringUtils.equals(param, "recruitMppApplyCode")) {
                 hbm.setParameter("recruitMppApplyCode", "%" + parameter.getRecruitMppApplyCode() + "%");
             } else if (StringUtils.equals(param, "recruitMppApplyName")) {
                 hbm.setParameter("recruitMppApplyName", "%" + parameter.getRecruitMppApplyName() + "%");
-            } else if (StringUtils.equals(param, "appDefinitionName")) {
+            }*/ if (StringUtils.equals(param, "appDefinitionName")) {
                 hbm.setParameter("appDefinitionName", HRMConstant.RECRUIT_MPP_APPLY);
             } else if (StringUtils.equals(param, "userId")) {
-                hbm.setParameter("userId", HrmUserInfoUtil.getUserName());
+                hbm.setParameter("userId", "%" + parameter.getRequester()  + "%");
             }
         }
         return hbm;

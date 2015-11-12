@@ -69,6 +69,8 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
     @Autowired
     private JmsTemplate jmsTemplatePasswordComplexity;
     @Autowired
+    private JmsTemplate jmsTemplateRecruitmetConfigEmp;
+    @Autowired
     protected SchedulerLogDao schedulerLogDao;
 //    @Override
 //    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -447,6 +449,17 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
                     }
                 });
                 break;
+            case "RECRUITMENT_CONFIG_EMP":
+                jmsTemplateRecruitmetConfigEmp.send(new MessageCreator() {
+
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
+                        System.out.println(" Jsms trigerereddd");
+                        return session.createTextMessage(String.valueOf(log.getId()));
+                    }
+                });
+                break;
+
             default:
                 break;
 

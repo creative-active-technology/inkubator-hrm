@@ -1,38 +1,10 @@
 package com.inkubator.hrm.service.impl;
 
-import ch.lambdaj.Lambda;
-import ch.lambdaj.group.Group;
-
-import com.inkubator.common.util.DateTimeUtil;
-import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.dao.BankDao;
-import com.inkubator.hrm.dao.BankGroupDao;
-import com.inkubator.hrm.dao.EmpDataDao;
-import com.inkubator.hrm.dao.JabatanDao;
-import com.inkubator.hrm.dao.RecruitMppApplyDao;
-import com.inkubator.hrm.dao.RecruitMppApplyDetailDao;
-import com.inkubator.hrm.dao.RecruitMppPeriodDao;
-import com.inkubator.hrm.entity.Bank;
-import com.inkubator.hrm.entity.Jabatan;
-import com.inkubator.hrm.entity.RecruitMppApplyDetail;
-import com.inkubator.hrm.entity.RecruitMppPeriod;
-import com.inkubator.hrm.service.BankService;
-import com.inkubator.hrm.service.RecruitMppApplyDetailService;
-import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
-import com.inkubator.hrm.web.model.RecruitMppApplyDetailViewModel;
-import com.inkubator.hrm.web.search.BankSearchParameter;
-import com.inkubator.hrm.web.search.RecruitMppApplyDetailSearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.time.DateUtils;
-import org.exolab.castor.types.DateTime;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -40,6 +12,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.inkubator.common.util.RandomNumberUtil;
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.JabatanDao;
+import com.inkubator.hrm.dao.RecruitMppApplyDao;
+import com.inkubator.hrm.dao.RecruitMppApplyDetailDao;
+import com.inkubator.hrm.dao.RecruitMppApplyDetailTimeDao;
+import com.inkubator.hrm.dao.RecruitMppPeriodDao;
+import com.inkubator.hrm.entity.RecruitMppApplyDetail;
+import com.inkubator.hrm.entity.RecruitMppApplyDetailTime;
+import com.inkubator.hrm.entity.RecruitMppPeriod;
+import com.inkubator.hrm.service.RecruitMppApplyDetailService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.web.model.RecruitMppApplyDetailViewModel;
+import com.inkubator.hrm.web.search.RecruitMppApplyDetailSearchParameter;
 
 /**
  *
@@ -59,6 +47,8 @@ public class RecruitMppApplyDetailServiceImpl extends IServiceImpl implements Re
     private RecruitMppPeriodDao recruitMppPeriodDao;  
     @Autowired
     private JabatanDao jabatanDao; 
+    @Autowired
+    private RecruitMppApplyDetailTimeDao recruitMppApplyDetailTimeDao;
 
     @Override
     public RecruitMppApplyDetail getEntiyByPK(String string) throws Exception {
@@ -267,59 +257,118 @@ public class RecruitMppApplyDetailServiceImpl extends IServiceImpl implements Re
 		Date startPeriod = recruitMppPeriod.getPeriodeStart();
 		Date endPeriod = recruitMppPeriod.getPeriodeEnd();
 		
-		//inisialiasi calendar dengan startPeriod dan endPeriod dari selectedMppPeriod
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(startPeriod);
+		RecruitMppApplyDetail recruitMppApplyDetail = recruitMppApplyDetailDao.getEntityByJabatanIdAndMppPeriodId(jabatanId, mppPeriodId);
+		Boolean isAlreadyCreated = recruitMppApplyDetailTimeDao.isMppDetailTimeAlreadyCreatedForMppDetailId(recruitMppApplyDetail.getId());
 		
-		Calendar calendarEndDate = Calendar.getInstance();
-		calendarEndDate.setTime(endPeriod);
+		//Jika belum di generate, generate dahulu detail mpp tiap bulan dari jabatan terpilih
+		if(!isAlreadyCreated){
+			generateListMppDetailTime(recruitMppApplyDetail, mppPeriodId, startPeriod, endPeriod);
+		}
 		
-		do {
-			
-			// set tgl awal dari current month
-			calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
-			Date startDateInSelectedMonth = calendar.getTime();
-			
-			// set tgl akhir dari current month
-			calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-			Date endDateInSelectedMonth = calendar.getTime();
-			
-			
-			RecruitMppApplyDetailViewModel model = generateMppDetailModelPerMonth(startDateInSelectedMonth, endDateInSelectedMonth, jabatanId);
-			model.setPeriodeStart(startDateInSelectedMonth);
-			model.setPeriodeEnd(endDateInSelectedMonth);
-			
-			listRecruitMppApplyDetailViewModel.add(model);
-			
-			//Lompat ke bulan berikutnya
-			calendar.add(Calendar.MONTH, 1);
-			
-			
-		}while(calendar.before(calendarEndDate));
+		List<RecruitMppApplyDetailTime> listMppDetailTime = recruitMppApplyDetailTimeDao.getListByMppApplyDetailId(recruitMppApplyDetail.getId());
+		listRecruitMppApplyDetailViewModel = convertListMppDetailTimeToModel(listMppDetailTime, mppPeriodId);
 		
 		return listRecruitMppApplyDetailViewModel;
 	}
 	
-	private RecruitMppApplyDetailViewModel generateMppDetailModelPerMonth(Date startDate, Date endDate, Long jabatanId){
-		RecruitMppApplyDetailViewModel model = new RecruitMppApplyDetailViewModel();
-		RecruitMppApplyDetail recruitMppApplyDetail = recruitMppApplyDetailDao.getEntityByDateRangeAndJabatanId(jabatanId, startDate, endDate);
-		Integer plan = 0;
+	private List<RecruitMppApplyDetailViewModel> convertListMppDetailTimeToModel(List<RecruitMppApplyDetailTime> listMppApplyDetailTime, Long mppPeriodId){
+		List<RecruitMppApplyDetailViewModel> listMppDetailTimeModel = new ArrayList<RecruitMppApplyDetailViewModel>();
 		
-		// Cek jika ada Recruitment MPP untuk jabatan yang di pilih pada range date terpilih, maka set Id dan plan dari model dengan data dari recruitMppApplyDetail
-		if(null != recruitMppApplyDetail){
-			model.setId(recruitMppApplyDetail.getId());
-			plan = recruitMppApplyDetail.getRecruitPlan();
+		for(RecruitMppApplyDetailTime mppDetailTime : listMppApplyDetailTime){
+			
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(mppDetailTime.getMppMonthApply());
+			calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			
+			RecruitMppApplyDetailViewModel model = new RecruitMppApplyDetailViewModel();
+			model.setId(mppDetailTime.getId());
+			model.setActual(mppDetailTime.getActual());
+			model.setDifference(mppDetailTime.getDifference());
+			model.setMpp(mppDetailTime.getPlanningPerson().longValue());
+			model.setId(mppDetailTime.getId());
+			model.setJabatanId(mppDetailTime.getRecruitMppApplyDetail().getJabatan().getId());
+			model.setJabatanKode(mppDetailTime.getRecruitMppApplyDetail().getJabatan().getCode());
+			model.setJabatanName(mppDetailTime.getRecruitMppApplyDetail().getJabatan().getName());
+			model.setMppPeriodId(mppPeriodId);
+			model.setPeriodeStart(mppDetailTime.getMppMonthApply());
+			model.setPeriodeEnd(calendar.getTime());
+			model.setRecruitMppApplyId(mppDetailTime.getRecruitMppApplyDetail().getRecruitMppApply().getId());
+			listMppDetailTimeModel.add(model);
 		}
 		
-		Integer actual = empDataDao.getTotalKaryawanByJabatanIdWithJoinDateBeforeOrEqualDate(jabatanId, startDate).intValue();
-		Integer difference = plan == actual ? 0 : plan > actual ? (plan - actual) : (actual - plan);
-		model.setJabatanId(jabatanId);
-		model.setActual(actual);
-		model.setDifference(difference);
-		model.setMpp(plan.longValue());
-		return model;
+		return listMppDetailTimeModel;
+	}
+	
+	private void generateListMppDetailTime(RecruitMppApplyDetail mppApplyDetail, Long mppPeriodId, Date startDateMppPeriode, Date endDateMppPeriode){
+		
+			//inisialiasi calendar dengan startPeriod dan endPeriod dari selectedMppPeriod
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(startDateMppPeriode);
+			
+			Calendar calendarEndDate = Calendar.getInstance();
+			calendarEndDate.setTime(endDateMppPeriode);
+			
+			String createBy = HrmUserInfoUtil.getUserName();
+			Date createOn = new Date();
+			
+			Boolean isFound = Boolean.FALSE;// flag untuk penanda di bulan apa sebenarnya mpp dilaksanakan.
+			Integer tempDifference = 0;// temporary penampung dari tiap bulan yang akan di looping.
+			
+			//Looping tiap bulan dari periode MPP terpilih.
+			do {
+				
+				// set tgl awal dari current month
+				calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+				Date startDateInSelectedMonth = calendar.getTime();
+				
+				// set tgl akhir dari current month
+				calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+				Date endDateInSelectedMonth = calendar.getTime();
+				
+				RecruitMppApplyDetailTime mppApplyDetailTime = new RecruitMppApplyDetailTime();
+				mppApplyDetailTime.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+				mppApplyDetailTime.setCreatedBy(createBy);
+				mppApplyDetailTime.setCreatedOn(createOn);
+				mppApplyDetailTime.setRecruitMppApplyDetail(mppApplyDetail);
+				mppApplyDetailTime.setMppMonthApply(startDateInSelectedMonth);
+				
+				Integer recruitPlan = 0;
+				Integer actual = 0;
+				
+				RecruitMppApplyDetail recruitMppApplyDetail = recruitMppApplyDetailDao.getEntityByDateRangeAndJabatanId(mppApplyDetail.getJabatan().getId(), startDateMppPeriode, endDateMppPeriode);
+				if(null != recruitMppApplyDetail){
+					
+					recruitPlan = recruitMppApplyDetail.getRecruitPlan();
+					actual =  empDataDao.getTotalKaryawanByJabatanIdWithJoinDateBeforeOrEqualDate(mppApplyDetail.getJabatan().getId(), startDateInSelectedMonth).intValue();
+					Integer difference = recruitPlan == actual ? 0 : recruitPlan > actual ? (recruitPlan - actual) : (actual - recruitPlan);
+					
+					mppApplyDetailTime.setActual(actual);
+					mppApplyDetailTime.setPlanningPerson(recruitPlan);
+					mppApplyDetailTime.setDifference(difference);
+					tempDifference = difference;
+					
+					isFound = Boolean.TRUE; // jika recruitMppApplyDetail != null, berarti bulan real di laksanakan mpp sudah ketemu.
+					tempDifference = difference; // Tampung nilai difference dari bulan tsb untuk di jadikan sebagai acuan nilai aktual di bulan selanjutnya.
+					
+				}else{
+					
+					//Jika isFound == true, actual diambil dari tempDifference (penampung difference bulan sebelumnya), jika masih false, get real actual karyawan yang menduduki jabatan tesebut di bulan tersebut.
+					actual = isFound ? tempDifference : empDataDao.getTotalKaryawanByJabatanIdWithJoinDateBeforeOrEqualDate(mppApplyDetail.getJabatan().getId(), startDateInSelectedMonth).intValue();
+					Integer difference = recruitPlan == actual ? 0 : recruitPlan > actual ? (recruitPlan - actual) : (actual - recruitPlan);
+					mppApplyDetailTime.setActual(actual);
+					mppApplyDetailTime.setPlanningPerson(recruitPlan);
+					mppApplyDetailTime.setDifference(difference);
+				}
+				
+				recruitMppApplyDetailTimeDao.saveAndFlush(mppApplyDetailTime);
+				
+				//Lompat ke bulan berikutnya
+				calendar.add(Calendar.MONTH, 1);
+				
+			}while(calendar.before(calendarEndDate));
 	}
 
+	
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<RecruitMppApplyDetail> getListInSelectedMppPeriodIdWithApprovalStatus(Long recruitMppPeriodId, Integer approvalStatus) throws Exception {
@@ -342,6 +391,24 @@ public class RecruitMppApplyDetailServiceImpl extends IServiceImpl implements Re
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<RecruitMppApplyDetail> getListByJabatanIdAndMppPeriodId(Long jabatanId, Long recruitMppPeriodId) throws Exception {
 		return recruitMppApplyDetailDao.getListByJabatanIdAndMppPeriodId(jabatanId, recruitMppPeriodId);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public RecruitMppApplyDetail getEntityByJabatanIdAndMppPeriodId(Long jabatanId, Long mppPeriodId) throws Exception {
+		return recruitMppApplyDetailDao.getEntityByJabatanIdAndMppPeriodId(jabatanId, mppPeriodId);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RecruitMppApplyDetail> getAllDataWithDetail() throws Exception {
+		return recruitMppApplyDetailDao.getAllDataWithDetail();
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RecruitMppApplyDetail> getListByMppPeriodIdWithApprovalStatusAndHaveNotBeenRecruited(Long recruitMppPeriodId, Integer approvalStatus) throws Exception {
+		return recruitMppApplyDetailDao.getListByMppPeriodIdWithApprovalStatusAndHaveNotBeenRecruited(recruitMppPeriodId, approvalStatus);
 	}
     
 }

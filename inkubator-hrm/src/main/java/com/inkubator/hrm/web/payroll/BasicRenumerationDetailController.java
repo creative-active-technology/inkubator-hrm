@@ -56,8 +56,8 @@ public class BasicRenumerationDetailController extends BaseController {
             String empId = FacesUtil.getRequestParameter("execution");
             selectedEmpData = empDataService.getByEmpIdWithDetail(Long.parseLong(empId.substring(1)));
             
-            listBenefit = new ArrayList<BenefitGroupRenumerationModel>();
-            listSubsidy = new ArrayList<BenefitGroupRenumerationModel>();
+            listBenefit = new ArrayList<>();
+            listSubsidy = new ArrayList<>();
             listAllRenumeration = benefitGroupService.getAllDataRenumeration(selectedEmpData.getId());
             for(BenefitGroupRenumerationModel model : listAllRenumeration){
             	if(ObjectUtils.equals(model.getComponentCategory(), HRMConstant.PAY_SALARY_COMPONENT_TUNJANGAN)){

@@ -25,4 +25,7 @@ public interface RecruitSelectionApplicantInitialService extends IService<Recrui
     		int firstResult, int maxResults, Order orderable) throws Exception;
     
     public Long getTotalByParamforRecruitmentScheduleSetting(RecruitmentScheduleSettingSearchParameter searchParameter)  throws Exception;
+    
+    public List<RecruitSelectionApplicantInitial> getListByRecruitHireApplyId(Long recruitHireApplyId)  throws Exception;
+    
 }

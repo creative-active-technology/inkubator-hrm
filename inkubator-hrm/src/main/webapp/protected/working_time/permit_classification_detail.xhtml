@@ -195,7 +195,9 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.approval_name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{approvalDefinitionData.approvalDefinition.name}"/>
+                                <h:outputLabel value= "#{approvalDefinitionData.approvalDefinition.name}">
+                                	<f:converter converterId="approvalDefinitionConverter"/>
+                                </h:outputLabel>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">  
@@ -207,13 +209,17 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.process_name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{approvalDefinitionData.approvalDefinition.processType}"/>
+                                <h:outputLabel value= "#{approvalDefinitionData.approvalDefinition.processType}">
+                                	<f:converter converterId="approvalDefinitionConverter"/>
+                                </h:outputLabel>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['approvaldefinition.approver_type']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{approvalDefinitionData.approvalDefinition.approverType}"/>
+                                <h:outputLabel value= "#{approvalDefinitionData.approvalDefinition.approverType}" >
+                                	<f:converter converterId="approvalDefinitionConverter"/>
+                                </h:outputLabel>
                             </p:column>
                             <p:column style="text-align: center">
                                 <f:facet name="header">  

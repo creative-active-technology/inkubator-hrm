@@ -53,7 +53,7 @@
                                     <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" actionListener="#{terminationTypeViewController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{terminationTypeViewController.onDialogReturn}"  update="tableTerminationTypeId,:growlTerminationTypeViewlId"/>
                                     </p:commandButton>
-                                    
+
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{terminationTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
@@ -73,28 +73,34 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="#{terminationTypeData.code}"  style="width: 37%">
+                            <p:column sortBy="#{terminationTypeData.code}"  >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['terminationType.terminationType_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{terminationTypeData.code}"/>
                             </p:column>  
-                            <p:column sortBy="#{terminationTypeData.name}"  style="width: 50%">
+                            <p:column sortBy="#{terminationTypeData.name}" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['terminationType.terminationType_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{terminationTypeData.name}"/>
-                            </p:column>    
+                            </p:column>  
+                            <p:column sortBy="#{terminationTypeData.name}" >
+                                <f:facet name="header">  
+                                    <h:outputText value="Surat Refferensi"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{terminationTypeData.systemLetterReference.name}"/>
+                            </p:column>   
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
-                                				 style="font-size: 10px!important" update=":panelDialogDetailId" 
-                                				 action="#{terminationTypeViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailTerminationType').show()">                        
+                                                 style="font-size: 10px!important" update=":panelDialogDetailId" 
+                                                 action="#{terminationTypeViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogDetailTerminationType').show()">                        
                                     <f:setPropertyActionListener value="#{terminationTypeData}" target="#{terminationTypeViewController.selectedTerminationType}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
-                                				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                				 action="#{terminationTypeViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmTerminationType').show()">
+                                                 style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                                 action="#{terminationTypeViewController.doDetail()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmTerminationType').show()">
                                     <f:setPropertyActionListener value="#{terminationTypeData}" target="#{terminationTypeViewController.selectedTerminationType}" />
                                 </p:commandButton>
                                 -
@@ -156,6 +162,10 @@
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['terminationType.terminationType_name']}" styleClass="label_hrm"/></p:column>
                             <p:column style="width:70%;"><p:outputLabel value="#{terminationTypeViewController.selectedTerminationType.name}" styleClass="label_hrm"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:30%"><p:outputLabel value="Surat Refferensi" styleClass="label_hrm"/></p:column>
+                            <p:column style="width:70%;"><p:outputLabel value="#{terminationTypeViewController.selectedTerminationType.systemLetterReference.name}" styleClass="label_hrm"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="width:30%"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>

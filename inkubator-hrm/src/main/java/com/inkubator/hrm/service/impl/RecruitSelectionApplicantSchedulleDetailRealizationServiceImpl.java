@@ -355,4 +355,10 @@ public class RecruitSelectionApplicantSchedulleDetailRealizationServiceImpl exte
 		}
 	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Boolean isSchedulleDetailHaveBeenRealized(Long recruitSelectionApplicantScheduleDetailId) throws Exception {
+		return recruitSelectionApplicantSchedulleDetailRealizationDao.isSchedulleDetailHaveBeenRealized(recruitSelectionApplicantScheduleDetailId);
+	}
+
 }

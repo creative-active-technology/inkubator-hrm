@@ -162,6 +162,10 @@ public class OfferingAndProhabitFormController extends BaseController {
         }
     }
 
+    public void doGetValue(){
+    	System.out.println(offeringAndProhabitModel.getCode() + " hahihuheho");
+    }
+    
     private RecruitLetters getEntityFromViewModel(OfferingAndProhabitModel model) {
         RecruitLetters recruitLetters = new RecruitLetters();
         if (model.getId() != null) {
@@ -174,7 +178,6 @@ public class OfferingAndProhabitFormController extends BaseController {
         recruitLetters.setFormatNumber(model.getFormatLetterNumber());
         recruitLetters.setIsActive(model.getIsActive());
         recruitLetters.setLeterTypeId(Integer.parseInt(model.getLeterTypeId()));
-        System.out.println(" Ini adlaah jenis suranya " + model.getLeterTypeId());
         recruitLetters.setSmsNotif(model.getIsActive());
         recruitLetters.setSmsNotif(model.getIsSendingViaSMS());
         return recruitLetters;

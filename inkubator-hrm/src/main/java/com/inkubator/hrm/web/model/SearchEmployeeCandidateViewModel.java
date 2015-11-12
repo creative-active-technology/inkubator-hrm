@@ -1,6 +1,7 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 
 /**
  *
@@ -8,23 +9,23 @@ import java.io.Serializable;
  */
 public class SearchEmployeeCandidateViewModel implements Serializable {
 
-    private Long empDataId;
+    private BigInteger empDataId;
     private String nik;
     private String firstName;
     private String lastName;
-    private Long idJabatan;
+    private BigInteger idJabatan;
     private String jabatanName;
-    private Long idReligion;
+    private BigInteger idReligion;
     private String religionName;
     private String kriteria;
-    private Long lastEducationLevelId;
+    private BigInteger lastEducationLevelId;
     private String lastEducationLevelName;
 
-    public Long getEmpDataId() {
+    public BigInteger getEmpDataId() {
         return empDataId;
     }
 
-    public void setEmpDataId(Long empDataId) {
+    public void setEmpDataId(BigInteger empDataId) {
         this.empDataId = empDataId;
     }
 
@@ -52,11 +53,11 @@ public class SearchEmployeeCandidateViewModel implements Serializable {
         this.lastName = lastName;
     }
 
-    public Long getIdJabatan() {
+    public BigInteger getIdJabatan() {
         return idJabatan;
     }
 
-    public void setIdJabatan(Long idJabatan) {
+    public void setIdJabatan(BigInteger idJabatan) {
         this.idJabatan = idJabatan;
     }
 
@@ -68,11 +69,11 @@ public class SearchEmployeeCandidateViewModel implements Serializable {
         this.jabatanName = jabatanName;
     }
 
-    public Long getIdReligion() {
+    public BigInteger getIdReligion() {
         return idReligion;
     }
 
-    public void setIdReligion(Long idReligion) {
+    public void setIdReligion(BigInteger idReligion) {
         this.idReligion = idReligion;
     }
 
@@ -92,11 +93,11 @@ public class SearchEmployeeCandidateViewModel implements Serializable {
         this.kriteria = kriteria;
     }
 
-    public Long getLastEducationLevelId() {
+    public BigInteger getLastEducationLevelId() {
         return lastEducationLevelId;
     }
 
-    public void setLastEducationLevelId(Long lastEducationLevelId) {
+    public void setLastEducationLevelId(BigInteger lastEducationLevelId) {
         this.lastEducationLevelId = lastEducationLevelId;
     }
 

@@ -7,6 +7,7 @@ package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.RecruitLetters;
+import com.inkubator.hrm.entity.RecruitSelectionType;
 import com.inkubator.hrm.web.search.RecrutimentLetterSearchParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -23,4 +24,6 @@ public interface RecruitLettersService extends IService<RecruitLetters> {
 
     public Long getTotalByParam(RecrutimentLetterSearchParameter parameter) throws Exception;
     public  void saveWithSelectionType(RecruitLetters letters, List<Long>data)throws Exception;
+    
+    public void doDistributionRescruitLetter(RecruitLetters letters) throws Exception;
 }

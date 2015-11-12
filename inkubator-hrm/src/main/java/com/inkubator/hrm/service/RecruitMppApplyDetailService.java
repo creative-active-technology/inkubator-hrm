@@ -34,4 +34,10 @@ public interface RecruitMppApplyDetailService extends IService<RecruitMppApplyDe
     public List<RecruitMppApplyDetail> getAllDataJabatanByRecruitMppApplyId(Long recruitMppApplyId) throws Exception;
     
     public List<RecruitMppApplyDetail> getListByJabatanIdAndMppPeriodId(Long jabatanId, Long recruitMppPeriodId) throws Exception;
+
+	public RecruitMppApplyDetail getEntityByJabatanIdAndMppPeriodId(Long jabatanId, Long mppPeriodId)  throws Exception;
+    
+    public List<RecruitMppApplyDetail> getAllDataWithDetail() throws Exception;
+    
+    public List<RecruitMppApplyDetail> getListByMppPeriodIdWithApprovalStatusAndHaveNotBeenRecruited(Long recruitMppPeriodId, Integer approvalStatus) throws Exception;
 }

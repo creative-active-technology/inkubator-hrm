@@ -61,6 +61,7 @@
 	                            	</p:outputLabel>
 	                            </p:column>
 	                        </p:row>	  
+	                        
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['recruitment_applicant.total_to_be_recruit']}" styleClass="label_hrm"/>
@@ -74,9 +75,9 @@
 	                                <p:outputLabel value="#{appmsg['recruitment_applicant.test_coordinator']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:outputLabel value="#{recruitScheduleSettingModel.empCoordinatorNik}" />
+	                            	<p:outputLabel value="#{recruitScheduleSettingModel.empData.nik}" />
 	                            	-
-	                            	<p:outputLabel value="#{recruitScheduleSettingModel.empCoordinatorFullName}" />
+	                            	<p:outputLabel value="#{recruitScheduleSettingModel.empData.bioData.fullName}" />
 	                            </p:column>
 	                        </p:row>
 	                         <p:row>
@@ -88,76 +89,106 @@
 	                            </p:column>
 	                        </p:row>                            
 	                 	</p:panelGrid>
-	                 	<div style="margin-bottom: 20px;margin-left: 5px">
-                            <p:outputLabel value="*)#{appmsg['businesstravel.business_number_flow_message']}" style="font-size: 10px"/>
-                        </div>
 	                 	
-	                 	<!-- <p:dataTable  id="tableBusinessTravelComponentId" var="businessTravelComponentData"  value="#{businessTravelModel.businessTravelComponents}" lazy="false" paginator="#{businessTravelModel.isPaginator}" pageLinks="7"
+	                 	 <p:tabView id="tabView" dynamic="true"  cache="true" styleClass="tabview_hrm" style="margin-top: 15px;margin-bottom: 15px;margin-left: 5px;margin-right: 5px" scrollable="true" >
+	                 	<c:forEach   var="dataRender" items="#{recruitScheduleSettingModel.listSelectionSeriesDetails}" id="repeat" begin="0" end="#{recruitScheduleSettingModel.listSelectionSeriesDetails.size()-1}" varStatus="loop"  >
+	                 	
+                            <p:tab title="#{dataRender.recruitSelectionType.name}" >  
+                            	
+                            	<p:dataTable  var="data"  value="#{recruitScheduleSettingModel.mapSelectionApplicantSchedule.get(dataRender.recruitSelectionType.id)}" lazy="false" paginator="true" pageLinks="7"
 	                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
 	                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
 	                                      rowIndexVar="no"> 
-	                            <p:column style="text-align: center;width: 5%">
+	                            <p:column style="text-align: center;width: 3%">
 	                                <f:facet name="header">  
 	                                    <h:outputText value="#{appmsg['global.number']}"/>
 	                                </f:facet>
 	                                <h:outputLabel value="#{no+1}." />
 	                            </p:column>  
-	                            <p:column style="text-align: center;width: 20%">
+	                            <p:column style="text-align: center;width: 12%">
 	                                <f:facet name="header">  
-	                                    <h:outputText value="#{appmsg['businesstravel.travel_component']}"/>
+	                                    <h:outputText value="#{appmsg['applicant_realization.applicant_name']}"/>
 	                                </f:facet>
-	                                <h:outputLabel value= "#{businessTravelComponentData.travelComponent.name}"/>
+	                                <h:outputLabel value= "#{data.applicantName}"/>
 	                            </p:column>
-	                            <p:column style="text-align: center;width: 10%">
+	                            <p:column style="text-align: center;width: 8%">
 	                                <f:facet name="header">  
-	                                    <h:outputText value="#{appmsg['businesstravel.rate']}"/>
+	                                    <h:outputText value="#{appmsg['recruitment_applicant.candidate_status']}"/>
 	                                </f:facet>
-	                                <h:outputLabel value= "#{businessTravelComponentData.defaultRate}">
-	                                	<f:convertNumber pattern="###,###" type="currency"/>
-	                                </h:outputLabel>
+	                                <h:outputLabel value= "#{data.candidateStatus}" />
 	                            </p:column>
-	                            <p:column style="text-align: center;width: 10%">
+	                            <p:column style="text-align: center;width: 15%">
 	                                <f:facet name="header">  
-	                                    <h:outputText value="#{appmsg['businesstravel.quantity']}"/>
+	                                    <h:outputText value="#{appmsg['recruitment.pic']}"/>
 	                                </f:facet>
-	                               	<p:spinner value="#{businessTravelComponentData.quantity}" size="4" min="0" styleClass="isitext_hrm" required="true">
-	                               		<p:ajax update="tableBusinessTravelComponentId,:formBusinessTravelComponentFormId:totalAmountId" process="@this" listener="#{businessTravelFormController.doAdjustPayByAmount(flowRequestContext)}"/>
-	                               	</p:spinner>
+	                                <p:autoComplete  title="#{appmsg['recruitment_applicant.test_coordinator']}" rendered="#{not data.isHaveBeenRealized}"
+                                                value="#{data.empDataPic}"
+                                                completeMethod="#{recruitmentScheduleSettingFormController.doAutoCompleteEmployeeCoordinator}"                                                
+                                                var="empData"
+                                                itemValue="#{empData}"
+                                                itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                converter="empDataConverter"
+                                                required="true" styleClass="isitext_hrm" >
+                                    </p:autoComplete>
+                                    <h:outputLabel value="#{data.empDataPic.nik} - #{data.empDataPic.bioData.fullName}" rendered="#{data.isHaveBeenRealized}" />
 	                            </p:column>
-	                            <p:column style="text-align: center;width: 10%">
+	                            
+	                            <p:column style="text-align: center;width: 15%">
 	                                <f:facet name="header">  
-	                                    <h:outputText value="#{appmsg['businesstravel.earned_per_quatity']}"/>
+	                                    <h:outputText value="#{appmsg['applicant_realization.execution_date']}"/>
 	                                </f:facet>
-	                                <pe:inputNumber title="#{appmsg['businesstravel.earned_per_quatity']}" value="#{businessTravelComponentData.earnedPerQuantity}" 
-	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:190px;">
-	                                	<p:ajax update="tableBusinessTravelComponentId,:formBusinessTravelComponentFormId:totalAmountId" process="@this" listener="#{businessTravelFormController.doAdjustPayByAmount(flowRequestContext)}"/>
-	                                </pe:inputNumber>
+	                                <p:calendar pattern="dd MMMM yyyy" label="#{appmsg['applicant_realization.execution_date']}" value="#{data.scheduleDate}"
+                                                 required="true" navigator="true" rendered="#{not data.isHaveBeenRealized}" >
+                                    </p:calendar>
+                                    <h:outputLabel value="#{data.scheduleDate}" rendered="#{data.isHaveBeenRealized}" >
+                                    	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </h:outputLabel>
 	                            </p:column>
-	                            <p:column style="text-align: center;width: 10%">
+	                             
+                                 <p:column style="text-align: center;width: 17%">
 	                                <f:facet name="header">  
-	                                    <h:outputText value="#{appmsg['businesstravel.pay_by_amount']}"/>
+	                                    <h:outputText value="#{appmsg['applicant_realization.execution_time']}"/>
 	                                </f:facet>
-	                                <h:outputLabel value= "#{businessTravelComponentData.payByAmount}">
-	                                	<f:convertNumber pattern="###,###" type="currency"/>
-	                                </h:outputLabel>
+	                                 <div>
+	                                	<pe:timePicker rendered="#{not data.isHaveBeenRealized}" mode="popup" value="#{data.scheduleStartTime}" label="#{appmsg['applicant_realization.execution_time']}"  styleClass="isitext_hrm"  required="true"/>
+	                                	 <h:outputLabel value="#{data.scheduleStartTime}" rendered="#{data.isHaveBeenRealized}" >
+                                    		<f:convertDateTime pattern="HH:mm" />
+                                    	</h:outputLabel>
+                                    	<p:outputLabel style="margin-left: 5px;margin-right: 5px" value="#{appmsg['global.to']}" />
+                                    	<h:outputLabel value="#{data.scheduleEndTime}" rendered="#{data.isHaveBeenRealized}" >
+                                    		<f:convertDateTime pattern="HH:mm" />
+                                    	</h:outputLabel>
+	                               		<pe:timePicker rendered="#{not data.isHaveBeenRealized}"  mode="popup" value="#{data.scheduleEndTime}" label="#{appmsg['applicant_realization.execution_time']}"  styleClass="isitext_hrm"  required="true"/>
+	                                </div>
 	                            </p:column>
-	                    </p:dataTable> -->
-	                 		                    
+	                            
+	                             <p:column style="text-align: center;width: 10%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['applicant_realization.room']}"/>
+	                                </f:facet>
+	                               	<p:inputText rendered="#{not data.isHaveBeenRealized}" value="#{data.room}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['applicant_realization.room']}" required="true"   />
+	                               	<h:outputLabel value="#{data.room}" rendered="#{data.isHaveBeenRealized}" />
+                                 </p:column>
+                                 <p:column style="text-align: center;width: 20%">
+	                              <f:facet name="header">  
+	                                  <h:outputText value="#{appmsg['applicationInformation.note']}"/>
+	                              </f:facet>
+                                  <p:inputTextarea rendered="#{not data.isHaveBeenRealized}"  rows="2"   maxlength="225" value="#{data.notes}" autoResize="true" required="false"
+                                      label="#{appmsg['applicationInformation.note']}" title="#{appmsg['applicationInformation.note']}" />
+                                  <h:outputLabel value="#{data.notes}" rendered="#{data.isHaveBeenRealized}" />
+                                 </p:column>
+	                    	</p:dataTable>
+                            </p:tab>
+                        </c:forEach>
+                         </p:tabView>  
+                         
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
 	                    	<p:commandButton value="#{appmsg['global.previous']}" title="#{appmsg['global.previous']}" styleClass="label_button" icon="ui-icon-arrow-1-w" 
 	                        				 action="back" immediate="true"/>	
-	                        <!-- <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formBusinessTravelComponentFormId" action="#{businessTravelFormController.doResetBusinessTravelComponentForm(flowRequestContext)}"
-                                                 icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
-	                            <p:resetInput target="formRecruitSelectionScheduleDetailId" />  
-	                        </p:commandButton>  -->                       
 	                        <p:commandButton value="#{appmsg['global.save']}" styleClass="isitext_hrm" style="margin-right: 5px" 
 	                        				 label="#{appmsg['global.save']}" icon="ui-icon-disk" title="#{appmsg['global.save']}"
                                              ajax="true" action="save" update=":growlRecruitSelectionScheduleDetaiId" />
-                            <!-- <p:commandButton value="#{appmsg['global.apply_revision']}" ajax="true" update="formRecruitSelectionScheduleDetailId,:growlRecruitSelectionScheduleDetaiId" 
-                                             action="revised" styleClass="isitext_hrm"
-                                             style="margin-right: 5px" label="#{appmsg['global.apply_revision']}"
-                                             icon="ui-icon-disk" title="#{appmsg['global.apply_revision']}"/> -->
                             <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" icon="ui-icon-contact" 
 	                        				 action="end" immediate="true"/>
 	                    </div>

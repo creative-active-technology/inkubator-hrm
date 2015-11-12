@@ -231,5 +231,11 @@ public class RecruitSelectionApplicantInitialServiceImpl extends IServiceImpl im
 	public Long getTotalByParamforRecruitmentScheduleSetting(RecruitmentScheduleSettingSearchParameter searchParameter)	throws Exception {
 		return recruitSelectionApplicantInitialDao.getTotalByParamforRecruitmentScheduleSetting(searchParameter);
 	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RecruitSelectionApplicantInitial> getListByRecruitHireApplyId(Long recruitHireApplyId) throws Exception {
+		return recruitSelectionApplicantInitialDao.getListByRecruitHireApplyId(recruitHireApplyId);
+	}
     
 }

@@ -102,7 +102,8 @@
             </h:panelGrid>   
             <p:separator/>
             <h:panelGrid columns="1" style="margin-bottom: 15px;">
-                <p:outputLabel id="changeUserInfoId" value="#{appmsg['master_layout.user_information_attention']}" styleClass="label_hrm"/>
+                <!-- <p:outputLabel id="changeUserInfoId" value="#{appmsg['master_layout.user_information_attention']}" styleClass="label_hrm"/> -->
+                <p:outputLabel id="changeUserInfoIdAttention" value="#{appmsg['master_layout.user_information_sms_and_email']}" styleClass="label_hrm"/>
                 <p:outputLabel id="changePasswordId" value="#{appmsg['master_layout.user_password_attention']}" styleClass="label_hrm" />
             </h:panelGrid>
             <p:tabView id="tabViewUserInfoId" onTabChange="handleViewTabUserInfo(index)" styleClass="tabview_hrm">
@@ -145,14 +146,23 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width:30%">
-                                    <p:outputLabel for="phoneNumber" value="#{appmsg['master_layout.phone_number']}" styleClass="label_hrm"/>
+                                    <p:outputLabel for="phone" value="#{appmsg['master_layout.phone_number']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 1%">
                                     <h:outputLabel value=":" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width:60%;">
-                                    <p:inputText id="phoneNumber" value="#{userInfoController.userModel.phoneNumber}" required="true" style="width:250px;"/>
-                                    <p:message for="phoneNumber"/>
+                                    <!-- <p:inputText id="phoneNumber" value="#{userInfoController.userModel.phoneNumber}" required="true" style="width:250px;"/>
+                                    <p:message for="phoneNumber"/> -->
+                                    <p:inputText  value="#{userInfoController.userModel.countryPhoneCode}" styleClass="isitext_hrm" style="width: 50px;margin-right: 3px" label="#{appmsg['user_form.phone_number']}"
+                                                  required="true" id="countryPhoneCode">
+                                        <p:clientValidator/>
+                                    </p:inputText>
+                                    <p:inputText value="#{userInfoController.userModel.phoneNumber}" styleClass="isitext_hrm" style="width: 186px;" label="#{appmsg['user_form.phone_number']}"
+                                                  required="true" id="phone" >
+                                    </p:inputText>
+                                    <p:message for="countryPhoneCode"/>
+                                    <p:message for="phone"/>
                                 </p:column>
                             </p:row>
                         </p:panelGrid>
@@ -160,7 +170,8 @@
                         <p:commandButton value="#{appmsg['global.edit']}" update="formUserInfoTab,:mainGrowl" ajax="true" title="#{appmsg['global.edit']}" action="#{userInfoController.doUpdateUserInfo()}" 
                                          styleClass="isitext_hrm" icon="ui-icon-locked" oncomplete="handleDoUpdateUserInfo(args)"/>
                         <p:watermark for="emailAddress" value="some_one@some_where.com"/>
-                        <p:watermark for="phoneNumber" value="+62000000000"/>
+                        <p:watermark for="phone" value="080000000000"/>
+                        <p:watermark for="countryPhoneCode" value="+62"/>
                     </h:form>
                 </p:tab>
                 <p:tab title="#{appmsg['master_layout.change_password']}">
@@ -235,6 +246,7 @@
                                         <f:param name="id" value="#{BIODATA_ID}"/>
                                     </p:graphicImage>  
                                 </p:commandLink>  -->
+                                </p:commandLink> --> 
                                 <h:panelGroup>
                                     <p:outputLabel value="#{realName} : " style="color: #ff9933 !important;font-weight: bold!important"  styleClass="label_welcome_header" />
                                     <p:outputLabel value="#{appmsg['global.login_as']} #{homeController.roleUser}" styleClass="label_welcome_header" />
@@ -317,8 +329,8 @@
                                     <p:sticky target="menuId" />
                                            <!--<p:menubar model="#{menuController.menuModel}" style="margin-left: 0px;margin-right: 0px;margin-top: 0px" styleClass="panelMenu" autoDisplay="false" id="menuId"/>-->
                                     <p:menubar style="margin-left: 0px;margin-right: 0px;margin-top: 0px" styleClass="panelMenu" autoDisplay="false" id="menuId">  
-                                        <p:menuitem value="" url="/protected/home.htm"  title="Back to Home" style="font-size: 12px !important;font-weight: normal!important;color: white" icon="ui-icon-home" />  
-                                        <p:submenu label="#{appmsg['menu.system']}"  styleClass="menu" icon="img-user-account">
+                                        <p:menuitem value="" url="/protected/home.htm"  title="Back to Home" style="font-size: 12px !important;font-weight: normal!important;color: white" icon="ui-icon-home" />
+                                        <p:submenu label=""  styleClass="menu" icon="img-user-account">
                                             <p:submenu label="#{appmsg['menu.account']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.user_view']}"  style="color: #003366" title="#{appmsg['menu.user_view']}" url="/protected/account/user_view.htm"  icon="img-user"/> 
                                                 <p:menuitem value="#{appmsg['menu.role_view']}"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-user-role" />
@@ -329,7 +341,7 @@
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['menu.approvalPattern']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['approvaldefinition.approval_definition']}"  style="color: #003366" title="#{appmsg['approvaldefinition.approval_definition']}" url="/protected/approval/approval_definition_view.htm"  icon="img-approval-definition"/> 
-                                                <!--<p:menuitem value="Approval Activity"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-approval-activity" />-->
+                                                <p:menuitem value="Approval Activity"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-approval-activity" />
                                                 <p:menuitem value="#{appmsg['approvalActivity.approvalActivityHistory']}"  style="color: #003366" title="#{appmsg['approvalActivity.approvalActivityHistory']}" url="/protected/approval/approval_activity_view.htm" icon="img-approval-activity" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['menu.applicationMenu']}"  styleClass="menu_child" >
@@ -349,7 +361,7 @@
                                                 <p:menuitem value="#{appmsg['batchJobExecution.batchMonitoring']}" style="color: #003366" title="#{appmsg['batchJobExecution.batchMonitoring']}" url="/protected/batch/batch_job_execution.htm" icon="img-login-history"/>
                                                 
                                             </p:submenu>
-                                        </p:submenu>
+                                        </p:submenu> 
                                         <!--                                        <p:submenu label="Approval Matrix"  styleClass="menu" icon="img-approval-matrix">
                                                                                 </p:submenu>-->
 <!--                                        <p:submenu label="#{appmsg['menu.configuration']}" style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-configuration">
@@ -685,7 +697,7 @@
                                                 <p:menuitem value="#{appmsg['recruitment.initial_filtering']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.initial_filtering']}" url="/protected/recruitment/recruit_initial_selection_form.htm" /> 
                                                 <p:menuitem value="#{appmsg['recruitment.set_schedule']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.set_schedule']}" url="/protected/recruitment/recruitment_schedule_setting.htm" /> 
                                                 <p:menuitem value="#{appmsg['recruitment.applicant_review_process']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.applicant_review_process']}" url="/protected/recruitment/selection_applicant_realization_view.htm" /> 
-                                                <p:menuitem value="#{appmsg['recruitment.selection_stage_result']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.selection_stage_result']}" url="#" />
+                                                <p:menuitem value="#{appmsg['recruitment.selection_stage_result']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.selection_stage_result']}" url="/protected/recruitment/selection_applicant_passed_view.htm" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['recruitment.employee_process']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['recruitment.set_employee']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.set_employee']}" url="#" /> 
@@ -874,6 +886,19 @@
                                                 <p:menuitem value="#{appmsg['report.late_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.late_data']}" url="#" />
                                             </p:submenu>
                                         </p:submenu>-->
+                                       <p:submenu label="Pengelolaan Karir"  styleClass="menu" icon="img-user-account">
+                                       		<p:submenu label="Setelan"  styleClass="menu_child" icon="img-user-account">
+                                                <p:menuitem value="Award Type " icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.employee_data']}" url="#" />
+                                                <p:menuitem value="Disicpline Type" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.mutation_data']}" url="#" />
+                                                <p:menuitem value="Employee status role " icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.recap_emp_edu']}" url="#" />
+                                                <p:menuitem value="Career Transition" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.recap_position_emp']}" url="#" />
+                                                <p:menuitem value="Career Transition Detail " icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.pension_preparement']}" url="#" />
+                                  	         	<p:menuitem value="Resignation Reason" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.recap_position_emp']}" url="#" />
+                                                <p:menuitem value="Career Data Changes" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.pension_preparement']}" url="#" />
+                                  	         	<p:menuitem value="Succession Parameter" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.pension_preparement']}" url="#" />
+                                  	    	</p:submenu>
+                                       </p:submenu>
+                                            
                                         <p:menuitem value="Logout" icon="ui-icon-power" styleClass="menu" style="color: #ff9933 !important;font-size: 14px!important" title="Logout and Exit" url="/logout.htm" />  
                                     </p:menubar>  
                                 </h:form>
@@ -922,10 +947,12 @@
         <script type="text/javascript">
             function handleViewTabUserInfo(idx) {
                 if (idx === 0) {
-                    $('#changeUserInfoId').show();
+                    /* $('#changeUserInfoId').show(); */
+                    $('#changeUserInfoIdAttention').show();
                     $('#changePasswordId').hide();
                 } else {
-                    $('#changeUserInfoId').hide();
+                    /* $('#changeUserInfoId').hide(); */
+                    $('#changeUserInfoIdAttention').hide();
                     $('#changePasswordId').show();
                 }
             }

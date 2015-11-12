@@ -743,6 +743,12 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 		BioData bioData = bioDataDao.getEntiyByPK(empData.getBioData().getId());
 		Jabatan jabatan = empData.getJabatanByJabatanId();
 		RecruitHireApply recruitHireApply = recruitHireApplyDao.getEntityByJabatanId(empData.getJabatanByJabatanId().getId());
+		
+		// RecruitApplicant wajib ada advertisementDetail, advertisementDetail butuh idRecruitHireApply, jika recruitHireApply null, berarti pasti empCandidate belum di ada iklannya
+		if(recruitHireApply == null){
+			throw new BussinessException("empCandidateSearch.emp_candidate_still_not_have_advertisement");
+		}
+		
 		RecruitVacancyAdvertisementDetail recruitVacancyAdvertisementDetail = recruitVacancyAdvertisementDetailDao.getEntityByRecruitHireApplyId(recruitHireApply.getId());
 		
 		//Jika recruitVacancyAdvertisementDetail == null, lempar business Exception (salah satu jabatan kandidat tenaga kerja belum dibuatkan iklan lowongan

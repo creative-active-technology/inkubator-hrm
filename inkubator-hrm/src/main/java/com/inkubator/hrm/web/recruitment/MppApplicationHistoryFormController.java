@@ -18,6 +18,7 @@ import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 
 
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -51,20 +52,20 @@ public class MppApplicationHistoryFormController extends BaseController {
         try {
         	model = new MppApplicationHistoryFormModel();
             String mppApplyDetailId = FacesUtil.getRequestParameter("mppApplyDetailId");
-            if(StringUtils.isNotBlank(mppApplyDetailId)){
+            String idMppDetailTime = FacesUtil.getRequestParameter("idMppDetailTime");
+            if(StringUtils.isNotBlank(mppApplyDetailId) && StringUtils.isNotBlank(idMppDetailTime)){
             	
             	RecruitMppApplyDetail recruitMppApplyDetail = recruitMppApplyDetailService.getEntityWithDetail(Long.parseLong(mppApplyDetailId));
+            	RecruitMppApplyDetailTime recruitMppApplyDetailTime = recruitMppApplyDetailTimeService.getEntiyByPK(Long.parseLong(idMppDetailTime));
+            	
+            	model.setId(recruitMppApplyDetailTime.getId());
             	model.setMppApplyDetailId(recruitMppApplyDetail.getId());
             	model.setJabatanId(recruitMppApplyDetail.getJabatan().getId());
-            	model.setPeriodeStart(recruitMppApplyDetail.getRecruitMppMonth());
-            	
-            	Long plan = recruitMppApplyDetail.getRecruitPlan().longValue();
-            	Long actual = empDataService.getTotalKaryawanByJabatanIdWithJoinDateBeforeOrEqualDate(model.getJabatanId(), model.getPeriodeStart());
-            	Integer difference = (int) (plan == actual ? 0 : plan > actual ? (plan - actual) : (actual - plan));
-            	
-            	model.setMpp(plan);
-            	model.setActual(actual);
-            	model.setDifference(difference.longValue());
+            	model.setPeriodeStart(recruitMppApplyDetailTime.getMppMonthApply());
+            	model.setMaxMpp(recruitMppApplyDetail.getRecruitPlan().longValue());
+            	model.setMpp(recruitMppApplyDetailTime.getPlanningPerson().longValue());
+            	model.setActual(recruitMppApplyDetailTime.getActual().longValue());
+            	model.setDifference(recruitMppApplyDetailTime.getDifference().longValue());
             	
             }
             
@@ -81,12 +82,18 @@ public class MppApplicationHistoryFormController extends BaseController {
         model = null;
     }
 
+    public void onChangeMpp() {
+    	Long mpp = model.getMpp();
+    	Long actual = model.getActual();
+    	Long difference = mpp == actual ? 0 : mpp > actual ? (mpp - actual) : (actual - mpp);
+    	model.setDifference(difference);
+    }
 
     public void doSave() {
 
         try {
             RecruitMppApplyDetailTime recruitMppApplyDetailTime = getEntityFromViewModel(model);
-            recruitMppApplyDetailTimeService.saveDataAndUpdateMppApplyDetail(recruitMppApplyDetailTime);
+            recruitMppApplyDetailTimeService.updateActualAndDifferenceListMppDetailTimeBasedOnSelectedEntity(recruitMppApplyDetailTime);
             RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
             cleanAndExit();
         } catch (BussinessException ex) {
@@ -104,8 +111,7 @@ public class MppApplicationHistoryFormController extends BaseController {
 		this.model = model;
 	}
 
-	public void setRecruitMppApplyDetailTimeService(
-			RecruitMppApplyDetailTimeService recruitMppApplyDetailTimeService) {
+	public void setRecruitMppApplyDetailTimeService(RecruitMppApplyDetailTimeService recruitMppApplyDetailTimeService) {
 		this.recruitMppApplyDetailTimeService = recruitMppApplyDetailTimeService;
 	}
 
@@ -126,6 +132,8 @@ public class MppApplicationHistoryFormController extends BaseController {
         }
         recruitMppApplyDetailTime.setMppMonthApply(model.getPeriodeStart());
         recruitMppApplyDetailTime.setPlanningPerson(model.getMpp().intValue());    
+        recruitMppApplyDetailTime.setActual(model.getActual().intValue());
+        recruitMppApplyDetailTime.setDifference(model.getDifference().intValue());
         recruitMppApplyDetailTime.setRecruitMppApplyDetail(new RecruitMppApplyDetail(model.getMppApplyDetailId()));
         
         return recruitMppApplyDetailTime;

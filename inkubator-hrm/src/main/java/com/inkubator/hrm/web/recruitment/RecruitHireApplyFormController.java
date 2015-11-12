@@ -154,6 +154,7 @@ public class RecruitHireApplyFormController extends BaseController {
                     if (selectedApprovalActivity.getApprovalStatus() != HRMConstant.APPROVAL_STATUS_APPROVED) {
                         model = convertJsonToModel(selectedApprovalActivity.getPendingData());
                     }
+                    
                 }
             } else {
                 HrmUser user = hrmUserService.getUserWithDetail(UserInfoUtil.getUserName());
@@ -258,9 +259,10 @@ public class RecruitHireApplyFormController extends BaseController {
     public void onChangeMppPeriod() {
         try {
             mapJabatan.clear();
-            //Get jabatan dari periode terpilih dari mpp apply yang statusnya telah di setujui
-            List<RecruitMppApplyDetail> listMppDetail = recruitMppApplyDetailService.getListInSelectedMppPeriodIdWithApprovalStatus(model.getRecruitMppPeriodId(), HRMConstant.APPROVAL_STATUS_APPROVED );
-            for (RecruitMppApplyDetail detail : listMppDetail) {
+            //Get jabatan dari periode terpilih dari mpp apply yang statusnya telah di setujui, dan belum di lakukan proses Recruitment
+            List<RecruitMppApplyDetail> listMppDetailThatNoRecruited = recruitMppApplyDetailService.getListByMppPeriodIdWithApprovalStatusAndHaveNotBeenRecruited(model.getRecruitMppPeriodId(), HRMConstant.APPROVAL_STATUS_APPROVED );
+            
+            for (RecruitMppApplyDetail detail : listMppDetailThatNoRecruited) {
                 mapJabatan.put(detail.getJabatan().getName(), detail.getJabatan().getId());
             }
 
@@ -273,7 +275,7 @@ public class RecruitHireApplyFormController extends BaseController {
         try {
             Long totalActual = empDataService.getTotalKaryawanByJabatanId(model.getJabatanId());
             model.setActual(totalActual);
-            if (model.getRecruitMppId() != null) {
+            if (model.getRecruitMppPeriodId() != null) {
 
                 Long totalMpp = recruitMppApplyDetailService.getRecruitPlanByJabatanIdAndMppPeriodId(model.getJabatanId(), model.getRecruitMppPeriodId());
                 if (null != totalMpp) {
@@ -320,11 +322,10 @@ public class RecruitHireApplyFormController extends BaseController {
 
         Long totalMpp = recruitMppApplyDetailService.getRecruitPlanByJabatanIdAndMppPeriodId(recruitHireApplyModel.getJabatanId(), recruitHireApplyModel.getRecruitMppId());
         if (null != totalMpp) {
-            model.setMpp(totalMpp);
+        	recruitHireApplyModel.setMpp(totalMpp);
         } else {
-            model.setMpp(0l);
+        	recruitHireApplyModel.setMpp(0l);
         }
-        
         
         return recruitHireApplyModel;
     }
@@ -366,7 +367,7 @@ public class RecruitHireApplyFormController extends BaseController {
         JsonObject jsonObject = (JsonObject) parser.parse(jsonData);
         RecruitHireApply recruitHireApply = gson.fromJson(jsonObject, RecruitHireApply.class);
         model = getModelFromEntity(recruitHireApply);
-
+        
         JsonArray arrayDetailRecruitmentRequest = jsonObject.getAsJsonArray("listDetailRecruitHireApply");
         List<OrgTypeOfSpecList> listTypeOfSpec = new ArrayList<>();
 

@@ -88,6 +88,8 @@ public class RecruitApplicantDaoImpl extends IDAOImpl<RecruitApplicant>implement
 		criteria.createAlias("recruitVacancyAdvertisementDetail", "recruitVacancyAdvertisementDetail", JoinType.LEFT_OUTER_JOIN);
 		criteria.createAlias("recruitVacancyAdvertisementDetail.hireApply", "hireApply", JoinType.LEFT_OUTER_JOIN);
 		criteria.createAlias("hireApply.jabatan", "jabatan", JoinType.LEFT_OUTER_JOIN);
+		criteria.add(Restrictions.eq("isActive", Boolean.TRUE));
+		criteria.add(Restrictions.eq("isVerified", Boolean.TRUE));
 		if(parameter.getJabatanId() != null && parameter.getJabatanId() != 0){
 			criteria.add(Restrictions.eq("jabatan.id", parameter.getJabatanId()));
 		}

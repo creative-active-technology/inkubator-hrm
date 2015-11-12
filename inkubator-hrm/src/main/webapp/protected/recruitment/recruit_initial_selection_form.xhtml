@@ -38,7 +38,7 @@
                                     <p:outputLabel  value="#{appmsg['recruitSelectionVacancy.rekrutment']}"  for="recruitHireApplyId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="recruitHireApplyId" value="#{recruitInitialSelectionFormController.searchParameter.recruitMppApplyId}" style="width: 150px;margin-right: 3px">
+                                    <p:selectOneMenu id="recruitHireApplyId" value="#{recruitInitialSelectionFormController.searchParameter.recruitMppApplyId}" style="width: 250px;margin-right: 3px">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{recruitInitialSelectionFormController.dropDownRecruitHireApply}"/>
                                     	<p:ajax update="jabatanId" process="@this" listener="#{recruitInitialSelectionFormController.doChangeJabatanDropDown()}"/>
@@ -52,7 +52,7 @@
                                     <p:outputLabel  value="#{appmsg['companyRelation.jabatan']}"  for="jabatanId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="jabatanId" value="#{recruitInitialSelectionFormController.searchParameter.jabatanId}" style="width: 150px;margin-right: 3px">
+                                    <p:selectOneMenu id="jabatanId" value="#{recruitInitialSelectionFormController.searchParameter.jabatanId}" style="width: 250px;margin-right: 3px">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{recruitInitialSelectionFormController.dropDownJabatan}"/>
                                     </p:selectOneMenu>
@@ -64,7 +64,7 @@
                                     <p:outputLabel  value="#{appmsg['recruitInitialSelection.candidate']}"  for="kandidatId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="kandidatId" value="#{recruitInitialSelectionFormController.searchParameter.kandidatId}" style="width: 150px;margin-right: 3px">
+                                    <p:selectOneMenu id="kandidatId" value="#{recruitInitialSelectionFormController.searchParameter.kandidatId}" style="width: 250px;margin-right: 3px">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="Internal" itemValue="1"/>
                                         <f:selectItem itemLabel="Eksternal" itemValue="0"/>
@@ -87,6 +87,7 @@
 						<p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
+                                	
                                     <p:commandButton value="Check All" ajax="true" action="#{recruitInitialSelectionFormController.doCheckAll()}"
                                              styleClass="isitext_hrm" immediate="true" rendered="#{recruitInitialSelectionFormController.isUnCheckAll}"
                                              style="margin-right: 5px" label="Check All" update="formId"
@@ -133,7 +134,7 @@
                                 	<f:convertDateTime pattern="dd-MM-yyyy"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="#{data.bioData.gender}" style="width: 8%">
+                            <p:column sortBy="#{data.bioData.gender}" style="width: 7%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.gender']}"/>
                                 </f:facet>
@@ -141,34 +142,39 @@
                                 	<f:converter converterId="genderConverter"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="#{data.lastJabatan}" style="width: 10%">
+                            <p:column sortBy="#{data.lastJabatan}" style="width: 9%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['recruitment_applicant.latest_position']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{data.lastJabatan}" />
                             </p:column>
-                            <p:column sortBy="#{data.experience}" style="width: 10%">
+                            <p:column sortBy="#{data.experience}" style="width: 9%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['mppRecruitmentHist.work_experience']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{data.experience}" />
                             </p:column>
-                            <p:column sortBy="#{data.educationLevel.name}" style="width: 10%">
+                            <p:column sortBy="#{data.educationLevel.name}" style="width: 9%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['educationhistory.education_level']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{data.educationLevel.name}" />
                             </p:column>
-                            <p:column sortBy="#{data.score}" style="width: 8%; text-align: center">
+                            <p:column sortBy="#{data.score}" style="width: 7%; text-align: center">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['educationhistory.score']} / #{appmsg['global.scale']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{data.score} / #{data.scale}" />
                             </p:column>
-                            <p:column style="width: 6%">
+                            <p:column style="width: 9%; text-align: center;">
 					            <f:facet name="header">
                                      <h:outputText value="#{appmsg['global.action']}" />
 					            </f:facet>
+					            <p:commandButton icon="ui-icon-disk" ajax="false" style="font-size: 10px!important" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                        <p:fileDownload value="#{fileStreamerController.fileCv}" /> 
+                                        <f:param name="bioDataId" value="#{data.bioData.id}" />
+                                </p:commandButton>
+                                -
 					            <p:selectBooleanButton value="#{recruitInitialSelectionFormController.recruitInitialSelectionModel.selectedIds[data.id]}" styleClass="label_button"
 					            					   onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" offIcon="ui-icon-close"/>
 					        </p:column> 

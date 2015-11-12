@@ -12,6 +12,8 @@ import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulleDetail;
 public interface RecruitSelectionApplicantSchedulleDetailService extends IService<RecruitSelectionApplicantSchedulleDetail> {
 
 	public List<RecruitSelectionApplicantSchedulleDetail> getAllDataByApplicantIdAndSelectionApplicantSchedulleId(
-			Long applicantId, Long selectionApplicantSchedulleId);
+			Long applicantId, Long selectionApplicantSchedulleId) throws Exception;
+	
+	public List<RecruitSelectionApplicantSchedulleDetail> getListByRecruitSelectionApplicantSchedulleId(Long recruitSelectionApplicantSchedulleId) throws Exception;
 	
 }

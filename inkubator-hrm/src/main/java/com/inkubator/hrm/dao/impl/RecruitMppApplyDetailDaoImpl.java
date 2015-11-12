@@ -5,6 +5,7 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.AnnouncementDao;
 import com.inkubator.hrm.dao.RecruitMppApplyDetailDao;
 import com.inkubator.hrm.entity.Announcement;
+import com.inkubator.hrm.entity.RecruitHireApply;
 import com.inkubator.hrm.entity.RecruitMppApplyDetail;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.RecruitMppApplyDetailViewModel;
@@ -21,10 +22,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Query;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
@@ -239,6 +244,51 @@ public class RecruitMppApplyDetailDaoImpl extends IDAOImpl<RecruitMppApplyDetail
         criteria.createAlias("recruitMppApply.recruitMppPeriod", "recruitMppPeriod", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("jabatan.id", jabatanId));
         criteria.add(Restrictions.eq("recruitMppPeriod.id", recruitMppPeriodId));
+        return criteria.list();
+	}
+
+	@Override
+	public RecruitMppApplyDetail getEntityByJabatanIdAndMppPeriodId(Long jabatanId, Long mppPeriodId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("jabatan", "jabatan", JoinType.INNER_JOIN);
+        criteria.createAlias("recruitMppApply", "recruitMppApply", JoinType.INNER_JOIN);
+        criteria.createAlias("recruitMppApply.recruitMppPeriod", "recruitMppPeriod", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("jabatan.id", jabatanId));
+        criteria.add(Restrictions.eq("recruitMppPeriod.id", mppPeriodId));
+        return (RecruitMppApplyDetail) criteria.uniqueResult();
+	}
+
+	@Override
+	public List<RecruitMppApplyDetail> getAllDataWithDetail() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("jabatan", FetchMode.JOIN);
+        criteria.setFetchMode("recruitMppApply", FetchMode.JOIN);
+        criteria.setFetchMode("recruitMppApply.recruitMppPeriod", FetchMode.JOIN);
+		return criteria.list();
+	}
+
+	@Override
+	public List<RecruitMppApplyDetail> getListByMppPeriodIdWithApprovalStatusAndHaveNotBeenRecruited(Long recruitMppPeriodId, Integer approvalStatus) {
+		
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("recruitMppApply", "recruitMppApply", JoinType.INNER_JOIN);
+        criteria.createAlias("recruitMppApply.recruitMppPeriod", "recruitMppPeriod", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatan", "jabatan", JoinType.INNER_JOIN);
+        
+        criteria.add(Restrictions.eq("recruitMppPeriod.id", recruitMppPeriodId));
+        criteria.add(Restrictions.eq("recruitMppApply.applicationStatus", approvalStatus));
+        
+        // DetachedCriteria for checking on RecruitHireApply
+        DetachedCriteria recruitHireApplyCriteria = DetachedCriteria.forClass(RecruitHireApply.class)
+    		.createAlias("jabatan", "jabatan", JoinType.INNER_JOIN)
+    		.createAlias("recruitMppPeriod", "recruitMppPeriod", JoinType.INNER_JOIN)
+            .add(Restrictions.eq("recruitMppPeriod.id", recruitMppPeriodId))
+            .add(Restrictions.eq("applicationStatus", HRMConstant.APPROVAL_STATUS_APPROVED))
+            .setProjection(Projections.property("jabatan.id"));//Get jabatan id from RecruitHireApply on selected mppPeriod and already Approved
+        
+        String[] var = {"jabatan.id"};
+        criteria.add(Subqueries.propertiesNotIn(var, recruitHireApplyCriteria));// filter only jabatan that not exist on recruitHireApply
+        
         return criteria.list();
 	}
 

@@ -62,7 +62,7 @@ public class SelectionApplicantRealizationFormController extends BaseController 
 	        String applicantId = FacesUtil.getRequestParameter("execution");
 	        String selectionScheduleId = FacesUtil.getRequestParameter("schedule");
 	        
-	        if(StringUtils.isNotEmpty(applicantId) && StringUtils.isNotEmpty(selectionScheduleId)){
+	        if(StringUtils.isNotEmpty(applicantId.substring(1)) && StringUtils.isNotEmpty(selectionScheduleId.substring(1))){
 	        	applicant = recruitApplicantService.getEntityByPkWithDetail(Long.parseLong(applicantId.substring(1)));
 	        	selectionApplicantSchedulle = recruitSelectionApplicantSchedulleService.getEntityByPkWithDetail(Long.parseLong(selectionScheduleId.substring(1)));
 	        	listModel = recruitSelectionApplicantSchedulleDetailRealizationService.getAllDataSelectionScheduleRealization(applicant.getId(), selectionApplicantSchedulle.getId());
