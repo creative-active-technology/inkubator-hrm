@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>TODO supply a title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">
+                    <h:form id="formId">
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="bank.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['carreerawardtype.carreer_award_type']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['carreerawardtype.carreer_award_type_from_organisation']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:growl id="growlId" globalOnly="true" showDetail="true" />
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                    <p:selectOneMenu value="#{carreerAwardTypeViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name"/>
+                                    </p:selectOneMenu>
+                                    <p:inputText id="searchId" value="#{carreerAwardTypeViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{carreerAwardTypeViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Carreer_Award_Type"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{carreerAwardTypeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{carreerAwardTypeViewController.onDialogReturn}"  update="tableId, growlId"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{carreerAwardTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                    
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:focus for="searchId" />
+                        <p:dataTable  var="data"  value="#{carreerAwardTypeViewController.lazy}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['carreerawardtype.list']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="#{data.code}" style="width: 33%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['carreerawardtype.award_type_code']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.code}" />
+                            </p:column>
+                            <p:column sortBy="#{data.name}" style="width: 33%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['carreerawardtype.award_type_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.name}" />
+                            </p:column>
+                            <p:column sortBy="#{data.validity}" style="width: 30%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['carreerawardtype.validity']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.validity} #{appmsg['global.month']}" />
+                            </p:column>
+
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 14%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+                                                 onclick="PF('statusDialog').show()"  oncomplete="PF('detail').show()" update=":detailPanel"
+                                                 style="font-size: 10px!important" action="#{carreerAwardTypeViewController.doSelectEntity()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{carreerAwardTypeViewController.selected}" />
+                                </p:commandButton>
+                                - 
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                                                 action="#{carreerAwardTypeViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDelete').show()">
+                                    <f:setPropertyActionListener value="#{data}" target="#{carreerAwardTypeViewController.selected}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
+                                                  action="#{carreerAwardTypeViewController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{carreerAwardTypeViewController.selected}" />
+                                    <p:ajax event="dialogReturn" listener="#{carreerAwardTypeViewController.onDialogReturn}"  update="tableId, :formId:growlId"/>
+                                </p:commandButton> 
+                            </p:column> 
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{carreerAwardTypeViewController.lazy.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formId" trigger="tableId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                </div>
+                <p:dialog modal="true" widgetVar="statusDialog" header="#{appmsg['global.waiting']}" draggable="false" closable="false" resizable="false">
+                    <div align="center"><h:graphicImage library="images" name="waiting.gif"/></div>
+                </p:dialog>
+                <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['global.name']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{carreerAwardTypeViewController.selected.name}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{carreerAwardTypeViewController.doDelete()}" update="formId"
+                                         oncomplete="PF('dialogConfirmDelete').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmDelete').hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <p:dialog widgetVar="detail" header="#{appmsg['carreerawardtype.detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
+                    <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['carreerawardtype.award_type_code']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{carreerAwardTypeViewController.selected.code}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['carreerawardtype.award_type_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{carreerAwardTypeViewController.selected.name}"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['carreerawardtype.letter_reference']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{carreerAwardTypeViewController.selected.systemLetterReferenceByLetterTemplateId.code}-#{carreerAwardTypeViewController.selected.systemLetterReferenceByLetterTemplateId.name}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['carreerawardtype.validity']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{carreerAwardTypeViewController.selected.validity} #{appmsg['global.month']}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{carreerAwardTypeViewController.selected.description}"/> </p:column>
+                        </p:row>
+
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['savingType.savingType_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
