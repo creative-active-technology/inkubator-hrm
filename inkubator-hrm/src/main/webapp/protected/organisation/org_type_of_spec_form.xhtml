@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="bank.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Formulir Tipe Spesifikasi Kerja" styleClass="header_big" />
-                                <p:outputLabel value="Tipe Spesifikasi Kerja dari Organisasi" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['orgtypeofspec.type_of_specification_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['orgtypeofspec.type_of_spec_from_organization']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -35,7 +35,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="code" value="Kode Spesifikasi Kerja" styleClass="label_hrm"/>
+                                <p:outputLabel for="code" value="#{appmsg['orgtypeofspec.type_of_spec_code']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
@@ -53,7 +53,7 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="name" value="Nama Spesifikasi Kerja" styleClass="label_hrm"/>
+                                <p:outputLabel for="name" value="#{appmsg['orgtypeofspec.type_of_spec_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
@@ -71,7 +71,7 @@
                         
                         
                         <p:row>
-                            <p:column style="width: 37%">
+                            <p:column style="width: 40%">
                                 <p:outputLabel for="description" value="#{appmsg['role_view.role_description']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
@@ -79,7 +79,7 @@
                             </p:column>
                             <p:column style="width: 50%" >
                                 <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{orgTypeOfSpecFormController.model.description}" 
-                                                 style="width: 96%; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                                 style="width: 210px; height: 80px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
                                                  label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
 
                             </p:column>
@@ -91,13 +91,13 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="width: 25%">
+                            <p:column style="width: 40%">
                                 <p:outputLabel  value="" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel  value=""  styleClass="label_hrm"/>
                             </p:column>
-                            <p:column style="width: 60%" >
+                            <p:column style="width: 40%" >
                                 <h:outputText id="counter" />
                             </p:column>
                         </p:row>
