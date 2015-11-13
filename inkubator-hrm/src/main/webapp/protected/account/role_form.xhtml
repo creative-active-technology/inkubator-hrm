@@ -39,7 +39,7 @@
 	                            <p:column  style="width: 80%">
 	                                <p:focus for ="roleName">
 	                                    <p:inputText id="roleName" value="#{roleFormController.roleModel.roleName}"
-	                                                 required="true" label="Kode" 
+	                                                 required="true" label="#{appmsg['role_view.role_name']}" 
 	                                                 maxlength="30"
 	                                                 title="#{appmsg['role_view.role_name']}" style="width: 270px"
 	                                                 onkeyup="this.value = this.value.toUpperCase();">

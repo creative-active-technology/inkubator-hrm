@@ -22,8 +22,8 @@
                         <p:graphicImage library="images" name="bank.png" height="36" width="36" cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="Scheduler Config" styleClass="header_big" />
-                                <p:outputLabel value="Scheduer Config dari Scheduler" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['schedulerconfig.scheduler_config']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['schedulerconfig.scheduler_config_from_scheduler']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -42,7 +42,6 @@
                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.name']}" itemValue="name"/>
                                     </p:selectOneMenu>
                                     <p:selectOneMenu id="scheduleSearchName"  styleClass="isitext_hrm"  value="#{schedulerConfigViewController.searchParameter.parameter}" filter="true"  filterMatchMode="contains" required="true">
-
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.user_password_notification_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_USER_PASSWORD_NOTIFICATION}" />
                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.approval_matrix_notification_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_APROVAL_MATRIX_NOTIF}" />
@@ -85,15 +84,15 @@
                                       rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="List Scheduler Config"/>
+                                <h:outputText value="#{appmsg['schedulerconfig.list_scheduler_config']}"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 3%">
+                            <p:column style="text-align: center; width: 3%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="#{data.name}" style="width: 200px">
+                            <p:column sortBy="#{data.name}">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['scheduler_config.name']}"/>
                                 </f:facet>
@@ -102,7 +101,7 @@
                                 </h:outputLabel>
                             </p:column>
 
-                            <p:column sortBy="#{data.schedullerType}">
+                            <p:column sortBy="#{data.schedullerType}" style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['scheduler_config.scheduler_type']}"/>
                                 </f:facet>
@@ -111,7 +110,7 @@
                                 </h:outputLabel>
                             </p:column>
 
-                            <p:column sortBy="#{data.repeateType}"  >
+                            <p:column sortBy="#{data.repeateType}" style="width: 14%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['scheduler_config.repeate_type']}"/>
                                 </f:facet>
@@ -119,7 +118,7 @@
                                     <f:converter converterId="schedulerRepeatTypeConverter"/>
                                 </h:outputLabel>
                             </p:column> 
-                            <p:column sortBy="#{data.dateStartExecution}"  >
+                            <p:column sortBy="#{data.dateStartExecution}"  style="width: 18%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['scheduler_config.start_date']}"/>
                                 </f:facet>
@@ -127,7 +126,7 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </p:outputLabel>
                             </p:column> 
-                            <p:column sortBy="#{data.isTimeDiv}"  style="width: 50px">
+                            <p:column sortBy="#{data.isTimeDiv}" style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['scheduler_config.time_range']}"/>
                                 </f:facet>
@@ -135,9 +134,9 @@
                                     <f:converter converterId="booleanMessageConverter" />
                                 </p:outputLabel>
                             </p:column> 
-                            <p:column sortBy="#{data.lastExecution}"  >
+                            <p:column sortBy="#{data.lastExecution}" style="width: 17%">
                                 <f:facet name="header">  
-                                    <h:outputText value="Last Execution"/>
+                                    <h:outputText value="#{appmsg['scheduler_config.last_execution']}"/>
                                 </f:facet>
                                 <p:outputLabel value= "#{data.lastExecution}" rendered="#{data.isTimeDiv}">
                                     <f:convertDateTime pattern="dd MMMM yyyy HH:mm:ss" />

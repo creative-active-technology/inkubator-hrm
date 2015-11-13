@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="bank.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="Tipe Spesifikasi Kerja" styleClass="header_big" />
-                                    <p:outputLabel value="Tipe Spesifikasi Kerja dari Organisasi" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['orgtypeofspec.type_of_spec']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['orgtypeofspec.type_of_spec_from_organization']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -35,8 +35,8 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{orgTypeOfSpecViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="Kode" itemValue="code"/>
-                                        <f:selectItem itemLabel="Nama" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{orgTypeOfSpecViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{orgTypeOfSpecViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -44,7 +44,7 @@
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
-                                    <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                    <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="#{appmsg['global.export']}" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Saving_Type"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add']}" actionListener="#{orgTypeOfSpecViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
@@ -61,7 +61,7 @@
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="Daftar Spesifikasi Kerja"/>
+                                <h:outputText value="#{appmsg['orgtypeofspec.type_of_spec_list']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -71,13 +71,13 @@
                             </p:column>
                             <p:column sortBy="#{data.code}" style="width: 33%">
                                 <f:facet name="header">
-                                    <h:outputText value="Kode Spesifikasi Kerja"/>
+                                    <h:outputText value="#{appmsg['orgtypeofspec.type_of_spec_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.code}" />
                             </p:column>
                             <p:column sortBy="#{data.name}" style="width: 33%">
                                 <f:facet name="header">
-                                    <h:outputText value="Nama Spesifikasi Kerja"/>
+                                    <h:outputText value="#{appmsg['orgtypeofspec.type_of_spec_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}" />
                             </p:column>
@@ -147,15 +147,15 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmDelete').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="detail" header="#{appmsg['orgtypeofspec.typespecdetail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog widgetVar="detail" header="#{appmsg['orgtypeofspec.type_of_specification_detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.code']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['orgtypeofspec.type_of_spec_code']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{orgTypeOfSpecViewController.selected.code}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.name']}" styleClass="label_hrm"/></p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['orgtypeofspec.type_of_spec_name']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{orgTypeOfSpecViewController.selected.name}"/></p:column>
                         </p:row>
                         <p:row>
