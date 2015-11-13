@@ -76,6 +76,10 @@ public class RecruitLettersViewController extends BaseController {
         if (recruitLettersSelected.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_REJECT)) {
             return "/protected/recruitment/reject_letter_form.htm?faces-redirect=true&execution=e" + recruitLettersSelected.getId();
         }
+        
+        if (recruitLettersSelected.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_SCHEDULE)) {
+            return "/protected/recruitment/selection_letter_form.htm?faces-redirect=true&execution=e" + recruitLettersSelected.getId();
+        }
         return null;
     }
 

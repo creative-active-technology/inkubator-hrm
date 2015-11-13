@@ -84,37 +84,40 @@ public class RecruitLettersServiceImpl extends IServiceImpl implements RecruitLe
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         recruitLettersDao.save(entity);
-        System.out.println("save tabel tengah");
-        List<RecruitSelectionType> recruitSelectionTypes = new ArrayList<>();
-        Set<RecruitLetterSelection> recruitLetterSelections = entity.getRecruitLetterSelections();
-        for (RecruitLetterSelection recruitLetterSelection : recruitLetterSelections) {
-            recruitSelectionTypes.add(recruitLetterSelection.getRecruitSelectionType());
-        }
-
-        for (RecruitSelectionType recruitSelectionType : recruitSelectionTypes) {
-            List<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetails = recruitmenSelectionSeriesDetailDao.getAllByRecruitRecruitSelectionTypeId(recruitSelectionType.getId());
-            for (RecruitmenSelectionSeriesDetail recruitmenSelectionSeriesDetail : recruitmenSelectionSeriesDetails) {
-                if (entity.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_REJECT)) {
-                    recruitmenSelectionSeriesDetail.setRecruitLettersByRejectLetterId(entity);
-                    recruitmenSelectionSeriesDetail.setUpdatedBy(new Date());
-                    recruitmenSelectionSeriesDetail.setUpdatedOn(UserInfoUtil.getUserName());
-                    recruitmenSelectionSeriesDetailDao.update(recruitmenSelectionSeriesDetail);
-                }
-//
-                if (entity.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_OFFERING)) {
-                    recruitmenSelectionSeriesDetail.setRecruitLettersByAcceptLetterId(entity);
-                    recruitmenSelectionSeriesDetail.setUpdatedBy(new Date());
-                    recruitmenSelectionSeriesDetail.setUpdatedOn(UserInfoUtil.getUserName());
-                    recruitmenSelectionSeriesDetailDao.update(recruitmenSelectionSeriesDetail);
-                }
-                
-                if (entity.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_SCHEDULE)) {
-                    recruitmenSelectionSeriesDetail.setRecruitLettersBySchedulleLetterId(entity);
-                     recruitmenSelectionSeriesDetail.setUpdatedBy(new Date());
-                    recruitmenSelectionSeriesDetail.setUpdatedOn(UserInfoUtil.getUserName());
-                    recruitmenSelectionSeriesDetailDao.update(recruitmenSelectionSeriesDetail);
-                }
-            }
+        // no need to save mid table if letterId = 4 or HRMConstant.LETTER_TYPE_SCHEDULE
+        if(entity.getLeterTypeId() != HRMConstant.LETTER_TYPE_SCHEDULE){
+	        List<RecruitSelectionType> recruitSelectionTypes = new ArrayList<>();
+	        Set<RecruitLetterSelection> recruitLetterSelections = entity.getRecruitLetterSelections();
+	        for (RecruitLetterSelection recruitLetterSelection : recruitLetterSelections) {
+	            recruitSelectionTypes.add(recruitLetterSelection.getRecruitSelectionType());
+	        }
+	
+	        for (RecruitSelectionType recruitSelectionType : recruitSelectionTypes) {
+	            List<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetails = recruitmenSelectionSeriesDetailDao.getAllByRecruitRecruitSelectionTypeId(recruitSelectionType.getId());
+	            for (RecruitmenSelectionSeriesDetail recruitmenSelectionSeriesDetail : recruitmenSelectionSeriesDetails) {
+	                if (entity.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_REJECT)) {
+	                    recruitmenSelectionSeriesDetail.setRecruitLettersByRejectLetterId(entity);
+	                    recruitmenSelectionSeriesDetail.setUpdatedBy(new Date());
+	                    recruitmenSelectionSeriesDetail.setUpdatedOn(UserInfoUtil.getUserName());
+	                    recruitmenSelectionSeriesDetailDao.update(recruitmenSelectionSeriesDetail);
+	                }
+	//
+	                if (entity.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_OFFERING)) {
+	                    recruitmenSelectionSeriesDetail.setRecruitLettersByAcceptLetterId(entity);
+	                    recruitmenSelectionSeriesDetail.setUpdatedBy(new Date());
+	                    recruitmenSelectionSeriesDetail.setUpdatedOn(UserInfoUtil.getUserName());
+	                    recruitmenSelectionSeriesDetailDao.update(recruitmenSelectionSeriesDetail);
+	                }
+	                
+	                if (entity.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_SCHEDULE)) {
+	                    recruitmenSelectionSeriesDetail.setRecruitLettersBySchedulleLetterId(entity);
+	                     recruitmenSelectionSeriesDetail.setUpdatedBy(new Date());
+	                    recruitmenSelectionSeriesDetail.setUpdatedOn(UserInfoUtil.getUserName());
+	                    recruitmenSelectionSeriesDetailDao.update(recruitmenSelectionSeriesDetail);
+	                }
+	            }
+	        }
+        
         }
 
     }

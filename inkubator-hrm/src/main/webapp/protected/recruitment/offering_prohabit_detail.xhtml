@@ -129,7 +129,7 @@
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <h:panelGrid columns="3" style="margin-bottom: 5px;">
                             <p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{offeringAndProhabitDetilController.doEdit()}" styleClass="label_button"/>
-                            <p:commandButton value="Distribusi Tipe Seleksi"  icon="ui-icon-script"  title="#{appmsg['global.back']}" action="#{offeringAndProhabitDetilController.doDistribution()}" styleClass="label_button"/>
+                            <p:commandButton value="Distribusi Tipe Seleksi" rendered="#{offeringAndProhabitDetilController.isNotSchedule}" icon="ui-icon-script"  title="#{appmsg['global.back']}" action="#{offeringAndProhabitDetilController.doDistribution()}" styleClass="label_button"/>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{offeringAndProhabitDetilController.doBack()}" styleClass="label_button"/>
 
                         </h:panelGrid>
