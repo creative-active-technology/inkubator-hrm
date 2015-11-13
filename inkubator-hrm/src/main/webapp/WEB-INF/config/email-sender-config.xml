@@ -12,7 +12,7 @@
        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd">
     
     <context:property-placeholder location="classpath*:mail_config.properties" />
-    <!-- <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
+	<bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
         <property name="javaMailProperties">
             <props>
                 <prop key="mail.smtp.auth">true</prop>
@@ -23,13 +23,13 @@
         </property>
         <property name="username" value="noreplayoptimahr@gmail.com" />
         <property name="password" value="optima@123Hris" />
-    </bean> -->
+    </bean>
     
    <!--............................... Setting for Mail JNDI .......-->
-    <jee:jndi-lookup id="mailSession" jndi-name="java:jboss/mail/hrm"  resource-ref="true" />
+<!--     <jee:jndi-lookup id="mailSession" jndi-name="java:jboss/mail/hrm"  resource-ref="true" />
     <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
           <property name="session" ref="mailSession"/>  
-    </bean>
+    </bean> -->
     
 <!--    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
         <property name="javaMailProperties">
