@@ -100,6 +100,7 @@ import com.inkubator.hrm.web.search.RecruitAgreementNoticeSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpDepartmentJabatanParameter;
 import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
+import com.inkubator.hrm.web.search.SearchEmployeeCandidateParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
@@ -959,13 +960,12 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<SearchEmployeeCandidateViewModel> getAllDataEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId, String gender, int firstResult, int maxResults, Order order) throws Exception {
-        List<SearchEmployeeCandidateViewModel> listSearchEmployeeCandidateViewModels = this.empDataDao.getAllDataEmpCandidateByParamWithDetail(listJabatanId, listReligionId, listAge, listJoinDate, gpa, educationLevelId, gender, firstResult, maxResults, order);
-        EducationLevel educationLevel = educationLevelDao.getEntiyByPK(educationLevelId);
-
+    public List<SearchEmployeeCandidateViewModel> getAllDataEmpCandidateByParamWithDetail(SearchEmployeeCandidateParameter searchEmployeeCandidateParameter) throws Exception {
+        List<SearchEmployeeCandidateViewModel> listSearchEmployeeCandidateViewModels = this.empDataDao.getAllDataEmpCandidateByParamWithDetail(searchEmployeeCandidateParameter);
+      
         // Set Detail Position Criteria of each Data 
         for (SearchEmployeeCandidateViewModel searchEmployeeCandidateViewModel : listSearchEmployeeCandidateViewModels) {
-            List<KlasifikasiKerjaJabatan> listKlasifikasiKerjaJabatans = klasifikasiKerjaJabatanDao.getByJabatanId(searchEmployeeCandidateViewModel.getIdJabatan());
+            List<KlasifikasiKerjaJabatan> listKlasifikasiKerjaJabatans = klasifikasiKerjaJabatanDao.getByJabatanId(searchEmployeeCandidateViewModel.getIdJabatan().longValue());
             String kriteria = StringsUtils.EMPTY;
 
             for (KlasifikasiKerjaJabatan klasifikasiKerjaJabatan : listKlasifikasiKerjaJabatans) {
@@ -973,6 +973,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
                 kriteria += klasifikasiKerjaJabatan.getKlasifikasiKerja().getDescription() + (isNotLastRecord ? ", " : "");
             }
             searchEmployeeCandidateViewModel.setKriteria(kriteria);
+            
+            EducationLevel educationLevel = educationLevelDao.getEntiyByPK(searchEmployeeCandidateViewModel.getLastEducationLevelId().longValue());
             searchEmployeeCandidateViewModel.setLastEducationLevelName(educationLevel.getName());
 
         }
@@ -982,8 +984,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalEmpCandidateByParamWithDetail(List<Long> listJabatanId, List<Long> listReligionId, List<Integer> listAge, List<Integer> listJoinDate, Double gpa, Long educationLevelId, String gender) throws Exception {
-        return this.empDataDao.getTotalEmpCandidateByParamWithDetail(listJabatanId, listReligionId, listAge, listJoinDate, gpa, educationLevelId, gender);
+    public Long getTotalEmpCandidateByParamWithDetail(SearchEmployeeCandidateParameter searchEmployeeCandidateParameter) throws Exception {
+        return this.empDataDao.getTotalEmpCandidateByParamWithDetail(searchEmployeeCandidateParameter);
     }
 
     @Override

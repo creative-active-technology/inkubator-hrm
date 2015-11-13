@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.model;
 
+import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.Religion;
@@ -37,11 +38,11 @@ public class SearchEmployeeCandidateModel implements Serializable{
     private String religions;
     private DualListModel<Jabatan> dualListModelJabatan = new DualListModel<>();
     private DualListModel<Religion> dualListModelReligion = new DualListModel<>();
+    private DualListModel<EducationLevel> dualListEducationLevel = new DualListModel<>();
     private Map<String, Long> mapEducation = new TreeMap<>();
-    private Long educationLevelType;
     private Double gpa;
     private Double gpaScale = 4.0;
-    private LazyDataModel<SearchEmployeeCandidateViewModel> lazyDataModel;
+    private List<SearchEmployeeCandidateViewModel> listCandidate = new ArrayList<SearchEmployeeCandidateViewModel>();
     private List<Long> listIdEmpDataCandidate = new ArrayList<Long>();
     private Map<Long, Boolean> selectedIds = new HashMap<Long, Boolean>();
     
@@ -69,23 +70,22 @@ public class SearchEmployeeCandidateModel implements Serializable{
         this.dualListModelReligion = dualListModelReligion;
     }  
 
-    public LazyDataModel<SearchEmployeeCandidateViewModel> getLazyDataModel() {
-        return lazyDataModel;
-    }
-
-    public void setLazyDataModel(LazyDataModel<SearchEmployeeCandidateViewModel> lazyDataModel) {
-        this.lazyDataModel = lazyDataModel;
-    }
-
     public SearchEmployeeCandidateViewModel getSelectedEmpCandidate() {
         return selectedEmpCandidate;
     }
 
-    public void setSelectedEmpCandidate(SearchEmployeeCandidateViewModel selectedEmpCandidate) {
+    public List<SearchEmployeeCandidateViewModel> getListCandidate() {
+		return listCandidate;
+	}
+
+	public void setListCandidate(
+			List<SearchEmployeeCandidateViewModel> listCandidate) {
+		this.listCandidate = listCandidate;
+	}
+
+	public void setSelectedEmpCandidate(SearchEmployeeCandidateViewModel selectedEmpCandidate) {
         this.selectedEmpCandidate = selectedEmpCandidate;
     }
-
-    
 
     public int getWorkingPeriodFrom() {
         return workingPeriodFrom;
@@ -134,14 +134,6 @@ public class SearchEmployeeCandidateModel implements Serializable{
     public void setMapEducation(Map<String, Long> mapEducation) {
         this.mapEducation = mapEducation;
     }
-
-    public Long getEducationLevelType() {
-        return educationLevelType;
-    }
-
-    public void setEducationLevelType(Long educationLevelType) {
-        this.educationLevelType = educationLevelType;
-    }   
 
     public Double getGpa() {
         return gpa;
@@ -196,6 +188,13 @@ public class SearchEmployeeCandidateModel implements Serializable{
 		this.selectedIds = selectedIds;
 	}
 
-    
+	public DualListModel<EducationLevel> getDualListEducationLevel() {
+		return dualListEducationLevel;
+	}
+
+	public void setDualListEducationLevel(
+			DualListModel<EducationLevel> dualListEducationLevel) {
+		this.dualListEducationLevel = dualListEducationLevel;
+	}
     
 }

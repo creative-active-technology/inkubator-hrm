@@ -118,13 +118,13 @@
                                 <p:column style="width: 15%;background-color: #e1f0f0!important">
                                     <p:outputLabel for="educationId" value="#{appmsg['global.education']}" styleClass="label_hrm"/>
                                 </p:column>
-                                <p:column  style="width: 80%">
-                                    <p:selectOneMenu id="educationId" required="true" value="#{searchEmployeeCandidateModel.educationLevelType}">
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{searchEmployeeCandidateModel.mapEducation}" />
-                                    </p:selectOneMenu>
-                                    <p:message for="educationId"/>
-                                </p:column>
+                                 <p:column style="text-align: center;" colspan="2">
+                                        <p:pickList value="#{searchEmployeeCandidateModel.dualListEducationLevel}" var="educationLevel" itemValue="#{educationLevel}" converter="educationLevelConverter" id="educationId"
+                                                    required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['religion.religion']}" styleClass="isitext_hrm"
+                                                    itemLabel="#{educationLevel.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                    removeLabel="#{appmsg['global.remove']}"/>
+                                        <p:message for="educationId" />
+                                    </p:column>
                             </p:row>
 
                             <p:row>

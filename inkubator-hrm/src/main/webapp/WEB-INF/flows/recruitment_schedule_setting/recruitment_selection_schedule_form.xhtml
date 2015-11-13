@@ -90,7 +90,7 @@
 	                                <p:selectOneMenu id="selectionSeriesId" rendered="#{not recruitScheduleSettingModel.isAlreadyHaveSelectionScheduleSeries}" styleClass="isitext_hrm" required="true"  value="#{recruitScheduleSettingModel.selectionSeriesId}" style="width:290px;">
 	                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
 	                                    <f:selectItems value="#{listRecruitSelectionSeries}" var="selectionSeries" itemValue="#{selectionSeries.id}" itemLabel="#{selectionSeries.name}"/>
-	                                    <!-- <p:ajax listener="#{businessTravelFormController.doResetTravelComponentList(flowRequestContext)}" /> -->
+	                                    <p:ajax listener="#{recruitmentScheduleSettingFormController.doGenerateListSeriesInitParam(flowRequestContext)}" update="panelSeriesInitialParam" />
 	                                </p:selectOneMenu>
 	                                <p:message  rendered="#{not recruitScheduleSettingModel.isAlreadyHaveSelectionScheduleSeries}" for="selectionSeriesId"/>
 	                                
@@ -100,6 +100,72 @@
 	                                             	                             
 	                 	</p:panelGrid>	                    
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <p:panel id="panelSeriesInitialParam">
+	                    <p:dataTable  var="data" rendered="#{not recruitScheduleSettingModel.isAlreadyHaveSelectionScheduleSeries}"   value="#{recruitScheduleSettingModel.listSeriesInitialParam}" lazy="false" paginator="true" pageLinks="7"
+	                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+	                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+	                                      rowIndexVar="no"> 
+	                            <p:column style="text-align: center;width: 3%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['global.number']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value="#{no+1}." />
+	                            </p:column>  
+	                            <p:column style="text-align: center;width: 12%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['recruitSelectionView.name']}"/>
+	                                </f:facet>
+	                                <h:outputLabel value= "#{data.selectionSeriesDetailName}"/>
+	                            </p:column>
+	                            <p:column style="text-align: center;width: 15%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['recruitment.pic']}"/>
+	                                </f:facet>
+	                                <p:autoComplete  title="#{appmsg['recruitment_applicant.test_coordinator']}" 
+                                                value="#{data.empDataPic}"
+                                                completeMethod="#{recruitmentScheduleSettingFormController.doAutoCompleteEmployeeCoordinator}"                                                
+                                                var="empData"
+                                                itemValue="#{empData}"
+                                                itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                converter="empDataConverter"
+                                                required="true" styleClass="isitext_hrm" >
+                                    </p:autoComplete>
+	                            </p:column>
+	                            
+	                            <p:column style="text-align: center;width: 15%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['applicant_realization.execution_date']}"/>
+	                                </f:facet>
+	                                <p:calendar pattern="dd MMMM yyyy" label="#{appmsg['applicant_realization.execution_date']}" value="#{data.scheduleDate}"
+                                                 required="true" navigator="true"  />
+	                            </p:column>
+	                             
+                                 <p:column style="text-align: center;width: 17%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['applicant_realization.execution_time']}"/>
+	                                </f:facet>
+	                                 <div>
+	                                	<pe:timePicker mode="popup" value="#{data.scheduleStartTime}" label="#{appmsg['applicant_realization.execution_time']}"  styleClass="isitext_hrm"  required="true"/>
+                                    	<p:outputLabel style="margin-left: 5px;margin-right: 5px" value="#{appmsg['global.to']}" />
+	                               		<pe:timePicker mode="popup" value="#{data.scheduleEndTime}" label="#{appmsg['applicant_realization.execution_time']}"  styleClass="isitext_hrm"  required="true"/>
+	                                </div>
+	                            </p:column>
+	                            
+	                             <p:column style="text-align: center;width: 10%">
+	                                <f:facet name="header">  
+	                                    <h:outputText value="#{appmsg['applicant_realization.room']}"/>
+	                                </f:facet>
+	                               	<p:inputText value="#{data.room}" styleClass="isitext_hrm" style="width: 75%" label="#{appmsg['applicant_realization.room']}" required="true"   />
+                                 </p:column>
+                                 <p:column style="text-align: center;width: 20%">
+	                              <f:facet name="header">  
+	                                  <h:outputText value="#{appmsg['applicationInformation.note']}"/>
+	                              </f:facet>
+                                  <p:inputTextarea  rows="2"   maxlength="225" value="#{data.notes}" autoResize="true" required="false"
+                                      label="#{appmsg['applicationInformation.note']}" title="#{appmsg['applicationInformation.note']}" />
+                                 </p:column>
+	                    	</p:dataTable>
+	                    	</p:panel>
 	                    <div style="margin-bottom: 5px">
 	                    	<p:commandButton value="#{appmsg['global.next']}" label="#{appmsg['global.next']}" title="#{appmsg['global.next']}" 
 	                    					 icon="ui-icon-arrow-1-e" styleClass="isitext_hrm" style="margin-right: 5px" 

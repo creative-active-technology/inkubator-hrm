@@ -259,9 +259,10 @@ public class RecruitHireApplyFormController extends BaseController {
     public void onChangeMppPeriod() {
         try {
             mapJabatan.clear();
-            //Get jabatan dari periode terpilih dari mpp apply yang statusnya telah di setujui
-            List<RecruitMppApplyDetail> listMppDetail = recruitMppApplyDetailService.getListInSelectedMppPeriodIdWithApprovalStatus(model.getRecruitMppPeriodId(), HRMConstant.APPROVAL_STATUS_APPROVED );
-            for (RecruitMppApplyDetail detail : listMppDetail) {
+            //Get jabatan dari periode terpilih dari mpp apply yang statusnya telah di setujui, dan belum di lakukan proses Recruitment
+            List<RecruitMppApplyDetail> listMppDetailThatNoRecruited = recruitMppApplyDetailService.getListByMppPeriodIdWithApprovalStatusAndHaveNotBeenRecruited(model.getRecruitMppPeriodId(), HRMConstant.APPROVAL_STATUS_APPROVED );
+            
+            for (RecruitMppApplyDetail detail : listMppDetailThatNoRecruited) {
                 mapJabatan.put(detail.getJabatan().getName(), detail.getJabatan().getId());
             }
 

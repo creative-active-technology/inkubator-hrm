@@ -25,6 +25,7 @@
         <transition on="personalInfo" to="personal"/>
         <transition on="employeeInfo" to="employee"/>
         <transition on="employeeBackgroundInfo" to="employeeBackground"/>
+         <transition on="end"  to="end"/>
     </view-state>
     
     <action-state id="commit_data">
