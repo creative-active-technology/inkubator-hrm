@@ -33,6 +33,21 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['systemLetter.group_system']}"  for="systemGroupId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="systemGroupId" value="#{systemLetterReferenceFormController.model.groupReference}" style="width: 150px;margin-right: 3px" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['systemLetter.achievement']}" itemValue="0"/>
+                                        <f:selectItem itemLabel="#{appmsg['systemLetter.warning']}" itemValue="1"/>
+                                        <f:selectItem itemLabel="#{appmsg['systemLetter.transition']}" itemValue="2"/>
+                                        <f:selectItem itemLabel="#{appmsg['systemLetter.performance_appraisal']}" itemValue="3"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="systemGroupId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['systemLetterRef.code']}"  for="codeId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
@@ -53,7 +68,23 @@
                                 </p:column>
                             </p:row>
 
-                            <p:row>
+							<p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['systemLetter.content_type']}"  for="typeContentId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <p:selectOneMenu id="typeContentId" value="#{systemLetterReferenceFormController.model.typeContent}" style="width: 150px;margin-right: 3px" required="true">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['global.upload']}" itemValue="0"/>
+                                        <f:selectItem itemLabel="#{appmsg['systemLetter.content_type']}" itemValue="1"/>
+                                        <p:ajax update="uploadFoto, contentId" process="@this" listener="#{systemLetterReferenceFormController.doChangeUploadOrDesign()}"/>
+                                    
+                                    </p:selectOneMenu>
+                                    <p:message for="typeContentId"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <!-- <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['systemLetterRef.summary']}"  for="summaryLetterId" styleClass="label_hrm" />
                                 </p:column>
@@ -62,9 +93,52 @@
                                                  required="true" styleClass="isitext_hrm" style="width:210px;" />
                                     <p:message for="summaryLetterId"/>
                                 </p:column>
-                            </p:row>
+                            </p:row> -->
+
+                            
+
 
                             <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="uploadFoto" value="File Upload" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 100%" colspan="5">
+                                    <p:fileUpload disabled="#{systemLetterReferenceFormController.isDisabledUpload}" required="true" sizeLimit="209715200" label="#{appmsg['global.choose_photo']}" fileUploadListener="#{systemLetterReferenceFormController.handleFileUpload}" 
+                                                  mode="advanced"  id="uploadFoto"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
+                                                  dragDropSupport="true" multiple="false" update="fotoNameId" allowTypes="/(\.|\/)(doc?x|pdf|csv|xls?x|jpe?g|png)$/"/> 
+                                    <p:outputLabel value="#{appmsg['global.file_name']}"/>
+                                    <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
+                                    <p:outputLabel value="#{systemLetterReferenceFormController.model.fileUploadName}" id="fotoNameId"/>
+                                </p:column>
+                            </p:row>
+
+							
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="Design"  for="contentId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <!-- <p:inputTextarea  rows="5" cols="37" counter="counter" maxlength="500" id="tujuanJabatanId" value="#{systemLetterReferenceFormController.model.description}" required="false"
+                                                      style="width: 350px; height: 60px;" counterTemplate="#{appmsg['global.remaining']}" autoResize="true" 
+                                                      label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
+                                    <p:message for="tujuanJabatanId"/> -->
+                                    <p:editor  id="contentId" disabled="#{systemLetterReferenceFormController.isDisabledDesign}" width="800"  value="#{systemLetterReferenceFormController.model.content}"  required="true" />
+                                    <!--<pe:ckEditor id="contentId" required="true" />-->
+                                    <p:commandButton value="#{appmsg['global.help']}"  style="margin-top: 5px" onclick="PF('statusDialog').show()" oncomplete="PF('dialogHelper').show()"/>
+                                    <p:message for="contentId"/>
+                                </p:column>
+                            </p:row>
+                            <!-- <p:row> 
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  for="tujuanJabatanId" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    <h:outputText id="counter" />
+                                </p:column>
+                            </p:row> -->
+
+							<p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['systemLetterRef.effective_date']}"  for="effectiveDateId" styleClass="label_hrm" />
                                 </p:column>
@@ -75,42 +149,7 @@
                                     <p:message for="effectiveDateId"/>
                                 </p:column>
                             </p:row>
-
-
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="uploadFoto" value="File Upload" styleClass="label_hrm"/>
-                                </p:column>
-                                <p:column  style="width: 100%" colspan="5">
-                                    <p:fileUpload required="true" sizeLimit="209715200" label="#{appmsg['global.choose_photo']}" fileUploadListener="#{systemLetterReferenceFormController.handleFileUpload}" 
-                                                  mode="advanced"  id="uploadFoto"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
-                                                  dragDropSupport="true" multiple="false" update="fotoNameId" allowTypes="/(\.|\/)(doc?x|pdf|csv|xls?x|jpe?g|png)$/"/> 
-                                    <p:outputLabel value="#{appmsg['global.file_name']}"/>
-                                    <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
-                                    <p:outputLabel value="#{systemLetterReferenceFormController.model.fileUploadName}" id="fotoNameId"/>
-                                </p:column>
-                            </p:row>
-
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['global.description']}"  for="tujuanJabatanId" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%">
-                                    <p:inputTextarea  rows="5" cols="37" counter="counter" maxlength="500" id="tujuanJabatanId" value="#{systemLetterReferenceFormController.model.description}" required="false"
-                                                      style="width: 350px; height: 60px;" counterTemplate="#{appmsg['global.remaining']}" autoResize="true" 
-                                                      label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
-                                    <p:message for="tujuanJabatanId"/>
-                                </p:column>
-                            </p:row>
-                            <p:row> 
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  for="tujuanJabatanId" styleClass="label_hrm" />
-                                </p:column>
-                                <p:column style="width: 80%">
-                                    <h:outputText id="counter" />
-                                </p:column>
-                            </p:row>
-
+                            
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['systemLetterRef.active']}"  for="isActive" styleClass="label_hrm" />
@@ -131,6 +170,10 @@
                                              styleClass="isitext_hrm" 
                                              style="margin-right: 5px" label="#{appmsg['global.save']}" update="formId, :growlId"
                                              icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['offering_module.see_pdf']}" icon="ui-icon-zoomin" title="#{appmsg['offering_module.see_pdf']}" label="#{appmsg['offering_module.see_pdf']}" styleClass="label_button"
+                                             update="panelDialogSystemLetterReport" action="#{systemLetterReferenceFormController.doGetBioData()}"
+                                             onclick="PF('statusDialog').show()"  oncomplete="PF('dialogSystemLetter').show()">                        
+                            </p:commandButton>
                             <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId" action="#{systemLetterReferenceFormController.doReset()}"
                                              icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px" >  
                                 <p:resetInput target="formId" />  
@@ -138,6 +181,54 @@
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{systemLetterReferenceFormController.doBack()}"
                                              styleClass="label_button"/>
                         </div>
+                        <p:dialog widgetVar="dialogHelper" header="#{appmsg['global.help']}" modal="false" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
+                                  appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                            <h:panelGrid columns="3" >
+                                <p:outputLabel value="#{appmsg['offering_module.applicant_name']}" styleClass="label_hrm"/>
+                                <p:outputLabel value=":" styleClass="label_hrm"/>
+                                <p:outputLabel value="{%ApplicantName%}" />
+                                <p:outputLabel value="#{appmsg['offering_module.letter_number']}" styleClass="label_hrm"/>
+                                <p:outputLabel value=":" styleClass="label_hrm"/>
+                                <p:outputLabel value="{%LetterNumber%}" />
+                                <p:outputLabel value="#{appmsg['offering_module.selection_date']}" styleClass="label_hrm"/>
+                                <p:outputLabel value=":" styleClass="label_hrm"/>
+                                <p:outputLabel value="{%DateOfSelectionSchedulle%}" />
+                                <p:outputLabel value="#{appmsg['offering_module.evaluation_date']}" styleClass="label_hrm"/>
+                                <p:outputLabel value=":" styleClass="label_hrm"/>
+                                <p:outputLabel value="{%DateOfSelectionEvaluation%}" />
+                                <p:outputLabel value="#{appmsg['offering_module.pic_name']}" styleClass="label_hrm"/>
+                                <p:outputLabel value=":" styleClass="label_hrm"/>
+                                <p:outputLabel value="{%PICName%}" />
+                                <p:outputLabel value="#{appmsg['offering_module.date_generated']}" styleClass="label_hrm"/>
+                                <p:outputLabel value=":" styleClass="label_hrm"/>
+                                <p:outputLabel value="{%DateOfDocument%}" />
+                                <p:outputLabel value="#{appmsg['offering_module.expired_date_document']}" styleClass="label_hrm"/>
+                                <p:outputLabel value=":" styleClass="label_hrm"/>
+                                <p:outputLabel value="{%DateOfDocumentExpire%}" />
+                            </h:panelGrid>
+                        </p:dialog>
+                        
+                        <p:dialog widgetVar="dialogSystemLetter" header="#{appmsg['bioaddress.detail_address']}" styleClass="header_small_no_bold" height="300" width="700" modal="true" resizable="false" hideEffect="puff" 
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)">
+	                    <p:panelGrid id="panelDialogSystemLetterReport" style="width:100%;margin:5px;">
+	
+	                        <p:row>
+	                            <!--<p:column style="width:15%;background-color: #e1f0f0!important"><p:outputLabel value="#{empDataDetilController.id}" styleClass="label_hrm"/></p:column>-->
+	                            <p:column>
+	                                <p:media value="#{reportStreamController.systemLetter}" player="pdf" width="700px" height="300px" cache="false">
+	                                	<f:param name="contentSurat" value="#{systemLetterReferenceFormController.model.content}" />
+	                                	<f:param name="penandaTangan" value="#{systemLetterReferenceFormController.bioData.firstName} #{systemLetterReferenceFormController.bioData.lastName}" />
+	                                	<f:param name="signature" value="#{systemLetterReferenceFormController.bioData.pathSignature}" />
+	                                </p:media>
+	                            </p:column>
+	                        </p:row>
+	                        <f:facet name="footer">
+	                            <p:row>
+	                                <p:column colspan="4"><p:outputLabel value="#{appmsg['menu.personalia']} - #{appmsg['global.address']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+	                            </p:row>
+	                        </f:facet>
+	                    </p:panelGrid>
+                </p:dialog>
                     </div>
                 </h:form>
             </ui:define>

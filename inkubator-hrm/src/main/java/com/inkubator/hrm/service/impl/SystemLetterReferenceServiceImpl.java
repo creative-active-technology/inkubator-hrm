@@ -278,6 +278,7 @@ public class SystemLetterReferenceServiceImpl extends IServiceImpl implements Sy
         update.setName(entity.getName());
         update.setLetterSumary(entity.getLetterSumary());
         update.setIsActive(entity.getIsActive());
+        
         update.setEffectiveDate(entity.getEffectiveDate());
         update.setDescription(entity.getDescription());
         update.setUpdatedBy(UserInfoUtil.getUserName());

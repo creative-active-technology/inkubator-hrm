@@ -88,7 +88,7 @@ public class OrgTypeOfSpecViewController extends BaseController{
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", true);
-        options.put("contentWidth", 440);
+        options.put("contentWidth", 460);
         options.put("contentHeight", 360);
         RequestContext.getCurrentInstance().openDialog("org_type_of_spec_form", options, params);
     }

@@ -30,42 +30,50 @@ public class SystemLetterReference  implements java.io.Serializable {
      private String name;
      private byte[] uploadData;
      private String letterSumary;
-     private String fileUploadName;
      private String description;
+     private Date effectiveDate;
+     private String fileUploadName;
+     private boolean isActive;
+     private String content;
      private Date createdOn;
      private String createdBy;
      private Date updatedOn;
      private String updatedBy;
-     private Date effectiveDate;
-     private Boolean isActive;
-//     private Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForRejectLetterId = new HashSet<RecruitmenSelectionSeriesDetail>(0);
-//     private Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForAcceptLetterId = new HashSet<RecruitmenSelectionSeriesDetail>(0);
+     private Integer groupReference;
 
     public SystemLetterReference() {
     }
 
-    public SystemLetterReference(long id) {
-        this.id = id;
-    }
+    
 	
-    public SystemLetterReference(long id, String code, String name) {
+    public SystemLetterReference(long id) {
+		this.id = id;
+	}
+
+
+
+	public SystemLetterReference(long id, String code, String name, boolean isActive) {
         this.id = id;
         this.code = code;
         this.name = name;
+        this.isActive = isActive;
     }
-    public SystemLetterReference(long id, String code, String name, byte[] uploadData, String letterSumary, String description, Date createdOn, String createdBy, Date updatedOn, String updatedBy, Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForRejectLetterId, Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForAcceptLetterId) {
+    public SystemLetterReference(long id, String code, String name, byte[] uploadData, String letterSumary, String description, Date effectiveDate, String fileUploadName, boolean isActive, String content, Date createdOn, String createdBy, Date updatedOn, String updatedBy, Integer groupReference) {
        this.id = id;
        this.code = code;
        this.name = name;
        this.uploadData = uploadData;
        this.letterSumary = letterSumary;
        this.description = description;
+       this.effectiveDate = effectiveDate;
+       this.fileUploadName = fileUploadName;
+       this.isActive = isActive;
+       this.content = content;
        this.createdOn = createdOn;
        this.createdBy = createdBy;
        this.updatedOn = updatedOn;
        this.updatedBy = updatedBy;
-//       this.recruitmenSelectionSeriesDetailsForRejectLetterId = recruitmenSelectionSeriesDetailsForRejectLetterId;
-//       this.recruitmenSelectionSeriesDetailsForAcceptLetterId = recruitmenSelectionSeriesDetailsForAcceptLetterId;
+       this.groupReference = groupReference;
     }
    
      @Id 
@@ -131,13 +139,53 @@ public class SystemLetterReference  implements java.io.Serializable {
     }
 
     
-    @Column(name="description", length=45)
+    @Column(name="description")
     public String getDescription() {
         return this.description;
     }
     
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Temporal(TemporalType.DATE)
+    @Column(name="effective_date", length=10)
+    public Date getEffectiveDate() {
+        return this.effectiveDate;
+    }
+    
+    public void setEffectiveDate(Date effectiveDate) {
+        this.effectiveDate = effectiveDate;
+    }
+
+    
+    @Column(name="file_upload_name")
+    public String getFileUploadName() {
+        return this.fileUploadName;
+    }
+    
+    public void setFileUploadName(String fileUploadName) {
+        this.fileUploadName = fileUploadName;
+    }
+
+    
+    @Column(name="is_active", nullable=false)
+    public boolean getIsActive() {
+        return this.isActive;
+    }
+    
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    
+    @Column(name="content", length=65535, columnDefinition="Text")
+    public String getContent() {
+        return this.content;
+    }
+    
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -180,54 +228,15 @@ public class SystemLetterReference  implements java.io.Serializable {
         this.updatedBy = updatedBy;
     }
 
-//@OneToMany(fetch=FetchType.LAZY, mappedBy="systemLetterReferenceByRejectLetterId")
-//    public Set<RecruitmenSelectionSeriesDetail> getRecruitmenSelectionSeriesDetailsForRejectLetterId() {
-//        return this.recruitmenSelectionSeriesDetailsForRejectLetterId;
-//    }
-//    
-//    public void setRecruitmenSelectionSeriesDetailsForRejectLetterId(Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForRejectLetterId) {
-//        this.recruitmenSelectionSeriesDetailsForRejectLetterId = recruitmenSelectionSeriesDetailsForRejectLetterId;
-//    }
-
-//@OneToMany(fetch=FetchType.LAZY, mappedBy="systemLetterReferenceByAcceptLetterId")
-//    public Set<RecruitmenSelectionSeriesDetail> getRecruitmenSelectionSeriesDetailsForAcceptLetterId() {
-//        return this.recruitmenSelectionSeriesDetailsForAcceptLetterId;
-//    }
-//    
-//    public void setRecruitmenSelectionSeriesDetailsForAcceptLetterId(Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForAcceptLetterId) {
-//        this.recruitmenSelectionSeriesDetailsForAcceptLetterId = recruitmenSelectionSeriesDetailsForAcceptLetterId;
-//    }
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "effective_date", length = 10)
-    public Date getEffectiveDate() {
-        return effectiveDate;
-    }
-
-    public void setEffectiveDate(Date effectiveDate) {
-        this.effectiveDate = effectiveDate;
-    }
-
-    @Column(name = "is_active", nullable = false)
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
-
-    @Column(name="file_upload_name")
-    public String getFileUploadName() {
-        return fileUploadName;
-    }
-
-    public void setFileUploadName(String fileUploadName) {
-        this.fileUploadName = fileUploadName;
-    }
-
     
-
+    @Column(name="group_reference")
+    public Integer getGroupReference() {
+        return this.groupReference;
+    }
+    
+    public void setGroupReference(Integer groupReference) {
+        this.groupReference = groupReference;
+    }
 
 }
 

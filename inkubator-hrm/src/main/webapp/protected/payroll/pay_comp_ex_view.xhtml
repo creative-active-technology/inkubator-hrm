@@ -89,11 +89,9 @@
                                 <f:facet name="header">
                                     <h:outputText value="Jumlah Nominal"/>
                                 </f:facet>
-                                <div style="text-align: right">
                                 <h:outputLabel value= "#{data.jumlahNominal}" >
                                     <f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
-                            </div>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 3%;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"

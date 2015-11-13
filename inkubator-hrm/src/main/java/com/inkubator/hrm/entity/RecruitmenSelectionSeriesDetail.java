@@ -29,6 +29,7 @@ public class RecruitmenSelectionSeriesDetail  implements java.io.Serializable {
      private Integer version;
      private RecruitLetters recruitLettersByAcceptLetterId;
      private RecruitLetters recruitLettersByRejectLetterId;
+     private RecruitLetters recruitLettersBySchedulleLetterId;
      private RecruitSelectionType recruitSelectionType;
      private RecruitmenSelectionSeries recruitmenSelectionSeries;
      private String note;
@@ -105,6 +106,17 @@ public class RecruitmenSelectionSeriesDetail  implements java.io.Serializable {
         this.recruitLettersByRejectLetterId = recruitLettersByRejectLetterId;
     }
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="schedule_letter_id")
+	public RecruitLetters getRecruitLettersBySchedulleLetterId() {
+		return recruitLettersBySchedulleLetterId;
+	}
+
+
+	public void setRecruitLettersBySchedulleLetterId(RecruitLetters recruitLettersBySchedulleLetterId) {
+		this.recruitLettersBySchedulleLetterId = recruitLettersBySchedulleLetterId;
+	}
+	
 @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="selection_type_id", nullable=false, insertable=false, updatable=false)
     public RecruitSelectionType getRecruitSelectionType() {
@@ -184,6 +196,9 @@ public class RecruitmenSelectionSeriesDetail  implements java.io.Serializable {
     public void setListOrder(Integer listOrder) {
         this.listOrder = listOrder;
     }
+
+
+
 
 
 

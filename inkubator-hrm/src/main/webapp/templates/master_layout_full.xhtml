@@ -250,7 +250,6 @@
                                     <p:outputLabel value="#{realName} : " style="color: #ff9933 !important;font-weight: bold!important"  styleClass="label_welcome_header" />
                                     <p:outputLabel value="#{appmsg['global.login_as']} #{homeController.roleUser}" styleClass="label_welcome_header" />
                                 </h:panelGroup>
-
                             </h:panelGrid>
                         </div>
 
@@ -340,7 +339,7 @@
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['menu.approvalPattern']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['approvaldefinition.approval_definition']}"  style="color: #003366" title="#{appmsg['approvaldefinition.approval_definition']}" url="/protected/approval/approval_definition_view.htm"  icon="img-approval-definition"/> 
-                                                <p:menuitem value="Approval Activity"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-approval-activity" />
+                                    
                                                 <p:menuitem value="#{appmsg['approvalActivity.approvalActivityHistory']}"  style="color: #003366" title="#{appmsg['approvalActivity.approvalActivityHistory']}" url="/protected/approval/approval_activity_view.htm" icon="img-approval-activity" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['menu.applicationMenu']}"  styleClass="menu_child" >
