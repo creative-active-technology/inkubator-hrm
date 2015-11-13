@@ -10,12 +10,14 @@ import org.primefaces.push.annotation.PushEndpoint;
 import org.primefaces.push.impl.JSONEncoder;
 
 import com.inkubator.hrm.web.model.ApprovalPushMessageModel;
+import org.atmosphere.config.service.Singleton;
 
 /**
  *
  * @author rizkykojek
  */
 @PushEndpoint("/notificationsApproval")
+@Singleton
 public class ApprovalNotifResource {
 
     @OnMessage(encoders = {JSONEncoder.class})

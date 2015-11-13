@@ -37,6 +37,8 @@ public class LetterTypeConverter implements Converter {
             messages = resourceBundle.getString("offering_module.reject");
         } else if (data == HRMConstant.LETTER_TYPE_RESCHEDULE) {
             messages = resourceBundle.getString("offering_module.reschedule");
+        } else if (data == HRMConstant.LETTER_TYPE_SCHEDULE) {
+            messages = resourceBundle.getString("offering_module.form_selection");
         }
         return messages;
 

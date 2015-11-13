@@ -22,9 +22,6 @@ public class RecruitScheduleSettingModel implements Serializable {
 	private Long recruitMppApplyId;
 	private String recruitMppApplyName;
 	private Long recruitSelectionApplicantSchedulleId;
-	/*private Long empCoordinatorId;
-	private String empCoordinatorNik;
-	private String empCoordinatorFullName;*/
 	private EmpData empData;
 	private Long selectionSeriesId;
 	private String selectionSeriesName;
@@ -37,6 +34,7 @@ public class RecruitScheduleSettingModel implements Serializable {
 	private List<RecruitmenSelectionSeriesDetail> listSelectionSeriesDetails = new ArrayList<RecruitmenSelectionSeriesDetail>();
 	private Map<Long, List<RecruitSelectionApplicantScheduleDetailViewModel>> mapSelectionApplicantSchedule = new HashMap<Long, List<RecruitSelectionApplicantScheduleDetailViewModel>>();
 	private Boolean isAlreadyHaveSelectionScheduleSeries;
+	private List<SelectionSeriesDetailInitialParameterModel> listSeriesInitialParam = new ArrayList<SelectionSeriesDetailInitialParameterModel>();
 	
 	public Long getId() {
 		return id;
@@ -50,12 +48,6 @@ public class RecruitScheduleSettingModel implements Serializable {
 	public void setRecruitHireApplyId(Long recruitHireApplyId) {
 		this.recruitHireApplyId = recruitHireApplyId;
 	}
-	/*public Long getEmpCoordinatorId() {
-		return empCoordinatorId;
-	}
-	public void setEmpCoordinatorId(Long empCoordinatorId) {
-		this.empCoordinatorId = empCoordinatorId;
-	}*/
 	public Long getSelectionSeriesId() {
 		return selectionSeriesId;
 	}
@@ -116,20 +108,6 @@ public class RecruitScheduleSettingModel implements Serializable {
 	public void setRecruitMppApplyName(String recruitMppApplyName) {
 		this.recruitMppApplyName = recruitMppApplyName;
 	}
-	/*public String getEmpCoordinatorNik() {
-		return empCoordinatorNik;
-	}
-	public void setEmpCoordinatorNik(String empCoordinatorNik) {
-		this.empCoordinatorNik = empCoordinatorNik;
-	}
-	public String getEmpCoordinatorFullName() {
-		return empCoordinatorFullName;
-	}
-	public void setEmpCoordinatorFullName(String empCoordinatorFullName) {
-		this.empCoordinatorFullName = empCoordinatorFullName;
-	}*/
-	
-	
 	public String getSelectionSeriesName() {
 		return selectionSeriesName;
 	}
@@ -170,6 +148,14 @@ public class RecruitScheduleSettingModel implements Serializable {
 			Long recruitSelectionApplicantSchedulleId) {
 		this.recruitSelectionApplicantSchedulleId = recruitSelectionApplicantSchedulleId;
 	}
+	
+	public List<SelectionSeriesDetailInitialParameterModel> getListSeriesInitialParam() {
+		return listSeriesInitialParam;
+	}
+	public void setListSeriesInitialParam(List<SelectionSeriesDetailInitialParameterModel> listSeriesInitialParam) {
+		this.listSeriesInitialParam = listSeriesInitialParam;
+	}
+	
 	
 	
 }

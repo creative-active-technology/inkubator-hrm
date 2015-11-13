@@ -134,7 +134,7 @@ public class ReportStreamController extends BaseController {
     	String contentSurat = context.getExternalContext().getRequestParameterMap().get("contentSurat");
     	String penandaTangan = context.getExternalContext().getRequestParameterMap().get("penandaTangan");
     	String signature = context.getExternalContext().getRequestParameterMap().get("signature");
-    	System.out.println(signature);
+    	System.out.println(signature + " signature" + " penanda tangan " + penandaTangan + " content " + contentSurat);
     	// parameter
     	params.put("companyId", HrmUserInfoUtil.getCompanyId());
     	params.put("contentSurat", contentSurat);
@@ -144,6 +144,22 @@ public class ReportStreamController extends BaseController {
         return file;
     }
     
+    public StreamedContent getSystemLetter() throws JRException, SQLException, Exception{
+    	Map<String, Object> params = new HashMap<>();
+    	FacesContext context = FacesUtil.getFacesContext();
+    	StreamedContent file = new DefaultStreamedContent();
+    	String contentSurat = context.getExternalContext().getRequestParameterMap().get("contentSurat");
+    	String penandaTangan = context.getExternalContext().getRequestParameterMap().get("penandaTangan");
+    	String signature = context.getExternalContext().getRequestParameterMap().get("signature");
+    	System.out.println(signature);
+    	// parameter
+    	params.put("companyId", HrmUserInfoUtil.getCompanyId());
+    	params.put("contentSurat", contentSurat);
+    	params.put("penandaTangan", penandaTangan);
+    	params.put("signature", signature);
+        file = CommonReportUtil.exportReportToPDFStream("system_letter_report.jasper", params, "Test.pdf");
+        return file;
+    }
     public StreamedContent getFilePph() {
     
         FacesContext context = FacesUtil.getFacesContext();

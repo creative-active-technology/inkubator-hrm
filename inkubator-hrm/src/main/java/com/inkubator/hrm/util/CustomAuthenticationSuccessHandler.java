@@ -44,7 +44,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
-
+     LOGGER.warn("Login sukses di akses");
         try {
             LoginHistory loginHistory = new LoginHistory();
             loginHistory.setLanguange((String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE));
@@ -82,7 +82,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         }
         clearAuthenticationAttributes(request);
         String targetUrl = savedRequest.getRedirectUrl();
-        LOGGER.debug("Redirecting to DefaultSavedRequest Url: " + targetUrl);
+        LOGGER.warn("Redirecting to DefaultSavedRequest Url: " + targetUrl);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 }
