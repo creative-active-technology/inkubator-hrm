@@ -57,17 +57,17 @@ public class LoginController extends BaseController {
     @Override
     public void initialization() {
         Device device = deviceResolver.resolveDevice(FacesUtil.getRequest());
-
+        LOGGER.error("Login di aksesss");
         if (device.isMobile()) {
             try {
                 LOGGER.info("Mobile");
-                FacesUtil.getExternalContext().redirect("/MOBILE-HR");
+                FacesUtil.getExternalContext().redirect("https://production.incubatechnology.com:8443/MOBILE-HR/");
             } catch (IOException ex) {
                 LOGGER.error(ex, ex);
             }
         }
         if (device.isNormal()) {
-            LOGGER.info("NOrmal Desktop");
+            LOGGER.error("NOrmal Desktop");
             if (FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE) == null) {
                 selectedLanguage = "in";
                 FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, selectedLanguage);
@@ -157,6 +157,7 @@ public class LoginController extends BaseController {
     }
 
     public String doLogin() {
+           LOGGER.error("Melakukan login -----");
         ExternalContext context = FacesUtil.getExternalContext();
         RequestDispatcher dispatcher = ((ServletRequest) context.getRequest())
                 .getRequestDispatcher("/" + HRMConstant.SPRING_SECURITY_CHECK);

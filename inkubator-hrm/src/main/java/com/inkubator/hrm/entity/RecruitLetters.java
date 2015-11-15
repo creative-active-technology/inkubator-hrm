@@ -50,6 +50,7 @@ public class RecruitLetters implements java.io.Serializable {
     private List<RecruitCommChannels> recruitCommChannelss = new ArrayList<>();
     private Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForAcceptLetterId = new HashSet<RecruitmenSelectionSeriesDetail>(0);
     private Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForRejectLetterId = new HashSet<RecruitmenSelectionSeriesDetail>(0);
+    private Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForScheduleLetterId = new HashSet<RecruitmenSelectionSeriesDetail>(0);
 
     public RecruitLetters() {
     }
@@ -270,4 +271,16 @@ public class RecruitLetters implements java.io.Serializable {
     public void setRecruitmenSelectionSeriesDetailsForRejectLetterId(Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForRejectLetterId) {
         this.recruitmenSelectionSeriesDetailsForRejectLetterId = recruitmenSelectionSeriesDetailsForRejectLetterId;
     }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitLettersBySchedulleLetterId")
+	public Set<RecruitmenSelectionSeriesDetail> getRecruitmenSelectionSeriesDetailsForScheduleLetterId() {
+		return recruitmenSelectionSeriesDetailsForScheduleLetterId;
+	}
+
+	public void setRecruitmenSelectionSeriesDetailsForScheduleLetterId(
+			Set<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetailsForScheduleLetterId) {
+		this.recruitmenSelectionSeriesDetailsForScheduleLetterId = recruitmenSelectionSeriesDetailsForScheduleLetterId;
+	}
+    
+    
 }

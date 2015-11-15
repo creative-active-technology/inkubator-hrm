@@ -1,5 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +34,8 @@ import com.inkubator.hrm.entity.RecruitSelectionType;
 import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetail;
 import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetailId;
 import com.inkubator.hrm.service.RecruitSelectionApplicantPassedService;
+import com.inkubator.hrm.web.model.RecruitSelectionApplicantPassedViewModel;
+import com.inkubator.hrm.web.search.RecruitSelectionApplicantPassedSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 import ch.lambdaj.Lambda;
@@ -297,8 +300,21 @@ public class RecruitSelectionApplicantPassedServiceImpl extends IServiceImpl imp
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalByHireApplyIdAndNotPlacementStatus(Long hireApplyId, String placementStatus) throws Exception {
-		
 		return recruitSelectionApplicantPassedDao.getTotalByHireApplyIdAndPlacementStatus(hireApplyId,placementStatus);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RecruitSelectionApplicantPassedViewModel> getListSelectionPassedViewModelByParam(RecruitSelectionApplicantPassedSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) throws Exception {
+		//return recruitSelectionApplicantPassedDao.getListSelectionPassedViewModelByParam(searchParameter, firstResult, maxResults, orderable);
+		return new ArrayList<RecruitSelectionApplicantPassedViewModel>();
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalSelectionPassedViewModelByParam(RecruitSelectionApplicantPassedSearchParameter searchParameter) throws Exception {
+		//return recruitSelectionApplicantPassedDao.getTotalSelectionPassedViewModelByParam(searchParameter);
+		return 0l;
 	}
 
 }

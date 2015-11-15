@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
-
 public class AccessHistoryLazyDataModel extends LazyDataModel<RiwayatAkses> implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(AccessHistoryLazyDataModel.class);
@@ -64,12 +63,7 @@ public class AccessHistoryLazyDataModel extends LazyDataModel<RiwayatAkses> impl
         return null;
     }
 
-    @Override
-    public void setRowIndex(int rowIndex) {
-        if (rowIndex == -1 || getPageSize() == 0) {
-            super.setRowIndex(-1);
-        } else {
-            super.setRowIndex(rowIndex % getPageSize());
-        }
-    }
+	
+	
+	
 }

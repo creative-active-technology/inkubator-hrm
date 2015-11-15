@@ -5,31 +5,38 @@
  */
 package com.inkubator.hrm.web.organisation;
 
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.SystemLetterReference;
-import com.inkubator.hrm.service.SystemLetterReferenceService;
-import com.inkubator.hrm.web.model.SystemLetterReferenceModel;
-import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesIO;
-import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
+
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.BioData;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.SystemLetterReference;
+import com.inkubator.hrm.service.BioDataService;
+import com.inkubator.hrm.service.SystemLetterReferenceService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.web.model.SystemLetterReferenceModel;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesIO;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /*--------------------------------------------------------------------
  *  Author:        Deni
  *  Written:       4/5/2015
  *  Finish:        5/5/2015
- *  Last updated:  -
+ *  Last updated:  11/11/2015
  *
  *  
  *  a class to run the process save and update System Letter Reference
@@ -42,18 +49,25 @@ public class SystemLetterReferenceFormController extends BaseController {
 
     @ManagedProperty(value = "#{systemLetterReferenceService}")
     private SystemLetterReferenceService systemLetterReferenceService;
+    @ManagedProperty(value = "#{bioDataService}")
+    private BioDataService bioDataService;
     @ManagedProperty(value = "#{facesIO}")
     private FacesIO facesIO;
+    private BioData bioData;
     private SystemLetterReferenceModel model;
     private UploadedFile fileUpload;
     private Boolean isUpdate;
-
+    private Boolean isDisabledDesign;
+    private Boolean isDisabledUpload;
+    
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
         model = new SystemLetterReferenceModel();
         isUpdate = Boolean.FALSE;
+        isDisabledUpload = Boolean.TRUE;
+        isDisabledDesign = Boolean.TRUE;
         String systemLetterReferenceId = FacesUtil.getRequestParameter("execution");
         if (systemLetterReferenceId != null) {
             try {
@@ -75,6 +89,7 @@ public class SystemLetterReferenceFormController extends BaseController {
         fileUpload = null;
         facesIO = null;
         isUpdate = null;
+        bioDataService = null;
     }
 
     /*--------------------------------------------------------------------
@@ -119,10 +134,12 @@ public class SystemLetterReferenceFormController extends BaseController {
         model.setCode(entity.getCode());
         model.setName(entity.getName());
         model.setDescription(entity.getDescription());
+        model.setContent(entity.getContent());
         model.setLetterSumary(entity.getLetterSumary());
         model.setEffectiveDate(entity.getEffectiveDate());
         model.setIsActive(entity.getIsActive());
         model.setFileUploadName(entity.getFileUploadName());
+        model.setGroupReference(entity.getGroupReference());
         return model;
     }
 
@@ -138,11 +155,13 @@ public class SystemLetterReferenceFormController extends BaseController {
         }
         systemLetterReference.setCode(model.getCode());
         systemLetterReference.setName(model.getName());
+        systemLetterReference.setContent(model.getContent());
         systemLetterReference.setDescription(model.getDescription());
         systemLetterReference.setLetterSumary(model.getLetterSumary());
         systemLetterReference.setEffectiveDate(model.getEffectiveDate());
         systemLetterReference.setIsActive(model.getIsActive());
         systemLetterReference.setFileUploadName(model.getFileUploadName());
+        systemLetterReference.setGroupReference(model.getGroupReference());
         return systemLetterReference;
     }
 
@@ -155,6 +174,25 @@ public class SystemLetterReferenceFormController extends BaseController {
         model.setFileUploadName(fileUpload.getFileName());
     }
 
+    /*----------------------------------------------------------------------------
+     *  change disabled upload or design by typeContent choosen
+     *  0 = upload
+     *  1 = design
+     *----------------------------------------------------------------------------*/
+    public void doChangeUploadOrDesign(){
+    	if(model.getTypeContent() == 0){
+    		isDisabledUpload = Boolean.FALSE;
+    		isDisabledDesign = Boolean.TRUE;
+    	}else{
+    		isDisabledUpload = Boolean.TRUE;
+    		isDisabledDesign = Boolean.FALSE;
+    	}
+    }
+    
+    public void doGetBioData() throws Exception{
+    	bioData = bioDataService.getEntiyByPK(HrmUserInfoUtil.getBioDataId());
+    }
+    
     public String doBack() {
         return "/protected/organisation/system_letter_view.htm?faces-redirect=true";
     }
@@ -207,4 +245,37 @@ public class SystemLetterReferenceFormController extends BaseController {
         this.fileUpload = fileUpload;
     }
 
+	public Boolean getIsDisabledDesign() {
+		return isDisabledDesign;
+	}
+
+	public void setIsDisabledDesign(Boolean isDisabledDesign) {
+		this.isDisabledDesign = isDisabledDesign;
+	}
+
+	public Boolean getIsDisabledUpload() {
+		return isDisabledUpload;
+	}
+
+	public void setIsDisabledUpload(Boolean isDisabledUpload) {
+		this.isDisabledUpload = isDisabledUpload;
+	}
+
+	public BioDataService getBioDataService() {
+		return bioDataService;
+	}
+
+	public void setBioDataService(BioDataService bioDataService) {
+		this.bioDataService = bioDataService;
+	}
+
+	public BioData getBioData() {
+		return bioData;
+	}
+
+	public void setBioData(BioData bioData) {
+		this.bioData = bioData;
+	}
+
+    
 }

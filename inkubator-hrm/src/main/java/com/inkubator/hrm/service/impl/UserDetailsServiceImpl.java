@@ -39,20 +39,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Service(value = "userDetailsService")
 @Lazy
 public class UserDetailsServiceImpl extends IServiceImpl implements UserDetailsService {
-
+    
     @Autowired
     private HrmUserDao hrmUserDao;
     @Autowired
     private HrmUserRoleDao hrmUserRoleDao;
-
+    
     @Override
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS,
             isolation = Isolation.READ_COMMITTED, timeout = 30)
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException, DataAccessException {
+         LOGGER.error("LOG EKESUSI+++++++++++++++++++++++++++++++==" );
         if (userName == null || userName.trim().isEmpty()) {
             throw new UsernameNotFoundException("Empty username");
         }
-
+        
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Security verification for user '" + userName + "'");
         }
@@ -70,7 +71,7 @@ public class UserDetailsServiceImpl extends IServiceImpl implements UserDetailsS
 //            spiRoles.add(spiUserRole.getSpiRole());
             dataRole.add(spiUserRole.getHrmRole().getRoleName());
         }
-        if (spiUser.getEmpData() == null && !dataRole.contains(HRMConstant.SUPER_ADMIN))  {
+        if (spiUser.getEmpData() == null && !dataRole.contains(HRMConstant.SUPER_ADMIN)) {
             throw new UsernameNotFoundException("user " + userName + " could not be found");
         }
         Collection<GrantedAuthority> grantedAuthorities = toGrantedAuthorities(dataRole);
@@ -78,7 +79,7 @@ public class UserDetailsServiceImpl extends IServiceImpl implements UserDetailsS
         Boolean isActive = Boolean.FALSE;
         Boolean isLock = Boolean.FALSE;
         Boolean isExired = Boolean.FALSE;
-
+        
         if (spiUser.getIsActive() == 1) {
             isActive = Boolean.TRUE;
         }
@@ -91,9 +92,10 @@ public class UserDetailsServiceImpl extends IServiceImpl implements UserDetailsS
 //        for (SpiRole spiRole : spiRoles) {
 //            dataRole.add(spiRole.getRoleName());
 //        }
+        LOGGER.error(spiUser.getUserId() + "dfdfdfdfdfdfdfdfdfdfdfdfdf  " + password);
         return new User(spiUser.getUserId(), password, isActive, true, !isExired, !isLock, grantedAuthorities);
     }
-
+    
     private Collection<GrantedAuthority> toGrantedAuthorities(List<String> roles) {
         List<GrantedAuthority> result = newArrayList();
         for (String role : roles) {

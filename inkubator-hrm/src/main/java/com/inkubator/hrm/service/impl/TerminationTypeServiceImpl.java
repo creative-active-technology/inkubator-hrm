@@ -3,6 +3,7 @@ package com.inkubator.hrm.service.impl;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.SystemLetterReferenceDao;
 import com.inkubator.hrm.dao.TerminationTypeDao;
 import com.inkubator.hrm.entity.TerminationType;
 import com.inkubator.hrm.service.TerminationTypeService;
@@ -28,6 +29,8 @@ public class TerminationTypeServiceImpl extends IServiceImpl implements Terminat
 
     @Autowired
     private TerminationTypeDao terminationTypeDao;
+    @Autowired
+    private SystemLetterReferenceDao systemLetterReferenceDao;
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -165,7 +168,9 @@ public class TerminationTypeServiceImpl extends IServiceImpl implements Terminat
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public TerminationType getEntiyByPK(Long id) throws Exception {
-        return terminationTypeDao.getEntiyByPK(id);
+        TerminationType terminationType = terminationTypeDao.getEntiyByPK(id);
+        terminationType.getSystemLetterReference().getName();
+        return terminationType;
     }
 
     @Override
@@ -200,10 +205,10 @@ public class TerminationTypeServiceImpl extends IServiceImpl implements Terminat
         if (totalDuplicates > 0) {
             throw new BussinessException("terminationType.error_duplicate_terminationType_code");
         }
-
         terminationType.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         terminationType.setCreatedBy(UserInfoUtil.getUserName());
         terminationType.setCreatedOn(new Date());
+        terminationType.setSystemLetterReference(systemLetterReferenceDao.getEntiyByPK(terminationType.getSystemLetterReference().getId()));
         terminationTypeDao.save(terminationType);
     }
 
@@ -244,6 +249,7 @@ public class TerminationTypeServiceImpl extends IServiceImpl implements Terminat
         terminationType.setCode(b.getCode());
         terminationType.setName(b.getName());
         terminationType.setDescription(b.getDescription());
+        terminationType.setSystemLetterReference(systemLetterReferenceDao.getEntiyByPK(b.getSystemLetterReference().getId()));
         terminationType.setUpdatedBy(UserInfoUtil.getUserName());
         terminationType.setUpdatedOn(new Date());
         terminationTypeDao.update(terminationType);

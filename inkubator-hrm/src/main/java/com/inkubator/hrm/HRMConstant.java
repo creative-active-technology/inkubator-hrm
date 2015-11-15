@@ -78,7 +78,7 @@ public class HRMConstant {
     public static final String LEAVE_CODE = "CUTI";
     /* END */
 
-    /* 
+ /* 
      * Constant for JOB Deskripsi Module */
     public static final Integer JOB_DESCRIPTION_PRIMER = 1;
     public static final Integer JOB_DESCRIPTION_SEKUNDER = 2;
@@ -86,7 +86,7 @@ public class HRMConstant {
     public static final Integer JOB_DESCRIPTION_MONTH = 2;
     /* END */
 
-    /* 
+ /* 
      * Constant for JOB Deskripsi Module */
     public static final Integer GLOBAL_MALE = 1;
     public static final Integer GLOBAL_FEMALE = 0;
@@ -96,7 +96,7 @@ public class HRMConstant {
     public static final Integer BLOOD_O_TYPE = 4;
     /* END */
 
-    /* 
+ /* 
      * Constant for BIO address Module */
     public static final Integer BIOADDRESS_TYPE_IDENTITY_CARD = 0;
     public static final Integer BIOADDRESS_TYPE_RESIDENCE = 1;
@@ -106,34 +106,34 @@ public class HRMConstant {
     public static final Integer BIOADDRESS_STATUS_OWNER = 2;
     /* END */
 
-    /* Constant for Travel Components */
+ /* Constant for Travel Components */
     public static final Integer MEASUREMENT_PACK = 0;
     public static final Integer MEASUREMENT_UNIT = 1;
     public static final Integer MEASUREMENT_DAY = 2;
     /* END */
 
-    /* Constant for Travel Zone */
+ /* Constant for Travel Zone */
     public static final Integer ZONE_DOMESTICS = 0;
     public static final Integer ZONE_OVERSEAS = 1;
     /* END */
 
-    /* Constant for Business Travel */
+ /* Constant for Business Travel */
     public static final Integer BUSINESS_TRAVEL_STATUS_WAITING = 10;
     public static final Integer BUSINESS_TRAVEL_STATUS_ON_GOING = 11;
     public static final Integer BUSINESS_TRAVEL_STATUS_DONE = 12;
     /* END */
 
-    /* Constant for BIO Medical Module */
+ /* Constant for BIO Medical Module */
     public static final Integer BIOMEDICAL_HEALED = 0;
     public static final Integer BIOMEDICAL_NOT_HEALED = 1;
     /* END */
 
-    /* Constant for BIO Family Relation Module */
+ /* Constant for BIO Family Relation Module */
     public static final Integer BIOFAMILY_DEPENDENTS_YES = 1;
     public static final Integer BIOFAMILY_DEPENDENTS_NO = 0;
     /* END */
 
-    /* Constant for BIO Bank Account Module */
+ /* Constant for BIO Bank Account Module */
     public static final Integer BANK_SAVING_TYPE_DEPOSITO = 0;
     public static final Integer BANK_SAVING_TYPE_SAVING = 1;
     public static final Integer BANK_SAVING_TYPE_GIRO = 2;
@@ -142,7 +142,7 @@ public class HRMConstant {
     public static final Integer BANK_DEFAULT_ACCOUNT_NO = 1;
     /* END */
 
-    /* Constant for Placement */
+ /* Constant for Placement */
     public static final Integer PLACEMENT_PREMI_HEATLY_YES = 1;
     public static final Integer PLACEMENT_PREMI_HEATLY_NO = 0;
     public static final Integer PLACEMENT_IS_FINGER_YES = 1;
@@ -153,13 +153,13 @@ public class HRMConstant {
     public static final Integer PLACEMENT_NO_MARRIED = 0;
     /* END */
 
-    /* Constant for Company Policy */
+ /* Constant for Company Policy */
     public static final String COMP_POLICY_REPEAT_ON_WEEKLY = "WEEKLY";
     public static final String COMP_POLICY_REPEAT_ON_MONTHLY = "MONTHLY";
     public static final String COMP_POLICY_REPEAT_ON_QUARTERLY = "QUARTERLY";
     /* END */
 
-    /* Approval Definition */
+ /* Approval Definition */
     public static final String APPROVAL_TYPE_INDIVIDUAL = "APPROVAL_TYPE_INDIVIDUAL";
     public static final String APPROVAL_TYPE_POSITION = "APPROVAL_TYPE_POSITION";
     public static final String APPROVAL_TYPE_DEPARTMENT = "APPROVAL_TYPE_DEPARTMENT";
@@ -206,13 +206,13 @@ public class HRMConstant {
     /* END */
 
 
-    /*Placement */
+ /*Placement */
     public static final String EMP_PLACEMENT = "EMP_PLACEMENT";
     public static final String EMP_ROTATION = "EMP_ROTATION";
     public static final String EMP_TERMINATION = "EMP_TERMINATION";
     /* END */
 
-    /* Constant for  Model Component */
+ /* Constant for  Model Component */
     public static final Integer MODEL_COMP_BASIC_SALARY = 0;
     public static final Integer MODEL_COMP_CEIL = 1;
     public static final Integer MODEL_COMP_TAX = 2;
@@ -224,14 +224,14 @@ public class HRMConstant {
     public static final Integer MODEL_COMP_TAKE_HOME_PAY = 100;
     /* END */
 
-    /* Constant for  Appraisal Element */
+ /* Constant for  Appraisal Element */
     public static final Integer LEADER_YES = 1;
     public static final Integer LEADER_NO = 0;
     public static final Integer OPERATOR_YES = 1;
     public static final Integer OPERATOR_NO = 0;
     /* END */
 
-    /* Constant for LoanSchema */
+ /* Constant for LoanSchema */
     public static final Integer ANNUITY = 0;
     public static final Integer FLAT = 1;
     public static final Integer FLOATING = 2;
@@ -240,18 +240,18 @@ public class HRMConstant {
     public static final Integer SALARY = 1;
     /* END */
 
-    /* Constant for Organization */
+ /* Constant for Organization */
     public static final String ORGANIZATION_LEVEL_HOLDING = "0";
     public static final String ORGANIZATION_LEVEL_COMPANY = "1";
     /* END */
 
-    /* Constant for FinancialNonBanking */
+ /* Constant for FinancialNonBanking */
     public static final String FINANCIAL_SERVICE_INSURANCE = "0";
     public static final String FINANCIAL_SERVICE_FINANCING = "1";
     public static final String FINANCIAL_SERVICE_PENSION = "2";
     /* END */
 
-    /* Constant for ReimbursmentSchema */
+ /* Constant for ReimbursmentSchema */
     public static final Integer REIMBURSMENT_UNIT = 0;
     public static final Integer REIMBURSMENT_NOMINAL = 1;
 
@@ -418,7 +418,7 @@ public class HRMConstant {
     public static final Integer RMBS_DISBURSEMENT_STATUS_CANCELLED = 2;
     /* END */
 
-    /* 
+ /* 
      * Constant for Reimbursement Module */
     public static final Integer ANNOUNCEMENT_STATUS_APPROVED = 0;
     public static final Integer ANNOUNCEMENT_STATUS_REJECTED = 1;
@@ -429,7 +429,7 @@ public class HRMConstant {
     public static final Integer ANNOUNCEMENT_VIEW_WEB = 1;
     /* END */
 
-    /* 
+ /* 
      * Constant for ORGANISASI LEVEL */
     public static final String ORGANISASI = "ORG";
     public static final String DEPARTMENT = "DEP";
@@ -443,7 +443,7 @@ public class HRMConstant {
     public static final String COMPANY_NAME = "COMPANY_NAME";
     /* END */
 
-    /* 
+ /* 
      * Constant for Emp Correction Attendance Module */
     public static final Integer EMP_CORRECTION_ATTENDANCE_STATUS_APPROVED = 0;
     public static final Integer EMP_CORRECTION_ATTENDANCE_STATUS_REJECTED = 1;
@@ -473,14 +473,14 @@ public class HRMConstant {
     public static final Integer VACANCY_ADVERTISEMENT_STATUS_CANCELLED = 2;
     /* END */
 
-    /* 
+ /* 
      * Constant for Hospital Module */
     public static final String HOSPITAL_TYPE_GOVERNMENT = "GOVERNMENT";
     public static final String HOSPITAL_TYPE_PRIVATE = "PRIVATE";
     public static final String HOSPITAL_TYPE_INSTITUTION = "INSTITUTION";
     /* END */
 
-    /* 
+ /* 
      * Constant for Hospital Module */
     public static final String COMPARATOR_EQUALS = "EQUALS";
     public static final String COMPARATOR_NOT_EQUALS = "NOT_EQUALS";
@@ -511,24 +511,26 @@ public class HRMConstant {
     public static final String SCHEDULER_RECRUITMENT_CONFIG_EMP = "RECRUITMENT_CONFIG_EMP";
     /* END */
 
-    /* Constant for Recruit Applicant */
+ /* Constant for Recruit Applicant */
     public static final Integer RECRUIT_APPLICANT_CAREER_CANDIDATE_EXTERNAL = 0;
     public static final Integer RECRUIT_APPLICANT_CAREER_CANDIDATE_INTERNAL = 1;
     public static final Integer RECRUIT_APPLICANT_CAREER_CANDIDATE_INTERNAL_AND_EXTERNAL = 2;
     /* END */
 
-    /* Constant for Selection Applicant */
+ /* Constant for Selection Applicant */
     public static final String SELECTION_APPLICANT_STATUS_NEW = "NEW";
     public static final String SELECTION_APPLICANT_STATUS_IN_PROGRESS = "IN_PROGRESS";
     public static final String SELECTION_APPLICANT_STATUS_PASS = "PASS";
     public static final String SELECTION_APPLICANT_STATUS_FAILED = "FAILED";
     /* END */
 
-    /*OFFERING Letter Constant*/
+ /*OFFERING Letter Constant*/
     public static final Integer LETTER_TYPE_OFFERING = 0;
     public static final Integer LETTER_TYPE_PROBATION = 1;
     public static final Integer LETTER_TYPE_REJECT = 2;
     public static final Integer LETTER_TYPE_RESCHEDULE = 3;
+    public static final Integer LETTER_TYPE_SCHEDULE = 4;
+    
 
     /*CONSTANT FOR EMAIL DIRECT TO PAGE APPROVAL*/
     public static final String REIMBURSMENT_APPROVAL_PAGE = "/protected/reimbursement/rmbs_application_approval_form.htm";
@@ -545,10 +547,11 @@ public class HRMConstant {
     public static final String RECRUITMENT_REQUEST_APPROVAL_PAGE = "/protected/recruitment/recruitment_req_approval_form.htm";
     public static final String EMP_CORRECTION_ATTENDANCE_APPROVAL_PAGE = "/protected/working_time/emp_correction_attendance_approval_form.htm";
     public static final String VACANCY_ADVERTISEMENT_APPROVAL_PAGE = "/protected/recruitment/vacancy_advertisement_approval_form.htm";
-    
+
     /* Constant for Selection Applicant Passed */
     public static final String SELECTION_APPLICANT_PASSED_STATUS_PENDING = "PENDING";
     public static final String SELECTION_APPLICANT_PASSED_STATUS_EMPLOYEMENT = "EMPLOYEMENT";
     public static final String SELECTION_APPLICANT_PASSED_STATUS_OFFERING_REJECT = "OFFERING_REJECT";
+   
     /* END */
 }

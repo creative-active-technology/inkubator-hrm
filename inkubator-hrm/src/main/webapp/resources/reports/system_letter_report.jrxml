@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="offering_letter_report" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="34a37e8a-46f9-468f-97ce-64b95d9ba823">
+	<property name="ireport.zoom" value="1.2100000000000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="companyId" class="java.lang.Long"/>
+	<parameter name="contentSurat" class="java.lang.String"/>
+	<parameter name="penandaTangan" class="java.lang.String"/>
+	<parameter name="signature" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select company.company_logo as companyLogo, company.official_name as officialName, concat(address, ', ',city_name, ', ' ,province_name, ', ', country_name, ', ', postal_code) as address from company company INNER JOIN city city ON city.id = company.city_id
+INNER JOIN province province ON province.id = city.province_id
+INNER JOIN country country ON country.id = province.country_id where company.id = $P{companyId}]]>
+	</queryString>
+	<field name="companyLogo" class="java.awt.Image"/>
+	<field name="officialName" class="java.lang.String"/>
+	<field name="address" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="70">
+			<textField>
+				<reportElement x="88" y="0" width="467" height="30" uuid="f6145e02-d865-4f30-bbc3-2c2a288ce86a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{officialName}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="68" width="555" height="1" uuid="25ef1983-9490-4c3c-bed2-daa0ef5a0951"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="88" y="30" width="467" height="28" uuid="bed57643-7451-494b-9517-438cedddeb28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="0" width="88" height="58" uuid="3bef4c30-d61a-4e78-81c0-c42fbb4748ca"/>
+				<imageExpression><![CDATA[$F{companyLogo}]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="64" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="0" width="555" height="64" uuid="ccf42b42-1be0-4332-b8e6-e415eebd226f"/>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$P{contentSurat}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="93">
+			<staticText>
+				<reportElement x="395" y="0" width="160" height="20" uuid="e2167c43-7941-4217-aaa0-26d21dd37a22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Disusun Oleh]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="395" y="63" width="160" height="20" uuid="a5406eac-112d-4209-86f3-99bfa276d6ea"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{penandaTangan}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="447" y="20" width="108" height="43" uuid="31c38328-e6a9-494d-bd13-2fac13fe7fa1"/>
+				<imageExpression><![CDATA[$P{signature}]]></imageExpression>
+			</image>
+		</band>
+	</lastPageFooter>
+</jasperReport>
