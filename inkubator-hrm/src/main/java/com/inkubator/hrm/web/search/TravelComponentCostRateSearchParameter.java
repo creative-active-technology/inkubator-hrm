@@ -14,7 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 public class TravelComponentCostRateSearchParameter extends SearchParameter {
 
     private String code;
-    private String costCenter;
     private String golonganJabatan;
     private String travelComponent;
     private String travelZone;
@@ -30,19 +29,6 @@ public class TravelComponentCostRateSearchParameter extends SearchParameter {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getCostCenter() {
-        if (StringUtils.equalsIgnoreCase(getKeyParam(), "costCenter")) {
-            costCenter = getParameter();
-        } else {
-            costCenter = null;
-        }
-        return costCenter;
-    }
-
-    public void setCostCenter(String costCenter) {
-        this.costCenter = costCenter;
     }
 
     public String getGolonganJabatan() {
