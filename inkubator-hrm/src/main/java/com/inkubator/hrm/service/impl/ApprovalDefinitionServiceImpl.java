@@ -16,6 +16,8 @@ import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.ApprovalDefinitionLoan;
+import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.service.ApprovalDefinitionService;
 import com.inkubator.hrm.web.search.ApprovalDefinitionSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -180,19 +182,17 @@ public class ApprovalDefinitionServiceImpl extends IServiceImpl implements Appro
         ad.setAutoApproveOnDelay(entity.getAutoApproveOnDelay());
         ad.setDelayTime(entity.getDelayTime());
         ad.setEscalateOnDelay(entity.getEscalateOnDelay());
-        if (entity.getHrmUserByApproverIndividual() != null) {
-            ad.setHrmUserByApproverIndividual(hrmUserDao.getEntiyByPK(entity.getHrmUserByApproverIndividual().getId()));
-        }
-        if (entity.getHrmUserByOnBehalfIndividual() != null) {
-            ad.setHrmUserByOnBehalfIndividual(hrmUserDao.getEntiyByPK(entity.getHrmUserByOnBehalfIndividual().getId()));
-        }
+        
+        HrmUser userByApproverIndividual = entity.getHrmUserByApproverIndividual() == null ? null : hrmUserDao.getEntiyByPK(entity.getHrmUserByApproverIndividual().getId());
+        HrmUser userByOnBehalfIndividual = entity.getHrmUserByOnBehalfIndividual() == null ? null : hrmUserDao.getEntiyByPK(entity.getHrmUserByOnBehalfIndividual().getId());
+        ad.setHrmUserByApproverIndividual(userByApproverIndividual);
+        ad.setHrmUserByOnBehalfIndividual(userByOnBehalfIndividual);
 
-        if (entity.getJabatanByApproverPosition() != null) {
-            ad.setJabatanByApproverPosition(jabatanDao.getEntiyByPK(entity.getJabatanByApproverPosition().getId()));
-        }
-        if (entity.getJabatanByOnBehalfPosition() != null) {
-            ad.setJabatanByOnBehalfPosition(jabatanDao.getEntiyByPK(entity.getJabatanByOnBehalfPosition().getId()));
-        }
+        Jabatan jabatanByApproverPosition = entity.getJabatanByApproverPosition() == null ? null : jabatanDao.getEntiyByPK(entity.getJabatanByApproverPosition().getId());
+        Jabatan jabatanByOnBehalfPosition = entity.getJabatanByOnBehalfPosition() == null ? null : jabatanDao.getEntiyByPK(entity.getJabatanByOnBehalfPosition().getId());
+        ad.setJabatanByApproverPosition(jabatanByApproverPosition);
+        ad.setJabatanByOnBehalfPosition(jabatanByOnBehalfPosition);
+        
         ad.setMinApprover(entity.getMinApprover());
         ad.setMinRejector(entity.getMinRejector());
         ad.setName(entity.getName());
