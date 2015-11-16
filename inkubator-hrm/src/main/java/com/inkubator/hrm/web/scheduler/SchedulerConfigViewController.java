@@ -49,6 +49,9 @@ public class SchedulerConfigViewController extends BaseController{
 	}
 	
 	public void doSearch(){
+		if(searchParameter.getName().equals("0")){
+			searchParameter = new SchedulerConfigSearchParameter();
+		}
 		lazyDataSchedulerConfig = null;
 	}
 	
