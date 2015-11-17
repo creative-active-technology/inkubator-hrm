@@ -33,6 +33,7 @@ public class OfferingAndProhabitDetilController extends BaseController {
     private RecruitLettersService recruitLettersService;
 
     private RecruitLetters selectedRecruitLetters;
+    private Boolean isNotSchedule;
 
     @PostConstruct
     @Override
@@ -41,6 +42,10 @@ public class OfferingAndProhabitDetilController extends BaseController {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution");
             selectedRecruitLetters = recruitLettersService.getByPkWithDetail(Long.parseLong(id.substring(1)));
+            isNotSchedule = Boolean.TRUE;
+            if(selectedRecruitLetters.getLeterTypeId() == HRMConstant.LETTER_TYPE_SCHEDULE){
+            	isNotSchedule = Boolean.FALSE;
+            }
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }
@@ -75,6 +80,10 @@ public class OfferingAndProhabitDetilController extends BaseController {
         if (selectedRecruitLetters.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_REJECT)) {
             return "/protected/recruitment/reject_letter_form.htm?faces-redirect=true&execution=e" + selectedRecruitLetters.getId();
         }
+        
+        if (selectedRecruitLetters.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_SCHEDULE)) {
+            return "/protected/recruitment/selection_letter_form.htm?faces-redirect=true&execution=e" + selectedRecruitLetters.getId();
+        }
         return null;
     }
 
@@ -93,4 +102,14 @@ public class OfferingAndProhabitDetilController extends BaseController {
         }
         return null;
     }
+
+	public Boolean getIsNotSchedule() {
+		return isNotSchedule;
+	}
+
+	public void setIsNotSchedule(Boolean isNotSchedule) {
+		this.isNotSchedule = isNotSchedule;
+	}
+    
+    
 }

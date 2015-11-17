@@ -71,11 +71,6 @@ public class TravelComponentCostRateDaoImpl extends IDAOImpl<TravelComponentCost
         	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
         } 
         
-            criteria.createAlias("costCenter", "costCenter", JoinType.INNER_JOIN);
-        if (StringUtils.isNotEmpty(searchParameter.getCostCenter())) {
-            criteria.add(Restrictions.like("costCenter.name", searchParameter.getCostCenter(), MatchMode.START));
-        }
-        
             criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.INNER_JOIN);
         if (StringUtils.isNotEmpty(searchParameter.getGolonganJabatan())) {
             criteria.add(Restrictions.like("golonganJabatan.code", searchParameter.getGolonganJabatan(), MatchMode.START));
@@ -93,32 +88,7 @@ public class TravelComponentCostRateDaoImpl extends IDAOImpl<TravelComponentCost
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
-    /*
-     * Do Search With Order
-     */
-    private void doSearchTravelComponentCostRateByParam(TravelComponentCostRateSearchParameter searchParameter, Criteria criteria, Order order) {
-        if (searchParameter.getCode()!= null) {
-        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
-        } 
-        if (StringUtils.isNotEmpty(searchParameter.getCostCenter())) {
-            criteria.createAlias("costCenter", "cc", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("cc.name", searchParameter.getCostCenter(), MatchMode.START));
-        }
-        if (StringUtils.isNotEmpty(searchParameter.getGolonganJabatan()) || order.toString().contains("golonganJabatan.code")) {
-            criteria.createAlias("golonganJabatan", "gj", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("golonganJabatan.code", searchParameter.getGolonganJabatan(), MatchMode.START));
-        }
-        if (StringUtils.isNotEmpty(searchParameter.getTravelComponent()) || order.toString().contains("travelComponent.name")) {
-            criteria.createAlias("travelComponent", "travelComponent", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("travelComponent.name", searchParameter.getTravelComponent(), MatchMode.START));
-        }
-        if (StringUtils.isNotEmpty(searchParameter.getTravelZone()) || order.toString().contains("travelZone.name")) {
-           
-            criteria.createAlias("travelZone", "travelZone", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("travelZone.name", searchParameter.getTravelZone(), MatchMode.START));
-        }
-        criteria.add(Restrictions.isNotNull("id"));
-    }
+    
     
     @Override
     public Long getByTravelComponentCostRateCode(String code) {

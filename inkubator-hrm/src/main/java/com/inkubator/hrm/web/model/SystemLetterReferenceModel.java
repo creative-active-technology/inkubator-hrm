@@ -20,6 +20,9 @@ public class SystemLetterReferenceModel implements Serializable {
     private String fileUploadName;
     private Boolean isActive;
     private UploadedFile fileUpload;
+    private String content;
+    private Integer groupReference;
+    private Integer typeContent;
 
     public UploadedFile getFileUpload() {
         return fileUpload;
@@ -100,6 +103,30 @@ public class SystemLetterReferenceModel implements Serializable {
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
     }
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Integer getGroupReference() {
+		return groupReference;
+	}
+
+	public void setGroupReference(Integer groupReference) {
+		this.groupReference = groupReference;
+	}
+
+	public Integer getTypeContent() {
+		return typeContent;
+	}
+
+	public void setTypeContent(Integer typeContent) {
+		this.typeContent = typeContent;
+	}
     
     
 }

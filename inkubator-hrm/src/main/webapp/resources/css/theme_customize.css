@@ -21,5 +21,6 @@
 .ui-inputfield{
     box-shadow: none !important;
 }
+.label_help{font-family:Arial!important;font-size:13px!important;font-weight:bold!important;}
 
 /*unutuk theme baru ada tambahan dan pengurnan : label_hrm ---color:#036!important di remove colornya; plus tanbahan 2 ui-state-default dan ui-inputfield*/

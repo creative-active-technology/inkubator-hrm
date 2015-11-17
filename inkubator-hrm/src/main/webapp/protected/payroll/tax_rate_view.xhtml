@@ -59,29 +59,23 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['taxrate.lowest']}"/>
                                 </f:facet>
-                                <div style="text-align: right;">
                                     <h:outputLabel value= "#{taxRateData.lowRate}">
                                         <f:convertNumber pattern="###,###" type="currency"/>
                                     </h:outputLabel>
-                                </div>
                             </p:column>
                             <p:column sortBy="#{taxRateData.topRate}" style="width: 30%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['taxrate.highest']}"/>
                                 </f:facet>
-                                <div style="text-align: right;">
                                     <h:outputLabel value= "#{taxRateData.topRate}">
                                         <f:convertNumber pattern="###,###" type="currency"/>
                                     </h:outputLabel>
-                                </div>
                             </p:column>
                             <p:column sortBy="#{taxRateData.percentRate}" style="width: 20%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.tax']}"/>
                                 </f:facet>
-                                <div style="text-align: right;" >
                                     <p:outputLabel value= "#{taxRateData.percentRate}"  />
-                                </div>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important" ajax="true" update="detailPanel"
