@@ -40,7 +40,7 @@ public class RecruitSelectionApplicantPassedLazyDataModel extends LazyDataModel<
 	        if (sortField != null) {
 	            orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
 	        } else {
-	        	orderable = Order.desc("appraisalElement");
+	        	orderable = Order.desc("id");
 	        }
 	        
 	        listSelectionApplicantPassedViewModel = recruitSelectionApplicantPassedService.getListSelectionPassedViewModelByParam(searchParameter, first, pageSize, orderable);

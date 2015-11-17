@@ -3,32 +3,47 @@ package com.inkubator.hrm.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
+import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.inkubator.common.util.JsonConverter;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.RecruitApplicantDao;
 import com.inkubator.hrm.dao.RecruitHireApplyDao;
+import com.inkubator.hrm.dao.RecruitLettersDao;
 import com.inkubator.hrm.dao.RecruitSelectionApplicantPassedDao;
 import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDao;
 import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDetailDao;
+import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDetailHistoryDao;
 import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDetailRealizationDao;
 import com.inkubator.hrm.dao.RecruitSelectionTypeDao;
 import com.inkubator.hrm.dao.RecruitmenSelectionSeriesDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.entity.RecruitHireApply;
+import com.inkubator.hrm.entity.RecruitLetters;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantPassed;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantPassedId;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulle;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulleDetail;
+import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulleDetailHistory;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulleDetailRealization;
 import com.inkubator.hrm.entity.RecruitSelectionType;
 import com.inkubator.hrm.entity.RecruitmenSelectionSeries;
@@ -36,6 +51,8 @@ import com.inkubator.hrm.service.RecruitSelectionApplicantSchedulleService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.SelectionApplicantPassedViewModel;
 import com.inkubator.hrm.web.model.SelectionPositionPassedViewModel;
+
+import ch.lambdaj.Lambda;
 
 /**
  *
@@ -63,6 +80,16 @@ public class RecruitSelectionApplicantSchedulleServiceImpl extends IServiceImpl	
 	private RecruitSelectionApplicantSchedulleDetailRealizationDao recruitSelectionApplicantSchedulleDetailRealizationDao;
 	@Autowired
 	private RecruitSelectionApplicantPassedDao recruitSelectionApplicantPassedDao;
+	@Autowired
+	private RecruitSelectionApplicantSchedulleDetailHistoryDao recruitSelectionApplicantSchedulleDetailHistoryDao;
+	@Autowired
+	private RecruitLettersDao recruitLettersDao;
+	@Autowired
+    private JmsTemplate jmsTemplateSMS;
+	@Autowired
+    private JmsTemplate jmsTemplateEmailRecruitmentSelectionSchedule;
+	@Autowired
+    private JsonConverter jsonConverter;
 	
 	@Override
 	public RecruitSelectionApplicantSchedulle getEntiyByPK(String id) throws Exception {
@@ -287,6 +314,13 @@ public class RecruitSelectionApplicantSchedulleServiceImpl extends IServiceImpl	
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public String saveData(RecruitSelectionApplicantSchedulle recruitSelectionchedulle, List<RecruitSelectionApplicantSchedulleDetail> listRecruitSelectionScheduleDetail)	throws Exception {
 		
+		List<RecruitLetters> listRecruitLetterSchedule = recruitLettersDao.getAllWithSpecificLetterType(HRMConstant.LETTER_TYPE_SCHEDULE);
+		listRecruitLetterSchedule = Lambda.select(listRecruitLetterSchedule, Lambda.having(Lambda.on(RecruitLetters.class).getIsActive(), Matchers.equalTo(Boolean.TRUE)));
+		if(listRecruitLetterSchedule == null || listRecruitLetterSchedule.isEmpty()){
+			throw new BussinessException("recruitment.selection_letter_not_exist");
+		}
+		
+		RecruitLetters recruitLetterSchedule = listRecruitLetterSchedule.get(0);
 		String result = "error";
 		String createBy = HrmUserInfoUtil.getUserName();
 		Date createOn = new Date(); 
@@ -321,11 +355,48 @@ public class RecruitSelectionApplicantSchedulleServiceImpl extends IServiceImpl	
 			
 			recruitSelectionApplicantSchedulleDetailDao.save(scheduleDetail);
 			
+			//Save Schedule Detail Log History
+			RecruitSelectionApplicantSchedulleDetailHistory scheduleDetailHistory = generateScheduleDetailHistory(scheduleDetail, createBy);
+			recruitSelectionApplicantSchedulleDetailHistoryDao.save(scheduleDetailHistory);
+			
+			//Send Email
+			sendEmailSelectionSchedulle(scheduleDetailHistory, recruitLetterSchedule);
 		}
+		
 		
 		result = "success";
 		
 		return result;
+	}
+	
+	private RecruitSelectionApplicantSchedulleDetailHistory generateScheduleDetailHistory(RecruitSelectionApplicantSchedulleDetail scheduleDetail, String createBy){
+		RecruitSelectionApplicantSchedulleDetailHistory scheduleDetailHistory = new RecruitSelectionApplicantSchedulleDetailHistory();
+		scheduleDetailHistory.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		scheduleDetailHistory.setApplicantId(scheduleDetail.getApplicant().getId());
+		scheduleDetailHistory.setEmailAddress(scheduleDetail.getApplicant().getBioData().getPersonalEmail());
+		scheduleDetailHistory.setEmailNotification(0);
+		scheduleDetailHistory.setPhoneNumber(scheduleDetail.getApplicant().getBioData().getMobilePhone());
+		scheduleDetailHistory.setPicEmpId(scheduleDetail.getEmpData().getId());
+		scheduleDetailHistory.setSchedulleDetailId(scheduleDetail.getId());
+		scheduleDetailHistory.setSmsNotification(0);
+		scheduleDetailHistory.setCreatedBy(createBy);
+		scheduleDetailHistory.setCreatedOn(new Date());
+		return scheduleDetailHistory;
+	}
+	
+	private void sendEmailSelectionSchedulle(RecruitSelectionApplicantSchedulleDetailHistory scheduleDetailHistory, RecruitLetters letterScheduleSelection) throws Exception{
+		RecruitApplicant recruitApplicant = recruitApplicantDao.getEntityByPkWithDetail(scheduleDetailHistory.getApplicantId());
+		String emailAddress = recruitApplicant.getBioData().getPersonalEmail();
+		if(StringUtils.isNotBlank(emailAddress)){
+			//send messaging, for processing sending email
+	        this.jmsTemplateEmailRecruitmentSelectionSchedule.send(new MessageCreator() {
+	            @Override
+	            public Message createMessage(Session session)
+	                    throws JMSException {
+	                return session.createTextMessage(jsonConverter.getJson(scheduleDetailHistory));
+	            }
+	        });
+		}
 	}
 
 	@Override

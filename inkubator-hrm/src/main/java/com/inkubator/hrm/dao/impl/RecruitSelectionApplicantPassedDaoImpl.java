@@ -8,13 +8,17 @@ import com.inkubator.hrm.dao.RecruitSelectionApplicantPassedDao;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantPassed;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantPassedId;
 import com.inkubator.hrm.web.model.RecruitSelectionApplicantPassedViewModel;
+import com.inkubator.hrm.web.model.SearchEmployeeCandidateViewModel;
+import com.inkubator.hrm.web.search.RecruitAgreementNoticeSearchParameter;
 import com.inkubator.hrm.web.search.RecruitSelectionApplicantPassedSearchParameter;
 
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 
 /**
  *
@@ -55,17 +59,75 @@ public class RecruitSelectionApplicantPassedDaoImpl extends IDAOImpl<RecruitSele
 
 	@Override
 	public List<RecruitSelectionApplicantPassedViewModel> getListSelectionPassedViewModelByParam(
-			RecruitSelectionApplicantPassedSearchParameter searchParameter, int firstResult, int maxResults,
-			Order orderable) {
-		// TODO Auto-generated method stub
-		return null;
+			RecruitSelectionApplicantPassedSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) {
+		
+		final StringBuilder query = new StringBuilder("SELECT applicantPassed.id AS id,");
+        query.append(" applicant.id AS applicantId,");
+        query.append(" CONCAT(bioData.firstName, ' ', bioData.lastName) AS applicantName,");
+        query.append(" hireApply.id AS hireApplyId,");
+        query.append(" jabatan.id AS jabatanId,");
+        query.append(" jabatan.name AS jabatanName,");
+        query.append(" department.id AS departmentId,");
+        query.append(" department.departmentName AS departmentName,");
+        query.append(" applicantPassed.latestTestDate as applyDate,");
+        query.append(" employeeType.id as employeeTypeId ");
+        query.append(" FROM RecruitSelectionApplicantPassed applicantPassed");
+        query.append(" INNER JOIN applicantPassed.applicant applicant");
+        query.append(" INNER JOIN applicantPassed.hireApply hireApply");
+        query.append(" INNER JOIN hireApply.jabatan jabatan");
+        query.append(" INNER JOIN jabatan.department department");
+        query.append(" INNER JOIN applicantPassed.employeeType employeeType");
+        query.append(" INNER JOIN applicant.bioData bioData");
+        
+        doSearchRecruitSelectionApplicantPassedByParam(searchParameter, query);
+        
+        Query hbm = getCurrentSession().createQuery(query.toString());
+        hbm = doSetValueSearchRecruitSelectionApplicantPassedByParam(searchParameter, hbm);
+        hbm.setFirstResult(firstResult);
+        hbm.setMaxResults(maxResults);
+        return hbm.setResultTransformer(Transformers.aliasToBean(RecruitSelectionApplicantPassedViewModel.class)).list();
 	}
 
 	@Override
 	public Long getTotalSelectionPassedViewModelByParam(
 			RecruitSelectionApplicantPassedSearchParameter searchParameter) {
-		// TODO Auto-generated method stub
-		return null;
+		final StringBuilder query = new StringBuilder("SELECT COUNT(*) ");
+        query.append(" FROM RecruitSelectionApplicantPassed applicantPassed");
+        query.append(" INNER JOIN applicantPassed.applicant applicant");
+        query.append(" INNER JOIN applicantPassed.hireApply hireApply");
+        query.append(" INNER JOIN hireApply.jabatan jabatan");
+        query.append(" INNER JOIN jabatan.department department");
+        query.append(" INNER JOIN applicantPassed.employeeType employeeType");
+        query.append(" INNER JOIN applicant.bioData bioData");
+        doSearchRecruitSelectionApplicantPassedByParam(searchParameter, query);
+        
+        Query hbm = getCurrentSession().createQuery(query.toString());
+        hbm = doSetValueSearchRecruitSelectionApplicantPassedByParam(searchParameter, hbm);
+        
+        Long totalRecord = hbm.uniqueResult() == null ? 0l : Long.valueOf(hbm.uniqueResult().toString());
+        return totalRecord;
 	}
+	
+	private  void doSearchRecruitSelectionApplicantPassedByParam(RecruitSelectionApplicantPassedSearchParameter searchParameter, StringBuilder query){
+		if(searchParameter.getCandidateName() != null){
+			query.append(" WHERE bioData.firstName LIKE :candidateName ");
+		}else if(searchParameter.getJabatanName() != null){
+			query.append(" WHERE jabatan.name LIKE :jabatanName ");
+		}else if(searchParameter.getDepartmentName() != null){
+			query.append(" WHERE department.departmentName LIKE :departmentName ");
+		}
+    }
+	
+	private  Query doSetValueSearchRecruitSelectionApplicantPassedByParam(RecruitSelectionApplicantPassedSearchParameter searchParameter, Query query){
+		if(searchParameter.getCandidateName() != null){
+			query.setParameter("candidateName", "%" + searchParameter.getCandidateName() +  "%");
+		}else if(searchParameter.getJabatanName() != null){
+			query.setParameter("jabatanName", "%" + searchParameter.getJabatanName() +  "%");
+		}else if(searchParameter.getDepartmentName() != null){
+			query.setParameter("departmentName", "%" + searchParameter.getDepartmentName() +  "%");
+		}
+		
+		return query;
+    }
 
 }
