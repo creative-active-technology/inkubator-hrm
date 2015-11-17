@@ -19,11 +19,11 @@ public class SchedulerConfigSearchParameter extends SearchParameter{
 	private String name;
 
 	public String getName() {
-		if(StringUtils.equalsIgnoreCase(getKeyParam(), "name")){
+		/*if(StringUtils.equalsIgnoreCase(getKeyParam(), "name")){
 			name = getParameter();
 		} else {
 			name = null;
-		}
+		}*/
 		return name;
 	}
 	public void setName(String name) {
