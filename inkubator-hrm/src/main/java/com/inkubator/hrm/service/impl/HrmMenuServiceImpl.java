@@ -402,12 +402,9 @@ public class HrmMenuServiceImpl extends IServiceImpl implements HrmMenuService {
         Set<HrmMenuRole> setRoleMenus = new HashSet<>();
 //        Set<HrmMenu> listChildTogenerate = new HashSet<>();
         List<String> roleUsers = UserInfoUtil.getRoles();
-        for (String userRole : roleUsers) {
-            List<HrmMenuRole> listRoleMenu = this.hrmMenuRoleDao.getByLevelOneAndRoleName(userRole);
-            if (listRoleMenu != null) {
-                setRoleMenus.addAll(listRoleMenu);
-            }
-        }
+        roleUsers.stream().map((userRole) -> this.hrmMenuRoleDao.getByLevelOneAndRoleName(userRole)).filter((listRoleMenu) -> (listRoleMenu != null)).forEach((listRoleMenu) -> {
+            setRoleMenus.addAll(listRoleMenu);
+        });
         for (HrmMenuRole menuRole : setRoleMenus) {
             if (!listMenuToGenerate.contains(menuRole.getHrmMenu())) {
                listMenuToGenerate.add(menuRole.getHrmMenu());
@@ -448,12 +445,9 @@ public class HrmMenuServiceImpl extends IServiceImpl implements HrmMenuService {
     private void doCreateChild(HrmMenu hrmMenu, DefaultSubMenu masterSubMenu, List<String> roleUsers) {
         Set<HrmMenu> listChildTogenerate = new HashSet<>();
         if (!hrmMenu.getHrmMenus().isEmpty()) {
-            for (String userRole : roleUsers) {
-                List<HrmMenu> listChild = this.hrmMenuDao.getlistChildByParentMenu(hrmMenu.getId(), userRole);
-                if (listChild.size() > 0) {
-                    listChildTogenerate.addAll(listChild);
-                }
-            }
+            roleUsers.stream().map((userRole) -> this.hrmMenuDao.getlistChildByParentMenu(hrmMenu.getId(), userRole)).filter((listChild) -> (listChild.size() > 0)).forEach((listChild) -> {
+                listChildTogenerate.addAll(listChild);
+            });
     
             List<HrmMenu> onlyOneMenus = new ArrayList<>(listChildTogenerate);
             onlyOneMenus = Lambda.sort(onlyOneMenus, Lambda.on(HrmMenu.class).getOrderLevelMenu());
