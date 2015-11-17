@@ -306,15 +306,15 @@ public class RecruitSelectionApplicantPassedServiceImpl extends IServiceImpl imp
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<RecruitSelectionApplicantPassedViewModel> getListSelectionPassedViewModelByParam(RecruitSelectionApplicantPassedSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) throws Exception {
-		//return recruitSelectionApplicantPassedDao.getListSelectionPassedViewModelByParam(searchParameter, firstResult, maxResults, orderable);
-		return new ArrayList<RecruitSelectionApplicantPassedViewModel>();
+		return recruitSelectionApplicantPassedDao.getListSelectionPassedViewModelByParam(searchParameter, firstResult, maxResults, orderable);
+		//return new ArrayList<RecruitSelectionApplicantPassedViewModel>();
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalSelectionPassedViewModelByParam(RecruitSelectionApplicantPassedSearchParameter searchParameter) throws Exception {
-		//return recruitSelectionApplicantPassedDao.getTotalSelectionPassedViewModelByParam(searchParameter);
-		return 0l;
+		return recruitSelectionApplicantPassedDao.getTotalSelectionPassedViewModelByParam(searchParameter);
+		//return 0l;
 	}
 
 }
