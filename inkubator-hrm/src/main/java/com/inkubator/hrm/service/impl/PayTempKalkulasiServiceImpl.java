@@ -794,7 +794,7 @@ public class PayTempKalkulasiServiceImpl extends IServiceImpl implements PayTemp
         ScriptEngineManager mgr = new ScriptEngineManager();
         ScriptEngine jsEngine = mgr.getEngineByName("JavaScript");
         double ceiling = (Double) jsEngine.eval(ceilKalkulasi.getPaySalaryComponent().getFormula());
-
+        System.out.println(" Jummlah nya "+jsEngine.eval(ceilKalkulasi.getPaySalaryComponent().getFormula()));
         PayTempKalkulasi totalIncomeKalkulasi = payTempKalkulasiDao.getEntityByEmpDataIdAndSpecificModelComponent(empData.getId(), HRMConstant.MODEL_COMP_TAKE_HOME_PAY);
         BigDecimal totalIncome = totalIncomeKalkulasi.getNominal();
         totalIncome = this.calculateTotalIncome(totalIncome, taxKalkulasi);

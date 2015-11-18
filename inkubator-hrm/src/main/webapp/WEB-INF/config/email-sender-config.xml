@@ -27,13 +27,12 @@
      -->
    <!--............................... Setting for Mail JNDI .......-->
 
-     <jee:jndi-lookup id="mailSession" jndi-name="java:jboss/mail/hrm"  resource-ref="true" />
+   <!--   <jee:jndi-lookup id="mailSession" jndi-name="java:jboss/mail/hrm"  resource-ref="true" />
     <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
           <property name="session" ref="mailSession"/>  
-    </bean>  
-   
-    
-<!--  <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
+    </bean>   -->
+
+  <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
         <property name="javaMailProperties">
             <props>
                 <prop key="mail.smtp.auth">false</prop>
@@ -44,7 +43,7 @@
         </property>
         <property name="username" value="noreply_hr@incubatechnology.com" />
         <property name="password" value="optima@123Hris" />
-    </bean>-->
+    </bean>
     <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean" lazy-init="true">
         <property name="velocityProperties" >
             <value>

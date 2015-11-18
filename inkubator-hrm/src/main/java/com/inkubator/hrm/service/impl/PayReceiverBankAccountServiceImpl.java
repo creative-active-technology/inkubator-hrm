@@ -259,7 +259,12 @@ public class PayReceiverBankAccountServiceImpl extends IServiceImpl implements P
         List<PayReceiverAccountModel> listModel = new ArrayList<>();
         for (PayReceiverBankAccount account : listAccount) {
             PayReceiverAccountModel model = new PayReceiverAccountModel();
-            model.setBankName(account.getBioBankAccount().getBank().getBankName());
+            if((account.getBioBankAccount().getBank().getBankName()!=null)){
+                  model.setBankName(account.getBioBankAccount().getBank().getBankName());
+            }else{
+                      model.setBankName(account.getBioBankAccount().getBank().getBank().getBankName()+" - "+account.getBioBankAccount().getBank().getBranchName());
+            }
+            
             model.setAccountNumber(account.getBioBankAccount().getAccountNumber());
             model.setAccountName(account.getBioBankAccount().getOwnerName());
             model.setPercent(account.getPersen());
