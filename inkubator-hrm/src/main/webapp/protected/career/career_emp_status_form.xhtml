@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlPoupId" globalOnly="true" showDetail="true"/>                
+                <h:form id="formPopupId">
+                	<p:focus context="formPopupId"/>
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="reimbursement_ico.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['career_emp_status.form_employee_career_status']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['career_emp_status.employee_career_status_from_career']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 39%">
+                                <p:outputLabel for="codeId" value="#{appmsg['career_emp_status.status_code']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="codeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 60%">
+                            	<p:inputText id="codeId" title="#{appmsg['career_emp_status.status_code']}" value="#{careerEmpStatusFormController.model.code}" 
+                                    		 required="true" maxlength="12" styleClass="isitext_hrm" style="width:250px;" />                                
+                            </p:column>
+                        </p:row>
+                         <p:row>
+                            <p:column colspan="3">
+                                <p:message for="codeId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 39%">
+                                <p:outputLabel for="nameId" value="#{appmsg['career_emp_status.status_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="nameId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 60%">
+                                    <p:inputText id="nameId" title="#{appmsg['career_emp_status.status_name']}" value="#{careerEmpStatusFormController.model.name}" 
+                                    			 required="true" maxlength="60" styleClass="isitext_hrm" style="width:250px;" />                                
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="nameId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 39%">
+                                <p:outputLabel for="empTypeId" value="#{appmsg['career_emp_status.employee_status']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="empTypeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 60%">
+                            	<p:selectOneMenu id="empTypeId" styleClass="isitext_hrm" required="true"  value="#{careerEmpStatusFormController.model.empTypeId}" style="width:260px;">
+	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                               	<f:selectItems value="#{careerEmpStatusFormController.listEmpType}" var="empType" itemValue="#{empType.id}" itemLabel="#{empType.name}"/>
+	                          	</p:selectOneMenu>                              
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="empTypeId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 39%">
+                                <p:outputLabel for="systemLetterReferenceId" value="#{appmsg['career_emp_status.letter_reference']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="systemLetterReferenceId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 60%">
+                            	<p:selectOneMenu id="systemLetterReferenceId" styleClass="isitext_hrm" required="true"  value="#{careerEmpStatusFormController.model.systemLetterReferenceId}" style="width:260px;">
+	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+	                               	<f:selectItems value="#{careerEmpStatusFormController.listSysLetterRef}" var="sysLetterRef" itemValue="#{sysLetterRef.id}" itemLabel="#{sysLetterRef.name}"/>
+	                          	</p:selectOneMenu>                              
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="systemLetterReferenceId"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 39%">
+                                <p:outputLabel for="limitTimeId" value="#{appmsg['career_emp_status.validity_period']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="limitTimeId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 60%">
+                            	<p:spinner id="limitTimeId" value="#{careerEmpStatusFormController.model.limitTime}" styleClass="isitext_hrm" 
+                            			   stepFactor="1" min="0" max="24" size="3" required="true"/>
+                            	<p:outputLabel value=" #{appmsg['global.month']}" styleClass="label_hrm"/>                               
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="limitTimeId"/>
+                            </p:column>
+                        </p:row>                        
+                        <p:row>
+                            <p:column style="width: 39%">
+                                <p:outputLabel value="#{appmsg['career_emp_status.automatically_switched_status']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 60%">
+	                          	<p:selectBooleanButton value="#{careerEmpStatusFormController.model.isAutoMove}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+	                                               	   offIcon="ui-icon-close" styleClass="label_button"/>                             
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 10px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formPopupId,:growlPoupId"
+                                         action="#{careerEmpStatusFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formPopupId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formPopupId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
