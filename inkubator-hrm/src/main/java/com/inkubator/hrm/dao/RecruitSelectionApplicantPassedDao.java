@@ -25,4 +25,6 @@ public interface RecruitSelectionApplicantPassedDao extends IDAO<RecruitSelectio
 	public List<RecruitSelectionApplicantPassedViewModel> getListSelectionPassedViewModelByParam(RecruitSelectionApplicantPassedSearchParameter searchParameter, int firstResult, int maxResults, Order orderable);
 	
 	public Long getTotalSelectionPassedViewModelByParam(RecruitSelectionApplicantPassedSearchParameter searchParameter);
+	
+	public RecruitSelectionApplicantPassed getEntityWithDetailByRecruitSelectionApplicantPassedId(RecruitSelectionApplicantPassedId id);
 }

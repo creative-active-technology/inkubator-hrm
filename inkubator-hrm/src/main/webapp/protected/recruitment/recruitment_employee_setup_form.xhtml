@@ -33,123 +33,144 @@
 	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="codeId" value="#{appmsg['rmbs_schema.code']}" styleClass="label_hrm"/>
+	                                <p:outputLabel for="nikId" value="#{appmsg['global.nik']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:inputText id="codeId" title="#{appmsg['rmbs_schema.code']}" value="#{rmbsSchemaFormController.model.code}" 
+	                            	<p:inputText id="nikId" title="#{appmsg['global.nik']}" value="#{recruitmentEmployeeSetupFormController.model.nik}" 
 	                                    		 required="true" maxlength="12" styleClass="isitext_hrm" style="width:290px;" />
-	                                <p:message for="codeId"/>
+	                                <p:message for="nikId"/>
 	                            </p:column>
 	                        </p:row>                                
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="nameId" value="#{appmsg['rmbs_schema.name']}" styleClass="label_hrm"/>
+	                                <p:outputLabel for="nameId" value="#{appmsg['global.name']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:inputText id="nameId" title="#{appmsg['rmbs_schema.name']}" value="#{rmbsSchemaFormController.model.name}" 
+	                            	<p:inputText id="nameId" title="#{appmsg['global.name']}" value="#{recruitmentEmployeeSetupFormController.model.applicantName}" 
 	                                    		 required="true" maxlength="60" styleClass="isitext_hrm" style="width:290px;" />
 	                                <p:message for="nameId"/>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="nomorSkId" value="#{appmsg['rmbs_schema.no_sk']}" styleClass="label_hrm"/>
+	                                <p:outputLabel for="birthDateId" value="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_date']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:inputText id="nomorSkId" title="#{appmsg['rmbs_schema.no_sk']}" value="#{rmbsSchemaFormController.model.nomorSk}" 
-	                                    		 required="true" maxlength="60" styleClass="isitext_hrm" style="width:290px;" />
-	                                <p:message for="nomorSkId"/>
+	                            	<p:calendar  id="birthDateId" pattern="dd MMMM yyyy" label="#{appmsg['bioFamilyRelationship.bioFamilyRelationship_date']}" value="#{recruitmentEmployeeSetupFormController.model.dateOfBirth}"
+                                                 required="true" navigator="true">
+                                        <f:validator validatorId="birthDateValidator"  />
+                                        <f:attribute name="validatorMessage" value="#{appmsg['global.birthDate_validator']}"/>
+                                    </p:calendar>
+	                                <p:message for="birthDateId"/>
 	                            </p:column>
 	                        </p:row>  
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="descId" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+	                                <p:outputLabel for="departmentId" value="#{appmsg['menu.department']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<p:inputTextarea id="descId" rows="5" cols="37" counter="counter" maxlength="225" value="#{rmbsSchemaFormController.model.description}" 
-                                                 	 style="width: 250px; height: 40px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
-                                                 	 label="#{appmsg['global.description']}" title="#{appmsg['global.description']}" />	                                
-	                                <p:message for="descId"/>
-	                                <h:outputText id="counter" />
+	                            	<p:selectOneMenu  style="margin-right: 3px;" id="departmentId" filter="true" required="true" value="#{recruitmentEmployeeSetupFormController.model.departmentId}"
+                                                      label="#{appmsg['menu.department']}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{recruitmentEmployeeSetupFormController.mapDepartment}"  />
+                                    </p:selectOneMenu>
+	                                <p:message for="departmentId"/>
 	                            </p:column>
 	                        </p:row> 	
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="maxTotalReimburstId" value="#{appmsg['rmbs_schema.max_total_reimbursement']}" styleClass="label_hrm"/>
+	                                <p:outputLabel for="jobGradeId" value="#{appmsg['menu.job_grade']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<pe:inputNumber id="maxTotalReimburstId" title="#{appmsg['rmbs_schema.max_total_reimbursement']}" value="#{rmbsSchemaFormController.model.maxTotalReimburst}" 
+	                            	<p:selectOneMenu  style="margin-right: 3px;" id="jobGradeId" filter="true" required="true" value="#{recruitmentEmployeeSetupFormController.model.golonganJabatanId}"
+                                                      label="#{appmsg['menu.job_grade']}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{recruitmentEmployeeSetupFormController.mapGolonganJabatan}"  />
+                                    </p:selectOneMenu>
+	                                <p:message for="jobGradeId"/>
+	                            </p:column>
+	                        </p:row>
+	                         <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="jabatanId" value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="jabatanId" title="#{appmsg['jabatan.jabatan']}" value="#{recruitmentEmployeeSetupFormController.model.jabatanName}" 
+	                                    		 required="true" maxlength="12" styleClass="isitext_hrm" style="width:290px;" />
+	                                <p:message for="jabatanId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="jobStatusId" value="#{appmsg['organization.job_status']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneMenu  style="margin-right: 3px;" id="jobStatusId" filter="true" required="true" value="#{recruitmentEmployeeSetupFormController.model.employeeTypeId}"
+                                                      label="#{appmsg['organization.job_status']}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{recruitmentEmployeeSetupFormController.mapEmployeeType}"  />
+                                    </p:selectOneMenu>
+	                                <p:message for="jobStatusId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="tmbId" value="#{appmsg['placement.join_data']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:calendar  id="tmbId" pattern="dd MMMM yyyy" label="#{appmsg['placement.join_data']}" value="#{recruitmentEmployeeSetupFormController.model.tmbDate}"
+                                                 required="true" navigator="true">
+                                    </p:calendar>
+	                                <p:message for="tmbId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{recruitmentEmployeeSetupFormController.isInternalCandidate}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="rotationDateId" value="#{appmsg['placement.rotation_date']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:calendar  id="rotationDateId" pattern="dd MMMM yyyy" rendered="#{recruitmentEmployeeSetupFormController.isInternalCandidate}" label="#{appmsg['placement.rotation_date']}" value="#{recruitmentEmployeeSetupFormController.model.rotationDate}"
+                                                 required="#{recruitmentEmployeeSetupFormController.isInternalCandidate}" navigator="true">
+                                    </p:calendar>
+	                                <p:message for="rotationDateId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="salaryGradeId" value="#{appmsg['payroll.pay_salary_grade']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneMenu  style="margin-right: 3px;" id="salaryGradeId" filter="true" required="true" value="#{recruitmentEmployeeSetupFormController.model.paySalaryGradeId}"
+                                                      label="#{appmsg['payroll.pay_salary_grade']}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{recruitmentEmployeeSetupFormController.mapSalaryGrade}"  />
+                                    </p:selectOneMenu>
+	                                <p:message for="salaryGradeId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="gajiPokokId" value="#{appmsg['placement.gaji_pokok']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<pe:inputNumber id="gajiPokokId" title="#{appmsg['placement.gaji_pokok']}" value="#{recruitmentEmployeeSetupFormController.model.gajiPokok}" 
 	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:160px;">
 	                                </pe:inputNumber>
-	                                <p:message for="maxTotalReimburstId"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="maxWithReceiptPerTypeId" value="#{appmsg['rmbs_schema.max_with_receipt']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<pe:inputNumber id="maxWithReceiptPerTypeId" title="#{appmsg['rmbs_schema.max_with_receipt']}" value="#{rmbsSchemaFormController.model.maxWithReceiptPerType}" 
-	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:160px;">
-	                                </pe:inputNumber>
-	                                <p:message for="maxWithReceiptPerTypeId"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="maxWithoutReceiptPerTypeId" value="#{appmsg['rmbs_schema.max_without_receipt']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<pe:inputNumber id="maxWithoutReceiptPerTypeId" title="#{appmsg['rmbs_schema.max_without_receipt']}" value="#{rmbsSchemaFormController.model.maxWithoutReceiptPerType}" 
-	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:160px;">
-	                                </pe:inputNumber>
-	                                <p:message for="maxWithoutReceiptPerTypeId"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="noticeForLimitId" value="#{appmsg['rmbs_schema.limit_warning']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:spinner id="noticeForLimitId" value="#{rmbsSchemaFormController.model.noticeForLimit}" styleClass="isitext_hrm" 
-                            			   stepFactor="1" min="0" max="100" size="3" required="true"/>
-                            		<p:outputLabel value=" %" styleClass="label_hrm"/>
-	                                <p:message for="noticeForLimitId"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="submissionDeadlineId" value="#{appmsg['rmbs_schema.submission_deadline']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:spinner id="submissionDeadlineId" value="#{rmbsSchemaFormController.model.submissionDeadline}" styleClass="isitext_hrm" 
-                            			   stepFactor="1" min="0" max="365" size="3" required="true"/>
-                            		<p:outputLabel value=" hari" styleClass="label_hrm"/>
-	                                <p:message for="submissionDeadlineId"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="isActiveId" value="#{appmsg['global.active']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:selectBooleanButton  onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" required="false"
-                                                            offIcon="ui-icon-close"  id="isActiveId" styleClass="label_button" value="#{rmbsSchemaFormController.model.isActive}" />
-                                    <p:message for="isActiveId"/>
+                                    <p:message for="gajiPokokId"/>
 	                            </p:column>
 	                        </p:row>	                                                     
 	                 	</p:panelGrid>	                    
 	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
 	                    <div style="margin-bottom: 5px">
 	                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
-	                                         action="#{rmbsSchemaFormController.doSave()}" styleClass="isitext_hrm"
+	                                         action="#{recruitmentEmployeeSetupFormController.doSave()}" styleClass="isitext_hrm"
 	                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
 	                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
 	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId"
                                          icon="ui-icon-refresh" styleClass="isitext_hrm" >  
                             	<p:resetInput target="formId" />  
                         	</p:commandButton>
-	                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{rmbsSchemaFormController.doBack()}" immediate="true"
+	                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{recruitmentEmployeeSetupFormController.doBack()}" immediate="true"
 	                                      	 styleClass="label_button"/>
 	                    </div>
                     </div>

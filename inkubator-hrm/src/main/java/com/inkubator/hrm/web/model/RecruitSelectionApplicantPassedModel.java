@@ -13,7 +13,6 @@ import java.util.Date;
  */
 public class RecruitSelectionApplicantPassedModel implements Serializable{
 	
-	private Long id;
 	private String nik;
     private Long applicantId;
     private String applicantName;
@@ -23,15 +22,26 @@ public class RecruitSelectionApplicantPassedModel implements Serializable{
     private Long employeeTypeId;
     private Long golonganJabatanId;
     private Long jabatanId;
+    private String jabatanName;
     private Date tmbDate;
     private Date rotationDate;
+    private Long paySalaryGradeId;
+    private Double gajiPokok;
+    private Long hireApplyId;
     
-	public Long getId() {
-		return id;
+	public Long getHireApplyId() {
+		return hireApplyId;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setHireApplyId(Long hireApplyId) {
+		this.hireApplyId = hireApplyId;
 	}
+	public Double getGajiPokok() {
+		return gajiPokok;
+	}
+	public void setGajiPokok(Double gajiPokok) {
+		this.gajiPokok = gajiPokok;
+	}
+	
 	public Long getApplicantId() {
 		return applicantId;
 	}
@@ -68,5 +78,48 @@ public class RecruitSelectionApplicantPassedModel implements Serializable{
 	public void setEmployeeTypeId(Long employeeTypeId) {
 		this.employeeTypeId = employeeTypeId;
 	}
+	public String getNik() {
+		return nik;
+	}
+	public void setNik(String nik) {
+		this.nik = nik;
+	}
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+	public Long getGolonganJabatanId() {
+		return golonganJabatanId;
+	}
+	public void setGolonganJabatanId(Long golonganJabatanId) {
+		this.golonganJabatanId = golonganJabatanId;
+	}
+	public Date getTmbDate() {
+		return tmbDate;
+	}
+	public void setTmbDate(Date tmbDate) {
+		this.tmbDate = tmbDate;
+	}
+	public Date getRotationDate() {
+		return rotationDate;
+	}
+	public void setRotationDate(Date rotationDate) {
+		this.rotationDate = rotationDate;
+	}
+	public Long getPaySalaryGradeId() {
+		return paySalaryGradeId;
+	}
+	public void setPaySalaryGradeId(Long paySalaryGradeId) {
+		this.paySalaryGradeId = paySalaryGradeId;
+	}
+	public String getJabatanName() {
+		return jabatanName;
+	}
+	public void setJabatanName(String jabatanName) {
+		this.jabatanName = jabatanName;
+	}
     
+	
 }
