@@ -31,9 +31,8 @@
     <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
           <property name="session" ref="mailSession"/>  
     </bean>   -->
-   
-    
- <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
+
+  <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
         <property name="javaMailProperties">
             <props>
                 <prop key="mail.smtp.auth">false</prop>
