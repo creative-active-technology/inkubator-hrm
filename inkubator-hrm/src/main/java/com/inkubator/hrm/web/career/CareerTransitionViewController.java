@@ -48,6 +48,10 @@ public class CareerTransitionViewController extends BaseController{
         selectedCareerTransition = null;
     }
 
+    public String doAdd(){
+    	return "/protected/career/career_transition_form.htm?faces-redirect=true";
+    }
+    
 	public CareerTransitionSearchParameter getSearchParameter() {
 		return searchParameter;
 	}

@@ -36,7 +36,7 @@ public class CareerTransitionLazyDataModel extends LazyDataModel<CarreerTransiti
                 if(sortField != null){
                     order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
                 }else{
-                    order = Order.desc("name");
+                    order = Order.desc("transitionName");
                 }
                 careerTransitionList = careerTransitionService.getByParam(searchParameter, first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(careerTransitionService.getTotalByParam(searchParameter)));
