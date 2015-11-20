@@ -13,7 +13,7 @@ import com.inkubator.webcore.util.SearchParameter;
  *
  * @author arsyad_
  */
-public class CarreerAwardTypeSearchParameter extends SearchParameter{
+public class CareerAwardTypeSearchParameter extends SearchParameter{
     private String code;
     private String name;
     

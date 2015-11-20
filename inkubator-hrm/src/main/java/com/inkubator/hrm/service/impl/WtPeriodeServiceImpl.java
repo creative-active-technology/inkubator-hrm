@@ -262,4 +262,10 @@ public class WtPeriodeServiceImpl extends IServiceImpl implements WtPeriodeServi
         return wtPeriodeDao.getWtPeriodEmpByWtPeriodId(wtPeriodId);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<WtPeriode> getAllWithStatusAbsen(String status) throws Exception {
+       return this.wtPeriodeDao.getAllWithStatusAbsen(status);
+    }
+
 }

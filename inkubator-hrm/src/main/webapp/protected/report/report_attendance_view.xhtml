@@ -36,9 +36,13 @@
                                     <p:outputLabel value="#{appmsg['unregSalary.periode']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                	<p:calendar value="#{reportAttendanceViewController.modelSearchParameter.startPeriod}" style="width: 100px" styleClass="isitext_hrm"/>
+<!--                                	<p:calendar value="#{reportAttendanceViewController.modelSearchParameter.startPeriod}" style="width: 100px" styleClass="isitext_hrm"/>
                                     <p:outputLabel value="&nbsp;&nbsp;&nbsp;#{appmsg['global.to']}&nbsp;&nbsp;&nbsp;" />
-                                    <p:calendar value="#{reportAttendanceViewController.modelSearchParameter.endPeriod}" style="width: 100px" styleClass="isitext_hrm"/>		                    		
+                                    <p:calendar value="#{reportAttendanceViewController.modelSearchParameter.endPeriod}" style="width: 100px" styleClass="isitext_hrm"/>		                    		-->
+                                    <p:selectOneMenu id="businessTypeId" styleClass="isitext_hrm" required="true"  value="#{reportAttendanceViewController.modelSearchParameter.wtPeriodeId}">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{reportAttendanceViewController.data}"  var="data" itemValue="#{data.id}" itemLabel="#{data.bulanAsLabel}- #{data.tahun} "/>
+                                    </p:selectOneMenu>
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -46,7 +50,7 @@
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                         <p:outputLabel  value="#{appmsg['department.department']}" style="font-weight: bold"/>
                                     </p:column>
-                                    <p:column style="text-align: center;">
+                                    <p:column >
                                         <p:pickList value="#{reportAttendanceViewController.departmentDualListModel}" var="role" itemValue="#{role}" converter="departmentConverter" id="educationLevelId"
                                                     required="false"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['department.department']}" styleClass="isitext_hrm"
                                                     itemLabel="#{role.departmentName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
@@ -78,20 +82,20 @@
 
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
-                        
-                                                <p:toolbar  style="margin-top: 10px">
-                            
+
+                        <p:toolbar  style="margin-top: 10px">
+
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Report_Employee_Education"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{reportEmployeeEducationViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
-                                    
+
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
-                        
+
                         <p:dataTable  var="data"  value="#{reportAttendanceViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
@@ -160,7 +164,7 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.sick}" />
                             </p:column>
-                            
+
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
                                 <p:outputLabel value="#{reportAttendanceViewController.lazyDataModel.rowCount}"/>

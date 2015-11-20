@@ -27,7 +27,7 @@
      -->
    <!--............................... Setting for Mail JNDI .......-->
 
-   <!--   <jee:jndi-lookup id="mailSession" jndi-name="java:jboss/mail/hrm"  resource-ref="true" />
+<!--      <jee:jndi-lookup id="mailSession" jndi-name="java:jboss/mail/hrm"  resource-ref="true" />
     <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" >
           <property name="session" ref="mailSession"/>  
     </bean>   -->
