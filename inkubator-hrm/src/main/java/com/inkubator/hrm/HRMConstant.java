@@ -413,6 +413,7 @@ public class HRMConstant {
     public static final Integer RMBS_APPLICATION_STATUS_CANCELED = 2;
     public static final Integer RMBS_APPLICATION_STATUS_REJECTED = 3;
     public static final Integer RMBS_APPLICATION_STATUS_PAID = 5;
+    public static final Integer RMBS_APPLICATION_STATUS_DISBURSED_REJECTED = 6;
     public static final Integer RMBS_DISBURSEMENT_STATUS_APPROVED = 0;
     public static final Integer RMBS_DISBURSEMENT_STATUS_REJECTED = 1;
     public static final Integer RMBS_DISBURSEMENT_STATUS_CANCELLED = 2;

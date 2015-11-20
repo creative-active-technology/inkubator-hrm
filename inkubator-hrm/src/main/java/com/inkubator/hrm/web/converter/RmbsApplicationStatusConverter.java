@@ -39,6 +39,8 @@ public class RmbsApplicationStatusConverter implements Converter {
         	messages = resourceBundle.getString("approvalactivity.reject");
         } else if(Objects.equals(data, HRMConstant.RMBS_APPLICATION_STATUS_PAID)){
         	messages = resourceBundle.getString("rmbs_application.status_paid");
+        } else if(Objects.equals(data, HRMConstant.RMBS_APPLICATION_STATUS_DISBURSED_REJECTED)){
+        	messages = resourceBundle.getString("rmbs_application.status_disbursed_rejected");
         } 
         
         return messages;
