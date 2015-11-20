@@ -1,4 +1,4 @@
-package com.inkubator.hrm.web.organisation;
+package com.inkubator.hrm.web.career;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,24 +17,24 @@ import org.primefaces.context.RequestContext;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.CarreerAwardType;
+import com.inkubator.hrm.entity.CareerAwardType;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.SystemLetterReference;
-import com.inkubator.hrm.service.CarreerAwardTypeService;
+import com.inkubator.hrm.service.CareerAwardTypeService;
 import com.inkubator.hrm.service.SystemLetterReferenceService;
-import com.inkubator.hrm.web.model.CarreerAwardTypeModel;
+import com.inkubator.hrm.web.model.CareerAwardTypeModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 
 
-@ManagedBean(name = "carreerAwardTypeFormController")
+@ManagedBean(name = "careerAwardTypeFormController")
 @ViewScoped
-public class CarreerAwardTypeFormController  extends BaseController{
-	@ManagedProperty(value = "#{carreerAwardTypeService}")
-    private CarreerAwardTypeService service;
-    private CarreerAwardType selected;
-    private CarreerAwardTypeModel model;
+public class CareerAwardTypeFormController  extends BaseController{
+	@ManagedProperty(value = "#{careerAwardTypeService}")
+    private CareerAwardTypeService service;
+    private CareerAwardType selected;
+    private CareerAwardTypeModel model;
     private Boolean isUpdate;
     @ManagedProperty(value = "#{systemLetterReferenceService}")
     private SystemLetterReferenceService systemLetterReferenceService;
@@ -47,13 +47,13 @@ public class CarreerAwardTypeFormController  extends BaseController{
     public void initialization(){
     	super.initialization();
     	try{
-    		String carreerAwardTypeId = FacesUtil.getRequestParameter("carreerAwardTypeId");
-    		model = new CarreerAwardTypeModel();
+    		String careerAwardTypeId = FacesUtil.getRequestParameter("careerAwardTypeId");
+    		model = new CareerAwardTypeModel();
     		isUpdate = Boolean.FALSE;
-    		if(StringUtils.isNotEmpty(carreerAwardTypeId)){
-    			CarreerAwardType carreerAwardType = service.getEntiyByPK(Long.parseLong(carreerAwardTypeId));
-    			if(carreerAwardTypeId != null){
-    				model = getModelFromEntity(carreerAwardType);
+    		if(StringUtils.isNotEmpty(careerAwardTypeId)){
+    			CareerAwardType careerAwardType = service.getEntiyByPK(Long.parseLong(careerAwardTypeId));
+    			if(careerAwardTypeId != null){
+    				model = getModelFromEntity(careerAwardType);
     				isUpdate = Boolean.TRUE;
     			}
     		}
@@ -66,13 +66,13 @@ public class CarreerAwardTypeFormController  extends BaseController{
     @PreDestroy
     public void cleanAndExit(){
     	isUpdate = null;
-    	model = new CarreerAwardTypeModel();
+    	model = new CareerAwardTypeModel();
     	selected = null;
     	service = null;
     }
     
-    private CarreerAwardTypeModel getModelFromEntity(CarreerAwardType entity){
-    	CarreerAwardTypeModel model = new CarreerAwardTypeModel();
+    private CareerAwardTypeModel getModelFromEntity(CareerAwardType entity){
+    	CareerAwardTypeModel model = new CareerAwardTypeModel();
     	model.setId(entity.getId());
     	model.setCode(entity.getCode());
     	model.setName(entity.getName());
@@ -84,30 +84,30 @@ public class CarreerAwardTypeFormController  extends BaseController{
     	return model;
     }
     
-    private CarreerAwardType getEntityFromViewModel(CarreerAwardTypeModel model){
-    	CarreerAwardType carreerAwardType = new CarreerAwardType();
+    private CareerAwardType getEntityFromViewModel(CareerAwardTypeModel model){
+    	CareerAwardType careerAwardType = new CareerAwardType();
     	if(model.getId() != null){
-    		carreerAwardType.setId(model.getId());
+    		careerAwardType.setId(model.getId());
     	} 
-    	carreerAwardType.setCode(model.getCode());
-    	carreerAwardType.setName(model.getName());
-    	carreerAwardType.setDescription(model.getDescription());
-    	carreerAwardType.setValidity(model.getValidity());
-    	carreerAwardType.setPoint(model.getPoint());
-    	carreerAwardType.setSystemLetterReferenceByLetterTemplateId(new SystemLetterReference(model.getSystemLetterReferenceByLetterTemplateId()));
-    	carreerAwardType.setSystemLetterReferenceByCertificateLetterTemplateId(new SystemLetterReference(model.getSystemLetterReferenceByCertificateLetterTemplateId()));
-    	return carreerAwardType;
+    	careerAwardType.setCode(model.getCode());
+    	careerAwardType.setName(model.getName());
+    	careerAwardType.setDescription(model.getDescription());
+    	careerAwardType.setValidity(model.getValidity());
+    	careerAwardType.setPoint(model.getPoint());
+    	careerAwardType.setSystemLetterReferenceByLetterTemplateId(new SystemLetterReference(model.getSystemLetterReferenceByLetterTemplateId()));
+    	careerAwardType.setSystemLetterReferenceByCertificateLetterTemplateId(new SystemLetterReference(model.getSystemLetterReferenceByCertificateLetterTemplateId()));
+    	return careerAwardType;
     }
     
     public void doSave(){
-    	CarreerAwardType carreerAwardType = getEntityFromViewModel(model);
+    	CareerAwardType careerAwardType = getEntityFromViewModel(model);
         try{
             if(isUpdate){
-                service.update(carreerAwardType);
+                service.update(careerAwardType);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
                 System.out.println("update");
             } else {
-                service.save(carreerAwardType);
+                service.save(careerAwardType);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }
             cleanAndExit();
@@ -118,27 +118,27 @@ public class CarreerAwardTypeFormController  extends BaseController{
         }
     }
 
-	public CarreerAwardTypeService getService() {
+	public CareerAwardTypeService getService() {
 		return service;
 	}
 
-	public void setService(CarreerAwardTypeService service) {
+	public void setService(CareerAwardTypeService service) {
 		this.service = service;
 	}
 
-	public CarreerAwardType getSelected() {
+	public CareerAwardType getSelected() {
 		return selected;
 	}
 
-	public void setSelected(CarreerAwardType selected) {
+	public void setSelected(CareerAwardType selected) {
 		this.selected = selected;
 	}
 
-	public CarreerAwardTypeModel getModel() {
+	public CareerAwardTypeModel getModel() {
 		return model;
 	}
 
-	public void setModel(CarreerAwardTypeModel model) {
+	public void setModel(CareerAwardTypeModel model) {
 		this.model = model;
 	}
 

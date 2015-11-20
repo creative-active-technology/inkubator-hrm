@@ -13,23 +13,23 @@ import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
-import com.inkubator.hrm.dao.CarreerAwardTypeDao;
-import com.inkubator.hrm.entity.CarreerAwardType;
+import com.inkubator.hrm.dao.CareerAwardTypeDao;
+import com.inkubator.hrm.entity.CareerAwardType;
 import com.inkubator.hrm.entity.Divisi;
-import com.inkubator.hrm.web.search.CarreerAwardTypeSearchParameter;
+import com.inkubator.hrm.web.search.CareerAwardTypeSearchParameter;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 
-@Repository(value = "carreerAwardTypeDao")
+@Repository(value = "careerAwardTypeDao")
 @Lazy
-public class CarreerAwardTypeDaoImpl extends IDAOImpl<CarreerAwardType> implements CarreerAwardTypeDao{
+public class CareerAwardTypeDaoImpl extends IDAOImpl<CareerAwardType> implements CareerAwardTypeDao{
 	
 	@Override
-    public Class<CarreerAwardType> getEntityClass() {
-        return CarreerAwardType.class;
+    public Class<CareerAwardType> getEntityClass() {
+        return CareerAwardType.class;
     }
 	
 	@Override
-	public List<CarreerAwardType> getByParam(CarreerAwardTypeSearchParameter searchParameter, int firstResult,
+	public List<CareerAwardType> getByParam(CareerAwardTypeSearchParameter searchParameter, int firstResult,
 			int maxResult, Order order) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		doSearchByParam(searchParameter, criteria);
@@ -40,13 +40,13 @@ public class CarreerAwardTypeDaoImpl extends IDAOImpl<CarreerAwardType> implemen
 	}
 
 	@Override
-	public Long getTotalByParam(CarreerAwardTypeSearchParameter searchParameter) {
+	public Long getTotalByParam(CareerAwardTypeSearchParameter searchParameter) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		doSearchByParam(searchParameter, criteria);
 		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 	
-	public void doSearchByParam(CarreerAwardTypeSearchParameter searchParameter, Criteria criteria){
+	public void doSearchByParam(CareerAwardTypeSearchParameter searchParameter, Criteria criteria){
 		criteria.createAlias("systemLetterReferenceByLetterTemplateId", "systemLetterReferenceByLetterTemplateId", JoinType.INNER_JOIN);
 		criteria.createAlias("systemLetterReferenceByCertificateLetterTemplateId", "systemLetterReferenceByCertificateLetterTemplateId",  JoinType.INNER_JOIN);
 		
@@ -60,12 +60,12 @@ public class CarreerAwardTypeDaoImpl extends IDAOImpl<CarreerAwardType> implemen
 	}
 
 	@Override
-	public CarreerAwardType getEntityByPkWithDetail(long id) {
+	public CareerAwardType getEntityByPkWithDetail(long id) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.setFetchMode("systemLetterReferenceByLetterTemplateId", FetchMode.JOIN);
 		criteria.setFetchMode("systemLetterReferenceByCertificateLetterTemplateId", FetchMode.JOIN);
 		criteria.add(Restrictions.eq("id", id));
-		return (CarreerAwardType) criteria.uniqueResult();
+		return (CareerAwardType) criteria.uniqueResult();
 	}
 	
 

@@ -2,7 +2,7 @@ package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
 
-public class CarreerAwardTypeModel implements Serializable{
+public class CareerAwardTypeModel implements Serializable{
 	
 	private Long id;
 	private String code;

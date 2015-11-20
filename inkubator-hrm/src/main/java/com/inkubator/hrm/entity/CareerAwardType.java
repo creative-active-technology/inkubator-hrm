@@ -23,7 +23,7 @@ import javax.persistence.Version;
     ,catalog="hrm"
     , uniqueConstraints = {@UniqueConstraint(columnNames="award_code"), @UniqueConstraint(columnNames="award_name")} 
 )
-public class CarreerAwardType  implements java.io.Serializable {
+public class CareerAwardType  implements java.io.Serializable {
 
 
      private long id;
@@ -41,17 +41,17 @@ public class CarreerAwardType  implements java.io.Serializable {
      private Date updatedOn;
      private String updatedBy;
 
-    public CarreerAwardType() {
+    public CareerAwardType() {
     }
 	
-    public CarreerAwardType(long id, String code, String name) {
+    public CareerAwardType(long id, String code, String name) {
         this.id = id;
         this.code = code;
         this.name = name;
     }
     
     
-    public CarreerAwardType(long id, SystemLetterReference systemLetterReferenceByLetterTemplateId, SystemLetterReference systemLetterReferenceByCertificateLetterTemplateId, String code, String name, String description, Integer validity, Double point, Date createdOn, String createdBy, Date updatedOn, String updatedBy) {
+    public CareerAwardType(long id, SystemLetterReference systemLetterReferenceByLetterTemplateId, SystemLetterReference systemLetterReferenceByCertificateLetterTemplateId, String code, String name, String description, Integer validity, Double point, Date createdOn, String createdBy, Date updatedOn, String updatedBy) {
        this.id = id;
        this.systemLetterReferenceByLetterTemplateId = systemLetterReferenceByLetterTemplateId;
        this.systemLetterReferenceByCertificateLetterTemplateId = systemLetterReferenceByCertificateLetterTemplateId;

@@ -14,51 +14,51 @@ import org.springframework.transaction.annotation.Transactional;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.dao.CarreerAwardTypeDao;
+import com.inkubator.hrm.dao.CareerAwardTypeDao;
 import com.inkubator.hrm.dao.SystemLetterReferenceDao;
-import com.inkubator.hrm.entity.CarreerAwardType;
+import com.inkubator.hrm.entity.CareerAwardType;
 import com.inkubator.hrm.entity.SystemLetterReference;
-import com.inkubator.hrm.service.CarreerAwardTypeService;
-import com.inkubator.hrm.web.search.CarreerAwardTypeSearchParameter;
+import com.inkubator.hrm.service.CareerAwardTypeService;
+import com.inkubator.hrm.web.search.CareerAwardTypeSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
-@Service(value = "carreerAwardTypeService")
+@Service(value = "careerAwardTypeService")
 @Lazy
-public class CarreerAwardTypeServiceImpl extends IServiceImpl implements CarreerAwardTypeService{
+public class CareerAwardTypeServiceImpl extends IServiceImpl implements CareerAwardTypeService{
 	
 	@Autowired
-	private CarreerAwardTypeDao carreerAwardTypeDao;
+	private CareerAwardTypeDao careerAwardTypeDao;
 	
 	@Autowired
 	private SystemLetterReferenceDao systemLetterReferenceDao;
 
 	@Override
-	public CarreerAwardType getEntiyByPK(String id) throws Exception {
+	public CareerAwardType getEntiyByPK(String id) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CarreerAwardType getEntiyByPK(Integer id) throws Exception {
+	public CareerAwardType getEntiyByPK(Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public CarreerAwardType getEntiyByPK(Long id) throws Exception {
-		return this.carreerAwardTypeDao.getEntiyByPK(id);
+	public CareerAwardType getEntiyByPK(Long id) throws Exception {
+		return this.careerAwardTypeDao.getEntiyByPK(id);
 	}
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void save(CarreerAwardType entity) throws Exception {
-		long totalDuplicates = carreerAwardTypeDao.getTotalByCode(entity.getCode());
+	public void save(CareerAwardType entity) throws Exception {
+		long totalDuplicates = careerAwardTypeDao.getTotalByCode(entity.getCode());
 		if (totalDuplicates > 0){
 			throw new BussinessException("marital.error_duplicate_marital_code");
 		}
 		
-		long totalDuplicateName = carreerAwardTypeDao.getTotalByName(entity.getName());
+		long totalDuplicateName = careerAwardTypeDao.getTotalByName(entity.getName());
 		if (totalDuplicateName > 0){
 			throw new BussinessException("appraisalDetail.error_duplicate_appraisalDetail_name");
 		}
@@ -69,17 +69,17 @@ public class CarreerAwardTypeServiceImpl extends IServiceImpl implements Carreer
 		entity.setSystemLetterReferenceByCertificateLetterTemplateId(systemLetterReferenceDao.getEntiyByPK(entity.getSystemLetterReferenceByCertificateLetterTemplateId().getId()));
 		entity.setCreatedBy(UserInfoUtil.getUserName());
 		entity.setCreatedOn(new Date());
-		carreerAwardTypeDao.save(entity);
+		careerAwardTypeDao.save(entity);
 	}
 
 	@Override
 	@Transactional(readOnly =  false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void update(CarreerAwardType entity) throws Exception {
-		long totalduplicates = carreerAwardTypeDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
+	public void update(CareerAwardType entity) throws Exception {
+		long totalduplicates = careerAwardTypeDao.getTotalByCodeAndNotId(entity.getCode(), entity.getId());
 		if (totalduplicates > 0){
 			throw new BussinessException("marital.error_duplicate_marital_code");
 		}
-		CarreerAwardType update = carreerAwardTypeDao.getEntiyByPK(entity.getId());
+		CareerAwardType update = careerAwardTypeDao.getEntiyByPK(entity.getId());
 		update.setCode(entity.getCode());
 		update.setName(entity.getName());
 		update.setDescription(entity.getDescription());
@@ -92,95 +92,95 @@ public class CarreerAwardTypeServiceImpl extends IServiceImpl implements Carreer
 		update.setSystemLetterReferenceByCertificateLetterTemplateId(certificateLetterTemplate);
 		update.setUpdatedBy(UserInfoUtil.getUserName());
 		update.setUpdatedOn(new Date());
-		this.carreerAwardTypeDao.update(update);
+		this.careerAwardTypeDao.update(update);
 	}
 
 	@Override
-	public void saveOrUpdate(CarreerAwardType enntity) throws Exception {
+	public void saveOrUpdate(CareerAwardType enntity) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public CarreerAwardType saveData(CarreerAwardType entity) throws Exception {
+	public CareerAwardType saveData(CareerAwardType entity) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CarreerAwardType updateData(CarreerAwardType entity) throws Exception {
+	public CareerAwardType updateData(CareerAwardType entity) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CarreerAwardType saveOrUpdateData(CarreerAwardType entity) throws Exception {
+	public CareerAwardType saveOrUpdateData(CareerAwardType entity) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CarreerAwardType getEntityByPkIsActive(String id, Integer isActive) throws Exception {
+	public CareerAwardType getEntityByPkIsActive(String id, Integer isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CarreerAwardType getEntityByPkIsActive(String id, Byte isActive) throws Exception {
+	public CareerAwardType getEntityByPkIsActive(String id, Byte isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CarreerAwardType getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
+	public CareerAwardType getEntityByPkIsActive(String id, Boolean isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CarreerAwardType getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
+	public CareerAwardType getEntityByPkIsActive(Integer id, Integer isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CarreerAwardType getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
+	public CareerAwardType getEntityByPkIsActive(Integer id, Byte isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CarreerAwardType getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
+	public CareerAwardType getEntityByPkIsActive(Integer id, Boolean isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CarreerAwardType getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
+	public CareerAwardType getEntityByPkIsActive(Long id, Integer isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CarreerAwardType getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
+	public CareerAwardType getEntityByPkIsActive(Long id, Byte isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CarreerAwardType getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
+	public CareerAwardType getEntityByPkIsActive(Long id, Boolean isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void delete(CarreerAwardType entity) throws Exception {
-		this.carreerAwardTypeDao.delete(entity);
+	public void delete(CareerAwardType entity) throws Exception {
+		this.careerAwardTypeDao.delete(entity);
 	}
 
 	@Override
-	public void softDelete(CarreerAwardType entity) throws Exception {
+	public void softDelete(CareerAwardType entity) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}
@@ -210,51 +210,51 @@ public class CarreerAwardTypeServiceImpl extends IServiceImpl implements Carreer
 	}
 
 	@Override
-	public List<CarreerAwardType> getAllData() throws Exception {
+	public List<CareerAwardType> getAllData() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<CarreerAwardType> getAllData(Boolean isActive) throws Exception {
+	public List<CareerAwardType> getAllData(Boolean isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<CarreerAwardType> getAllData(Integer isActive) throws Exception {
+	public List<CareerAwardType> getAllData(Integer isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<CarreerAwardType> getAllData(Byte isActive) throws Exception {
+	public List<CareerAwardType> getAllData(Byte isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<CarreerAwardType> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
+	public List<CareerAwardType> getAllDataPageAble(int firstResult, int maxResults, Order order) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<CarreerAwardType> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order,
+	public List<CareerAwardType> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order,
 			Boolean isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<CarreerAwardType> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order,
+	public List<CareerAwardType> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order,
 			Integer isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<CarreerAwardType> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order,
+	public List<CareerAwardType> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order,
 			Byte isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
@@ -262,21 +262,21 @@ public class CarreerAwardTypeServiceImpl extends IServiceImpl implements Carreer
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<CarreerAwardType> getByParam(CarreerAwardTypeSearchParameter searchParameter, int firstResult,
+	public List<CareerAwardType> getByParam(CareerAwardTypeSearchParameter searchParameter, int firstResult,
 			int maxResult, Order order) {
-		return this.carreerAwardTypeDao.getByParam(searchParameter, firstResult, maxResult, order);
+		return this.careerAwardTypeDao.getByParam(searchParameter, firstResult, maxResult, order);
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalByParam(CarreerAwardTypeSearchParameter searchParameter) {
-		return this.carreerAwardTypeDao.getTotalByParam(searchParameter);
+	public Long getTotalByParam(CareerAwardTypeSearchParameter searchParameter) {
+		return this.careerAwardTypeDao.getTotalByParam(searchParameter);
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public CarreerAwardType getEntityByPkWithDetail(long id) {
-		return this.carreerAwardTypeDao.getEntityByPkWithDetail(id);
+	public CareerAwardType getEntityByPkWithDetail(long id) {
+		return this.careerAwardTypeDao.getEntityByPkWithDetail(id);
 	}
 
 }
