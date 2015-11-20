@@ -35,13 +35,15 @@ public interface WtPeriodeDao extends IDAO<WtPeriode> {
     public WtPeriode getEntityByMonthAndYear(Integer month, String year);
 
     public WtPeriode getEntityByFromPeriodeAndUntilPeriode(Date fromPeriode, Date untilPeriode);
-    
+
     public WtPeriode getEntityByDateBetween(Date date);
-    
+
     public List<WtPeriodEmpViewModel> getListWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter, int firstResult, int maxResults, Order order);
-    
+
     public Long getTotalListWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter);
-    
+
     public WtPeriodEmpViewModel getWtPeriodEmpByWtPeriodId(Long wtPeriodId);
+
+    public List<WtPeriode> getAllWithStatusAbsen(String status);
 
 }
