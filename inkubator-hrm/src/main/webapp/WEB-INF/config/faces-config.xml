@@ -9,36 +9,38 @@ http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">-->
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
 
-<application>
-    <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
-    <locale-config>
-        <default-locale>in_ID</default-locale>
-        <supported-locale>en</supported-locale>
-    </locale-config>
-    <resource-bundle>
-        <base-name>Messages</base-name>
-        <var>appmsg</var>
-    </resource-bundle>
-    <message-bundle>
-        custom_component_message
-    </message-bundle>
-    <action-listener>org.primefaces.application.DialogActionListener</action-listener>
-    <navigation-handler>org.primefaces.application.DialogNavigationHandler</navigation-handler>
-    <view-handler>org.primefaces.application.DialogViewHandler</view-handler>
+    <application>
+        <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+        <locale-config>
+            <default-locale>in_ID</default-locale>
+            <supported-locale>en</supported-locale>
+        </locale-config>
+        <resource-bundle>
+            <base-name>Messages</base-name>
+            <var>appmsg</var>
+        </resource-bundle>
+        <message-bundle>
+            custom_component_message
+        </message-bundle>
+        <action-listener>org.primefaces.application.DialogActionListener</action-listener>
+        <navigation-handler>org.primefaces.application.DialogNavigationHandler</navigation-handler>
+        <view-handler>org.primefaces.application.DialogViewHandler</view-handler>
       
-    <!--<view-handler>com.csl.idm.web.filter.MyViewHandlerWrapper</view-handler>-->
-</application> 
-<navigation-rule>
-    <!--@by Deni Hunsi FR This for global close frome every page in folder proteted-->
-    <from-view-id>/protected/*</from-view-id>
-    <navigation-case>
-        <from-outcome>home</from-outcome>
-        <to-view-id>/protected/home.xhtml</to-view-id>
-        <redirect/>
-    </navigation-case> 
-</navigation-rule>
-<!--    <lifecycle>
-    <phase-listener>com.csl.web.core.listener.Primefaces35PhaseListener</phase-listener>
-</lifecycle>-->
-         
+        <!--<view-handler>com.csl.idm.web.filter.MyViewHandlerWrapper</view-handler>-->
+    </application> 
+    <navigation-rule>
+        <!--@by Deni Hunsi FR This for global close frome every page in folder proteted-->
+        <from-view-id>/protected/*</from-view-id>
+        <navigation-case>
+            <from-outcome>home</from-outcome>
+            <to-view-id>/protected/home.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case> 
+    </navigation-rule>
+    <!--    <lifecycle>
+        <phase-listener>com.csl.web.core.listener.Primefaces35PhaseListener</phase-listener>
+    </lifecycle>-->
+    <factory>
+        <exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory</exception-handler-factory>
+    </factory>
 </faces-config>
