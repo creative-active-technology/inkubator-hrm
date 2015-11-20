@@ -97,7 +97,7 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.approvedBy}" />
                             </p:column>
-                            <p:column style="width: 14%">
+                            <p:column style="width: 14%" sortBy="#{data.approvalStatus}">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['approvalactivity.approval_status']}"/>
                                 </f:facet>

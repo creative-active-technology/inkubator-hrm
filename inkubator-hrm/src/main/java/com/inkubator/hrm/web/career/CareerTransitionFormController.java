@@ -9,6 +9,6 @@ package com.inkubator.hrm.web.career;
  *
  * @author Deni
  */
-public class CareerTransitionInformationViewController {
+public class CareerTransitionFormController {
     
 }

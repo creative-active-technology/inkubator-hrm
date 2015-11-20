@@ -108,18 +108,18 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
         return (WtPeriode) criteria.uniqueResult();
     }
 
-	@Override
-	public WtPeriode getEntityByDateBetween(Date date) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+    @Override
+    public WtPeriode getEntityByDateBetween(Date date) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.le("fromPeriode", date));
         criteria.add(Restrictions.ge("untilPeriode", date));
         return (WtPeriode) criteria.uniqueResult();
-	}
-        
-        @Override
+    }
+
+    @Override
     public List<WtPeriodEmpViewModel> getListWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         final StringBuilder fromQuery = new StringBuilder();
-        fromQuery.append("select wtPeriode.id AS wtPeriodId, ");	
+        fromQuery.append("select wtPeriode.id AS wtPeriodId, ");
         fromQuery.append("wtPeriode.from_periode AS fromPeriode,");
         fromQuery.append("wtPeriode.until_periode AS untilPeriode,");
         fromQuery.append("SUM(CASE WHEN tempAttendanceRealization.id IS NOT NULL THEN 1 ELSE 0 END) AS totalEmpDataFromTemporary, ");
@@ -133,8 +133,7 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
         //filter by search param
         fromQuery.append(doSearchWtPeriodEmpByParam(searchParameter));
         fromQuery.append("GROUP BY  wtPeriode.id ");
-        
-        
+
         final StringBuilder query = new StringBuilder();
         query.append("select wtPeriodId, ");
         query.append("fromPeriode, ");
@@ -142,10 +141,9 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
         query.append("status, ");
         query.append("CASE WHEN totalEmpDataFromLogMonthEnd > 0 THEN totalEmpDataFromLogMonthEnd ELSE totalEmpDataFromTemporary END AS totalEmpData, ");
         query.append("CASE WHEN totalWorkingGroupFromLogMonthEnd > 0 THEN totalWorkingGroupFromLogMonthEnd ELSE totalWorkingGroupFromTemporary END AS totalWorkingGroup ");
-        query.append("FROM ("+ fromQuery.toString() +") AS xx ");
-        query.append("ORDER BY  "+ order);
-        
-        
+        query.append("FROM (" + fromQuery.toString() + ") AS xx ");
+        query.append("ORDER BY  " + order);
+
         Query hbm = getCurrentSession().createSQLQuery(query.toString()).setFirstResult(firstResult).setMaxResults(maxResults);
         hbm = this.setValueQueryWtPeriodEmpByParam(hbm, searchParameter);
 
@@ -155,44 +153,44 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
     @Override
     public Long getTotalListWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter) {
         final StringBuilder query = new StringBuilder("SELECT count(*) FROM wt_periode wtPeriode ");
-        
+
         //filter by search param
-        query.append(doSearchWtPeriodEmpByParam(searchParameter));        
-        
+        query.append(doSearchWtPeriodEmpByParam(searchParameter));
+
         Query hbm = getCurrentSession().createSQLQuery(query.toString());
         hbm = this.setValueQueryWtPeriodEmpByParam(hbm, searchParameter);
-        
+
         return Long.valueOf(hbm.uniqueResult().toString());
     }
-    
+
     private String doSearchWtPeriodEmpByParam(WtPeriodeEmpSearchParameter searchParameter) {
-    	StringBuilder query = new StringBuilder();
-    	
-    	if(searchParameter.getStartPeriod() != null){
-    		query.append(" WHERE wtPeriode.from_periode = :startPeriod " );
-    	}
-    	if(searchParameter.getEndPeriod() != null){
-    		query.append(" WHERE wtPeriode.until_periode = :endPeriod " );
-    	}
-    	
-    	return query.toString();
+        StringBuilder query = new StringBuilder();
+
+        if (searchParameter.getStartPeriod() != null) {
+            query.append(" WHERE wtPeriode.from_periode = :startPeriod ");
+        }
+        if (searchParameter.getEndPeriod() != null) {
+            query.append(" WHERE wtPeriode.until_periode = :endPeriod ");
+        }
+
+        return query.toString();
     }
-    
-    private Query setValueQueryWtPeriodEmpByParam(Query hbm, WtPeriodeEmpSearchParameter parameter){    	
-    	for(String param : hbm.getNamedParameters()){
-    		if(StringUtils.equals(param, "startPeriod")){
-    			hbm.setParameter("startPeriod", parameter.getStartPeriod());
-    		} else if(StringUtils.equals(param, "endPeriod")){
-    			hbm.setParameter("endPeriod", parameter.getEndPeriod());
-    		}
-    	}    	
-    	return hbm;
+
+    private Query setValueQueryWtPeriodEmpByParam(Query hbm, WtPeriodeEmpSearchParameter parameter) {
+        for (String param : hbm.getNamedParameters()) {
+            if (StringUtils.equals(param, "startPeriod")) {
+                hbm.setParameter("startPeriod", parameter.getStartPeriod());
+            } else if (StringUtils.equals(param, "endPeriod")) {
+                hbm.setParameter("endPeriod", parameter.getEndPeriod());
+            }
+        }
+        return hbm;
     }
 
     @Override
     public WtPeriodEmpViewModel getWtPeriodEmpByWtPeriodId(Long wtPeriodId) {
-    	final StringBuilder fromQuery = new StringBuilder();
-        fromQuery.append("select wtPeriode.id AS wtPeriodId, ");	
+        final StringBuilder fromQuery = new StringBuilder();
+        fromQuery.append("select wtPeriode.id AS wtPeriodId, ");
         fromQuery.append("wtPeriode.from_periode AS fromPeriode,");
         fromQuery.append("wtPeriode.until_periode AS untilPeriode,");
         fromQuery.append("SUM(CASE WHEN tempAttendanceRealization.id IS NOT NULL THEN 1 ELSE 0 END) AS totalEmpDataFromTemporary, ");
@@ -205,8 +203,7 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
         fromQuery.append("LEFT JOIN temp_attendance_realization tempAttendanceRealization ON tempAttendanceRealization.wt_period_id=wtPeriode.id ");
         fromQuery.append("WHERE wtPeriode.id = " + wtPeriodId + " ");
         fromQuery.append("GROUP BY  wtPeriode.id ");
-        
-        
+
         final StringBuilder query = new StringBuilder();
         query.append("select wtPeriodId, ");
         query.append("fromPeriode, ");
@@ -214,11 +211,20 @@ public class WtPeriodeDaoImpl extends IDAOImpl<WtPeriode> implements WtPeriodeDa
         query.append("status, ");
         query.append("CASE WHEN totalEmpDataFromLogMonthEnd > 0 THEN totalEmpDataFromLogMonthEnd ELSE totalEmpDataFromTemporary END AS totalEmpData, ");
         query.append("CASE WHEN totalWorkingGroupFromLogMonthEnd > 0 THEN totalWorkingGroupFromLogMonthEnd ELSE totalWorkingGroupFromTemporary END AS totalWorkingGroup ");
-        query.append("FROM ("+ fromQuery.toString() +") AS xx ");
-        
-        
+        query.append("FROM (" + fromQuery.toString() + ") AS xx ");
+
         Query hbm = getCurrentSession().createSQLQuery(query.toString())
                 .setResultTransformer(Transformers.aliasToBean(WtPeriodEmpViewModel.class));
-        return (WtPeriodEmpViewModel)hbm.uniqueResult();
+        return (WtPeriodEmpViewModel) hbm.uniqueResult();
+    }
+
+    @Override
+    public List<WtPeriode> getAllWithStatusAbsen(String status) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("absen", status));
+        criteria.addOrder(Order.desc("tahun"));
+        criteria.addOrder(Order.asc("bulan"));
+
+        return criteria.list();
     }
 }

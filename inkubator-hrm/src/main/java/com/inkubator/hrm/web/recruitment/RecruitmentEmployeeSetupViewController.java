@@ -48,7 +48,8 @@ public class RecruitmentEmployeeSetupViewController extends BaseController {
     }
     
     public String doDetail() {
-    	return "/protected/recruitment/selection_applicant_passed_form.htm?faces-redirect=true&execution=e" + selected.getId();
+    	return "/protected/recruitment/recruitment_employee_setup_form.htm?faces-redirect=true&applicantId=e" + selected.getApplicantId() + "&hireApplyId=e" + selected.getHireApplyId();
+    	//return "/protected/recruitment/recruitment_employee_setup_form.htm?faces-redirect=true&execution=e" + selected.getApplicantId();
     }
 
 	public RecruitSelectionApplicantPassedSearchParameter getSearchParameter() {

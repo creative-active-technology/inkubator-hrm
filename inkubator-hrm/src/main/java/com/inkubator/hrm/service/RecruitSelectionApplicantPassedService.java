@@ -6,6 +6,8 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantPassed;
+import com.inkubator.hrm.entity.RecruitSelectionApplicantPassedId;
+import com.inkubator.hrm.web.model.RecruitSelectionApplicantPassedModel;
 import com.inkubator.hrm.web.model.RecruitSelectionApplicantPassedViewModel;
 import com.inkubator.hrm.web.search.RecruitSelectionApplicantPassedSearchParameter;
 
@@ -22,5 +24,9 @@ public interface RecruitSelectionApplicantPassedService extends IService<Recruit
 	public List<RecruitSelectionApplicantPassedViewModel> getListSelectionPassedViewModelByParam(RecruitSelectionApplicantPassedSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) throws Exception;
 	
 	public Long getTotalSelectionPassedViewModelByParam(RecruitSelectionApplicantPassedSearchParameter searchParameter)  throws Exception;
+	
+	public RecruitSelectionApplicantPassed getEntityWithDetailByRecruitSelectionApplicantPassedId(RecruitSelectionApplicantPassedId id) throws Exception;
+	
+	public String setupEmployee(RecruitSelectionApplicantPassedModel applicantPassedModel, Boolean isInternalCandidate) throws Exception;
 	
 }

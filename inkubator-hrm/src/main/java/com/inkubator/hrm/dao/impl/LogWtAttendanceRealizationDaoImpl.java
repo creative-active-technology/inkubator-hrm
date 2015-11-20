@@ -49,126 +49,140 @@ public class LogWtAttendanceRealizationDaoImpl extends IDAOImpl<LogWtAttendanceR
         query.append(" logAttendanceRealization.wtGroupWorkingName AS wtGroupWorkingName,");
         query.append(" logAttendanceRealization.empDataId AS empId,");
         query.append(" logAttendanceRealization.empNik AS nik,");
-        query.append(" logAttendanceRealization.empName AS empName,");       
+        query.append(" logAttendanceRealization.empName AS empName,");
         query.append(" logAttendanceRealization.attendanceDaysSchedule AS attendanceDaysSchedule,");
         query.append(" logAttendanceRealization.attendanceDaysPresent AS attendanceDaysPresent,");
         query.append(" logAttendanceRealization.leaves AS leaves,");
         query.append(" logAttendanceRealization.overtime AS overTime,");
         query.append(" logAttendanceRealization.permit AS permit,");
         query.append(" logAttendanceRealization.sick AS sick,");
-        query.append(" logAttendanceRealization.duty AS duty");       
-        query.append(" FROM LogWtAttendanceRealization logAttendanceRealization");        
+        query.append(" logAttendanceRealization.duty AS duty");
+        query.append(" FROM LogWtAttendanceRealization logAttendanceRealization");
         query.append(" WHERE logAttendanceRealization.wtPeriodeId = :wtPeriodId ");
-        
+
         //filter by search param
         query.append(doSearchLogWtAttendanceCalculationByParam(searchParameter));
         query.append("ORDER BY " + orderable);
-        
+
         Query hbm = getCurrentSession().createQuery(query.toString())
-        		.setParameter("wtPeriodId", wtPeriodId);
+                .setParameter("wtPeriodId", wtPeriodId);
         hbm = this.setValueQueryLogWtAttendanceCalculationByParam(hbm, searchParameter);
-        
-        return 	hbm                 
-                .setMaxResults(maxResults).setFirstResult(firstResult)                
+
+        return hbm
+                .setMaxResults(maxResults).setFirstResult(firstResult)
                 .setResultTransformer(Transformers.aliasToBean(TempAttendanceRealizationViewModel.class))
                 .list();
     }
 
     @Override
     public Long getTotalListTempAttendanceRealizationViewModelByWtPeriodId(WtAttendanceCalculationSearchParameter searchParameter, Long wtPeriodId) {
-         final StringBuilder query = new StringBuilder("SELECT COUNT(*) ");       
-         query.append(" FROM LogWtAttendanceRealization logAttendanceRealization");        
-         query.append(" WHERE logAttendanceRealization.wtPeriodeId = :wtPeriodId ");
-         
-         //filter by search param
-         query.append(doSearchLogWtAttendanceCalculationByParam(searchParameter));
-         
-          Query hbm = getCurrentSession().createQuery(query.toString())
-                        .setParameter("wtPeriodId", wtPeriodId);
-          hbm = this.setValueQueryLogWtAttendanceCalculationByParam(hbm, searchParameter);
-          
+        final StringBuilder query = new StringBuilder("SELECT COUNT(*) ");
+        query.append(" FROM LogWtAttendanceRealization logAttendanceRealization");
+        query.append(" WHERE logAttendanceRealization.wtPeriodeId = :wtPeriodId ");
+
+        //filter by search param
+        query.append(doSearchLogWtAttendanceCalculationByParam(searchParameter));
+
+        Query hbm = getCurrentSession().createQuery(query.toString())
+                .setParameter("wtPeriodId", wtPeriodId);
+        hbm = this.setValueQueryLogWtAttendanceCalculationByParam(hbm, searchParameter);
+
         return Long.valueOf(hbm.uniqueResult().toString());
     }
-    
+
     private String doSearchLogWtAttendanceCalculationByParam(WtAttendanceCalculationSearchParameter searchParameter) {
-    	StringBuilder query = new StringBuilder();
-    	
-    	if(!StringsUtils.equals(searchParameter.getNik(), null)){
-    		query.append(" AND logAttendanceRealization.empNik LIKE :nik ");
-    	}
-    	
-    	if(!StringsUtils.equals(searchParameter.getEmpName(), null)){
-    		query.append(" AND logAttendanceRealization.empName LIKE :empName ");
-    	}
-    	
-    	if(!StringsUtils.equals(searchParameter.getWtGroupWorkingName(), null)){
-    		query.append(" AND logAttendanceRealization.wtGroupWorkingName LIKE :wtGroupWorkingName  ");
-    	}    	
-    	
-    	
-    	return query.toString();
-    }
-    
-    private Query setValueQueryLogWtAttendanceCalculationByParam(Query hbm, WtAttendanceCalculationSearchParameter parameter){    	
-    	for(String param : hbm.getNamedParameters()){
-    		if(StringUtils.equals(param, "empName")){
-    			hbm.setParameter("empName", "%" + parameter.getEmpName() + "%");
-    		} else if(StringUtils.equals(param, "nik")){
-    			hbm.setParameter("nik", "%" + parameter.getNik() + "%");
-    		} else if(StringUtils.equals(param, "wtGroupWorkingName")){
-    			hbm.setParameter("wtGroupWorkingName", "%" + parameter.getWtGroupWorkingName() + "%");
-    		} 
-    	}    	
-    	return hbm;
+        StringBuilder query = new StringBuilder();
+
+        if (!StringsUtils.equals(searchParameter.getNik(), null)) {
+            query.append(" AND logAttendanceRealization.empNik LIKE :nik ");
+        }
+
+        if (!StringsUtils.equals(searchParameter.getEmpName(), null)) {
+            query.append(" AND logAttendanceRealization.empName LIKE :empName ");
+        }
+
+        if (!StringsUtils.equals(searchParameter.getWtGroupWorkingName(), null)) {
+            query.append(" AND logAttendanceRealization.wtGroupWorkingName LIKE :wtGroupWorkingName  ");
+        }
+
+        return query.toString();
     }
 
-	@Override
-	public void deleteByPeriodId(Long periodId) {
-		Query query = getCurrentSession().createQuery("DELETE FROM LogWtAttendanceRealization temp WHERE temp.wtPeriodeId = :periodId")
-				.setLong("periodId", periodId);
+    private Query setValueQueryLogWtAttendanceCalculationByParam(Query hbm, WtAttendanceCalculationSearchParameter parameter) {
+        for (String param : hbm.getNamedParameters()) {
+            if (StringUtils.equals(param, "empName")) {
+                hbm.setParameter("empName", "%" + parameter.getEmpName() + "%");
+            } else if (StringUtils.equals(param, "nik")) {
+                hbm.setParameter("nik", "%" + parameter.getNik() + "%");
+            } else if (StringUtils.equals(param, "wtGroupWorkingName")) {
+                hbm.setParameter("wtGroupWorkingName", "%" + parameter.getWtGroupWorkingName() + "%");
+            }
+        }
+        return hbm;
+    }
+
+    @Override
+    public void deleteByPeriodId(Long periodId) {
+        Query query = getCurrentSession().createQuery("DELETE FROM LogWtAttendanceRealization temp WHERE temp.wtPeriodeId = :periodId")
+                .setLong("periodId", periodId);
         query.executeUpdate();
-		
-	}
 
-	@Override
-	public List<LogWtAttendanceRealization> getAllDataByPeriodId(Long wtPeriodId) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("wtPeriodeId", wtPeriodId));
-		return criteria.list();
-	}
+    }
 
-	@Override
-	public List<LogWtAttendanceRealization> getAllDataByParam(LogWtAttendanceRealizationModel model, int firstResult, int maxResults, Order orderable) {
-		
-		
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.ge("periodeDateStart", model.getStartPeriod()));
-		criteria.add(Restrictions.lt("periodeDateEnd", model.getEndPeriod()));
-		if(model.getListDeptName() != null){
-			criteria.add(Restrictions.in("empDepartementName", model.getListDeptName()));
-		}
-		if(model.getListGolJabName() != null){
-			criteria.add(Restrictions.in("empGolJab", model.getListGolJabName()));
-		}
-		criteria.addOrder(orderable);
+    @Override
+    public List<LogWtAttendanceRealization> getAllDataByPeriodId(Long wtPeriodId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("wtPeriodeId", wtPeriodId));
+        return criteria.list();
+    }
+
+    @Override
+    public List<LogWtAttendanceRealization> getAllDataByParam(LogWtAttendanceRealizationModel model, int firstResult, int maxResults, Order orderable) {
+
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+//		criteria.add(Restrictions.ge("periodeDateStart", model.getStartPeriod()));
+//		criteria.add(Restrictions.lt("periodeDateEnd", model.getEndPeriod()));
+        if (model.getWtPeriodeId() != null) {
+            criteria.add(Restrictions.eq("wtPeriodeId", model.getWtPeriodeId()));
+        }
+
+        if (model.getListDeptName() != null && model.getListDeptName().size() > 0) {
+            criteria.add(Restrictions.in("empDepartementName", model.getListDeptName()));
+        }
+
+        if (model.getListDeptName() != null && model.getListGolJabName().size() > 0) {
+            criteria.add(Restrictions.in("empGolJab", model.getListGolJabName()));
+        }
+//        if (model.getListGolJabName() != null) {
+//            criteria.add(Restrictions.in("empGolJab", model.getListGolJabName()));
+//        }
+        criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
-		return criteria.list();
-	}
+        return criteria.list();
+    }
 
-	@Override
-	public Long getTotalDataByParam(LogWtAttendanceRealizationModel model) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.ge("periodeDateStart", model.getStartPeriod()));
-		criteria.add(Restrictions.lt("periodeDateEnd", model.getEndPeriod()));
-		if(model.getListDeptName() != null){
-			criteria.add(Restrictions.in("empDepartementName", model.getListDeptName()));
-		}
-		if(model.getListGolJabName() != null){
-			criteria.add(Restrictions.in("empGolJab", model.getListGolJabName()));
-		}
-		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-	}
+    @Override
+    public Long getTotalDataByParam(LogWtAttendanceRealizationModel model) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+//        criteria.add(Restrictions.ge("periodeDateStart", model.getStartPeriod()));
+//        criteria.add(Restrictions.lt("periodeDateEnd", model.getEndPeriod()));
+//        criteria.add(Restrictions.eq("wtPeriodeId", model.getWtPeriodeId()));
+        System.out.println(" daftar nama dep" + model.getListDeptName());
+        if (model.getWtPeriodeId() != null) {
+            criteria.add(Restrictions.eq("wtPeriodeId", model.getWtPeriodeId()));
+        }
 
+        if (model.getListDeptName() != null && model.getListDeptName().size() > 0) {
+            criteria.add(Restrictions.in("empDepartementName", model.getListDeptName()));
+        }
+        if (model.getListDeptName() != null && model.getListGolJabName().size() > 0) {
+            criteria.add(Restrictions.in("empGolJab", model.getListGolJabName()));
+        }
+//        if (model.getListGolJabName() != null) {
+//            criteria.add(Restrictions.in("empGolJab", model.getListGolJabName()));
+//        }
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
 
 }

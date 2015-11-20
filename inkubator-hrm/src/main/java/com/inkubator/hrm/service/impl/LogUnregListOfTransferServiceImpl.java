@@ -18,6 +18,7 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.LogUnregListOfTransferDao;
 import com.inkubator.hrm.dao.PayReceiverBankAccountDao;
+import com.inkubator.hrm.entity.Bank;
 import com.inkubator.hrm.entity.LogUnregListOfTransfer;
 import com.inkubator.hrm.entity.PayReceiverBankAccount;
 import com.inkubator.hrm.entity.TempUnregPayroll;
@@ -287,7 +288,13 @@ public class LogUnregListOfTransferServiceImpl extends IServiceImpl implements L
 			logUnregListOfTransfer.setDepartmentId(tempUnregPayroll.getEmpData().getJabatanByJabatanId().getDepartment().getId());
 			logUnregListOfTransfer.setDepartmentName(tempUnregPayroll.getEmpData().getJabatanByJabatanId().getDepartment().getDepartmentName());
 			logUnregListOfTransfer.setBankId(payReceiverBankAccount.getBioBankAccount().getBank().getId());
-			logUnregListOfTransfer.setBankName(payReceiverBankAccount.getBioBankAccount().getBank().getBankName());
+			
+			// di looping untuk mendapatkan nama parent BANK -nya, contoh Bank BCA Cabang Kalimalang, maka result nya adalah Bank BCA
+			Bank bank = payReceiverBankAccount.getBioBankAccount().getBank();
+			while (bank.getBank() != null) {
+				bank = bank.getBank();
+			}
+			logUnregListOfTransfer.setBankName(bank.getBankName());
 			logUnregListOfTransfer.setAccountName(payReceiverBankAccount.getBioBankAccount().getOwnerName());
 			logUnregListOfTransfer.setAccountNumber(payReceiverBankAccount.getBioBankAccount().getAccountNumber());
 			logUnregListOfTransfer.setTransferPercent(payReceiverBankAccount.getPersen());

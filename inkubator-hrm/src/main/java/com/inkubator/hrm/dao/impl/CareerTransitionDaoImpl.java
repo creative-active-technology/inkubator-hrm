@@ -1,0 +1,63 @@
+package com.inkubator.hrm.dao.impl;
+
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+
+import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.dao.CareerTransitionDao;
+import com.inkubator.hrm.entity.CarreerTransition;
+import com.inkubator.hrm.web.search.CareerTransitionSearchParameter;
+
+@Repository(value = "careerTransitionDao")
+@Lazy
+public class CareerTransitionDaoImpl extends IDAOImpl<CarreerTransition> implements CareerTransitionDao{
+
+	@Override
+	public Class<CarreerTransition> getEntityClass() {
+		return CarreerTransition.class;
+	}
+	
+	@Override
+	public List<CarreerTransition> getByParam(CareerTransitionSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		doSearchByParam(searchParameter, criteria);
+        criteria.addOrder(orderable);
+        criteria.setFirstResult(firstResult);
+        criteria.setMaxResults(maxResults);
+        return criteria.list();
+	}
+
+	@Override
+	public Long getTotalByParam(CareerTransitionSearchParameter searchParameter) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		doSearchByParam(searchParameter, criteria);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+
+	@Override
+	public CarreerTransition getEntityByPKWithDetail(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void doSearchByParam(CareerTransitionSearchParameter searchParameter, Criteria criteria){
+		if (searchParameter.getTransitionCode()!= null) {
+            criteria.add(Restrictions.like("transitionCode", searchParameter.getTransitionCode(), MatchMode.ANYWHERE));
+        }
+        if (searchParameter.getTransitionName() != null) {
+            criteria.add(Restrictions.like("transitionName", searchParameter.getTransitionName(), MatchMode.ANYWHERE));
+        }
+        if (searchParameter.getTransitionRole() != null) {
+            criteria.add(Restrictions.like("transitionRole", searchParameter.getTransitionRole(), MatchMode.ANYWHERE));
+        }
+        criteria.add(Restrictions.isNotNull("id"));
+	}
+
+}

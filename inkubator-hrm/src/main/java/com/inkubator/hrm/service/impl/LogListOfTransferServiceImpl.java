@@ -18,6 +18,7 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.LogListOfTransferDao;
 import com.inkubator.hrm.dao.PayReceiverBankAccountDao;
+import com.inkubator.hrm.entity.Bank;
 import com.inkubator.hrm.entity.LogListOfTransfer;
 import com.inkubator.hrm.entity.PayReceiverBankAccount;
 import com.inkubator.hrm.entity.PayTempKalkulasi;
@@ -281,7 +282,13 @@ public class LogListOfTransferServiceImpl extends IServiceImpl implements LogLis
 			logListOfTransfer.setDepartmentId(payTempKalkulasi.getEmpData().getJabatanByJabatanId().getDepartment().getId());
 			logListOfTransfer.setDepartmentName(payTempKalkulasi.getEmpData().getJabatanByJabatanId().getDepartment().getDepartmentName());
 			logListOfTransfer.setBankId(payReceiverBankAccount.getBioBankAccount().getBank().getId());
-			logListOfTransfer.setBankName(payReceiverBankAccount.getBioBankAccount().getBank().getBankName());
+			
+			// di looping untuk mendapatkan nama parent BANK -nya, contoh Bank BCA Cabang Kalimalang, maka result nya adalah Bank BCA
+			Bank bank = payReceiverBankAccount.getBioBankAccount().getBank();
+			while(bank.getBank() != null){
+				bank = bank.getBank(); 
+			}
+			logListOfTransfer.setBankName(bank.getBankName());
 			logListOfTransfer.setAccountName(payReceiverBankAccount.getBioBankAccount().getOwnerName());
 			logListOfTransfer.setAccountNumber(payReceiverBankAccount.getBioBankAccount().getAccountNumber());
 			logListOfTransfer.setTransferPercent(payReceiverBankAccount.getPersen());
