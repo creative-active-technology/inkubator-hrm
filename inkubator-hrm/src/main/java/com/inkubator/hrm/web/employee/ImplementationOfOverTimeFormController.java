@@ -6,6 +6,8 @@ package com.inkubator.hrm.web.employee;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -224,7 +226,9 @@ public class ImplementationOfOverTimeFormController extends BaseController {
             }
             
         } catch (BussinessException ex) { 
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        	ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messages.getString("global.error"), ex.getMessage());
+            FacesUtil.getFacesContext().addMessage(null, msg); 
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }

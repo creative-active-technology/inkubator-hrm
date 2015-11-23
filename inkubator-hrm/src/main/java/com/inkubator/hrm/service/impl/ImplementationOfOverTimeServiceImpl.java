@@ -496,7 +496,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
             }
         } else {
         	System.out.println("masuk jadwalKaryawan == null");
-            throw new BussinessException("implementationovertime.your_implementation_date_far");
+            throw new BussinessException("implementationovertime.employee_working_schedule_has_not_been_created", new SimpleDateFormat("dd MMMM yyyy").format(entity.getImplementationDate()));
         }
 
         
