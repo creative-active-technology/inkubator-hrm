@@ -552,6 +552,11 @@ public class HRMConstant {
     public static final String SELECTION_APPLICANT_PASSED_STATUS_PENDING = "PENDING";
     public static final String SELECTION_APPLICANT_PASSED_STATUS_EMPLOYEMENT = "EMPLOYEMENT";
     public static final String SELECTION_APPLICANT_PASSED_STATUS_OFFERING_REJECT = "OFFERING_REJECT";
-   
+
+    /* Constant for Career Role Transition */
+    public static final Integer CAREER_EMPLOYEE_STATUS = 1;
+    public static final Integer CAREER_TERMINATION_TYPE = 2;
+    public static final Integer CAREER_TRANSITION = 3;
+    
     /* END */
 }
