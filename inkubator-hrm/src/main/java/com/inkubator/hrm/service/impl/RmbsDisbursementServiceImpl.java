@@ -49,6 +49,7 @@ import com.inkubator.hrm.entity.TransactionCodefication;
 import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.RmbsDisbursementService;
 import com.inkubator.hrm.util.KodefikasiUtil;
+import com.inkubator.hrm.web.search.RmbsDisbursementSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
 
@@ -306,6 +307,7 @@ public class RmbsDisbursementServiceImpl extends BaseApprovalServiceImpl impleme
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void rejected(long approvalActivityId, String comment) throws Exception {
 		Map<String, Object> result = super.rejectedAndCheckNextApproval(approvalActivityId, comment);
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
@@ -330,6 +332,7 @@ public class RmbsDisbursementServiceImpl extends BaseApprovalServiceImpl impleme
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void diverted(long approvalActivityId) throws Exception {
 		Map<String, Object> result = super.divertedAndCheckNextApproval(approvalActivityId);
         ApprovalActivity appActivity = (ApprovalActivity) result.get("approvalActivity");
@@ -435,10 +438,7 @@ public class RmbsDisbursementServiceImpl extends BaseApprovalServiceImpl impleme
 			disbursement.setCode(code);            
             
 			rmbsDisbursementDao.save(disbursement);			
-			if(approvalStatus == HRMConstant.RMBS_DISBURSEMENT_STATUS_APPROVED){
-				//update rmbs application dan relasinya, hanya jika di approved
-				this.updateApplicationAndRelations(listRmbsApplicationId, disbursement);
-			}
+			this.updateApplicationAndRelations(listRmbsApplicationId, disbursement);
 			
             message = "success_without_approval";
             
@@ -496,7 +496,8 @@ public class RmbsDisbursementServiceImpl extends BaseApprovalServiceImpl impleme
 				throw new BussinessException("rmbs_disbursement.error_application_status_is_not_valid");
 			}
 			
-			application.setApplicationStatus(HRMConstant.RMBS_APPLICATION_STATUS_DISBURSED);
+			application.setApplicationStatus(disbursement.getStatus().equals(HRMConstant.RMBS_DISBURSEMENT_STATUS_APPROVED) ? 
+					HRMConstant.RMBS_APPLICATION_STATUS_DISBURSED : HRMConstant.RMBS_APPLICATION_STATUS_DISBURSED_REJECTED);
 			application.setUpdatedBy(UserInfoUtil.getUserName());
 			application.setUpdatedOn(new Date());
 			rmbsApplicationDao.update(application);
@@ -529,6 +530,20 @@ public class RmbsDisbursementServiceImpl extends BaseApprovalServiceImpl impleme
 		detail.append("Tanggal pencairan  " + dateFormat.format(entity.getDisbursementDate()) + ". ");
 		detail.append("Periode " + dateFormat.format(entity.getPayrollPeriodDate()));
 		return detail.toString();
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<RmbsApplicationDisbursement> getByParam(RmbsDisbursementSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception {
+		// TODO Auto-generated method stub
+		return rmbsApplicationDisbursementDao.getByParam(parameter, firstResult, maxResults, orderable);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByParam(RmbsDisbursementSearchParameter parameter) throws Exception {
+		// TODO Auto-generated method stub
+		return rmbsApplicationDisbursementDao.getTotalByParam(parameter);
 	}
 
 }
