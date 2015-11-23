@@ -16,6 +16,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.CareerEmpStatus;
@@ -63,7 +65,16 @@ public class CareerTransitionFormController extends BaseController {
         	careerTransitionModel = new CareerTransitionModel();
         	dropDownSystemLetterReference = new TreeMap<String, Long>();
         	isUpdate = Boolean.FALSE;
+        	String careerTransitionId = FacesUtil.getRequestParameter("execution");
         	try {
+        		if(StringUtils.isNotEmpty(careerTransitionId)){
+        			CareerTransition careerTransition = careerTransitionService.getEntityByPKWithDetail(Long.valueOf(careerTransitionId.substring(1)));
+        			if(careerTransition != null){
+        				careerTransitionModel = getModelFromEntity(careerTransition);
+        				doChangeRoleTransition();
+        				isUpdate = Boolean.TRUE;
+        			}
+        		}
 				List<SystemLetterReference> listSystemLetterReference = systemLetterReferenceService.getAllData();
 				for(SystemLetterReference systemLetterReference : listSystemLetterReference){
 					dropDownSystemLetterReference.put(systemLetterReference.getName(), systemLetterReference.getId());
@@ -119,7 +130,7 @@ public class CareerTransitionFormController extends BaseController {
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
-            return "/protected/reference/city_detail.htm?faces-redirect=true&execution=e" + careerTransition.getId();
+            return "/protected/career/career_transition_view.htm?faces-redirect=true&execution=e" + careerTransition.getId();
         } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
@@ -128,19 +139,38 @@ public class CareerTransitionFormController extends BaseController {
         return null;
     }
     
-    public void doTest2(){
-    	System.out.println("do test aja");
+    public String doBack(){
+    	return "/protected/career/career_transition_view.htm?faces-redirect=true";
     }
     
-    public void doHehe(){
-    	System.out.println("do heheheh");
+    public CareerTransitionModel getModelFromEntity(CareerTransition careerTransition){
+    	careerTransitionModel.setId(careerTransition.getId());
+    	CareerTransitionModel careerTransitionModel = new CareerTransitionModel();
+    	careerTransitionModel.setDescription(careerTransition.getDescription());
+    	careerTransitionModel.setSystemLetterReferenceId(careerTransition.getSystemLetterReference().getId());
+    	careerTransitionModel.setTransitionCode(careerTransition.getTransitionCode());
+    	careerTransitionModel.setTransitionName(careerTransition.getTransitionName());
+    	careerTransitionModel.setRoleTransitionId(careerTransition.getTransitionRole());
+    	if(careerTransition.getTransitionRole() == HRMConstant.CAREER_EMPLOYEE_STATUS){
+    		careerTransitionModel.setRoleTransitionDetailId(careerTransition.getCareerEmpStatus().getId());
+    	}else if(careerTransition.getTransitionRole() == HRMConstant.CAREER_TERMINATION_TYPE){
+    		careerTransitionModel.setRoleTransitionDetailId(careerTransition.getCareerTerminationType().getId());
+    	}else if(careerTransition.getTransitionRole() == HRMConstant.CAREER_TRANSITION){
+    		careerTransitionModel.setRoleTransitionDetailId(careerTransition.getSystemCareerConst().getId());
+    	}
+    	
+    	return careerTransitionModel;
     }
     
     public CareerTransition getEntityFromViewModel(CareerTransitionModel careerTransitionModel){
     	CareerTransition careerTransition = new CareerTransition();
+    	if(careerTransitionModel.getId() != null){
+			careerTransition.setId(careerTransitionModel.getId());
+    	}
     	careerTransition.setTransitionName(careerTransitionModel.getTransitionName());
     	careerTransition.setTransitionCode(careerTransitionModel.getTransitionCode());
-    	careerTransition.setRoleTransition(careerTransitionModel.getRoleTransitionId());
+    	careerTransition.setTransitionRole(careerTransitionModel.getRoleTransitionId());
+    	System.out.println(careerTransitionModel.getRoleTransitionDetailId() + " model update");
     	if(careerTransitionModel.getRoleTransitionId() == HRMConstant.CAREER_EMPLOYEE_STATUS){
     		careerTransition.setCareerEmpStatus(new CareerEmpStatus(careerTransitionModel.getRoleTransitionDetailId()));
     	}else if(careerTransitionModel.getRoleTransitionId() == HRMConstant.CAREER_TERMINATION_TYPE){

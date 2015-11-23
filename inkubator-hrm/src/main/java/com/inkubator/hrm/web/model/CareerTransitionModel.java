@@ -3,6 +3,7 @@ package com.inkubator.hrm.web.model;
 import java.io.Serializable;
 
 public class CareerTransitionModel implements Serializable {
+	private Long id;
 	private Integer roleTransitionId;
 	private Long roleTransitionDetailId;
 	private String transitionCode;
@@ -11,6 +12,12 @@ public class CareerTransitionModel implements Serializable {
 	private Long systemLetterReferenceId;
 	
 	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public Integer getRoleTransitionId() {
 		return roleTransitionId;
 	}

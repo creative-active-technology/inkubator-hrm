@@ -39,26 +39,25 @@ public class CareerTransition implements java.io.Serializable {
      private SystemCareerConst systemCareerConst;
      private String transitionCode;
      private String transitionName;
-     private String transitionRole;
+     private Integer transitionRole;
      private Date createdOn;
      private String createdBy;
      private String updatedBy;
      private Date updatedOn;
      private String description;
      private SystemLetterReference systemLetterReference;
-     private Integer roleTransition;
 
     public CareerTransition() {
     }
 
 	
-    public CareerTransition(Long id, String transitionCode, String transitionName, String transitionRole) {
+    public CareerTransition(Long id, String transitionCode, String transitionName, Integer transitionRole) {
         this.id = id;
         this.transitionCode = transitionCode;
         this.transitionName = transitionName;
         this.transitionRole = transitionRole;
     }
-    public CareerTransition(Long id, CareerEmpStatus careerEmpStatus, CareerTerminationType careerTerminationType, SystemCareerConst systemCareerConst, String transitionCode, String transitionName, String transitionRole, Date createdOn, String createdBy, String updatedBy, Date updatedOn) {
+    public CareerTransition(Long id, CareerEmpStatus careerEmpStatus, CareerTerminationType careerTerminationType, SystemCareerConst systemCareerConst, String transitionCode, String transitionName, Integer transitionRole, Date createdOn, String createdBy, String updatedBy, Date updatedOn) {
        this.id = id;
        this.careerEmpStatus = careerEmpStatus;
        this.careerTerminationType = careerTerminationType;
@@ -110,7 +109,7 @@ public class CareerTransition implements java.io.Serializable {
         return this.careerTerminationType;
     }
     
-    public void setCareerTerminationType(CareerTerminationType carreerTerminationType) {
+    public void setCareerTerminationType(CareerTerminationType careerTerminationType) {
         this.careerTerminationType = careerTerminationType;
     }
 
@@ -146,11 +145,11 @@ public class CareerTransition implements java.io.Serializable {
 
     
     @Column(name="transition_role", nullable=false, length=11)
-    public String getTransitionRole() {
+    public Integer getTransitionRole() {
         return this.transitionRole;
     }
     
-    public void setTransitionRole(String transitionRole) {
+    public void setTransitionRole(Integer transitionRole) {
         this.transitionRole = transitionRole;
     }
 
@@ -216,15 +215,6 @@ public class CareerTransition implements java.io.Serializable {
 	}
 
 
-	@Transient
-	public Integer getRoleTransition() {
-		return roleTransition;
-	}
-
-
-	public void setRoleTransition(Integer roleTransition) {
-		this.roleTransition = roleTransition;
-	}
 
 
 }

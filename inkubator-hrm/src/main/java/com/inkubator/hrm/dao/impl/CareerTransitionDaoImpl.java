@@ -3,6 +3,7 @@ package com.inkubator.hrm.dao.impl;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.CareerTransitionDao;
 import com.inkubator.hrm.entity.CareerTransition;
+import com.inkubator.hrm.entity.ReimbursmentSchema;
 import com.inkubator.hrm.web.search.CareerTransitionSearchParameter;
 
 @Repository(value = "careerTransitionDao")
@@ -43,8 +45,13 @@ public class CareerTransitionDaoImpl extends IDAOImpl<CareerTransition> implemen
 
 	@Override
 	public CareerTransition getEntityByPKWithDetail(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("careerEmpStatus", FetchMode.JOIN);
+        criteria.setFetchMode("careerTerminationType", FetchMode.JOIN);
+        criteria.setFetchMode("systemCareerConst", FetchMode.JOIN);
+        criteria.setFetchMode("systemLetterReference", FetchMode.JOIN);
+        return (CareerTransition) criteria.uniqueResult();
 	}
 	
 	public void doSearchByParam(CareerTransitionSearchParameter searchParameter, Criteria criteria){

@@ -26,9 +26,9 @@ public class SystemCareerConst implements java.io.Serializable {
 
 
      private Long id;
-     private String const_;
-     private String desc;
-     private Byte isWork;
+     private String constant;
+     private String description;
+     private Boolean isWork;
      private String name;
      private Set<CareerTransition> careerTransitions = new HashSet<CareerTransition>(0);
 
@@ -39,10 +39,10 @@ public class SystemCareerConst implements java.io.Serializable {
     public SystemCareerConst(Long id) {
         this.id = id;
     }
-    public SystemCareerConst(Long id, String const_, String desc, Byte isWork, String name, Set<CareerTransition> careerTransitions) {
+    public SystemCareerConst(Long id, String constant, String description, Boolean isWork, String name, Set<CareerTransition> careerTransitions) {
        this.id = id;
-       this.const_ = const_;
-       this.desc = desc;
+       this.constant = constant;
+       this.description = description;
        this.isWork = isWork;
        this.name = name;
        this.careerTransitions = careerTransitions;
@@ -61,32 +61,34 @@ public class SystemCareerConst implements java.io.Serializable {
     }
 
     
-    @Column(name="const", length=45)
-    public String getConst_() {
-        return this.const_;
-    }
-    
-    public void setConst_(String const_) {
-        this.const_ = const_;
-    }
+    @Column(name="constant", length=45)
+    public String getConstant() {
+		return constant;
+	}
+
+
+	public void setConstant(String constant) {
+		this.constant = constant;
+	}
 
     
-    @Column(name="desc")
-    public String getDesc() {
-        return this.desc;
-    }
-    
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
+	@Column(name = "description", length = 65535, columnDefinition = "Text")
+    public String getDescription() {
+		return description;
+	}
 
-    
-    @Column(name="is_work")
-    public Byte getIsWork() {
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+
+	@Column(name="is_work")
+    public Boolean getIsWork() {
         return this.isWork;
     }
     
-    public void setIsWork(Byte isWork) {
+    public void setIsWork(Boolean isWork) {
         this.isWork = isWork;
     }
 

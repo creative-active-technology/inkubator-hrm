@@ -1,5 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -18,10 +19,10 @@ import com.inkubator.hrm.dao.CareerTerminationTypeDao;
 import com.inkubator.hrm.dao.CareerTransitionDao;
 import com.inkubator.hrm.dao.SystemCareerConstDao;
 import com.inkubator.hrm.dao.SystemLetterReferenceDao;
-import com.inkubator.hrm.entity.CareerEmpStatus;
 import com.inkubator.hrm.entity.CareerTransition;
 import com.inkubator.hrm.service.CareerTransitionService;
 import com.inkubator.hrm.web.search.CareerTransitionSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 @Service(value = "careerTransitionService")
 @Lazy
@@ -61,20 +62,38 @@ public class CareerTransitionServiceImpl extends IServiceImpl implements CareerT
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(CareerTransition entity) throws Exception {
 		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-		if(entity.getRoleTransition() == HRMConstant.CAREER_EMPLOYEE_STATUS){
+		if(entity.getTransitionRole() == HRMConstant.CAREER_EMPLOYEE_STATUS){
 			entity.setCareerEmpStatus(careerEmpTypeDao.getEntiyByPK(entity.getCareerEmpStatus().getId()));
-		}else if(entity.getRoleTransition() == HRMConstant.CAREER_TERMINATION_TYPE){
+		}else if(entity.getTransitionRole() == HRMConstant.CAREER_TERMINATION_TYPE){
 			entity.setCareerTerminationType(careerTerminationTypeDao.getEntiyByPK(entity.getCareerTerminationType().getId()));
-    	}else if(entity.getRoleTransition() == HRMConstant.CAREER_TRANSITION){
+    	}else if(entity.getTransitionRole() == HRMConstant.CAREER_TRANSITION){
     		entity.setSystemCareerConst(systemCareerConstDao.getEntiyByPK(entity.getSystemCareerConst().getId()));
     	}
 		entity.setSystemLetterReference(systemLetterReferenceDao.getEntiyByPK(entity.getSystemLetterReference().getId()));
+		entity.setCreatedBy(UserInfoUtil.getUserName());
+		entity.setCreatedOn(new Date());
 		careerTransitionDao.save(entity);
 	}
 	
 	@Override
-	public void update(CareerTransition entity) throws Exception {
-		// TODO Auto-generated method stub
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void update(CareerTransition entity) throws Exception {
+		CareerTransition careerTransition = careerTransitionDao.getEntityByPKWithDetail(entity.getId());
+		if(entity.getTransitionRole() == HRMConstant.CAREER_EMPLOYEE_STATUS){
+			careerTransition.setCareerEmpStatus(careerEmpTypeDao.getEntiyByPK(entity.getCareerEmpStatus().getId()));
+		}else if(entity.getTransitionRole() == HRMConstant.CAREER_TERMINATION_TYPE){
+			careerTransition.setCareerTerminationType(careerTerminationTypeDao.getEntiyByPK(entity.getCareerTerminationType().getId()));
+    	}else if(entity.getTransitionRole() == HRMConstant.CAREER_TRANSITION){
+    		careerTransition.setSystemCareerConst(systemCareerConstDao.getEntiyByPK(entity.getSystemCareerConst().getId()));
+    	}
+		careerTransition.setTransitionRole(entity.getTransitionRole());
+		careerTransition.setSystemLetterReference(systemLetterReferenceDao.getEntiyByPK(entity.getSystemLetterReference().getId()));
+		careerTransition.setTransitionCode(entity.getTransitionCode());
+		careerTransition.setTransitionName(entity.getTransitionName());
+		careerTransition.setDescription(entity.getDescription());
+		careerTransition.setUpdatedBy(UserInfoUtil.getUserName());
+		careerTransition.setUpdatedOn(new Date());
+		careerTransitionDao.save(careerTransition);
 		
 	}
 

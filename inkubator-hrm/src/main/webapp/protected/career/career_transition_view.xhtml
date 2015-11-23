@@ -45,7 +45,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Saving_Type"/>
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Career_Transition"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.add']}" action="#{careerTransitionViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
                                         <!-- <p:ajax event="dialogReturn" listener="#{savingTypeViewController.onDialogReturn}"  update="tableId, growlId"/> -->
@@ -77,9 +77,9 @@
                             </p:column>
                             <p:column sortBy="#{data.name}" style="width: 43%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['global.transitionName']}"/>
+                                    <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.name}" />
+                                <h:outputLabel value= "#{data.transitionName}" />
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
@@ -95,14 +95,14 @@
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
-                                                  action="#{savingTypeViewController.doEdit()}" >
-                                    <f:setPropertyActionListener value="#{data}" target="#{savingTypeViewController.selected}" />
-                                    <p:ajax event="dialogReturn" listener="#{savingTypeViewController.onDialogReturn}"  update="tableId, :formId:growlId"/>
+                                                  action="#{careerTransitionViewController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{careerTransitionViewController.selectedCareerTransition}" />
+                                    <!-- <p:ajax event="dialogReturn" listener="#{savingTypeViewController.onDialogReturn}"  update="tableId, :formId:growlId"/> -->
                                 </p:commandButton> 
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{savingTypeViewController.lazy.rowCount}"/>
+                                <p:outputLabel value="#{careerTransitionViewController.lazyDataModel.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
