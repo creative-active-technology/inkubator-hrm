@@ -13,7 +13,7 @@ import javax.faces.bean.ViewScoped;
 
 import org.primefaces.model.LazyDataModel;
 
-import com.inkubator.hrm.entity.CarreerTransition;
+import com.inkubator.hrm.entity.CareerTransition;
 import com.inkubator.hrm.service.CareerTransitionService;
 import com.inkubator.hrm.web.lazymodel.CareerTransitionLazyDataModel;
 import com.inkubator.hrm.web.search.CareerTransitionSearchParameter;
@@ -28,8 +28,8 @@ import com.inkubator.webcore.controller.BaseController;
 public class CareerTransitionViewController extends BaseController{
 	
 	private CareerTransitionSearchParameter searchParameter;
-    private LazyDataModel<CarreerTransition> lazyDataModel;
-    private CarreerTransition selectedCareerTransition;
+    private LazyDataModel<CareerTransition> lazyDataModel;
+    private CareerTransition selectedCareerTransition;
     @ManagedProperty(value = "#{careerTransitionService}")
     private CareerTransitionService careerTransitionService;
     
@@ -48,6 +48,10 @@ public class CareerTransitionViewController extends BaseController{
         selectedCareerTransition = null;
     }
 
+    public String doAdd(){
+    	return "/protected/career/career_transition_form.htm?faces-redirect=true";
+    }
+    
 	public CareerTransitionSearchParameter getSearchParameter() {
 		return searchParameter;
 	}
@@ -56,22 +60,22 @@ public class CareerTransitionViewController extends BaseController{
 		this.searchParameter = searchParameter;
 	}
 
-	public LazyDataModel<CarreerTransition> getLazyDataModel() {
+	public LazyDataModel<CareerTransition> getLazyDataModel() {
 		if (lazyDataModel == null) {
 			lazyDataModel = new CareerTransitionLazyDataModel(searchParameter, careerTransitionService);
         }
 		return lazyDataModel;
 	}
 
-	public void setLazyDataModel(LazyDataModel<CarreerTransition> lazyDataModel) {
+	public void setLazyDataModel(LazyDataModel<CareerTransition> lazyDataModel) {
 		this.lazyDataModel = lazyDataModel;
 	}
 
-	public CarreerTransition getSelectedCareerTransition() {
+	public CareerTransition getSelectedCareerTransition() {
 		return selectedCareerTransition;
 	}
 
-	public void setSelectedCareerTransition(CarreerTransition selectedCareerTransition) {
+	public void setSelectedCareerTransition(CareerTransition selectedCareerTransition) {
 		this.selectedCareerTransition = selectedCareerTransition;
 	}
 

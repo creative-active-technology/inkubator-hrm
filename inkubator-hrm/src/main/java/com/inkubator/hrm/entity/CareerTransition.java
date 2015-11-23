@@ -5,7 +5,9 @@
  */
 package com.inkubator.hrm.entity;
 
+import java.beans.Transient;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,18 +25,18 @@ import javax.persistence.Version;
  * @author Deni
  */
 @Entity
-@Table(name="carreer_transition"
+@Table(name="career_transition"
     ,catalog="hrm"
     , uniqueConstraints = {@UniqueConstraint(columnNames="transition_code"), @UniqueConstraint(columnNames="transition_name")} 
 )
-public class CarreerTransition implements java.io.Serializable {
+public class CareerTransition implements java.io.Serializable {
 
 
-     private int id;
+     private Long id;
      private Integer version;
-     private CarreerEmpStatus carreerEmpStatus;
-     private CarreerTerminationType carreerTerminationType;
-     private SystemCarreerConst systemCarreerConst;
+     private CareerEmpStatus careerEmpStatus;
+     private CareerTerminationType careerTerminationType;
+     private SystemCareerConst systemCareerConst;
      private String transitionCode;
      private String transitionName;
      private String transitionRole;
@@ -42,22 +44,25 @@ public class CarreerTransition implements java.io.Serializable {
      private String createdBy;
      private String updatedBy;
      private Date updatedOn;
+     private String description;
+     private SystemLetterReference systemLetterReference;
+     private Integer roleTransition;
 
-    public CarreerTransition() {
+    public CareerTransition() {
     }
 
 	
-    public CarreerTransition(int id, String transitionCode, String transitionName, String transitionRole) {
+    public CareerTransition(Long id, String transitionCode, String transitionName, String transitionRole) {
         this.id = id;
         this.transitionCode = transitionCode;
         this.transitionName = transitionName;
         this.transitionRole = transitionRole;
     }
-    public CarreerTransition(int id, CarreerEmpStatus carreerEmpStatus, CarreerTerminationType carreerTerminationType, SystemCarreerConst systemCarreerConst, String transitionCode, String transitionName, String transitionRole, Date createdOn, String createdBy, String updatedBy, Date updatedOn) {
+    public CareerTransition(Long id, CareerEmpStatus careerEmpStatus, CareerTerminationType careerTerminationType, SystemCareerConst systemCareerConst, String transitionCode, String transitionName, String transitionRole, Date createdOn, String createdBy, String updatedBy, Date updatedOn) {
        this.id = id;
-       this.carreerEmpStatus = carreerEmpStatus;
-       this.carreerTerminationType = carreerTerminationType;
-       this.systemCarreerConst = systemCarreerConst;
+       this.careerEmpStatus = careerEmpStatus;
+       this.careerTerminationType = careerTerminationType;
+       this.systemCareerConst = systemCareerConst;
        this.transitionCode = transitionCode;
        this.transitionName = transitionName;
        this.transitionRole = transitionRole;
@@ -71,11 +76,11 @@ public class CarreerTransition implements java.io.Serializable {
 
     
     @Column(name="id", unique=true, nullable=false)
-    public int getId() {
+    public Long getId() {
         return this.id;
     }
     
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -90,33 +95,33 @@ public class CarreerTransition implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="carreer_emp_status_id")
-    public CarreerEmpStatus getCarreerEmpStatus() {
-        return this.carreerEmpStatus;
+    @JoinColumn(name="career_emp_status_id")
+    public CareerEmpStatus getCareerEmpStatus() {
+        return this.careerEmpStatus;
     }
     
-    public void setCarreerEmpStatus(CarreerEmpStatus carreerEmpStatus) {
-        this.carreerEmpStatus = carreerEmpStatus;
+    public void setCareerEmpStatus(CareerEmpStatus careerEmpStatus) {
+        this.careerEmpStatus = careerEmpStatus;
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="carreer_termination_type_id")
-    public CarreerTerminationType getCarreerTerminationType() {
-        return this.carreerTerminationType;
+    @JoinColumn(name="career_termination_type_id")
+   	public CareerTerminationType getCareerTerminationType() {
+        return this.careerTerminationType;
     }
     
-    public void setCarreerTerminationType(CarreerTerminationType carreerTerminationType) {
-        this.carreerTerminationType = carreerTerminationType;
+    public void setCareerTerminationType(CareerTerminationType carreerTerminationType) {
+        this.careerTerminationType = careerTerminationType;
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="system_carreer_const")
-    public SystemCarreerConst getSystemCarreerConst() {
-        return this.systemCarreerConst;
+    @JoinColumn(name="system_career_const")
+    public SystemCareerConst getSystemCareerConst() {
+        return this.systemCareerConst;
     }
     
-    public void setSystemCarreerConst(SystemCarreerConst systemCarreerConst) {
-        this.systemCarreerConst = systemCarreerConst;
+    public void setSystemCareerConst(SystemCareerConst systemCareerConst) {
+        this.systemCareerConst = systemCareerConst;
     }
 
     
@@ -189,7 +194,37 @@ public class CarreerTransition implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
+	@Column(name = "description", length = 65535, columnDefinition = "Text")
+	public String getDescription() {
+		return description;
+	}
 
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+
+	@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="system_letter_reference_id")
+	public SystemLetterReference getSystemLetterReference() {
+		return systemLetterReference;
+	}
+
+
+	public void setSystemLetterReference(SystemLetterReference systemLetterReference) {
+		this.systemLetterReference = systemLetterReference;
+	}
+
+
+	@Transient
+	public Integer getRoleTransition() {
+		return roleTransition;
+	}
+
+
+	public void setRoleTransition(Integer roleTransition) {
+		this.roleTransition = roleTransition;
+	}
 
 
 }

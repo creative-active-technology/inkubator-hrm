@@ -10,16 +10,16 @@ import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
-import com.inkubator.hrm.entity.CarreerTransition;
+import com.inkubator.hrm.entity.CareerTransition;
 import com.inkubator.hrm.entity.SavingType;
 import com.inkubator.hrm.service.CareerTransitionService;
 import com.inkubator.hrm.web.search.CareerTransitionSearchParameter;
 
-public class CareerTransitionLazyDataModel extends LazyDataModel<CarreerTransition> implements Serializable {
+public class CareerTransitionLazyDataModel extends LazyDataModel<CareerTransition> implements Serializable {
 	private static final Logger LOGGER = Logger.getLogger(CareerTransitionLazyDataModel.class);
     private final CareerTransitionSearchParameter searchParameter;
     private final CareerTransitionService careerTransitionService;
-    private List<CarreerTransition> careerTransitionList = new ArrayList<>();
+    private List<CareerTransition> careerTransitionList = new ArrayList<>();
     private Integer jumlahData;
     
 	public CareerTransitionLazyDataModel(CareerTransitionSearchParameter searchParameter, CareerTransitionService careerTransitionService) {
@@ -28,7 +28,7 @@ public class CareerTransitionLazyDataModel extends LazyDataModel<CarreerTransiti
 	}
     
 	@Override
-    public List<CarreerTransition> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+    public List<CareerTransition> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         LOGGER.info("Step Load Lazy data Model");
 
             try {
@@ -36,7 +36,7 @@ public class CareerTransitionLazyDataModel extends LazyDataModel<CarreerTransiti
                 if(sortField != null){
                     order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
                 }else{
-                    order = Order.desc("name");
+                    order = Order.desc("transitionName");
                 }
                 careerTransitionList = careerTransitionService.getByParam(searchParameter, first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(careerTransitionService.getTotalByParam(searchParameter)));
@@ -52,13 +52,13 @@ public class CareerTransitionLazyDataModel extends LazyDataModel<CarreerTransiti
     }
     
     @Override
-    public Object getRowKey(CarreerTransition carreerTransition) {
+    public Object getRowKey(CareerTransition carreerTransition) {
         return carreerTransition.getId();
     }
 
     @Override
-    public CarreerTransition getRowData(String id) {
-        for (CarreerTransition carreerTransition : careerTransitionList) {
+    public CareerTransition getRowData(String id) {
+        for (CareerTransition carreerTransition : careerTransitionList) {
             if (id.equals(String.valueOf(carreerTransition.getId()))) {
                 return carreerTransition;
             }

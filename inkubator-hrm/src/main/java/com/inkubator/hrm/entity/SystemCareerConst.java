@@ -19,44 +19,44 @@ import javax.persistence.Table;
  * @author Deni
  */
 @Entity
-@Table(name="system_carreer_const"
+@Table(name="system_career_const"
     ,catalog="hrm"
 )
-public class SystemCarreerConst implements java.io.Serializable {
+public class SystemCareerConst implements java.io.Serializable {
 
 
-     private int id;
+     private Long id;
      private String const_;
      private String desc;
      private Byte isWork;
      private String name;
-     private Set<CarreerTransition> carreerTransitions = new HashSet<CarreerTransition>(0);
+     private Set<CareerTransition> careerTransitions = new HashSet<CareerTransition>(0);
 
-    public SystemCarreerConst() {
+    public SystemCareerConst() {
     }
 
 	
-    public SystemCarreerConst(int id) {
+    public SystemCareerConst(Long id) {
         this.id = id;
     }
-    public SystemCarreerConst(int id, String const_, String desc, Byte isWork, String name, Set<CarreerTransition> carreerTransitions) {
+    public SystemCareerConst(Long id, String const_, String desc, Byte isWork, String name, Set<CareerTransition> careerTransitions) {
        this.id = id;
        this.const_ = const_;
        this.desc = desc;
        this.isWork = isWork;
        this.name = name;
-       this.carreerTransitions = carreerTransitions;
+       this.careerTransitions = careerTransitions;
     }
    
      @Id 
 
     
     @Column(name="id", unique=true, nullable=false)
-    public int getId() {
+    public Long getId() {
         return this.id;
     }
     
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -100,13 +100,13 @@ public class SystemCarreerConst implements java.io.Serializable {
         this.name = name;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="systemCarreerConst")
-    public Set<CarreerTransition> getCarreerTransitions() {
-        return this.carreerTransitions;
+@OneToMany(fetch=FetchType.LAZY, mappedBy="systemCareerConst")
+    public Set<CareerTransition> getCareerTransitions() {
+        return this.careerTransitions;
     }
     
-    public void setCarreerTransitions(Set<CarreerTransition> carreerTransitions) {
-        this.carreerTransitions = carreerTransitions;
+    public void setCareerTransitions(Set<CareerTransition> careerTransitions) {
+        this.careerTransitions = careerTransitions;
     }
 
 
