@@ -1,4 +1,4 @@
-package com.inkubator.hrm.web.organisation;
+package com.inkubator.hrm.web.career;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,27 +18,27 @@ import org.primefaces.model.LazyDataModel;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.CarreerAwardType;
-import com.inkubator.hrm.service.CarreerAwardTypeService;
-import com.inkubator.hrm.web.lazymodel.CarreerAwardTypeLazyDataModel;
-import com.inkubator.hrm.web.search.CarreerAwardTypeSearchParameter;
+import com.inkubator.hrm.entity.CareerAwardType;
+import com.inkubator.hrm.service.CareerAwardTypeService;
+import com.inkubator.hrm.web.lazymodel.CareerAwardTypeLazyDataModel;
+import com.inkubator.hrm.web.search.CareerAwardTypeSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 
-@ManagedBean(name = "carreerAwardTypeViewController")
+@ManagedBean(name = "careerAwardTypeViewController")
 @ViewScoped
-public class CarreerAwardTypeViewController extends BaseController{
-	@ManagedProperty(value = "#{carreerAwardTypeService}")
-	private CarreerAwardTypeService service;
-	private	CarreerAwardTypeSearchParameter searchParameter;
-	private LazyDataModel<CarreerAwardType> lazy;
-	private CarreerAwardType selected;
+public class CareerAwardTypeViewController extends BaseController{
+	@ManagedProperty(value = "#{careerAwardTypeService}")
+	private CareerAwardTypeService service;
+	private	CareerAwardTypeSearchParameter searchParameter;
+	private LazyDataModel<CareerAwardType> lazy;
+	private CareerAwardType selected;
 	
 	@Override
     public void initialization(){
         super.initialization();
-        searchParameter = new CarreerAwardTypeSearchParameter();
+        searchParameter = new CareerAwardTypeSearchParameter();
     }
 	
 	@PreDestroy
@@ -82,7 +82,7 @@ public class CarreerAwardTypeViewController extends BaseController{
         options.put("resizable", true);
         options.put("contentWidth", 470);
         options.put("contentHeight", 530);
-        RequestContext.getCurrentInstance().openDialog("carreer_award_form", options, params);
+        RequestContext.getCurrentInstance().openDialog("career_award_form", options, params);
     }
     
     public void doAdd(){
@@ -93,7 +93,7 @@ public class CarreerAwardTypeViewController extends BaseController{
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();
         dataIsi.add(String.valueOf(selected.getId()));
-        dataToSend.put("carreerAwardTypeId", dataIsi);
+        dataToSend.put("careerAwardTypeId", dataIsi);
         showDialog(dataToSend);
     }
     
@@ -111,38 +111,38 @@ public class CarreerAwardTypeViewController extends BaseController{
         }
     }
 
-	public CarreerAwardTypeService getService() {
+	public CareerAwardTypeService getService() {
 		return service;
 	}
 
-	public void setService(CarreerAwardTypeService service) {
+	public void setService(CareerAwardTypeService service) {
 		this.service = service;
 	}
 
-	public CarreerAwardTypeSearchParameter getSearchParameter() {
+	public CareerAwardTypeSearchParameter getSearchParameter() {
 		return searchParameter;
 	}
 
-	public void setSearchParameter(CarreerAwardTypeSearchParameter searchParameter) {
+	public void setSearchParameter(CareerAwardTypeSearchParameter searchParameter) {
 		this.searchParameter = searchParameter;
 	}
 
-	public LazyDataModel<CarreerAwardType> getLazy() {
+	public LazyDataModel<CareerAwardType> getLazy() {
 		 if(lazy == null){
-			 lazy = new CarreerAwardTypeLazyDataModel(searchParameter, service);
+			 lazy = new CareerAwardTypeLazyDataModel(searchParameter, service);
 	     }
 		return lazy;
 	}
 
-	public void setLazy(LazyDataModel<CarreerAwardType> lazy) {
+	public void setLazy(LazyDataModel<CareerAwardType> lazy) {
 		this.lazy = lazy;
 	}
 
-	public CarreerAwardType getSelected() {
+	public CareerAwardType getSelected() {
 		return selected;
 	}
 
-	public void setSelected(CarreerAwardType selected) {
+	public void setSelected(CareerAwardType selected) {
 		this.selected = selected;
 	}
     

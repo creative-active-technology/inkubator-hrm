@@ -349,8 +349,8 @@ public class PaySalaryComponentFormController extends BaseController {
         options.put("modal", false);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 460);
-        options.put("contentHeight", 450);
+        options.put("contentWidth", 670);
+        options.put("contentHeight", 510);
         RequestContext.getCurrentInstance().openDialog("pay_salary_comp_formula", options, null);
     }
 

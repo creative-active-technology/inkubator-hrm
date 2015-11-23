@@ -21,8 +21,8 @@
                         <p:graphicImage library="images" name="bank.png" height="36" width="36"  cache="true"/>
                         <h:panelGroup layout="block">
                             <h:panelGrid>
-                                <p:outputLabel value="#{appmsg['carreerawardtype.form']}" styleClass="header_big" />
-                                <p:outputLabel value="#{appmsg['carreerawardtype.carreer_award_type_from_organisation']}" styleClass="header_small_no_bold" />
+                                <p:outputLabel value="#{appmsg['careerdisciplinetype.career_discipline_type_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['careerdisciplinetype.career_discipline_type_from_career']}" styleClass="header_small_no_bold" />
                             </h:panelGrid>
                         </h:panelGroup>
                     </h:panelGrid>
@@ -35,13 +35,13 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="code" value="#{appmsg['carreerawardtype.award_type_code']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="code" value="#{appmsg['careerdisciplinetype.career_discipline_type_code']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="code" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:inputText id="code"  value="#{carreerAwardTypeFormController.model.code}"
+                                <p:inputText id="code"  value="#{careerDisciplineTypeFormController.model.code}"
                                              required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
@@ -53,13 +53,13 @@
                         
                         <p:row>
                             <p:column style="width: 40%">
-                                <p:outputLabel for="name" value="#{appmsg['carreerawardtype.award_type_name']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="name" value="#{appmsg['careerdisciplinetype.career_discipline_type_name']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="name" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:inputText id="name"  value="#{carreerAwardTypeFormController.model.name}"
+                                <p:inputText id="name"  value="#{careerDisciplineTypeFormController.model.name}"
                                              required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
                             </p:column>
                         </p:row>
@@ -71,18 +71,18 @@
                         
                         <p:row>
                             <p:column style="width: 37%">
-                                <p:outputLabel for="systemLetterReferenceId" value="#{appmsg['carreerawardtype.letter_reference']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="systemLetterReferenceId" value="#{appmsg['careerawardtype.letter_reference']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="systemLetterReferenceId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 50%">
-                                <p:selectOneMenu id="systemLetterReferenceId" value="#{carreerAwardTypeFormController.model.systemLetterReferenceByLetterTemplateId}" style="width: 210px" >
+                                <p:selectOneMenu id="systemLetterReferenceId" value="#{careerDisciplineTypeFormController.model.systemLetterReferenceId}" style="width: 210px" >
                                                 <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                                <f:selectItems value="#{carreerAwardTypeFormController.dropDownSystemLetterReference}"/>
+                                                <f:selectItems value="#{careerDisciplineTypeFormController.dropDownSystemLetterReference}"/>
                                             </p:selectOneMenu>
                             </p:column>
-                        </p:row>
+                        </p:row> 
                         <p:row>
                             <p:column colspan="3">
                                 <p:message for="systemLetterReferenceId"/>
@@ -91,50 +91,13 @@
                         
                         <p:row>
                             <p:column style="width: 37%">
-                                <p:outputLabel for="awardSourceId" value="#{appmsg['carreerawardtype.award_source']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="awardSourceId" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
-                                <p:selectOneMenu id="awardSourceId" value="#{carreerAwardTypeFormController.model.awardSource}" style="width: 210px;margin-right: 3px" >
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="Internal" itemValue="0"/>
-                                        <f:selectItem itemLabel="Eksternal" itemValue="1"/>
-                                    </p:selectOneMenu>
-                            </p:column>
-                                <p:message for="awardSourceId"/>
-                        </p:row>
-                        
-                        <p:row>
-                            <p:column style="width: 37%">
-                                <p:outputLabel for="systemLetterReferenceByCertificateLetterTemplateId" value="#{appmsg['carreerawardtype.certificate_template']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="systemLetterReferenceByCertificateLetterTemplateId" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 50%">
-                                <p:selectOneMenu id="systemLetterReferenceByCertificateLetterTemplateId" value="#{carreerAwardTypeFormController.model.systemLetterReferenceByCertificateLetterTemplateId}" style="width: 210px" >
-                                                <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                                <f:selectItems value="#{carreerAwardTypeFormController.dropDownSystemLetterReference}"/>
-                                            </p:selectOneMenu>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="systemLetterReferenceByCertificateLetterTemplateId"/>
-                            </p:column>
-                        </p:row>
-                        
-                        <p:row>
-                            <p:column style="width: 37%">
-                                <p:outputLabel for="validity" value="#{appmsg['carreerawardtype.validity']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="validity" value="#{appmsg['careerawardtype.validity']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="validity" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">                                
-                                <p:spinner id="validity" required="true" value="#{carreerAwardTypeFormController.model.validity}" size="3" min="0" stepFactor="1" max="60" styleClass="isitext_hrm" />                                
+                                <p:spinner id="validity" required="true" value="#{careerDisciplineTypeFormController.model.validity}" size="3" min="0" stepFactor="1" max="60" styleClass="isitext_hrm" />                                
                                  <h:outputLabel  value="  #{appmsg['global.month']}" styleClass="label_hrm"/>
                             </p:column>
                           
@@ -147,13 +110,13 @@
                         
                         <p:row>
                             <p:column style="width: 37%">
-                                <p:outputLabel for="point" value="#{appmsg['carreerawardtype.point']}" styleClass="label_hrm"/>
+                                <p:outputLabel for="point" value="#{appmsg['careerawardtype.point']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
                                 <h:outputLabel for="point" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">                                
-                                <p:spinner id="point" required="true" value="#{carreerAwardTypeFormController.model.point}" size="3" min="0" stepFactor="10" max="1000" styleClass="isitext_hrm" />                                
+                                <p:spinner id="point" required="true" value="#{careerDisciplineTypeFormController.model.point}" size="3" min="0" stepFactor="10" max="1000" styleClass="isitext_hrm" />                                
                             </p:column>
                           
                         </p:row>
@@ -171,7 +134,7 @@
                                 <h:outputLabel for="description" value=":"  styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 50%" >
-                                <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{carreerAwardTypeFormController.model.description}" 
+                                <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{careerDisciplineTypeFormController.model.description}" 
                                                  style="width: 210px; height: 60px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
                                                  label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
                             </p:column>
@@ -197,7 +160,7 @@
                     <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">
                         <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
-                                         action="#{carreerAwardTypeFormController.doSave()}" styleClass="isitext_hrm"
+                                         action="#{careerDisciplineTypeFormController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"
                                          icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
                         <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formId" 

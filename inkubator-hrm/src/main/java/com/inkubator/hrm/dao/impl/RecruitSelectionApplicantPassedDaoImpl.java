@@ -14,10 +14,12 @@ import com.inkubator.hrm.web.search.RecruitSelectionApplicantPassedSearchParamet
 
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
 
 /**
@@ -61,7 +63,7 @@ public class RecruitSelectionApplicantPassedDaoImpl extends IDAOImpl<RecruitSele
 	public List<RecruitSelectionApplicantPassedViewModel> getListSelectionPassedViewModelByParam(
 			RecruitSelectionApplicantPassedSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) {
 		
-		final StringBuilder query = new StringBuilder("SELECT applicantPassed.id AS id,");
+		final StringBuilder query = new StringBuilder("SELECT applicantPassed.id.applicantId AS id,");
         query.append(" applicant.id AS applicantId,");
         query.append(" CONCAT(bioData.firstName, ' ', bioData.lastName) AS applicantName,");
         query.append(" hireApply.id AS hireApplyId,");
@@ -129,5 +131,19 @@ public class RecruitSelectionApplicantPassedDaoImpl extends IDAOImpl<RecruitSele
 		
 		return query;
     }
+
+	@Override
+	public RecruitSelectionApplicantPassed getEntityWithDetailByRecruitSelectionApplicantPassedId(RecruitSelectionApplicantPassedId id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("applicant", FetchMode.JOIN);
+        criteria.setFetchMode("hireApply", FetchMode.JOIN);
+        criteria.setFetchMode("employeeType", FetchMode.JOIN);
+        criteria.setFetchMode("applicant.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("hireApply.jabatan", FetchMode.JOIN);
+        criteria.setFetchMode("hireApply.jabatan.department", FetchMode.JOIN);
+        criteria.setFetchMode("hireApply.jabatan.golonganJabatan", FetchMode.JOIN);
+        return (RecruitSelectionApplicantPassed) criteria.uniqueResult();
+	}
 
 }

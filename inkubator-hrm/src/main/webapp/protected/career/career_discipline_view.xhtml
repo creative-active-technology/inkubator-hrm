@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="bank.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="#{appmsg['carreerawardtype.carreer_award_type']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['carreerawardtype.carreer_award_type_from_organisation']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['careerdisciplinetype.career_discipline_type']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['careerdisciplinetype.career_discipline_type_from_career']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -33,35 +33,35 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:selectOneMenu value="#{carreerAwardTypeViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                    <p:selectOneMenu value="#{careerDisciplineTypeViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{carreerAwardTypeViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{carreerAwardTypeViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:inputText id="searchId" value="#{careerDisciplineTypeViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{careerDisciplineTypeViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Carreer_Award_Type"/>
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_career_Discipline_Type"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{carreerAwardTypeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{carreerAwardTypeViewController.onDialogReturn}"  update="tableId, growlId"/>
+                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{careerDisciplineTypeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{careerDisciplineTypeViewController.onDialogReturn}"  update="tableId, growlId"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{carreerAwardTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{careerDisciplineTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                     
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
                         <p:focus for="searchId" />
-                        <p:dataTable  var="data"  value="#{carreerAwardTypeViewController.lazy}" lazy="true" paginator="true" pageLinks="7"
+                        <p:dataTable  var="data"  value="#{careerDisciplineTypeViewController.lazy}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
                                       rowIndexVar="no">
                             <f:facet name="header">  
-                                <h:outputText value="#{appmsg['carreerawardtype.list']}"/>
+                                <h:outputText value="#{appmsg['careerdisciplinetype.career_discipline_type_list']}"/>
                             </f:facet> 
                             <p:column style="text-align: center;width: 3%">
                                 <f:facet name="header">  
@@ -71,19 +71,19 @@
                             </p:column>
                             <p:column sortBy="#{data.code}" style="width: 33%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['carreerawardtype.award_type_code']}"/>
+                                    <h:outputText value="#{appmsg['careerdisciplinetype.career_discipline_type_code']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.code}" />
                             </p:column>
                             <p:column sortBy="#{data.name}" style="width: 33%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['carreerawardtype.award_type_name']}"/>
+                                    <h:outputText value="#{appmsg['careerdisciplinetype.career_discipline_type_name']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.name}" />
                             </p:column>
                             <p:column sortBy="#{data.validity}" style="width: 30%">
                                 <f:facet name="header">
-                                    <h:outputText value="#{appmsg['carreerawardtype.validity']}"/>
+                                    <h:outputText value="#{appmsg['careerawardtype.validity']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.validity} #{appmsg['global.month']}" />
                             </p:column>
@@ -91,25 +91,25 @@
                             <p:column headerText="#{appmsg['global.action']}" style="width: 14%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                  onclick="PF('statusDialog').show()"  oncomplete="PF('detail').show()" update=":detailPanel"
-                                                 style="font-size: 10px!important" action="#{carreerAwardTypeViewController.doSelectEntity()}">                        
-                                    <f:setPropertyActionListener value="#{data}" target="#{carreerAwardTypeViewController.selected}" />
+                                                 style="font-size: 10px!important" action="#{careerDisciplineTypeViewController.doSelectEntity()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{careerDisciplineTypeViewController.selected}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                                 action="#{carreerAwardTypeViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDelete').show()">
-                                    <f:setPropertyActionListener value="#{data}" target="#{carreerAwardTypeViewController.selected}" />
+                                                                 action="#{careerDisciplineTypeViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDelete').show()">
+                                    <f:setPropertyActionListener value="#{data}" target="#{careerDisciplineTypeViewController.selected}" />
                                 </p:commandButton>
                                 -
                                 <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
-                                                  action="#{carreerAwardTypeViewController.doEdit()}" >
-                                    <f:setPropertyActionListener value="#{data}" target="#{carreerAwardTypeViewController.selected}" />
-                                    <p:ajax event="dialogReturn" listener="#{carreerAwardTypeViewController.onDialogReturn}"  update="tableId, :formId:growlId"/>
+                                                  action="#{careerDisciplineTypeViewController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{careerDisciplineTypeViewController.selected}" />
+                                    <p:ajax event="dialogReturn" listener="#{careerDisciplineTypeViewController.onDialogReturn}"  update="tableId, :formId:growlId"/>
                                 </p:commandButton> 
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
-                                <p:outputLabel value="#{carreerAwardTypeViewController.lazy.rowCount}"/>
+                                <p:outputLabel value="#{careerDisciplineTypeViewController.lazy.rowCount}"/>
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
@@ -140,41 +140,33 @@
                         <h:panelGrid id="panelDialogConfirmId"  columns="3">
                             <p:outputLabel value="#{appmsg['global.name']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{carreerAwardTypeViewController.selected.name}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{careerDisciplineTypeViewController.selected.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
-                        <p:commandButton value="#{appmsg['global.yes']}" action="#{carreerAwardTypeViewController.doDelete()}" update="formId"
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{careerDisciplineTypeViewController.doDelete()}" update="formId"
                                          oncomplete="PF('dialogConfirmDelete').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmDelete').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="detail" header="#{appmsg['carreerawardtype.detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog widgetVar="detail" header="#{appmsg['careerdisciplinetype.career_discipline_type_detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['carreerawardtype.award_type_code']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{carreerAwardTypeViewController.selected.code}"/> </p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['careerdisciplinetype.career_discipline_type_code']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{careerDisciplineTypeViewController.selected.code}"/> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['carreerawardtype.award_type_name']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{carreerAwardTypeViewController.selected.name}"/></p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['carreerawardtype.letter_reference']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{carreerAwardTypeViewController.selected.systemLetterReferenceByLetterTemplateId.code}-#{carreerAwardTypeViewController.selected.systemLetterReferenceByLetterTemplateId.name}"/> </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['carreerawardtype.validity']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{carreerAwardTypeViewController.selected.validity} #{appmsg['global.month']}"/> </p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['careerdisciplinetype.career_discipline_type_name']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{careerDisciplineTypeViewController.selected.name}"/></p:column>
                         </p:row>
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{carreerAwardTypeViewController.selected.description}"/> </p:column>
+                            <p:column><p:outputLabel value="#{careerDisciplineTypeViewController.selected.description}"/> </p:column>
                         </p:row>
 
                         <f:facet name="footer">
                             <p:row>
-                                <p:column colspan="2"><p:outputLabel value="#{appmsg['savingType.savingType_header']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                                <p:column colspan="2"><p:outputLabel value="#{appmsg['careerdisciplinetype.career_discipline_type_from_career']}" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
                             </p:row>
                         </f:facet>
                     </p:panelGrid>

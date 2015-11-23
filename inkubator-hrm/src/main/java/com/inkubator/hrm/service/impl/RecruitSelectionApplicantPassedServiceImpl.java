@@ -34,6 +34,7 @@ import com.inkubator.hrm.entity.RecruitSelectionType;
 import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetail;
 import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetailId;
 import com.inkubator.hrm.service.RecruitSelectionApplicantPassedService;
+import com.inkubator.hrm.web.model.RecruitSelectionApplicantPassedModel;
 import com.inkubator.hrm.web.model.RecruitSelectionApplicantPassedViewModel;
 import com.inkubator.hrm.web.search.RecruitSelectionApplicantPassedSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -307,14 +308,29 @@ public class RecruitSelectionApplicantPassedServiceImpl extends IServiceImpl imp
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<RecruitSelectionApplicantPassedViewModel> getListSelectionPassedViewModelByParam(RecruitSelectionApplicantPassedSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) throws Exception {
 		return recruitSelectionApplicantPassedDao.getListSelectionPassedViewModelByParam(searchParameter, firstResult, maxResults, orderable);
-		//return new ArrayList<RecruitSelectionApplicantPassedViewModel>();
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalSelectionPassedViewModelByParam(RecruitSelectionApplicantPassedSearchParameter searchParameter) throws Exception {
 		return recruitSelectionApplicantPassedDao.getTotalSelectionPassedViewModelByParam(searchParameter);
-		//return 0l;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public RecruitSelectionApplicantPassed getEntityWithDetailByRecruitSelectionApplicantPassedId(RecruitSelectionApplicantPassedId id) throws Exception {
+		return recruitSelectionApplicantPassedDao.getEntityWithDetailByRecruitSelectionApplicantPassedId(id);
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public String setupEmployee(RecruitSelectionApplicantPassedModel applicantPassedModel, Boolean isInternalCandidate) throws Exception {
+		String result = "error";
+		
+		
+		
+		result = "success";
+		return result;
 	}
 
 }
