@@ -47,8 +47,8 @@ public class CareerTransitionFormController extends BaseController {
     private CareerTransitionService careerTransitionService;
     @ManagedProperty(value = "#{careerEmpStatusService}")
     private CareerEmpStatusService careerEmpStatusService;
-    @ManagedProperty(value = "#{carreerTerminationTypeService}")
-    private CareerTerminationTypeService carreerTerminationTypeService;
+    @ManagedProperty(value = "#{careerTerminationTypeService}")
+    private CareerTerminationTypeService careerTerminationTypeService;
     @ManagedProperty(value = "#{systemCarreerConstService}")
     private SystemCareerConstService systemCarreerConstService;
     @ManagedProperty(value = "#{systemLetterReferenceService}")
@@ -91,7 +91,7 @@ public class CareerTransitionFormController extends BaseController {
         careerTransitionModel = null;
         careerTransitionService = null;
         careerEmpStatusService = null;
-        carreerTerminationTypeService = null;
+        careerTerminationTypeService = null;
         systemCarreerConstService = null;
         dropDownRoleTransitionDetail = null;
         systemLetterReferenceService = null;
@@ -106,7 +106,7 @@ public class CareerTransitionFormController extends BaseController {
     			dropDownRoleTransitionDetail.put(careerEmpStatus.getName(), careerEmpStatus.getId());
     		}
     	}else if(careerTransitionModel.getRoleTransitionId() == HRMConstant.CAREER_TERMINATION_TYPE){
-    		List<CareerTerminationType> listTerminationType = carreerTerminationTypeService.getAllData();
+    		List<CareerTerminationType> listTerminationType = careerTerminationTypeService.getAllData();
     		for(CareerTerminationType carreerTerminationType : listTerminationType){
     			dropDownRoleTransitionDetail.put(carreerTerminationType.getName(), carreerTerminationType.getId());
     		}
@@ -130,7 +130,7 @@ public class CareerTransitionFormController extends BaseController {
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
-            return "/protected/career/career_transition_view.htm?faces-redirect=true&execution=e" + careerTransition.getId();
+            return "/protected/career/career_transition_view.htm?faces-redirect=true";
         } catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
@@ -143,9 +143,26 @@ public class CareerTransitionFormController extends BaseController {
     	return "/protected/career/career_transition_view.htm?faces-redirect=true";
     }
     
+    public void doReset() throws Exception{
+    	if(isUpdate){
+    		CareerTransition careerTransition = careerTransitionService.getEntityByPKWithDetail(careerTransitionModel.getId());
+			if(careerTransition != null){
+				careerTransitionModel = getModelFromEntity(careerTransition);
+				doChangeRoleTransition();
+			}
+    	}else{
+    		careerTransitionModel.setTransitionCode(null);
+    		careerTransitionModel.setTransitionName(null);
+    		careerTransitionModel.setDescription(null);
+    		careerTransitionModel.setRoleTransitionDetailId(null);
+    		careerTransitionModel.setRoleTransitionId(null);
+    		careerTransitionModel.setSystemLetterReferenceId(null);
+    	}
+    }
+    
     public CareerTransitionModel getModelFromEntity(CareerTransition careerTransition){
-    	careerTransitionModel.setId(careerTransition.getId());
     	CareerTransitionModel careerTransitionModel = new CareerTransitionModel();
+    	careerTransitionModel.setId(careerTransition.getId());
     	careerTransitionModel.setDescription(careerTransition.getDescription());
     	careerTransitionModel.setSystemLetterReferenceId(careerTransition.getSystemLetterReference().getId());
     	careerTransitionModel.setTransitionCode(careerTransition.getTransitionCode());
@@ -170,13 +187,12 @@ public class CareerTransitionFormController extends BaseController {
     	careerTransition.setTransitionName(careerTransitionModel.getTransitionName());
     	careerTransition.setTransitionCode(careerTransitionModel.getTransitionCode());
     	careerTransition.setTransitionRole(careerTransitionModel.getRoleTransitionId());
-    	System.out.println(careerTransitionModel.getRoleTransitionDetailId() + " model update");
     	if(careerTransitionModel.getRoleTransitionId() == HRMConstant.CAREER_EMPLOYEE_STATUS){
     		careerTransition.setCareerEmpStatus(new CareerEmpStatus(careerTransitionModel.getRoleTransitionDetailId()));
     	}else if(careerTransitionModel.getRoleTransitionId() == HRMConstant.CAREER_TERMINATION_TYPE){
-
+    		careerTransition.setCareerTerminationType(new CareerTerminationType(careerTransitionModel.getRoleTransitionDetailId()));
     	}else if(careerTransitionModel.getRoleTransitionId() == HRMConstant.CAREER_TRANSITION){
-
+    		careerTransition.setSystemCareerConst(new SystemCareerConst(careerTransitionModel.getRoleTransitionDetailId()));
     	}
     	
     	careerTransition.setDescription(careerTransitionModel.getDescription());
@@ -216,12 +232,12 @@ public class CareerTransitionFormController extends BaseController {
 		this.careerEmpStatusService = careerEmpStatusService;
 	}
 
-	public CareerTerminationTypeService getCarreerTerminationTypeService() {
-		return carreerTerminationTypeService;
+	public CareerTerminationTypeService getCareerTerminationTypeService() {
+		return careerTerminationTypeService;
 	}
 
-	public void setCarreerTerminationTypeService(CareerTerminationTypeService carreerTerminationTypeService) {
-		this.carreerTerminationTypeService = carreerTerminationTypeService;
+	public void setCareerTerminationTypeService(CareerTerminationTypeService careerTerminationTypeService) {
+		this.careerTerminationTypeService = careerTerminationTypeService;
 	}
 
 	public SystemCareerConstService getSystemCarreerConstService() {

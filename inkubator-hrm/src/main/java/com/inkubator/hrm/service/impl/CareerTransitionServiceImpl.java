@@ -176,9 +176,9 @@ public class CareerTransitionServiceImpl extends IServiceImpl implements CareerT
 	}
 
 	@Override
-	public void delete(CareerTransition entity) throws Exception {
-		// TODO Auto-generated method stub
-		
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void delete(CareerTransition entity) throws Exception {
+		this.careerTransitionDao.delete(entity);
 	}
 
 	@Override
