@@ -131,10 +131,10 @@ public class ApprovalActivityNotSendListenerServiceImpl extends BaseSchedulerDin
              toSend.add(requesterUser.getEmailAddress());
              }
              }*/
-            toSend.add("deni.arianto24@yahoo.com");
-            toSentCC.add("amjadicky@gmail.com");
+//            toSend.add("deni.arianto24@yahoo.com");
+//            toSentCC.add("amjadicky@gmail.com");
             toSend.add("rizal2_dhfr@yahoo.com");
-            toSentCC.add("rizkykojek@gmail.com");
+//            toSentCC.add("rizkykojek@gmail.com");
             vtm.setTo(toSend.toArray(new String[toSend.size()]));
             vtm.setCc(toSentCC.toArray(new String[toSentCC.size()]));
             vtm.setBcc(toSentBCC.toArray(new String[toSentBCC.size()]));
@@ -183,7 +183,6 @@ public class ApprovalActivityNotSendListenerServiceImpl extends BaseSchedulerDin
                             Gson gs = JsonUtil.getHibernateEntityGsonBuilder().create();
                             RmbsApplication application = gs.fromJson(appActivity.getPendingData(), RmbsApplication.class);
                             RmbsType rmbsType = rmbsTypeDao.getEntiyByPK(application.getRmbsType().getId());
-                            System.out.println(" Object Json" + rmbsType.getName());
                             maptoSend.put("reimbursementType", rmbsType.getName());
                             maptoSend.put("applicationDate", jsonObject.get("applicationDate").getAsString());
                             maptoSend.put("nominal", jsonObject.get("nominal").getAsString());

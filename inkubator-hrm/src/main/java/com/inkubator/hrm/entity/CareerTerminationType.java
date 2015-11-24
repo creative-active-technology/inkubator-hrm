@@ -26,11 +26,11 @@ import javax.persistence.Version;
  * @author Deni
  */
 @Entity
-@Table(name="carreer_termination_type"
+@Table(name="career_termination_type"
     ,catalog="hrm"
     , uniqueConstraints = @UniqueConstraint(columnNames="code") 
 )
-public class CarreerTerminationType implements java.io.Serializable {
+public class CareerTerminationType implements java.io.Serializable {
 
 
      private long id;
@@ -43,16 +43,16 @@ public class CarreerTerminationType implements java.io.Serializable {
      private String code;
      private String name;
      private String description;
-     private Set<CarreerTransition> carreerTransitions = new HashSet<CarreerTransition>(0);
+     private Set<CareerTransition> careerTransitions = new HashSet<CareerTransition>(0);
 
-    public CarreerTerminationType() {
+    public CareerTerminationType() {
     }
 
 	
-    public CarreerTerminationType(long id) {
+    public CareerTerminationType(long id) {
         this.id = id;
     }
-    public CarreerTerminationType(long id, SystemLetterReference systemLetterReference, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String code, String name, String description, Set<CarreerTransition> carreerTransitions) {
+    public CareerTerminationType(long id, SystemLetterReference systemLetterReference, String createdBy, Date createdOn, String updatedBy, Date updatedOn, String code, String name, String description, Set<CareerTransition> careerTransitions) {
        this.id = id;
        this.systemLetterReference = systemLetterReference;
        this.createdBy = createdBy;
@@ -62,7 +62,7 @@ public class CarreerTerminationType implements java.io.Serializable {
        this.code = code;
        this.name = name;
        this.description = description;
-       this.carreerTransitions = carreerTransitions;
+       this.careerTransitions = careerTransitions;
     }
    
      @Id 
@@ -158,7 +158,7 @@ public class CarreerTerminationType implements java.io.Serializable {
     }
 
     
-    @Column(name="description", length=65535)
+    @Column(name="description", length=65535, columnDefinition = "Text")
     public String getDescription() {
         return this.description;
     }
@@ -167,13 +167,13 @@ public class CarreerTerminationType implements java.io.Serializable {
         this.description = description;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="carreerTerminationType")
-    public Set<CarreerTransition> getCarreerTransitions() {
-        return this.carreerTransitions;
+@OneToMany(fetch=FetchType.LAZY, mappedBy="careerTerminationType")
+    public Set<CareerTransition> getCareerTransitions() {
+        return this.careerTransitions;
     }
     
-    public void setCarreerTransitions(Set<CarreerTransition> carreerTransitions) {
-        this.carreerTransitions = carreerTransitions;
+    public void setCareerTransitions(Set<CareerTransition> careerTransitions) {
+        this.careerTransitions = careerTransitions;
     }
 
 

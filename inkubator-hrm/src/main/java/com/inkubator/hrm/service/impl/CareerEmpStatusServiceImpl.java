@@ -227,9 +227,9 @@ public class CareerEmpStatusServiceImpl extends IServiceImpl implements CareerEm
 	}
 
 	@Override
-	public List<CareerEmpStatus> getAllData() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<CareerEmpStatus> getAllData() throws Exception {
+		return careerEmpStatusDao.getAllData();
 	}
 
 	@Override
