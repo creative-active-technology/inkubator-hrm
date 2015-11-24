@@ -591,6 +591,7 @@ public class AnnouncementServiceImpl extends BaseApprovalServiceImpl implements 
         jsonObject.addProperty("listGolonganJabatanId", jsonGolonganJabatan);
         String jsonUnitKerja = gson.toJson(listUnitKerjaId.toArray(new Long[listUnitKerjaId.size()])).toString();
         jsonObject.addProperty("listUnitKerjaId", jsonUnitKerja);
+        jsonObject.addProperty(HRMConstant.CONTEXT_PATH, FacesUtil.getRequest().getContextPath());
         
         return gson.toJson(jsonObject);
 	}

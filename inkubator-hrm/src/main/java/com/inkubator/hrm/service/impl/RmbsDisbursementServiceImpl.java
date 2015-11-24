@@ -464,6 +464,7 @@ public class RmbsDisbursementServiceImpl extends BaseApprovalServiceImpl impleme
         JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(disbursement));
         String jsonIds = gson.toJson(listRmbsApplicationId.toArray(new Long[listRmbsApplicationId.size()])).toString();
         jsonObject.addProperty("listRmbsApplicationId", jsonIds);
+        jsonObject.addProperty(HRMConstant.CONTEXT_PATH, FacesUtil.getRequest().getContextPath());
         
         return gson.toJson(jsonObject);
 	}

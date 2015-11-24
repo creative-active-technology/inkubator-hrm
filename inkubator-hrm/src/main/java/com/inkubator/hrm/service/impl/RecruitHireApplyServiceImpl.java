@@ -465,7 +465,8 @@ public class RecruitHireApplyServiceImpl extends BaseApprovalServiceImpl impleme
          JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
          JsonArray jsonDetailRecruitHireApply = (JsonArray) parser.parse(gson.toJson(listHireApplyDetails));
          jsonObject.add("listDetailRecruitHireApply", jsonDetailRecruitHireApply);
-         String pendingData = gson.toJson(jsonObject);
+         jsonObject.addProperty(HRMConstant.CONTEXT_PATH, FacesUtil.getRequest().getContextPath());
+         String pendingData = gson.toJson(jsonObject); 
          return pendingData;
     }
 

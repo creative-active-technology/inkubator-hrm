@@ -342,6 +342,7 @@ public class TempJadwalKaryawanServiceImpl extends BaseApprovalServiceImpl imple
             jsonObject.addProperty("groupWorkingId", groupWorkingId);
             jsonObject.addProperty("createDate", dateFormat.format(new Date()));
             jsonObject.addProperty("createBy", UserInfoUtil.getUserName());
+            jsonObject.addProperty(HRMConstant.CONTEXT_PATH, FacesUtil.getRequest().getContextPath());
 
             approvalActivity.setPendingData(jsonObject.toString());
             approvalActivityDao.save(approvalActivity);
