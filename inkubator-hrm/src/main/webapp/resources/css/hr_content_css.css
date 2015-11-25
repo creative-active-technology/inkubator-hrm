@@ -4,7 +4,7 @@ body {
 	padding: 0;
 	color: #142b30;
 	background-color: #a4d0da;
-	/* background-image: url('../images/Bottom_texture.jpg'); */
+	background-image: url('../images/Bottom_texture.jpg');
 	background-repeat: repeat;
 	background-attachment: fixed;
 	background-position: top left
@@ -36,17 +36,9 @@ body {
 	bottom: 0;
 	right: 0;
 	background-attachment: fixed;
-	/* background-image: url('../images/page_gl.png'); */
+	background-image: url('../images/page_gl.png');
 	background-repeat: no-repeat;
-	background-position: top left;
-	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#23538a+0,2989d8+50,a6cede+100 */
-	background: #23538a; /* Old browsers */
-	background: -moz-linear-gradient(top,  #23538a 0%, #2989d8 63%, #a6cede 100%); /* FF3.6-15 */
-	background: -webkit-linear-gradient(top,  #23538a 0%,#2989d8 63%,#a6cede 100%); /* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(to bottom,  #23538a 0%,#2989d8 63%,#a6cede 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#23538a', endColorstr='#a6cede',GradientType=0 ); /* IE6-9 */
-		
-	
+	background-position: top left
 }
 
 html:first-child #art-page-background-glare {
@@ -55,7 +47,7 @@ html:first-child #art-page-background-glare {
 
 #art-page-background-middle-texture {
 	position: absolute;
-	/* background-image: url('../images/Middle_texture.jpg'); */
+	background-image: url('../images/Middle_texture.jpg');
 	background-repeat: repeat-x;
 	background-position: top left;
 	background-attachment: fixed;
