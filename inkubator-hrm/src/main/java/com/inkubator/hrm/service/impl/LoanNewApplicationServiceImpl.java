@@ -607,6 +607,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         JsonParser parser = new JsonParser();
         JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
+        jsonObject.addProperty(HRMConstant.CONTEXT_PATH, FacesUtil.getRequest().getContextPath());
 
         return gson.toJson(jsonObject);
     }

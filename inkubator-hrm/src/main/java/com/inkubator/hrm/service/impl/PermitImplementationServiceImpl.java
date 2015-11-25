@@ -1102,6 +1102,7 @@ public class PermitImplementationServiceImpl extends BaseApprovalServiceImpl imp
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
             JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
             jsonObject.addProperty("permitImplementationFile", uploadPath);
+            jsonObject.addProperty(HRMConstant.CONTEXT_PATH, FacesUtil.getRequest().getContextPath());
             //save to approval activity
             approvalActivity.setPendingData(gson.toJson(jsonObject));
             approvalActivityDao.save(approvalActivity);

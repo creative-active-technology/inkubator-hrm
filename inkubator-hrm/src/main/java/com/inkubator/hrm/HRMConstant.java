@@ -559,5 +559,7 @@ public class HRMConstant {
     public static final Integer CAREER_TERMINATION_TYPE = 2;
     public static final Integer CAREER_TRANSITION = 3;
     
+    /* Constant for contextPath */
+    public static final String CONTEXT_PATH = "contextPath";
     /* END */
 }

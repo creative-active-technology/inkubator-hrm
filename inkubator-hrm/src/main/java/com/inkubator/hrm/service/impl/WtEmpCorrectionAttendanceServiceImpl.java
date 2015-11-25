@@ -528,7 +528,7 @@ public class WtEmpCorrectionAttendanceServiceImpl extends BaseApprovalServiceImp
         JsonParser parser = new JsonParser();
         JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
         jsonObject.addProperty("listDetail", gson.toJson(listDetail));
-        
+        jsonObject.addProperty(HRMConstant.CONTEXT_PATH, FacesUtil.getRequest().getContextPath());
         return gson.toJson(jsonObject);
 	}
 

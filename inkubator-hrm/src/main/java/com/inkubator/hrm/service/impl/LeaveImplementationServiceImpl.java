@@ -665,7 +665,11 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
         } else {
             //parsing object to json and save to approval activity 
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-            approvalActivity.setPendingData(gson.toJson(entity));
+            
+            JsonParser parser = new JsonParser();
+            JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
+            jsonObject.addProperty(HRMConstant.CONTEXT_PATH, FacesUtil.getRequest().getContextPath());
+            approvalActivity.setPendingData(jsonObject.toString());
             approvalActivityDao.save(approvalActivity);
 
             message = "success_need_approval";
