@@ -15,6 +15,7 @@
             <div id="art-page-background-glare">
                 <div id="art-page-background-glare-image">
                     <h:inputHidden value="#{loginController.selectedLanguage}"/>
+                
                     <div id="header_login">
                         <div id="header_login_left">
                             <h:panelGrid columns="1">
@@ -28,7 +29,7 @@
                             </h:panelGrid>
                         </div> 
                     </div>
-
+                   
                     <div style="clear: both"/>
                     <div style="background:none repeat scroll 0 0 #ffffff;height: 2px;position: relative;">
 
@@ -76,7 +77,7 @@
                         <h:form id="loginForm" prependId="false">
                             <p:growl id="loginGrowl" life="5000" showDetail="true" escape="false" />
                             <h:panelGrid columns="2" style="margin-top: 10px;margin-left: 10px;" cellspacing="5" >
-                                <p:graphicImage value="./resources/images/logo_optima.png" height="140px"  style="margin-right: 10px" />
+                                <p:graphicImage value="./resources/images/logo_optima.png" height="140px"  style="margin-right: 10px"  cache="true"/>
                                 <h:panelGrid columns="3" cellpadding="3" style="margin-left: 15px">
                                     <h:outputLabel for="j_username" value="#{appmsg['loginform.userid']}" styleClass="label_hrm" escape="false"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" escape="false"/>

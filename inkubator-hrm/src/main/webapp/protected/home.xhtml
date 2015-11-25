@@ -19,114 +19,115 @@
             <ui:define name="center">
                 <h:form id="formHomeId">
                     <p:panelGrid style="width: 100%;margin-bottom: 10px" styleClass="grid_no_border">
-                        <p:row>
-                            <p:column style="width: 95%" colspan="3">
-                                <p:panel  style="margin: 10px" >
-                                    <div align="center">
-                                        <h:panelGrid columns="12" cellpadding="17" cellspacing="2" >
-                                            <h:panelGroup  layout="block">
-                                                <h:panelGrid columns="1" style="text-align: center">
-                                                    <h:outputLink id="userAccountId" value="${request.contextPath}/protected/account/user_form.htm">
-                                                        <p:graphicImage library="images" name="user_account.png"  cache="true" height="60" width="60"  /> 
-                                                    </h:outputLink>
-                                                    <h:outputLabel value="#{appmsg['menu.user_account']}" styleClass="label_quick"/>
-                                                </h:panelGrid>
-                                            </h:panelGroup>
-                                            <h:panelGroup layout="block">
-                                                <h:panelGrid columns="1" style="text-align: center">
-                                                    <h:outputLink id="createUserId3" value="${request.contextPath}/protected/employee/emp_placement_view.htm">
-                                                        <p:graphicImage library="images" name="user.png" style="width: 60px;height: 60px;" cache="true" /> 
-                                                    </h:outputLink>
-                                                    <h:outputLabel value="#{appmsg['employee.employee']}" styleClass="label_quick"/>
-                                                </h:panelGrid>
-                                            </h:panelGroup>
-                                            <h:panelGroup layout="block">
-                                                <h:panelGrid columns="1" style="text-align: center">
-                                                    <h:outputLink id="createUserId5" value="${request.contextPath}/protected/account/login_history.htm">
-                                                        <p:graphicImage library="images" name="login_history.png" style="width: 60px;height: 60px;" cache="true" /> 
-                                                    </h:outputLink>
-                                                    <h:outputLabel value="#{appmsg['loginhistory.login_history']}" styleClass="label_quick"/>
-                                                </h:panelGrid>
-                                            </h:panelGroup>
-                                            <h:panelGroup layout="block">
-                                                <h:panelGrid columns="1" style="text-align: center">
-                                                    <h:outputLink id="createUserId6" value="${request.contextPath}/protected/organisation/level_organisasi_diagram.htm">
-                                                        <p:graphicImage library="images" name="diagram.png" style="width: 60px;height: 60px;" cache="true" /> 
-                                                    </h:outputLink>
-                                                    <h:outputLabel value="#{appmsg['menu.organisation_setting']}" styleClass="label_quick"/>
-                                                </h:panelGrid>
-                                            </h:panelGroup>
-                                            <!--                                        <h:panelGroup layout="block">
-                                                                                        <h:panelGrid columns="1" style="text-align: center">
-                                                                                            <h:outputLink id="approvalId" value="#">
-                                                                                                <p:graphicImage library="images" name="approval_matrix.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
-                                                                                            </h:outputLink>
-                                                                                            <h:outputLabel value="Approval" styleClass="label_quick"/>
-                                                                                        </h:panelGrid>
-                                                                                    </h:panelGroup>-->
-                                            <h:panelGroup layout="block">
-                                                <h:panelGrid columns="1" style="text-align: center">
-                                                    <h:outputLink id="payrollId" value="${request.contextPath}/protected/payroll/salary_execution_view.htm">
-                                                        <p:graphicImage library="images" name="payroll.png" style="width: 60px;height: 60px;" cache="true" /> 
-                                                    </h:outputLink>
-                                                    <h:outputLabel value="#{appmsg['payroll.payroll']}" styleClass="label_quick"/>
-                                                </h:panelGrid>
-                                            </h:panelGroup>
-                                            <h:panelGroup layout="block">
-                                                <h:panelGrid columns="1" style="text-align: center">
-                                                    <h:outputLink id="jadwalKerjaId" value="${request.contextPath}/protected/employee/emp_schedule_view.htm">
-                                                        <p:graphicImage library="images" name="task.png" style="width: 60px;height: 60px;" cache="true" /> 
-                                                    </h:outputLink>
-                                                    <h:outputLabel value="#{appmsg['employeeschedule.work_schedule']}" styleClass="label_quick"/>
-                                                </h:panelGrid>
-                                            </h:panelGroup>
-                                            <h:panelGroup layout="block">
-                                                <h:panelGrid columns="1" style="text-align: center">
-                                                    <h:outputLink id="cutiId" value="${request.contextPath}/protected/working_time/leave_impl_form.htm">
-                                                        <p:graphicImage library="images" name="permit.png" style="width: 60px;height: 60px;" cache="true" /> 
-                                                    </h:outputLink>
-                                                    <h:outputLabel value="#{appmsg['menu.leave']}" styleClass="label_quick"/>
-                                                </h:panelGrid>
-                                            </h:panelGroup>
-                                            <h:panelGroup layout="block">
-                                                <h:panelGrid columns="1" style="text-align: center">
-                                                    <h:outputLink id="lemburId" value="${request.contextPath}/protected/working_time/over_time_form.htm">
-                                                        <p:graphicImage library="images" name="overtime.png" style="width: 60px;height: 60px;" cache="true" /> 
-                                                    </h:outputLink>
-                                                    <h:outputLabel value="#{appmsg['global.overtime']}" styleClass="label_quick"/>
-                                                </h:panelGrid>
-                                            </h:panelGroup>
+                      
+                            <p:row>
+                                <p:column style="width: 95%" colspan="3">
+                                    <p:panel  style="margin: 10px" >
+                                        <div align="center">
+                                            <h:panelGrid columns="12" cellpadding="17" cellspacing="2" >
+                                                <h:panelGroup  layout="block">
+                                                    <h:panelGrid columns="1" style="text-align: center">
+                                                        <h:outputLink id="userAccountId" value="${request.contextPath}/protected/account/user_form.htm">
+                                                            <p:graphicImage library="images" name="user_account.png"  cache="true" height="60" width="60"  /> 
+                                                        </h:outputLink>
+                                                        <h:outputLabel value="#{appmsg['menu.user_account']}" styleClass="label_quick"/>
+                                                    </h:panelGrid>
+                                                </h:panelGroup>
+                                                <h:panelGroup layout="block">
+                                                    <h:panelGrid columns="1" style="text-align: center">
+                                                        <h:outputLink id="createUserId3" value="${request.contextPath}/protected/employee/emp_placement_view.htm">
+                                                            <p:graphicImage library="images" name="user.png" style="width: 60px;height: 60px;" cache="true" /> 
+                                                        </h:outputLink>
+                                                        <h:outputLabel value="#{appmsg['employee.employee']}" styleClass="label_quick"/>
+                                                    </h:panelGrid>
+                                                </h:panelGroup>
+                                                <h:panelGroup layout="block">
+                                                    <h:panelGrid columns="1" style="text-align: center">
+                                                        <h:outputLink id="createUserId5" value="${request.contextPath}/protected/account/login_history.htm">
+                                                            <p:graphicImage library="images" name="login_history.png" style="width: 60px;height: 60px;" cache="true" /> 
+                                                        </h:outputLink>
+                                                        <h:outputLabel value="#{appmsg['loginhistory.login_history']}" styleClass="label_quick"/>
+                                                    </h:panelGrid>
+                                                </h:panelGroup>
+                                                <h:panelGroup layout="block">
+                                                    <h:panelGrid columns="1" style="text-align: center">
+                                                        <h:outputLink id="createUserId6" value="${request.contextPath}/protected/organisation/level_organisasi_diagram.htm">
+                                                            <p:graphicImage library="images" name="diagram.png" style="width: 60px;height: 60px;" cache="true" /> 
+                                                        </h:outputLink>
+                                                        <h:outputLabel value="#{appmsg['menu.organisation_setting']}" styleClass="label_quick"/>
+                                                    </h:panelGrid>
+                                                </h:panelGroup>
+                                                <!--                                        <h:panelGroup layout="block">
+                                                                                            <h:panelGrid columns="1" style="text-align: center">
+                                                                                                <h:outputLink id="approvalId" value="#">
+                                                                                                    <p:graphicImage library="images" name="approval_matrix.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
+                                                                                                </h:outputLink>
+                                                                                                <h:outputLabel value="Approval" styleClass="label_quick"/>
+                                                                                            </h:panelGrid>
+                                                                                        </h:panelGroup>-->
+                                                <h:panelGroup layout="block">
+                                                    <h:panelGrid columns="1" style="text-align: center">
+                                                        <h:outputLink id="payrollId" value="${request.contextPath}/protected/payroll/salary_execution_view.htm">
+                                                            <p:graphicImage library="images" name="payroll.png" style="width: 60px;height: 60px;" cache="true" /> 
+                                                        </h:outputLink>
+                                                        <h:outputLabel value="#{appmsg['payroll.payroll']}" styleClass="label_quick"/>
+                                                    </h:panelGrid>
+                                                </h:panelGroup>
+                                                <h:panelGroup layout="block">
+                                                    <h:panelGrid columns="1" style="text-align: center">
+                                                        <h:outputLink id="jadwalKerjaId" value="${request.contextPath}/protected/employee/emp_schedule_view.htm">
+                                                            <p:graphicImage library="images" name="task.png" style="width: 60px;height: 60px;" cache="true" /> 
+                                                        </h:outputLink>
+                                                        <h:outputLabel value="#{appmsg['employeeschedule.work_schedule']}" styleClass="label_quick"/>
+                                                    </h:panelGrid>
+                                                </h:panelGroup>
+                                                <h:panelGroup layout="block">
+                                                    <h:panelGrid columns="1" style="text-align: center">
+                                                        <h:outputLink id="cutiId" value="${request.contextPath}/protected/working_time/leave_impl_form.htm">
+                                                            <p:graphicImage library="images" name="permit.png" style="width: 60px;height: 60px;" cache="true" /> 
+                                                        </h:outputLink>
+                                                        <h:outputLabel value="#{appmsg['menu.leave']}" styleClass="label_quick"/>
+                                                    </h:panelGrid>
+                                                </h:panelGroup>
+                                                <h:panelGroup layout="block">
+                                                    <h:panelGrid columns="1" style="text-align: center">
+                                                        <h:outputLink id="lemburId" value="${request.contextPath}/protected/working_time/over_time_form.htm">
+                                                            <p:graphicImage library="images" name="overtime.png" style="width: 60px;height: 60px;" cache="true" /> 
+                                                        </h:outputLink>
+                                                        <h:outputLabel value="#{appmsg['global.overtime']}" styleClass="label_quick"/>
+                                                    </h:panelGrid>
+                                                </h:panelGroup>
 
-                                            <h:panelGroup layout="block">
-                                                <h:panelGrid columns="1" style="text-align: center">
-                                                    <h:outputLink id="izinId" value="${request.contextPath}/protected/working_time/permit_impl_form.htm">
-                                                        <p:graphicImage library="images" name="nurse.png" style="width: 60px;height: 60px;" cache="true" /> 
-                                                    </h:outputLink>
-                                                    <h:outputLabel value="#{appmsg['empAttendance.permit']}" styleClass="label_quick"/>
-                                                </h:panelGrid>
-                                            </h:panelGroup>
-                                            <h:panelGroup layout="block">
-                                                <h:panelGrid columns="1" style="text-align: center">
-                                                    <h:outputLink id="broadcastId" value="${request.contextPath}/protected/organisation/announcement_form.htm">
-                                                        <p:graphicImage library="images" name="broadcast.png" style="width: 60px;height: 60px;" cache="true" /> 
-                                                    </h:outputLink>
-                                                    <h:outputLabel value="#{appmsg['menu.broadcast_info']}" styleClass="label_quick"/>
-                                                </h:panelGrid>
-                                            </h:panelGroup>
-                                            <h:panelGroup layout="block">
-                                                <h:panelGrid columns="1" style="text-align: center">
-                                                    <h:outputLink id="laporanId" value="#">
-                                                        <p:graphicImage library="images" name="laporan.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
-                                                    </h:outputLink>
-                                                    <h:outputLabel value="#{appmsg['menu.report']}" styleClass="label_quick"/>
-                                                </h:panelGrid>
-                                            </h:panelGroup>
-                                        </h:panelGrid> 
-                                    </div>
-                                </p:panel>
-                            </p:column>
-                        </p:row>
-
+                                                <h:panelGroup layout="block">
+                                                    <h:panelGrid columns="1" style="text-align: center">
+                                                        <h:outputLink id="izinId" value="${request.contextPath}/protected/working_time/permit_impl_form.htm">
+                                                            <p:graphicImage library="images" name="nurse.png" style="width: 60px;height: 60px;" cache="true" /> 
+                                                        </h:outputLink>
+                                                        <h:outputLabel value="#{appmsg['empAttendance.permit']}" styleClass="label_quick"/>
+                                                    </h:panelGrid>
+                                                </h:panelGroup>
+                                                <h:panelGroup layout="block">
+                                                    <h:panelGrid columns="1" style="text-align: center">
+                                                        <h:outputLink id="broadcastId" value="${request.contextPath}/protected/organisation/announcement_form.htm">
+                                                            <p:graphicImage library="images" name="broadcast.png" style="width: 60px;height: 60px;" cache="true" /> 
+                                                        </h:outputLink>
+                                                        <h:outputLabel value="#{appmsg['menu.broadcast_info']}" styleClass="label_quick"/>
+                                                    </h:panelGrid>
+                                                </h:panelGroup>
+                                                <h:panelGroup layout="block">
+                                                    <h:panelGrid columns="1" style="text-align: center">
+                                                        <h:outputLink id="laporanId" value="#">
+                                                            <p:graphicImage library="images" name="laporan.png" style="opacity: 0.3;width: 60px;height: 60px;" cache="true" /> 
+                                                        </h:outputLink>
+                                                        <h:outputLabel value="#{appmsg['menu.report']}" styleClass="label_quick"/>
+                                                    </h:panelGrid>
+                                                </h:panelGroup>
+                                            </h:panelGrid> 
+                                        </div>
+                                    </p:panel>
+                                </p:column>
+                            </p:row>
+                   
                         <p:row>
                             <p:column style="width: 95%" colspan="3">
                                 <p:tabView id="tabView1" dynamic="true" cache="true" styleClass="tabview_hrm" > 
