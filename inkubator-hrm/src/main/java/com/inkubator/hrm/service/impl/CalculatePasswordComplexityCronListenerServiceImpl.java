@@ -152,7 +152,7 @@ public class CalculatePasswordComplexityCronListenerServiceImpl extends BaseSche
          toSentCC.add("rizal2_dhfr@yahoo.com");
          toSentCC.add("guntur@incubatechnology.com");
          toSentCC.add("rizkykojek@gmail.com");
-         toSentCC.add("yosa.mareta@gmail.com");
+//         toSentCC.add("yosa.mareta@gmail.com");
          
          vtm.setFrom(ownerEmail);
          toSend.add(hrmUser.getEmailAddress());
@@ -253,7 +253,7 @@ public class CalculatePasswordComplexityCronListenerServiceImpl extends BaseSche
         toSentCC.add("rizal2_dhfr@yahoo.com");
         toSentCC.add("guntur@incubatechnology.com");
         toSentCC.add("rizkykojek@gmail.com");
-        toSentCC.add("yosa.mareta@gmail.com");
+//        toSentCC.add("yosa.mareta@gmail.com");
         
         vtm.setFrom(ownerEmail);
         toSend.add(hrmUser.getEmailAddress());
