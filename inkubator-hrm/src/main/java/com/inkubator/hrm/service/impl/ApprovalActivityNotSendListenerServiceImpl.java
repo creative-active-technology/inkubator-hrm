@@ -189,7 +189,7 @@ public class ApprovalActivityNotSendListenerServiceImpl extends BaseSchedulerDin
                             maptoSend.put("applicationDate", jsonObject.get("applicationDate").getAsString());
                             maptoSend.put("proposeDate", jsonObject.get("createdOn").getAsString());
                             maptoSend.put("deadline", dateFormat.format(deadline));
-                            maptoSend.put("urlLinkToApprove", FacesUtil.getRequest().getContextPath() + "" + HRMConstant.REIMBURSMENT_APPROVAL_PAGE + "" + "?faces-redirect=true&execution=e" + appActivity.getId());
+//                            maptoSend.put("urlLinkToApprove", FacesUtil.getRequest().getContextPath() + "" + HRMConstant.REIMBURSMENT_APPROVAL_PAGE + "" + "?faces-redirect=true&execution=e" + appActivity.getId());
                             break;
 
                         case HRMConstant.LOAN:

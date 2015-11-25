@@ -49,7 +49,7 @@
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Approval_Activity"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{empPersonAchievementViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
-                                    
+
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
@@ -102,14 +102,19 @@
                                     <h:outputText value="#{appmsg['approvalactivity.approval_status']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.approvalStatus}">
-                                	<f:converter converterId="approvalStatusConverter"/>
+                                    <f:converter converterId="approvalStatusConverter"/>
                                 </h:outputLabel>
                             </p:column>
-                            
+                            <p:column style="width: 14%;text-align: center" sortBy="#{data.sequence}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['approvalactivity.sequance']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.sequence}" />
+                            </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
-                                                         style="font-size: 10px!important"
-                                                         action="#{approvalActivityViewController.doDetail()}">                        
+                                                 style="font-size: 10px!important"
+                                                 action="#{approvalActivityViewController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{data}" target="#{approvalActivityViewController.selected}" />
                                 </p:commandButton>
                             </p:column> 
