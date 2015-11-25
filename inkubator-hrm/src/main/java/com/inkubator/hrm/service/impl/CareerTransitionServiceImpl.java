@@ -212,9 +212,9 @@ public class CareerTransitionServiceImpl extends IServiceImpl implements CareerT
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
 	public List<CareerTransition> getAllData() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return careerTransitionDao.getAllData();
 	}
 
 	@Override

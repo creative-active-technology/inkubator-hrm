@@ -188,6 +188,7 @@ public class HRMConstant {
     public static final String LEAVE_CANCELLATION = "LEAVE_CANCELLATION";
     public static final String OVERTIME = "OVERTIME";
     public static final String VACANCY_ADVERTISEMENT = "VACANCY_ADVERTISEMENT";
+    public static final String EMPLOYEE_CAREER_TRANSITION = "EMPLOYEE_CAREER_TRANSITION";
     public static final String APPROVAL_PROCESS = "APPROVAL_PROCESS";
     public static final String ON_APPROVE_INFO = "ON_APPROVE_INFO";
     public static final String ON_REJECT_INFO = "ON_REJECT_INFO";
@@ -559,5 +560,8 @@ public class HRMConstant {
     public static final Integer CAREER_TERMINATION_TYPE = 2;
     public static final Integer CAREER_TRANSITION = 3;
     
+    /* Constant for Career Role Transition */
+    public static final String SALARY_DECREASES = "DECREASES";
+    public static final String SALARY_INCREASES = "INCREASES";    
     /* END */
 }
