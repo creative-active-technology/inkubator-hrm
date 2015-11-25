@@ -19,7 +19,6 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.MecineFingerDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.MecineFinger;
-import com.inkubator.hrm.entity.SchedulerConfig;
 import com.inkubator.hrm.entity.SchedulerLog;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.util.MachineFingerUtil;

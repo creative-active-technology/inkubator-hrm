@@ -57,6 +57,7 @@ public class ApprovalActivityNotSendListenerServiceImpl extends BaseSchedulerDin
     private String ownerEmail;
     private String ownerCompany;
     private String ownerAdministrator;
+    private String serverName;
     @Autowired
     private VelocityTemplateSender velocityTemplateSender;
     @Autowired
@@ -189,7 +190,7 @@ public class ApprovalActivityNotSendListenerServiceImpl extends BaseSchedulerDin
                             maptoSend.put("applicationDate", jsonObject.get("applicationDate").getAsString());
                             maptoSend.put("proposeDate", jsonObject.get("createdOn").getAsString());
                             maptoSend.put("deadline", dateFormat.format(deadline));
-                            maptoSend.put("urlLinkToApprove", FacesUtil.getRequest().getContextPath() + "" + HRMConstant.REIMBURSMENT_APPROVAL_PAGE + "" + "?faces-redirect=true&execution=e" + appActivity.getId());
+//                            maptoSend.put("urlLinkToApprove", jsonObject.get(HRMConstant.CONTEXT_PATH).getAsString() + "" + HRMConstant.REIMBURSMENT_APPROVAL_PAGE + "" + "?faces-redirect=true&execution=e" + appActivity.getId());
                             break;
 
                         case HRMConstant.LOAN:
@@ -251,12 +252,11 @@ public class ApprovalActivityNotSendListenerServiceImpl extends BaseSchedulerDin
                             Gson gs = JsonUtil.getHibernateEntityGsonBuilder().create();
                             RmbsApplication application = gs.fromJson(appActivity.getPendingData(), RmbsApplication.class);
                             RmbsType rmbsType = rmbsTypeDao.getEntiyByPK(application.getRmbsType().getId());
-                            System.out.println(" Object Json" + rmbsType.getName());
-                            maptoSend.put("reimbursementType", jsonObject.get("name").getAsString());
-                            maptoSend.put("claim_date", jsonObject.get("claim_date").getAsString());
-                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
-                            maptoSend.put("nominalOrUnit", jsonObject.get("nominalOrUnit").getAsString());
-                            maptoSend.put("reimbursmentNo", jsonObject.get("reimbursmentNo").getAsString());
+                            maptoSend.put("reimbursementType", rmbsType.getName());
+                            maptoSend.put("applicationDate", jsonObject.get("applicationDate").getAsString());
+                            maptoSend.put("nominal", jsonObject.get("nominal").getAsString());
+                            maptoSend.put("applicationDate", jsonObject.get("applicationDate").getAsString());
+                            maptoSend.put("proposeDate", jsonObject.get("createdOn").getAsString());
                             if (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) {
                                 maptoSend.put("statusDesc", "Permohonan Diterima");
                             } else if (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED) {
@@ -287,7 +287,13 @@ public class ApprovalActivityNotSendListenerServiceImpl extends BaseSchedulerDin
                             break;
                     }
                 }
-
+                if (jsonObject.get(HRMConstant.CONTEXT_PATH).getAsString() != null) {
+                    String urlLinkToApprove = serverName + "" + jsonObject.get(HRMConstant.CONTEXT_PATH).getAsString() + "" + HRMConstant.REIMBURSMENT_APPROVAL_PAGE + "" + "?faces-redirect=true&execution=e" + appActivity.getId();
+                    System.out.println(" Ini adlaaha link nya : " + urlLinkToApprove);
+                    maptoSend.put("urlLinkToApprove", urlLinkToApprove);
+                } else {
+                    maptoSend.put("urlLinkToApprove", applicationUrl);
+                }
                 maptoSend.put("ownerAdministrator", ownerAdministrator);
                 maptoSend.put("ownerCompany", ownerCompany);
                 maptoSend.put("applicationUrl", applicationUrl);
@@ -302,6 +308,10 @@ public class ApprovalActivityNotSendListenerServiceImpl extends BaseSchedulerDin
             }
         }
 
+    }
+
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
     }
 
 }

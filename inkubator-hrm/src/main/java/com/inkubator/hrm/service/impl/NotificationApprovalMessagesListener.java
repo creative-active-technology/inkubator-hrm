@@ -106,7 +106,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
              }*/
             toSend.add("deni.arianto1606@gmail.com");
             toSend.add("rizal2_dhfr@yahoo.com");
-            toSend.add("yosa.mareta@gmail.com");
+//            toSend.add("yosa.mareta@gmail.com");
             toSend.add("guntur@incubatechnology.com");
             toSentCC.add("rizkykojek@gmail.com");
             toSentCC.add("amjadicky@gmail.com");

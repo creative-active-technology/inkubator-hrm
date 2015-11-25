@@ -35,13 +35,6 @@ public class CompanyDaoImpl extends IDAOImpl<Company> implements CompanyDao {
     @Override
     public List<Company> getByParam(CompanySearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.setFetchMode("city", FetchMode.JOIN);
-        criteria.setFetchMode("city.province", FetchMode.JOIN);
-        criteria.setFetchMode("city.province.country", FetchMode.JOIN);
-        
-        criteria.createAlias("city", "city", JoinType.INNER_JOIN);
-        criteria.createAlias("city.province", "province", JoinType.INNER_JOIN);
-        criteria.createAlias("city.province.country", "country", JoinType.INNER_JOIN);
         doSearchByParam(parameter, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
@@ -57,6 +50,9 @@ public class CompanyDaoImpl extends IDAOImpl<Company> implements CompanyDao {
     }
 
     private void doSearchByParam(CompanySearchParameter parameter, Criteria criteria) {
+    	criteria.createAlias("city", "city", JoinType.INNER_JOIN);
+        criteria.createAlias("city.province", "province", JoinType.INNER_JOIN);
+        criteria.createAlias("province.country", "country", JoinType.INNER_JOIN);
         if (StringUtils.isNotEmpty(parameter.getName())) {
             criteria.add(Restrictions.like("name", parameter.getName(), MatchMode.ANYWHERE));
         }
