@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.RecruitSelectionApplicantPassedDao;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantPassed;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantPassedId;
@@ -80,6 +81,8 @@ public class RecruitSelectionApplicantPassedDaoImpl extends IDAOImpl<RecruitSele
         query.append(" INNER JOIN jabatan.department department");
         query.append(" INNER JOIN applicantPassed.employeeType employeeType");
         query.append(" INNER JOIN applicant.bioData bioData");
+        query.append(" WHERE applicantPassed.placementStatus = :placementStatus ");
+        
         
         doSearchRecruitSelectionApplicantPassedByParam(searchParameter, query);
         
@@ -101,6 +104,7 @@ public class RecruitSelectionApplicantPassedDaoImpl extends IDAOImpl<RecruitSele
         query.append(" INNER JOIN jabatan.department department");
         query.append(" INNER JOIN applicantPassed.employeeType employeeType");
         query.append(" INNER JOIN applicant.bioData bioData");
+        query.append(" WHERE applicantPassed.placementStatus = :placementStatus ");
         doSearchRecruitSelectionApplicantPassedByParam(searchParameter, query);
         
         Query hbm = getCurrentSession().createQuery(query.toString());
@@ -112,15 +116,16 @@ public class RecruitSelectionApplicantPassedDaoImpl extends IDAOImpl<RecruitSele
 	
 	private  void doSearchRecruitSelectionApplicantPassedByParam(RecruitSelectionApplicantPassedSearchParameter searchParameter, StringBuilder query){
 		if(searchParameter.getCandidateName() != null){
-			query.append(" WHERE bioData.firstName LIKE :candidateName ");
+			query.append(" AND bioData.firstName LIKE :candidateName ");
 		}else if(searchParameter.getJabatanName() != null){
-			query.append(" WHERE jabatan.name LIKE :jabatanName ");
+			query.append(" AND jabatan.name LIKE :jabatanName ");
 		}else if(searchParameter.getDepartmentName() != null){
-			query.append(" WHERE department.departmentName LIKE :departmentName ");
+			query.append(" AND department.departmentName LIKE :departmentName ");
 		}
     }
 	
 	private  Query doSetValueSearchRecruitSelectionApplicantPassedByParam(RecruitSelectionApplicantPassedSearchParameter searchParameter, Query query){
+		query.setParameter("placementStatus", HRMConstant.SELECTION_APPLICANT_PASSED_STATUS_PENDING);//Filter hanya yang pending yang bisa disetup
 		if(searchParameter.getCandidateName() != null){
 			query.setParameter("candidateName", "%" + searchParameter.getCandidateName() +  "%");
 		}else if(searchParameter.getJabatanName() != null){

@@ -210,6 +210,7 @@ public class HRMConstant {
     public static final String EMP_PLACEMENT = "EMP_PLACEMENT";
     public static final String EMP_ROTATION = "EMP_ROTATION";
     public static final String EMP_TERMINATION = "EMP_TERMINATION";
+    public static final String EMP_NEW_HIRE = "EMP_NEW_HIRE";
     /* END */
 
  /* Constant for  Model Component */
