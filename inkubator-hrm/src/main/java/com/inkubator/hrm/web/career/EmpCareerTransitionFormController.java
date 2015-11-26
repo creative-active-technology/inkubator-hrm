@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -12,14 +13,14 @@ import javax.faces.bean.ViewScoped;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 
+import com.google.gson.Gson;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.ApprovalActivity;
-import com.inkubator.hrm.entity.CareerTransition;
 import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.entity.EmployeeType;
-import com.inkubator.hrm.entity.GolonganJabatan;
-import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.json.util.JsonUtil;
+import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.CareerTransitionService;
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.EmpCareerHistoryService;
@@ -31,6 +32,8 @@ import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.EmpCareerHistoryModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 import ch.lambdaj.Lambda;
 
@@ -48,12 +51,6 @@ public class EmpCareerTransitionFormController extends BaseController {
     private ApprovalActivity askingRevisedActivity;
     private EmpCareerHistoryModel model;
     
-    private List<CareerTransition> listCareerTransition;
-    private List<Department> listDepartment;
-    private List<Jabatan> listJabatan;
-    private List<GolonganJabatan> listGolonganJabatan;
-    private List<EmployeeType> listEmployeeType;
-    
     @ManagedProperty(value = "#{empCareerHistoryService}")
     private EmpCareerHistoryService empCareerHistoryService;
     @ManagedProperty(value = "#{empDataService}")
@@ -68,6 +65,8 @@ public class EmpCareerTransitionFormController extends BaseController {
     private EmployeeTypeService employeeTypeService;
     @ManagedProperty(value = "#{careerTransitionService}")
     private CareerTransitionService careerTransitionService;
+    @ManagedProperty(value = "#{approvalActivityService}")
+    private ApprovalActivityService approvalActivityService;
     
 	@PostConstruct
     @Override
@@ -77,41 +76,131 @@ public class EmpCareerTransitionFormController extends BaseController {
         	//initial
         	isAdministator = Lambda.exists(UserInfoUtil.getRoles(), Matchers.containsString(HRMConstant.ADMINISTRATOR_ROLE));
             isRevised = Boolean.FALSE;
-            model = new EmpCareerHistoryModel();
-            
-            listCareerTransition = careerTransitionService.getAllData();
-            listDepartment = departmentService.getAllDataWithoutSpecificCompany();
-            listGolonganJabatan = golonganJabatanService.getAllWithDetail();
-            listEmployeeType =  employeeTypeService.getAllData();
-            
+        	model = new EmpCareerHistoryModel();
+            model.setListCareerTransition(careerTransitionService.getAllData());
+            model.setListDepartment(departmentService.getAllDataWithoutSpecificCompany());
+            model.setListGolonganJabatan(golonganJabatanService.getAllWithDetail());
+            model.setListEmployeeType(employeeTypeService.getAllData());
+                        
+            //di cek terlebih dahulu, jika datangnya dari proses approval, artinya user akan melakukan revisi data yg masih dalam bentuk json	        
+            String appActivityId = FacesUtil.getRequestParameter("activity");
+            if (StringUtils.isNotEmpty(appActivityId)) {
+                //parsing data from json to object 
+                isRevised = Boolean.TRUE;
+                currentActivity = approvalActivityService.getEntityByPkWithDetail(Long.parseLong(appActivityId.substring(1)));
+                askingRevisedActivity = approvalActivityService.getEntityByActivityNumberAndSequence(currentActivity.getActivityNumber(),
+                        currentActivity.getSequence() - 1);
+                this.getModelFromJson(currentActivity.getPendingData());
+
+            } else {            	
+            	if (!isAdministator) { //jika bukan administrator, langsung di set empData berdasarkan yang login
+            		model.setEmpData(HrmUserInfoUtil.getEmpData());
+            		this.onChangeEmployee();
+            	}
+            	model.setSalaryChangesType(HRMConstant.SALARY_INCREASES); //default salary increases
+            }
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }        
-		
 	}
 	
 	@PreDestroy
     public void cleanAndExit() {
-		
+		isAdministator = null;
+	    isRevised = null;
+	    currentActivity = null;
+	    askingRevisedActivity = null;
+	    model = null;
+	    empCareerHistoryService = null;
+	    empDataService = null;
+	    departmentService = null;
+	    jabatanService = null;
+	    golonganJabatanService = null;
+	    employeeTypeService = null;
+	    careerTransitionService = null;
+	    approvalActivityService = null;
 	}
 	
 	public String doBack() {
         return "/protected/career/emp_career_transition_view.htm?faces-redirect=true";
     }
 	
-	public String doSave() {
+	public void doReset(){
 		
-		return null;
+	}
+	
+	public String doSave() {
+        String path = "";
+        try {
+            String message = empCareerHistoryService.saveTransitionWithApproval(model);
+            if (StringUtils.equals(message, "success_need_approval")) {
+                path = "/protected/career/emp_career_transition_form.htm?faces-redirect=true";
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+            } else {
+                path = "/protected/career/emp_career_transition_form.htm?faces-redirect=true";
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            }
+            return path;
+
+        } catch (BussinessException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+        return null;
 	}
 	
 	public String doRevised() {
-		
-		return null;
+		String path = "";
+        try {
+            String message = empCareerHistoryService.saveTransitionWithRevised(model, currentActivity.getId());
+            if (StringUtils.equals(message, "success_need_approval")) {
+                path = "/protected/career/emp_career_transition_form.htm?faces-redirect=true";
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully_and_requires_approval", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+
+            } else {
+                path = "/protected/career/emp_career_transition_form.htm?faces-redirect=true";
+                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully", FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            }
+            return path;
+
+        } catch (BussinessException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+        return null;
 	}
 	
 	
 	private void getModelFromJson(String json) {
+		try {
+			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+			EmpCareerHistoryModel m = gson.fromJson(json, EmpCareerHistoryModel.class);
+			
+			EmpData empData = empDataService.getByIdWithDetail(m.getEmpData().getId());
+			EmpData copyOfLetterTo = empDataService.getByIdWithDetail(m.getCopyOfLetterTo().getId());
+			Department department = departmentService.getEntityByPkWithDetail(m.getDepartmentId());
+			
+			model.setEmpData(empData);
+			model.setCareerTransitionId(m.getCareerTransitionId());
+			model.setEffectiveDate(m.getEffectiveDate());
+			model.setCopyOfLetterTo(copyOfLetterTo);
+			model.setDepartmentId(m.getDepartmentId());
+			model.setJabatanId(m.getJabatanId());
+			model.setGolonganJabatanId(m.getGolonganJabatanId());
+			model.setEmployeeTypeId(m.getEmployeeTypeId());
+			model.setJoinDate(m.getJoinDate());
+			model.setSalaryChangesType(m.getSalaryChangesType());
+			model.setSalaryChangesPercent(m.getSalaryChangesPercent());
+			model.setNoSk(m.getNoSk());
+			model.setNotes(m.getNotes());
+			model.setCompanyName(department.getCompany().getName());
 		
+		} catch (Exception e) {
+	        LOGGER.error("Error", e);
+	    }   
 	}
 	
 	public List<EmpData> doAutoCompleteEmployee(String param) {
@@ -128,6 +217,12 @@ public class EmpCareerTransitionFormController extends BaseController {
         try {
         	EmpData empData = empDataService.getByEmpIdWithDetail(model.getEmpData().getId());
         	model.setEmpData(empData);
+        	model.setCurrentCompany(empData.getJabatanByJabatanId().getDepartment().getCompany().getName());
+        	model.setCurrentDepartment(empData.getJabatanByJabatanId().getDepartment().getDepartmentName());
+        	model.setCurrentEmployeeType(empData.getEmployeeType().getName());
+        	model.setCurrentGolJab(empData.getGolonganJabatan().getCode() + " " + empData.getGolonganJabatan().getPangkat().getPangkatName());
+        	model.setCurrentJabatan(empData.getJabatanByJabatanId().getName());
+        	model.setCurrentJoinDate(empData.getJoinDate());
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -135,9 +230,10 @@ public class EmpCareerTransitionFormController extends BaseController {
     
     public void onChangeDepartment() {
         try {
-        	listJabatan = jabatanService.getByDepartementId(model.getDepartmentId());
+        	model.setListJabatan(jabatanService.getByDepartementId(model.getDepartmentId()));
         	Department department =  departmentService.getEntityByPkWithDetail(model.getDepartmentId());
-        	model.setCompanyName(department.getCompany().getName());
+        	String companyName = department.getCompany() == null ? StringUtils.EMPTY : department.getCompany().getName();
+        	model.setCompanyName(companyName);
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -239,44 +335,12 @@ public class EmpCareerTransitionFormController extends BaseController {
 		this.careerTransitionService = careerTransitionService;
 	}
 
-	public List<CareerTransition> getListCareerTransition() {
-		return listCareerTransition;
+	public ApprovalActivityService getApprovalActivityService() {
+		return approvalActivityService;
 	}
 
-	public void setListCareerTransition(List<CareerTransition> listCareerTransition) {
-		this.listCareerTransition = listCareerTransition;
+	public void setApprovalActivityService(ApprovalActivityService approvalActivityService) {
+		this.approvalActivityService = approvalActivityService;
 	}
 
-	public List<Department> getListDepartment() {
-		return listDepartment;
-	}
-
-	public void setListDepartment(List<Department> listDepartment) {
-		this.listDepartment = listDepartment;
-	}
-
-	public List<Jabatan> getListJabatan() {
-		return listJabatan;
-	}
-
-	public void setListJabatan(List<Jabatan> listJabatan) {
-		this.listJabatan = listJabatan;
-	}
-
-	public List<GolonganJabatan> getListGolonganJabatan() {
-		return listGolonganJabatan;
-	}
-
-	public void setListGolonganJabatan(List<GolonganJabatan> listGolonganJabatan) {
-		this.listGolonganJabatan = listGolonganJabatan;
-	}
-
-	public List<EmployeeType> getListEmployeeType() {
-		return listEmployeeType;
-	}
-
-	public void setListEmployeeType(List<EmployeeType> listEmployeeType) {
-		this.listEmployeeType = listEmployeeType;
-	}
-	
 }

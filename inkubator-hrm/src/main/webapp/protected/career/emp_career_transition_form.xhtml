@@ -6,9 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:pe="http://primefaces.org/ui/extensions"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:o="http://omnifaces.org/ui"
-      xmlns:of="http://omnifaces.org/functions">
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
         <title>IGNORED</title>
     </h:head>
@@ -55,7 +53,7 @@
                                 <p:column  style="width: 80%">
                                     <p:selectOneMenu id="careerTransitionId" styleClass="isitext_hrm" required="true"  value="#{empCareerTransitionFormController.model.careerTransitionId}" style="width:290px;">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{empCareerTransitionFormController.listCareerTransition}" var="careerTransition" itemValue="#{careerTransition.id}" itemLabel="#{careerTransition.transitionName}"/>
+                                        <f:selectItems value="#{empCareerTransitionFormController.model.listCareerTransition}" var="careerTransition" itemValue="#{careerTransition.id}" itemLabel="#{careerTransition.transitionName}"/>
                                     </p:selectOneMenu> 
                                     <p:message for="careerTransitionId"/>
                                 </p:column>
@@ -84,6 +82,16 @@
                                     <p:message for="copyOfLetterToId"/>
                                 </p:column>
                             </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="noSkId" value="#{appmsg['organizationletter.letter_number']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="noSkId" value="#{empCareerTransitionFormController.model.noSk}" 
+                                                 	 required="true" maxlength="100" styleClass="isitext_hrm" style="width:290px;" />
+                                    <p:message for="noSkId"/>
+                                </p:column>
+                            </p:row>
                         </p:panelGrid>
                         
                         <p:fieldset legend="#{appmsg['emp_career_transition.detail_information']}" style="width: 80%;margin-bottom:10px;margin-top:20px;">
@@ -101,7 +109,7 @@
                                         <p:outputLabel  value="#{appmsg['organization.company_name']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column style="width: 34%"> 
-                                    	<p:inputText id="currentCompany" value="#{empCareerTransitionFormController.model.empData.jabatanByJabatanId.department.company.name}" readonly="true" styleClass="isitext_hrm" style="width:290px;" />
+                                    	<p:inputText id="currentCompany" value="#{empCareerTransitionFormController.model.currentCompany}" readonly="true" styleClass="isitext_hrm" style="width:290px;" />
                                     </p:column>
                                     <p:column style="width: 16%;background-color: #e1f0f0!important" >
                                         <p:outputLabel  value="#{appmsg['organization.company_name']}" styleClass="label_hrm"/>
@@ -116,7 +124,7 @@
                                         <p:outputLabel  value="#{appmsg['department.department']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column style="width: 34%">
-                                        <p:inputText id="currentDepartment" value="#{empCareerTransitionFormController.model.empData.jabatanByJabatanId.department.departmentName}" readonly="true" styleClass="isitext_hrm" style="width:290px;" />
+                                        <p:inputText id="currentDepartment" value="#{empCareerTransitionFormController.model.currentDepartment}" readonly="true" styleClass="isitext_hrm" style="width:290px;" />
                                     </p:column>
                                     <p:column style="width: 16%;background-color: #e1f0f0!important" >
                                         <p:outputLabel  value="#{appmsg['department.department']}" styleClass="label_hrm" for="departmentId"/>
@@ -124,7 +132,7 @@
                                     <p:column style="width: 34%">
                                         <p:selectOneMenu id="departmentId" styleClass="isitext_hrm" required="true"  value="#{empCareerTransitionFormController.model.departmentId}" style="width:290px;">
                                         	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        	<f:selectItems value="#{empCareerTransitionFormController.listDepartment}" var="department" itemValue="#{department.id}" itemLabel="#{department.departmentName}"/>
+                                        	<f:selectItems value="#{empCareerTransitionFormController.model.listDepartment}" var="department" itemValue="#{department.id}" itemLabel="#{department.departmentName}"/>
                                         	<p:ajax listener="#{empCareerTransitionFormController.onChangeDepartment()}" update="jabatanId,companyName"/>
                                     	</p:selectOneMenu>
                                     	<p:message for="departmentId"/>
@@ -135,7 +143,7 @@
                                         <p:outputLabel  value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column style="width: 34%">
-                                        <p:inputText id="currentJabatan" value="#{empCareerTransitionFormController.model.empData.jabatanByJabatanId.name}" readonly="true" styleClass="isitext_hrm" style="width:290px;" />
+                                        <p:inputText id="currentJabatan" value="#{empCareerTransitionFormController.model.currentJabatan}" readonly="true" styleClass="isitext_hrm" style="width:290px;" />
                                     </p:column>
                                     <p:column style="width: 16%;background-color: #e1f0f0!important" >
                                         <p:outputLabel  value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm" for="jabatanId"/>
@@ -143,7 +151,7 @@
                                     <p:column style="width: 34%">
                                         <p:selectOneMenu id="jabatanId" styleClass="isitext_hrm" required="true"  value="#{empCareerTransitionFormController.model.jabatanId}" style="width:290px;">
                                         	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        	<f:selectItems value="#{empCareerTransitionFormController.listJabatan}" var="jabatan" itemValue="#{jabatan.id}" itemLabel="#{jabatan.name}"/>
+                                        	<f:selectItems value="#{empCareerTransitionFormController.model.listJabatan}" var="jabatan" itemValue="#{jabatan.id}" itemLabel="#{jabatan.name}"/>
                                     	</p:selectOneMenu>
                                     	<p:message for="jabatanId"/>
                                     </p:column>
@@ -153,7 +161,7 @@
                                         <p:outputLabel  value="#{appmsg['employeetype.employee_type']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column style="width: 34%">
-                                    	<p:inputText id="currentEmployeeType" value="#{empCareerTransitionFormController.model.empData.employeeType.name}" readonly="true" styleClass="isitext_hrm" style="width:290px;" />
+                                    	<p:inputText id="currentEmployeeType" value="#{empCareerTransitionFormController.model.currentEmployeeType}" readonly="true" styleClass="isitext_hrm" style="width:290px;" />
                                     </p:column>
                                     <p:column style="width: 16%;background-color: #e1f0f0!important" >
                                         <p:outputLabel  value="#{appmsg['employeetype.employee_type']}" styleClass="label_hrm" for="employeeTypeId"/>
@@ -161,7 +169,7 @@
                                     <p:column style="width: 34%">
                                         <p:selectOneMenu id="employeeTypeId" styleClass="isitext_hrm" required="true"  value="#{empCareerTransitionFormController.model.employeeTypeId}" style="width:290px;">
                                         	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        	<f:selectItems value="#{empCareerTransitionFormController.listEmployeeType}" var="employeeType" itemValue="#{employeeType.id}" itemLabel="#{employeeType.name}"/>
+                                        	<f:selectItems value="#{empCareerTransitionFormController.model.listEmployeeType}" var="employeeType" itemValue="#{employeeType.id}" itemLabel="#{employeeType.name}"/>
                                     	</p:selectOneMenu>
                                     	<p:message for="employeeTypeId"/>
                                     </p:column>
@@ -171,7 +179,7 @@
                                         <p:outputLabel  value="#{appmsg['functiongroup.function_group']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column style="width: 34%">
-                                    	<p:inputText id="currentGolJab" value="#{empCareerTransitionFormController.model.empData.golonganJabatan.code}" readonly="true" styleClass="isitext_hrm" style="width:290px;" />
+                                    	<p:inputText id="currentGolJab" value="#{empCareerTransitionFormController.model.currentGolJab}" readonly="true" styleClass="isitext_hrm" style="width:290px;" />
                                     </p:column>
                                     <p:column style="width: 16%;background-color: #e1f0f0!important" >
                                         <p:outputLabel  value="#{appmsg['functiongroup.function_group']}" styleClass="label_hrm" for="golonganJabatanId"/>
@@ -179,7 +187,7 @@
                                     <p:column style="width: 34%">
                                         <p:selectOneMenu id="golonganJabatanId" styleClass="isitext_hrm" required="true"  value="#{empCareerTransitionFormController.model.golonganJabatanId}" style="width:290px;">
                                         	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        	<f:selectItems value="#{empCareerTransitionFormController.listGolonganJabatan}" var="golonganJabatan" itemValue="#{golonganJabatan.id}" itemLabel="#{golonganJabatan.code}  #{golonganJabatan.pangkat.pangkatName}"/>
+                                        	<f:selectItems value="#{empCareerTransitionFormController.model.listGolonganJabatan}" var="golonganJabatan" itemValue="#{golonganJabatan.id}" itemLabel="#{golonganJabatan.code}  #{golonganJabatan.pangkat.pangkatName}"/>
                                     	</p:selectOneMenu>
                                     	<p:message for="golonganJabatanId"/>
                                     </p:column>
@@ -189,7 +197,7 @@
                                         <p:outputLabel  value="#{appmsg['employee.join_date']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column style="width: 34%">
-                                    	<p:calendar id="currentJoinDate" readonly="true" pattern="dd-MMMM-yyyy" value="#{empCareerTransitionFormController.model.empData.joinDate}">
+                                    	<p:calendar id="currentJoinDate" readonly="true" pattern="dd-MMMM-yyyy" value="#{empCareerTransitionFormController.model.currentJoinDate}">
                                     	</p:calendar>
                                     </p:column>
                                     <p:column style="width: 16%;background-color: #e1f0f0!important" >
@@ -207,19 +215,19 @@
                      	<p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
                      		<p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel for="salaryChangesTypeId" value="#{appmsg['emp_career_transition.salary_changes']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['emp_career_transition.salary_changes']}" for="salaryChangesPercentId" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
                                 	<h:panelGrid columns="3">
-                                		<p:selectOneRadio id="salaryChangesTypeId" layout="pageDirection" styleClass="isitext_hrm" value="#{empCareerTransitionFormController.model.salaryChangesType}">
+                                		<p:selectOneRadio layout="pageDirection" styleClass="isitext_hrm" value="#{empCareerTransitionFormController.model.salaryChangesType}">
 								            <f:selectItem itemLabel="(+)" itemValue="INCREASES" />
 								            <f:selectItem itemLabel="(-)" itemValue="DECREASES" />
 								        </p:selectOneRadio>
 								        
-								        <p:spinner stepFactor="5" min="0" max="100" size="3" value="#{empCareerTransitionFormController.model.salaryChangesPercent}"/>
+								        <p:spinner id="salaryChangesPercentId" required="true" stepFactor="5" min="0" max="100" size="3" value="#{empCareerTransitionFormController.model.salaryChangesPercent}"/>
 								        <p:outputLabel value="%" styleClass="label_hrm"/>
                                 	</h:panelGrid>                                	
-                                    <p:message for="salaryChangesTypeId"/>
+                                    <p:message for="salaryChangesPercentId"/>
                                 </p:column>
                             </p:row>
                             <p:row>

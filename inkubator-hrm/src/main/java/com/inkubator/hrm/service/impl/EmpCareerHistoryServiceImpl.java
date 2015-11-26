@@ -303,6 +303,7 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 			Jabatan jabatan = jabatanDao.getEntiyByPK(model.getJabatanId());
 			GolonganJabatan golonganJabatan = golonganJabatanDao.getEntiyByPK(model.getGolonganJabatanId());
 			CareerTransition careerTransition = careerTransitionDao.getEntiyByPK(model.getCareerTransitionId());
+			EmpData copyOfLetterTo = empDataDao.getEntiyByPK(model.getCopyOfLetterTo().getId());
 			
 			EmpData empData = empDataDao.getEntiyByPK(model.getEmpData().getId());
 			String salaryEncrypted = this.calculateSalaryEncrypted(empData.getBasicSalary(), model.getSalaryChangesType(), model.getSalaryChangesPercent());
@@ -319,16 +320,18 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 			EmpCareerHistory careerHistory = new EmpCareerHistory();
 			careerHistory.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 	        careerHistory.setBioData(empData.getBioData());
-	        careerHistory.setGolonganJabatan(jabatan.getGolonganJabatan());
-	        careerHistory.setJabatan(jabatan);
+	        careerHistory.setCopyOfLetterTo(copyOfLetterTo);
+	        careerHistory.setGolonganJabatan(empData.getGolonganJabatan());
+	        careerHistory.setJabatan(empData.getJabatanByJabatanId());
 	        careerHistory.setNik(empData.getNik());
 	        careerHistory.setNoSk(model.getNoSk());
 	        careerHistory.setSalary(empData.getBasicSalary());
 	        careerHistory.setTglPenganngkatan(model.getEffectiveDate());
 	        careerHistory.setStatus(careerTransition.getSystemCareerConst().getConstant());
-	        careerHistory.setEmployeeType(employeeType);
+	        careerHistory.setEmployeeType(empData.getEmployeeType());
 	        careerHistory.setSalaryChangesType(model.getSalaryChangesType());
 	        careerHistory.setSalaryChangesPercent(model.getSalaryChangesPercent());
+	        careerHistory.setNotes(model.getNotes());
 	        careerHistory.setApprovalActivityNumber(model.getApprovalActivityNumber());
 	        careerHistory.setCreatedBy(UserInfoUtil.getUserName());
 	        careerHistory.setCreatedOn(new Date());

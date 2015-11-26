@@ -88,7 +88,6 @@ public class DepartmentDaoImpl extends IDAOImpl<Department> implements Departmen
     public Department getEntityByPkWithDetail(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("id", id));
-        criteria.setFetchMode("costCenterDept", FetchMode.JOIN);
         criteria.setFetchMode("company", FetchMode.JOIN);
         return (Department) criteria.uniqueResult();
     }
