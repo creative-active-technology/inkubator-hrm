@@ -99,6 +99,7 @@ public class UnitKerjaModel implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    @Pattern(regexp = "^[\\d() -]+", message = "{error_phone_without_country_code}")
     public String getFaxNumber() {
         return faxNumber;
     }

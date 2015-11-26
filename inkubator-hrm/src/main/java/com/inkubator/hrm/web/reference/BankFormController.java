@@ -224,9 +224,10 @@ public class BankFormController extends BaseController {
             isReadOnlyBankNameAndCode = Boolean.TRUE;
             isReadOnlyBankNameAndCodeBranch = Boolean.FALSE;
             Bank bank = bankService.getEntiyByPK(bankModel.getBank());
-            bankModel.setBankCode(bank.getBankCode());
-            bankModel.setBankName(bank.getBankName());
-            bankModel.setBranchCode(bank.getBankCode());
+            Bank topParent=bankService.getTopParentBank(bankModel.getBank());
+            bankModel.setBankCode(topParent.getBankCode());
+            bankModel.setBankName(topParent.getBankName());
+            bankModel.setBranchCode(topParent.getBankCode());
         }
     }
 

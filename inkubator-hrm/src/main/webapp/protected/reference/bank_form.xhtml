@@ -38,7 +38,7 @@
                                     <p:outputLabel  value="#{appmsg['bank.parent_bank']}"  for="bankId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu id="bankId" value="#{bankFormController.bankModel.bank}" style="margin-right: 3px" required="false">
+                                    <p:selectOneMenu id="bankId" value="#{bankFormController.bankModel.bank}" style="margin-right: 3px" required="false" disabled="#{bankFormController.isUpdate}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="0"/>
                                         <f:selectItems value="#{bankFormController.dropDownBank}"/>
                                         <p:ajax update="code,name,branchCodeParent,branchCode,branchName" process="@this" listener="#{bankFormController.doChangeReadOnlyBankNameAndCode()}"/>
