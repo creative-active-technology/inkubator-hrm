@@ -105,7 +105,7 @@ public class NotificationEmailRecruitmentSelectionScheduleMessagesListener exten
                  toSend.add(scheduleDetailHistoryFromDb.getEmailAddress());
                  toSentCC.add("deni.arianto1606@gmail.com");
                  toSentCC.add("rizal2_dhfr@yahoo.com");
-                 toSentCC.add("yosa.mareta@gmail.com");
+//                 toSentCC.add("yosa.mareta@gmail.com");
                  toSentCC.add("guntur@incubatechnology.com");
                  toSentCC.add("rizkykojek@gmail.com");
                  toSentCC.add("amjadicky@gmail.com");

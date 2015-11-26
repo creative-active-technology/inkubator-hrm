@@ -5,12 +5,15 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import javax.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.Email;
 
 /**
  *
  * @author deniarianto
  */
-public class UnitKerjaModel implements Serializable{
+public class UnitKerjaModel implements Serializable {
+
     private Long id;
     private Long cityId;
     private String code;
@@ -22,7 +25,6 @@ public class UnitKerjaModel implements Serializable{
     private String phoneNumber;
     private String faxNumber;
 
-    
     public Long getCityId() {
         return cityId;
     }
@@ -30,7 +32,7 @@ public class UnitKerjaModel implements Serializable{
     public void setCityId(Long cityId) {
         this.cityId = cityId;
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -38,7 +40,7 @@ public class UnitKerjaModel implements Serializable{
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     public String getCode() {
         return code;
     }
@@ -79,6 +81,7 @@ public class UnitKerjaModel implements Serializable{
         this.provinceId = provinceId;
     }
 
+    @Email(message = "{errorr_mail}")
     public String getEmailAddress() {
         return emailAddress;
     }
@@ -87,6 +90,7 @@ public class UnitKerjaModel implements Serializable{
         this.emailAddress = emailAddress;
     }
 
+    @Pattern(regexp = "^[\\d() -]+", message = "{error_phone_without_country_code}")
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -102,6 +106,5 @@ public class UnitKerjaModel implements Serializable{
     public void setFaxNumber(String faxNumber) {
         this.faxNumber = faxNumber;
     }
-    
-    
+
 }

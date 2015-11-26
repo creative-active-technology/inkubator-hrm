@@ -382,6 +382,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 			arrayComponents.add(component);
 		}
 		jsonObject.add("businessTravelComponents", arrayComponents);
+                jsonObject.addProperty(HRMConstant.CONTEXT_PATH, FacesUtil.getRequest().getContextPath());
         
         return gson.toJson(jsonObject);
 	}

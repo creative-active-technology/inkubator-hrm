@@ -242,7 +242,7 @@
                         <div style="float:left">
                             <h:panelGrid style="margin-left: 50px;padding-top: 8px" columns="2">
                                   <p:commandLink >
-                                    <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="22" width="22" cache="false" style="border:  1px solid #ffffff !important; border-radius: 4px !important" >
+                                    <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="22" width="22" cache="true" style="border:  1px solid #ffffff !important; border-radius: 4px !important"    >
                                         <f:param name="id" value="#{BIODATA_ID}"/>
                                     </p:graphicImage>  
                                 </p:commandLink>
@@ -907,6 +907,7 @@
                                         <p:menuitem value="Logout" icon="ui-icon-power" styleClass="menu" style="color: #ff9933 !important;font-size: 14px!important" title="Logout and Exit" url="/logout.htm" />  
                                     </p:menubar>  
                                 </h:form>
+                                
                                 <div class="art-header" id="logoId">
                                     <div class="art-header-jpeg"></div>
                                     <div class="art-logo" style="float: right">

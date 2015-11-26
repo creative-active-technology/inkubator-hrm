@@ -7,6 +7,8 @@ package com.inkubator.hrm.service.impl;
 import ch.lambdaj.Lambda;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.JsonConverter;
 import com.inkubator.exception.BussinessException;
@@ -529,7 +531,11 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
 
             //parsing object to json and save to approval activity 
             Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-            approvalActivity.setPendingData(gson.toJson(entity));
+            JsonParser parser = new JsonParser();
+            JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
+            jsonObject.addProperty(HRMConstant.CONTEXT_PATH, FacesUtil.getRequest().getContextPath());
+            approvalActivity.setPendingData(jsonObject.toString());
+            
             approvalActivityDao.save(approvalActivity);
 
             message = "success_need_approval";
