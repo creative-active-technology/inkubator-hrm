@@ -188,6 +188,7 @@ public class HRMConstant {
     public static final String LEAVE_CANCELLATION = "LEAVE_CANCELLATION";
     public static final String OVERTIME = "OVERTIME";
     public static final String VACANCY_ADVERTISEMENT = "VACANCY_ADVERTISEMENT";
+    public static final String EMPLOYEE_CAREER_TRANSITION = "EMPLOYEE_CAREER_TRANSITION";
     public static final String APPROVAL_PROCESS = "APPROVAL_PROCESS";
     public static final String ON_APPROVE_INFO = "ON_APPROVE_INFO";
     public static final String ON_REJECT_INFO = "ON_REJECT_INFO";
@@ -210,6 +211,7 @@ public class HRMConstant {
     public static final String EMP_PLACEMENT = "EMP_PLACEMENT";
     public static final String EMP_ROTATION = "EMP_ROTATION";
     public static final String EMP_TERMINATION = "EMP_TERMINATION";
+    public static final String EMP_NEW_HIRE = "EMP_NEW_HIRE";
     /* END */
 
  /* Constant for  Model Component */
@@ -558,6 +560,10 @@ public class HRMConstant {
     public static final Integer CAREER_EMPLOYEE_STATUS = 1;
     public static final Integer CAREER_TERMINATION_TYPE = 2;
     public static final Integer CAREER_TRANSITION = 3;
+    
+    /* Constant for Employee Career Transition */
+    public static final String SALARY_DECREASES = "DECREASES";
+    public static final String SALARY_INCREASES = "INCREASES";    
     
     /* Constant for contextPath */
     public static final String CONTEXT_PATH = "contextPath";

@@ -581,4 +581,10 @@ public class DepartmentServiceImpl extends IServiceImpl implements DepartmentSer
 		return departmentDao.getAllWithSpecificCompany();
 	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<Department> getAllDataWithoutSpecificCompany() throws Exception {
+		return departmentDao.getAllData();
+	}
+
 }
