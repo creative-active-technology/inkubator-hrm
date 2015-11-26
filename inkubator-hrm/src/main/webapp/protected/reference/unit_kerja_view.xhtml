@@ -37,7 +37,7 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['unitkerja.code']}" itemValue="code"/>
                                         <f:selectItem itemLabel="#{appmsg['unitkerja.name']}" itemValue="name"/>
-                                        <f:selectItem itemLabel="#{appmsg['unitkerja.location']}" itemValue="location"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.address']}" itemValue="location"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{unitKerjaController.unitKerjaSearchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{unitKerjaController.doSearch()}" update="tableUnitKerjaId"  styleClass="label_button" icon="ui-icon-search"/>
