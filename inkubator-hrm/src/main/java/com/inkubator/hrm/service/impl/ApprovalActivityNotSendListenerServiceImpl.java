@@ -252,12 +252,11 @@ public class ApprovalActivityNotSendListenerServiceImpl extends BaseSchedulerDin
                             Gson gs = JsonUtil.getHibernateEntityGsonBuilder().create();
                             RmbsApplication application = gs.fromJson(appActivity.getPendingData(), RmbsApplication.class);
                             RmbsType rmbsType = rmbsTypeDao.getEntiyByPK(application.getRmbsType().getId());
-                            System.out.println(" Object Json" + rmbsType.getName());
-                            maptoSend.put("reimbursementType", jsonObject.get("name").getAsString());
-                            maptoSend.put("claim_date", jsonObject.get("claim_date").getAsString());
-                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
-                            maptoSend.put("nominalOrUnit", jsonObject.get("nominalOrUnit").getAsString());
-                            maptoSend.put("reimbursmentNo", jsonObject.get("reimbursmentNo").getAsString());
+                            maptoSend.put("reimbursementType", rmbsType.getName());
+                            maptoSend.put("applicationDate", jsonObject.get("applicationDate").getAsString());
+                            maptoSend.put("nominal", jsonObject.get("nominal").getAsString());
+                            maptoSend.put("applicationDate", jsonObject.get("applicationDate").getAsString());
+                            maptoSend.put("proposeDate", jsonObject.get("createdOn").getAsString());
                             if (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED) {
                                 maptoSend.put("statusDesc", "Permohonan Diterima");
                             } else if (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED) {
@@ -290,7 +289,7 @@ public class ApprovalActivityNotSendListenerServiceImpl extends BaseSchedulerDin
                 }
                 if (jsonObject.get(HRMConstant.CONTEXT_PATH).getAsString() != null) {
                     String urlLinkToApprove = serverName + "" + jsonObject.get(HRMConstant.CONTEXT_PATH).getAsString() + "" + HRMConstant.REIMBURSMENT_APPROVAL_PAGE + "" + "?faces-redirect=true&execution=e" + appActivity.getId();
-                    System.out.println(" Ini adlaaha link nya : "+urlLinkToApprove);
+                    System.out.println(" Ini adlaaha link nya : " + urlLinkToApprove);
                     maptoSend.put("urlLinkToApprove", urlLinkToApprove);
                 } else {
                     maptoSend.put("urlLinkToApprove", applicationUrl);

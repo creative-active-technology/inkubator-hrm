@@ -7,6 +7,7 @@ package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.EmpCareerHistory;
+import com.inkubator.hrm.web.model.EmpCareerHistoryModel;
 import com.inkubator.hrm.web.search.ReportEmpMutationParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -15,11 +16,15 @@ import org.hibernate.criterion.Order;
  *
  * @author Deni Husni FR
  */
-public interface EmpCareerHistoryService extends IService<EmpCareerHistory> {
+public interface EmpCareerHistoryService extends IService<EmpCareerHistory>, BaseApprovalService {
 
     public List<EmpCareerHistory> getEmployeeCareerByBioId(long id) throws Exception;
     
     public List<EmpCareerHistory> getByParamReport(ReportEmpMutationParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalEmpCareerHistoryDataByParamReport(ReportEmpMutationParameter searchParameter);
+    
+    public String saveTransitionWithApproval(EmpCareerHistoryModel model) throws Exception;
+    
+    public String saveTransitionWithRevised(EmpCareerHistoryModel model, Long approvalActivityId) throws Exception;
 }

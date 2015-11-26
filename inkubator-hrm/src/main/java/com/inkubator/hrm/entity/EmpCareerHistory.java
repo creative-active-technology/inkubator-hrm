@@ -37,6 +37,11 @@ public class EmpCareerHistory implements java.io.Serializable {
     private String updateBy;
     private Date updatedOn;
     private String status;
+    private String approvalActivityNumber;
+    private String salaryChangesType;
+    private Double salaryChangesPercent;
+    private String notes;
+    private EmpData copyOfLetterTo;
     private EmployeeType employeeType;
      private String jabatanOldName;
      private String jabatanOldCode;
@@ -195,8 +200,54 @@ public class EmpCareerHistory implements java.io.Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+    
+    @Column(name = "approval_activity_number", length = 45, unique = true)
+    public String getApprovalActivityNumber() {
+        return approvalActivityNumber;
+    }
 
-    @Column(name = "salary", length = 65535, columnDefinition="Text")
+    public void setApprovalActivityNumber(String approvalActivityNumber) {
+        this.approvalActivityNumber = approvalActivityNumber;
+    }
+    
+    @Column(name = "salary_changes_type")
+    public String getSalaryChangesType() {
+		return salaryChangesType;
+	}
+
+	public void setSalaryChangesType(String salaryChangesType) {
+		this.salaryChangesType = salaryChangesType;
+	}
+
+	@Column(name = "salary_changes_percent")
+	public Double getSalaryChangesPercent() {
+		return salaryChangesPercent;
+	}
+
+	public void setSalaryChangesPercent(Double salaryChangesPercent) {
+		this.salaryChangesPercent = salaryChangesPercent;
+	}
+	
+	@Column(name = "notes", length = 65535, columnDefinition = "Text")
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "copy_of_letter_to")
+	public EmpData getCopyOfLetterTo() {
+		return copyOfLetterTo;
+	}
+
+	public void setCopyOfLetterTo(EmpData copyOfLetterTo) {
+		this.copyOfLetterTo = copyOfLetterTo;
+	}
+
+	@Column(name = "salary", length = 65535, columnDefinition="Text")
     public String getSalary() {
         return this.salary;
     }
