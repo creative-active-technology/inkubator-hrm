@@ -36,6 +36,7 @@ public class CareerTerminationType implements java.io.Serializable {
      private long id;
      private Integer version;
      private SystemLetterReference systemLetterReference;
+     private SystemCareerConst systemCareerConst;
      private String createdBy;
      private Date createdOn;
      private String updatedBy;
@@ -87,18 +88,28 @@ public class CareerTerminationType implements java.io.Serializable {
         this.version = version;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="letter_ref_id")
     public SystemLetterReference getSystemLetterReference() {
         return this.systemLetterReference;
     }
-    
+   
     public void setSystemLetterReference(SystemLetterReference systemLetterReference) {
         this.systemLetterReference = systemLetterReference;
     }
-
     
-    @Column(name="created_by", length=45)
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="system_career_const_id")
+    public SystemCareerConst getSystemCareerConst() {
+		return systemCareerConst;
+	}
+
+
+	public void setSystemCareerConst(SystemCareerConst systemCareerConst) {
+		this.systemCareerConst = systemCareerConst;
+	}
+
+	@Column(name="created_by", length=45)
     public String getCreatedBy() {
         return this.createdBy;
     }
