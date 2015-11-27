@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Deni
  */
-@Service(value = "systemCarreerConstService")
+@Service(value = "systemCareerConstService")
 @Lazy
 public class SystemCareerConstServiceImpl extends IServiceImpl implements SystemCareerConstService {
 
