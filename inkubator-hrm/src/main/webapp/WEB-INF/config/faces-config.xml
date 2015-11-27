@@ -40,7 +40,7 @@ http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">-->
     <!--    <lifecycle>
         <phase-listener>com.csl.web.core.listener.Primefaces35PhaseListener</phase-listener>
     </lifecycle>-->
-    <factory>
+<!--    <factory>
         <exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory</exception-handler-factory>
-    </factory>
+    </factory>-->
 </faces-config>

@@ -314,9 +314,19 @@ public class BankServiceImpl extends IServiceImpl implements BankService {
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<Bank> getAllWithparent() throws Exception {
         return this.bankDao.getAllWithparent();
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Bank getTopParentBank(Long id) throws Exception {
+        Bank bank = bankDao.getEntiyByPK(id);
+        while (bank.getBank() != null) {
+            bank = bank.getBank();
+        }
+        return bank;
     }
 
 }

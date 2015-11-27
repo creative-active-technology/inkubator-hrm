@@ -257,7 +257,7 @@ public class EmpDataDetilController extends BaseController {
     }
 
     public String doBack() {        
-        return "/protected/employee/emp_placement_view.htm?faces-redirect=true";
+        return "/protected/personalia/emp_background_view.htm?faces-redirect=true";
     }
 
     public List<JabatanSpesifikasi> getListJabatanSpesifikasi() {

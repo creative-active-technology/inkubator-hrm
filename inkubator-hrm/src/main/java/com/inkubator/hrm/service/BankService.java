@@ -9,17 +9,19 @@ import com.inkubator.hrm.entity.Bank;
 import com.inkubator.hrm.web.search.BankSearchParameter;
 
 /**
-*
-* @author Taufik Hidayat
-*/
+ *
+ * @author Taufik Hidayat
+ */
 public interface BankService extends IService<Bank> {
 
-	public List<Bank> getByParam(BankSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
+    public List<Bank> getByParam(BankSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
-	public Long getTotalByParam(BankSearchParameter parameter) throws Exception;
-        
-        public Bank getEntityWithDetail(Long id) throws Exception;
-        
-        public List<Bank> getAllWithparent()throws Exception;
+    public Long getTotalByParam(BankSearchParameter parameter) throws Exception;
+
+    public Bank getEntityWithDetail(Long id) throws Exception;
+
+    public List<Bank> getAllWithparent() throws Exception;
+
+    public Bank getTopParentBank(Long id) throws Exception;
 
 }
