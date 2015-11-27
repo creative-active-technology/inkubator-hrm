@@ -180,9 +180,16 @@
                                     <p:outputLabel  value="#{appmsg['permitdistribution.start_saldo']}"  for="strtBalance" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber id="strtBalance" decimalPlaces="1" value="#{permitDistributionFormController.model.startBalance}"
+<!--                                    <pe:inputNumber id="strtBalance" decimalPlaces="1" value="#{permitDistributionFormController.model.startBalance}"
                                                     styleClass="isitext_hrm" style="width:50px;" required="true" />
-                                    <p:outputLabel  value=" Hari" />
+                                    <p:outputLabel  value=" Hari" />-->
+
+                                    <p:inputText id="strtBalance" value="#{permitDistributionFormController.model.startBalance}"  required="true"
+                                                 styleClass="isitext_hrm" style="width:50px;text-align: right;">
+                                        <f:validateDoubleRange/>
+                                        <f:convertNumber/>
+                                    </p:inputText> 
+
                                     <p:message for="strtBalance"/>
                                 </p:column>
                             </p:row>
