@@ -62,25 +62,25 @@
                                                                                offIcon="ui-icon-close" styleClass="label_button" style="margin-bottom: 5px;"/>
                                                     </p:column>
                                                 </p:row>-->
-                                                <p:row>
-                                                    <p:column style="width: 29%">
-                                                        <p:outputLabel for="pangkatId" value="#{appmsg['position.position_group']}" styleClass="label_hrm"/>
-                                                    </p:column>
-                                                    <p:column style="width: 1%">
-                                                        <h:outputLabel for="pangkatId" value=":" styleClass="label_hrm"/>
-                                                    </p:column>
-                                                    <p:column  style="width: 70%">
-                                                        <p:selectOneMenu id="pangkatId" styleClass="isitext_hrm" required="true" filter="true" value="#{golonganJabatanFormController.model.pangkatId}">
-                                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                                            <f:selectItems value="#{golonganJabatanFormController.model.pangkats.entrySet()}" var="pangkat" itemValue="#{pangkat.key}" itemLabel="#{pangkat.value}"/>
-                                                        </p:selectOneMenu>
-                                                    </p:column>
-                                                </p:row>
-                                                <p:row>
-                                                    <p:column colspan="3">
-                                                        <p:message for="pangkatId"/>
-                                                    </p:column>
-                                                </p:row>                                                                       
+                        <p:row>
+                            <p:column style="width: 29%">
+                                <p:outputLabel for="pangkatId" value="#{appmsg['position.position_group']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="pangkatId" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 70%">
+                                <p:selectOneMenu id="pangkatId" styleClass="isitext_hrm" required="true" filter="true" value="#{golonganJabatanFormController.model.pangkatId}">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{golonganJabatanFormController.model.pangkats.entrySet()}" var="pangkat" itemValue="#{pangkat.key}" itemLabel="#{pangkat.value}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="pangkatId"/>
+                            </p:column>
+                        </p:row>                                                                       
 
                         <p:row>
                             <p:column style="width: 29%">
@@ -111,23 +111,49 @@
                             </p:column>
                             <p:column  style="width: 70%">
                                 <h:outputLabel value="Min " styleClass="label_hrm"/> 
-                                <pe:inputNumber decimalPlaces="0" id="pointMin" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.pointMin}" 
+<!--                                <pe:inputNumber decimalPlaces="0" id="pointMin" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.pointMin}" 
                                                 required="true" maxlength="4" requiredMessage="#{appmsg['functiongroup.point_min_must_be_filled']}" styleClass="isitext_hrm" style="width:450px!important;" >
                                     <f:validator validatorId="bigDecimalNumberBetweenValidator"  />
                                     <f:attribute name="endNumberInteger" value="#{pointMed}"/>
                                     <f:attribute name="validatorMessage" value="#{appmsg['paysalarygrade.min_poin_could_not_greater_than_med_point']}"/>
-                                </pe:inputNumber>
+                                </pe:inputNumber>-->
+
+                                <p:inputText id="pointMin" value="#{golonganJabatanFormController.model.pointMin}"  required="true"  title="#{appmsg['functiongroup.function_group_code']}"
+                                             style="text-align: right;width: 40px"  styleClass="isitext_hrm" maxlength="4" requiredMessage="#{appmsg['functiongroup.point_min_must_be_filled']}" >
+                                    <!--<f:validateDoubleRange/>-->
+                                    <f:convertNumber minFractionDigits="0"/>
+                                    <f:validator validatorId="bigDecimalNumberBetweenValidator"  />
+                                    <f:attribute name="endNumberInteger" value="#{pointMed}"/>
+                                    <f:attribute name="validatorMessage" value="#{appmsg['paysalarygrade.min_poin_could_not_greater_than_med_point']}"/>
+                                </p:inputText> 
+
                                 <h:outputLabel value="Med " styleClass="label_hrm"/>
-                                <pe:inputNumber decimalPlaces="0" id="pointMed" binding="#{pointMed}" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.pointMid}" 
+<!--                                <pe:inputNumber decimalPlaces="0" id="pointMed" binding="#{pointMed}" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.pointMid}" 
                                                 required="true" maxlength="4" requiredMessage="#{appmsg['functiongroup.point_med_must_be_filled']}" styleClass="isitext_hrm" style="width:45px;" >
                                     <f:validator validatorId="bigDecimalNumberBetweenValidator"  />
                                     <f:attribute name="endNumberInteger" value="#{pointMax}"/>
                                     <f:attribute name="validatorMessage" value="#{appmsg['paysalarygrade.min_poin_could_not_greater_than_med_point']}"/>
-                                </pe:inputNumber>
+                                </pe:inputNumber>-->
+
+                                <p:inputText id="pointMed"  binding="#{pointMed}"  title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.pointMid}"  required="true"  
+                                             style="text-align: right;width: 40px"  styleClass="isitext_hrm" maxlength="4" requiredMessage="#{appmsg['functiongroup.point_med_must_be_filled']}"  >
+                                    <!--<f:validateDoubleRange/>-->
+                                    <f:convertNumber minFractionDigits="0"/>
+                                    <f:validator validatorId="bigDecimalNumberBetweenValidator"  />
+                                    <f:attribute name="endNumberInteger" value="#{pointMax}"/>
+                                    <f:attribute name="validatorMessage" value="#{appmsg['paysalarygrade.min_poin_could_not_greater_than_med_point']}"/>
+                                </p:inputText> 
+
                                 <h:outputLabel value="Max " styleClass="label_hrm"/> 
-                                <pe:inputNumber decimalPlaces="0" id="pointMax" binding="#{pointMax}" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.pointMax}" 
+<!--                                <pe:inputNumber decimalPlaces="0" id="pointMax" binding="#{pointMax}" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.pointMax}" 
                                                 required="true" maxlength="4" requiredMessage="#{appmsg['functiongroup.point_max_must_be_filled']}" styleClass="isitext_hrm" style="width:45px;" >
-                                </pe:inputNumber>
+                                </pe:inputNumber>-->
+
+                                <p:inputText id="pointMax"  binding="#{pointMax}"  title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.pointMax}"  required="true"  
+                                             style="text-align: right;width: 40px"  styleClass="isitext_hrm" maxlength="4" requiredMessage="#{appmsg['functiongroup.point_max_must_be_filled']}" >
+                                    <f:validateDoubleRange/>
+                                    <f:convertNumber minFractionDigits="0"/>
+                                </p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -145,9 +171,16 @@
                                 <h:outputLabel for="rasio" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                                <pe:inputNumber decimalPlaces="0" id="rasio" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.ratioCompact}" 
+<!--                                <pe:inputNumber decimalPlaces="0" id="rasio" title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.ratioCompact}" 
                                                 required="true" maxlength="4" styleClass="isitext_hrm" style="width:235px;" >
-                                </pe:inputNumber>
+                                </pe:inputNumber>-->
+
+                                <p:inputText id="rasio"   title="#{appmsg['functiongroup.function_group_code']}" value="#{golonganJabatanFormController.model.ratioCompact}"  required="true"  
+                                             style="text-align: right;width: 50px"  styleClass="isitext_hrm" maxlength="4"  >
+                                    <f:validateDoubleRange/>
+                                    <f:convertNumber minFractionDigits="0"/>
+                                </p:inputText>
+
                             </p:column>
                         </p:row>
                         <p:row>
@@ -170,9 +203,9 @@
                     </h:panelGrid>
                 </h:form>
                 <style>
-                	.pe-inputNumber{
-                		width: 45px!important;
-                	}
+                    .pe-inputNumber{
+                        width: 45px!important;
+                    }
                 </style>
             </ui:define>
 

@@ -191,7 +191,7 @@
                                     <p:inputText id="mainSalary" value="#{empDataFormController.empDataModel.basicSalary}"  required="true"
                                                  style="text-align: right;width: 350px"  >
                                         <f:validateDoubleRange/>
-                                        <f:convertNumber />
+                                        <f:convertNumber minFractionDigits="2"/>
                                     </p:inputText> 
                                     <p:message for="mainSalary"/>
                                 </p:column>

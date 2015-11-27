@@ -18,6 +18,7 @@ import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.service.AnnouncementService;
 import com.inkubator.hrm.service.ApprovalActivityCronService;
 import com.inkubator.hrm.service.BusinessTravelService;
+import com.inkubator.hrm.service.EmpCareerHistoryService;
 import com.inkubator.hrm.service.ImplementationOfOverTimeService;
 import com.inkubator.hrm.service.LeaveImplementationService;
 import com.inkubator.hrm.service.LoanNewApplicationService;
@@ -68,6 +69,8 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
     private RecruitHireApplyService recruitHireApplyService;
     @Autowired
     private RecruitMppApplyService recruitMppApplyService;
+    @Autowired
+    private EmpCareerHistoryService empCareerHistoryService;
 	
 	
 	@Override
@@ -136,6 +139,9 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 	                    case HRMConstant.RECRUIT_MPP_APPLY:
 	                    	recruitMppApplyService.approved(approvalActivity.getId(), null, null);
 	                        break;
+	                    case HRMConstant.EMPLOYEE_CAREER_TRANSITION:
+	                    	empCareerHistoryService.approved(approvalActivity.getId(), null, null);
+	                        break;
 						default:
 							break;
 					}
@@ -185,6 +191,9 @@ public class ApprovalActivityCronServiceImpl implements ApprovalActivityCronServ
 	                        break;
 	                    case HRMConstant.RECRUIT_MPP_APPLY:
 	                    	recruitMppApplyService.diverted(approvalActivity.getId());
+	                        break;
+	                    case HRMConstant.EMPLOYEE_CAREER_TRANSITION:
+	                    	empCareerHistoryService.diverted(approvalActivity.getId());
 	                        break;
 						default:
 							break;

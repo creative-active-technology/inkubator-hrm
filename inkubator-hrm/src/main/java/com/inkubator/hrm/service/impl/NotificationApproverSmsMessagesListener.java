@@ -29,8 +29,10 @@ import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.service.AnnouncementService;
 import com.inkubator.hrm.service.BusinessTravelService;
+import com.inkubator.hrm.service.EmpCareerHistoryService;
 import com.inkubator.hrm.service.LeaveImplementationService;
 import com.inkubator.hrm.service.LoanNewApplicationService;
+import com.inkubator.hrm.service.RecruitVacancyAdvertisementService;
 import com.inkubator.hrm.service.RmbsApplicationService;
 import com.inkubator.hrm.service.RmbsDisbursementService;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
@@ -66,6 +68,10 @@ public class NotificationApproverSmsMessagesListener extends IServiceImpl implem
 	private AnnouncementService announcementService;
 	@Autowired
 	private WtEmpCorrectionAttendanceService wtEmpCorrectionAttendanceService;
+	@Autowired
+	private RecruitVacancyAdvertisementService recruitVacancyAdvertisementService;
+	@Autowired
+	private EmpCareerHistoryService empCareerHistoryService;
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, timeout = 50, rollbackFor = Exception.class)
@@ -132,6 +138,12 @@ public class NotificationApproverSmsMessagesListener extends IServiceImpl implem
 						case HRMConstant.EMP_CORRECTION_ATTENDANCE:
 							wtEmpCorrectionAttendanceService.approved(approvalActivity.getId(), null, arrContent[2]);
 							break;
+						case HRMConstant.VACANCY_ADVERTISEMENT:
+							recruitVacancyAdvertisementService.approved(approvalActivity.getId(), null, arrContent[2]);
+							break;
+						case HRMConstant.EMPLOYEE_CAREER_TRANSITION:
+							empCareerHistoryService.approved(approvalActivity.getId(), null, arrContent[2]);
+							break;
 						default:
 							break;
 					}					
@@ -167,6 +179,12 @@ public class NotificationApproverSmsMessagesListener extends IServiceImpl implem
 						case HRMConstant.EMP_CORRECTION_ATTENDANCE:
 							wtEmpCorrectionAttendanceService.rejected(approvalActivity.getId(), arrContent[2]);
 							break;
+						case HRMConstant.VACANCY_ADVERTISEMENT:
+							recruitVacancyAdvertisementService.rejected(approvalActivity.getId(), arrContent[2]);
+							break;
+						case HRMConstant.EMPLOYEE_CAREER_TRANSITION:
+							empCareerHistoryService.rejected(approvalActivity.getId(), arrContent[2]);
+							break;
 						default:
 							break;
 					}					
@@ -189,6 +207,12 @@ public class NotificationApproverSmsMessagesListener extends IServiceImpl implem
 							break;
 						case HRMConstant.EMP_CORRECTION_ATTENDANCE:
 							wtEmpCorrectionAttendanceService.askingRevised(approvalActivity.getId(), arrContent[2]);
+							break;
+						case HRMConstant.VACANCY_ADVERTISEMENT:
+							recruitVacancyAdvertisementService.askingRevised(approvalActivity.getId(), arrContent[2]);
+							break;
+						case HRMConstant.EMPLOYEE_CAREER_TRANSITION:
+							empCareerHistoryService.askingRevised(approvalActivity.getId(), arrContent[2]);
 							break;
 						default:
 							/** Tidak semua module implement asking revised, jika belum/tidak implement maka kirim sms balik ke sender untuk notifikasi */

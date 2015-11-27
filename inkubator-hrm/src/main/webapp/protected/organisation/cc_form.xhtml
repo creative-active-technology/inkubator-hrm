@@ -66,31 +66,31 @@
                                 <p:message for="name"/>
                             </p:column>
                         </p:row>
-<!--                        <p:row>
-                            <p:column style="width: 40%">
-                                <p:outputLabel for="level" value="#{appmsg['costcenter.level']}" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column style="width: 1%">
-                                <h:outputLabel for="level" value=":" styleClass="label_hrm"/>
-                            </p:column>
-                            <p:column  style="width: 50%">
-                                <p:selectOneMenu id="level" value="#{costCenterFormController.costCenterModel.level}" style="width: 150px;margin-right: 3px" >
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="1" itemValue="1"/>
-                                        <f:selectItem itemLabel="2" itemValue="2"/>
-                                        <f:selectItem itemLabel="3" itemValue="3"/>
-                                        <f:selectItem itemLabel="4" itemValue="4"/>
-                                        <f:selectItem itemLabel="5" itemValue="5"/>
-                                        <p:ajax listener="#{costCenterFormController.onChangeManageBreakTime()}" 
-                                    	        update="parentId" />
-                                    </p:selectOneMenu>
-                            </p:column>
-                        </p:row>-->
-<!--                        <p:row>
-                            <p:column colspan="3">
-                                <p:message for="level"/>
-                            </p:column>
-                        </p:row>-->
+                        <!--                        <p:row>
+                                                    <p:column style="width: 40%">
+                                                        <p:outputLabel for="level" value="#{appmsg['costcenter.level']}" styleClass="label_hrm"/>
+                                                    </p:column>
+                                                    <p:column style="width: 1%">
+                                                        <h:outputLabel for="level" value=":" styleClass="label_hrm"/>
+                                                    </p:column>
+                                                    <p:column  style="width: 50%">
+                                                        <p:selectOneMenu id="level" value="#{costCenterFormController.costCenterModel.level}" style="width: 150px;margin-right: 3px" >
+                                                                <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                                                <f:selectItem itemLabel="1" itemValue="1"/>
+                                                                <f:selectItem itemLabel="2" itemValue="2"/>
+                                                                <f:selectItem itemLabel="3" itemValue="3"/>
+                                                                <f:selectItem itemLabel="4" itemValue="4"/>
+                                                                <f:selectItem itemLabel="5" itemValue="5"/>
+                                                                <p:ajax listener="#{costCenterFormController.onChangeManageBreakTime()}" 
+                                                                        update="parentId" />
+                                                            </p:selectOneMenu>
+                                                    </p:column>
+                                                </p:row>-->
+                        <!--                        <p:row>
+                                                    <p:column colspan="3">
+                                                        <p:message for="level"/>
+                                                    </p:column>
+                                                </p:row>-->
                         <p:row>
                             <p:column style="width: 40%">
                                 <p:outputLabel for="parentId" value="#{appmsg['costcenter.parentId']}" styleClass="label_hrm"/>
@@ -100,9 +100,9 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:selectOneMenu id="parentId" value="#{costCenterFormController.costCenterModel.parentId}" style="width: 150px;margin-right: 3px" disabled="#{costCenterFormController.isParentDisabled}" >
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{costCenterFormController.costCenterParent}"/>
-                                    </p:selectOneMenu>
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{costCenterFormController.costCenterParent}"/>
+                                </p:selectOneMenu>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -118,8 +118,15 @@
                                 <h:outputLabel for="balance" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber id="balance"  value="#{costCenterFormController.costCenterModel.balance}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="text-align: right;width:210px;" />
+<!--                                <pe:inputNumber id="balance"  value="#{costCenterFormController.costCenterModel.balance}"
+                                                required="true"  maxlength="45" styleClass="isitext_hrm" style="text-align: right;width:210px;" />-->
+
+                                <p:inputText id="balance" value="#{costCenterFormController.costCenterModel.balance}"  required="true"
+                                             style="text-align: right;width: 210px"  >
+                                    <f:validateDoubleRange/>
+                                    <f:convertNumber minFractionDigits="2"/>
+                                </p:inputText> 
+
                             </p:column>
                         </p:row>
                         <p:row>
