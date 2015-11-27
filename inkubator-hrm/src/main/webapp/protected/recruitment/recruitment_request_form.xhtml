@@ -124,9 +124,18 @@
                                         <p:selectOneMenu  required="true" value="#{recruitHireApplyFormController.model.currencyId}">
                                             <f:selectItems value="#{recruitHireApplyFormController.mapCurrency}" />
                                         </p:selectOneMenu>
-                                        <pe:inputNumber style="margin-left: -10px" id="rentangGajiId" required="true" value="#{recruitHireApplyFormController.model.salaryMin}"/>
+                                        <!-- <pe:inputNumber style="margin-left: -10px" id="rentangGajiId" required="true" value="#{recruitHireApplyFormController.model.salaryMin}"/> -->
+                                        <p:inputText id="rentangGajiId" title="#{appmsg['mppRecruitmentHist.salary_range']}" value="#{recruitHireApplyFormController.model.salaryMin}" 
+			                                     	 required="true" style="text-align: right;width: 140px" styleClass="isitext_hrm" >
+			                            	<f:validateDoubleRange/>
+			                            	<f:convertNumber minFractionDigits="2"/>
+			                      		</p:inputText>
                                         <p:outputLabel value="#{appmsg['global.to']}" style="margin-left: -10px"/>
-                                        <pe:inputNumber style="margin-left: -10px" required="true" value="#{recruitHireApplyFormController.model.salaryMax}"/>
+                                        <!-- <pe:inputNumber style="margin-left: -10px" required="true" value="#{recruitHireApplyFormController.model.salaryMax}"/> -->
+                                        <p:inputText value="#{recruitHireApplyFormController.model.salaryMax}" required="true" style="text-align: right;width: 140px" styleClass="isitext_hrm" >
+			                            	<f:validateDoubleRange/>
+			                            	<f:convertNumber minFractionDigits="2"/>
+			                      		</p:inputText>
                                     </h:panelGrid>
                                     <p:message for="rentangGajiId"/>
                                 </p:column>
@@ -193,12 +202,19 @@
                                          <p:outputLabel value="(#{appmsg['mppRecruitmentHist.scale_4']})" styleClass="label_hrm" style="margin-left: 5px"/>
                                     </p:column>
                                     <p:column  style="width: 80%">
-                                        <pe:inputNumber  id="ipkMinId" required="true" label="#{appmsg['mppRecruitmentHist.min_ipk']}" decimalPlaces="2" value="#{recruitHireApplyFormController.model.gpaMin}" style="width:50px"/>
-                                        &nbsp;&nbsp;
-                                         <p:outputLabel value=" #{appmsg['global.to']} " style="margin-left: -10px"/>
-                                         &nbsp;&nbsp;
-                                         <pe:inputNumber id="ipkMaxId" required="true" label="#{appmsg['mppRecruitmentHist.max_ipk']}" decimalPlaces="2" value="#{recruitHireApplyFormController.model.gpaMax}" style="margin-left: -10px;width:50px"/>
-                                       
+                                        <!-- <pe:inputNumber  id="ipkMinId" required="true" label="#{appmsg['mppRecruitmentHist.min_ipk']}" decimalPlaces="2" value="#{recruitHireApplyFormController.model.gpaMin}" style="width:50px"/> -->
+                                        <p:inputText id="ipkMinId" title="#{appmsg['mppRecruitmentHist.min_ipk']}" value="#{recruitHireApplyFormController.model.gpaMin}" 
+			                                     	 required="true" style="text-align: right;width: 50px" styleClass="isitext_hrm" >
+				                            <f:validateDoubleRange/>
+				                            <f:convertNumber minFractionDigits="2"/>
+				                      	</p:inputText>
+                                         <p:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp; #{appmsg['global.to']} &nbsp;" style="margin-left: -10px"/>
+                                        <!--  <pe:inputNumber id="ipkMaxId" required="true" label="#{appmsg['mppRecruitmentHist.max_ipk']}" decimalPlaces="2" value="#{recruitHireApplyFormController.model.gpaMax}" style="margin-left: -10px;width:50px"/> -->
+                                       	<p:inputText id="ipkMaxId" title="#{appmsg['mppRecruitmentHist.max_ipk']}" value="#{recruitHireApplyFormController.model.gpaMax}" 
+			                                     	 required="true" style="text-align: right;width: 50px" styleClass="isitext_hrm" >
+				                            <f:validateDoubleRange/>
+				                            <f:convertNumber minFractionDigits="2"/>
+				                      	</p:inputText>
                                         <p:message for="ipkMinId"/>
                                         <p:message for="ipkMaxId"/>
                                     </p:column>

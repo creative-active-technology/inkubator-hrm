@@ -5,13 +5,14 @@
  */
 package com.inkubator.hrm.web.validator;
 
-import com.inkubator.hrm.web.model.LoanApplicationFormModel;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+
+import com.inkubator.hrm.web.model.LoanApplicationFormModel;
 
 /**
  *
@@ -22,7 +23,7 @@ public class LoanNewMaxMinLoanAmountValidator implements Validator {
      @Override
     public void validate(FacesContext facesContext, UIComponent component, Object obj) throws ValidatorException {
         LoanApplicationFormModel model = (LoanApplicationFormModel) component.getAttributes().get("model");
-        Double nominalLoan = (Double) obj;
+        Double nominalLoan = ((Number) obj).doubleValue();
         
         if (model == null || nominalLoan == null) {
             return; // Let required="true" do its job.

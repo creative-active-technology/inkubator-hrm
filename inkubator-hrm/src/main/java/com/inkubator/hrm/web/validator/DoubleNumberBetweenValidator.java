@@ -21,7 +21,7 @@ public class DoubleNumberBetweenValidator implements Validator {
 
     @Override
     public void validate(FacesContext facesContext, UIComponent component, Object obj) throws ValidatorException {
-        Double beginNumber = (Double) obj;
+        Double beginNumber = ((Number) obj).doubleValue();
 
         // Obtain the component and submitted value of the end number component.
         UIInput endTimeComponent = (UIInput) component.getAttributes().get("endNumberDouble");

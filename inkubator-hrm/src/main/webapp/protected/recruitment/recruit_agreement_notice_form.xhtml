@@ -107,7 +107,12 @@
                                         <p:outputLabel for="pastSalary" value="#{appmsg['applicationInformation.last_salary']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column  style="width: 80%">
-                                        <pe:inputNumber  id="pastSalary" required="true" label="#{appmsg['applicationInformation.last_salary']}" decimalPlaces="2" value="#{recruitAgreementNoticeFormController.model.lastSalary}" style="width:50px"/>
+                                        <!-- <pe:inputNumber  id="pastSalary" required="true" label="#{appmsg['applicationInformation.last_salary']}" decimalPlaces="2" value="#{recruitAgreementNoticeFormController.model.lastSalary}" style="width:50px"/> -->
+                                       	<p:inputText id="pastSalary" title="#{appmsg['applicationInformation.last_salary']}" value="#{recruitAgreementNoticeFormController.model.lastSalary}" 
+			                                         required="true" style="text-align: right;width: 210px" styleClass="isitext_hrm" >
+			                            	<f:validateDoubleRange/>
+			                                <f:convertNumber minFractionDigits="2"/>
+			                           	</p:inputText>
                                        	<p:messages for="pastSalary"/>
                                     </p:column>
                                 </p:row>
@@ -117,8 +122,13 @@
                                         <p:outputLabel for="expectedSalary" value="#{appmsg['applicationInformation.expected_salary']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column  style="width: 80%">
-                                        <pe:inputNumber  id="expectedSalary" required="true" label="#{appmsg['applicationInformation.expected_salary']}" decimalPlaces="2" value="#{recruitAgreementNoticeFormController.model.expectedSalary}" style="width:50px"/>
-                                       
+                                        <!-- <pe:inputNumber  id="expectedSalary" required="true" label="#{appmsg['applicationInformation.expected_salary']}" decimalPlaces="2" value="#{recruitAgreementNoticeFormController.model.expectedSalary}" style="width:50px"/> -->
+                                       	<p:inputText id="expectedSalary" title="#{appmsg['applicationInformation.expected_salary']}" value="#{recruitAgreementNoticeFormController.model.expectedSalary}" 
+			                                         required="true" style="text-align: right;width: 210px" styleClass="isitext_hrm" >
+			                            	<f:validateDoubleRange/>
+			                                <f:convertNumber minFractionDigits="2"/>
+			                           	</p:inputText>
+			                           	<p:messages for="expectedSalary"/>
                                     </p:column>
                                 </p:row>
                                 

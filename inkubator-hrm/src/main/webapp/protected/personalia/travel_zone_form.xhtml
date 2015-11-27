@@ -99,8 +99,13 @@
                                 <h:outputLabel for="distanceId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber id="distanceId" value="#{travelZoneFormController.travelZoneModel.distance}" title="#{appmsg['travelZone.travelZone_distance']}"  symbol=" KM" symbolPosition="s"  
-                                                decimalSeparator="," thousandSeparator="." required="true" requiredMessage="#{appmsg['travelZone.travelZone_distance_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;" />   
+                                <!-- <pe:inputNumber id="distanceId" value="#{travelZoneFormController.travelZoneModel.distance}" title="#{appmsg['travelZone.travelZone_distance']}"  symbol=" KM" symbolPosition="s"  
+                                                decimalSeparator="," thousandSeparator="." required="true" requiredMessage="#{appmsg['travelZone.travelZone_distance_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;" /> -->
+                                <p:inputText id="distanceId" title="#{appmsg['travelZone.travelZone_distance']}" value="#{travelZoneFormController.travelZoneModel.distance}" 
+		                                  	 required="true" style="text-align: right;width: 250px" styleClass="isitext_hrm" >
+		                     		<f:validateDoubleRange/>
+		                            <f:convertNumber minFractionDigits="2"/>
+		                    	</p:inputText> KM   
                             </p:column>
                         </p:row>
                         <p:row>

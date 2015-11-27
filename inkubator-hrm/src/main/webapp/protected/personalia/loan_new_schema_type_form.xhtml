@@ -82,8 +82,14 @@
                                 <h:outputLabel for="maxApproval" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber decimalPlaces="0" id="maxApproval"  value="#{loanNewSchemaListOfTypeFormController.model.maximumApproval}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
-                                                required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
+                                <!-- <pe:inputNumber decimalPlaces="0" id="maxApproval"  value="#{loanNewSchemaListOfTypeFormController.model.maximumApproval}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
+                                                required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" /> -->
+                                <p:inputText id="maxApproval" title="#{appmsg['loanschema.max_approve']}" value="#{loanNewSchemaListOfTypeFormController.model.maximumApproval}" 
+                                             required="true" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}" 
+                                           	 maxlength="15" style="text-align: right;width: 210px" styleClass="isitext_hrm" >
+                                	<f:validateDoubleRange/>
+                                    <f:convertNumber minFractionDigits="2"/>
+                              	</p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -100,8 +106,14 @@
                                 <h:outputLabel for="maxAllocation" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber decimalPlaces="0" id="maxAllocation"  value="#{loanNewSchemaListOfTypeFormController.model.maximumAllocation}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
-                                                required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
+                                <!-- <pe:inputNumber decimalPlaces="0" id="maxAllocation"  value="#{loanNewSchemaListOfTypeFormController.model.maximumAllocation}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
+                                                required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" /> -->
+                                <p:inputText id="maxAllocation" title="#{appmsg['loanschema.max_allocation']}" value="#{loanNewSchemaListOfTypeFormController.model.maximumAllocation}" 
+                                             required="true" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}" 
+                                           	 maxlength="15" style="text-align: right;width: 210px" styleClass="isitext_hrm" >
+                                	<f:validateDoubleRange/>
+                                    <f:convertNumber minFractionDigits="2"/>
+                              	</p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -119,8 +131,14 @@
                                 <h:outputLabel for="minApproval" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber decimalPlaces="0" id="minApproval"  value="#{loanNewSchemaListOfTypeFormController.model.minimumApproval}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
-                                                required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
+                                <!-- <pe:inputNumber decimalPlaces="0" id="minApproval"  value="#{loanNewSchemaListOfTypeFormController.model.minimumApproval}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
+                                                required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" /> -->
+                                <p:inputText id="minApproval" title="#{appmsg['loanschema.min_approve']}" value="#{loanNewSchemaListOfTypeFormController.model.minimumApproval}" 
+                                             required="true" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}" 
+                                           	 maxlength="15" style="text-align: right;width: 210px" styleClass="isitext_hrm" >
+                                	<f:validateDoubleRange/>
+                                    <f:convertNumber minFractionDigits="2"/>
+                              	</p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -137,8 +155,14 @@
                                 <h:outputLabel for="minAllocation" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber decimalPlaces="0" id="minAllocation"  value="#{loanNewSchemaListOfTypeFormController.model.minimumAllocation}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
-                                                required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
+                                <!-- <pe:inputNumber decimalPlaces="0" id="minAllocation"  value="#{loanNewSchemaListOfTypeFormController.model.minimumAllocation}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
+                                                required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" /> -->
+                                <p:inputText id="minAllocation" title="#{appmsg['loanschema.min_allocation']}" value="#{loanNewSchemaListOfTypeFormController.model.minimumAllocation}" 
+                                             required="true" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}" 
+                                           	 maxlength="15" style="text-align: right;width: 210px" styleClass="isitext_hrm" >
+                                	<f:validateDoubleRange/>
+                                    <f:convertNumber minFractionDigits="2"/>
+                              	</p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -155,8 +179,14 @@
                                 <h:outputLabel for="minInstallment" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber decimalPlaces="0" id="minInstallment"  value="#{loanNewSchemaListOfTypeFormController.model.minimumMonthlyInstallment}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
-                                                required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
+                                <!-- <pe:inputNumber decimalPlaces="0" id="minInstallment"  value="#{loanNewSchemaListOfTypeFormController.model.minimumMonthlyInstallment}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
+                                                required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" /> -->
+                                <p:inputText id="minInstallment" title="#{appmsg['loanschema.min_monthly_installment']}" value="#{loanNewSchemaListOfTypeFormController.model.minimumMonthlyInstallment}" 
+                                             required="true" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}" 
+                                           	 maxlength="15" style="text-align: right;width: 210px" styleClass="isitext_hrm" >
+                                	<f:validateDoubleRange/>
+                                    <f:convertNumber minFractionDigits="2"/>
+                              	</p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -173,8 +203,14 @@
                                 <h:outputLabel for="maxPeriod" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber decimalPlaces="0" id="maxPeriod"  value="#{loanNewSchemaListOfTypeFormController.model.maxPeriode}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
-                                                required="true"  maxlength="3" styleClass="isitext_hrm" style="width:210px;" />
+                                <!-- <pe:inputNumber decimalPlaces="0" id="maxPeriod"  value="#{loanNewSchemaListOfTypeFormController.model.maxPeriode}" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}"
+                                                required="true"  maxlength="3" styleClass="isitext_hrm" style="width:210px;" /> -->
+                                <p:inputText id="maxPeriod" title="#{appmsg['loanschema.max_period']}" value="#{loanNewSchemaListOfTypeFormController.model.maxPeriode}" 
+                                             required="true" disabled="#{loanNewSchemaListOfTypeFormController.isUpdate}" 
+                                           	 maxlength="15" style="text-align: right;width: 210px" styleClass="isitext_hrm" >
+                                	<f:validateDoubleRange/>
+                                    <f:convertNumber minFractionDigits="2"/>
+                              	</p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>

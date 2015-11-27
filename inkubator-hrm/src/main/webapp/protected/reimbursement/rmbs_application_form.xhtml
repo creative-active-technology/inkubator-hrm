@@ -198,8 +198,13 @@
                                     <p:outputLabel for="nominalId" value="#{appmsg['global.nominal']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <pe:inputNumber id="nominalId" title="#{appmsg['global.nominal']}" value="#{rmbsApplicationFormController.model.nominal}" 
-                                                    decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:290px;"/> 
+                                    <!-- <pe:inputNumber id="nominalId" title="#{appmsg['global.nominal']}" value="#{rmbsApplicationFormController.model.nominal}" 
+                                                    decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:290px;"/> --> 
+                                    <p:inputText id="nominalId" title="#{appmsg['global.nominal']}" value="#{rmbsApplicationFormController.model.nominal}" 
+                                                 required="true" style="text-align: right;width: 200px" styleClass="isitext_hrm" >
+                                        <f:validateDoubleRange/>
+                                        <f:convertNumber minFractionDigits="2"/>
+                                    </p:inputText>
                                     <p:message for="nominalId"/>
                                 </p:column>
                             </p:row>

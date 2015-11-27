@@ -132,10 +132,16 @@
                                 <h:outputLabel for="defaultRate" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber id="defaultRate"  value="#{travelComponentCostRateFormController.model.defaultRateId}"
+                                <!-- <pe:inputNumber id="defaultRate"  value="#{travelComponentCostRateFormController.model.defaultRateId}"
                                              required="true"  maxlength="45" styleClass="isitext_hrm" style="text-align: right;width:210px;" >
                                     <pe:keyFilter mask="num"></pe:keyFilter>
-                                </pe:inputNumber>
+                                </pe:inputNumber> -->
+                                <p:inputText id="defaultRate" title="#{appmsg['travelcomponentcostrate.default_rate']}" value="#{travelComponentCostRateFormController.model.defaultRateId}" 
+		                                  	 required="true" maxlength="45" 
+		                                     style="text-align: right;width: 210px" styleClass="isitext_hrm" >
+		                            <f:validateDoubleRange/>
+		                            <f:convertNumber minFractionDigits="2"/>
+		                   		</p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>
