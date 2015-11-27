@@ -41,13 +41,22 @@
                                 <h:outputLabel for="lowRateId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber id="lowRateId" title="#{appmsg['taxrate.lowest']}" value="#{taxRateFormController.model.lowRate}" 
+                                <!-- <pe:inputNumber id="lowRateId" title="#{appmsg['taxrate.lowest']}" value="#{taxRateFormController.model.lowRate}" 
 	                                			decimalPlaces="0" maxValue="1000000000000000" required="true" styleClass="isitext_hrm" style="width:160px;">
 	                            	<f:validator validatorId="doubleNumberBetweenValidator"  />
                                     <f:attribute name="endNumberDouble" value="#{topRateId}"/>
                                     <f:attribute name="validatorConstraint" value="GREATER_EQUALS"/>
                                     <f:attribute name="validatorMessage" value="#{appmsg['taxrate.tax_rate_double_validator']}"/>
-	                            </pe:inputNumber>	                                
+	                            </pe:inputNumber> -->
+	                             <p:inputText id="lowRateId" title="#{appmsg['taxrate.lowest']}" value="#{taxRateFormController.model.lowRate}"  
+                                                 style="text-align: right;width: 160px" required="true" styleClass="isitext_hrm" >
+                                     <f:validateDoubleRange maximum="1000000000000000" />
+                                     <f:convertNumber />
+                                     <f:validator validatorId="doubleNumberBetweenValidator"  />
+                                    <f:attribute name="endNumberDouble" value="#{topRateId}"/>
+                                    <f:attribute name="validatorConstraint" value="GREATER_EQUALS"/>
+                                    <f:attribute name="validatorMessage" value="#{appmsg['taxrate.tax_rate_double_validator']}"/>
+                                 </p:inputText>	                                
                             </p:column>
                         </p:row>
                         <p:row>
@@ -63,8 +72,14 @@
                                 <h:outputLabel for="topRateId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber id="topRateId" binding="#{topRateId}" title="#{appmsg['taxrate.highest']}" value="#{taxRateFormController.model.topRate}" 
-	                                				decimalPlaces="0" maxValue="1000000000000000" required="true" styleClass="isitext_hrm" style="width:160px;"/>	                                
+                                <!-- <pe:inputNumber id="topRateId" binding="#{topRateId}" title="#{appmsg['taxrate.highest']}" value="#{taxRateFormController.model.topRate}" 
+	                                				decimalPlaces="0" maxValue="1000000000000000" required="true" styleClass="isitext_hrm" style="width:160px;"/> -->
+	                                				
+	                             <p:inputText id="topRateId" binding="#{topRateId}" title="#{appmsg['taxrate.highest']}" value="#{taxRateFormController.model.topRate}"  
+                                                 style="text-align: right;width: 160px" required="true" styleClass="isitext_hrm" >
+                                     <f:validateDoubleRange maximum="1000000000000000" />
+                                     <f:convertNumber />
+                                 </p:inputText>	                                
                             </p:column>
                         </p:row>
                         <p:row>
@@ -80,8 +95,13 @@
                                 <h:outputLabel for="percentRateId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber id="percentRateId" title="#{appmsg['global.tax']}" value="#{taxRateFormController.model.percentRate}" 
-	                                				decimalPlaces="2" maxValue="100" required="true" styleClass="isitext_hrm" style="width:110px;"/>	                                
+                                <!-- <pe:inputNumber id="percentRateId" title="#{appmsg['global.tax']}" value="#{taxRateFormController.model.percentRate}" 
+	                                				decimalPlaces="2" maxValue="100" required="true" styleClass="isitext_hrm" style="width:110px;"/>	 -->
+	                            <p:inputText id="percentRateId" title="#{appmsg['global.tax']}" value="#{taxRateFormController.model.percentRate}"  
+                                                 style="text-align: right;width: 110px" required="true" styleClass="isitext_hrm" >
+                                     <f:validateDoubleRange maximum="100"/>
+                                     <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                                 </p:inputText>                                
                             </p:column>
                         </p:row>
                         <p:row>

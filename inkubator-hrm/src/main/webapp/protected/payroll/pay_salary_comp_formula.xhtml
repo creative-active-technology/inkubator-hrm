@@ -82,28 +82,57 @@
                         <h:panelGrid columns="9" id="panelFormId"> 
                             <p:outputLabel value="Basic Salary" styleClass="label_hrm"/>
                             <p:outputLabel value=":" styleClass="label_hrm"/>
-                            <pe:inputNumber value="#{paySalaryComponentFormulaController.basicSalary}" decimalPlaces="2" style="width: 40px" required="true" label="Basic Salary" />
-
+                            <!-- <pe:inputNumber value="#{paySalaryComponentFormulaController.basicSalary}" decimalPlaces="2" style="width: 40px" required="true" label="Basic Salary" /> -->
+						 	<p:inputText  title="#{appmsg['componentException.fixed_nominal']}" value="#{paySalaryComponentFormulaController.basicSalary}"  
+                                 style="text-align: right;width: 40px" required="true" styleClass="isitext_hrm" >
+                                <f:validateDoubleRange/>
+                                <f:convertNumber minFractionDigits="2"  maxFractionDigits="2"/>
+                          	</p:inputText>
 
                             <p:outputLabel value="Working Day" styleClass="label_hrm"/>
                             <p:outputLabel value=":" styleClass="label_hrm"/>
-                            <pe:inputNumber value="#{paySalaryComponentFormulaController.workingDay}" decimalPlaces="2" style="width: 40px" required="true" label="Working Day" />
+                            <!-- <pe:inputNumber value="#{paySalaryComponentFormulaController.workingDay}" decimalPlaces="2" style="width: 40px" required="true" label="Working Day" /> -->
+                            <p:inputText  title="Working Day" value="#{paySalaryComponentFormulaController.workingDay}"  
+                                 style="text-align: right;width: 40px" required="true" styleClass="isitext_hrm" >
+                                <f:validateDoubleRange/>
+                                <f:convertNumber minFractionDigits="2"  maxFractionDigits="2"/>
+                          	</p:inputText>
 
                             <p:outputLabel value="Total Day" styleClass="label_hrm"/>
                             <p:outputLabel value=":" styleClass="label_hrm"/>
-                            <pe:inputNumber value="#{paySalaryComponentFormulaController.totalDay}" decimalPlaces="2" style="width: 40px" required="true" label="Total Day" />
+                            <!-- <pe:inputNumber value="#{paySalaryComponentFormulaController.totalDay}" decimalPlaces="2" style="width: 40px" required="true" label="Total Day" /> -->
+                            <p:inputText  title="Total Day" value="#{paySalaryComponentFormulaController.totalDay}"  
+                                 style="text-align: right;width: 40px" required="true" styleClass="isitext_hrm" >
+                                <f:validateDoubleRange/>
+                                <f:convertNumber minFractionDigits="2"  maxFractionDigits="2"/>
+                          	</p:inputText>
 
                             <p:outputLabel value="Over Time" styleClass="label_hrm"/>
                             <p:outputLabel value=":" styleClass="label_hrm"/>
-                            <pe:inputNumber value="#{paySalaryComponentFormulaController.overTIme}" decimalPlaces="2" style="width: 40px" required="true" label="Over Time" />
+                            <!-- <pe:inputNumber value="#{paySalaryComponentFormulaController.overTIme}" decimalPlaces="2" style="width: 40px" required="true" label="Over Time" /> -->
+                            <p:inputText  title="Over Time" value="#{paySalaryComponentFormulaController.overTIme}"  
+                                 style="text-align: right;width: 40px" required="true" styleClass="isitext_hrm" >
+                                <f:validateDoubleRange/>
+                                <f:convertNumber minFractionDigits="2"  maxFractionDigits="2"/>
+                          	</p:inputText>
 
                             <p:outputLabel value="Less Time" styleClass="label_hrm"/>
                             <p:outputLabel value=":" styleClass="label_hrm"/>
-                            <pe:inputNumber value="#{paySalaryComponentFormulaController.lessTime}" decimalPlaces="2" style="width: 40px" required="true" label="Less Time" />
+                            <!-- <pe:inputNumber value="#{paySalaryComponentFormulaController.lessTime}" decimalPlaces="2" style="width: 40px" required="true" label="Less Time" /> -->
+                            <p:inputText  title="Over Time" value="#{paySalaryComponentFormulaController.lessTime}"  
+                                 style="text-align: right;width: 40px" required="true" styleClass="isitext_hrm" >
+                                <f:validateDoubleRange/>
+                                <f:convertNumber minFractionDigits="2"  maxFractionDigits="2"/>
+                          	</p:inputText>
 
                             <p:outputLabel value="More Time" styleClass="label_hrm"/>
                             <p:outputLabel value=":" styleClass="label_hrm"/>
-                            <pe:inputNumber value="#{paySalaryComponentFormulaController.moreTime}" decimalPlaces="2" style="width: 40px" required="true" label="More Time" />
+                            <!-- <pe:inputNumber value="#{paySalaryComponentFormulaController.moreTime}" decimalPlaces="2" style="width: 40px" required="true" label="More Time" /> -->
+                            <p:inputText  title="More Time" value="#{paySalaryComponentFormulaController.moreTime}"  
+                                 style="text-align: right;width: 40px" required="true" styleClass="isitext_hrm" >
+                                <f:validateDoubleRange/>
+                                <f:convertNumber minFractionDigits="2"  maxFractionDigits="2"/>
+                          	</p:inputText>
 
 
                         </h:panelGrid>
