@@ -78,8 +78,13 @@
                                 <h:outputLabel for="nominalId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                            	<pe:inputNumber id="nominalId" title="#{appmsg['global.nominal']}" value="#{payTempUploadDataFormController.model.nominalValue}" 
-	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:197px;"/>                                
+                            	<!-- <pe:inputNumber id="nominalId" title="#{appmsg['global.nominal']}" value="#{payTempUploadDataFormController.model.nominalValue}" 
+	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:197px;"/> -->    
+								 <p:inputText id="nominalId" title="#{appmsg['global.nominal']}" value="#{payTempUploadDataFormController.model.nominalValue}"  
+                                                 style="text-align: right;width: 197px" required="true" styleClass="isitext_hrm" >
+                                     <f:validateDoubleRange/>
+                                     <f:convertNumber />
+                                 </p:inputText>                            
                             </p:column>
                         </p:row>
                         <p:row>

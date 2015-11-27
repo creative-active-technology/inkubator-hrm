@@ -79,15 +79,27 @@
                                     <p:outputLabel  value="#{appmsg['loanStatusMessage.loan_nominal_range']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber  value="#{loanStatusViewController.loanStatusSearchParameter.startNominal}" styleClass="isitext_hrm" style="width: 50px;margin-right: 3px" label="#{appmsg['user_form.phone_number']}"
+                                    <!-- <pe:inputNumber  value="#{loanStatusViewController.loanStatusSearchParameter.startNominal}" styleClass="isitext_hrm" style="width: 50px;margin-right: 3px" label="#{appmsg['user_form.phone_number']}"
                                                   required="true" id="startNominal" >
                                         <p:clientValidator/>
-                                    </pe:inputNumber>
+                                    </pe:inputNumber> -->
+                                    <p:inputText id="startNominal" title="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}" value="#{loanStatusViewController.loanStatusSearchParameter.startNominal}"  
+                                                 style="text-align: right;width: 200px" required="true" styleClass="isitext_hrm" >
+	                                     <f:validateDoubleRange/>
+	                                     <f:convertNumber />
+	                                     <p:clientValidator/>
+                                 	</p:inputText>
                                     -
-                                    <pe:inputNumber  value="#{loanStatusViewController.loanStatusSearchParameter.endNominal}" styleClass="isitext_hrm" style="width: 50px;margin-right: 3px" label="#{appmsg['user_form.phone_number']}"
+                                    <!-- <pe:inputNumber  value="#{loanStatusViewController.loanStatusSearchParameter.endNominal}" styleClass="isitext_hrm" style="width: 50px;margin-right: 3px" label="#{appmsg['user_form.phone_number']}"
                                                   required="true" id="endNominal" >
                                         <p:clientValidator/>
-                                    </pe:inputNumber>
+                                    </pe:inputNumber> -->
+                                    <p:inputText id="endNominal" title="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}" value="#{loanStatusViewController.loanStatusSearchParameter.endNominal}"  
+                                                 style="text-align: right;width: 200px" required="true" styleClass="isitext_hrm" >
+	                                     <f:validateDoubleRange/>
+	                                     <f:convertNumber />
+	                                     <p:clientValidator/>
+                                 	</p:inputText>
                                 </p:column>
                             </p:row>
 

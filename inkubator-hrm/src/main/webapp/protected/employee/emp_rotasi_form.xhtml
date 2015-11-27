@@ -182,8 +182,13 @@
                                     <p:outputLabel  value="#{appmsg['placement.gaji_pokok']}"  for="mainSalary" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber id="mainSalary" value="#{empDataFormController.empDataModel.basicSalary}"  required="true"
-                                                    style="text-align: right;width: 350px"  /> 
+<!--                                    <pe:inputNumber id="mainSalary" value="#{empDataFormController.empDataModel.basicSalary}"  required="true"
+                                                    style="text-align: right;width: 350px"  /> -->
+                                    <p:inputText id="mainSalary" value="#{empDataFormController.empDataModel.basicSalary}"  required="true"
+                                                 style="text-align: right;width: 350px"  >
+                                        <f:validateDoubleRange/>
+                                        <f:convertNumber minFractionDigits="2"/>
+                                    </p:inputText> 
                                     <p:message for="mainSalary"/>
                                 </p:column>
 

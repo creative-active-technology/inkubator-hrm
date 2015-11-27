@@ -165,8 +165,13 @@
                                 <h:outputLabel for="score" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 33%">
-                                <pe:inputNumber id="score"  value="#{educationHistoryFormController.model.score}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:143px;" />
+                                <!-- <pe:inputNumber id="score"  value="#{educationHistoryFormController.model.score}"
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:143px;" /> -->
+                                   <p:inputText id="score" maxlength="45" title="#{appmsg['educationhistory.score']}" value="#{educationHistoryFormController.model.score}"   
+                                                 style="text-align: right;width: 143px" required="true" styleClass="isitext_hrm" >
+                                     <f:validateDoubleRange  />
+                                     <f:convertNumber minFractionDigits="2" maxFractionDigits="2"  />
+                                 </p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>

@@ -59,8 +59,14 @@
                                 <h:outputLabel for="accountNumberId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 60%">
-                                <pe:inputNumber id="accountNumberId" title="#{appmsg['global.account_number']}" value="#{companyBankAccountFormController.accountModel.accountNumber}" 
-                                                required="true" thousandSeparator="" decimalPlaces="0" maxValue="99999999999999999999" styleClass="isitext_hrm" style="width:260px;"/>
+<!--                                <pe:inputNumber id="accountNumberId" title="#{appmsg['global.account_number']}" value="#{companyBankAccountFormController.accountModel.accountNumber}" 
+                                                required="true" thousandSeparator="" decimalPlaces="0" maxValue="99999999999999999999" styleClass="isitext_hrm" style="width:260px;"/>-->
+
+                                <p:inputText id="accountNumberId" title="#{appmsg['global.account_number']}" value="#{companyBankAccountFormController.accountModel.accountNumber}"  required="true"
+                                             styleClass="isitext_hrm" style="width:260px"  >
+                                    <f:validateDoubleRange maximum="99999999999999999999"/>
+                                    <f:convertNumber  groupingUsed="false"/>
+                                </p:inputText> 
                             </p:column>
                         </p:row>
                         <p:row>

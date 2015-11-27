@@ -253,7 +253,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         empData.setJoinDate(entity.getJoinDate());
         empData.setNik(entity.getNik());
         empData.setNoSk(entity.getNoSk());
-        empData.setRotasiDate(entity.getRotasiDate());
+        empData.setRotasiDate(entity.getJoinDate());
         PaySalaryGrade paySalaryGrade = paySalaryGradeDao.getEntiyByPK(entity.getPaySalaryGrade().getId());
         empData.setPaySalaryGrade(paySalaryGrade);
         double min = paySalaryGrade.getMinSalary().doubleValue();
