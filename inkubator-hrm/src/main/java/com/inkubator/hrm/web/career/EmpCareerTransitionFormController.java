@@ -126,7 +126,7 @@ public class EmpCareerTransitionFormController extends BaseController {
     }
 	
 	public void doReset(){
-		
+		this.getModelFromJson(currentActivity.getPendingData());
 	}
 	
 	public String doSave() {
