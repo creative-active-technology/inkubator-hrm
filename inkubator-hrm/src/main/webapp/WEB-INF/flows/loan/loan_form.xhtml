@@ -13,139 +13,144 @@
     <h:body>
         <ui:composition template="/templates/master_layout_full.xhtml">
             <ui:define name="windowTitle">
-				Home
+                Home
             </ui:define>
             <ui:define name="center">
                 <p:growl id="growlLoanFormId" globalOnly="true" showDetail="true"/>                
                 <h:form id="formLoanFormId">
-                	<p:focus context="formLoanFormId"/>
-                	<div id="box_bg" style="margin: 10px">
-	                    <h:panelGrid  columns="2">
-	                        <p:graphicImage library="images" name="loan.png" height="36" width="36" />
-	                        <h:panelGroup layout="block">
-	                            <h:panelGrid>
-	                                <p:outputLabel value="#{appmsg['loan.loan']}" styleClass="header_big" />
-	                                <p:outputLabel value="#{appmsg['loan.loan_data_from_application']}" styleClass="header_small_no_bold" />
-	                            </h:panelGrid>
-	                        </h:panelGroup>
-	                    </h:panelGrid>
-	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
-	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">	                        
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="employeeId" value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:autoComplete id="employeeId" title="#{appmsg['global.employee']}" 
-                                                value="#{loanModel.empData}"
-                                                completeMethod="#{loanFormController.doAutoCompleteEmployee}"                                                
-                                                var="empData"
-                                                itemValue="#{empData}"
-                                                itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
-                                                converter="empDataConverter"
-                                                required="true" styleClass="isitext_hrm" size="46">
-                                    	<p:ajax event="itemSelect" listener="#{loanFormController.onChangeEmployee(flowRequestContext)}" update="loanSchemaId"/>
+                    <p:focus context="formLoanFormId"/>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="loan.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['loan.loan']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['loan.loan_data_from_application']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">	                        
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="employeeId" value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:autoComplete id="employeeId" title="#{appmsg['global.employee']}" 
+                                                    value="#{loanModel.empData}"
+                                                    completeMethod="#{loanFormController.doAutoCompleteEmployee}"                                                
+                                                    var="empData"
+                                                    itemValue="#{empData}"
+                                                    itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                    converter="empDataConverter"
+                                                    required="true" styleClass="isitext_hrm" size="46">
+                                        <p:ajax event="itemSelect" listener="#{loanFormController.onChangeEmployee(flowRequestContext)}" update="loanSchemaId"/>
                                     </p:autoComplete>
-                              		<p:message for="employeeId"/>
-	                        	</p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="loanSchemaId" value="#{appmsg['loanschema.loan']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                                <p:selectOneMenu id="loanSchemaId" styleClass="isitext_hrm" required="true"  value="#{loanModel.loanSchemaId}" style="width:300px;">
-	                            		<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-	                                    <f:selectItems value="#{loanSchemas}" var="loanSchema" itemValue="#{loanSchema.id}" itemLabel="#{loanSchema.name}"/>
-	                                    <p:ajax listener="#{loanFormController.onChangeLoanSchema(flowRequestContext)}" update="maxNominalPrincipalId,maxTerminId,interestRateId,typeOfInterestId"/>
-	                                </p:selectOneMenu>
-	                                <p:message for="loanSchemaId"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="nominalPrincipalId" value="#{appmsg['loan.nominal_principal']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<pe:inputNumber id="nominalPrincipalId" title="#{appmsg['loan.nominal_principal']}" value="#{loanModel.nominalPrincipal}" 
-	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:290px;">
-	                                	<p:ajax listener="#{loanFormController.doResetLoanPaymentDetailForm(flowRequestContext)}"/>
-	                                </pe:inputNumber>
-	                                <p:outputLabel value="&nbsp;  (max: Rp. "/>				
-	                                <p:outputLabel id="maxNominalPrincipalId" value="#{loanModel.maxNominalPrincipal}">
-	                                	<f:convertNumber pattern="###,###" type="currency"/>
-	                                </p:outputLabel>
-	                                <p:outputLabel value=")"/>
-	                                <p:message for="nominalPrincipalId"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="terminId" value="#{appmsg['loan.termin']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:spinner id="terminId" value="#{loanModel.termin}" size="4" min="1" styleClass="isitext_hrm" required="true">
-	                            		<p:ajax listener="#{loanFormController.doResetLoanPaymentDetailForm(flowRequestContext)}"/>
-	                            	</p:spinner>
-	                            	<p:outputLabel id="maxTerminId" value="&nbsp;  (max: #{loanModel.maxTermin})"/>	
-	                                <p:message for="terminId"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="interestRateId" value="#{appmsg['loan.interest_rate']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:inputText id="interestRateId" title="#{appmsg['loan.interest_rate']}" value="#{loanModel.interestRate}" 
-	                                    		 required="true" readonly="true" styleClass="isitext_hrm" style="width:55px;" />
-	                                <p:outputLabel value=" %"/>	
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="typeOfInterestId" value="#{appmsg['loanschema.type_of_interest']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                            	<p:inputText id="typeOfInterestId" title="#{appmsg['loanschema.type_of_interest']}" value="#{loanModel.typeOfInterest}" 
-	                                    		 required="true" readonly="true" styleClass="isitext_hrm" style="width:137px;">
-	                                	<f:converter converterId="typeOfInterestConverter"/>
-	                                </p:inputText>	
-	                            </p:column>
-	                        </p:row>
-                                <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="loanDateId" value="#{appmsg['loan.loan_date']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                                <p:calendar id="loanDateId" required="true" pattern="dd-MMMM-yyyy" 
-                                            	value="#{loanModel.loanDate}"/>
-	                                <p:message for="loanDateId"/>
-	                            </p:column>
-	                        </p:row>
-	                        <p:row>
-	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
-	                                <p:outputLabel for="loanPaymentDateId" value="#{appmsg['loan.approvalDate']}" styleClass="label_hrm"/>
-	                            </p:column>
-	                            <p:column  style="width: 80%">
-	                                <p:calendar id="loanPaymentDateId" required="true" pattern="dd-MMMM-yyyy" value="#{loanModel.loanPaymentDate}">
-	                                	<p:ajax listener="#{loanFormController.doResetLoanPaymentDetailForm(flowRequestContext)}"/>
+                                    <p:message for="employeeId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="loanSchemaId" value="#{appmsg['loanschema.loan']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectOneMenu id="loanSchemaId" styleClass="isitext_hrm" required="true"  value="#{loanModel.loanSchemaId}" style="width:300px;">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{loanSchemas}" var="loanSchema" itemValue="#{loanSchema.id}" itemLabel="#{loanSchema.name}"/>
+                                        <p:ajax listener="#{loanFormController.onChangeLoanSchema(flowRequestContext)}" update="maxNominalPrincipalId,maxTerminId,interestRateId,typeOfInterestId"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="loanSchemaId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="nominalPrincipalId" value="#{appmsg['loan.nominal_principal']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <!--<pe:inputNumber id="nominalPrincipalId" title="#{appmsg['loan.nominal_principal']}" value="#{loanModel.nominalPrincipal}"--> 
+                                                    <!--decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:290px;">-->
+                                        <p:inputText id="nominalPrincipalId" value="#{oanModel.nominalPrincipal}"  required="true" title="#{appmsg['loan.nominal_principal']}"
+                                                     style="text-align: right;width: 290px"  >
+                                            <f:validateDoubleRange/>
+                                            <f:convertNumber />
+                                            <p:ajax listener="#{loanFormController.doResetLoanPaymentDetailForm(flowRequestContext)}"/>
+                                        </p:inputText>
+                                    <!--</pe:inputNumber>-->
+                                    <p:outputLabel value="&nbsp;  (max: Rp. "/>				
+                                    <p:outputLabel id="maxNominalPrincipalId" value="#{loanModel.maxNominalPrincipal}">
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </p:outputLabel>
+                                    <p:outputLabel value=")"/>
+                                    <p:message for="nominalPrincipalId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="terminId" value="#{appmsg['loan.termin']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:spinner id="terminId" value="#{loanModel.termin}" size="4" min="1" styleClass="isitext_hrm" required="true">
+                                        <p:ajax listener="#{loanFormController.doResetLoanPaymentDetailForm(flowRequestContext)}"/>
+                                    </p:spinner>
+                                    <p:outputLabel id="maxTerminId" value="&nbsp;  (max: #{loanModel.maxTermin})"/>	
+                                    <p:message for="terminId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="interestRateId" value="#{appmsg['loan.interest_rate']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="interestRateId" title="#{appmsg['loan.interest_rate']}" value="#{loanModel.interestRate}" 
+                                                 required="true" readonly="true" styleClass="isitext_hrm" style="width:55px;" />
+                                    <p:outputLabel value=" %"/>	
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="typeOfInterestId" value="#{appmsg['loanschema.type_of_interest']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:inputText id="typeOfInterestId" title="#{appmsg['loanschema.type_of_interest']}" value="#{loanModel.typeOfInterest}" 
+                                                 required="true" readonly="true" styleClass="isitext_hrm" style="width:137px;">
+                                        <f:converter converterId="typeOfInterestConverter"/>
+                                    </p:inputText>	
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="loanDateId" value="#{appmsg['loan.loan_date']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:calendar id="loanDateId" required="true" pattern="dd-MMMM-yyyy" 
+                                                value="#{loanModel.loanDate}"/>
+                                    <p:message for="loanDateId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="loanPaymentDateId" value="#{appmsg['loan.approvalDate']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:calendar id="loanPaymentDateId" required="true" pattern="dd-MMMM-yyyy" value="#{loanModel.loanPaymentDate}">
+                                        <p:ajax listener="#{loanFormController.doResetLoanPaymentDetailForm(flowRequestContext)}"/>
                                     </p:calendar>
-	                                <p:message for="loanPaymentDateId"/>
-	                            </p:column>
-	                        </p:row> 	                                              
-	                 	</p:panelGrid>	                    
-	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
-	                    <div style="margin-bottom: 5px">
-	                    	<p:commandButton value="#{appmsg['global.next']}" label="#{appmsg['global.next']}" title="#{appmsg['global.next']}" 
-	                    					 icon="ui-icon-arrow-1-e" styleClass="isitext_hrm" style="margin-right: 5px" 
-	                    					 ajax="true" action="next" update="formLoanFormId"/>
-	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formLoanFormId" action="#{loanFormController.doResetLoanForm(flowRequestContext)}"
-                                                 icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
-	                            <p:resetInput target="formLoanFormId" />  
-	                        </p:commandButton>
-	                        <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" icon="ui-icon-contact" 
-	                        				 action="end" immediate="true"/>
-	                    </div>
+                                    <p:message for="loanPaymentDateId"/>
+                                </p:column>
+                            </p:row> 	                                              
+                        </p:panelGrid>	                    
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.next']}" label="#{appmsg['global.next']}" title="#{appmsg['global.next']}" 
+                                             icon="ui-icon-arrow-1-e" styleClass="isitext_hrm" style="margin-right: 5px" 
+                                             ajax="true" action="next" update="formLoanFormId"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formLoanFormId" action="#{loanFormController.doResetLoanForm(flowRequestContext)}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+                                <p:resetInput target="formLoanFormId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" icon="ui-icon-contact" 
+                                             action="end" immediate="true"/>
+                        </div>
                     </div>
                 </h:form>
             </ui:define>

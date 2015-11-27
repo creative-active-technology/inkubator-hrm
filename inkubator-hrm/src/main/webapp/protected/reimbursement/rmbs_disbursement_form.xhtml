@@ -140,7 +140,7 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.rmbsType.name}"/>
                             </p:column>
-                            <p:column style="width: 10%">
+                            <!-- <p:column style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['biodocument.attachments']}"/>
                                 </f:facet>
@@ -150,6 +150,14 @@
                                 	<p:fileDownload value="#{fileStreamerController.rmbsApplicationReceiptBlob}" /> 
 	                                <f:param name="rmbsApplicationId" value="#{data.id}" />
 	                         	</p:commandLink>
+                            </p:column> -->
+                            <p:column style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['home.filling_date']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.applicationDate}">
+                                	<f:convertDateTime pattern="dd MMMM yyyy"/>
+                                </h:outputLabel>
                             </p:column>
                             <p:column style="width: 10%">
                                 <f:facet name="header">  
