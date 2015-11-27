@@ -179,7 +179,7 @@ public class EmpCareerTransitionFormController extends BaseController {
 			Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
 			EmpCareerHistoryModel m = gson.fromJson(json, EmpCareerHistoryModel.class);
 			
-			EmpData empData = empDataService.getByIdWithDetail(m.getEmpData().getId());
+			EmpData empData = empDataService.getByEmpIdWithDetail(m.getEmpData().getId());
 			EmpData copyOfLetterTo = empDataService.getByIdWithDetail(m.getCopyOfLetterTo().getId());
 			Department department = departmentService.getEntityByPkWithDetail(m.getDepartmentId());
 			
@@ -197,6 +197,9 @@ public class EmpCareerTransitionFormController extends BaseController {
 			model.setNoSk(m.getNoSk());
 			model.setNotes(m.getNotes());
 			model.setCompanyName(department.getCompany().getName());
+
+			this.onChangeEmployee();
+			this.onChangeDepartment();
 		
 		} catch (Exception e) {
 	        LOGGER.error("Error", e);

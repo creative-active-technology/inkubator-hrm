@@ -17,6 +17,7 @@ import com.inkubator.hrm.entity.Jabatan;
  */
 public class EmpCareerHistoryModel implements Serializable {
 
+	//persisted property
 	private EmpData empData;
 	private Long careerTransitionId;
 	private Date effectiveDate;
@@ -32,8 +33,13 @@ public class EmpCareerHistoryModel implements Serializable {
     private String approvalActivityNumber;    
     private String notes;
     
-    //additional
+    //additional (not persisted)
     private String companyName;
+    private String careerTransitionName;
+    private String departmentName;
+    private String jabatanName;
+    private String golonganJabatanName;
+    private String employeeTypeName;
     private String currentCompany;
     private String currentDepartment;
     private String currentJabatan;
@@ -41,6 +47,7 @@ public class EmpCareerHistoryModel implements Serializable {
     private String currentGolJab;
     private Date currentJoinDate;
     
+    //list
     private List<CareerTransition> listCareerTransition;
     private List<Department> listDepartment;
     private List<Jabatan> listJabatan;
@@ -136,6 +143,36 @@ public class EmpCareerHistoryModel implements Serializable {
 	}
 	public void setNotes(String notes) {
 		this.notes = notes;
+	}
+	public String getCareerTransitionName() {
+		return careerTransitionName;
+	}
+	public void setCareerTransitionName(String careerTransitionName) {
+		this.careerTransitionName = careerTransitionName;
+	}
+	public String getDepartmentName() {
+		return departmentName;
+	}
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+	public String getJabatanName() {
+		return jabatanName;
+	}
+	public void setJabatanName(String jabatanName) {
+		this.jabatanName = jabatanName;
+	}
+	public String getGolonganJabatanName() {
+		return golonganJabatanName;
+	}
+	public void setGolonganJabatanName(String golonganJabatanName) {
+		this.golonganJabatanName = golonganJabatanName;
+	}
+	public String getEmployeeTypeName() {
+		return employeeTypeName;
+	}
+	public void setEmployeeTypeName(String employeeTypeName) {
+		this.employeeTypeName = employeeTypeName;
 	}
 	public List<CareerTransition> getListCareerTransition() {
 		return listCareerTransition;

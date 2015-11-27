@@ -110,6 +110,14 @@ public class ApprovalRemoteCommand {
                 	}
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
                     break;
+                case HRMConstant.EMPLOYEE_CAREER_TRANSITION:
+                	if(isWaitingApproval){
+                		infoMessages = messages.getString("emp_career_transition.submission_of_career_transition") + " " + requestFullName + " " + messages.getString("approval.need_approval_from") + " " + approverFullName;
+                	} else if(isWaitingRevised){
+                		infoMessages = messages.getString("emp_career_transition.submission_of_career_transition") + " " + requestFullName + " " + messages.getString("approval.need_revision_by") + " " + approverFullName;
+                	}
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Executed", infoMessages));
+                    break;
                 default:
                     break;
             }
