@@ -11,6 +11,33 @@
         <link rel="shortcut icon" href="./hr.ico" type="image/x-icon" />
     </h:head>
     <h:body>
-       
+        <div align="center">
+            <p:graphicImage value="./resources/images/logo_ohr.png"  width="95%" style="margin-top: 25%" cache="true" />
+        </div>     
+        <h:form style="margin-top: 20%;margin-left: 3px;margin-right: 3px" prependId="false" id="loginForm">
+            <p:growl id="loginGrowl" life="4000"/>
+            <div align="center">
+                <h:panelGrid columns="3" >
+                    <p:outputLabel  value="User Name" style="text-shadow: none!important;color: #ffffff;font-size: 13px !important;font-weight: bold;"/>
+                    <p:outputLabel  value=":" style="text-shadow: none!important;color: #ffffff;font-size: 13px !important;font-weight: bold;"/>
+                    <p:inputText  id="j_username" required="true" placeholder="Name or Email " style="font-size: 13px !important;width: 250px" label="Name or Email" maxlength="50"
+                                  value="#{mobileLoginController.userName}" />
+
+                    <p:outputLabel value="Password" style="text-shadow: none;color: #ffffff;font-size: 13px;font-weight: bold"/>
+                    <p:outputLabel  value=":" style="text-shadow: none!important;color: #ffffff;font-size: 13px !important;font-weight: bold;"/>
+                    <p:password id="j_password" required="true" placeholder=" Your Password" style="font-size: 13px !important;width: 250px"  label="Password" value="#{mobileLoginController.password}"/>
+                    <p:outputLabel/>
+                    <p:outputLabel/>
+                    <p:commandButton value="LOGIN" action="#{mobileLoginController.doLogin()}"  icon="ui-icon-lock" update="loginForm" ajax="false" type="submit"
+                                     style="color: #003366;font-size: 13px!important;margin-top: 10px"/> 
+                </h:panelGrid>
+            </div>
+
+
+
+
+
+
+        </h:form>
     </h:body>
 </html>
