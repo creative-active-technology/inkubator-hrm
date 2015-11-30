@@ -102,8 +102,14 @@
                                     <p:outputLabel for="quantity" value="#{appmsg['businesstravel.quantity']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber id="quantity" disabled="#{reimbursmentFormController.isQuantity}" value="#{reimbursmentFormController.model.quantity}" onkeyup="this.value = this.value.toUpperCase();"
-                                             required="true" maxlength="6" styleClass="isitext_hrm" style="width:257px;" />
+                                    <!-- <pe:inputNumber id="quantity" disabled="#{reimbursmentFormController.isQuantity}" value="#{reimbursmentFormController.model.quantity}" onkeyup="this.value = this.value.toUpperCase();"
+                                             required="true" maxlength="6" styleClass="isitext_hrm" style="width:257px;" /> -->
+                                    <p:inputText id="quantity" title="#{appmsg['businesstravel.quantity']}" value="#{reimbursmentFormController.model.quantity}" 
+	                                             required="true" disabled="#{reimbursmentFormController.isQuantity}" onkeyup="this.value = this.value.toUpperCase();"
+	                                           	 maxlength="9" style="text-align: right;width: 210px" styleClass="isitext_hrm" >
+	                                	<f:validateDoubleRange/>
+	                                    <f:convertNumber minFractionDigits="0" groupingUsed="false"/>
+	                              	</p:inputText>
                                     <p:message for="quantity"/>
                                 </p:column>
                             </p:row>
@@ -114,8 +120,14 @@
                                     <p:outputLabel  value="#{appmsg['reimbursment.nominal']}"  for="nominal" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber id="nominal" disabled="#{reimbursmentFormController.isNominal}" value="#{reimbursmentFormController.model.nominal}" 
-                                                required="true" maxlength="6" styleClass="isitext_hrm" style="width:257px;"/>
+                                    <!-- <pe:inputNumber id="nominal" disabled="#{reimbursmentFormController.isNominal}" value="#{reimbursmentFormController.model.nominal}" 
+                                                required="true" maxlength="6" styleClass="isitext_hrm" style="width:257px;"/> -->
+                                    <p:inputText id="nominal" title="#{appmsg['reimbursment.nominal']}" value="#{reimbursmentFormController.model.nominal}" 
+	                                             required="true" disabled="#{reimbursmentFormController.isNominal}"
+	                                           	 maxlength="9" style="text-align: right;width: 210px" styleClass="isitext_hrm" >
+	                                	<f:validateDoubleRange/>
+	                                    <f:convertNumber minFractionDigits="2"/>
+	                              	</p:inputText>
                                     <p:message for="nominal"/>
                                 </p:column>
                             </p:row>

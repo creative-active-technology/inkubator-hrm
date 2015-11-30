@@ -169,14 +169,24 @@
                                 </p:column>
                                 <p:column style="width: 75%">
                                     <h:panelGrid columns="2" style="margin-left: -10px;">
-                                        <pe:inputNumber id="nominalLoanId" title="#{appmsg['loan.loan_nominal']}" value="#{loanApplicationFormController.model.nominalLoan}" 
+                                        <!-- <pe:inputNumber id="nominalLoanId" title="#{appmsg['loan.loan_nominal']}" value="#{loanApplicationFormController.model.nominalLoan}" 
                                                         decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:200px;">
                                             <p:ajax listener="#{loanApplicationFormController.updateDataPinjamanByJumlahPinjaman()}"  update="usedLoan,availableLoan,tableLoanNewApplicationInstallmentId"/>
                                             <f:validator validatorId="loanNewMaxMinLoanAmountValidator"  />
                                             <f:attribute name="validatorMaxExceedMessage" value="#{appmsg['loan.error_nominal_loan_cannot_greater_than_max_allocation']}"/>
                                             <f:attribute name="validatorLowerThanMinMessage" value="#{appmsg['loan.error_nominal_loan_cannot_lower_than_min_allocation']}"/>
                                             <f:attribute name="model" value="#{loanApplicationFormController.model}"/>
-                                        </pe:inputNumber>
+                                        </pe:inputNumber> -->
+                                        <p:inputText id="nominalLoanId" title="#{appmsg['loan.loan_nominal']}" value="#{loanApplicationFormController.model.nominalLoan}" 
+	                                                 required="true" style="text-align: right;width: 200px" styleClass="isitext_hrm" >
+	                                        <p:ajax listener="#{loanApplicationFormController.updateDataPinjamanByJumlahPinjaman()}"  update="usedLoan,availableLoan,tableLoanNewApplicationInstallmentId"/>
+                                            <f:validator validatorId="loanNewMaxMinLoanAmountValidator"  />
+                                            <f:attribute name="validatorMaxExceedMessage" value="#{appmsg['loan.error_nominal_loan_cannot_greater_than_max_allocation']}"/>
+                                            <f:attribute name="validatorLowerThanMinMessage" value="#{appmsg['loan.error_nominal_loan_cannot_lower_than_min_allocation']}"/>
+                                            <f:attribute name="model" value="#{loanApplicationFormController.model}"/>
+	                                        <f:validateDoubleRange/>
+	                                        <f:convertNumber minFractionDigits="2"/>
+	                                    </p:inputText>
 
                                         <p:message for="nominalLoanId"/>
                                     </h:panelGrid>
@@ -389,13 +399,19 @@
                                         <p:outputLabel value="#{appmsg['loan.subsidized_installment_value']}"
                                                        rendered="#{loanApplicationFormController.subsidiType eq 1}"  styleClass="label_hrm" />                                    
                                         <p:outputLabel value=" : " rendered="#{loanApplicationFormController.subsidiType eq 1}"  styleClass="label_hrm" />
-                                        <pe:inputNumber id="nominalSubsidi" title="#{appmsg['loan.subsidized_installment_value']}" 
+                                        <!-- <pe:inputNumber id="nominalSubsidi" title="#{appmsg['loan.subsidized_installment_value']}" 
                                                         label="#{appmsg['loan.subsidized_installment_value']}"
                                                         value="#{loanApplicationFormController.model.subsidiCicilan}" 
                                                         rendered="#{loanApplicationFormController.subsidiType eq 1}" 
                                                         decimalPlaces="0" required="#{loanApplicationFormController.subsidiType eq 1}" styleClass="isitext_hrm" style="width:200px;">   
 
-                                        </pe:inputNumber>
+                                        </pe:inputNumber> -->
+                                        <p:inputText id="nominalSubsidi" title="#{appmsg['loan.subsidized_installment_value']}" value="#{loanApplicationFormController.model.subsidiCicilan}" 
+	                                                 rendered="#{loanApplicationFormController.subsidiType eq 1}"  required="#{loanApplicationFormController.subsidiType eq 1}" 
+	                                                 style="text-align: right;width: 200px" styleClass="isitext_hrm" >
+	                                        <f:validateDoubleRange/>
+	                                        <f:convertNumber minFractionDigits="2"/>
+	                                    </p:inputText>
                                         <p:message for="nominalSubsidi"/>
                                     </h:panelGrid>
 

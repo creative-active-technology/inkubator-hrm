@@ -265,16 +265,30 @@
                                         <p:outputLabel  value="#{appmsg['recruitment_applicant.final_score_from_scale']}" styleClass="label_hrm" for="scoreId"/>
                                     </p:column>
                                     <p:column style="width: 84%">
-                                        <pe:inputNumber id="scoreId"  label="#{appmsg['recruitment_applicant.final_score_from_scale']}" value="#{recruitApplicantFormController.model.score}" 
+                                        <!-- <pe:inputNumber id="scoreId"  label="#{appmsg['recruitment_applicant.final_score_from_scale']}" value="#{recruitApplicantFormController.model.score}" 
                                                         decimalPlaces="2" required="true" styleClass="isitext_hrm" size="7">
                                             <f:validator validatorId="doubleNumberBetweenValidator"  />
                                             <f:attribute name="endNumberDouble" value="#{scaleId}"/>
                                             <f:attribute name="validatorConstraint" value="GREATER_THAN"/>
                                             <f:attribute name="validatorMessage" value="#{appmsg['recruitment_applicant.error_final_score_bigger_thank_scale']}"/>
-                                        </pe:inputNumber>
+                                        </pe:inputNumber> -->
+                                        <p:inputText id="scoreId" title="#{appmsg['recruitment_applicant.final_score_from_scale']}" value="#{recruitApplicantFormController.model.score}" 
+			                                         required="true" maxlength="5" style="text-align: right;width: 60px" styleClass="isitext_hrm" >
+			                            	<f:validator validatorId="doubleNumberBetweenValidator"  />
+                                            <f:attribute name="endNumberDouble" value="#{scaleId}"/>
+                                            <f:attribute name="validatorConstraint" value="GREATER_THAN"/>
+                                            <f:attribute name="validatorMessage" value="#{appmsg['recruitment_applicant.error_final_score_bigger_thank_scale']}"/>
+			                            	<f:validateDoubleRange/>
+			                                <f:convertNumber minFractionDigits="2"/>
+			                           	</p:inputText>
                                         <p:outputLabel  value="&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp;" styleClass="label_hrm"/>
-                                        <pe:inputNumber id="scaleId" binding="#{scaleId}" label="#{appmsg['recruitment_applicant.final_score_from_scale']}" value="#{recruitApplicantFormController.model.scale}" 
-                                                        decimalPlaces="0" required="true" styleClass="isitext_hrm" size="7"/>			                                
+                                        <!-- <pe:inputNumber id="scaleId" binding="#{scaleId}" label="#{appmsg['recruitment_applicant.final_score_from_scale']}" value="#{recruitApplicantFormController.model.scale}" 
+                                                        decimalPlaces="0" required="true" styleClass="isitext_hrm" size="7"/> -->
+                                        <p:inputText id="scaleId" binding="#{scaleId}" title="#{appmsg['recruitment_applicant.final_score_from_scale']}" value="#{recruitApplicantFormController.model.scale}" 
+		                                         	 maxlength="5" required="true" style="text-align: right;width: 60px" styleClass="isitext_hrm" >
+		                            	<f:validateDoubleRange/>
+		                                <f:convertNumber minFractionDigits="0"/>
+		                           	</p:inputText>			                                
                                         <p:message for="scoreId"/>
                                         <p:message for="scaleId"/>
                                     </p:column>

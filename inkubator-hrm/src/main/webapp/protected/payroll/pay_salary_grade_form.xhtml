@@ -58,12 +58,22 @@
                                 <h:outputLabel for="minSalary" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber id="minSalary"  value="#{paySalaryGradeFormController.paySalaryGradeModel.minSalary}"
+                                <!-- <pe:inputNumber id="minSalary"  value="#{paySalaryGradeFormController.paySalaryGradeModel.minSalary}"
                                              required="true"  maxlength="45" styleClass="isitext_hrm" style="text-align: right;width:210px;" >
                                 <f:validator validatorId="bigDecimalNumberBetweenValidator"  />
                                 <f:attribute name="endNumberInteger" value="#{medSalary}"/>
                                 <f:attribute name="validatorMessage" value="#{appmsg['paysalarygrade.min_salary_could_not_greater_than_med_salary']}"/>
-                                </pe:inputNumber>
+                                </pe:inputNumber> -->
+                                
+                                <p:inputText id="minSalary" title="#{appmsg['paysalarygrade.min_salary']}" 
+                                		value="#{paySalaryGradeFormController.paySalaryGradeModel.minSalary}"  maxlength="45"
+                                        style="text-align: right;width: 210px" required="true" styleClass="isitext_hrm" >
+                                    <f:validateDoubleRange/>
+                                    <f:convertNumber />
+                                    <f:validator validatorId="bigDecimalNumberBetweenValidator"  />
+                                	<f:attribute name="endNumberInteger" value="#{medSalary}"/>
+                                	<f:attribute name="validatorMessage" value="#{appmsg['paysalarygrade.min_salary_could_not_greater_than_med_salary']}"/>
+                                 </p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -80,12 +90,22 @@
                                 <h:outputLabel for="medSalary" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber id="medSalary"  value="#{paySalaryGradeFormController.paySalaryGradeModel.mediumSalary}"
+                                <!-- <pe:inputNumber id="medSalary"  value="#{paySalaryGradeFormController.paySalaryGradeModel.mediumSalary}"
                                              binding="#{medSalary}" required="true"  maxlength="45" styleClass="isitext_hrm" style="text-align: right;width:210px;" >
                                 <f:validator validatorId="bigDecimalNumberBetweenValidator"  />
                                 <f:attribute name="endNumberInteger" value="#{maxSalary}"/>
                                 <f:attribute name="validatorMessage" value="#{appmsg['paysalarygrade.med_salary_could_not_greater_than_max_salary']}"/>
-                                </pe:inputNumber>
+                                </pe:inputNumber> -->
+                                
+                                <p:inputText id="medSalary" binding="#{medSalary}" title="#{appmsg['paysalarygrade.medium_salary']}" 
+                                		value="#{paySalaryGradeFormController.paySalaryGradeModel.mediumSalary}"  maxlength="45"
+                                        style="text-align: right;width: 210px" required="true" styleClass="isitext_hrm" >
+                                    <f:validateDoubleRange />
+                                    <f:convertNumber />
+                                    <f:validator validatorId="bigDecimalNumberBetweenValidator"  />
+                                	<f:attribute name="endNumberInteger" value="#{maxSalary}"/>
+                                	<f:attribute name="validatorMessage" value="#{appmsg['paysalarygrade.med_salary_could_not_greater_than_max_salary']}"/>
+                                 </p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -101,8 +121,15 @@
                                 <h:outputLabel for="maxSalary" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber id="maxSalary"  value="#{paySalaryGradeFormController.paySalaryGradeModel.maxSalary}"
-                                             binding="#{maxSalary}" required="true"  maxlength="45" styleClass="isitext_hrm" style="text-align: right;width:210px;" />
+                                <!-- <pe:inputNumber id="maxSalary"  value="#{paySalaryGradeFormController.paySalaryGradeModel.maxSalary}"
+                                             binding="#{maxSalary}" required="true"  maxlength="45" styleClass="isitext_hrm" style="text-align: right;width:210px;" /> -->
+                                 
+                                 <p:inputText id="maxSalary" binding="#{maxSalary}" title="#{appmsg['paysalarygrade.max_salary']}" 
+                                		value="#{paySalaryGradeFormController.paySalaryGradeModel.maxSalary}"  maxlength="45"
+                                        style="text-align: right;width: 210px" required="true" styleClass="isitext_hrm" >
+                                    <f:validateDoubleRange/>
+                                 	<f:convertNumber />
+                                 </p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>

@@ -127,8 +127,13 @@
                                 <h:outputLabel for="maxPinjaman" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber id="maxPinjaman"  value="#{loanNewSchemaFormController.model.totalMaximumLoan}"
-                                             required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
+                                <!-- <pe:inputNumber id="maxPinjaman"  value="#{loanNewSchemaFormController.model.totalMaximumLoan}"
+                                             required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" /> -->
+                               	<p:inputText id="maxPinjaman" title="#{appmsg['loanschema.max_loan']}" value="#{loanNewSchemaFormController.model.totalMaximumLoan}" 
+	                                         required="true" maxlength="15" style="text-align: right;width: 210px" styleClass="isitext_hrm" >
+	                            	<f:validateDoubleRange/>
+	                                <f:convertNumber minFractionDigits="2"/>
+	                           </p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -145,8 +150,13 @@
                                 <h:outputLabel for="maxCicilan" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber id="maxCicilan"  value="#{loanNewSchemaFormController.model.totalMaximumInstallment}"
-                                             required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
+                                <!-- <pe:inputNumber id="maxCicilan"  value="#{loanNewSchemaFormController.model.totalMaximumInstallment}"
+                                             required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" /> -->
+                                <p:inputText id="maxCicilan" title="#{appmsg['loanschema.max_installment']}" value="#{loanNewSchemaFormController.model.totalMaximumInstallment}" 
+	                                         required="true" maxlength="15" style="text-align: right;width: 210px" styleClass="isitext_hrm" >
+	                            	<f:validateDoubleRange/>
+	                                <f:convertNumber minFractionDigits="2"/>
+	                           </p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>
