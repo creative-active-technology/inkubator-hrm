@@ -54,4 +54,6 @@ public interface LoanNewApplicationService extends IService<LoanNewApplication>,
     public List<LoanNewApplicationStatusViewModel> getAllDataLoanNewApplicationStatus(LoanStatusSearchParameter parameter, int firstResult, int maxResults, Order orderable) throws Exception;
     
     public Long getTotalDataLoanNewApplicationStatus(LoanStatusSearchParameter parameter) throws Exception;
+    
+    public LoanNewApplication getEntityWithDetailByActivityNumber(String activityNumber) throws Exception;
 }

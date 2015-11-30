@@ -52,4 +52,6 @@ public interface LoanNewApplicationDao extends IDAO<LoanNewApplication> {
         
         public Long getTotalDataLoanNewApplicationStatus(LoanStatusSearchParameter parameter);
         
+        public LoanNewApplication getEntityWithDetailByActivityNumber(String activityNumber);
+        
 }
