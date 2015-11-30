@@ -83,8 +83,14 @@
                                     <p:outputLabel for="costId" value="#{appmsg['vacancy_advertisement.cost']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <pe:inputNumber id="costId" title="#{appmsg['vacancy_advertisement.cost']}" value="#{detailModel.cost}" 
-	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:290px;"/>	                                
+                                   <!--  <pe:inputNumber id="costId" title="#{appmsg['vacancy_advertisement.cost']}" value="#{detailModel.cost}" 
+	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:290px;"/>	 -->
+	                                				
+                       				<p:inputText title="#{appmsg['vacancy_advertisement.cost']}" value="#{detailModel.cost}" id="costId"
+                                                 style="text-align: right;width: 200px" styleClass="isitext_hrm" >
+                                        <f:validateDoubleRange/>
+                                        <f:convertNumber minFractionDigits="2"/>
+                                    </p:inputText>                             
                                     <p:message for="costId"/>
                                 </p:column>
                             </p:row>
