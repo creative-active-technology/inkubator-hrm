@@ -61,9 +61,14 @@
                                 <h:outputLabel for="limitPerClaimId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 60%">
-                            	<pe:inputNumber id="limitPerClaimId" title="Limit per Klaim" value="#{rmbsSchemaOfTypeFormController.model.limitPerClaim}" 
+                            	<!-- <pe:inputNumber id="limitPerClaimId" title="Limit per Klaim" value="#{rmbsSchemaOfTypeFormController.model.limitPerClaim}" 
 	                                			decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:200px;">
-	                            </pe:inputNumber>                                
+	                            </pe:inputNumber> -->
+	                            <p:inputText id="limitPerClaimId" title="#{appmsg['rmbs_schema.limit_per_claim']}" value="#{rmbsSchemaOfTypeFormController.model.limitPerClaim}" 
+			                               	 required="true" style="text-align: right;width: 160px" styleClass="isitext_hrm" >
+			                    	<f:validateDoubleRange/>
+			                        <f:convertNumber minFractionDigits="2"/>
+			                  	</p:inputText>                                
                             </p:column>
                         </p:row>
                         <p:row>
@@ -79,9 +84,14 @@
                                 <h:outputLabel for="maxPerMonthId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 60%">
-                            	<pe:inputNumber id="maxPerMonthId" title="Maks per Bulan" value="#{rmbsSchemaOfTypeFormController.model.maxPerMonth}" 
+                            	<!-- <pe:inputNumber id="maxPerMonthId" title="Maks per Bulan" value="#{rmbsSchemaOfTypeFormController.model.maxPerMonth}" 
 	                                			decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:200px;">
-	                            </pe:inputNumber>                                
+	                            </pe:inputNumber> -->
+	                            <p:inputText id="maxPerMonthId" title="#{appmsg['rmbs_schema.max_per_month']}" value="#{rmbsSchemaOfTypeFormController.model.maxPerMonth}" 
+			                               	 required="true" style="text-align: right;width: 160px" styleClass="isitext_hrm" >
+			                    	<f:validateDoubleRange/>
+			                        <f:convertNumber minFractionDigits="2"/>
+			                  	</p:inputText>                                
                             </p:column>
                         </p:row>
                         <p:row>

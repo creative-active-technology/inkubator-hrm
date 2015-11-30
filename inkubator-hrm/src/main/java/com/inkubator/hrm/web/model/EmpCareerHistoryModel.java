@@ -2,8 +2,14 @@ package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import com.inkubator.hrm.entity.CareerTransition;
+import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.EmployeeType;
+import com.inkubator.hrm.entity.GolonganJabatan;
+import com.inkubator.hrm.entity.Jabatan;
 
 /**
  *
@@ -11,6 +17,7 @@ import com.inkubator.hrm.entity.EmpData;
  */
 public class EmpCareerHistoryModel implements Serializable {
 
+	//persisted property
 	private EmpData empData;
 	private Long careerTransitionId;
 	private Date effectiveDate;
@@ -23,9 +30,29 @@ public class EmpCareerHistoryModel implements Serializable {
     private String salaryChangesType;
     private Double salaryChangesPercent;
     private String noSk;
-    private String approvalActivityNumber;
-    private String companyName;
+    private String approvalActivityNumber;    
     private String notes;
+    
+    //additional (not persisted)
+    private String companyName;
+    private String careerTransitionName;
+    private String departmentName;
+    private String jabatanName;
+    private String golonganJabatanName;
+    private String employeeTypeName;
+    private String currentCompany;
+    private String currentDepartment;
+    private String currentJabatan;
+    private String currentEmployeeType;
+    private String currentGolJab;
+    private Date currentJoinDate;
+    
+    //list
+    private List<CareerTransition> listCareerTransition;
+    private List<Department> listDepartment;
+    private List<Jabatan> listJabatan;
+    private List<GolonganJabatan> listGolonganJabatan;
+    private List<EmployeeType> listEmployeeType;
 	
 	public Long getCareerTransitionId() {
 		return careerTransitionId;
@@ -116,6 +143,102 @@ public class EmpCareerHistoryModel implements Serializable {
 	}
 	public void setNotes(String notes) {
 		this.notes = notes;
+	}
+	public String getCareerTransitionName() {
+		return careerTransitionName;
+	}
+	public void setCareerTransitionName(String careerTransitionName) {
+		this.careerTransitionName = careerTransitionName;
+	}
+	public String getDepartmentName() {
+		return departmentName;
+	}
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+	public String getJabatanName() {
+		return jabatanName;
+	}
+	public void setJabatanName(String jabatanName) {
+		this.jabatanName = jabatanName;
+	}
+	public String getGolonganJabatanName() {
+		return golonganJabatanName;
+	}
+	public void setGolonganJabatanName(String golonganJabatanName) {
+		this.golonganJabatanName = golonganJabatanName;
+	}
+	public String getEmployeeTypeName() {
+		return employeeTypeName;
+	}
+	public void setEmployeeTypeName(String employeeTypeName) {
+		this.employeeTypeName = employeeTypeName;
+	}
+	public List<CareerTransition> getListCareerTransition() {
+		return listCareerTransition;
+	}
+	public void setListCareerTransition(List<CareerTransition> listCareerTransition) {
+		this.listCareerTransition = listCareerTransition;
+	}
+	public List<Department> getListDepartment() {
+		return listDepartment;
+	}
+	public void setListDepartment(List<Department> listDepartment) {
+		this.listDepartment = listDepartment;
+	}
+	public List<Jabatan> getListJabatan() {
+		return listJabatan;
+	}
+	public void setListJabatan(List<Jabatan> listJabatan) {
+		this.listJabatan = listJabatan;
+	}
+	public List<GolonganJabatan> getListGolonganJabatan() {
+		return listGolonganJabatan;
+	}
+	public void setListGolonganJabatan(List<GolonganJabatan> listGolonganJabatan) {
+		this.listGolonganJabatan = listGolonganJabatan;
+	}
+	public List<EmployeeType> getListEmployeeType() {
+		return listEmployeeType;
+	}
+	public void setListEmployeeType(List<EmployeeType> listEmployeeType) {
+		this.listEmployeeType = listEmployeeType;
+	}
+	public String getCurrentCompany() {
+		return currentCompany;
+	}
+	public void setCurrentCompany(String currentCompany) {
+		this.currentCompany = currentCompany;
+	}
+	public String getCurrentDepartment() {
+		return currentDepartment;
+	}
+	public void setCurrentDepartment(String currentDepartment) {
+		this.currentDepartment = currentDepartment;
+	}
+	public String getCurrentJabatan() {
+		return currentJabatan;
+	}
+	public void setCurrentJabatan(String currentJabatan) {
+		this.currentJabatan = currentJabatan;
+	}
+	public String getCurrentEmployeeType() {
+		return currentEmployeeType;
+	}
+	public void setCurrentEmployeeType(String currentEmployeeType) {
+		this.currentEmployeeType = currentEmployeeType;
+	}
+	public String getCurrentGolJab() {
+		return currentGolJab;
+	}
+	public void setCurrentGolJab(String currentGolJab) {
+		this.currentGolJab = currentGolJab;
+	}
+	public Date getCurrentJoinDate() {
+		return currentJoinDate;
+	}
+	public void setCurrentJoinDate(Date currentJoinDate) {
+		this.currentJoinDate = currentJoinDate;
 	}
     
 }

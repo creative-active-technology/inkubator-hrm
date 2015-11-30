@@ -140,8 +140,13 @@
                                     <p:outputLabel  value="#{appmsg['reimbursment.nominal_unit']}"  for="nominalUnit" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber id="nominalUnit" value="#{reimbursmentSchemaFormController.model.nominalUnit}" 
-                                                    required="true" styleClass="isitext_hrm" style="width:210px;"/>
+                                    <!-- <pe:inputNumber id="nominalUnit" value="#{reimbursmentSchemaFormController.model.nominalUnit}" 
+                                                    required="true" styleClass="isitext_hrm" style="width:210px;"/> -->
+                                    <p:inputText id="nominalUnit" title="#{appmsg['reimbursment.nominal_unit']}" value="#{reimbursmentSchemaFormController.model.nominalUnit}" 
+	                                             required="true" style="text-align: right;width: 210px" styleClass="isitext_hrm" >
+	                                	<f:validateDoubleRange/>
+	                                    <f:convertNumber minFractionDigits="2"/>
+	                              	</p:inputText>
                                     <p:message for="nominalUnit"/>
                                 </p:column>
                             </p:row>

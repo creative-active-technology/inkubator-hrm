@@ -1,0 +1,245 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlId" globalOnly="true" showDetail="true"/>                
+                <h:form id="formId">
+                    <p:focus context="formId"/>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="user_ico.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['emp_career_transition.detail_career_transition']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['emp_career_transition.career_transition_from_career']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px"> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.empData.bioData.combineName}" styleClass="label_hrm"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['emp_career_transition.career_transition']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.careerTransitionName}" styleClass="label_hrm"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['vacancy_advertisement.effective_date']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.joinDate}" styleClass="label_hrm">
+                                		<f:convertDateTime pattern="dd MMMM yyyy"/>
+                                	</p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['emp_career_transition.copy_of_letter']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{empCareerTransitionApprovalFormController.model.copyOfLetterTo.bioData.combineName}" styleClass="label_hrm"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['organizationletter.letter_number']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.noSk}" styleClass="label_hrm"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        
+                        <p:fieldset legend="#{appmsg['emp_career_transition.detail_information']}" style="width: 80%;margin-bottom:10px;margin-top:20px;">
+                            <p:panelGrid style="width: 100%;" styleClass="grid_border3">
+                            	<p:row>
+                            		<p:column colspan="2" style="width: 16%;background-color: #4CA5B7!important;text-align:center;font-size:large;" >
+                                        <p:outputLabel  value="#{appmsg['emp_career_transition.current']}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column colspan="2" style="width: 16%;background-color: #4CA5B7!important;text-align:center;font-size:large;" >
+                                        <p:outputLabel  value="#{appmsg['emp_career_transition.next']}" styleClass="label_hrm"/>
+                                    </p:column>
+                            	</p:row>
+                            	<p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['organization.company_name']}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 34%"> 
+                                    	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.currentCompany}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['organization.company_name']}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                    	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.companyName}" styleClass="label_hrm"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['department.department']}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                    	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.currentDepartment}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['department.department']}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                    	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.departmentName}" styleClass="label_hrm"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                    	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.currentJabatan}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                    	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.jabatanName}" styleClass="label_hrm"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['employeetype.employee_type']}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                    	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.currentEmployeeType}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['employeetype.employee_type']}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                    	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.employeeTypeName}" styleClass="label_hrm"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['functiongroup.function_group']}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                    	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.currentGolJab}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['functiongroup.function_group']}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                    	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.golonganJabatanName}" styleClass="label_hrm"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['employee.join_date']}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                    	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.currentJoinDate}" styleClass="label_hrm">
+                                    		<f:convertDateTime pattern="dd MMMM yyyy"/>
+                                    	</p:outputLabel>
+                                    </p:column>
+                                    <p:column style="width: 16%;background-color: #e1f0f0!important" >
+                                        <p:outputLabel  value="#{appmsg['employee.join_date']}" styleClass="label_hrm"/>
+                                    </p:column>
+                                    <p:column style="width: 34%">
+                                    	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.joinDate}" styleClass="label_hrm">
+                                    		<f:convertDateTime pattern="dd MMMM yyyy"/>
+                                    	</p:outputLabel>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                      	</p:fieldset>
+                        
+                     	<p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+                     		<p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['emp_career_transition.salary_changes']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{empCareerTransitionApprovalFormController.model.salaryChangesType} #{empCareerTransitionApprovalFormController.model.salaryChangesPercent} %" styleClass="label_hrm"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['global.notes']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.notes}" styleClass="label_hrm"/>
+                                </p:column>
+                            </p:row>                             
+                            <p:row rendered="#{empCareerTransitionApprovalFormController.isWaitingApproval}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputTextarea title="#{appmsg['global.comment']}" value="#{empCareerTransitionApprovalFormController.comment}" 
+	                                    			 maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
+	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{empCareerTransitionApprovalFormController.isWaitingRevised}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['approvalactivity.requesting_revised_by']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{empCareerTransitionApprovalFormController.askingRevisedActivity.approvedBy}"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row rendered="#{empCareerTransitionApprovalFormController.isWaitingRevised}">
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:outputLabel value="#{empCareerTransitionApprovalFormController.askingRevisedActivity.approvalCommment}"/>
+	                            </p:column>
+	                        </p:row>     
+                        </p:panelGrid>	                    
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <h:panelGroup rendered="#{empCareerTransitionApprovalFormController.isWaitingApproval}">
+		                    	<p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{empCareerTransitionApprovalFormController.doApproved()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{empCareerTransitionApprovalFormController.isApprover}" update=":growlId"/>
+								<p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{empCareerTransitionApprovalFormController.doRejected()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{empCareerTransitionApprovalFormController.isApprover}" update=":growlId"/>
+	                            <p:commandButton value="#{appmsg['approvalactivity.asking_for_revised']}" icon="ui-icon-zoomin" title="#{appmsg['approvalactivity.asking_for_revised']}" action="#{empCareerTransitionApprovalFormController.doAskingRevised()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{empCareerTransitionApprovalFormController.isApprover}" update=":growlId"/>
+	                        </h:panelGroup>
+	                        <h:panelGroup rendered="#{empCareerTransitionApprovalFormController.isWaitingRevised}">
+		                    	<p:commandButton value="#{appmsg['approvalactivity.revised']}" icon="ui-icon-zoomin" title="#{appmsg['approvalactivity.revised']}" action="#{empCareerTransitionApprovalFormController.doRevised()}"
+	                                			 style="margin-right: 5px" styleClass="label_button" rendered="#{empCareerTransitionApprovalFormController.isRequester}" update=":growlId"/>		                        
+	                        </h:panelGroup>
+	                        <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{empCareerTransitionApprovalFormController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

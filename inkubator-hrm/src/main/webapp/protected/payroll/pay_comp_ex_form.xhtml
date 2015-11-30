@@ -91,8 +91,13 @@
                                 <h:outputLabel for="fixedNominal" value=":"  styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 50%" >
-                                <pe:inputNumber id="fixedNominal" title="#{appmsg['componentException.fixed_nominal']}" value="#{payComponentDataExceptionFormController.model.nominal}" 
-	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:210px;" />
+                                <!-- <pe:inputNumber id="fixedNominal" title="#{appmsg['componentException.fixed_nominal']}" value="#{payComponentDataExceptionFormController.model.nominal}" 
+	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:210px;" /> -->
+	                            <p:inputText id="fixedNominal" title="#{appmsg['componentException.fixed_nominal']}" value="#{payComponentDataExceptionFormController.model.nominal}"  
+                                                 style="text-align: right;width: 200px" required="true" styleClass="isitext_hrm" >
+	                                     <f:validateDoubleRange/>
+	                                     <f:convertNumber />
+                                 	</p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>

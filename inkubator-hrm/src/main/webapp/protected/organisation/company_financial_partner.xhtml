@@ -17,7 +17,7 @@
             <ui:define name="center">
                 <p:growl id="growlFinancialPartnerFormId" globalOnly="true" showDetail="true"/>
                 <h:form id="formFinancialPartnerFormId">
-                	<p:focus context="formFinancialPartnerFormId"/>
+                    <p:focus context="formFinancialPartnerFormId"/>
                     <h:panelGrid  columns="2">
                         <p:graphicImage library="images" name="company.png" height="36" width="36" />
                         <h:panelGroup layout="block">
@@ -32,7 +32,7 @@
                         <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
-                    	<p:row>
+                        <p:row>
                             <p:column style="width: 29%">
                                 <p:outputLabel for="productNameId" value="#{appmsg['organization.product_name']}" styleClass="label_hrm"/>
                             </p:column>
@@ -40,8 +40,8 @@
                                 <h:outputLabel for="productNameId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                            	<p:inputText id="productNameId" title="#{appmsg['organization.product_name']}" value="#{companyFinancialPartnerFormController.model.productName}" 
-	                            			 required="true" maxlength="60" styleClass="isitext_hrm" style="width:260px;"/>
+                                <p:inputText id="productNameId" title="#{appmsg['organization.product_name']}" value="#{companyFinancialPartnerFormController.model.productName}" 
+                                             required="true" maxlength="60" styleClass="isitext_hrm" style="width:260px;"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -57,14 +57,14 @@
                                 <h:outputLabel for="serviceTypeId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                            	<p:selectOneMenu id="serviceTypeId" styleClass="isitext_hrm" value="#{companyFinancialPartnerFormController.model.financialService}" style="width:266px;" required="true">
-	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-	                            	<!-- cek HRMConstant -->
-	                            	<f:selectItem itemLabel="#{appmsg['organization.insurance']}" itemValue="0"/>
-	                            	<f:selectItem itemLabel="#{appmsg['organization.financing']}" itemValue="1"/>
-	                            	<f:selectItem itemLabel="#{appmsg['organization.pension_fund']}" itemValue="2"/>
-	                            	<p:ajax listener="#{companyFinancialPartnerFormController.onChangeFinancialService()}" update="financialNonBankingId"/>
-	                        	</p:selectOneMenu>
+                                <p:selectOneMenu id="serviceTypeId" styleClass="isitext_hrm" value="#{companyFinancialPartnerFormController.model.financialService}" style="width:266px;" required="true">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <!-- cek HRMConstant -->
+                                    <f:selectItem itemLabel="#{appmsg['organization.insurance']}" itemValue="0"/>
+                                    <f:selectItem itemLabel="#{appmsg['organization.financing']}" itemValue="1"/>
+                                    <f:selectItem itemLabel="#{appmsg['organization.pension_fund']}" itemValue="2"/>
+                                    <p:ajax listener="#{companyFinancialPartnerFormController.onChangeFinancialService()}" update="financialNonBankingId"/>
+                                </p:selectOneMenu>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -80,10 +80,10 @@
                                 <h:outputLabel for="financialNonBankingId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                            	<p:selectOneMenu id="financialNonBankingId" styleClass="isitext_hrm" value="#{companyFinancialPartnerFormController.model.financialNonBankingId}" style="width:266px;" required="true">
-	                            	<f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-	                            	<f:selectItems value="#{companyFinancialPartnerFormController.financialNonBankings}" var="financialNonBanking" itemValue="#{financialNonBanking.id}" itemLabel="#{financialNonBanking.name}"/>
-	                        	</p:selectOneMenu>
+                                <p:selectOneMenu id="financialNonBankingId" styleClass="isitext_hrm" value="#{companyFinancialPartnerFormController.model.financialNonBankingId}" style="width:266px;" required="true">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{companyFinancialPartnerFormController.financialNonBankings}" var="financialNonBanking" itemValue="#{financialNonBanking.id}" itemLabel="#{financialNonBanking.name}"/>
+                                </p:selectOneMenu>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -99,8 +99,14 @@
                                 <h:outputLabel for="accountNumberId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                            	<pe:inputNumber id="accountNumberId" title="#{appmsg['global.account_number']}" value="#{companyFinancialPartnerFormController.model.accountNumber}" 
-	                            			 required="true" thousandSeparator="" decimalPlaces="0" maxValue="99999999999999999999" styleClass="isitext_hrm" style="width:260px;"/>
+<!--                            	<pe:inputNumber id="accountNumberId" title="#{appmsg['global.account_number']}" value="#{companyFinancialPartnerFormController.model.accountNumber}" 
+                                     required="true" thousandSeparator="" decimalPlaces="0" maxValue="99999999999999999999" styleClass="isitext_hrm" style="width:260px;"/>-->
+
+                                <p:inputText id="accountNumberId"  title="#{appmsg['global.account_number']}" value="#{companyFinancialPartnerFormController.model.accountNumber}"  required="true"
+                                             style="width: 260px" styleClass="isitext_hrm" >
+                                    <f:validateDoubleRange maximum="99999999999999999999" />
+                                    <f:convertNumber groupingUsed="false" />
+                                </p:inputText> 
                             </p:column>
                         </p:row>
                         <p:row>
@@ -116,8 +122,8 @@
                                 <h:outputLabel for="accountNameId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                            	<p:inputText id="accountNameId" title="#{appmsg['organization.company_account_name']}" value="#{companyFinancialPartnerFormController.model.accountName}" 
-	                            			 required="true" maxlength="60" styleClass="isitext_hrm" style="width:260px;"/>
+                                <p:inputText id="accountNameId" title="#{appmsg['organization.company_account_name']}" value="#{companyFinancialPartnerFormController.model.accountName}" 
+                                             required="true" maxlength="60" styleClass="isitext_hrm" style="width:260px;"/>
                             </p:column>
                         </p:row>
                         <p:row>

@@ -153,9 +153,14 @@
 	                                <p:outputLabel for="gajiPokokId" value="#{appmsg['placement.gaji_pokok']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<pe:inputNumber id="gajiPokokId" title="#{appmsg['placement.gaji_pokok']}" value="#{recruitmentEmployeeSetupFormController.model.gajiPokok}" 
+	                            	<!-- <pe:inputNumber id="gajiPokokId" title="#{appmsg['placement.gaji_pokok']}" value="#{recruitmentEmployeeSetupFormController.model.gajiPokok}" 
 	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:160px;">
-	                                </pe:inputNumber>
+	                                </pe:inputNumber> -->
+	                                <p:inputText id="gajiPokokId" title="#{appmsg['placement.gaji_pokok']}" value="#{recruitmentEmployeeSetupFormController.model.gajiPokok}" 
+			                                     required="true" style="text-align: right;width: 140px" styleClass="isitext_hrm" >
+			                            <f:validateDoubleRange/>
+			                            <f:convertNumber minFractionDigits="2"/>
+			                      	</p:inputText>
                                     <p:message for="gajiPokokId"/>
 	                            </p:column>
 	                        </p:row>	                                                     

@@ -60,8 +60,13 @@
                                     <p:outputLabel  value="#{appmsg['recruitSelectionView.cost']}" for="biaya" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber id="biaya"  value="#{recruitmentTypeFormController.model.cost}"
-                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" />
+                                    <!-- <pe:inputNumber id="biaya"  value="#{recruitmentTypeFormController.model.cost}"
+                                             required="true"  maxlength="45" styleClass="isitext_hrm" style="width:210px;" /> -->
+                                    <p:inputText id="biaya" title="#{appmsg['recruitSelectionView.cost']}" value="#{recruitmentTypeFormController.model.cost}" 
+			                                     required="true" style="text-align: right;width: 210px" styleClass="isitext_hrm" >
+			                            <f:validateDoubleRange/>
+			                            <f:convertNumber minFractionDigits="2"/>
+			                      	</p:inputText>
                                     <p:message for="biaya"/>
                                 </p:column>
                             </p:row>
