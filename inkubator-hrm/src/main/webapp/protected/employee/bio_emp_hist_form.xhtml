@@ -116,8 +116,14 @@
                                 <p:outputLabel  value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                                <pe:inputNumber id="salaryId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary']}" value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.salary}"  
-                                                required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;" />
+                                <!-- <pe:inputNumber id="salaryId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary']}" value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.salary}"  
+                                                required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;" /> -->
+                            	<p:inputText title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary']}" value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.salary}" 
+                                                 id="salaryId" style="text-align: right;width: 200px" styleClass="isitext_hrm" >
+                                    <f:validateDoubleRange/>
+                                    <f:convertNumber minFractionDigits="2"/>
+                                </p:inputText>
+                            
                             </p:column>
                         </p:row>
                         <p:row>

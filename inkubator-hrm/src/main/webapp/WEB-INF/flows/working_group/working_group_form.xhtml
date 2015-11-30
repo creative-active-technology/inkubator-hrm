@@ -134,9 +134,16 @@
                                     <p:outputLabel  value="#{appmsg['workinggroup.working_group_working_time_per_hour']}"  for="perDayWorkId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber decimalPlaces="1" id="perDayWorkId" style="text-align: right;width: 60px" required="true" label="#{appmsg['workinggroup.working_group_working_time_per_hour']}"
+                                    <!-- <pe:inputNumber decimalPlaces="1" id="perDayWorkId" style="text-align: right;width: 60px" required="true" label="#{appmsg['workinggroup.working_group_working_time_per_hour']}"
                                                     value="#{groupWorkingModel.workingTimePerday}"
                                                     styleClass="isitext_hrm" maxValue="24"/>
+                                     -->                
+                                    
+                                    <p:inputText id="perDayWorkId" title="#{appmsg['workinggroup.working_group_working_time_per_hour']}" value="#{groupWorkingModel.workingTimePerday}"  required="true" styleClass="isitext_hrm" style="width:50px;"  >
+										<f:validateDoubleRange maximum="99999999999999999999"/>
+										<f:convertNumber  groupingUsed="false"/>
+									</p:inputText>
+								
                                     <p:message for="perDayWorkId"/>
                                 </p:column>
 
@@ -146,8 +153,14 @@
                                     <p:outputLabel  value="#{appmsg['workinggroup.working_group_working_time_per_week']}"  for="perWeekWorkId" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber decimalPlaces="1" id="perWeekWorkId" style="text-align: right;width: 60px" value="#{groupWorkingModel.workingTimePerweek}"
+                                    <!-- <pe:inputNumber decimalPlaces="1" id="perWeekWorkId" style="text-align: right;width: 60px" value="#{groupWorkingModel.workingTimePerweek}"
                                                     styleClass="isitext_hrm" maxValue="100" label="#{appmsg['workinggroup.working_group_working_time_per_week']}" required="true"/>
+                                     -->
+                                    <p:inputText id="perWeekWorkId" title="#{appmsg['workinggroup.working_group_working_time_per_week']}" value="#{groupWorkingModel.workingTimePerweek}"  required="true" styleClass="isitext_hrm" style="width:50px;"  >
+										<f:validateDoubleRange maximum="99999999999999999999"/>
+										<f:convertNumber  groupingUsed="false"/>
+									</p:inputText>
+                                    
                                     <p:message for="perWeekWorkId"/>
                                 </p:column>
                             </p:row>

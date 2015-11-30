@@ -102,8 +102,15 @@
                                     <p:outputLabel  value="#{appmsg['recruitVacancySelection.extra_fee']}"  for="extraFee" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber id="extraFee" value="#{recruitVacancySelectionModel.extraBudget}" onkeyup="this.value = this.value.toUpperCase();"
-                                                 required="true" styleClass="isitext_hrm" style="width:210px;" />
+                                    <!-- <pe:inputNumber id="extraFee" value="#{recruitVacancySelectionModel.extraBudget}" onkeyup="this.value = this.value.toUpperCase();"
+                                                 required="true" styleClass="isitext_hrm" style="width:210px;" /> -->
+                                    
+                                    <p:inputText title="#{appmsg['businesstravel.earned_per_quatity']}" value="#{recruitVacancySelectionModel.extraBudget}" 
+                                                 id="extraFee" style="text-align: right;width: 200px" styleClass="isitext_hrm" >
+                                        <!-- <p:ajax update="tableBusinessTravelComponentId,:formBusinessTravelComponentFormId:totalAmountId" process="@this" listener="#{businessTravelFormController.doAdjustPayByAmount(flowRequestContext)}"/> -->
+                                        <f:validateDoubleRange/>
+                                        <f:convertNumber minFractionDigits="2"/>
+                                    </p:inputText>
                                     <p:message for="extraFee"/>
                                 </p:column>
                             </p:row>

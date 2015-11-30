@@ -67,10 +67,17 @@
 	                                <p:outputLabel for="nominalPrincipalId" value="#{appmsg['loan.nominal_principal']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<pe:inputNumber id="nominalPrincipalId" title="#{appmsg['loan.nominal_principal']}" value="#{loanModel.nominalPrincipal}" 
+	                            	<!-- <pe:inputNumber id="nominalPrincipalId" title="#{appmsg['loan.nominal_principal']}" value="#{loanModel.nominalPrincipal}" 
 	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:290px;">
 	                                	<p:ajax listener="#{loanFormController.doResetLoanPaymentDetailForm(flowRequestContext)}"/>
-	                                </pe:inputNumber>
+	                                </pe:inputNumber> -->
+	                                
+	                                <p:inputText id="nominalPrincipalId" title="#{appmsg['loan.nominal_principal']}" value="#{loanModel.nominalPrincipal}" required="true"
+                                             styleClass="isitext_hrm" style="width:260px"  >
+                                        <p:ajax listener="#{loanFormController.doResetLoanPaymentDetailForm(flowRequestContext)}"/>     
+	                                    <f:validateDoubleRange maximum="99999999999999999999"/>
+	                                    <f:convertNumber  groupingUsed="false"/>
+	                                </p:inputText>
 	                                <p:outputLabel value="&nbsp;  (max: Rp. "/>				
 	                                <p:outputLabel id="maxNominalPrincipalId" value="#{loanModel.maxNominalPrincipal}">
 	                                	<f:convertNumber pattern="###,###" type="currency"/>
