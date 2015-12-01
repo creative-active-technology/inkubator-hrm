@@ -328,7 +328,7 @@
                                            <!--<p:menubar model="#{menuController.menuModel}" style="margin-left: 0px;margin-right: 0px;margin-top: 0px" styleClass="panelMenu" autoDisplay="false" id="menuId"/>-->
                                     <p:menubar style="margin-left: 0px;margin-right: 0px;margin-top: 0px" styleClass="panelMenu" autoDisplay="false" id="menuId">  
                                         <p:menuitem value="" url="/protected/home.htm"  title="Back to Home" style="font-size: 12px !important;font-weight: normal!important;color: white" icon="ui-icon-home" />
-                                        <p:submenu label=""  styleClass="menu" icon="img-user-account">
+                                        <p:submenu label="#{appmsg['menu.system']}"  styleClass="menu" icon="img-user-account">
                                             <p:submenu label="#{appmsg['menu.account']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.user_view']}"  style="color: #003366" title="#{appmsg['menu.user_view']}" url="/protected/account/user_view.htm"  icon="img-user"/> 
                                                 <p:menuitem value="#{appmsg['menu.role_view']}"  style="color: #003366" title="#{appmsg['menu.role_view']}" url="/protected/account/role_view.htm" icon="img-user-role" />
