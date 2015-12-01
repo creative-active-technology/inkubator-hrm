@@ -412,4 +412,15 @@ public class LoanNewApplicationDaoImpl extends IDAOImpl<LoanNewApplication> impl
 		
 		return searchQuery.toString();
 	}
+
+	@Override
+	public LoanNewApplication getEntityWithDetailByActivityNumber(String activityNumber) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("approvalActivityNumber", activityNumber));
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("loanNewSchema", FetchMode.JOIN);
+        criteria.setFetchMode("loanNewType", FetchMode.JOIN);
+        return (LoanNewApplication) criteria.uniqueResult();
+	}
 }

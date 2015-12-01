@@ -22,4 +22,5 @@ public interface PersonalDisciplineDao extends IDAO<PersonalDiscipline>{
     public PersonalDiscipline getEntityByPkWithAllRelation(Long id);
     
     public List<PersonalDiscipline> getAllDataByEmployeeId(Long id);
+    
 }

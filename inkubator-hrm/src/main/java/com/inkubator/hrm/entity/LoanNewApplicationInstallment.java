@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 /**
@@ -34,6 +35,7 @@ public class LoanNewApplicationInstallment implements java.io.Serializable {
     private Date updatedOn;
     private String createdBy;
     private String updatedBy;
+    private Integer paidStatus;
 
     public LoanNewApplicationInstallment() {
     }
@@ -181,5 +183,16 @@ public class LoanNewApplicationInstallment implements java.io.Serializable {
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
     }
+    
+    @Transient
+	public Integer getPaidStatus() {
+		return paidStatus;
+	}
+
+	public void setPaidStatus(Integer paidStatus) {
+		this.paidStatus = paidStatus;
+	}
+    
+    
 
 }

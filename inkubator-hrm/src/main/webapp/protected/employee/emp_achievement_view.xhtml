@@ -83,11 +83,11 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="#{data.achievementName}" style="width: 30%">
+                            <p:column sortBy="#{data.careerAwardType.name}" style="width: 30%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['personachievement.achievement']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.achievementName}" />
+                                <h:outputLabel value= "#{data.careerAwardType.name}" />
                             </p:column>
                             
                             

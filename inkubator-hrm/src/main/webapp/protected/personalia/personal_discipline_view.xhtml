@@ -91,11 +91,11 @@
                                     <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
-                            <p:column sortBy="#{data.admonitionType.name}" style="width: 25%">
+                            <p:column sortBy="#{data.careerDisciplineType.name}" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['admonitionType.admonitionType']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.admonitionType.name}" />
+                                <h:outputLabel value= "#{data.careerDisciplineType.name}" />
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
@@ -167,7 +167,7 @@
                         </p:row>
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['admonitionType.admonitionType']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{personalDisciplineViewController.selected.admonitionType.name}"/> </p:column>
+                            <p:column><p:outputLabel value="#{personalDisciplineViewController.selected.careerDisciplineType.name}"/> </p:column>
                         </p:row>
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['workinggroup.working_group_start_date']}" styleClass="label_hrm"/></p:column>

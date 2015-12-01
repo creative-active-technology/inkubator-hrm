@@ -37,6 +37,7 @@ public class PersonalDiscipline implements java.io.Serializable{
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private CareerDisciplineType careerDisciplineType;
 
     public PersonalDiscipline() {
     }
@@ -45,7 +46,7 @@ public class PersonalDiscipline implements java.io.Serializable{
         this.id = id;
     }
 
-    public PersonalDiscipline(Long id, Integer version, EmpData empData, AdmonitionType admonitionType, Date expiredDate, Date startDate, String description, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
+    public PersonalDiscipline(Long id, Integer version, EmpData empData, AdmonitionType admonitionType, Date expiredDate, Date startDate, String description, String createdBy, Date createdOn, String updatedBy, Date updatedOn, CareerDisciplineType careerDisciplineType) {
         this.id = id;
         this.version = version;
         this.empData = empData;
@@ -57,6 +58,7 @@ public class PersonalDiscipline implements java.io.Serializable{
         this.createdOn = createdOn;
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
+        this.careerDisciplineType = careerDisciplineType;
     }
 
     @Id
@@ -167,6 +169,16 @@ public class PersonalDiscipline implements java.io.Serializable{
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+
+    @ManyToOne
+    @JoinColumn(name="career_discipline_id")
+	public CareerDisciplineType getCareerDisciplineType() {
+		return careerDisciplineType;
+	}
+
+	public void setCareerDisciplineType(CareerDisciplineType careerDisciplineType) {
+		this.careerDisciplineType = careerDisciplineType;
+	}
     
     
 }

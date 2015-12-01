@@ -65,10 +65,12 @@ public class EmpPersonAchievementDaoImpl extends IDAOImpl<EmpPersonAchievement> 
         criteria.add(Restrictions.eq("id", id));
         criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("careerAwardType", FetchMode.JOIN);
         return (EmpPersonAchievement) criteria.uniqueResult();
     }
 
     private void doSearchEmpPersonAchievementByParam(EmpPersonAchievementSearchParameter searchParameter, Criteria criteria) {
+    	criteria.createAlias("careerAwardType", "careerAwardType", JoinType.INNER_JOIN);
         if (searchParameter.getAchievementName() != null) {
             criteria.add(Restrictions.like("achievementName", searchParameter.getAchievementName(), MatchMode.START));
         }
@@ -88,6 +90,7 @@ public class EmpPersonAchievementDaoImpl extends IDAOImpl<EmpPersonAchievement> 
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("careerAwardType", FetchMode.JOIN);
         return criteria.list();
     }
 
