@@ -63,8 +63,13 @@
                                 <h:outputLabel for="nominalId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber id="nominalId" title="#{appmsg['global.nominal']}" value="#{unregSpecificSchemeExceptionFormController.model.nominal}" 
-	                                			decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:195px;"/>
+                                <!-- <pe:inputNumber id="nominalId" title="#{appmsg['global.nominal']}" value="#{unregSpecificSchemeExceptionFormController.model.nominal}" 
+	                                			decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:195px;"/> -->
+	                            <p:inputText id="nominalId" title="#{appmsg['global.nominal']}" value="#{unregSpecificSchemeExceptionFormController.model.nominal}"   
+                                                 style="text-align: right;width: 195px" required="true" styleClass="isitext_hrm" >
+                                     <f:validateDoubleRange />
+                                     <f:convertNumber  />
+                                 </p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>

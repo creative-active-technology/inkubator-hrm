@@ -196,15 +196,25 @@ public class RmbsApplicationDaoImpl extends IDAOImpl<RmbsApplication> implements
 	public List<RmbsApplication> getUndisbursedByParam(int firstResult, int maxResults, Order orderable) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("applicationStatus", HRMConstant.RMBS_APPLICATION_STATUS_UNDISBURSED));
-		criteria.setFetchMode("empData", FetchMode.JOIN);
-		criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
 		criteria.setFetchMode("rmbsType", FetchMode.JOIN);
+		addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
 		criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
 		return criteria.list();
 	}
 
+	private Criteria addJoinRelationsOfCompanyId(Criteria criteria, Long companyId) {
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+		criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
+        criteria.createAlias("department.company", "company", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("company.id", companyId));
+
+        return criteria;
+    }
+	
 	@Override
 	public Long getTotalUndisbursedByParam() {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());

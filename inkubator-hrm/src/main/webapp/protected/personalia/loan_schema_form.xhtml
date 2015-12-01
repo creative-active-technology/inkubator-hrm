@@ -119,8 +119,14 @@
                                     <p:outputLabel  value="#{appmsg['loanschema.max_nominal']}"  for="maxNominal" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber id="maxNominal" value="#{loanSchemaFormController.model.maxNominal}" 
-                                                    required="true" styleClass="isitext_hrm" style="width:210px;" disabled="#{loanSchemaFormController.isMaxNominal}"/>
+                                    <!-- <pe:inputNumber id="maxNominal" value="#{loanSchemaFormController.model.maxNominal}" 
+                                                    required="true" styleClass="isitext_hrm" style="width:210px;" disabled="#{loanSchemaFormController.isMaxNominal}"/> -->
+                                    <p:inputText id="maxNominal" title="#{appmsg['loanschema.max_nominal']}" value="#{loanSchemaFormController.model.maxNominal}" 
+		                                         required="true" disabled="#{loanSchemaFormController.isMaxNominal}" 
+		                                         style="text-align: right;width: 210px" styleClass="isitext_hrm" >
+		                            	<f:validateDoubleRange/>
+		                                <f:convertNumber minFractionDigits="2"/>
+		                           	</p:inputText>
                                     <p:message for="maxNominal"/>
                                 </p:column>
                             </p:row>
@@ -145,8 +151,13 @@
                                     <p:outputLabel  value="#{appmsg['loanschema.interest_rate']}"  for="interestRate" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber id="interestRate" value="#{loanSchemaFormController.model.interestRate}" 
-                                                    required="true" styleClass="isitext_hrm" style="width:210px;" />
+                                    <!-- <pe:inputNumber id="interestRate" value="#{loanSchemaFormController.model.interestRate}" 
+                                                    required="true" styleClass="isitext_hrm" style="width:210px;" /> -->
+                                    <p:inputText id="interestRate" title="#{appmsg['loanschema.interest_rate']}" value="#{loanSchemaFormController.model.interestRate}" 
+		                                         required="true" style="text-align: right;width: 210px" styleClass="isitext_hrm" >
+		                            	<f:validateDoubleRange/>
+		                                <f:convertNumber minFractionDigits="2"/>
+		                           </p:inputText>
                                     <p:message for="interestRate"/>
                                 </p:column>
                             </p:row>
@@ -168,9 +179,14 @@
                                     <p:outputLabel  value="#{appmsg['loanschema.min_payment']}"  for="minPayment" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber id="minPayment" value="#{loanSchemaFormController.model.minPaymment}" style="width:210px;" required="true" 
+                                    <!-- <pe:inputNumber id="minPayment" value="#{loanSchemaFormController.model.minPaymment}" style="width:210px;" required="true" 
                                            validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
-                                    </pe:inputNumber>     
+                                    </pe:inputNumber> --> 
+                                    <p:inputText id="minPayment" title="#{appmsg['loanschema.min_payment']}" value="#{loanSchemaFormController.model.minPaymment}" 
+		                                         required="true" style="text-align: right;width: 210px" styleClass="isitext_hrm" >
+		                            	<f:validateDoubleRange/>
+		                                <f:convertNumber minFractionDigits="2"/>
+		                           </p:inputText>    
                                     <p:message for="minPayment"/>
                                 </p:column>
                             </p:row>

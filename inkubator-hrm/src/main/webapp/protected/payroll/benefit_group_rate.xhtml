@@ -61,8 +61,14 @@
                                 <h:outputLabel for="nominalId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                                <pe:inputNumber id="nominalId" title="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}" value="#{benefitGroupRateFormController.benefitGroupRateModel.nominal}"  
-                                                required="true" requiredMessage="#{appmsg['benefitGroupRate.benefitGroupRate_nominal_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;" />
+                                <!-- <pe:inputNumber id="nominalId" title="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}" value="#{benefitGroupRateFormController.benefitGroupRateModel.nominal}"  
+                                     required="true" requiredMessage="#{appmsg['benefitGroupRate.benefitGroupRate_nominal_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;" /> -->
+                                                
+                                 <p:inputText id="nominalId" title="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}" value="#{benefitGroupRateFormController.benefitGroupRateModel.nominal}"  
+                                                 style="text-align: right;width: 200px" required="true" styleClass="isitext_hrm" >
+                                     <f:validateDoubleRange/>
+                                     <f:convertNumber />
+                                 </p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>

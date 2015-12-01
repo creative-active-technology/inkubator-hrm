@@ -167,8 +167,15 @@
                                     <p:outputLabel for="valuePrice" value="#{appmsg['overtime.value_overtime']}" styleClass="label_hrm" style="margin-left:30px;"/>
                                 </p:column>
                                 <p:column  style="width: 50%">
-                                    <pe:inputNumber value="#{overTimeFormController.overTimeModel.valuePrice}" required="true"
-                                                    id="valuePrice" styleClass="isitext_hrm"  style="width: 210px;text-align: right" decimalPlaces="2" />
+                                    <!-- <pe:inputNumber value="#{overTimeFormController.overTimeModel.valuePrice}" required="true"
+                                                    id="valuePrice" styleClass="isitext_hrm"  style="width: 210px;text-align: right" decimalPlaces="2" /> -->
+                                                    
+                                    <p:inputText id="valuePrice" title="#{appmsg['overtime.value_overtime']}" value="#{overTimeFormController.overTimeModel.valuePrice}"  
+                                                 style="text-align: right;width: 210px;" required="true" styleClass="isitext_hrm" >
+	                                     <f:validateDoubleRange  />
+	                                     <f:convertNumber   />
+                                 	</p:inputText>
+                                 	
                                     <p:message for="valuePrice"/>
                                 </p:column>
                             </p:row>

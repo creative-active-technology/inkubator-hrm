@@ -144,6 +144,9 @@ public class HomeApproalActivityController extends BaseController {
                 		redirect = "/protected/recruitment/vacancy_advertisement_detail.htm?faces-redirect=true&execution=a" + selectedApprovalActivity.getActivityNumber();
                 	}
                     break;
+                case HRMConstant.EMPLOYEE_CAREER_TRANSITION:
+                	redirect = "/protected/career/emp_career_transition_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
                 default:
                     break;
             }
@@ -195,8 +198,6 @@ public class HomeApproalActivityController extends BaseController {
                 case HRMConstant.ANNOUNCEMENT:
                     redirect = "/protected/organisation/announcement_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
-                    
-                    
                 case HRMConstant.RECRUITMENT_REQUEST:
                     redirect = "/protected/recruitment/recruitment_req_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
@@ -205,6 +206,9 @@ public class HomeApproalActivityController extends BaseController {
                     break;
                 case HRMConstant.VACANCY_ADVERTISEMENT:                    
                 	redirect = "/protected/recruitment/vacancy_advertisement_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
+                case HRMConstant.EMPLOYEE_CAREER_TRANSITION:                    
+                	redirect = "/protected/career/emp_career_transition_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 default:
                     break;

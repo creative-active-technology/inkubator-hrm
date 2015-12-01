@@ -38,12 +38,40 @@
                                     <p:outputLabel for="host1" value="#{appmsg['mechineFinger.dbhost']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber minValue="1" maxValue="255" id="host1" value="#{fingerQueryFormController.mecineFingerQueryModel.dbHost1}"  title="host1" style="width:50px;" decimalPlaces="0"/>
+                                    <!-- <pe:inputNumber minValue="1" maxValue="255" id="host1" value="#{fingerQueryFormController.mecineFingerQueryModel.dbHost1}"  title="host1" style="width:50px;" decimalPlaces="0"/>
                                     <pe:inputNumber maxValue="255" maxlength="3" id="host2" value="#{fingerQueryFormController.mecineFingerQueryModel.dbHost2}" title="host2" style="width:50px;" decimalPlaces="0"/>
                                     <pe:inputNumber maxValue="255" id="host3" value="#{fingerQueryFormController.mecineFingerQueryModel.dbHost3}" title="host3" style="width:50px;" decimalPlaces="0"/>
-                                    <pe:inputNumber maxValue="255" id="host4" value="#{fingerQueryFormController.mecineFingerQueryModel.dbHost4}" title="host4" style="width:50px;" decimalPlaces="0"/>
+                                    <pe:inputNumber maxValue="255" id="host4" value="#{fingerQueryFormController.mecineFingerQueryModel.dbHost4}" title="host4" style="width:50px;" decimalPlaces="0"/> -->
+                                    
+                                     <p:inputText id="host1" maxlength="3" title="host1" value="#{fingerQueryFormController.mecineFingerQueryModel.dbHost1}"   
+                                                 style="text-align: right;width: 50px;" required="true" styleClass="isitext_hrm" >
+                                     <f:validateDoubleRange minimum="1" maximum="255" />
+                                     <f:convertNumber  groupingUsed="false" />
+                                 	</p:inputText>
+                                 	
+                                 	<p:inputText id="host2" maxlength="3" title="host2" value="#{fingerQueryFormController.mecineFingerQueryModel.dbHost2}"  
+                                                 style="text-align: right;width: 50px;" required="true" styleClass="isitext_hrm" >
+                                     <f:validateDoubleRange maximum="255" />
+                                     <f:convertNumber  groupingUsed="false" />
+                                 	</p:inputText>
+                                 	
+                                 	<p:inputText id="host3" maxlength="3" title="host3" value="#{fingerQueryFormController.mecineFingerQueryModel.dbHost3}"  
+                                                 style="text-align: right;width: 50px;" required="true" styleClass="isitext_hrm" >
+                                     <f:validateDoubleRange maximum="255" />
+                                     <f:convertNumber  groupingUsed="false" />
+                                 	</p:inputText>
+                                 	
+                                 	<p:inputText id="host4" maxlength="3" title="host4" value="#{fingerQueryFormController.mecineFingerQueryModel.dbHost4}"  
+                                                 style="text-align: right;width: 50px;" required="true" styleClass="isitext_hrm" >
+                                     <f:validateDoubleRange maximum="255" />
+                                     <f:convertNumber  groupingUsed="false" />
+                                 	</p:inputText>
+                                 	
                                     <p:message for="host1"/>
-                                </p:column>
+									<p:message for="host2" />
+									<p:message for="host3" />
+									<p:message for="host4" />
+							</p:column>
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >

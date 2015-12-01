@@ -681,6 +681,7 @@ public class RmbsApplicationServiceImpl extends BaseApprovalServiceImpl implemen
         JsonParser parser = new JsonParser();
         JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
         jsonObject.addProperty("reimbursementFileName", uploadPath);
+        jsonObject.addProperty(HRMConstant.CONTEXT_PATH, FacesUtil.getRequest().getContextPath());
         
         return gson.toJson(jsonObject);
 	}

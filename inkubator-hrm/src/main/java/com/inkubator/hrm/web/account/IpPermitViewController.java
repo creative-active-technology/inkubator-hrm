@@ -92,7 +92,7 @@ public class IpPermitViewController extends BaseController{
         options.put("draggable", true);
         options.put("resizable", false);
         options.put("contentWidth", 400);
-        options.put("contentHeight", 420);
+        options.put("contentHeight", 300);
         RequestContext.getCurrentInstance().openDialog("ip_permit_form", options, params);
     }
     

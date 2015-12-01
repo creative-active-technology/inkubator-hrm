@@ -24,6 +24,7 @@ public class BioDataModel implements Serializable {
     private long raceId;
     private long maritalStatusId;
     private String firstName;
+    private String middleName;
     private String lastName;
     private String title;
     private String nickname;
@@ -102,7 +103,7 @@ public class BioDataModel implements Serializable {
         this.maritalStatusId = maritalStatusId;
     }
 
-    @Pattern(regexp = "^[A-Za-z]+", message = "{errorr_first_name}")
+    @Pattern(regexp = "^[A-Za-z][A-Za-z\\s]+", message = "{errorr_first_name}")
     public String getFirstName() {
         return firstName;
     }
@@ -111,7 +112,7 @@ public class BioDataModel implements Serializable {
         this.firstName = firstName;
     }
 
-    @Pattern(regexp = "^([A-Za-z]|)+", message = "{errorr_last_name}")
+    @Pattern(regexp = "^([A-Za-z][A-Za-z\\s]|)+", message = "{errorr_last_name}")
     public String getLastName() {
         return lastName;
     }
@@ -280,6 +281,15 @@ public class BioDataModel implements Serializable {
     public void setNextBirthday(Date nextBirthday) {
         this.nextBirthday = nextBirthday;
     }
+
+    @Pattern(regexp = "^([A-Za-z][A-Za-z\\s]|)+", message = "{errorr_middle_name}")
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
 
     
 }

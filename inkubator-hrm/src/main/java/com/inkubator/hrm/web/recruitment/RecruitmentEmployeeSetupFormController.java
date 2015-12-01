@@ -124,25 +124,16 @@ public class RecruitmentEmployeeSetupFormController extends BaseController {
     public String doSave() {
         try {
         	
-        	recruitSelectionApplicantPassedService.setupEmployee(model, isInternalCandidate);
+        	String result = recruitSelectionApplicantPassedService.setupEmployee(model, isInternalCandidate);
         	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         	return "/protected/recruitment/recruitment_employee_setup_view.htm?faces-redirect=true";
-            /*if (isUpdate) {
-            	rmbsSchemaService.update(rmbsSchema);
-            	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
-                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            } else {
-            	rmbsSchemaService.save(rmbsSchema);
-            	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            }
-            return "/protected/reimbursement/rmbs_schema_detail.htm?faces-redirect=true&execution=e" + rmbsSchema.getId();*/
             
         } catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
+            ex.printStackTrace();
         }
         
         return null;

@@ -92,10 +92,10 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:selectOneMenu id="country" value="#{unitKerjaFormController.unitKerjaModel.countryId}" filter="true" filterMatchMode="contains" style="width: 150px;margin-right: 3px" >
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{unitKerjaFormController.listDropDownCountry}"/>
-                                        <p:ajax update="province,messagesProvinceId" process="@this" listener="#{unitKerjaFormController.countryChanged()}"/>
-                                    </p:selectOneMenu>
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{unitKerjaFormController.listDropDownCountry}"/>
+                                    <p:ajax update="province,messagesProvinceId" process="@this" listener="#{unitKerjaFormController.countryChanged()}" />
+                                </p:selectOneMenu>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -111,11 +111,11 @@
                                 <h:outputLabel for="province" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu id="province" disabled="#{unitKerjaFormController.disabledProvince}" filter="true" filterMatchMode="contains" value="#{unitKerjaFormController.unitKerjaModel.provinceId}" style="width: 150px;margin-right: 3px" >
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}"  itemValue=""/>
-                                        <f:selectItems value="#{unitKerjaFormController.listDropDownProvince}"/>
-                                        <p:ajax update="city,messagesCityId" process="@this" listener="#{unitKerjaFormController.provinceChanged()}"/>
-                                    </p:selectOneMenu>
+                                <p:selectOneMenu id="province" filter="true" filterMatchMode="contains" value="#{unitKerjaFormController.unitKerjaModel.provinceId}" style="width: 150px;margin-right: 3px" >
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}"  itemValue=""/>
+                                    <f:selectItems value="#{unitKerjaFormController.listDropDownProvince}"/>
+                                    <p:ajax update="city,messagesCityId" process="@this" listener="#{unitKerjaFormController.provinceChanged()}"/>
+                                </p:selectOneMenu>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -132,19 +132,19 @@
                                 <h:outputLabel for="city" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu id="city" value="#{unitKerjaFormController.unitKerjaModel.cityId}" disabled="#{unitKerjaFormController.disabledCity}" style="width: 150px;margin-right: 3px" >
-                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItems value="#{unitKerjaFormController.listDropDownCity}"/>
-                                    </p:selectOneMenu>
+                                <p:selectOneMenu id="city" value="#{unitKerjaFormController.unitKerjaModel.cityId}"  style="width: 150px;margin-right: 3px"  required="true">
+                                    <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                    <f:selectItems value="#{unitKerjaFormController.listDropDownCity}"/>
+                                </p:selectOneMenu>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="3">
-                            	<p:message id="messagesCityId" for="messagesCityId"/>
+                                <p:message id="messagesCityId" for="messagesCityId"/>
                                 <p:message for="city"/>
                             </p:column>
                         </p:row>
-                        
+
                         <p:row>
                             <p:column style="width: 40%">
                                 <p:outputLabel for="phone" value="#{appmsg['global.phone_number']}" styleClass="label_hrm"/>
@@ -154,10 +154,14 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:inputText id="phone" value="#{unitKerjaFormController.unitKerjaModel.phoneNumber}" onkeyup="this.value = this.value.toUpperCase();"
-                                              maxlength="20" styleClass="isitext_hrm" style="width:200px;" />
+                                             maxlength="20" styleClass="isitext_hrm" style="width:200px;" />
                             </p:column>
                         </p:row>
-                        
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="phone"/>
+                            </p:column>
+                        </p:row>
                         <p:row>
                             <p:column style="width: 40%">
                                 <p:outputLabel for="fax" value="#{appmsg['global.fax']}" styleClass="label_hrm"/>
@@ -167,10 +171,14 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:inputText id="fax" value="#{unitKerjaFormController.unitKerjaModel.faxNumber}" onkeyup="this.value = this.value.toUpperCase();"
-                                              maxlength="20" styleClass="isitext_hrm" style="width:200px;" />
+                                             maxlength="20" styleClass="isitext_hrm" style="width:200px;" />
                             </p:column>
                         </p:row>
-                        
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="fax"/>
+                            </p:column>
+                        </p:row>
                         <p:row>
                             <p:column style="width: 40%">
                                 <p:outputLabel for="email" value="#{appmsg['global.email_address']}" styleClass="label_hrm"/>
@@ -180,10 +188,14 @@
                             </p:column>
                             <p:column  style="width: 50%">
                                 <p:inputText id="email" value="#{unitKerjaFormController.unitKerjaModel.emailAddress}"
-                                              maxlength="20" styleClass="isitext_hrm" style="width:200px;" />
+                                             maxlength="20" styleClass="isitext_hrm" style="width:200px;" />
                             </p:column>
                         </p:row>
-
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="email"/>
+                            </p:column>
+                        </p:row>
                     </p:panelGrid>
                     <p:focus context="formUnitKerjaId" />
                     <p:separator style="margin-top: 20px;margin-bottom: 10px"/>

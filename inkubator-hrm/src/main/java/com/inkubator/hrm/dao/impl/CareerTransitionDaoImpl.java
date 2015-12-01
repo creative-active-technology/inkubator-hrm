@@ -3,6 +3,7 @@ package com.inkubator.hrm.dao.impl;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -12,20 +13,21 @@ import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.CareerTransitionDao;
-import com.inkubator.hrm.entity.CarreerTransition;
+import com.inkubator.hrm.entity.CareerTransition;
+import com.inkubator.hrm.entity.ReimbursmentSchema;
 import com.inkubator.hrm.web.search.CareerTransitionSearchParameter;
 
 @Repository(value = "careerTransitionDao")
 @Lazy
-public class CareerTransitionDaoImpl extends IDAOImpl<CarreerTransition> implements CareerTransitionDao{
+public class CareerTransitionDaoImpl extends IDAOImpl<CareerTransition> implements CareerTransitionDao{
 
 	@Override
-	public Class<CarreerTransition> getEntityClass() {
-		return CarreerTransition.class;
+	public Class<CareerTransition> getEntityClass() {
+		return CareerTransition.class;
 	}
 	
 	@Override
-	public List<CarreerTransition> getByParam(CareerTransitionSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) {
+	public List<CareerTransition> getByParam(CareerTransitionSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		doSearchByParam(searchParameter, criteria);
         criteria.addOrder(orderable);
@@ -42,9 +44,14 @@ public class CareerTransitionDaoImpl extends IDAOImpl<CarreerTransition> impleme
 	}
 
 	@Override
-	public CarreerTransition getEntityByPKWithDetail(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public CareerTransition getEntityByPKWithDetail(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("careerEmpStatus", FetchMode.JOIN);
+        criteria.setFetchMode("careerTerminationType", FetchMode.JOIN);
+        criteria.setFetchMode("systemCareerConst", FetchMode.JOIN);
+        criteria.setFetchMode("systemLetterReference", FetchMode.JOIN);
+        return (CareerTransition) criteria.uniqueResult();
 	}
 	
 	public void doSearchByParam(CareerTransitionSearchParameter searchParameter, Criteria criteria){

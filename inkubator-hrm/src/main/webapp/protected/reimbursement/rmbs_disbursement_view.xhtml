@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg" style="margin: 10px">                    
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="pencairan_pinjaman_ico.png" height="36" width="36" cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['rmbs_disbursement.view_header']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['rmbs_disbursement.view_header_from_reimbursement']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+
+                    <p:separator/>
+                    <p:growl id="growlId" globalOnly="true" showDetail="true" />
+
+                    <h:form id="formId">
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                                <h:panelGrid columns="5">
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
+                                    <p:outputLabel value=":" />
+                                    <p:selectOneMenu value="#{rmbsDisbursementViewController.parameter.keyParam}" style="margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['global.nik']}" itemValue="empNik"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.employee']}" itemValue="empName"/>
+                                        <f:selectItem itemLabel="#{appmsg['rmbs_application.request_code']}" itemValue="rmbsApplicationCode"/>
+                                        <f:selectItem itemLabel="#{appmsg['rmbs_type.reimbursement_type']}" itemValue="rmbsTypeName"/>
+                                        <f:selectItem itemLabel="#{appmsg['rmbs_disbursement.disbursement_date']}" itemValue="disbursementDate"/>
+                                        <p:ajax update="groupSearchId"/>
+                                    </p:selectOneMenu>
+                                    <h:panelGroup id="groupSearchId">                                    	
+                                    	<p:inputText rendered="#{rmbsDisbursementViewController.parameter.keyParam != 'disbursementDate'}" 
+                                    				 value="#{rmbsDisbursementViewController.parameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                    	<p:calendar rendered="#{rmbsDisbursementViewController.parameter.keyParam == 'disbursementDate'}" 
+                                    				pattern="dd-MMMM-yyyy" value="#{rmbsDisbursementViewController.parameter.disbursementDate}"/>
+                                    </h:panelGroup>                                    
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{rmbsDisbursementViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Reimbursment"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{rmbsDisbursementViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:focus for="groupSearchId" />
+
+                        <p:dataTable  id="tableId" var="data"  value="#{rmbsDisbursementViewController.lazyData}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['rmbs_disbursement.list_of_disbursement']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>  
+                            <p:column sortBy="#{data.empData.nik}"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.nik']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.rmbsApplication.empData.nik}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.bioData.firstName}"  style="width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.employee']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.rmbsApplication.empData.bioData.combineName}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.rmbsApplication.code}"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['rmbs_application.request_code']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.rmbsApplication.code}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.rmbsType.name}"  style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['rmbs_type.reimbursement_type']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.rmbsApplication.rmbsType.name}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.rmbsDisbursement.disbursementDate}"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['rmbs_disbursement.disbursement_date']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.rmbsDisbursement.disbursementDate}">
+                                	<f:convertDateTime pattern="dd MMMM yyyy"  />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="#{data.rmbsApplication.nominal}"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.nominal']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.rmbsApplication.nominal}">
+                                	<f:convertNumber pattern="###,###" type="currency"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="#{data.rmbsApplication.applicationStatus}"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.status']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.rmbsApplication.applicationStatus}">
+                                	<f:converter converterId="rmbsApplicationStatusConverter"/>
+                                </h:outputLabel>
+                            </p:column>
+                            
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{rmbsDisbursementViewController.lazyData.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:blockUI block="formId" trigger="tableId,btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                </div>               
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>
+

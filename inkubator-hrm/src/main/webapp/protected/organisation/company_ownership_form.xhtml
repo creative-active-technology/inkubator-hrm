@@ -59,7 +59,7 @@
                                 <h:outputLabel for="persentage" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:spinner id="persentage" value="#{companyOwnershipFormController.model.percentage}" size="3" min="0" styleClass="isitext_hrm" required="true">
+                                <p:spinner id="persentage" value="#{companyOwnershipFormController.model.percentage}" max="100" size="3" min="0" styleClass="isitext_hrm" required="true">
                                 </p:spinner>
                                 <p:outputLabel value=" %" styleClass="label_hrm"/>
                             </p:column>
@@ -78,10 +78,16 @@
                                 <h:outputLabel for="nominal" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <pe:inputNumber id="nominal" value="#{companyOwnershipFormController.model.nominal}"
-                                             required="true" maxlength="45" styleClass="isitext_hrm" style="width:210px;" >
-                                    <!--<f:convertNumber pattern="###,###" type="currency" />-->
-                                </pe:inputNumber>
+<!--                                <pe:inputNumber id="nominal" value="#{companyOwnershipFormController.model.nominal}"
+                                                required="true" maxlength="45" styleClass="isitext_hrm" style="width:210px;" >
+                                    <f:convertNumber pattern="###,###" type="currency" />
+                                </pe:inputNumber>-->
+                                <p:inputText id="nominal" value="#{companyOwnershipFormController.model.nominal}"  required="true"
+                                             style="text-align: right;width: 210px" styleClass="isitext_hrm"  maxlength="45">
+                                    <f:validateDoubleRange/>
+                                    <f:convertNumber minFractionDigits="2"/>
+                                </p:inputText> 
+
                             </p:column>
                         </p:row>
                         <p:row>

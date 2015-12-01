@@ -407,6 +407,7 @@ public class RecruitMppApplyServiceImpl extends BaseApprovalServiceImpl implemen
 
         JsonArray jsonDetailMpp = (JsonArray) parser.parse(gson.toJson(listMppDetail));
         jsonObject.add("listMppDetail", jsonDetailMpp);
+        jsonObject.addProperty(HRMConstant.CONTEXT_PATH, FacesUtil.getRequest().getContextPath());
 
         return gson.toJson(jsonObject);
     }

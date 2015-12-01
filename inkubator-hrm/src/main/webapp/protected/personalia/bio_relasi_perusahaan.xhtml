@@ -204,8 +204,14 @@
                                 <h:outputLabel for="kodePos" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 35%">
-                                <pe:inputNumber decimalPlaces="0" thousandSeparator="" id="kodePos"  value="#{bioRelasiPerusahaanFormController.model.postCode}"
-                                                required="true"  maxlength="45" styleClass="isitext_hrm" style="width:220px;" />
+                                <!-- <pe:inputNumber decimalPlaces="0" thousandSeparator="" id="kodePos"  value="#{bioRelasiPerusahaanFormController.model.postCode}"
+                                                required="true"  maxlength="45" styleClass="isitext_hrm" style="width:220px;" /> -->
+                                
+                                <p:inputText id="kodePos" maxlength="45" title="Kode pos" value="#{bioRelasiPerusahaanFormController.model.postCode}"   
+                                                 style="text-align: right;width: 220px;" required="true" styleClass="isitext_hrm" >
+                                     <f:validateDoubleRange />
+                                     <f:convertNumber  groupingUsed="false" />
+                                 </p:inputText>
                             </p:column>
                             <p:column style="width: 16%">
                                 <p:outputLabel for="cityId" value="#{appmsg['city.city']}" styleClass="label_hrm"/>

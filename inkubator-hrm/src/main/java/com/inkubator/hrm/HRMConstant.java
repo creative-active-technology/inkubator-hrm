@@ -188,6 +188,7 @@ public class HRMConstant {
     public static final String LEAVE_CANCELLATION = "LEAVE_CANCELLATION";
     public static final String OVERTIME = "OVERTIME";
     public static final String VACANCY_ADVERTISEMENT = "VACANCY_ADVERTISEMENT";
+    public static final String EMPLOYEE_CAREER_TRANSITION = "EMPLOYEE_CAREER_TRANSITION";
     public static final String APPROVAL_PROCESS = "APPROVAL_PROCESS";
     public static final String ON_APPROVE_INFO = "ON_APPROVE_INFO";
     public static final String ON_REJECT_INFO = "ON_REJECT_INFO";
@@ -210,6 +211,7 @@ public class HRMConstant {
     public static final String EMP_PLACEMENT = "EMP_PLACEMENT";
     public static final String EMP_ROTATION = "EMP_ROTATION";
     public static final String EMP_TERMINATION = "EMP_TERMINATION";
+    public static final String EMP_NEW_HIRE = "EMP_NEW_HIRE";
     /* END */
 
  /* Constant for  Model Component */
@@ -373,6 +375,10 @@ public class HRMConstant {
     public static final Integer LOAN_CANCELED = 2;
     public static final Integer LOAN_REJECTED = 3;
     public static final Integer LOAN_PAID = 4;
+    
+    /* Loan New Installment */
+    public static final Integer LOAN_INSTALLMENT_NOT_YET_PAID = 0;
+    public static final Integer LOAN_INSTALLMENT_PAID = 1;
 
 //    KODEFIKAISIPROSES
     public static final String LOAN_KODE = "LOAN";
@@ -413,6 +419,7 @@ public class HRMConstant {
     public static final Integer RMBS_APPLICATION_STATUS_CANCELED = 2;
     public static final Integer RMBS_APPLICATION_STATUS_REJECTED = 3;
     public static final Integer RMBS_APPLICATION_STATUS_PAID = 5;
+    public static final Integer RMBS_APPLICATION_STATUS_DISBURSED_REJECTED = 6;
     public static final Integer RMBS_DISBURSEMENT_STATUS_APPROVED = 0;
     public static final Integer RMBS_DISBURSEMENT_STATUS_REJECTED = 1;
     public static final Integer RMBS_DISBURSEMENT_STATUS_CANCELLED = 2;
@@ -552,6 +559,17 @@ public class HRMConstant {
     public static final String SELECTION_APPLICANT_PASSED_STATUS_PENDING = "PENDING";
     public static final String SELECTION_APPLICANT_PASSED_STATUS_EMPLOYEMENT = "EMPLOYEMENT";
     public static final String SELECTION_APPLICANT_PASSED_STATUS_OFFERING_REJECT = "OFFERING_REJECT";
-   
+
+    /* Constant for Career Role Transition */
+    public static final Integer CAREER_EMPLOYEE_STATUS = 1;
+    public static final Integer CAREER_TERMINATION_TYPE = 2;
+    public static final Integer CAREER_TRANSITION = 3;
+    
+    /* Constant for Employee Career Transition */
+    public static final String SALARY_DECREASES = "DECREASES";
+    public static final String SALARY_INCREASES = "INCREASES";    
+    
+    /* Constant for contextPath */
+    public static final String CONTEXT_PATH = "contextPath";
     /* END */
 }

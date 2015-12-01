@@ -46,7 +46,12 @@
                                         <p:inputText id="searchId" value="#{paySalaryGradeController.searchParameter.parameter}" rendered="#{paySalaryGradeController.isRenderedTextField}" style="width: 250px" styleClass="label_button"/>
                                     </h:panelGroup>
                                     <h:panelGroup id="inputNumber">
-                                        <pe:inputNumber id="searchNumber" value="#{paySalaryGradeController.searchParameter.parameter}" rendered="#{paySalaryGradeController.isRenderedNumberField}" style="width: 250px" styleClass="label_button"/>
+                                        <!-- <pe:inputNumber id="searchNumber" value="#{paySalaryGradeController.searchParameter.parameter}" rendered="#{paySalaryGradeController.isRenderedNumberField}" style="width: 250px" styleClass="label_button"/> -->
+                                         <p:inputText id="searchNumber" rendered="#{paySalaryGradeController.isRenderedNumberField}" value="#{paySalaryGradeController.searchParameter.parameter}"  
+                                                 style="text-align: right;width: 250px" tyleClass="isitext_hrm" >
+		                                     <f:validateDoubleRange />
+		                                     <f:convertNumber   />
+                                 		</p:inputText>
                                     </h:panelGroup>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{paySalaryGradeController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>

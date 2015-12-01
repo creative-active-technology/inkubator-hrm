@@ -172,7 +172,7 @@
         <property name="ownerEmail" value="${email_param_owner_email}"/>
         <property name="ownerCompany" value="${email_param_owner_company}"/>
         <property name="ownerAdministrator" value="${email_param_owner_administrator}"/>
-        
+        <property name="serverName" value="${email_param_server_name}"/>
     </bean>
     
     

@@ -328,6 +328,10 @@ public abstract class BaseApprovalServiceImpl extends IServiceImpl {
         ApprovalActivity nextApproval = this.checkingNextApproval(approvalActivity);
         HashMap<String, Object> result = new HashMap<String, Object>();
         if (nextApproval == null) {
+        	/* dikembalikan ke semula status kirim emailnya, untuk digunakan di NotificationApprovalMessagesListener */
+            approvalActivity.setNotificationSend(false);
+            approvalActivityDao.update(approvalActivity);
+            
             // jika nextApproval sama dengan null, berarti sudah tidak ada lagi proses approval, lanjut ke saving objek dari "pendingData" json 
             // kirim approval activity yg current untuk diproses saving
             result.put("isEndOfApprovalProcess", "true");

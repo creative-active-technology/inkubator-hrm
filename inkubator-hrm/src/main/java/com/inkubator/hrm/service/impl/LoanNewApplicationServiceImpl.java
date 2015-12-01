@@ -607,6 +607,7 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         JsonParser parser = new JsonParser();
         JsonObject jsonObject = (JsonObject) parser.parse(gson.toJson(entity));
+        jsonObject.addProperty(HRMConstant.CONTEXT_PATH, FacesUtil.getRequest().getContextPath());
 
         return gson.toJson(jsonObject);
     }
@@ -881,9 +882,13 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalDataLoanNewApplicationStatus(
-			LoanStatusSearchParameter parameter) throws Exception {
-		// TODO Auto-generated method stub
+	public Long getTotalDataLoanNewApplicationStatus(LoanStatusSearchParameter parameter) throws Exception {
 		return loanNewApplicationDao.getTotalDataLoanNewApplicationStatus(parameter);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public LoanNewApplication getEntityWithDetailByActivityNumber(String activityNumber) throws Exception {
+		return loanNewApplicationDao.getEntityWithDetailByActivityNumber(activityNumber);
 	}
 }

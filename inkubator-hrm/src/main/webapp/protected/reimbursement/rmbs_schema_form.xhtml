@@ -78,9 +78,14 @@
 	                                <p:outputLabel for="maxTotalReimburstId" value="#{appmsg['rmbs_schema.max_total_reimbursement']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<pe:inputNumber id="maxTotalReimburstId" title="#{appmsg['rmbs_schema.max_total_reimbursement']}" value="#{rmbsSchemaFormController.model.maxTotalReimburst}" 
+	                            	<!-- <pe:inputNumber id="maxTotalReimburstId" title="#{appmsg['rmbs_schema.max_total_reimbursement']}" value="#{rmbsSchemaFormController.model.maxTotalReimburst}" 
 	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:160px;">
-	                                </pe:inputNumber>
+	                                </pe:inputNumber> -->
+	                                <p:inputText id="maxTotalReimburstId" title="#{appmsg['rmbs_schema.max_total_reimbursement']}" value="#{rmbsSchemaFormController.model.maxTotalReimburst}" 
+			                                     required="true" style="text-align: right;width: 160px" styleClass="isitext_hrm" >
+			                            <f:validateDoubleRange/>
+			                            <f:convertNumber minFractionDigits="2"/>
+			                      	</p:inputText>
 	                                <p:message for="maxTotalReimburstId"/>
 	                            </p:column>
 	                        </p:row>
@@ -89,9 +94,14 @@
 	                                <p:outputLabel for="maxWithReceiptPerTypeId" value="#{appmsg['rmbs_schema.max_with_receipt']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<pe:inputNumber id="maxWithReceiptPerTypeId" title="#{appmsg['rmbs_schema.max_with_receipt']}" value="#{rmbsSchemaFormController.model.maxWithReceiptPerType}" 
+	                            	<!-- <pe:inputNumber id="maxWithReceiptPerTypeId" title="#{appmsg['rmbs_schema.max_with_receipt']}" value="#{rmbsSchemaFormController.model.maxWithReceiptPerType}" 
 	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:160px;">
-	                                </pe:inputNumber>
+	                                </pe:inputNumber> -->
+	                                <p:inputText id="maxWithReceiptPerTypeId" title="#{appmsg['rmbs_schema.max_with_receipt']}" value="#{rmbsSchemaFormController.model.maxWithReceiptPerType}" 
+			                                     required="true" style="text-align: right;width: 160px" styleClass="isitext_hrm" >
+			                            <f:validateDoubleRange/>
+			                            <f:convertNumber minFractionDigits="2"/>
+			                      	</p:inputText>
 	                                <p:message for="maxWithReceiptPerTypeId"/>
 	                            </p:column>
 	                        </p:row>
@@ -100,9 +110,14 @@
 	                                <p:outputLabel for="maxWithoutReceiptPerTypeId" value="#{appmsg['rmbs_schema.max_without_receipt']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<pe:inputNumber id="maxWithoutReceiptPerTypeId" title="#{appmsg['rmbs_schema.max_without_receipt']}" value="#{rmbsSchemaFormController.model.maxWithoutReceiptPerType}" 
+	                            	<!-- <pe:inputNumber id="maxWithoutReceiptPerTypeId" title="#{appmsg['rmbs_schema.max_without_receipt']}" value="#{rmbsSchemaFormController.model.maxWithoutReceiptPerType}" 
 	                                				decimalPlaces="0" required="true" styleClass="isitext_hrm" style="width:160px;">
-	                                </pe:inputNumber>
+	                                </pe:inputNumber> -->
+	                                <p:inputText id="maxWithoutReceiptPerTypeId" title="#{appmsg['rmbs_schema.max_without_receipt']}" value="#{rmbsSchemaFormController.model.maxWithoutReceiptPerType}" 
+			                                     required="true" style="text-align: right;width: 160px" styleClass="isitext_hrm" >
+			                            <f:validateDoubleRange/>
+			                            <f:convertNumber minFractionDigits="2"/>
+			                      	</p:inputText>
 	                                <p:message for="maxWithoutReceiptPerTypeId"/>
 	                            </p:column>
 	                        </p:row>

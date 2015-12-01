@@ -43,4 +43,7 @@ public interface DepartmentService extends IService<Department> {
     public DefaultDiagramModel createDiagramModel(long companyId) throws Exception;
     
     public List<Department> getAllWithSpecificCompany() throws Exception;
+    
+    public List<Department> getAllDataWithoutSpecificCompany() throws Exception;
+    
 }

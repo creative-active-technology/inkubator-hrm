@@ -28,9 +28,9 @@
                     </h:panelGrid>
                     <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
                     <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
-                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="#{appmsg['bioEmploymentHistory.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="#{appmsg['bioEmploymentHistory.dialog_info_2']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <p:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <p:outputLabel value="#{appmsg['bioEmploymentHistory.dialog_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <p:outputLabel value="#{appmsg['bioEmploymentHistory.dialog_info_2']}" styleClass="label_hrm" style="font-weight: normal!important"/>
                     </h:panelGrid> 
                     <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
                         <p:row>
@@ -38,7 +38,7 @@
                                 <p:outputLabel for="yearId" value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_year']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
-                                <h:outputLabel for="yearId" value=":" styleClass="label_hrm"/>
+                                <p:outputLabel  value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
                                 <p:focus for ="yearId">
@@ -48,10 +48,10 @@
                                         <f:selectItems value="#{bioEmploymentHistoryFormController.listYears}"/>
                                         <f:validator validatorId="yearIntegerNumberBetweenValidator"  />
                                         <f:attribute name="endNumberInteger" value="#{yearOut}"/>
-                                        <f:attribute name="validatorMessage" value="#{appmsg['global.DateIn_validator ']}"/>
+                                        <f:attribute name="validatorMessage" value="#{appmsg['global.DateIn_validator']}"/>
                                     </p:selectOneMenu>
                                 </p:focus>
-                                 <h:outputLabel for="yearOut" value=" - " styleClass="label_hrm" />
+                                 <p:outputLabel  value=" - " styleClass="label_hrm" />
                                 <p:selectOneMenu id="yearOut" value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.yearOut}" binding="#{yearOut}" style="width: 150px;margin-right: 3px" 
                                                  required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_year_should_not_be_empty']}">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
@@ -74,7 +74,7 @@
                                 <p:outputLabel for="companyId" value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
-                                <h:outputLabel for="companyId" value=":" styleClass="label_hrm"/>
+                                <p:outputLabel  value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
                                 <p:autoComplete id="companyId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_company']}" 
@@ -95,7 +95,7 @@
                                 <p:outputLabel for="lastId" value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_last']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
-                                <h:outputLabel for="lastId" value=":" styleClass="label_hrm"/>
+                                <p:outputLabel value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
                                 <p:inputText id="lastId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_last']}" value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.lastOccupation}" 
@@ -113,11 +113,17 @@
                                 <p:outputLabel for="salaryId" value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
-                                <h:outputLabel for="salaryId" value=":" styleClass="label_hrm"/>
+                                <p:outputLabel  value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
-                                <pe:inputNumber id="salaryId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary']}" value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.salary}"  
-                                                required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;" />
+                                <!-- <pe:inputNumber id="salaryId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary']}" value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.salary}"  
+                                                required="true" requiredMessage="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary_should_not_be_empty']}" styleClass="isitext_hrm" style="width:250px;" /> -->
+                            	<p:inputText title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_salary']}" value="#{bioEmploymentHistoryFormController.bioEmploymentHistoryModel.salary}" 
+                                                 id="salaryId" style="text-align: right;width: 200px" styleClass="isitext_hrm" >
+                                    <f:validateDoubleRange/>
+                                    <f:convertNumber minFractionDigits="2"/>
+                                </p:inputText>
+                            
                             </p:column>
                         </p:row>
                         <p:row>
@@ -130,7 +136,7 @@
                                 <p:outputLabel for="cityId" value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_city']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
-                                <h:outputLabel for="cityId" value=":" styleClass="label_hrm"/>
+                                <p:outputLabel  value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
                                 <p:autoComplete id="cityId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_city']}" scrollHeight="100" 
@@ -156,7 +162,7 @@
                                 <p:outputLabel for="sectorId" value="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_sector']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 1%">
-                                <h:outputLabel for="sectorId" value=":" styleClass="label_hrm"/>
+                                <p:outputLabel  value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 70%">
                                 <p:autoComplete id="sectorId" title="#{appmsg['bioEmploymentHistory.bioEmploymentHistory_sector']}" scrollHeight="100" 

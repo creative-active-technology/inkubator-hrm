@@ -186,7 +186,8 @@
                                              icon="ui-icon-disk"
                                              id="buttonSave" title="#{appmsg['global.save']}"/>
                             <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" update=":formSubmitId2,:formSubmitId" action="#{wtFingerExceptionFormController.doReset()}"
-                                             process="@this" icon="ui-icon-refresh" styleClass="label_button"  style="margin-right: 5px" immediate="true">                                   
+                                             process="@this" icon="ui-icon-refresh" styleClass="label_button"  style="margin-right: 5px" > 
+                                             <p:resetInput target=":formSubmitId2,:formSubmitId" />                                   
                             </p:commandButton>
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{wtFingerExceptionFormController.doBack()}" immediate="true"
                                              styleClass="label_button"/>
