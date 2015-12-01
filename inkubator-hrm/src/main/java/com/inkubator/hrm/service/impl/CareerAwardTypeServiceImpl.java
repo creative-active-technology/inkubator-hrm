@@ -210,9 +210,9 @@ public class CareerAwardTypeServiceImpl extends IServiceImpl implements CareerAw
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<CareerAwardType> getAllData() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return this.careerAwardTypeDao.getAllData();
 	}
 
 	@Override

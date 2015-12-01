@@ -886,8 +886,6 @@
                                         </p:submenu>-->
                                        <p:submenu label="Pengelolaan Karir"  styleClass="menu" icon="img-user-account">
                                        		<p:submenu label="Setelan"  styleClass="menu_child" icon="img-user-account">
-                                                <p:menuitem value="Award Type " icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.employee_data']}" url="/protected/career/career_award_view.htm" />
-                                                <p:menuitem value="Discipline Type" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.mutation_data']}" url="/protected/career/career_discipline_view.htm" />
                                                 <p:menuitem value="#{appmsg['career_emp_status.employee_career_status']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['career_emp_status.employee_career_status']}" url="/protected/career/career_emp_status_view.htm" />
                                                 <p:menuitem value="Employee status role " icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.recap_emp_edu']}" url="#" />
                                                 <p:menuitem value="Career Transition" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.recap_position_emp']}" url="#" />
@@ -896,6 +894,10 @@
                                                 <p:menuitem value="Career Data Changes" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.pension_preparement']}" url="#" />
                                   	         	<p:menuitem value="Succession Parameter" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.pension_preparement']}" url="#" />
                                   	    	</p:submenu>
+                                  	    	<p:menuitem value="#{appmsg['careerawardtype.career_award_type']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['careerawardtype.career_award_type']}" url="/protected/career/career_award_view.htm" />
+                                            <p:menuitem value="#{appmsg['careerdisciplinetype.career_discipline_type']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['careerdisciplinetype.career_discipline_type']}" url="/protected/career/career_discipline_view.htm" />
+                                            <p:menuitem value="#{appmsg['career.career_rotation']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.career_rotation']}" url="#" />
+                                            <p:menuitem value="#{appmsg['career.career_revision']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.career_revision']}" url="#" />
                                        </p:submenu>
                                             
                                         <p:menuitem value="Logout" icon="ui-icon-power" styleClass="menu" style="color: #ff9933 !important;font-size: 14px!important" title="Logout and Exit" url="/logout.htm" />  

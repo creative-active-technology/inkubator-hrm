@@ -43,6 +43,10 @@ public class CareerAwardType  implements java.io.Serializable {
 
     public CareerAwardType() {
     }
+    
+    public CareerAwardType(long id){
+    	this.id = id;
+    }
 	
     public CareerAwardType(long id, String code, String name) {
         this.id = id;

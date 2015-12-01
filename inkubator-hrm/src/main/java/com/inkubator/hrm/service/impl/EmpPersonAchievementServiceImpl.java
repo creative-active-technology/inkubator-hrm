@@ -4,16 +4,9 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.common.util.RandomNumberUtil;
-import com.inkubator.datacore.service.impl.IServiceImpl;
-import com.inkubator.hrm.dao.EmpDataDao;
-import com.inkubator.hrm.dao.EmpPersonAchievementDao;
-import com.inkubator.hrm.entity.EmpPersonAchievement;
-import com.inkubator.hrm.service.EmpPersonAchievementService;
-import com.inkubator.hrm.web.search.EmpPersonAchievementSearchParameter;
-import com.inkubator.securitycore.util.UserInfoUtil;
 import java.util.Date;
 import java.util.List;
+
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -21,6 +14,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.CareerAwardTypeDao;
+import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.dao.EmpPersonAchievementDao;
+import com.inkubator.hrm.entity.EmpPersonAchievement;
+import com.inkubator.hrm.service.EmpPersonAchievementService;
+import com.inkubator.hrm.web.search.EmpPersonAchievementSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -34,6 +36,8 @@ public class EmpPersonAchievementServiceImpl extends IServiceImpl implements Emp
     private EmpPersonAchievementDao achievementDao;
     @Autowired
     private EmpDataDao empDataDao;
+    @Autowired
+    private CareerAwardTypeDao	careerAwardTypeDao;
     
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
@@ -73,6 +77,7 @@ public class EmpPersonAchievementServiceImpl extends IServiceImpl implements Emp
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(EmpPersonAchievement entity) throws Exception {
         entity.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
+        entity.setCareerAwardType(careerAwardTypeDao.getEntiyByPK(entity.getCareerAwardType().getId()));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         this.achievementDao.save(entity);
@@ -86,6 +91,7 @@ public class EmpPersonAchievementServiceImpl extends IServiceImpl implements Emp
         update.setDateAchievement(entity.getDateAchievement());
         update.setDescription(entity.getDescription());
         update.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
+        update.setCareerAwardType(careerAwardTypeDao.getEntiyByPK(entity.getCareerAwardType().getId()));
         update.setUpdatedBy(UserInfoUtil.getUserName());
         update.setUpdatedOn(new Date());
         this.achievementDao.update(update);

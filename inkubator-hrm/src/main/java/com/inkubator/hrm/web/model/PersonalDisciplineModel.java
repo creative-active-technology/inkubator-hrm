@@ -21,6 +21,7 @@ public class PersonalDisciplineModel implements Serializable{
     private String description;
     private String nikWithFullName;
     private EmpData empData;
+    private Long careerDisciplineTypeId;
 
     public Long getId() {
         return id;
@@ -85,6 +86,15 @@ public class PersonalDisciplineModel implements Serializable{
     public void setNikWithFullName(String nikWithFullName) {
         this.nikWithFullName = nikWithFullName;
     }
+
+	public Long getCareerDisciplineTypeId() {
+		return careerDisciplineTypeId;
+	}
+
+	public void setCareerDisciplineTypeId(Long careerDisciplineTypeId) {
+		this.careerDisciplineTypeId = careerDisciplineTypeId;
+	}
+    
     
     
 }

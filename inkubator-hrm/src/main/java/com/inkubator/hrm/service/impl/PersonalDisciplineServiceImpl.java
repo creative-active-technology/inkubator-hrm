@@ -6,6 +6,7 @@ package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.AdmonitionTypeDao;
+import com.inkubator.hrm.dao.CareerDisciplineTypeDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.PersonalDisciplineDao;
 import com.inkubator.hrm.entity.PersonalDiscipline;
@@ -36,6 +37,8 @@ public class PersonalDisciplineServiceImpl extends IServiceImpl implements Perso
     private EmpDataDao empDataDao;
     @Autowired
     private AdmonitionTypeDao admonitionTypeDao;
+    @Autowired
+    private CareerDisciplineTypeDao careerDisciplineTypeDao;
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ,propagation = Propagation.SUPPORTS, timeout = 50)
@@ -74,8 +77,9 @@ public class PersonalDisciplineServiceImpl extends IServiceImpl implements Perso
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(PersonalDiscipline entity) throws Exception {
-        entity.setAdmonitionType(admonitionTypeDao.getEntiyByPK(entity.getAdmonitionType().getId()));
+//        entity.setAdmonitionType(admonitionTypeDao.getEntiyByPK(entity.getAdmonitionType().getId()));
         entity.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
+        entity.setCareerDisciplineType(careerDisciplineTypeDao.getEntiyByPK(entity.getCareerDisciplineType().getId()));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());
         this.personalDisciplineDao.save(entity);
@@ -85,8 +89,9 @@ public class PersonalDisciplineServiceImpl extends IServiceImpl implements Perso
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(PersonalDiscipline entity) throws Exception {
         PersonalDiscipline update = personalDisciplineDao.getEntiyByPK(entity.getId());
-        update.setAdmonitionType(admonitionTypeDao.getEntiyByPK(entity.getAdmonitionType().getId()));
+//        update.setAdmonitionType(admonitionTypeDao.getEntiyByPK(entity.getAdmonitionType().getId()));
         update.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
+        update.setCareerDisciplineType(careerDisciplineTypeDao.getEntiyByPK(entity.getCareerDisciplineType().getId()));
         update.setDescription(entity.getDescription());
         update.setExpiredDate(entity.getExpiredDate());
         update.setStartDate(entity.getStartDate());
