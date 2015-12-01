@@ -169,6 +169,7 @@ img{ border:none; border:0px;}
 /* Containers */
 .Container100{ width:100%; overflow:hidden; float:left;}
 .Container96{ width:96%; overflow:hidden; float:left;}
+.Container94{ width:94%; overflow:hidden; float:left;}
 .Container90{ width:90%; overflow:hidden; float:left;}
 .Container85{ width:85%; overflow:hidden; float:left;}
 .Container80{ width:80%; overflow:hidden; float:left;}
@@ -245,11 +246,11 @@ img{ border:none; border:0px;}
 .changecolor:hover{background-color:yellowgreen; padding: 20px;}
 
 .notransition {
-  -webkit-transition: none !important;
-  -moz-transition: none !important;
-  -o-transition: none !important;
-  -ms-transition: none !important;
-  transition: none !important;
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    -ms-transition: none !important;
+    transition: none !important;
 }
 /******************************************************************************************************************************** */
 
@@ -257,31 +258,31 @@ img{ border:none; border:0px;}
 
 /* Large desktop */
 @media (min-width: 960px){
-	.ContainerIndent{margin:8px 10px;}
+    .ContainerIndent{margin:8px 10px;}
 }
- 
+
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 640px) and (max-width: 960px) {	
-	.span3 {width: 45%;}
-	.ContainerIndent{margin:6px 8px;}
-	.Responsive{width:50%}
+    .span3 {width: 45%;}
+    .ContainerIndent{margin:6px 8px;}
+    .Responsive{width:50%}
 }
- 
+
 /* Landscape phone to portrait tablet */
 @media (max-width: 640px) {									  
-	.ContainerIndent{margin:6px 8px;}
-	.Responsive{width:100%}	
+    .ContainerIndent{margin:6px 8px;}
+    .Responsive{width:100%}	
     .DisplayOnResponsive{display:block; float:right;}
 }
- 
+
 /* Portrait phones and down */
 @media (min-width:320px) and (max-width: 480px) {
     .span3 {width: 90%;}	
-	.ContainerIndent{margin:16px 8px 0px 8px;}
-	.Responsive{width:100%}
+    .ContainerIndent{margin:16px 8px 0px 8px;}
+    .Responsive{width:100%}
 }
 
 /* Landscape phones */
 @media (min-height:200px) and (max-height:500px) and (max-width:960px){
-	
+
 }

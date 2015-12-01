@@ -10,6 +10,7 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.service.HrmUserService;
+import com.inkubator.hrm.util.CustomAuthenticationSuccessHandler;
 import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.util.StringsUtils;
 import com.inkubator.webcore.controller.BaseController;
@@ -32,6 +33,11 @@ import javax.servlet.ServletResponse;
 import org.primefaces.context.RequestContext;
 import org.springframework.mobile.device.Device;
 import org.springframework.mobile.device.DeviceResolver;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
@@ -52,29 +58,38 @@ public class LoginController extends BaseController {
     @ManagedProperty(value = "#{deviceResolver}")
     private DeviceResolver deviceResolver;
     private String info;
+    private Boolean isMobile;
+    @ManagedProperty(value = "#{authenticationManager}")
+    private AuthenticationManager authenticationManager;
+    @ManagedProperty(value = "#{myHandlerSuccessLogin}")
+    private CustomAuthenticationSuccessHandler myHandlerSuccessLogin;
 
     @PostConstruct
     @Override
     public void initialization() {
         Device device = deviceResolver.resolveDevice(FacesUtil.getRequest());
         LOGGER.error("Login di aksesss");
+        if (FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE) == null) {
+            selectedLanguage = "in";
+            FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, selectedLanguage);
+        } else {
+            selectedLanguage = (String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE);
+        }
+        FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(selectedLanguage));
+
         if (device.isMobile()) {
-            try {
-                LOGGER.info("Mobile");
-                FacesUtil.getExternalContext().redirect("https://production.incubatechnology.com:8443/MOBILE-HR/");
-            } catch (IOException ex) {
-                LOGGER.error(ex, ex);
-            }
+//            try {
+            LOGGER.info("Mobile");
+            isMobile = Boolean.TRUE;
+//                FacesUtil.getExternalContext().redirect("/mobile_login.htm");
+//            } catch (IOException ex) {
+//                LOGGER.error(ex, ex);
+//            }
         }
         if (device.isNormal()) {
             LOGGER.error("NOrmal Desktop");
-            if (FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE) == null) {
-                selectedLanguage = "in";
-                FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, selectedLanguage);
-            } else {
-                selectedLanguage = (String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE);
-            }
-            FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(selectedLanguage));
+            isMobile = Boolean.FALSE;
+
         }
         if (device.isTablet()) {
             LOGGER.info("TABLET");
@@ -157,7 +172,7 @@ public class LoginController extends BaseController {
     }
 
     public String doLogin() {
-           LOGGER.error("Melakukan login -----");
+        LOGGER.error("Melakukan login -----");
         ExternalContext context = FacesUtil.getExternalContext();
         RequestDispatcher dispatcher = ((ServletRequest) context.getRequest())
                 .getRequestDispatcher("/" + HRMConstant.SPRING_SECURITY_CHECK);
@@ -202,6 +217,41 @@ public class LoginController extends BaseController {
 
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    public Boolean getIsMobile() {
+        return isMobile;
+    }
+
+    public void setIsMobile(Boolean isMobile) {
+        this.isMobile = isMobile;
+    }
+
+    public String doLoginMobile() {
+        try {
+            Authentication request = new UsernamePasswordAuthenticationToken(userId, this.getPassword());
+            Authentication result = authenticationManager.authenticate(request);
+            SecurityContextHolder.getContext().setAuthentication(result);
+            FacesUtil.setSessionAttribute(HRMConstant.LOGIN_DATE, dateFormatter.getDateFullAsStringsWithActiveLocale(new Date(),
+                    new Locale(selectedLanguage)));
+            myHandlerSuccessLogin.doAuthentification(FacesUtil.getRequest(), result);
+            return "/protected/home.htm?faces-redirect=true";
+        } catch (Exception e) {
+//            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", e.getMessage(),
+//                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+System.out.println(" errornya "+e.getMessage());
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "User Error", e.getMessage());
+            FacesUtil.getFacesContext().addMessage(null, msg);
+            return null;
+        }
+    }
+
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
+
+    public void setMyHandlerSuccessLogin(CustomAuthenticationSuccessHandler myHandlerSuccessLogin) {
+        this.myHandlerSuccessLogin = myHandlerSuccessLogin;
     }
 
 }
