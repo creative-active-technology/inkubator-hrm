@@ -152,10 +152,10 @@
                         <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3" >
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_start_date']}"   styleClass="label_hrm" />
+                                    <p:outputLabel for="starDate" value="#{appmsg['workinggroup.working_group_start_date']}"   styleClass="label_hrm" />
                                 </p:column> 
                                 <p:column style="width: 80%" >
-                                    <p:calendar required="true" id="starDate" value="#{placementOfEmployeeWorkScheduleFormController.model.startDate}" pattern="dd MMMM yyyy" title="#{appmsg['workinggroup.working_group_start_date']}">
+                                    <p:calendar required="true" id="starDate" label="#{appmsg['workinggroup.working_group_start_date']}"  value="#{placementOfEmployeeWorkScheduleFormController.model.startDate}" pattern="dd MMMM yyyy" title="#{appmsg['workinggroup.working_group_start_date']}">
                                         <f:validator validatorId="dateBetweenValidator" />
                                         <f:attribute name="endTime" value="#{endDateParam}"/>
                                         <f:attribute name="dateBetweenValidatorMessage" value="#{appmsg['group_working_time.time_bengin_is_greater']}"/>
@@ -165,11 +165,12 @@
                             </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    <p:outputLabel  value="#{appmsg['workinggroup.working_group_end_date']}"  styleClass="label_hrm" />
+                                    <p:outputLabel for="endDateParam"  value="#{appmsg['workinggroup.working_group_end_date']}"  styleClass="label_hrm" />
                                 </p:column> 
                                 <p:column style="width: 80%">
                                     <p:calendar required="true" binding="#{endDateParam}" id="endDateParam" value="#{placementOfEmployeeWorkScheduleFormController.model.endDate}"
                                                 pattern="dd MMMM yyyy" title="#{appmsg['workinggroup.working_group_end_date']}"/>
+                                    <p:message for="endDateParam"/>
                                 </p:column>
                             </p:row>
                         </p:panelGrid>

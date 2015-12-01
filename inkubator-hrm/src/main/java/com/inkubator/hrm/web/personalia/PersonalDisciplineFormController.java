@@ -4,36 +4,37 @@
  */
 package com.inkubator.hrm.web.personalia;
 
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.AdmonitionType;
-import com.inkubator.hrm.entity.EmpData;
-import com.inkubator.hrm.entity.PersonalDiscipline;
-import com.inkubator.hrm.service.AdmonitionTypeService;
-import com.inkubator.hrm.service.EmpDataService;
-import com.inkubator.hrm.service.PersonalDisciplineService;
-import com.inkubator.hrm.util.HrmUserInfoUtil;
-import com.inkubator.hrm.util.MapUtil;
-import com.inkubator.hrm.web.employee.EmpPersonAchievementFormController;
-import com.inkubator.hrm.web.model.PersonalDisciplineModel;
-import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.logging.Level;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
+
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.AdmonitionType;
+import com.inkubator.hrm.entity.CareerDisciplineType;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.PersonalDiscipline;
+import com.inkubator.hrm.service.AdmonitionTypeService;
+import com.inkubator.hrm.service.CareerDisciplineTypeService;
+import com.inkubator.hrm.service.EmpDataService;
+import com.inkubator.hrm.service.PersonalDisciplineService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.util.MapUtil;
+import com.inkubator.hrm.web.model.PersonalDisciplineModel;
+import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -50,10 +51,16 @@ public class PersonalDisciplineFormController extends BaseController{
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{admonitionTypeService}")
     private AdmonitionTypeService admonitionTypeService;
+    @ManagedProperty(value = "#{careerDisciplineTypeService}")
+    private CareerDisciplineTypeService careerDisciplineTypeService;
     
     //Dropdown
     private Map<String, Long> dropDownAdmonitionType = new TreeMap<String, Long>();;
     private List<AdmonitionType> listAdmonitionType = new ArrayList<>();
+    
+    //dropdown discipline type
+    private List<CareerDisciplineType> disciplineList = new ArrayList<CareerDisciplineType>();
+    private Map<String, Long> dropDownDisciplineType = new TreeMap<String, Long>();
     
     
     @PostConstruct
@@ -72,7 +79,7 @@ public class PersonalDisciplineFormController extends BaseController{
                     isUpdate = Boolean.TRUE;
                 }
             }
-            listDrowDown();
+            doSelectOneMenuCareerDisciplineType();
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -82,11 +89,12 @@ public class PersonalDisciplineFormController extends BaseController{
     public void cleanAndExit() {
         personalDisciplineService = null;
         isUpdate = null;
-        model = null;
+        model = new PersonalDisciplineModel();
         admonitionTypeService = null;
         empDataService = null;  
         dropDownAdmonitionType = null;
         listAdmonitionType = null;
+        dropDownDisciplineType = null;
     }
     
     public void listDrowDown() throws Exception{
@@ -100,17 +108,25 @@ public class PersonalDisciplineFormController extends BaseController{
         MapUtil.sortByValue(dropDownAdmonitionType);
     }
     
+    public void doSelectOneMenuCareerDisciplineType() throws Exception{
+    	disciplineList = careerDisciplineTypeService.getAllData();
+    	for(CareerDisciplineType careerDiscipline : disciplineList){
+    		dropDownDisciplineType.put(careerDiscipline.getName(), careerDiscipline.getId());
+    	}
+    }
+    
     
     
     private PersonalDisciplineModel getModelFromEntity(PersonalDiscipline entity) {
         PersonalDisciplineModel model = new PersonalDisciplineModel();
         model.setId(entity.getId());
-        if(entity.getAdmonitionType()!= null){
-            model.setAdmonitionType(entity.getAdmonitionType().getId());
+        if(entity.getCareerDisciplineType()!= null){
+            model.setCareerDisciplineTypeId(entity.getCareerDisciplineType().getId());
         }
         model.setDescription(entity.getDescription());
         model.setExpireDate(entity.getExpiredDate());
         model.setStartDate(entity.getStartDate());
+        model.setCareerDisciplineTypeId(entity.getCareerDisciplineType().getId());
 //        model.setNikWithFullName(entity.getEmpData().getNikWithFullName());
         model.setEmpData(entity.getEmpData());
         return model;
@@ -128,13 +144,16 @@ public class PersonalDisciplineFormController extends BaseController{
     
     public void doSave() throws Exception {
         PersonalDiscipline  personalDiscipline = getEntityFromViewModel(model);
+        System.out.println("Masuk Method DoSave dari Form Controller");
         try {
             if (isUpdate) {
                 personalDisciplineService.update(personalDiscipline);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
+                System.out.println("Masuk jika is update dari form controller");;
             } else {
                 personalDisciplineService.save(personalDiscipline);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
+                System.out.println("Masuk jika buka is update dari form controller");
             }
             cleanAndExit();
         } catch (BussinessException ex) { 
@@ -145,6 +164,7 @@ public class PersonalDisciplineFormController extends BaseController{
     }
 
     private PersonalDiscipline getEntityFromViewModel(PersonalDisciplineModel model) throws Exception {
+    	System.out.println("Masuk method getEntityFromViewModel dari form controller");
         PersonalDiscipline personalDiscipline = new PersonalDiscipline();
         if (model.getId() != null) {
             personalDiscipline.setId(model.getId());
@@ -154,7 +174,9 @@ public class PersonalDisciplineFormController extends BaseController{
         personalDiscipline.setDescription(model.getDescription());
         personalDiscipline.setStartDate(model.getStartDate());
         personalDiscipline.setExpiredDate(model.getExpireDate());
-        personalDiscipline.setAdmonitionType(new AdmonitionType(model.getAdmonitionType()));
+//        personalDiscipline.setAdmonitionType(new AdmonitionType(model.getAdmonitionType()));
+        personalDiscipline.setCareerDisciplineType(new CareerDisciplineType(model.getCareerDisciplineTypeId()));
+        System.out.println("proses setelah set id untuk career discipline type");
         return personalDiscipline;
     }
 
@@ -213,6 +235,30 @@ public class PersonalDisciplineFormController extends BaseController{
     public void setListAdmonitionType(List<AdmonitionType> listAdmonitionType) {
         this.listAdmonitionType = listAdmonitionType;
     }
+
+	public CareerDisciplineTypeService getCareerDisciplineTypeService() {
+		return careerDisciplineTypeService;
+	}
+
+	public void setCareerDisciplineTypeService(CareerDisciplineTypeService careerDisciplineTypeService) {
+		this.careerDisciplineTypeService = careerDisciplineTypeService;
+	}
+
+	public List<CareerDisciplineType> getDisciplineList() {
+		return disciplineList;
+	}
+
+	public void setDisciplineList(List<CareerDisciplineType> disciplineList) {
+		this.disciplineList = disciplineList;
+	}
+
+	public Map<String, Long> getDropDownDisciplineType() {
+		return dropDownDisciplineType;
+	}
+
+	public void setDropDownDisciplineType(Map<String, Long> dropDownDisciplineType) {
+		this.dropDownDisciplineType = dropDownDisciplineType;
+	}
     
     
 }

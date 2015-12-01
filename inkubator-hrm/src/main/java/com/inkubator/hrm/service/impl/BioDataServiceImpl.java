@@ -225,6 +225,7 @@ public class BioDataServiceImpl extends BaseApprovalServiceImpl implements BioDa
         bioData.setDateOfBirth(entity.getDateOfBirth());
         bioData.setDialect(this.dialectDao.getEntiyByPK(entity.getDialect().getId()));
         bioData.setFirstName(entity.getFirstName());
+        bioData.setMiddleName(entity.getMiddleName());
         bioData.setGender(entity.getGender());
         bioData.setJamsostek(entity.getJamsostek());
         bioData.setLastName(entity.getLastName());

@@ -15,7 +15,6 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.service.LoanNewApplicationService;
 import com.inkubator.hrm.web.lazymodel.LoanNewApplicationBoxLazyDataModel;
 import com.inkubator.hrm.web.model.LoanNewApplicationBoxViewModel;
-import com.inkubator.hrm.web.model.RmbsApplicationUndisbursedViewModel;
 import com.inkubator.hrm.web.search.LoanNewApplicationBoxSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
@@ -31,7 +30,7 @@ public class LoanNewApplicationBoxViewController extends BaseController {
     private Boolean isAdministator;
     private LoanNewApplicationBoxSearchParameter parameter;
     private LazyDataModel<LoanNewApplicationBoxViewModel> lazyData;
-    private RmbsApplicationUndisbursedViewModel selected;
+    private LoanNewApplicationBoxViewModel selected;
 
     @ManagedProperty(value = "#{loanNewApplicationService}")
     private LoanNewApplicationService loanNewApplicationService;
@@ -59,12 +58,8 @@ public class LoanNewApplicationBoxViewController extends BaseController {
         lazyData = null;
     }
 
-    public String doDetailApproval() {
-        return "/protected/reimbursement/rmbs_application_approval_form.htm?faces-redirect=true&execution=e" + selected.getApprovalActivityId();
-    }
-
-    public String doDetailEntity() {
-        return "/protected/reimbursement/rmbs_application_detail.htm?faces-redirect=true&execution=e" + selected.getRmbsApplicationId();
+    public String doDetail() {
+        return "/protected/loan/loan_application_detail.htm?faces-redirect=true&execution=d" + selected.getActivityNumber();
     }
 
     public LoanNewApplicationBoxSearchParameter getParameter() {
@@ -86,11 +81,11 @@ public class LoanNewApplicationBoxViewController extends BaseController {
         this.lazyData = lazyData;
     }
 
-    public RmbsApplicationUndisbursedViewModel getSelected() {
+    public LoanNewApplicationBoxViewModel getSelected() {
         return selected;
     }
 
-    public void setSelected(RmbsApplicationUndisbursedViewModel selected) {
+    public void setSelected(LoanNewApplicationBoxViewModel selected) {
         this.selected = selected;
     }
 

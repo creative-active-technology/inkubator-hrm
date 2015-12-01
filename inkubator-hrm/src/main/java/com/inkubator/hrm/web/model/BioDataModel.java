@@ -24,6 +24,7 @@ public class BioDataModel implements Serializable {
     private long raceId;
     private long maritalStatusId;
     private String firstName;
+    private String middleName;
     private String lastName;
     private String title;
     private String nickname;
@@ -280,6 +281,15 @@ public class BioDataModel implements Serializable {
     public void setNextBirthday(Date nextBirthday) {
         this.nextBirthday = nextBirthday;
     }
+
+    @Pattern(regexp = "^([A-Za-z][A-Za-z\\s]|)+", message = "{errorr_middle_name}")
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
 
     
 }

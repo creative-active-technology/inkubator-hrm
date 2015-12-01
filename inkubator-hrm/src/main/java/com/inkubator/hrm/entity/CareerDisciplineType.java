@@ -39,6 +39,10 @@ public class CareerDisciplineType  implements java.io.Serializable {
 
     public CareerDisciplineType() {
     }
+    
+    public CareerDisciplineType(Long id){
+    	this.id = id;
+    }
 
 	
     public CareerDisciplineType(long id, String code, String name) {

@@ -1,13 +1,33 @@
 /*
- * To change this template, choose Tools | Templates
+\ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package com.inkubator.hrm.web.employee;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.logging.Level;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.apache.commons.lang3.StringUtils;
+import org.primefaces.context.RequestContext;
+
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.CareerAwardType;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.EmpPersonAchievement;
+import com.inkubator.hrm.service.CareerAwardTypeService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.EmpPersonAchievementService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
@@ -15,19 +35,6 @@ import com.inkubator.hrm.web.model.EmpPersonAchievementModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import org.apache.commons.lang3.StringUtils;
-import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -43,6 +50,12 @@ public class EmpPersonAchievementFormController extends BaseController {
     private EmpPersonAchievementService empPersonAchievementService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
+    @ManagedProperty(value = "#{careerAwardTypeService}")
+    private CareerAwardTypeService careerAwardTypeService;
+    
+    private List<CareerAwardType> awardList = new ArrayList<CareerAwardType>();
+    private Map<String, Long> dropDownAwardList = new TreeMap<String, Long>();
+    
 
     @PostConstruct
     @Override
@@ -60,6 +73,7 @@ public class EmpPersonAchievementFormController extends BaseController {
                     isUpdate = Boolean.TRUE;
                 }
             }
+            doSelectOneMenuAwardList();
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -69,7 +83,7 @@ public class EmpPersonAchievementFormController extends BaseController {
     public void cleanAndExit() {
         empPersonAchievementService = null;
         isUpdate = null;
-        model = null;
+        model = new EmpPersonAchievementModel();
         empDataService = null;
     }
 
@@ -78,9 +92,9 @@ public class EmpPersonAchievementFormController extends BaseController {
         achievementModel.setId(entity.getId());
         achievementModel.setNikWithFullName(entity.getEmpData().getNikWithFullName());
         achievementModel.setDescription(entity.getDescription());
-        achievementModel.setAchievementName(entity.getAchievementName());
         achievementModel.setDateAchievement(entity.getDateAchievement());
         achievementModel.setEmpData(entity.getEmpData());
+        achievementModel.setCareerAwardTypeId(entity.getCareerAwardType().getId());
         return achievementModel;
     }
     
@@ -143,9 +157,19 @@ public class EmpPersonAchievementFormController extends BaseController {
         personAchievement.setAchievementName(model.getAchievementName());
         personAchievement.setDateAchievement(model.getDateAchievement());
         personAchievement.setDescription(model.getDescription());
+        personAchievement.setCareerAwardType(new CareerAwardType(model.getCareerAwardTypeId()));
 //        EmpData selectedEmployee = empDataService.getEntityByNik(StringUtils.substringBefore(model.getNikWithFullName(), " - "));
 //        personAchievement.setEmpData(new EmpData(selectedEmployee.getId()));
         return personAchievement;
+    }
+    
+    public void doSelectOneMenuAwardList() throws Exception{
+        awardList = careerAwardTypeService.getAllData();
+    
+        for(CareerAwardType careerAwardType : awardList){
+            dropDownAwardList.put(careerAwardType.getName(), careerAwardType.getId());
+            System.out.println("============================ " + dropDownAwardList.size());
+        }
     }
 
     public EmpPersonAchievementModel getModel() {
@@ -180,5 +204,29 @@ public class EmpPersonAchievementFormController extends BaseController {
         this.empDataService = empDataService;
     }
 
-    
+	public List<CareerAwardType> getAwardList() {
+		return awardList;
+	}
+
+	public void setAwardList(List<CareerAwardType> awardList) {
+		this.awardList = awardList;
+	}
+
+	public Map<String, Long> getDropDownAwardList() {
+		return dropDownAwardList;
+	}
+
+	public void setDropDownAwardList(Map<String, Long> dropDownAwardList) {
+		this.dropDownAwardList = dropDownAwardList;
+	}
+
+	public CareerAwardTypeService getCareerAwardTypeService() {
+		return careerAwardTypeService;
+	}
+
+	public void setCareerAwardTypeService(CareerAwardTypeService careerAwardTypeService) {
+		this.careerAwardTypeService = careerAwardTypeService;
+	}
+
+	
 }

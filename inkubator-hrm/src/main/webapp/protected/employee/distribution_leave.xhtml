@@ -187,9 +187,13 @@
                                     <p:outputLabel  value="#{appmsg['leavedistribution.start_saldo']}"  for="strtBalance" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber id="strtBalance" decimalPlaces="1" value="#{leaveDistributionSchemeFormController.model.startBalance}"
+                                    <!-- <pe:inputNumber id="strtBalance" decimalPlaces="1" value="#{leaveDistributionSchemeFormController.model.startBalance}"
                                                     styleClass="isitext_hrm" style="width:50px;" required="true" />
-                                    <p:outputLabel  value="#{appmsg['global.day']}" style="margin-left: 3px" />
+                                    <p:outputLabel  value="#{appmsg['global.day']}" style="margin-left: 3px" /> -->
+                                    <p:inputText id="strtBalance" title="#{appmsg['leavedistribution.start_saldo']}" value="#{leaveDistributionSchemeFormController.model.startBalance}"  required="true" styleClass="isitext_hrm" style="width:260px"  >
+										<f:validateDoubleRange maximum="99999999999999999999"/>
+										<f:convertNumber  groupingUsed="false"/>
+									</p:inputText>
                                     <p:message for="strtBalance"/>
                                 </p:column>
                             </p:row>

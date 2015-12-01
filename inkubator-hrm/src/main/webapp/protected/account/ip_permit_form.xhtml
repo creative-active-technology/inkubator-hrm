@@ -58,7 +58,7 @@
                                 <h:outputLabel for="fromAddress1" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 75%">
-                                <pe:inputNumber minValue="1" maxValue="255" id="fromAddress1" value="#{ipPermitFormController.model.fromAddress11}"  title="fromAddress1" style="width:50px;" decimalPlaces="0">
+                                <!-- <pe:inputNumber minValue="1" maxValue="255" id="fromAddress1" value="#{ipPermitFormController.model.fromAddress11}"  title="fromAddress1" style="width:50px;" decimalPlaces="0">
                                     <p:ajax process="@this" listener="#{ipPermitFormController.doChangeIpUntil()}" update="fromAddress5, fromAddress6, fromAddress7, fromAddress8"/>
                                 </pe:inputNumber>.
                                 <pe:inputNumber maxValue="255" maxlength="3" id="fromAddress2" value="#{ipPermitFormController.model.fromAddress12}" title="fromAddress2" style="width:50px;" decimalPlaces="0">
@@ -69,7 +69,33 @@
                                 </pe:inputNumber>.
                                 <pe:inputNumber maxValue="255" id="fromAddress4" value="#{ipPermitFormController.model.untilAddress1}" title="fromAddress4" style="width:50px;" decimalPlaces="0">
                                     <p:ajax process="@this" listener="#{ipPermitFormController.doChangeIpUntil()}" update="fromAddress5, fromAddress6, fromAddress7, fromAddress8"/>
-                                </pe:inputNumber>
+                                </pe:inputNumber> -->
+                                
+                                <p:inputText id="fromAddress1" title="fromAddress1" value="#{ipPermitFormController.model.fromAddress11}"  required="true" styleClass="isitext_hrm" style="width:50px;"  >
+										<p:ajax process="@this" listener="#{ipPermitFormController.doChangeIpUntil()}" update="fromAddress5, fromAddress6, fromAddress7, fromAddress8"/>
+										<f:validateDoubleRange maximum="99999999999999999999"/>
+										<f:convertNumber  groupingUsed="false"/>
+								</p:inputText>
+								
+								
+								<p:inputText id="fromAddress2" title="fromAddress2" value="#{ipPermitFormController.model.fromAddress12}"  required="true" styleClass="isitext_hrm" style="width:50px;"  >
+										<p:ajax process="@this" listener="#{ipPermitFormController.doChangeIpUntil()}" update="fromAddress5, fromAddress6, fromAddress7, fromAddress8"/>
+										<f:validateDoubleRange maximum="99999999999999999999"/>
+										<f:convertNumber  groupingUsed="false"/>
+								</p:inputText>	
+								
+								
+								<p:inputText id="fromAddress3" title="fromAddress3" value="#{ipPermitFormController.model.fromAddress13}"  required="true" styleClass="isitext_hrm" style="width:50px;"  >
+										<p:ajax process="@this" listener="#{ipPermitFormController.doChangeIpUntil()}" update="fromAddress5, fromAddress6, fromAddress7, fromAddress8"/>
+										<f:validateDoubleRange maximum="99999999999999999999"/>
+										<f:convertNumber  groupingUsed="false"/>
+								</p:inputText>
+								
+								<p:inputText id="fromAddress4" title="fromAddress4" value="#{ipPermitFormController.model.untilAddress1}"  required="true" styleClass="isitext_hrm" style="width:50px;"  >
+										<p:ajax process="@this" listener="#{ipPermitFormController.doChangeIpUntil()}" update="fromAddress5, fromAddress6, fromAddress7, fromAddress8"/>
+										<f:validateDoubleRange maximum="99999999999999999999"/>
+										<f:convertNumber  groupingUsed="false"/>
+								</p:inputText>	
                             </p:column>
                         </p:row>
                         <p:row>
@@ -86,10 +112,29 @@
                                 <h:outputLabel for="fromAddress5" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 75%">
-                                <pe:inputNumber disabled="true" id="fromAddress5" value="#{ipPermitFormController.model.fromAddress21}" title="fromAddress1" style="width:50px;" decimalPlaces="0"/>.
+                               <!--  <pe:inputNumber disabled="true" id="fromAddress5" value="#{ipPermitFormController.model.fromAddress21}" title="fromAddress1" style="width:50px;" decimalPlaces="0"/>.
                                 <pe:inputNumber disabled="true" id="fromAddress6" value="#{ipPermitFormController.model.fromAddress22}" title="fromAddress2" style="width:50px;" decimalPlaces="0"/>.
                                 <pe:inputNumber disabled="true" id="fromAddress7" value="#{ipPermitFormController.model.fromAddress23}" title="fromAddress3" style="width:50px;" decimalPlaces="0"/>.
-                                <pe:inputNumber id="fromAddress8" value="#{ipPermitFormController.model.untilAddress2}" title="fromAddress4" style="width:50px;" decimalPlaces="0"/>
+                                <pe:inputNumber id="fromAddress8" value="#{ipPermitFormController.model.untilAddress2}" title="fromAddress4" style="width:50px;" decimalPlaces="0"/> -->
+                            	<p:inputText disabled="true" id="fromAddress5" title="fromAddress5" value="#{ipPermitFormController.model.fromAddress21}"  required="true" styleClass="isitext_hrm" style="width:50px;"  >
+										<f:validateDoubleRange maximum="99999999999999999999"/>
+										<f:convertNumber  groupingUsed="false"/>
+								</p:inputText>
+								
+								<p:inputText disabled="true" id="fromAddress6" title="fromAddress6" value="#{ipPermitFormController.model.fromAddress22}"  required="true" styleClass="isitext_hrm" style="width:50px;"  >
+										<f:validateDoubleRange maximum="99999999999999999999"/>
+										<f:convertNumber  groupingUsed="false"/>
+								</p:inputText>
+								
+								<p:inputText disabled="true" id="fromAddress7" title="fromAddress7" value="#{ipPermitFormController.model.fromAddress23}"  required="true" styleClass="isitext_hrm" style="width:50px;"  >
+										<f:validateDoubleRange maximum="99999999999999999999"/>
+										<f:convertNumber  groupingUsed="false"/>
+								</p:inputText>
+								
+								<p:inputText id="fromAddress8" title="fromAddress8" value="#{ipPermitFormController.model.untilAddress2}"  required="true" styleClass="isitext_hrm" style="width:50px;"  >
+										<f:validateDoubleRange maximum="99999999999999999999"/>
+										<f:convertNumber  groupingUsed="false"/>
+								</p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>

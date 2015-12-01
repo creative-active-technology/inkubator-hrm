@@ -102,8 +102,13 @@
                                     <p:outputLabel for="orderLevelMenuId" value="#{appmsg['hrm_menu.order_level']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <pe:inputNumber id="orderLevelMenuId" title="#{appmsg['global.nominal']}" value="#{menuFormController.model.orderLevelMenu}" 
-                                                    decimalPlaces="0" maxValue="9999" required="true" styleClass="isitext_hrm" style="width:50px;"/>
+                                    <!-- <pe:inputNumber id="orderLevelMenuId" title="#{appmsg['global.nominal']}" value="#{menuFormController.model.orderLevelMenu}" 
+                                                    decimalPlaces="0" maxValue="9999" required="true" styleClass="isitext_hrm" style="width:50px;"/> -->
+                                                    
+                                    <p:inputText id="orderLevelMenuId" title="#{appmsg['global.nominal']}" value="#{menuFormController.model.orderLevelMenu}"  required="true" styleClass="isitext_hrm" style="width:260px"  >
+										<f:validateDoubleRange maximum="99999999999999999999"/>
+										<f:convertNumber  groupingUsed="false"/>
+									</p:inputText>
                                     <p:message for="orderLevelMenuId"/>
                                 </p:column>
                             </p:row>

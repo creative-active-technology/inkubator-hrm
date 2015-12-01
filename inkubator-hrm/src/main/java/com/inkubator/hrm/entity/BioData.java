@@ -37,6 +37,7 @@ public class BioData implements java.io.Serializable {
     private Race race;
     private MaritalStatus maritalStatus;
     private String firstName;
+    private String middleName;
     private String lastName;
     private String title;
     private String nickname;
@@ -206,7 +207,16 @@ public class BioData implements java.io.Serializable {
         this.firstName = firstName;
     }
 
-    @Column(name = "last_name", length = 100)
+    @Column(name = "middle_name", length = 100)
+    public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	@Column(name = "last_name", length = 100)
     public String getLastName() {
         return this.lastName;
     }

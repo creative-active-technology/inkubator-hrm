@@ -133,12 +133,20 @@
                                     
                                 </p:column>
                                 <p:column  style="width: 50%">
-                                    <pe:inputNumber  id="ipkId" required="true" label="#{appmsg['mppRecruitmentHist.ipk']}" decimalPlaces="2" value="#{searchEmployeeCandidateModel.gpa}" />                             
+                                    <!-- <pe:inputNumber  id="ipkId" required="true" label="#{appmsg['mppRecruitmentHist.ipk']}" decimalPlaces="2" value="#{searchEmployeeCandidateModel.gpa}" /> -->                             
+                                    <p:inputText id="ipkId" title="#{appmsg['mppRecruitmentHist.ipk']}" value="#{searchEmployeeCandidateModel.gpa}"  required="true" styleClass="isitext_hrm" >
+										<f:validateDoubleRange maximum="99999999999999999999"/>
+										<f:convertNumber  groupingUsed="false"/>
+									</p:inputText>
                                     &nbsp;&nbsp;
                                     <p:outputLabel value=" #{appmsg['global.scale']} " style="margin-left: -10px"/>
                                     &nbsp;&nbsp;
-                                    <pe:inputNumber id="scaleId" required="true" label="#{appmsg['global.scale']}" decimalPlaces="2" value="#{searchEmployeeCandidateModel.gpaScale}" 
-                                                    style="margin-left: -10px;width: 50%"/>
+                                    <!-- <pe:inputNumber id="scaleId" required="true" label="#{appmsg['global.scale']}" decimalPlaces="2" value="#{searchEmployeeCandidateModel.gpaScale}" 
+                                                    style="margin-left: -10px;width: 50%"/> -->
+                               		<p:inputText id="scaleId" title="#{appmsg['global.scale']}" value="#{searchEmployeeCandidateModel.gpaScale}"   required="true" styleClass="isitext_hrm" >
+										<f:validateDoubleRange maximum="99999999999999999999"/>
+										<f:convertNumber  groupingUsed="false"/>
+									</p:inputText>
                                     <p:message for="ipkId"/>
                                 </p:column>
                             </p:row>

@@ -60,14 +60,16 @@ public class PersonalDisciplineDaoImpl extends IDAOImpl<PersonalDiscipline> impl
         criteria.add(Restrictions.eq("id", id));
         criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        criteria.setFetchMode("admonitionType", FetchMode.JOIN);
+//        criteria.setFetchMode("admonitionType", FetchMode.JOIN);
+        criteria.setFetchMode("careerDisciplineType", FetchMode.JOIN);
         return (PersonalDiscipline) criteria.uniqueResult();
     }
     
     private void doSearchPersonalDisciplineByParam(PersonalDisciplineSearchParameter searchParameter, Criteria criteria) {
         criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
         criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
-        criteria.createAlias("admonitionType", "admonitionType", JoinType.INNER_JOIN);
+//        criteria.createAlias("admonitionType", "admonitionType", JoinType.INNER_JOIN);
+        criteria.createAlias("careerDisciplineType", "careerDisciplineType", JoinType.INNER_JOIN);
         if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.START));
@@ -84,7 +86,8 @@ public class PersonalDisciplineDaoImpl extends IDAOImpl<PersonalDiscipline> impl
     public List<PersonalDiscipline> getAllDataByEmployeeId(Long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("empData.id", id));
-        criteria.setFetchMode("admonitionType", FetchMode.JOIN);
+//        criteria.setFetchMode("admonitionType", FetchMode.JOIN);
+        criteria.setFetchMode("careerDisciplineType", FetchMode.JOIN);
         return criteria.list();
     }
 }

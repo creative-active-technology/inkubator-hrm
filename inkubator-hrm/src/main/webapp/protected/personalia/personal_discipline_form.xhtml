@@ -73,9 +73,9 @@
                                 <h:outputLabel for="admonitionType" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu id="admonitionType" value="#{personalDisciplineFormController.model.admonitionType}" style="width: 150px;margin-right: 3px" required="true">
+                                <p:selectOneMenu id="admonitionType" value="#{personalDisciplineFormController.model.careerDisciplineTypeId}" style="width: 150px;margin-right: 3px" required="true">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                    <f:selectItems value="#{personalDisciplineFormController.dropDownAdmonitionType}"/>
+                                    <f:selectItems value="#{personalDisciplineFormController.dropDownDisciplineType}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
