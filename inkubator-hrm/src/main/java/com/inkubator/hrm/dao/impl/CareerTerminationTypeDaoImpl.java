@@ -43,8 +43,7 @@ public class CareerTerminationTypeDaoImpl extends IDAOImpl<CareerTerminationType
 	    criteria.addOrder(orderable);
 	    criteria.setFirstResult(firstResult);
 	    criteria.setMaxResults(maxResults);
-        criteria.createAlias("systemLetterReference", "systemLetterReference", JoinType.INNER_JOIN);
-        criteria.createAlias("systemCareerConst", "systemCareerConst", JoinType.INNER_JOIN);
+        
 	    return criteria.list();
 	}
 
@@ -56,6 +55,8 @@ public class CareerTerminationTypeDaoImpl extends IDAOImpl<CareerTerminationType
 	}
 	
 	private void doSearchTerminationTypeByParam(CareerTerminationTypeSearchParameter searchParameter, Criteria criteria) {
+		criteria.createAlias("systemLetterReference", "systemLetterReference", JoinType.INNER_JOIN);
+        criteria.createAlias("systemCareerConst", "systemCareerConst", JoinType.INNER_JOIN);
         if (StringUtils.isNotBlank(searchParameter.getCode())) {
             criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
         }
