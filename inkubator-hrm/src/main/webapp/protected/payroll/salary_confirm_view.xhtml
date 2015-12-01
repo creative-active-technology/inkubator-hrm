@@ -29,21 +29,7 @@
 
                     <h:form id="formSalaryConfirmationViewId">
                     	<p:focus context="formSalaryConfirmationViewId"/>
-                        <p:toolbar  style="margin-top: 10px">
-                            <p:toolbarGroup align="left">
-                            	<p:panelGrid style="width: 100%;" styleClass="grid_no_border">
-                            	</p:panelGrid>
-                            </p:toolbarGroup>
-                            
-                            <p:toolbarGroup align="right">
-                                <h:panelGrid columns="3" >
-                                    <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableSalaryConfirmationId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee_Salary_Confirmation"/>
-                                    </p:commandButton>                                    
-                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{salaryConfirmationViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
-                                </h:panelGrid>
-                            </p:toolbarGroup>
-                        </p:toolbar>
+                        
                         <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3">
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
@@ -84,6 +70,22 @@
                             </p:row>
                         </p:panelGrid>
 
+						<p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                            	<p:panelGrid style="width: 100%;" styleClass="grid_no_border">
+                            	</p:panelGrid>
+                            </p:toolbarGroup>
+                            
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableSalaryConfirmationId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Employee_Salary_Confirmation"/>
+                                    </p:commandButton>                                    
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{salaryConfirmationViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        
                         <p:dataTable  id="tableSalaryConfirmationId" var="empData"  value="#{salaryConfirmationViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
