@@ -48,6 +48,7 @@ import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +60,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -168,11 +171,24 @@ public class EmpDataDetilController extends BaseController {
     private BioInsuranceService bioInsuranceService;
 //end. bio insurance
     
+    //Flag penanda bahwa halaman detail ini di akses dari proses pencarian karyawan
+    private Boolean isFromSearchEmployee = Boolean.FALSE;
+    private String urlBackToSearchEmployee = StringUtils.EMPTY;
+    
     @PostConstruct
     @Override
     public void initialization() {
         try {
             super.initialization();
+            
+            // Check jika berasal dari proses pencarian karyawan
+            Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+        	String flagFromSearchEmployee = (String) sessionMap.get("isFromSearchEmployee");
+        	if(StringUtils.equals(flagFromSearchEmployee, "true")){
+        		isFromSearchEmployee = Boolean.TRUE;
+        		urlBackToSearchEmployee = (String) sessionMap.get("urlBackToSearchEmployee");
+        	}
+        	
             String empId = FacesUtil.getRequestParameter("execution");
             formData = FacesUtil.getRequestParameter("from");
             selectedEmpData = empDataService.getByEmpIdWithDetail(Long.parseLong(empId.substring(1)));
@@ -256,7 +272,27 @@ public class EmpDataDetilController extends BaseController {
         return "/protected/employee/emp_rotasi_form.htm?faces-redirect=true&execution=e" + selectedEmpData.getId();
     }
 
-    public String doBack() {        
+    public String doBack() throws Exception {    
+    	
+    	if(isFromSearchEmployee){
+    		/* 
+    		 * Jika berasal dari flow pencarian karyawan,
+    		 * dapatkan real idFlowExecution dari urlBackToSearchEmployee yang sudah di insialisasi di awal load controller
+    		 * lalu redirect ke URL /flow-protected/search_employee?+idFlowExecution
+    		 */
+    		ExternalContext context = FacesUtil.getExternalContext();
+    		String idFlowExecution = StringUtils.substringAfterLast(urlBackToSearchEmployee, "?");
+    		
+    		 //Hapus dahulu flag dari sessionMap untuk agar ketika buka dari emp_placement_view, maka return nya sudah mengikuti behaviour normal
+    		 Map<String, Object> sessionMap = context.getSessionMap();
+    		 sessionMap.remove("isFromSearchEmployee");
+    		 sessionMap.remove("urlBackToSearchEmployee");
+    		 
+    		 //redirect ke halaman pencarian karyawan
+    		context.redirect(context.getRequestContextPath() + "/flow-protected/search_employee?" + idFlowExecution);
+    		return null;
+    	}
+    	
         return "/protected/personalia/emp_background_view.htm?faces-redirect=true";
     }
 
