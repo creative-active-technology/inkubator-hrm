@@ -102,10 +102,9 @@
                                 </h:outputLabel>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
-                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important" ajax="true"
-                                                  action="#{costCenterController.doDetail()}" >
+                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important"
+                                                  action="#{costCenterController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('detailCostCenter').show()" update=":detailPanel" >
                                     <f:setPropertyActionListener value="#{costCenterData}" target="#{costCenterController.selectedCostCenter}" />
-                                    <p:ajax event="dialogReturn" listener="#{costCenterController.onDialogReturn}" />
                                 </p:commandButton> 
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
@@ -161,10 +160,10 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmCostCenter').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
+
                 <p:dialog widgetVar="detailCostCenter" header="#{appmsg['costcenter.detail_cost_center']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
-
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['costcenter.code']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{costCenterController.selectedCostCenter.code}"/> </p:column>
@@ -174,13 +173,13 @@
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['costcenter.name']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{costCenterController.selectedCostCenter.name}"/> </p:column>
                         </p:row>
-                        <p:row>
+                        <!-- <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['costcenter.level']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{costCenterController.selectedCostCenter.level}"/> </p:column>
-                        </p:row>
+                        </p:row> -->
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['costcenter.parentId']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{costCenterController.selectedCostCenter.costCenter}"/> </p:column>
+                            <p:column><p:outputLabel value="#{costCenterController.selectedCostCenter.costCenter.name}"/> </p:column>
                         </p:row>
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>

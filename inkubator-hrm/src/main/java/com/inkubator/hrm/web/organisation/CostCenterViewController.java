@@ -170,7 +170,7 @@ public class CostCenterViewController extends BaseController{
     
     public void doSelectEntity() {
         try {
-            selectedCostCenter = this.costCenterService.getEntiyByPK(selectedCostCenter.getId());
+            selectedCostCenter = this.costCenterService.getCostCenterByIdWithDetail(selectedCostCenter.getId());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }
