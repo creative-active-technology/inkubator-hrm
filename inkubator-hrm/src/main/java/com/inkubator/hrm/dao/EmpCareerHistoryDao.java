@@ -7,6 +7,8 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.EmpCareerHistory;
+import com.inkubator.hrm.web.model.CareerTransitionInboxViewModel;
+import com.inkubator.hrm.web.search.CareerTransitionInboxSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpMutationParameter;
 import java.util.List;
 import org.hibernate.criterion.Order;
@@ -24,4 +26,10 @@ public interface EmpCareerHistoryDao extends IDAO<EmpCareerHistory> {
     public List<EmpCareerHistory> getByParamReport(ReportEmpMutationParameter searchParameter, int firstResult, int maxResults, Order order);
 
     public Long getTotalEmpCareerHistoryDataByParamReport(ReportEmpMutationParameter searchParameter);
+    
+    public List<CareerTransitionInboxViewModel> getEntityEmpCareerHistoryInboxByParam(CareerTransitionInboxSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+
+    public Long getTotalgetEntityEmpCareerHistoryInboxByParam(CareerTransitionInboxSearchParameter searchParameter);
+    
+    
 }
