@@ -49,8 +49,8 @@ public class CareerTransitionFormController extends BaseController {
     private CareerEmpStatusService careerEmpStatusService;
     @ManagedProperty(value = "#{careerTerminationTypeService}")
     private CareerTerminationTypeService careerTerminationTypeService;
-    @ManagedProperty(value = "#{systemCarreerConstService}")
-    private SystemCareerConstService systemCarreerConstService;
+    @ManagedProperty(value = "#{systemCareerConstService}")
+    private SystemCareerConstService systemCareerConstService;
     @ManagedProperty(value = "#{systemLetterReferenceService}")
     private SystemLetterReferenceService systemLetterReferenceService;
     private CareerTransitionModel careerTransitionModel;
@@ -92,7 +92,7 @@ public class CareerTransitionFormController extends BaseController {
         careerTransitionService = null;
         careerEmpStatusService = null;
         careerTerminationTypeService = null;
-        systemCarreerConstService = null;
+        systemCareerConstService = null;
         dropDownRoleTransitionDetail = null;
         systemLetterReferenceService = null;
         dropDownSystemLetterReference = null;
@@ -111,7 +111,7 @@ public class CareerTransitionFormController extends BaseController {
     			dropDownRoleTransitionDetail.put(carreerTerminationType.getName(), carreerTerminationType.getId());
     		}
     	}else if(careerTransitionModel.getRoleTransitionId() == HRMConstant.CAREER_TRANSITION){
-    		List<SystemCareerConst> listSystemCarrerrConst = systemCarreerConstService.getAllData();
+    		List<SystemCareerConst> listSystemCarrerrConst = systemCareerConstService.getAllData();
     		for(SystemCareerConst systemCarreerConst : listSystemCarrerrConst){
     			dropDownRoleTransitionDetail.put(systemCarreerConst.getName(), systemCarreerConst.getId());
     		}
@@ -240,12 +240,12 @@ public class CareerTransitionFormController extends BaseController {
 		this.careerTerminationTypeService = careerTerminationTypeService;
 	}
 
-	public SystemCareerConstService getSystemCarreerConstService() {
-		return systemCarreerConstService;
+	public SystemCareerConstService getSystemCareerConstService() {
+		return systemCareerConstService;
 	}
 
-	public void setSystemCarreerConstService(SystemCareerConstService systemCarreerConstService) {
-		this.systemCarreerConstService = systemCarreerConstService;
+	public void setSystemCareerConstService(SystemCareerConstService systemCareerConstService) {
+		this.systemCareerConstService = systemCareerConstService;
 	}
 
 	public Map<String, Long> getDropDownRoleTransitionDetail() {

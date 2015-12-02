@@ -14,7 +14,7 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.model.LazyDataModel;
 
 import com.inkubator.hrm.service.EmpCareerHistoryService;
-import com.inkubator.hrm.service.impl.EmpCareerHistoryServiceImpl;
+import com.inkubator.hrm.web.lazymodel.CareerTransitionInboxLazyDataModel;
 import com.inkubator.hrm.web.model.CareerTransitionInboxViewModel;
 import com.inkubator.hrm.web.search.CareerTransitionInboxSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
@@ -78,6 +78,9 @@ public class CareerTransitionInboxViewController extends BaseController {
     }
 
     public LazyDataModel<CareerTransitionInboxViewModel> getLazyDataModel() {
+    	if(lazyDataModel == null){
+    		lazyDataModel = new CareerTransitionInboxLazyDataModel(searchParameter, service);
+    	}
         return lazyDataModel;
     }
 
