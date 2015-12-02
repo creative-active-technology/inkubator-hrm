@@ -44,7 +44,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
-     LOGGER.warn("Login sukses di akses");
+        LOGGER.warn("Login sukses di akses");
         try {
             LoginHistory loginHistory = new LoginHistory();
             loginHistory.setLanguange((String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE));
@@ -84,5 +84,48 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         String targetUrl = savedRequest.getRedirectUrl();
         LOGGER.warn("Redirecting to DefaultSavedRequest Url: " + targetUrl);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
+    }
+
+    public void doAuthentification(HttpServletRequest request, Authentication authentication)  {
+        LOGGER.warn("Login sukses di akses");
+        try {
+            LoginHistory loginHistory = new LoginHistory();
+            loginHistory.setLanguange((String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE));
+            FacesUtil.setSessionAttribute("realName", HrmUserInfoUtil.getRealName());
+            HrmUser hrmUser = hrmUserService.getByUserIdOrEmail(authentication.getName());
+            FacesUtil.setSessionAttribute(HRMConstant.COMPANY_ACTIVE, hrmUserService.getCompanyId(hrmUser.getUserId()));
+            EmpData data = hrmUserService.getByUserIdWithEmpIdAndBioId(authentication.getName()).getEmpData();
+            FacesUtil.setSessionAttribute(HRMConstant.BIODATA_ID, data.getBioData().getId());
+            FacesUtil.setSessionAttribute(HRMConstant.EMP_DATA_ID, data.getId());
+            FacesUtil.setSessionAttribute(HRMConstant.COMPANY_NAME, hrmUserService.getCompanyName(authentication.getName()));
+            String number = RandomNumberUtil.getRandomNumber(15);
+            loginHistory.setId(Long.parseLong(number));
+            String ipHere = IpUtil.getIpFromRequest(request);
+            loginHistory.setIpAddress(ipHere);
+            loginHistory.setLoginDate(new Date());
+            loginHistory.setHrmUser(new HrmUser(authentication.getName()));
+            loginHistory.setAppName(HRMConstant.APP_NAME);
+            this.loginHistoryService.saveAndPushMessage(loginHistory);;
+        } catch (Exception ex) {
+            LOGGER.error("Error", ex);
+        }
+//        SavedRequest savedRequest = requestCache.getRequest(request, response);
+//
+//        if (savedRequest == null) {
+//            super.onAuthenticationSuccess(request, response, authentication);
+//            return;
+//        }
+//        String targetUrlParameter = getTargetUrlParameter();
+//        if (isAlwaysUseDefaultTargetUrl()
+//                || (targetUrlParameter != null && StringUtils.hasText(request
+//                        .getParameter(targetUrlParameter)))) {
+//            requestCache.removeRequest(request, response);
+//            super.onAuthenticationSuccess(request, response, authentication);
+//            return;
+//        }
+//        clearAuthenticationAttributes(request);
+//        String targetUrl = savedRequest.getRedirectUrl();
+//        LOGGER.warn("Redirecting to DefaultSavedRequest Url: " + targetUrl);
+//        getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 }

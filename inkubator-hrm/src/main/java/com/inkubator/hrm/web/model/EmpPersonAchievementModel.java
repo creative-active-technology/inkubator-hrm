@@ -20,6 +20,7 @@ public class EmpPersonAchievementModel implements Serializable{
     private Date dateAchievement;
     private EmpData empData;
     private String nikWithFullName;
+    private Long careerAwardTypeId;
 
     public long getEmpDataId() {
         return empDataId;
@@ -76,6 +77,14 @@ public class EmpPersonAchievementModel implements Serializable{
     public void setNikWithFullName(String nikWithFullName) {
         this.nikWithFullName = nikWithFullName;
     }
+
+	public Long getCareerAwardTypeId() {
+		return careerAwardTypeId;
+	}
+
+	public void setCareerAwardTypeId(Long careerAwardTypeId) {
+		this.careerAwardTypeId = careerAwardTypeId;
+	}
     
     
 }

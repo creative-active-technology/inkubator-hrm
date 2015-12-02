@@ -5,6 +5,7 @@
 package com.inkubator.hrm.entity;
 
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -37,6 +38,7 @@ public class EmpPersonAchievement implements java.io.Serializable {
     private Date createdOn;
     private String updatedBy;
     private Date updatedOn;
+    private CareerAwardType careerAwardType;
 
     public EmpPersonAchievement() {
     }
@@ -45,7 +47,7 @@ public class EmpPersonAchievement implements java.io.Serializable {
         this.id = id;
     }
 
-    public EmpPersonAchievement(long id, Integer version, EmpData empData, String achievementName, String description, Date dateAchievement, String createdBy, Date createdOn, String updatedBy, Date updatedOn) {
+    public EmpPersonAchievement(long id, Integer version, EmpData empData, String achievementName, String description, Date dateAchievement, String createdBy, Date createdOn, String updatedBy, Date updatedOn, CareerAwardType careerAwardType) {
         this.id = id;
         this.version = version;
         this.empData = empData;
@@ -56,6 +58,7 @@ public class EmpPersonAchievement implements java.io.Serializable {
         this.createdOn = createdOn;
         this.updatedBy = updatedBy;
         this.updatedOn = updatedOn;
+        this.careerAwardType = careerAwardType;
     }
 
     @Id
@@ -155,4 +158,16 @@ public class EmpPersonAchievement implements java.io.Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+
+    @ManyToOne
+    @JoinColumn(name="career_award_id")
+	public CareerAwardType getCareerAwardType() {
+		return careerAwardType;
+	}
+
+	public void setCareerAwardType(CareerAwardType careerAwardType) {
+		this.careerAwardType = careerAwardType;
+	}
+    
+    
 }

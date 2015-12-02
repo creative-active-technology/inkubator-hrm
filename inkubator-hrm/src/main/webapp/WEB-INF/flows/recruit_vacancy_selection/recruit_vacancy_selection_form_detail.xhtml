@@ -217,20 +217,33 @@
 								<f:facet name="header">
 									<h:outputText value="#{appmsg['recruitVacancySelection.basic_cost']}" />
 								</f:facet>
-								<pe:inputNumber id="basicCost" title="Place"
+								<!-- <pe:inputNumber id="basicCost" title="Place"
 									value="#{data.basicCost}" required="false"
 									requiredMessage="Place" maxlength="15" styleClass="isitext_hrm"
-									style="width:10px;" />
+									style="width:10px;" /> -->
+									
+								<p:inputText title="#{appmsg['businesstravel.earned_per_quatity']}" value="#{data.basicCost}" 
+                                                 id="basicCost" style="text-align: right;width: 130px" styleClass="isitext_hrm" >
+                                        <!-- <p:ajax update="tableBusinessTravelComponentId,:formBusinessTravelComponentFormId:totalAmountId" process="@this" listener="#{businessTravelFormController.doAdjustPayByAmount(flowRequestContext)}"/> -->
+                                        <f:validateDoubleRange/>
+                                        <f:convertNumber minFractionDigits="2"/>
+                                    </p:inputText>
 								<p:message for="basicCost" />
 							</p:column>
 							<p:column style="width: 12%">
 								<f:facet name="header">
 									<h:outputText value="#{appmsg['recruitVacancySelection.individual_cost']}" />
 								</f:facet>
-								<pe:inputNumber id="individualCost" title="#{appmsg['recruitVacancySelection.individual_cost']}"
+								<!-- <pe:inputNumber id="individualCost" title="#{appmsg['recruitVacancySelection.individual_cost']}"
 									value="#{data.individualCost}" required="false"
 									requiredMessage="Place" maxlength="5" styleClass="isitext_hrm"
-									style="width:10px;" />
+									style="width:10px;" /> -->
+								<p:inputText title="#{appmsg['businesstravel.earned_per_quatity']}" value="#{data.individualCost}" 
+                                                 id="individualCost" style="text-align: right;width: 130px" styleClass="isitext_hrm" >
+                                        <!-- <p:ajax update="tableBusinessTravelComponentId,:formBusinessTravelComponentFormId:totalAmountId" process="@this" listener="#{businessTravelFormController.doAdjustPayByAmount(flowRequestContext)}"/> -->
+                                        <f:validateDoubleRange/>
+                                        <f:convertNumber minFractionDigits="2"/>
+                                    </p:inputText>
 								<p:message for="individualCost" />
 							</p:column>
 

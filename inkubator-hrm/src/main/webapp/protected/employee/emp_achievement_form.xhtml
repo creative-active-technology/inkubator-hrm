@@ -61,6 +61,7 @@
                                 <p:message for="employeeId"/>
                             </p:column>
                         </p:row>
+
                         <p:row>
                             <p:column style="width: 39%">
                                 <p:outputLabel for="achievementId" value="#{appmsg['personachievement.achievement']}" styleClass="label_hrm"/>
@@ -68,12 +69,12 @@
                             <p:column style="width: 1%">
                                 <h:outputLabel for="achievementId" value=":" styleClass="label_hrm"/>
                             </p:column>
-                            <p:column  style="width: 60%">
-                                <p:autoComplete id="achievementId" title="#{appmsg['personachievement.achievement']}" 
-                                                value="#{empPersonAchievementFormController.model.achievementName}"
-                                                completeMethod="#{empPersonAchievementFormController.completeAchievement}" scrollHeight="100"
-                                                required="true" requiredMessage="#{appmsg['personachievement.achievement_should_not_be_empty']}" size="44" styleClass="isitext_hrm" style="width:250px;"></p:autoComplete>
-
+                            <p:column style="width: 60%">
+                                <p:selectOneMenu id="achievementId" value="#{empPersonAchievementFormController.model.careerAwardTypeId}" style="width: 210px" 
+                                				required="true" requiredMessage="#{appmsg['personachievement.achievement_should_not_be_empty']}">
+                                                <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                                <f:selectItems value="#{empPersonAchievementFormController.dropDownAwardList}"/>
+                                            </p:selectOneMenu>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -81,6 +82,7 @@
                                 <p:message for="achievementId"/>
                             </p:column>
                         </p:row>
+                        
                         <p:row>
                             <p:column style="width: 39%">
                                 <p:outputLabel for="tanggalLahirid" value="#{appmsg['personachievement.achievement_date']}" styleClass="label_hrm"/>

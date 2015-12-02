@@ -59,7 +59,7 @@
                             </p:column>
                         
                             <p:column width="79%">
-                                    <p:fileUpload required="true" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{ohsaIncidentDocumentFormController.handingFileUpload}"
+                                    <p:fileUpload required="false" sizeLimit="1000000000" label="#{appmsg['global.choose_file']}" fileUploadListener="#{ohsaIncidentDocumentFormController.handingFileUpload}"
 	                                          mode="advanced"  id="uploadFoto"  style="margin-top:10px;margin-bottom:10px;width: 100%;text-align: left!important"
 	                                          dragDropSupport="true" multiple="false" update="fileNameId,:growlBioSertifikasiFormlId"
 	                                          allowTypes="/(\.|\/)(jpe?g|png|pdf)$/"/> 
@@ -67,9 +67,12 @@
 	                            <p:outputLabel value=":" style="margin-left: 5px;margin-right: 5px"/>
                                     <p:outputLabel value="#{ohsaIncidentDocumentFormController.ohsaIncidentDocument.documentLabel}" id="fileNameId"/>  
                             </p:column>
-                            <p:column  style="width: 12%">
+                    	</p:row>
+                    	<p:row>
+                            <p:column colspan="3">
+                                <p:message for="uploadFoto"/>
                             </p:column>
-                    	</p:row>     
+                        </p:row>     
                         
                          <p:row>
                             <p:column style="width: 20%">
@@ -95,6 +98,11 @@
                                 <h:outputText id="counter" />
                             </p:column>
                         </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="descriptionId"/>
+                            </p:column>
+                        </p:row>     
                     </p:panelGrid>
                     <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
                     <h:panelGrid columns="2" style="margin-bottom: -30px!important">

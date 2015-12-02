@@ -375,6 +375,10 @@ public class HRMConstant {
     public static final Integer LOAN_CANCELED = 2;
     public static final Integer LOAN_REJECTED = 3;
     public static final Integer LOAN_PAID = 4;
+    
+    /* Loan New Installment */
+    public static final Integer LOAN_INSTALLMENT_NOT_YET_PAID = 0;
+    public static final Integer LOAN_INSTALLMENT_PAID = 1;
 
 //    KODEFIKAISIPROSES
     public static final String LOAN_KODE = "LOAN";
