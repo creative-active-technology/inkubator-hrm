@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <div style="font-family:Trebuchet MS;margin-bottom: 20px;font-weight: bold;color: black;padding: 3px 3px 3px 10px;background-image: linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -o-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -moz-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -ms-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-gradient(linear,left bottom,left topcolor-stop(0.68, rgb(114,185,215)));">
+            PERMOHONAN PENGAJUAN TRANSISI KARIR</div>
+        <div style="padding-left: 10px;font-family: Verdana">
+            Yth Bapak/Ibu,
+            <br />
+            <br />
+            Di beritahukan bahwa, pertanggal ${effectiveDate} karyawan dengan data-data sebagai berikut:<br /><br />
+			<table style="margin-left: 20px;">
+				<tr>
+					<td>Nama</td>   
+					<td>: ${employeeName}</td>
+				</tr>
+				<tr>
+					<td>Nik</td>   
+					<td>: ${beforeNik}</td>
+				</tr>
+				<tr>
+					<td>Tanggal bekerja</td>   
+					<td>: ${beforeJoinDate}</td>
+				</tr>
+				<tr>
+					<td>Status Karyawan</td>   
+					<td>: ${beforeEmployeeType} </td>
+				</tr>
+				<tr>
+					<td>Jabatan</td> 
+					<td>: ${beforeJabatan} </td>
+				</tr>
+				<tr>
+					<td>Departemen</td> 
+					<td>: ${beforeDepartment} </td>
+				</tr>
+            </table>
+            <br />
+           	telah di ubah data kekaryawanan menjadi sebagai berikut: <br /><br />
+			<table style="margin-left: 20px;">
+				<tr>
+					<td>Nik</td>   
+					<td>: ${afterNik}</td>
+				</tr>
+				<tr>
+					<td>Tanggal bekerja</td>   
+					<td>: ${afterJoinDate}</td>
+				</tr>
+				<tr>
+					<td>Status Karyawan</td>   
+					<td>: ${afterEmployeeType} </td>
+				</tr>
+				<tr>
+					<td>Jabatan</td> 
+					<td>: ${afterJabatan} </td>
+				</tr>
+				<tr>
+					<td>Departemen</td> 
+					<td>: ${afterDepartment} </td>
+				</tr>
+            </table>
+ 			<br />
+ 			<br />
+            Demikian pemberitahuan ini disampaikan, atas perhatian dan kerjasamanya disampaikan terima kasih.
+			<br />
+ 			<br />
+			Salam,
+            <br/>
+            <br/>
+            On Behalf ${applicationName}<br/>
+            ${ownerAdministrator}
+        </div>
+        <div style="font-family:Trebuchet MS ;margin-top: 20px;font-weight: bold;color: black;padding: 3px 3px 3px 10px;background-image: linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -o-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -moz-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -ms-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-gradient(linear,left bottom,left topcolor-stop(0.68, rgb(114,185,215)));">${applicationName} @${ownerCompany}
+        </div>
+    </body>
+</html>

@@ -1455,14 +1455,11 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        /**
-         * automatically get relations of jabatanByJabatanId, department,
-         * company don't create alias for that entity, or will get error :
-         * duplicate association path
-         */
-        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
 
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.createAlias("bioData.religion", "religion", JoinType.INNER_JOIN);
 
