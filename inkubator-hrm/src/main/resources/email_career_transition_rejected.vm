@@ -59,7 +59,7 @@
 				</tr>
             </table>
  			<br />
-            Status Pengajuan : ${statusDesc}
+            Status Pengajuan : <b>${statusDesc}</b>
  			<br />
  			<br />
             Demikian pemberitahuan ini disampaikan, atas perhatian dan kerjasamanya disampaikan terima kasih.

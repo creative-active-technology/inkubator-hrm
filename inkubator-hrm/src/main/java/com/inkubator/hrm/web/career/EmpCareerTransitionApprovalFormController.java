@@ -110,6 +110,7 @@ public class EmpCareerTransitionApprovalFormController extends BaseController {
         	model.setCurrentGolJab(empData.getGolonganJabatan().getCode() + " " + empData.getGolonganJabatan().getPangkat().getPangkatName());
         	model.setCurrentJabatan(empData.getJabatanByJabatanId().getName());
         	model.setCurrentJoinDate(empData.getJoinDate());
+        	model.setCurrentNik(empData.getNik());
             
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
