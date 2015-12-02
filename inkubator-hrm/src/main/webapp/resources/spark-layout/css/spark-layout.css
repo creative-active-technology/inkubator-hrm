@@ -92,12 +92,14 @@
 body{
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a7cfdf), color-stop(90%,#23538a));
     min-height:100%;
-    height: 100%;
+    height: 600px;
     background-attachment:fixed;
     background-position:top left;
     background-repeat:repeat;
-background-position:center;
+    background-position:center;
     
+
+
 }
 
 /* menu mask*/
@@ -194,7 +196,7 @@ background-position:center;
     outline: none;
 }  
 /*Layout Portlets Cover*/
-#layout-portlets-cover{width:92%; margin:0px auto; display: block;height: 600px;padding: 2px}
+#layout-portlets-cover{width:92%; margin:0px auto; display: block;padding: 2px}
 .layout-portlets-box{width:97%; padding:1% 1.5%; margin:8px auto; float:left; background-color:#F6FAFC/*#F1F6F9*/; border-radius:3px; -webkit-border-radius:3px; -moz-border-radius:3px;
                      -webkit-box-shadow: 0px 1px 0px 0px rgba(159,172,183,0.7);
                      -moz-box-shadow: 0px 1px 0px 0px rgba(159,172,183,0.7);
