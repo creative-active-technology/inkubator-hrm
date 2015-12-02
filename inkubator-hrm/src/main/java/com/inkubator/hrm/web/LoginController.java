@@ -36,7 +36,6 @@ import org.springframework.mobile.device.DeviceResolver;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
@@ -235,11 +234,8 @@ public class LoginController extends BaseController {
             FacesUtil.setSessionAttribute(HRMConstant.LOGIN_DATE, dateFormatter.getDateFullAsStringsWithActiveLocale(new Date(),
                     new Locale(selectedLanguage)));
             myHandlerSuccessLogin.doAuthentification(FacesUtil.getRequest(), result);
-            return "/protected/home.htm?faces-redirect=true";
+            return "/protected/mobile_home.htm?faces-redirect=true";
         } catch (Exception e) {
-//            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", e.getMessage(),
-//                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-System.out.println(" errornya "+e.getMessage());
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "User Error", e.getMessage());
             FacesUtil.getFacesContext().addMessage(null, msg);
             return null;

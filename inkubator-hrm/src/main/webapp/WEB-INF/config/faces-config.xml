@@ -40,7 +40,20 @@ http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">-->
     <!--    <lifecycle>
         <phase-listener>com.csl.web.core.listener.Primefaces35PhaseListener</phase-listener>
     </lifecycle>-->
-<!--    <factory>
+    <!--    <factory>
         <exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory</exception-handler-factory>
     </factory>-->
+     <name>primefaces-spark</name>
+    <component>
+        <component-type>org.primefaces.component.SparkMenu</component-type>
+        <component-class>org.primefaces.spark.component.menu.SparkMenu</component-class>
+    </component>
+    
+    <render-kit>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.SparkMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.spark.component.menu.SparkMenuRenderer</renderer-class>
+        </renderer>
+    </render-kit>
 </faces-config>
