@@ -22,6 +22,7 @@ public class EmpCareerHistoryModel implements Serializable {
 	private Long careerTransitionId;
 	private Date effectiveDate;
 	private EmpData copyOfLetterTo;
+	private String nik;
 	private Long departmentId;
     private Long jabatanId;
     private Long golonganJabatanId;
@@ -32,6 +33,8 @@ public class EmpCareerHistoryModel implements Serializable {
     private String noSk;
     private String approvalActivityNumber;    
     private String notes;
+    private Date createdOn;
+    private String createdBy;
     
     //additional (not persisted)
     private String companyName;
@@ -40,6 +43,7 @@ public class EmpCareerHistoryModel implements Serializable {
     private String jabatanName;
     private String golonganJabatanName;
     private String employeeTypeName;
+    private String currentNik;
     private String currentCompany;
     private String currentDepartment;
     private String currentJabatan;
@@ -240,5 +244,28 @@ public class EmpCareerHistoryModel implements Serializable {
 	public void setCurrentJoinDate(Date currentJoinDate) {
 		this.currentJoinDate = currentJoinDate;
 	}
-    
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+	}
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+	public String getNik() {
+		return nik;
+	}
+	public void setNik(String nik) {
+		this.nik = nik;
+	}
+	public String getCurrentNik() {
+		return currentNik;
+	}
+	public void setCurrentNik(String currentNik) {
+		this.currentNik = currentNik;
+	}
 }

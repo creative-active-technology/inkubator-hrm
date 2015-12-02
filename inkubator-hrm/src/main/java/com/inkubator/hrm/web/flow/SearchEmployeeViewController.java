@@ -14,9 +14,17 @@ import com.inkubator.hrm.service.EmployeeTypeService;
 import com.inkubator.hrm.service.GolonganJabatanService;
 import com.inkubator.hrm.web.lazymodel.SearchEmployeeLazyDataModel;
 import com.inkubator.hrm.web.model.SearchEmployeeModel;
+import com.inkubator.webcore.util.FacesUtil;
+
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import javax.faces.context.ExternalContext;
+
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.DualListModel;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +49,7 @@ public class SearchEmployeeViewController implements Serializable {
     private EmployeeTypeService employeeTypeService;
     @Autowired
     private EmpDataService empDataService;
+    private String urlBackToSearchEmployee = StringUtils.EMPTY;
 
     public SearchEmployeeModel initSearchEmployeeFormFlow(RequestContext context) throws Exception {
         //deklarasi variable
@@ -62,6 +71,10 @@ public class SearchEmployeeViewController implements Serializable {
     }
     
     public void doGetParamSearchEmployee(RequestContext context) throws Exception{
+    	
+    	//Set urlBackToSearchEmployee ketika onRender halaman Result
+    	urlBackToSearchEmployee = context.getFlowExecutionUrl();
+    	
         String departments = "";
         String golonganJabatan = "";
         String tipeKaryawan = "";
@@ -137,5 +150,56 @@ public class SearchEmployeeViewController implements Serializable {
     }
     public String doBack() {
         return "/flow-protected/search_employee";
+    }
+    
+    public void doDetailPersonalInfo(Long bioDataId){
+    	try {
+    		
+    		/*Set Flag kalau url tujuan itu di view dari proses pencarian karyawan 
+    		 * dan juga url back dari flow pencariannya ke dalam sessionMap
+    		 */
+			ExternalContext context = FacesUtil.getExternalContext();
+			Map<String, Object> sessionMap = context.getSessionMap();
+			sessionMap.put("isFromSearchEmployee", "true");
+			sessionMap.put("urlBackToSearchEmployee", urlBackToSearchEmployee);
+			
+			context.redirect(context.getRequestContextPath() + "/protected/personalia/biodata_detail.htm?execution=e" + bioDataId);
+		} catch (Exception e) {
+			LOGGER.error(e);
+		}
+    }
+    
+    public void doDetailEmployeeInfo(Long empDataId){
+    	try {
+    		
+    		/*Set Flag kalau url tujuan itu di view dari proses pencarian karyawan 
+    		 * dan juga url back dari flow pencariannya ke dalam sessionMap
+    		 */
+			ExternalContext context = FacesUtil.getExternalContext();
+			Map<String, Object> sessionMap = context.getSessionMap();
+			sessionMap.put("isFromSearchEmployee", "true");
+			sessionMap.put("urlBackToSearchEmployee", urlBackToSearchEmployee);
+			
+			context.redirect(context.getRequestContextPath() + "/protected/employee/emp_placement_detail.htm?execution=e" + empDataId);
+		} catch (Exception e) {
+			LOGGER.error(e);
+		}
+    }
+    
+    public void doDetailEmployeeBackgroundInfo(Long empDataId){
+    	try {
+    		
+    		/*Set Flag kalau url tujuan itu di view dari proses pencarian karyawan 
+    		 * dan juga url back dari flow pencariannya ke dalam sessionMap
+    		 */
+			ExternalContext context = FacesUtil.getExternalContext();
+			Map<String, Object> sessionMap = context.getSessionMap();
+			sessionMap.put("isFromSearchEmployee", "true");
+			sessionMap.put("urlBackToSearchEmployee", urlBackToSearchEmployee);
+			
+			context.redirect(context.getRequestContextPath() + "/protected/personalia/emp_background_detail.htm?execution=e" + empDataId);
+		} catch (Exception e) {
+			LOGGER.error(e);
+		}
     }
 }

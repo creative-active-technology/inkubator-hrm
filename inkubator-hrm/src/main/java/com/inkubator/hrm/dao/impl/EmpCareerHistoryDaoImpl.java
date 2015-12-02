@@ -6,12 +6,19 @@
 package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpCareerHistoryDao;
 import com.inkubator.hrm.entity.EmpCareerHistory;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.web.model.CareerTransitionInboxViewModel;
+import com.inkubator.hrm.web.search.CareerTransitionInboxSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpMutationParameter;
+import com.inkubator.hrm.web.search.RmbsApplicationUndisbursedSearchParameter;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
@@ -21,6 +28,7 @@ import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.sql.JoinType;
+import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -130,4 +138,78 @@ public class EmpCareerHistoryDaoImpl extends IDAOImpl<EmpCareerHistory> implemen
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
+    @Override
+    public List<CareerTransitionInboxViewModel> getEntityEmpCareerHistoryInboxByParam(CareerTransitionInboxSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+        StringBuffer selectQuery = new StringBuffer(
+                "SELECT approvalActivity.id AS approvalActivityId, " +
+                "empData.nik AS empNik," +
+                "CONCAT(bioData.first_name,' ',bioData.last_name) AS empName, " +
+                "approvalActivity.approval_status AS approvalStatus, " +
+                "approvalActivity.pending_data AS jsonData, " +
+                "FROM approval_activity approvalActivity " +
+                "LEFT JOIN approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id " +
+                "LEFT JOIN hrm_user AS approver ON approver.user_id = approvalActivity.approved_by " +
+                "LEFT JOIN hrm_user AS requester ON requester.user_id = approvalActivity.request_by " +
+                "LEFT JOIN emp_data AS empData ON requester.emp_data_id = empData.id " +
+                "INNER JOIN jabatan AS jabatan ON empData.jabatan_id = jabatan.id  " +
+                "INNER JOIN department AS department ON jabatan.departement_id = department.id  " +
+                "INNER JOIN company AS company ON department.company_id = company.id  " +
+                "LEFT JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id " +
+                "WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number) " +
+                "AND (rmbsApplication.application_status = 0 OR rmbsApplication.application_status IS NULL) " +
+                "AND approvalDefinition.name = :appDefinitionName "
+                + " AND  company.id = :companyId ");
+        selectQuery.append(this.setWhereQueryCareerTransitionInboxActivityByParam(searchParameter));
+        selectQuery.append("GROUP BY approvalActivity.activity_number ");
+    	selectQuery.append("ORDER BY " + order);
+        
+        Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString()).setMaxResults(maxResults).setFirstResult(firstResult)
+                	.setResultTransformer(Transformers.aliasToBean(CareerTransitionInboxViewModel.class));
+    	hbm = this.setValueQueryCareerTransitionInboxActivityByParam(hbm, searchParameter);
+    	
+    	return hbm.list();
+    }
+
+    @Override
+    public Long getTotalgetEntityEmpCareerHistoryInboxByParam(CareerTransitionInboxSearchParameter searchParameter) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private String setWhereQueryCareerTransitionInboxActivityByParam(CareerTransitionInboxSearchParameter parameter) {
+    	StringBuffer whereQuery = new StringBuffer();    	
+    	
+        if (StringUtils.isNotEmpty(parameter.getEmpNik())) {
+        	whereQuery.append("AND empData.nik LIKE :empNik ");
+        }        
+        if (StringUtils.isNotEmpty(parameter.getEmpName())) {
+        	whereQuery.append("AND (bioData.first_name LIKE :empName OR bioData.last_name LIKE :empName) ");
+        }        
+        
+        if (StringUtils.isNotEmpty(parameter.getUserId())) {
+        	whereQuery.append("AND (requester.user_id = :userId AND approvalActivity.approval_status IN (0,1,6) " +
+        			"OR approver.user_id = :userId AND approvalActivity.approval_status IN (0)) ");
+        } else {
+        	//view for administrator(can view all employee)
+        	whereQuery.append("AND approvalActivity.approval_status IN (0,1,6) ");
+        }
+        
+        return whereQuery.toString();
+    }
+    
+    private Query setValueQueryCareerTransitionInboxActivityByParam(Query hbm, CareerTransitionInboxSearchParameter parameter){    	
+    	for(String param : hbm.getNamedParameters()){
+    		if(StringUtils.equals(param, "empName")){
+    			hbm.setParameter("empName", "%" + parameter.getEmpName() + "%");
+    		} else if(StringUtils.equals(param, "empNik")){
+    			hbm.setParameter("empNik", "%" + parameter.getEmpNik() + "%");
+    		} else if(StringUtils.equals(param, "userId")){
+    			hbm.setParameter("userId", parameter.getUserId());
+    		} else if(StringUtils.equals(param, "appDefinitionName")){
+    			hbm.setParameter("appDefinitionName", HRMConstant.EMPLOYEE_CAREER_TRANSITION);
+    		}else if(StringUtils.equals(param, "companyId")){
+    			hbm.setParameter("companyId", HrmUserInfoUtil.getCompanyId());
+    		}
+    	}    	
+    	return hbm;
+    }
 }
