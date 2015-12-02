@@ -309,6 +309,25 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("endDate", jsonObject.get("endDate").getAsString());
                             maptoSend.put("listNamaJabatan", listNamaJabatan);
                             break;
+                        case HRMConstant.EMPLOYEE_CAREER_TRANSITION:
+                        	System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                            vtm.setSubject("Pengajuan Transisi Karir");
+                            vtm.setTemplatePath("email_career_transition_waiting_approval.vm");
+                            maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            maptoSend.put("nik", requesterUser.getEmpData().getNik());
+                            maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                            maptoSend.put("beforeNik", jsonObject.get("beforeNik").getAsString());
+                            maptoSend.put("beforeJoinDate", jsonObject.get("beforeJoinDate").getAsString());
+                            maptoSend.put("beforeEmployeeType", jsonObject.get("beforeEmployeeType").getAsString());
+                            maptoSend.put("beforeJabatan", jsonObject.get("beforeJabatan").getAsString());
+                            maptoSend.put("beforeDepartment", jsonObject.get("beforeDepartment").getAsString());
+                            maptoSend.put("afterNik", jsonObject.get("afterNik").getAsString());
+                            maptoSend.put("afterJoinDate", jsonObject.get("afterJoinDate").getAsString());
+                            maptoSend.put("afterEmployeeType", jsonObject.get("afterEmployeeType").getAsString());
+                            maptoSend.put("afterJabatan", jsonObject.get("afterJabatan").getAsString());
+                            maptoSend.put("afterDepartment", jsonObject.get("afterDepartment").getAsString());
+                            break;
                         default:
                             break;
                     }
@@ -501,6 +520,39 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("endDate", jsonObject.get("endDate").getAsString());
                             maptoSend.put("listNamaJabatan", listNamaJabatan);
                             maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+                            break;
+                            
+                        case HRMConstant.EMPLOYEE_CAREER_TRANSITION:
+                            vtm.setSubject("Pengajuan Transisi Karir");
+                            if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED){
+                            	vtm.setTemplatePath("email_career_transition_approved.vm");
+                                maptoSend.put("effectiveDate", jsonObject.get("effectiveDate").getAsString());
+                                maptoSend.put("beforeNik", jsonObject.get("beforeNik").getAsString());
+                                maptoSend.put("beforeJoinDate", jsonObject.get("beforeJoinDate").getAsString());
+                                maptoSend.put("beforeEmployeeType", jsonObject.get("beforeEmployeeType").getAsString());
+                                maptoSend.put("beforeJabatan", jsonObject.get("beforeJabatan").getAsString());
+                                maptoSend.put("beforeDepartment", jsonObject.get("beforeDepartment").getAsString());
+                                maptoSend.put("afterNik", jsonObject.get("afterNik").getAsString());
+                                maptoSend.put("afterJoinDate", jsonObject.get("afterJoinDate").getAsString());
+                                maptoSend.put("afterEmployeeType", jsonObject.get("afterEmployeeType").getAsString());
+                                maptoSend.put("afterJabatan", jsonObject.get("afterJabatan").getAsString());
+                                maptoSend.put("afterDepartment", jsonObject.get("afterDepartment").getAsString());
+                            } else {
+                            	vtm.setTemplatePath("email_career_transition_rejected.vm");
+                            	maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+                            	maptoSend.put("proposeDate", jsonObject.get("proposeDate").getAsString());
+                                maptoSend.put("beforeNik", jsonObject.get("beforeNik").getAsString());
+                                maptoSend.put("beforeJoinDate", jsonObject.get("beforeJoinDate").getAsString());
+                                maptoSend.put("beforeEmployeeType", jsonObject.get("beforeEmployeeType").getAsString());
+                                maptoSend.put("beforeJabatan", jsonObject.get("beforeJabatan").getAsString());
+                                maptoSend.put("beforeDepartment", jsonObject.get("beforeDepartment").getAsString());
+                                maptoSend.put("afterNik", jsonObject.get("afterNik").getAsString());
+                                maptoSend.put("afterJoinDate", jsonObject.get("afterJoinDate").getAsString());
+                                maptoSend.put("afterEmployeeType", jsonObject.get("afterEmployeeType").getAsString());
+                                maptoSend.put("afterJabatan", jsonObject.get("afterJabatan").getAsString());
+                                maptoSend.put("afterDepartment", jsonObject.get("afterDepartment").getAsString());
+                                maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+                            }
                             
                             break;
                         default:

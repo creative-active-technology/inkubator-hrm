@@ -550,6 +550,7 @@ public class HRMConstant {
     public static final String RECRUITMENT_REQUEST_APPROVAL_PAGE = "/protected/recruitment/recruitment_req_approval_form.htm";
     public static final String EMP_CORRECTION_ATTENDANCE_APPROVAL_PAGE = "/protected/working_time/emp_correction_attendance_approval_form.htm";
     public static final String VACANCY_ADVERTISEMENT_APPROVAL_PAGE = "/protected/recruitment/vacancy_advertisement_approval_form.htm";
+    public static final String EMPLOYEE_CAREER_TRANSITION_APPROVAL_PAGE = "/protected/career/emp_career_transition_approval_form.htm";
 
     /* Constant for Selection Applicant Passed */
     public static final String SELECTION_APPLICANT_PASSED_STATUS_PENDING = "PENDING";
