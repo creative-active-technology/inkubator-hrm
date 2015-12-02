@@ -187,6 +187,7 @@ public class EmpCareerTransitionFormController extends BaseController {
 			model.setCareerTransitionId(m.getCareerTransitionId());
 			model.setEffectiveDate(m.getEffectiveDate());
 			model.setCopyOfLetterTo(copyOfLetterTo);
+			model.setNik(m.getNik());
 			model.setDepartmentId(m.getDepartmentId());
 			model.setJabatanId(m.getJabatanId());
 			model.setGolonganJabatanId(m.getGolonganJabatanId());
@@ -197,6 +198,8 @@ public class EmpCareerTransitionFormController extends BaseController {
 			model.setNoSk(m.getNoSk());
 			model.setNotes(m.getNotes());
 			model.setCompanyName(department.getCompany().getName());
+			model.setCreatedBy(m.getCreatedBy());
+			model.setCreatedOn(m.getCreatedOn());
 
 			this.onChangeEmployee();
 			this.onChangeDepartment();
@@ -226,6 +229,7 @@ public class EmpCareerTransitionFormController extends BaseController {
         	model.setCurrentGolJab(empData.getGolonganJabatan().getCode() + " " + empData.getGolonganJabatan().getPangkat().getPangkatName());
         	model.setCurrentJabatan(empData.getJabatanByJabatanId().getName());
         	model.setCurrentJoinDate(empData.getJoinDate());
+        	model.setCurrentNik(empData.getNik());
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }

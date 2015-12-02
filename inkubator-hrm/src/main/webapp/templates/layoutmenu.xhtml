@@ -1,0 +1,83 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ps="http://primefaces.org/spark"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+    <h:form>
+        <ps:menu>
+            <f:facet name="options">
+                <p:commandButton type="button" icon="fa fa-search Fs18 white" styleClass="Fright"/>
+                <p:inputText placeholder="Search" styleClass="Fright"/>    
+            </f:facet>
+
+            <p:submenu label="Colors" icon="fa fa-paint-brush">
+                <p:menuitem value="Green" icon="fa fa-paint-brush" actionListener="#{themeView.change('green')}" ajax="false"/>
+                <p:menuitem value="Blue" icon="fa fa-paint-brush" actionListener="#{themeView.change('blue')}" ajax="false"/>
+                <p:menuitem value="Orange" icon="fa fa-paint-brush" actionListener="#{themeView.change('orange')}" ajax="false"/>
+                <p:menuitem value="Red" icon="fa fa-paint-brush" actionListener="#{themeView.change('red')}" ajax="false"/>
+            </p:submenu>
+            
+            <p:separator />
+
+<!--            <p:submenu label="Spark Theme" icon="fa fa-rocket">
+                <p:menuitem value="Sample Page" icon="fa fa-columns" outcome="sample" />
+                <p:menuitem value="Forms" icon="fa fa-file-text-o" outcome="forms" />
+                <p:menuitem value="Data Components" icon="fa fa-calendar-o" outcome="data" />
+                <p:menuitem value="DataTable" icon="fa fa-list-alt" outcome="datatable" />
+                <p:menuitem value="Panels" icon="fa fa-columns" outcome="panel" />
+                <p:menuitem value="Overlays" icon="fa fa-image" outcome="overlay" />
+                <p:menuitem value="Menus" icon="fa fa-align-justify" outcome="menu" />
+                <p:menuitem value="Messages" icon="fa fa-comments-o" outcome="messages" />
+                <p:menuitem value="FileUpload" icon="fa fa-cloud-upload" outcome="file" />
+                <p:menuitem value="Misc" icon="fa fa-stack-overflow" outcome="misc" />
+            </p:submenu>-->
+
+            <p:separator />
+
+<!--            <p:submenu label="Default Pages" icon="fa fa-newspaper-o">
+                <p:menuitem value="Empty Page" icon="fa fa-plus-square" outcome="empty-page" />
+                <p:menuitem value="Login Page" icon="fa fa-sign-in" outcome="login" />
+                <p:menuitem value="Error Page" icon="fa fa-exclamation-circle" outcome="error" />
+                <p:menuitem value="404 Page" icon="fa fa-times" outcome="404" />
+                <p:menuitem value="Access Denied Page" icon="fa fa-eye-slash" outcome="access-denied" />
+            </p:submenu>-->
+
+            <p:separator />
+
+            <p:submenu label="Menu Hierarchy" icon="fa fa-sitemap">
+                <p:submenu label="Submenu 1" icon="fa fa-folder">
+                    <p:submenu label="Submenu 1.1" icon="fa fa-folder">
+                        <p:submenu label="Submenu 1.2" icon="fa fa-folder">
+                            <p:menuitem value="Link 1" styleClass="fa fa-chain" url="#" />
+                            <p:menuitem value="Link 2" styleClass="fa fa-chain" url="#" />
+                            <p:menuitem value="Link 3" styleClass="fa fa-chain" url="#" />
+                        </p:submenu>
+                    </p:submenu>
+                </p:submenu>
+                <p:submenu label="Submenu 2" icon="fa fa-folder">
+                    <p:submenu label="Submenu 1.2" icon="fa fa-folder">
+                        <p:submenu label="Submenu 2.2" icon="fa fa-folder">
+                            <p:menuitem value="Link 1" styleClass="fa fa-chain" url="#" />
+                            <p:menuitem value="Link 2" styleClass="fa fa-chain" url="#" />
+                            <p:menuitem value="Link 3" styleClass="fa fa-chain" url="#" />
+                        </p:submenu>
+                    </p:submenu>
+                </p:submenu>
+            </p:submenu>
+
+            <p:separator />
+
+            <p:submenu label="Links" icon="fa fa-dropbox">
+<!--                <p:menuitem value="Documentation" icon="fa fa-life-ring" outcome="documentation" />
+                <p:menuitem value="Font Icons" icon="fa fa-paint-brush" outcome="font-icons"/>-->
+                <p:menuitem value="User Profile" icon="fa fa-users" url="#"/>
+                <p:menuitem value="Tasks" icon="fa fa-history" url="#"/>
+                <p:menuitem value="Contact" icon="fa fa-microphone" url="#"/>
+            </p:submenu>
+            
+        </ps:menu>
+    </h:form>
+
+</ui:composition>
