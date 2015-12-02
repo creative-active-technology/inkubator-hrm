@@ -17,7 +17,6 @@ import javax.jms.Message;
 import javax.jms.Session;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.criterion.Order;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -278,8 +277,8 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 	public String saveTransitionWithRevised(EmpCareerHistoryModel model, Long approvalActivityId) throws Exception {
 		String message = "error";
 		
-		/** do set addtional value */
-		model = this.doSetAdditionalValue(model);
+		/** do validation */
+		this.doValidationTransition(model, approvalActivityId);
 		
 		/** proceed of revising data */
 		String pendingData = this.convertToJsonData(model);
@@ -301,26 +300,38 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 		return model;
 	}
 	
-	private void doValidationTransition(EmpCareerHistoryModel model) throws BussinessException {
+	private void doValidationTransition(EmpCareerHistoryModel model, Long excludeAppActivityId) throws BussinessException {
 		CareerTransition careerTransition = careerTransitionDao.getEntiyByPK(model.getCareerTransitionId());
 		/** if employee is not working anymore(ex:termination), 
 			then it should check if the employee still have pending task approval */
 		if(careerTransition.getSystemCareerConst().getIsWork() == false){
 	        HrmUser user = hrmUserDao.getByEmpDataId(model.getEmpData().getId());
 	        if (user != null) {
-	            long totalPendingTask = approvalActivityDao.getPendingTask(user.getUserId()).size();
-	            if (totalPendingTask > 0) {
+	            List<ApprovalActivity> listPendingTask = approvalActivityDao.getPendingTask(user.getUserId());
+	            
+	            if(excludeAppActivityId != null){
+	            	//exclude this activityId, digunakan ketika melakukan revisi approval
+	            	listPendingTask.remove(new ApprovalActivity(excludeAppActivityId)); 	
+	            }
+	            
+	            if (listPendingTask.size() > 0) {
 	                throw new BussinessException("emp_data.error_cannot_do_transition_still_have_pending_task");
 	            }
 	        }
 		}
+		
+		/** nik should not be duplicate */
+		long totalDuplicates = empDataDao.getTotalByNikandNotId(model.getNik(), model.getEmpData().getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("emp_data.error_nik_duplicate");
+        }
 	}
 
 	private String saveTransition(EmpCareerHistoryModel model, Boolean isBypassApprovalChecking) throws Exception {
 		String message = "error";
 		
 		/** do validation */
-		this.doValidationTransition(model);
+		this.doValidationTransition(model, null);
 		
 		/** do set addtional value */
 		model = this.doSetAdditionalValue(model);
@@ -338,11 +349,15 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 			EmpData empData = empDataDao.getEntiyByPK(model.getEmpData().getId());
 			String salaryEncrypted = this.calculateSalaryEncrypted(empData.getBasicSalary(), model.getSalaryChangesType(), model.getSalaryChangesPercent());
 			empData.setBasicSalary(salaryEncrypted);
+			empData.setNik(model.getNik());
 			empData.setEmployeeType(employeeType);
 			empData.setJabatanByJabatanId(jabatan);
 			empData.setGolonganJabatan(golonganJabatan);
 			empData.setJoinDate(model.getJoinDate());
-			empData.setStatus(careerTransition.getSystemCareerConst().getConstant());
+			/** status di karyawan/empData berbeda dengan yang di empCareerHistory.
+			 *  cukup dua status saja termination(tidak bekerja) atau placement(masih bekerja), untuk detailnya silahkan di liat di status empCareerHistory */
+			String status = careerTransition.getSystemCareerConst().getIsWork() ? HRMConstant.EMP_PLACEMENT : HRMConstant.EMP_TERMINATION;
+			empData.setStatus(status);
 			empData.setUpdatedBy(StringUtils.isEmpty(model.getCreatedBy()) ? UserInfoUtil.getUserName() : model.getCreatedBy());
 			empData.setUpdatedOn(model.getCreatedOn() == null ? new Date() : model.getCreatedOn());
 			empDataDao.update(empData);
@@ -353,7 +368,7 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 	        careerHistory.setCopyOfLetterTo(copyOfLetterTo);
 	        careerHistory.setGolonganJabatan(empData.getGolonganJabatan());
 	        careerHistory.setJabatan(empData.getJabatanByJabatanId());
-	        careerHistory.setNik(empData.getNik());
+	        careerHistory.setNik(model.getNik());
 	        careerHistory.setNoSk(model.getNoSk());
 	        careerHistory.setSalary(empData.getBasicSalary());
 	        careerHistory.setTglPenganngkatan(model.getEffectiveDate());
@@ -482,7 +497,10 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 		//initialization
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy", new Locale(appActivity.getLocale()));
         EmpCareerHistoryModel model = this.convertJsonToModel(appActivity.getPendingData());
-        EmpData empData = empDataDao.getEntiyByPK(model.getEmpData().getId());
+        EmployeeType beforeEmployeeType = employeeTypeDao.getEntiyByPK(model.getEmpData().getEmployeeType().getId());
+        Jabatan beforeJabatan = jabatanDao.getEntiyByPK(model.getEmpData().getJabatanByJabatanId().getId());
+        EmployeeType afterEmployeeType = employeeTypeDao.getEntiyByPK(model.getEmployeeTypeId());
+        Jabatan afterJabatan = jabatanDao.getEntiyByPK(model.getJabatanId());
         
         //get all sendCC email address on status approve OR reject
         List<String> ccEmailAddresses = new ArrayList<String>();
@@ -504,16 +522,17 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
             jsonObj.put("ccEmailAddresses", ccEmailAddresses);
             jsonObj.put("locale", appActivity.getLocale());
             jsonObj.put("proposeDate", dateFormat.format(model.getCreatedOn()));
-            jsonObj.put("beforeNik", empData.getNik());
-            jsonObj.put("beforeJoinDate", dateFormat.format(empData.getJoinDate()));
-            jsonObj.put("beforeEmployeeType", empData.getEmployeeType().getName());
-            jsonObj.put("beforeJabatan", empData.getJabatanByJabatanId().getName());
-            jsonObj.put("beforeDepartment", empData.getJabatanByJabatanId().getDepartment().getDepartmentName());
+            jsonObj.put("effectiveDate", dateFormat.format(model.getEffectiveDate()));
+            jsonObj.put("beforeNik", model.getEmpData().getNik());
+            jsonObj.put("beforeJoinDate", dateFormat.format(model.getEmpData().getJoinDate()));
+            jsonObj.put("beforeEmployeeType", beforeEmployeeType.getName());
+            jsonObj.put("beforeJabatan", beforeJabatan.getName());
+            jsonObj.put("beforeDepartment", beforeJabatan.getDepartment().getDepartmentName());
             jsonObj.put("afterNik", model.getNik());
-            jsonObj.put("afterJoinDate", model.getJoinDate());
-            jsonObj.put("afterEmployeeType", model.getEmployeeTypeName());
-            jsonObj.put("afterJabatan", model.getJabatanName());
-            jsonObj.put("afterDepartment", model.getDepartmentName());
+            jsonObj.put("afterJoinDate", dateFormat.format(model.getJoinDate()));
+            jsonObj.put("afterEmployeeType", afterEmployeeType.getName());
+            jsonObj.put("afterJabatan", afterJabatan.getName());
+            jsonObj.put("afterDepartment", afterJabatan.getDepartment().getDepartmentName());
             
             jsonObj.put("urlLinkToApprove", FacesUtil.getRequest().getContextPath() + "" + HRMConstant.EMPLOYEE_CAREER_TRANSITION_APPROVAL_PAGE + "" +"?faces-redirect=true&execution=e" + appActivity.getId());
 

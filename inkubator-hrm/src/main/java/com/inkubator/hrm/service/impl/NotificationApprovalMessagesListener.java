@@ -310,7 +310,6 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             maptoSend.put("listNamaJabatan", listNamaJabatan);
                             break;
                         case HRMConstant.EMPLOYEE_CAREER_TRANSITION:
-                        	System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                             vtm.setSubject("Pengajuan Transisi Karir");
                             vtm.setTemplatePath("email_career_transition_waiting_approval.vm");
                             maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
@@ -526,7 +525,8 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                             vtm.setSubject("Pengajuan Transisi Karir");
                             if(appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED){
                             	vtm.setTemplatePath("email_career_transition_approved.vm");
-                                maptoSend.put("effectiveDate", jsonObject.get("effectiveDate").getAsString());
+                            	maptoSend.put("employeeName", requesterUser.getEmpData().getBioData().getFullName());
+                            	maptoSend.put("effectiveDate", jsonObject.get("effectiveDate").getAsString());
                                 maptoSend.put("beforeNik", jsonObject.get("beforeNik").getAsString());
                                 maptoSend.put("beforeJoinDate", jsonObject.get("beforeJoinDate").getAsString());
                                 maptoSend.put("beforeEmployeeType", jsonObject.get("beforeEmployeeType").getAsString());

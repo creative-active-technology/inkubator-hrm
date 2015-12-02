@@ -43,6 +43,7 @@ public class EmpCareerHistoryModel implements Serializable {
     private String jabatanName;
     private String golonganJabatanName;
     private String employeeTypeName;
+    private String currentNik;
     private String currentCompany;
     private String currentDepartment;
     private String currentJabatan;
@@ -261,5 +262,10 @@ public class EmpCareerHistoryModel implements Serializable {
 	public void setNik(String nik) {
 		this.nik = nik;
 	}
-    
+	public String getCurrentNik() {
+		return currentNik;
+	}
+	public void setCurrentNik(String currentNik) {
+		this.currentNik = currentNik;
+	}
 }
