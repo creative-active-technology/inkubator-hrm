@@ -34,6 +34,7 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
+import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.CareerTransitionDao;
 import com.inkubator.hrm.dao.EmpCareerHistoryDao;
 import com.inkubator.hrm.dao.EmpDataDao;
@@ -42,6 +43,7 @@ import com.inkubator.hrm.dao.GolonganJabatanDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.CareerTransition;
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.entity.EmpData;
@@ -82,6 +84,7 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 	private GolonganJabatanDao golonganJabatanDao;
 	@Autowired
 	private CareerTransitionDao careerTransitionDao;
+	
 
 	@Override
 	public EmpCareerHistory getEntiyByPK(String id) throws Exception {
@@ -568,7 +571,15 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<CareerTransitionInboxViewModel> getEntityEmpCareerHistoryInboxByParam(CareerTransitionInboxSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception{
-        return empCareerHistoryDao.getEntityEmpCareerHistoryInboxByParam(searchParameter, firstResult, maxResults, order);
+    	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+    	List<CareerTransitionInboxViewModel> listModel = empCareerHistoryDao.getEntityEmpCareerHistoryInboxByParam(searchParameter, firstResult, maxResults, order);
+    	System.out.println(listModel.size());
+    	for(CareerTransitionInboxViewModel careerTransitionInbox : listModel){
+    		EmpCareerHistoryModel model = this.convertJsonToModel(careerTransitionInbox.getJsonData());
+    		Jabatan jabatan = jabatanDao.getEntiyByPK(model.getJabatanId());
+    		careerTransitionInbox.setJabatanName(jabatan.getName());
+    	}
+    	return listModel;
     }
 
     @Override

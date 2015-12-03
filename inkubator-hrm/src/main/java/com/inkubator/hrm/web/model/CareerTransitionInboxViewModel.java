@@ -7,6 +7,7 @@ package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Date;
 
 /**
  *
@@ -21,6 +22,8 @@ public class CareerTransitionInboxViewModel implements Serializable {
     private String rmbsApplicationCode;
     private Integer approvalStatus;
     private String jsonData;
+    private String jabatanName;
+    private Date requestTime;
 
     public BigInteger getApprovalActivityId() {
         return approvalActivityId;
@@ -77,6 +80,22 @@ public class CareerTransitionInboxViewModel implements Serializable {
     public void setJsonData(String jsonData) {
         this.jsonData = jsonData;
     }
+
+	public String getJabatanName() {
+		return jabatanName;
+	}
+
+	public void setJabatanName(String jabatanName) {
+		this.jabatanName = jabatanName;
+	}
+
+	public Date getRequestTime() {
+		return requestTime;
+	}
+
+	public void setRequestTime(Date requestTime) {
+		this.requestTime = requestTime;
+	}
     
     
 }

@@ -145,7 +145,8 @@ public class EmpCareerHistoryDaoImpl extends IDAOImpl<EmpCareerHistory> implemen
                 "empData.nik AS empNik," +
                 "CONCAT(bioData.first_name,' ',bioData.last_name) AS empName, " +
                 "approvalActivity.approval_status AS approvalStatus, " +
-                "approvalActivity.pending_data AS jsonData " +
+                "approvalActivity.pending_data AS jsonData, " +
+                "approvalActivity.request_time AS requestTime " +
                 "FROM approval_activity approvalActivity " +
                 "LEFT JOIN approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id " +
                 "LEFT JOIN hrm_user AS approver ON approver.user_id = approvalActivity.approved_by " +
