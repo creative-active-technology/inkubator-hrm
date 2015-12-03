@@ -45,6 +45,7 @@ public class GolonganJabatan implements java.io.Serializable {
     private BigDecimal ratioCompact;
     private Date updatedOn;
     private List<GolonganJabatan> listGolonganJabatans = new ArrayList<>(0);
+    private Set<AppraisalCompetencyTypeGolJab> appraisalCompetencyTypeGolJabs = new HashSet<AppraisalCompetencyTypeGolJab>(0);
 
     public GolonganJabatan() {
     }
@@ -225,6 +226,15 @@ public class GolonganJabatan implements java.io.Serializable {
 
     public void setListGolonganJabatans(List<GolonganJabatan> listGolonganJabatans) {
         this.listGolonganJabatans = listGolonganJabatans;
+    }
+    
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="golonganJabatan")
+    public Set<AppraisalCompetencyTypeGolJab> getAppraisalCompetencyTypeGolJabs() {
+        return this.appraisalCompetencyTypeGolJabs;
+    }
+    
+    public void setAppraisalCompetencyTypeGolJabs(Set<AppraisalCompetencyTypeGolJab> appraisalCompetencyTypeGolJabs) {
+        this.appraisalCompetencyTypeGolJabs = appraisalCompetencyTypeGolJabs;
     }
     
     @Override
