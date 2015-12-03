@@ -86,7 +86,10 @@
 
 
 /*BODY*/
-body{margin:0px; background-image:url("#{resource['spark-layout:images/background.png']}"); background-repeat:repeat; background-position:center; background-color:#C3CCD5; 
+body{margin:0px; 
+     /*background-image:url("#{resource['spark-layout:images/background.png']}");*/ 
+     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a7cfdf), color-stop(90%,#23538a));
+     background-repeat:repeat; background-position:center; background-color:#C3CCD5; 
      background-attachment:fixed; font-family: 'ralewaymedium';}
 
 /* menu mask*/
