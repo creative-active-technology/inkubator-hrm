@@ -58,6 +58,8 @@ import com.inkubator.hrm.web.model.BioEducationHistoryViewModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,11 +72,16 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.StreamedContent;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Component;
 
 /**
  *
@@ -237,16 +244,27 @@ public class BioDataDetilController extends BaseController {
     private List<BioRelasiPerusahaan> listBioRelasiPerusaan;
     private BioRelasiPerusahaan selectedBioRelasiPerusahaan;
     //end. Bio RelasiPerusahaan
+    
+    //Flag penanda bahwa halaman detail ini di akses dari proses pencarian karyawan
+    private Boolean isFromSearchEmployee = Boolean.FALSE;
+    private String urlBackToSearchEmployee = StringUtils.EMPTY;
 
     @PostConstruct
     @Override
     public void initialization() {
         try {
             super.initialization();
+            
+            // Check jika berasal dari proses pencarian karyawan
+            Map<String, Object> sessionMap = FacesUtil.getExternalContext().getSessionMap();
+        	String flagFromSearchEmployee = (String) sessionMap.get("isFromSearchEmployee");
+        	if(StringUtils.equals(flagFromSearchEmployee, "true")){
+        		isFromSearchEmployee = Boolean.TRUE;
+        		urlBackToSearchEmployee = (String) sessionMap.get("urlBackToSearchEmployee");
+        	}
+            
             userId = FacesUtil.getRequestParameter("execution");
-       
             selectedBioData = bioDataService.getEntityByPKWithDetail(Long.parseLong(userId.substring(1)));
-            System.out.println(" nilai serveri nya "+selectedBioData);
             selectedEmpData = empDataService.getByEmpDataByBioDataId(selectedBioData.getId());
             bioAddresses = bioAddressService.getAllDataByBioDataId(selectedBioData.getId());
             bioDocuments = bioDocumentService.getAllDataByBioDataId(selectedBioData.getId());
@@ -267,7 +285,8 @@ public class BioDataDetilController extends BaseController {
             listBioRelasiPerusaan = bioRelasiPerusahaanService.getAllDataByBioDataId(selectedBioData.getId());
             //Inisialisasi Riwayat Dinas
             businessTravelList = businessTravelService.getAllDataByEmpDataId(selectedEmpData.getId());
-
+            
+            System.out.println("setelah inisialisasi list, dan sebelum looping ");
             //Looping List Dinas dan hitung Total Biaya dari masing - masing Dinas
             for (BusinessTravel businessTravel : businessTravelList) {
                 countTotalAmoutOfBusinessTravel(businessTravel);
@@ -280,9 +299,12 @@ public class BioDataDetilController extends BaseController {
                     setLeaveApprovalOfficer(lv);
                 }
             }
+            
+            System.out.println("setelah inisialisasi list dan  looping ");
 
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
+            ex.printStackTrace();
         }
     }
 
@@ -352,7 +374,9 @@ public class BioDataDetilController extends BaseController {
 
     public void setLeaveApprovalOfficer(LeaveImplementation leaveImplementation) throws Exception {
         ApprovalActivity selectedApprovalActivity = approvalActivityService.getEntityByActivityNumberLastSequence(leaveImplementation.getApprovalActivityNumber());
-        leaveImplementation.setApprovedBy(selectedApprovalActivity.getApprovedBy());
+        if(selectedApprovalActivity != null){
+        	leaveImplementation.setApprovedBy(selectedApprovalActivity.getApprovedBy());
+        }
     }
 
     public BioAddress getSelectedBioAddress() {
@@ -847,7 +871,27 @@ public class BioDataDetilController extends BaseController {
         return "/protected/personalia/biodata_form.htm?faces-redirect=true&execution=e" + selectedBioData.getId();
     }
 
-    public String doBack() {
+    public String doBack() throws Exception {
+    	if(isFromSearchEmployee){
+    		/* 
+    		 * Jika berasal dari flow pencarian karyawan,
+    		 * dapatkan real idFlowExecution dari urlBackToSearchEmployee yang sudah di insialisasi di awal load controller
+    		 * lalu redirect ke URL /flow-protected/search_employee?+idFlowExecution
+    		 */
+    		ExternalContext context = FacesUtil.getExternalContext();
+    		String idFlowExecution = StringUtils.substringAfterLast(urlBackToSearchEmployee, "?");
+    		
+    		 //Hapus dahulu flag dari sessionMap untuk agar ketika buka dari biodata_view, maka return nya sudah mengikuti behaviour normal
+    		 Map<String, Object> sessionMap = context.getSessionMap();
+    		 sessionMap.remove("isFromSearchEmployee");
+    		 sessionMap.remove("urlBackToSearchEmployee");
+    		 
+    		 //redirect ke halaman pencarian karyawan
+    		context.redirect(context.getRequestContextPath() + "/flow-protected/search_employee?" + idFlowExecution);
+    		return null;
+    	}
+    	
+    	//jika bukan dari proses pencarian, kembali ke halaman view biodata
         return "/protected/personalia/biodata_view.htm?faces-redirect=true";
     }
 

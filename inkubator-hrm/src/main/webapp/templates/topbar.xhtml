@@ -1,0 +1,63 @@
+<ui:composition 
+
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+
+    <div id="layout-topbar" class="ShadowGray">
+        <div id="layout-topbar-indent">
+            <a href="./mobile_home.htm">
+                <p:graphicImage value="../resources/images/logo_hr_blue.png"   cache="false"  id="logo"  height="100" width="130"/>
+                <!--<h:graphicImage name="images/LOGO.svg" styleClass="Fleft" library="spark-layout" id="logo" class="Fleft"/>-->
+            </a>
+            <a href="#" id="mobile-menu-button" class="BordRad3 white ShowOnMobile"><i class="fa fa-bars"></i> Menu</a>
+            <a href="#" id="mobile-menu-button-gray" class="BordRad3 white ShowOnMobile"><i class="fa fa-caret-down"></i> Top Menu</a>
+
+            <ul id="layout-topbar-menu">
+                <li>
+                    <a href="#" class="Animated05"><i class="fa fa-sign-out"></i> Logout</a>
+                </li>
+                <li class="fa fa-ellipsis-v menu-separator"></li>
+                <li>
+                    <a href="#" class="Animated05"><i class="fa fa-gear fa-spin"></i> Settings</a>
+                </li>
+                <li class="fa fa-ellipsis-v menu-separator"></li>
+                <li>
+                    <a class="Animated05 CursPointer"><i class="fa fa-flag-checkered"></i> Language <i class="fa fa-chevron-down Fs14 Fright ShowOnMobile"></i></a>
+                    <ul style="width:150px; margin-left:-30px;" class="Animated03 submenu">
+                        <li><a href="#" class="Animated05"><i class="fa fa-flag red"></i> English</a></li>
+                        <li><a href="#" class="Animated05"><i class="fa fa-flag red"></i> German</a></li>
+                        <li><a href="#" class="Animated05"><i class="fa fa-flag red"></i> Portuguese</a></li>
+                        <li><a href="#" class="Animated05"><i class="fa fa-flag red"></i> French</a></li>
+                    </ul>
+                </li>
+                <li class="fa fa-ellipsis-v menu-separator"></li>
+                <li>
+                    <a class="Animated05 CursPointer"><i class="fa fa-bell animated swing infinite red"></i> Messages <span class="notification-bubble BordRad3 animated rubberBand">24</span> <i class="fa fa-chevron-down Fs14 Fright ShowOnMobile"></i></a>
+                    <ul style="width:200px; margin-left:-45px;" class="Animated03 submenu">
+                        <li><a href="#" class="Animated05"><i class="fa fa-envelope Fs18 blue"></i> <span class="Fright Fs16 TexAlRight">Brian Connely<span class="Fs10 DispBlock">Sales Reports</span></span></a></li>
+                        <li><a href="#" class="Animated05"><i class="fa fa-envelope Fs18"></i> <span class="Fright Fs16 TexAlRight">Jack O'Neill<span class="Fs10 DispBlock">Last Meeting Notes</span></span></a></li>
+                        <li><a href="#" class="Animated05"><i class="fa fa-envelope Fs18 blue"></i> <span class="Fright Fs16 TexAlRight">Tony Parker<span class="Fs10 DispBlock">Web Site Visitors</span></span></a></li>
+                        <li><a href="#" class="Animated05"><i class="fa fa-envelope Fs18 red animated infinite rubberBand"></i> <span class="Fright Fs16 TexAlRight">Bob Ross<span class="Fs10 DispBlock">IK Reports</span></span></a></li>
+                        <li><a href="#" class="Animated05"><i class="fa fa-envelope Fs18 orange"></i> <span class="Fright Fs16 TexAlRight">Sarah White<span class="Fs10 DispBlock">Marketing News</span></span></a></li>
+                    </ul>
+                </li>
+                <li class="fa fa-ellipsis-v menu-separator"></li>
+                <li>
+                    <a class="Animated05 CursPointer"><i class="fa fa-user"></i> John DOE, Welcome <i class="fa fa-chevron-down Fs14 Fright ShowOnMobile"></i></a>
+                    <ul style="width:175px; margin-left:-10px;" class="Animated03 submenu">
+                        <li><a class="Animated05"><i class="fa fa-user Fs30 Fleft"></i> <span class="Fright Fs20 TexAlRight">John DOE<span class="Fs10 DispBlock">Last login 18:50</span></span></a></li>
+                        <li><a href="#" class="Animated05"><i class="fa fa-dashboard"></i> My Profile</a></li>
+                        <li><a href="#" class="Animated05"><i class="fa fa-magic"></i> My Settings</a></li>
+                        <li><a href="#" class="Animated05"><i class="fa fa-suitcase"></i> Tasks <span class="notification-bubble BordRad3 Fright">24</span></a></li>
+                        <li><a href="#" class="Animated05"><i class="fa fa-quote-right"></i> Notifications <span class="notification-bubble BordRad3 Fright">18</span></a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</ui:composition>
