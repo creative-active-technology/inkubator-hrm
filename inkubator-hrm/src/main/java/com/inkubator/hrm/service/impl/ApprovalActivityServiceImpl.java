@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -353,6 +352,24 @@ public class ApprovalActivityServiceImpl extends IServiceImpl implements Approva
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<ApprovalActivity> getAllDataWaitingStatusApproval() throws Exception {
         return approvalActivityDao.getAllDataWaitingStatusApproval();
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalRequestHistory(String userName) throws Exception {
+        return approvalActivityDao.getTotalRequestHistory(userName);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalPendingRequest(String userName) throws Exception {
+        return approvalActivityDao.getTotalPendingRequest(userName);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalPendingTask(String userName) throws Exception {
+        return approvalActivityDao.getTotalPendingTask(userName);
     }
 
 }

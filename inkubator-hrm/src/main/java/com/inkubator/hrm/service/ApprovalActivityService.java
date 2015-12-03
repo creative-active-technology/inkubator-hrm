@@ -48,4 +48,10 @@ public interface ApprovalActivityService extends IService<ApprovalActivity> {
     public List<ApprovalActivity> getAllDataWithAllRelation(ApprovalActivitySearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public List<ApprovalActivity> getAllDataWaitingStatusApproval() throws Exception;
+
+    public Long getTotalRequestHistory(String userName) throws Exception;
+
+    public Long getTotalPendingRequest(String userName) throws Exception;
+
+    public Long getTotalPendingTask(String userName) throws Exception;
 }

@@ -78,16 +78,16 @@
                                     <div class="EmptyBox10"></div>
                                     <i class="fa fa-thumbs-up Fs24 animated swing infinite blue"></i>
                                     <span class="Fs14 DispBlock black">#{appmsg['home.request_history']} </span>
-                                    <span class="Fs24 DispBlock red">24</span>
+                                    <span class="Fs24 DispBlock red">#{homeMobileController.totalRequestHistory}</span>
                                     <div class="EmptyBox10"></div>
                                 </div>
                             </a>
                             <a href="#" class="Wid30 Responsive BorderedBox Fleft TexAlCenter HoverEffect" style="margin-left:5%;">
                                 <div class="ContainerIndent">
                                     <div class="EmptyBox10"></div>
-                                       <i class="fa fa-tasks Fs24 animated bounceOut infinite blue"></i>
+                                    <i class="fa fa-tasks Fs24 animated bounceOut infinite blue"></i>
                                     <span class="Fs14 DispBlock black">#{appmsg['home.pending_task']}</span>
-                                    <span class="Fs24 DispBlock red">19</span>
+                                    <span class="Fs24 DispBlock red">#{homeMobileController.totalPendingTask}</span>
                                     <div class="EmptyBox10"></div>
                                 </div>
                             </a>
@@ -96,7 +96,7 @@
                                     <div class="EmptyBox10"></div>
                                     <i class="fa fa-thumbs-down animated swing infinite red Fs24"></i>
                                     <span class="Fs14 DispBlock black">#{appmsg['home.pending_request']}</span>
-                                    <span class="Fs24 DispBlock red">26</span>
+                                    <span class="Fs24 DispBlock red">#{homeMobileController.totalPendingRequest}</span>
                                     <div class="EmptyBox10"></div>
                                 </div>
                             </a>
@@ -105,7 +105,7 @@
                                     <div class="EmptyBox10"></div>
                                     <i class="fa fa-tachometer animated bounceIn infinite blue Fs24"></i>
                                     <span class="Fs14 DispBlock black">#{appmsg['resumeLeaveEmployee.leave_usage']}</span>
-                                    <span class="Fs24 DispBlock red">26</span>
+                                    <span class="Fs24 DispBlock red">#{homeMobileController.totalLeaveType}</span>
                                     <div class="EmptyBox10"></div>
                                 </div>
                             </a>
