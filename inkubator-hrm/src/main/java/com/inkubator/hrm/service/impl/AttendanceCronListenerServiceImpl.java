@@ -1,12 +1,18 @@
 package com.inkubator.hrm.service.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.TextMessage;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -14,19 +20,14 @@ import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.MecineFingerDao;
 import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.MecineFinger;
-import com.inkubator.hrm.entity.SchedulerLog;
 import com.inkubator.hrm.entity.WtPeriode;
+import com.inkubator.hrm.service.SchedulerLogService;
 import com.inkubator.hrm.util.MachineFingerUtil;
 import com.inkubator.webcore.util.FacesIO;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
-import org.springframework.transaction.PlatformTransactionManager;
 
 /**
  *
@@ -49,7 +50,7 @@ public class AttendanceCronListenerServiceImpl extends BaseSchedulerDinamicListe
     @Autowired
     private WtPeriodeDao wtPeriodeDao;
     @Autowired
-    private PlatformTransactionManager transactionManager;
+    private SchedulerLogService schedulerLogService;
 
     /**
      * <p>
@@ -66,14 +67,14 @@ public class AttendanceCronListenerServiceImpl extends BaseSchedulerDinamicListe
      *
      * @throws java.lang.Exception
      */
-//	@Override
-//    @Scheduled(cron = "${cron.calculate.attendance.daily}")
-    public void calculateAttendanceDaily() throws Exception {
+    public String calculateAttendanceDaily() throws Exception {
         LOGGER.warn("Calculate Attendance Running ==========================================================" + new Date());
+        StringBuffer statusMessage = new StringBuffer();
+        int stepProcess = 1;
         JobExecution jobExecution;
         JobParameters jobParameters;
         WtPeriode period = wtPeriodeDao.getEntityByAbsentTypeActive();
-
+        
         /**
          * Process no 1.
          */
@@ -83,24 +84,40 @@ public class AttendanceCronListenerServiceImpl extends BaseSchedulerDinamicListe
                 /**
                  * Download file from service(url) as stream to disk(file)
                  * before running jobs
-                 *
                  */
-                String xmlResponse = MachineFingerUtil.getAllDataAttendanceLog(machine.getServiceHost(), Integer.parseInt(machine.getServicePort()));
-                if (StringUtils.isEmpty(xmlResponse)) {
-                    throw new BussinessException("global.error_data_finger_empty");
+            	String xmlResponse = StringUtils.EMPTY;
+            	try {
+            		xmlResponse = MachineFingerUtil.getAllDataAttendanceLog(machine.getServiceHost(), Integer.parseInt(machine.getServicePort()));
+            	} catch (IOException e) {
+        			//LOGGER.error("Error", e);
+        		}
+            	
+                if (StringUtils.isNotEmpty(xmlResponse)) {                
+	                Long currentTimeInMillis = new Date().getTime();
+	                String pathUpload = facesIO.getPathUpload() + "machine_" + machine.getCode() + "_xml_" + currentTimeInMillis + ".xml";
+	                FileUtils.writeStringToFile(new File(pathUpload), xmlResponse);
+	
+	                //running jobs batch to execute file
+	                jobParameters = new JobParametersBuilder()
+	                        .addString("fragmentRootElementName", "Row")
+	                        .addString("resourcePath", "file:///" + pathUpload)
+	                        .addLong("machineId", machine.getId())
+	                        .addString("createdBy", HRMConstant.SYSTEM_ADMIN)
+	                        .addDate("createdOn", new Timestamp(currentTimeInMillis)).toJobParameters();
+	                jobExecution = jobLauncher.run(jobFingerSwapCapturedDownloadXml, jobParameters);
+	                
+	                if(jobExecution.getStatus() == BatchStatus.COMPLETED){
+	                	statusMessage.append(stepProcess + ". " + machine.getName() + " Download Finger Absent = Success | ");
+	                	stepProcess++;
+	                } else {
+	                	statusMessage.append(stepProcess + ". " + machine.getName() + " Download Finger Absent = Failed | ");
+	                	stepProcess++;
+	                }
+	                
+                } else {
+                	statusMessage.append(stepProcess + ". " + machine.getName() + " Download Finger Machine = Failed | ");
+                	stepProcess++;
                 }
-                Long currentTimeInMillis = new Date().getTime();
-                String pathUpload = facesIO.getPathUpload() + "machine_" + machine.getCode() + "_xml_" + currentTimeInMillis + ".xml";
-                FileUtils.writeStringToFile(new File(pathUpload), xmlResponse);
-
-                //running jobs batch to execute file
-                jobParameters = new JobParametersBuilder()
-                        .addString("fragmentRootElementName", "Row")
-                        .addString("resourcePath", "file:///" + pathUpload)
-                        .addLong("machineId", machine.getId())
-                        .addString("createdBy", HRMConstant.SYSTEM_ADMIN)
-                        .addDate("createdOn", new Timestamp(currentTimeInMillis)).toJobParameters();
-                jobExecution = jobLauncher.run(jobFingerSwapCapturedDownloadXml, jobParameters);
             }
         }
 
@@ -112,6 +129,14 @@ public class AttendanceCronListenerServiceImpl extends BaseSchedulerDinamicListe
                 .addDate("createdOn", new Timestamp(new Date().getTime()))
                 .toJobParameters();
         jobExecution = jobLauncher.run(jobSynchDataFingerRealization, jobParameters);
+        
+        if(jobExecution.getStatus() == BatchStatus.COMPLETED){
+        	statusMessage.append(stepProcess + ". Data Finger Synchronization = Success | ");
+        	stepProcess++;
+        } else {
+        	statusMessage.append(stepProcess + ". Data Finger Synchronization = Failed | ");
+        	stepProcess++;
+        }
 
         /**
          * Process no 3.
@@ -123,24 +148,29 @@ public class AttendanceCronListenerServiceImpl extends BaseSchedulerDinamicListe
                 .addLong("wtPeriodId", period.getId())
                 .toJobParameters();
         jobExecution = jobLauncher.run(jobTempAttendanceRealizationCalculation, jobParameters);
+        
+        if(jobExecution.getStatus() == BatchStatus.COMPLETED){
+        	statusMessage.append(stepProcess + ". Data Finger Calculation = Success | ");
+        	stepProcess++;
+        } else {
+        	statusMessage.append(stepProcess + ". Data Finger Calculation = Failed | ");
+        	stepProcess++;
+        }
+        
         LOGGER.warn("Calculate Attendance Finish ==========================================================" + new Date());
+        
+        return statusMessage.toString();
     }
 
     @Override
-//    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public void onMessage(Message msg) {
-        SchedulerLog log = null;
         try {
             TextMessage textMessage = (TextMessage) msg;
-            log = schedulerLogDao.getEntiyByPK(Long.parseLong(textMessage.getText()));
-            calculateAttendanceDaily();
-            log.setStatusMessages("FINISH");
-            super.doUpdateSchedulerLogSchedulerLog(log);
+            String statusMessage = calculateAttendanceDaily();
+            String schedullerLogId = textMessage.getText();
+            schedulerLogService.updateLogAndStatus(schedullerLogId, statusMessage);
+            
         } catch (Exception ex) {
-            if (log != null) {
-                log.setStatusMessages(ex.getMessage());
-                super.doUpdateSchedulerLogSchedulerLog(log);
-            }
             LOGGER.error(ex, ex);
         }
     }
