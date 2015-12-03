@@ -167,12 +167,12 @@
                                     <f:setPropertyActionListener value="#{data}" target="#{searchEmployeeModel.selectedEmpData}" />
                                 </p:commandButton>
                                 -
-                                <p:commandButton icon="ui-icon-folder-collapsed" title="#{appmsg['global.employee_information']}" label="#{appmsg['global.employee_information']}"
+                                <p:commandButton icon="ui-icon-suitcase" title="#{appmsg['global.employee_information']}" label="#{appmsg['global.employee_information']}"
                                                  style="font-size: 10px!important" action="#{searchEmployeeViewController.doDetailEmployeeInfo(data.id)}" ajax="false" >                        
                                     <f:setPropertyActionListener value="#{data}" target="#{searchEmployeeModel.selectedEmpData}" />
                                 </p:commandButton>
                                 -
-                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.background_information']}" label="#{appmsg['global.background_information']}"
+                                <p:commandButton icon="ui-icon-comment" title="#{appmsg['global.background_information']}" label="#{appmsg['global.background_information']}"
                                                  style="font-size: 10px!important" action="#{searchEmployeeViewController.doDetailEmployeeBackgroundInfo(data.id)}" ajax="false" >                        
                                     <f:setPropertyActionListener value="#{data}" target="#{searchEmployeeModel.selectedEmpData}" />
                                 </p:commandButton>
