@@ -1,6 +1,7 @@
 package com.inkubator.hrm.service.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -75,22 +76,27 @@ public class AttendanceCronServiceImpl implements AttendanceCronService {
 				/**
 		    	 * Download file from service(url) as stream to disk(file) before running jobs
 		    	 * */
-	    		String xmlResponse = MachineFingerUtil.getAllDataAttendanceLog(machine.getServiceHost(), Integer.parseInt(machine.getServicePort()));   
-	    		if(StringUtils.isEmpty(xmlResponse)){
-					throw new BussinessException("global.error_data_finger_empty");
+				String xmlResponse = StringUtils.EMPTY;
+				try {
+					xmlResponse = MachineFingerUtil.getAllDataAttendanceLog(machine.getServiceHost(), Integer.parseInt(machine.getServicePort()));   
+				} catch (IOException e) {
+        			//LOGGER.error("Error", e);
+        		}
+				
+				if (StringUtils.isNotEmpty(xmlResponse)) {
+		    		Long currentTimeInMillis = new Date().getTime();
+			    	String pathUpload = facesIO.getPathUpload() + "machine_" + machine.getCode() + "_xml_" + currentTimeInMillis + ".xml";
+			    	FileUtils.writeStringToFile(new File(pathUpload), xmlResponse);
+			    	
+			    	//running jobs batch to execute file
+			    	jobParameters = new JobParametersBuilder()
+				    	.addString("fragmentRootElementName", "Row")
+				    	.addString("resourcePath", "file:///"+pathUpload)
+				    	.addLong("machineId", machine.getId())
+				    	.addString("createdBy", HRMConstant.SYSTEM_ADMIN)
+				    	.addDate("createdOn", new Timestamp(currentTimeInMillis)).toJobParameters();	    	
+					jobExecution = jobLauncher.run(jobFingerSwapCapturedDownloadXml, jobParameters);
 				}
-	    		Long currentTimeInMillis = new Date().getTime();
-		    	String pathUpload = facesIO.getPathUpload() + "machine_" + machine.getCode() + "_xml_" + currentTimeInMillis + ".xml";
-		    	FileUtils.writeStringToFile(new File(pathUpload), xmlResponse);
-		    	
-		    	//running jobs batch to execute file
-		    	jobParameters = new JobParametersBuilder()
-			    	.addString("fragmentRootElementName", "Row")
-			    	.addString("resourcePath", "file:///"+pathUpload)
-			    	.addLong("machineId", machine.getId())
-			    	.addString("createdBy", HRMConstant.SYSTEM_ADMIN)
-			    	.addDate("createdOn", new Timestamp(currentTimeInMillis)).toJobParameters();	    	
-				jobExecution = jobLauncher.run(jobFingerSwapCapturedDownloadXml, jobParameters);
 			}
 		}
 		
