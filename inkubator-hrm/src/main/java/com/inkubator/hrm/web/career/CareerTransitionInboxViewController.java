@@ -13,6 +13,7 @@ import javax.faces.bean.ViewScoped;
 
 import org.primefaces.model.LazyDataModel;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.service.EmpCareerHistoryService;
 import com.inkubator.hrm.web.lazymodel.CareerTransitionInboxLazyDataModel;
 import com.inkubator.hrm.web.model.CareerTransitionInboxViewModel;
@@ -50,6 +51,14 @@ public class CareerTransitionInboxViewController extends BaseController {
     public void doSearch() {
         lazyDataModel = null;
     }
+    
+    public String doDetail(){
+    	if(selected.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED){
+    		return "/protected/career/career_transition_inbox_detail.htm?faces-redirect=true&execution=e"+selected.getApprovalActivityId();
+    	}else{
+    		return "/protected/career/emp_career_transition_approval_form.htm?faces-redirect=true&execution=e"+selected.getApprovalActivityId();
+    	}
+	}
     
     public void doSelectEntity() {
 //        try {

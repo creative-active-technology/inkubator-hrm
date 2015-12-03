@@ -577,7 +577,15 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
     	for(CareerTransitionInboxViewModel careerTransitionInbox : listModel){
     		EmpCareerHistoryModel model = this.convertJsonToModel(careerTransitionInbox.getJsonData());
     		Jabatan jabatan = jabatanDao.getEntiyByPK(model.getJabatanId());
+    		EmployeeType employeeType = employeeTypeDao.getEntiyByPK(model.getEmployeeTypeId());
+    		GolonganJabatan golJab = golonganJabatanDao.getEntiyByPK(model.getGolonganJabatanId());
+    		CareerTransition careerTransition = careerTransitionDao.getEntiyByPK(model.getCareerTransitionId());
+    		
     		careerTransitionInbox.setJabatanName(jabatan.getName());
+    		careerTransitionInbox.setGolonganJabatanName(golJab.getCode());
+    		careerTransitionInbox.setEmployeeTypeName(employeeType.getName());
+    		careerTransitionInbox.setTransitionRole(careerTransition.getTransitionRole());
+    		careerTransitionInbox.setNotes(model.getNotes());
     	}
     	return listModel;
     }

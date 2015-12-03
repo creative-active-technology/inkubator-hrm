@@ -17,14 +17,20 @@ public class CareerTransitionInboxViewModel implements Serializable {
     
     private BigInteger approvalActivityId;
     private BigInteger empCareerHistoryId;
-    private String empNik;
-    private String empName;
-    private String rmbsApplicationCode;
     private Integer approvalStatus;
-    private String jsonData;
-    private String jabatanName;
+    private Integer transitionRole;
+
     private Date requestTime;
 
+    private String rmbsApplicationCode;
+    private String empNik;
+    private String empName;
+    private String jsonData;
+    private String jabatanName;
+    private String golonganJabatanName;
+    private String employeeTypeName;
+    private String notes;
+    
     public BigInteger getApprovalActivityId() {
         return approvalActivityId;
     }
@@ -95,6 +101,38 @@ public class CareerTransitionInboxViewModel implements Serializable {
 
 	public void setRequestTime(Date requestTime) {
 		this.requestTime = requestTime;
+	}
+
+	public String getGolonganJabatanName() {
+		return golonganJabatanName;
+	}
+
+	public void setGolonganJabatanName(String golonganJabatanName) {
+		this.golonganJabatanName = golonganJabatanName;
+	}
+
+	public String getEmployeeTypeName() {
+		return employeeTypeName;
+	}
+
+	public void setEmployeeTypeName(String employeeTypeName) {
+		this.employeeTypeName = employeeTypeName;
+	}
+
+	public Integer getTransitionRole() {
+		return transitionRole;
+	}
+
+	public void setTransitionRole(Integer transitionRole) {
+		this.transitionRole = transitionRole;
+	}
+
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
     
     

@@ -75,9 +75,9 @@ public class EmpCareerTransitionApprovalFormController extends BaseController {
     public void initialization() {
         try {
             super.initialization();
-            
-            /** initial data for approval activity tracking */
             String id = FacesUtil.getRequestParameter("execution");
+            /** initial data for approval activity tracking */
+            
             currentActivity = approvalActivityService.getEntiyByPK(Long.parseLong(id.substring(1)));
             askingRevisedActivity = approvalActivityService.getEntityByActivityNumberAndSequence(currentActivity.getActivityNumber(),
                     currentActivity.getSequence() - 1);
@@ -315,5 +315,5 @@ public class EmpCareerTransitionApprovalFormController extends BaseController {
 	public void setApprovalActivityService(ApprovalActivityService approvalActivityService) {
 		this.approvalActivityService = approvalActivityService;
 	}
-
+	
 }
