@@ -94,4 +94,15 @@ public class LeaveImplementationDateDaoImpl extends IDAOImpl<LeaveImplementation
 		return criteria.list();
 	}
 
+	@Override
+	public LeaveImplementationDate getEntityByEmpDataIdAndActualDate(Long empDataId, Date actualDate) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("leaveImplementation", "leaveImplementation", JoinType.INNER_JOIN);
+		criteria.createAlias("leaveImplementation.empData", "empData", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("actualDate", actualDate));
+		criteria.add(Restrictions.eq("empData.id", empDataId));
+		criteria.add(Restrictions.eq("isCancelled", Boolean.FALSE));
+		return (LeaveImplementationDate) criteria.uniqueResult();
+	}
+
 }
