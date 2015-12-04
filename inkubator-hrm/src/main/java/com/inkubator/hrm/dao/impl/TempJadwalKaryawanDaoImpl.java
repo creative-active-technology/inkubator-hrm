@@ -216,5 +216,17 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
         criteria.add(Restrictions.not(Restrictions.eq("empData.status", HRMConstant.EMP_TERMINATION)));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
+	
+	@Override
+	public List<TempJadwalKaryawan> getAllDataByTanggalWaktuKerjaAndCompanyId(Date tanggalWaktuKerja, Long companyId){
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+		criteria.createAlias("empData.jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
+        criteria.createAlias("department.company", "company", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("tanggalWaktuKerja", tanggalWaktuKerja));  
+        criteria.add(Restrictions.eq("company.id", companyId));
+		return criteria.list();
+	}
 
 }

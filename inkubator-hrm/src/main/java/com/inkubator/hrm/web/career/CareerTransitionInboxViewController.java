@@ -13,8 +13,9 @@ import javax.faces.bean.ViewScoped;
 
 import org.primefaces.model.LazyDataModel;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.service.EmpCareerHistoryService;
-import com.inkubator.hrm.service.impl.EmpCareerHistoryServiceImpl;
+import com.inkubator.hrm.web.lazymodel.CareerTransitionInboxLazyDataModel;
 import com.inkubator.hrm.web.model.CareerTransitionInboxViewModel;
 import com.inkubator.hrm.web.search.CareerTransitionInboxSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
@@ -51,6 +52,14 @@ public class CareerTransitionInboxViewController extends BaseController {
         lazyDataModel = null;
     }
     
+    public String doDetail(){
+    	if(selected.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED){
+    		return "/protected/career/career_transition_inbox_detail.htm?faces-redirect=true&execution=e"+selected.getApprovalActivityId();
+    	}else{
+    		return "/protected/career/emp_career_transition_approval_form.htm?faces-redirect=true&execution=e"+selected.getApprovalActivityId();
+    	}
+	}
+    
     public void doSelectEntity() {
 //        try {
 //            selected = this.service.getEntiyByPK(selected.get());
@@ -78,6 +87,9 @@ public class CareerTransitionInboxViewController extends BaseController {
     }
 
     public LazyDataModel<CareerTransitionInboxViewModel> getLazyDataModel() {
+    	if(lazyDataModel == null){
+    		lazyDataModel = new CareerTransitionInboxLazyDataModel(searchParameter, service);
+    	}
         return lazyDataModel;
     }
 

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.criterion.Order;
+import org.primefaces.model.chart.ChartSeries;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.Department;
@@ -199,5 +200,7 @@ public interface EmpDataService extends IService<EmpData> {
     public Long getTotalAllEmployeeForRecruitAggrementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter) throws Exception;
     
     public List<EmpData> getListEmpDataWhichNotExistOnFingerEmpMatch() throws Exception;
+
+	public List<ChartSeries> getEmployeePresentationAttendanceOnDashboard(Long companyId, List<Date> listDate) throws Exception;
         
 }

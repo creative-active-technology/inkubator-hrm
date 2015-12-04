@@ -5,18 +5,20 @@
  */
 package com.inkubator.hrm.web.lazymodel;
 
-import com.inkubator.hrm.entity.SavingType;
-import com.inkubator.hrm.service.impl.EmpCareerHistoryServiceImpl;
-import com.inkubator.hrm.web.model.CareerTransitionInboxViewModel;
-import com.inkubator.hrm.web.search.CareerTransitionInboxSearchParameter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
+
+import com.inkubator.hrm.service.EmpCareerHistoryService;
+import com.inkubator.hrm.service.impl.EmpCareerHistoryServiceImpl;
+import com.inkubator.hrm.web.model.CareerTransitionInboxViewModel;
+import com.inkubator.hrm.web.search.CareerTransitionInboxSearchParameter;
 
 /**
  *
@@ -25,11 +27,11 @@ import org.primefaces.model.SortOrder;
 public class CareerTransitionInboxLazyDataModel extends LazyDataModel<CareerTransitionInboxViewModel> implements Serializable {
     private static final Logger LOGGER = Logger.getLogger(CareerTransitionInboxLazyDataModel.class);
     private final CareerTransitionInboxSearchParameter searchParameter;
-    private final EmpCareerHistoryServiceImpl service;
+    private final EmpCareerHistoryService service;
     private List<CareerTransitionInboxViewModel> careerTransitionInboxList = new ArrayList<>();
     private Integer jumlahData;
 
-    public CareerTransitionInboxLazyDataModel(CareerTransitionInboxSearchParameter searchParameter, EmpCareerHistoryServiceImpl service) {
+    public CareerTransitionInboxLazyDataModel(CareerTransitionInboxSearchParameter searchParameter, EmpCareerHistoryService service) {
         this.searchParameter = searchParameter;
         this.service = service;
     }
@@ -43,7 +45,7 @@ public class CareerTransitionInboxLazyDataModel extends LazyDataModel<CareerTran
                 if(sortField != null){
                     order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
                 }else{
-                    order = Order.desc("name");
+                    order = Order.desc("empName");
                 }
                 careerTransitionInboxList = service.getEntityEmpCareerHistoryInboxByParam(searchParameter, first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalgetEntityEmpCareerHistoryInboxByParam(searchParameter)));

@@ -1,6 +1,10 @@
 package com.inkubator.hrm.dao.impl;
 
+import java.util.Date;
+
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +31,14 @@ public class LogWtProcessReadFingerDaoImpl extends IDAOImpl<LogWtProcessReadFing
 		Query query = getCurrentSession().createQuery("DELETE FROM LogWtProcessReadFinger temp WHERE temp.wtPeriodeId = :periodId")
 				.setLong("periodId", periodId);
         query.executeUpdate();
+	}
+
+	@Override
+	public LogWtProcessReadFinger getEntityByEmpDataIdAndScheduleDate(Long empDataId, Date scheduleDate) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empDataId", empDataId));
+        criteria.add(Restrictions.eq("scheduleDate", scheduleDate));
+        return (LogWtProcessReadFinger) criteria.uniqueResult();
 	}
 
 	

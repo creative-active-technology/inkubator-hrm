@@ -16,8 +16,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.joda.time.DateTime;
+import org.primefaces.model.chart.ChartSeries;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
@@ -52,6 +54,8 @@ import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.dao.KlasifikasiKerjaJabatanDao;
 import com.inkubator.hrm.dao.LeaveImplementationDateDao;
+import com.inkubator.hrm.dao.LogWtProcessReadFingerDao;
+import com.inkubator.hrm.dao.MedicalCareDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.PermitImplementationDao;
 import com.inkubator.hrm.dao.TaxFreeDao;
@@ -74,8 +78,11 @@ import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.KlasifikasiKerjaJabatan;
+import com.inkubator.hrm.entity.LogWtProcessReadFinger;
 import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.entity.TaxFree;
+import com.inkubator.hrm.entity.TempJadwalKaryawan;
+import com.inkubator.hrm.entity.TempProcessReadFinger;
 import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.util.MapUtil;
@@ -102,6 +109,7 @@ import com.inkubator.hrm.web.search.ReportEmpWorkingGroupParameter;
 import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
 import com.inkubator.hrm.web.search.SearchEmployeeCandidateParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
  *
@@ -157,6 +165,10 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private PermitImplementationDao permitImplementationDao;
     @Autowired
     private TempJadwalKaryawanDao tempJadwalKaryawanDao;
+    @Autowired
+    private MedicalCareDao medicalCareDao;
+    @Autowired
+    private LogWtProcessReadFingerDao logWtProcessReadFingerDao;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -1341,6 +1353,112 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<EmpData> getListEmpDataWhichNotExistOnFingerEmpMatch() throws Exception {
 		return empDataDao.getListEmpDataWhichNotExistOnFingerEmpMatch();
+	}
+	
+	@Override
+	@Cacheable(value = "employeePresentationAttendanceOnDashboard", key = "#companyId")
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<ChartSeries> getEmployeePresentationAttendanceOnDashboard(Long companyId, List<Date> listDate) throws Exception {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy", FacesUtil.getFacesContext().getViewRoot().getLocale());
+		ChartSeries leaveAndTravel = new ChartSeries();
+		ChartSeries permitAndSick = new ChartSeries();
+		ChartSeries attend = new ChartSeries();
+		ChartSeries notAttend = new ChartSeries();
+		
+		leaveAndTravel.setLabel(ResourceBundleUtil.getAsString("attendance.leave_or_travel"));
+		permitAndSick.setLabel(ResourceBundleUtil.getAsString("attendance.permit_or_sick"));
+		attend.setLabel(ResourceBundleUtil.getAsString("attendance.attend"));
+		notAttend.setLabel(ResourceBundleUtil.getAsString("attendance.not_attend"));
+		
+		for(Date tanggalWaktuKerja : listDate){
+			Long totalLeaveAndTravel = 0L;
+			Long totalPermitAndSick = 0L;
+			Long totalAttend = 0L;
+			Long totalNotAttend = 0L;
+			
+			/** mulai perhitungan kehadiran, dengan prioritas (seandainya di semua kategori ada, walau real case tidak mungkin) :
+			 * 1. Cuti 
+			 * 2. Perjalanan Dinas
+			 * 3. Sakit 
+			 * 4. Ijin
+			 * 5. Hadir */
+			List<TempJadwalKaryawan> listJadwalKaryawan = tempJadwalKaryawanDao.getAllDataByTanggalWaktuKerjaAndCompanyId(tanggalWaktuKerja, companyId);
+			for(TempJadwalKaryawan jadwalKaryawan : listJadwalKaryawan){
+				if(this.isEmployeeOnLeaveOrTravel(jadwalKaryawan.getEmpData().getId(), tanggalWaktuKerja)) {
+					totalLeaveAndTravel++;
+				} else if(this.isEmployeeOnPermitOrSick(jadwalKaryawan.getEmpData().getId(), tanggalWaktuKerja)) {
+					totalPermitAndSick++;
+				} else if(this.isEmployeeAttend(jadwalKaryawan.getEmpData().getId(), tanggalWaktuKerja)) {
+					totalAttend++;
+				} else {
+					totalNotAttend++;
+				}				
+			}
+			
+			leaveAndTravel.set(formatter.format(tanggalWaktuKerja), totalLeaveAndTravel);
+			permitAndSick.set(formatter.format(tanggalWaktuKerja), totalPermitAndSick);
+			attend.set(formatter.format(tanggalWaktuKerja), totalAttend);
+			notAttend.set(formatter.format(tanggalWaktuKerja), totalNotAttend);
+		}
+		
+		List<ChartSeries> listPresentasiAttendance = new ArrayList<>();
+		listPresentasiAttendance.add(leaveAndTravel);
+		listPresentasiAttendance.add(permitAndSick);
+		listPresentasiAttendance.add(attend);
+		listPresentasiAttendance.add(notAttend);
+		return listPresentasiAttendance;
+	}
+
+	private boolean isEmployeeAttend(Long empDataId, Date tanggalWaktuKerja) {
+		Boolean isEmployeeAttend = Boolean.FALSE;
+		
+		/** jika tanggalWaktuKerja di periode waktu kerja AKTIF, maka ambil dari table temporary(TempProcessReadFinger)
+		 *  tapi jika tanggalWaktuKerja di periode waktu kerja VOID(tidak Aktif), maka ambil dari table log(LogWtProcessReadFinger)*/
+		WtPeriode periode = wtPeriodeDao.getEntityByDateBetween(tanggalWaktuKerja);
+		if(periode==null || StringUtils.equals(periode.getAbsen(), HRMConstant.PERIODE_ABSEN_ACTIVE)) {
+			TempProcessReadFinger readFinger = tempProcessReadFingerDao.getEntityByEmpDataIdAndScheduleDate(empDataId, tanggalWaktuKerja);
+			if(readFinger == null){
+				isEmployeeAttend = Boolean.FALSE;
+			} else if(readFinger.getFingerIn() != null || readFinger.getFingerOut() != null || readFinger.getWebCheckIn() != null || readFinger.getWebCheckOut() != null){
+				isEmployeeAttend = Boolean.TRUE;
+			}
+			
+		} else {
+			LogWtProcessReadFinger readFinger = logWtProcessReadFingerDao.getEntityByEmpDataIdAndScheduleDate(empDataId, tanggalWaktuKerja);
+			if(readFinger == null){
+				isEmployeeAttend = Boolean.FALSE;
+			} else if(readFinger.getFingerIn() != null || readFinger.getFingerOut() != null || readFinger.getWebCheckIn() != null || readFinger.getWebCheckOut() != null){
+				isEmployeeAttend = Boolean.TRUE;
+			}
+		}
+		
+		return isEmployeeAttend;
+	}
+
+	private boolean isEmployeeOnPermitOrSick(Long empDataId, Date tanggalWaktuKerja) {
+		Boolean isEmployeeOnPermitOrSick = Boolean.FALSE;
+		
+		if(medicalCareDao.getByEmpIdAndDate(empDataId, tanggalWaktuKerja) != null){
+			isEmployeeOnPermitOrSick = Boolean.TRUE;
+			
+		} else if(permitImplementationDao.getByEmpStardDateEndDate(empDataId, tanggalWaktuKerja) != null){
+			isEmployeeOnPermitOrSick = Boolean.TRUE;
+		}
+		
+		return isEmployeeOnPermitOrSick;
+	}
+
+	private boolean isEmployeeOnLeaveOrTravel(Long empDataId, Date tanggalWaktuKerja) {
+		Boolean isEmployeeOnLeaveOrTravel = Boolean.FALSE;
+		
+		if(leaveImplementationDateDao.getEntityByEmpDataIdAndActualDate(empDataId, tanggalWaktuKerja) != null){
+			isEmployeeOnLeaveOrTravel = Boolean.TRUE;
+			
+		} else if(businessTravelDao.getByEmpIdAndDate(empDataId, tanggalWaktuKerja) != null){
+			isEmployeeOnLeaveOrTravel = Boolean.TRUE;
+		}
+		
+		return isEmployeeOnLeaveOrTravel;
 	}
 
 }
