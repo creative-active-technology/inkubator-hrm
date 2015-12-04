@@ -69,7 +69,7 @@
                                 		value="#{paySalaryGradeFormController.paySalaryGradeModel.minSalary}"  maxlength="45"
                                         style="text-align: right;width: 210px" required="true" styleClass="isitext_hrm" >
                                     <f:validateDoubleRange/>
-                                    <f:convertNumber />
+                                    <f:convertNumbers/>
                                     <f:validator validatorId="bigDecimalNumberBetweenValidator"  />
                                 	<f:attribute name="endNumberInteger" value="#{medSalary}"/>
                                 	<f:attribute name="validatorMessage" value="#{appmsg['paysalarygrade.min_salary_could_not_greater_than_med_salary']}"/>

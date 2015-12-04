@@ -44,10 +44,6 @@ public class GolonganJabatanDaoImpl extends IDAOImpl<GolonganJabatan> implements
 //        criteria.setFetchMode("paySalaryGrade", FetchMode.JOIN);
 //        criteria.setFetchMode("paySalaryGrade.currency", FetchMode.JOIN);
 
-        criteria.createAlias("pangkat", "pangkat", JoinType.LEFT_OUTER_JOIN);
-        criteria.createAlias("paySalaryGrade", "paySalaryGrade", JoinType.LEFT_OUTER_JOIN);
-        criteria.createAlias("paySalaryGrade.currency", "currency", JoinType.LEFT_OUTER_JOIN);
-
         doSearchByParam(parameter, criteria);
 
         criteria.addOrder(orderable);
@@ -64,6 +60,9 @@ public class GolonganJabatanDaoImpl extends IDAOImpl<GolonganJabatan> implements
     }
 
     private void doSearchByParam(GolonganJabatanSearchParameter parameter, Criteria criteria) {
+    	criteria.createAlias("pangkat", "pangkat", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("paySalaryGrade", "paySalaryGrade", JoinType.LEFT_OUTER_JOIN);
+        criteria.createAlias("paySalaryGrade.currency", "currency", JoinType.LEFT_OUTER_JOIN);
         if (StringUtils.isNotEmpty(parameter.getCode())) {
             criteria.add(Restrictions.like("code", parameter.getCode(), MatchMode.ANYWHERE));
         }
