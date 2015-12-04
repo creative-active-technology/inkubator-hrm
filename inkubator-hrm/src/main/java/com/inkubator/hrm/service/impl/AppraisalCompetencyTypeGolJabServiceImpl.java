@@ -3,10 +3,15 @@ package com.inkubator.hrm.service.impl;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.AppraisalCompetencyTypeGolJabDao;
 import com.inkubator.hrm.entity.AppraisalCompetencyTypeGolJab;
 import com.inkubator.hrm.service.AppraisalCompetencyTypeGolJabService;
 
@@ -17,6 +22,9 @@ import com.inkubator.hrm.service.AppraisalCompetencyTypeGolJabService;
 @Service(value = "appraisalCompetencyTypeGolJabService")
 @Lazy
 public class AppraisalCompetencyTypeGolJabServiceImpl extends IServiceImpl implements AppraisalCompetencyTypeGolJabService {
+	
+	@Autowired
+	private AppraisalCompetencyTypeGolJabDao appraisalCompetencyTypeGolJabDao;
 
 	@Override
 	public void delete(AppraisalCompetencyTypeGolJab arg0) throws Exception {
@@ -211,6 +219,12 @@ public class AppraisalCompetencyTypeGolJabServiceImpl extends IServiceImpl imple
 	public AppraisalCompetencyTypeGolJab updateData(AppraisalCompetencyTypeGolJab arg0) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<AppraisalCompetencyTypeGolJab> getListByAppraisalCompetenceTypeId(Long appraisalCompetenceTypeId) throws Exception {
+		return appraisalCompetencyTypeGolJabDao.getListByAppraisalCompetenceTypeId(appraisalCompetenceTypeId);
 	}
 
 }
