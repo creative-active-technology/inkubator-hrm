@@ -21,11 +21,11 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.MecineFingerDao;
-import com.inkubator.hrm.dao.WtPeriodeDao;
 import com.inkubator.hrm.entity.MecineFinger;
 import com.inkubator.hrm.entity.WtPeriode;
+import com.inkubator.hrm.service.MecineFingerService;
 import com.inkubator.hrm.service.SchedulerLogService;
+import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.util.MachineFingerUtil;
 import com.inkubator.webcore.util.FacesIO;
 
@@ -44,13 +44,13 @@ public class AttendanceCronListenerServiceImpl extends BaseSchedulerDinamicListe
     @Autowired
     private Job jobTempAttendanceRealizationCalculation;
     @Autowired
-    private MecineFingerDao mecineFingerDao;
-    @Autowired
     private FacesIO facesIO;
     @Autowired
-    private WtPeriodeDao wtPeriodeDao;
-    @Autowired
     private SchedulerLogService schedulerLogService;
+    @Autowired
+    private WtPeriodeService wtPeriodeService;
+    @Autowired
+    private MecineFingerService mecineFingerService;
 
     /**
      * <p>
@@ -73,12 +73,12 @@ public class AttendanceCronListenerServiceImpl extends BaseSchedulerDinamicListe
         int stepProcess = 1;
         JobExecution jobExecution;
         JobParameters jobParameters;
-        WtPeriode period = wtPeriodeDao.getEntityByAbsentTypeActive();
+        WtPeriode period = wtPeriodeService.getEntityByAbsentTypeActive();
         
         /**
          * Process no 1.
          */
-        List<MecineFinger> listMachine = mecineFingerDao.getAllDataByMachineMethod(HRMConstant.METHOD_SERVICE_MACINE);
+        List<MecineFinger> listMachine = mecineFingerService.getAllDataByMachineMethod(HRMConstant.METHOD_SERVICE_MACINE);
         for (MecineFinger machine : listMachine) {
             if (machine.getServiceType() == HRMConstant.SERVICE_DATA_XML) {
                 /**
