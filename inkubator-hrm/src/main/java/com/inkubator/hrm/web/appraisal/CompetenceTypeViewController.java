@@ -90,8 +90,9 @@ public class CompetenceTypeViewController extends BaseController{
         RequestContext.getCurrentInstance().openDialog("competence_type_form", options, params);
     }
     
-    public void doAdd(){
-        showDialog(null);
+    public String doAdd(){
+    	return "/protected/appraisal/competence_type_form.htm?faces-redirect=true";
+       // showDialog(null);
     }
             
     public void doEdit(){

@@ -4,13 +4,8 @@
  * and open the template in the editor.
  */
 package com.inkubator.hrm.web.appraisal;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
@@ -22,32 +17,17 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.apache.commons.lang3.StringUtils;
-import org.primefaces.context.RequestContext;
 import org.primefaces.model.DualListModel;
 
-import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.AppraisalCompetencyType;
 import com.inkubator.hrm.entity.AppraisalCompetencyTypeGolJab;
-import com.inkubator.hrm.entity.EmployeeType;
 import com.inkubator.hrm.entity.GolonganJabatan;
-import com.inkubator.hrm.entity.KlasifikasiKerja;
-import com.inkubator.hrm.entity.OrgTypeOfSpec;
-import com.inkubator.hrm.entity.OrgTypeOfSpecList;
-import com.inkubator.hrm.entity.OrgTypeOfSpecListKlasifikasi;
-import com.inkubator.hrm.entity.OrgTypeOfSpecListKlasifikasiId;
-import com.inkubator.hrm.entity.ReimbursmentSchema;
-import com.inkubator.hrm.entity.ReimbursmentSchemaEmployeeType;
 import com.inkubator.hrm.service.AppraisalCompetencyTypeGolJabService;
 import com.inkubator.hrm.service.AppraisalCompetencyTypeService;
 import com.inkubator.hrm.service.GolonganJabatanService;
-import com.inkubator.hrm.service.KlasifikasiKerjaService;
-import com.inkubator.hrm.service.OrgTypeOfSpecListService;
-import com.inkubator.hrm.service.OrgTypeOfSpecService;
 import com.inkubator.hrm.web.model.AppraisalCompetencyTypeModel;
-import com.inkubator.hrm.web.model.OrgTypeOfSpecListModel;
-import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -91,7 +71,6 @@ public class CompetenceTypeFormController extends BaseController{
             }
             
             doDualListModelKlasifikasiKerja(isUpdate, model);
-            doSelectOneMenuOrgTypeOfSpecList();
         } catch (Exception e){
             LOGGER.error("error", e);
         }
@@ -127,93 +106,82 @@ public class CompetenceTypeFormController extends BaseController{
         appraisalCompetencyType.setCode(model.getCode());
         appraisalCompetencyType.setName(model.getName());
         appraisalCompetencyType.setDescription(model.getDescription());
+        appraisalCompetencyType.setVisibility(model.getVisibility());
         return appraisalCompetencyType;
     }
     
-    /*public void doSave(){
-        OrgTypeOfSpecList orgTypeOfSpecList = getEntityFromViewModel(model);
-        try{
-            if(isUpdate){
-                service.update(orgTypeOfSpecList);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
-            } else {
-                service.save(orgTypeOfSpecList);
-                RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
-            }
-            cleanAndExit();
-        } catch (BussinessException ex){
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        } catch (Exception ex){
-            LOGGER.error("Error", ex);
-        }
-    }*/
     
     public String doSave(){
-    	/*OrgTypeOfSpecList orgTypeOfSpecList = getEntityFromViewModel(model);
-    	if (isUpdate) {
-            return doUpdate(orgTypeOfSpecList);
-        } else {
-        	orgTypeOfSpecList.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-            return doInsert(orgTypeOfSpecList);
-        }*/
+    	AppraisalCompetencyType appraisalCompetencyType = getEntityFromViewModel(model);
+    	try {
+			List<Long> listIdGolJabatan = dualListModelGolJabatan.getTarget().stream().map(golJabatan -> golJabatan.getId()).collect(Collectors.toList());
+			if (isUpdate) {
+			    return "/protected/appraisal/competence_type_view.htm?faces-redirect=true";
+			} else {
+				appraisalCompetencyTypeService.saveDataCompetenceType(appraisalCompetencyType, listIdGolJabatan);
+				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+	                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+				return "/protected/appraisal/competence_type_view.htm?faces-redirect=true";
+			}
+		} catch (BussinessException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+        }catch (Exception e) {
+			e.printStackTrace();
+		}
     	return null;
     }
     
-    private String doUpdate(OrgTypeOfSpecList orgTypeOfSpecList) {
-        /*try {
-            
-        	Set<OrgTypeOfSpecListKlasifikasi> dataToSave = new HashSet<>(0);
-        	List<KlasifikasiKerja> listSelectedKlasifikasiKerja = dualListModelGolJabatan.getTarget();
-        	for (KlasifikasiKerja klasifikasiKerja : listSelectedKlasifikasiKerja) {
-            	OrgTypeOfSpecListKlasifikasi orgTypeOfSpecListKlasifikasi = new OrgTypeOfSpecListKlasifikasi();
-            	orgTypeOfSpecListKlasifikasi.setId(new OrgTypeOfSpecListKlasifikasiId(orgTypeOfSpecList.getId(), klasifikasiKerja.getId()));
-            	orgTypeOfSpecListKlasifikasi.setOrgTypeOfSpecList(orgTypeOfSpecList);
-            	orgTypeOfSpecListKlasifikasi.setKlasifikasiKerja(klasifikasiKerja);
-            	orgTypeOfSpecListKlasifikasi.setCreatedBy(UserInfoUtil.getUserName());
-            	orgTypeOfSpecListKlasifikasi.setCreatedOn(new Date());
-                dataToSave.add(orgTypeOfSpecListKlasifikasi);
-            }
-        	orgTypeOfSpecList.setOrgTypeOfSpecListKlasifikasis(dataToSave);
-            service.update(orgTypeOfSpecList);
-                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-                return "/protected/organisation/org_typespec_list_detail.htm?faces-redirect=true&execution=e" + orgTypeOfSpecList.getId();
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }*/
-        return null;
-    }
+   
     
-    private String doInsert(OrgTypeOfSpecList orgTypeOfSpecList) {
-        /*try {
-                Set<OrgTypeOfSpecListKlasifikasi> dataToSave = new HashSet<>(0);
-                List<KlasifikasiKerja> listSelectedKlasifikasiKerja = dualListModelGolJabatan.getTarget();
-                for (KlasifikasiKerja klasifikasiKerja : listSelectedKlasifikasiKerja) {
-                	OrgTypeOfSpecListKlasifikasi orgTypeOfSpecListKlasifikasi = new OrgTypeOfSpecListKlasifikasi();
-                	orgTypeOfSpecListKlasifikasi.setId(new OrgTypeOfSpecListKlasifikasiId(orgTypeOfSpecList.getId(), klasifikasiKerja.getId()));
-                	orgTypeOfSpecListKlasifikasi.setOrgTypeOfSpecList(orgTypeOfSpecList);
-                	orgTypeOfSpecListKlasifikasi.setKlasifikasiKerja(klasifikasiKerja);
-                	orgTypeOfSpecListKlasifikasi.setCreatedBy(UserInfoUtil.getUserName());
-                	orgTypeOfSpecListKlasifikasi.setCreatedOn(new Date());
-                    dataToSave.add(orgTypeOfSpecListKlasifikasi);
-                }
-                orgTypeOfSpecList.setOrgTypeOfSpecListKlasifikasis(dataToSave);
-                service.save(orgTypeOfSpecList);
-                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-                return "/protected/organisation/org_typespec_list_detail.htm?faces-redirect=true&execution=e" + orgTypeOfSpecList.getId();
-                
-
-            
-        } catch (Exception ex) {
-            LOGGER.error("Error", ex);
-        }*/
-        return null;
+    //method for add list selection for dualListModel
+    public void doDualListModelKlasifikasiKerja(Boolean isUpdate, AppraisalCompetencyTypeModel model) throws Exception{
+    	 List<GolonganJabatan> listGolonganJabatan = golonganJabatanService.getAllData();
+    	if(isUpdate){
+    		List<AppraisalCompetencyTypeGolJab> listCompTypeGolJab = appraisalCompetencyTypeGolJabService.getListByAppraisalCompetenceTypeId(model.getId());
+    		List<GolonganJabatan> listGolJabatanFromCompetencyType = listCompTypeGolJab.stream().map(AppraisalCompetencyTypeGolJab::getGolonganJabatan).collect(Collectors.toList());
+    		listGolonganJabatan.removeAll(listGolJabatanFromCompetencyType);
+    		dualListModelGolJabatan = new DualListModel<>(listGolonganJabatan, listGolJabatanFromCompetencyType);
+    	}else{
+    		dualListModelGolJabatan.setSource(listGolonganJabatan);
+    	}
     }
 
     
+	public String doBack(){
+		return "/protected/appraisal/competence_type_view.htm?faces-redirect=true";
+	}
+	
 
-    public AppraisalCompetencyTypeModel getModel() {
+    public Map<String, Long> getMapGolJabatan() {
+		return mapGolJabatan;
+	}
+
+	public void setMapGolJabatan(Map<String, Long> mapGolJabatan) {
+		this.mapGolJabatan = mapGolJabatan;
+	}
+
+	public DualListModel<GolonganJabatan> getDualListModelGolJabatan() {
+		return dualListModelGolJabatan;
+	}
+
+	public void setDualListModelGolJabatan(DualListModel<GolonganJabatan> dualListModelGolJabatan) {
+		this.dualListModelGolJabatan = dualListModelGolJabatan;
+	}
+
+	public void setAppraisalCompetencyTypeGolJabService(
+			AppraisalCompetencyTypeGolJabService appraisalCompetencyTypeGolJabService) {
+		this.appraisalCompetencyTypeGolJabService = appraisalCompetencyTypeGolJabService;
+	}
+
+	public void setAppraisalCompetencyTypeService(AppraisalCompetencyTypeService appraisalCompetencyTypeService) {
+		this.appraisalCompetencyTypeService = appraisalCompetencyTypeService;
+	}
+
+	public void setGolonganJabatanService(GolonganJabatanService golonganJabatanService) {
+		this.golonganJabatanService = golonganJabatanService;
+	}
+
+	public AppraisalCompetencyTypeModel getModel() {
         return model;
     }
 
@@ -245,31 +213,6 @@ public class CompetenceTypeFormController extends BaseController{
 		this.selected = selected;
 	}
 
-	//method for add selection dropdown
-    public void doSelectOneMenuOrgTypeOfSpecList() throws Exception{
-       /*orgTypeOfSpec = orgTypeOfSpecService.getAllData();
-     
-       for(OrgTypeOfSpec orgTypeOfSpecs : orgTypeOfSpec){
-           mapGolJabatan.put(orgTypeOfSpecs.getName(), orgTypeOfSpecs.getId());
-       }*/
-    }
-    
-    //method for add list selection for dualListModel
-    public void doDualListModelKlasifikasiKerja(Boolean isUpdate, AppraisalCompetencyTypeModel model) throws Exception{
-    	 List<GolonganJabatan> listGolonganJabatan = golonganJabatanService.getAllData();
-    	if(isUpdate){
-    		List<AppraisalCompetencyTypeGolJab> listCompTypeGolJab = appraisalCompetencyTypeGolJabService.getListByAppraisalCompetenceTypeId(model.getId());
-    		List<GolonganJabatan> listGolJabatanFromCompetencyType = listCompTypeGolJab.stream().map(AppraisalCompetencyTypeGolJab::getGolonganJabatan).collect(Collectors.toList());
-    		listGolonganJabatan.removeAll(listGolJabatanFromCompetencyType);
-    		dualListModelGolJabatan = new DualListModel<>(listGolonganJabatan, listGolJabatanFromCompetencyType);
-    	}else{
-    		dualListModelGolJabatan.setSource(listGolonganJabatan);
-    	}
-    }
-
-    
-	public String doBack(){
-		return "/protected/organisation/org_typespec_list_view.htm?faces-redirect=true";
-	}
+	
     
 }
