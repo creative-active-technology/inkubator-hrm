@@ -54,19 +54,21 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="#{appmsg['unregSalary.periode']}" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['empCandidateSearch.working_period']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:calendar  id="startPeriode" size="25" pattern="dd MMMM yyyy" label="#{appmsg['workingTime.start_period']}" value="#{UnregSalaryEmpSettingFormController.model.startPeriodDate}"
                                                              required="true" navigator="true">
-                                                    <f:validator validatorId="birthDateValidator"  />
-                                                    <f:attribute name="validatorMessage" value="#{appmsg['global.period_date_validator']}"/>
+                                                    <f:validator validatorId="dateBetweenValidator"  />
+                                                    <f:attribute name="endTime" value="#{endPeriode}"/>
+                                                    <f:attribute name="dateBetweenValidatorMessage" value="#{appmsg['global.period_date_validator']}"/>
                                                 </p:calendar>
                                                 <p:outputLabel  value=" s/d " style="font-weight: bold"/>
-                                                <p:calendar  id="endPeriode" size="25" pattern="dd MMMM yyyy" label="#{appmsg['workingTime.end_period']}" value="#{UnregSalaryEmpSettingFormController.model.endPeriodDate}"
+                                                <p:calendar  id="endPeriode" binding="#{endPeriode}" size="25" pattern="dd MMMM yyyy" label="#{appmsg['workingTime.end_period']}" value="#{UnregSalaryEmpSettingFormController.model.endPeriodDate}"
                                                              required="true" navigator="true">
-                                                    <f:validator validatorId="birthDateValidator"  />
-                                                    <f:attribute name="validatorMessage" value="#{appmsg['global.period_date_validator']}"/>
+                                                    <!-- <f:validator validatorId="dateBetweenValidator"  />
+                                                     <f:attribute name="endTime" value="#{endId}"/>
+                                                    <f:attribute name="validatorMessage" value="#{appmsg['global.period_date_validator']}"/> -->
                                                 </p:calendar>
                                                 <p:message for="startPeriode"/>
                                                 <p:message for="endPeriode"/>
@@ -110,7 +112,7 @@
                                         </p:row>
                                         <p:row>
                                             <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                <p:outputLabel  value="#{appmsg['global.gender']} zz" style="font-weight: bold"/>
+                                                <p:outputLabel  value="#{appmsg['global.gender']}" style="font-weight: bold"/>
                                             </p:column>
                                             <p:column style="width: 80%">
                                                 <p:pickList value="#{UnregSalaryEmpSettingFormController.genderDualListModel}" var="a" itemValue="#{a}" converter="genderPickListConverter" id="picklistGender"
@@ -140,7 +142,7 @@
 
                         <p:separator/>
                         <h:panelGrid columns="4" style="margin-bottom: 5px;float: left">
-                            <p:commandButton value="#{appmsg['global.save']}" action="#{UnregSalaryEmpSettingFormController.doSave()}" title="#{appmsg['global.save']}" label="#{appmsg['global.save']}" styleClass="label_button" icon="ui-icon-document" ajax="false" update=":growlId">
+                            <p:commandButton value="#{appmsg['global.save']}" action="#{UnregSalaryEmpSettingFormController.doSave()}" title="#{appmsg['global.save']}" label="#{appmsg['global.save']}" styleClass="label_button" icon="ui-icon-document" ajax="true" update="formId,:growlId">
                                 <!--<p:ajax event="dialogReturn" listener="#{UnregSalaryEmpSettingFormController.onDialogReturn}" update=":growlId"/>-->
                             </p:commandButton>
                             <!--<p:commandButton value="#{appmsg['global.edit']}"  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" action="#{bioDataDetilController.doEdit()}" styleClass="label_button"/>-->
