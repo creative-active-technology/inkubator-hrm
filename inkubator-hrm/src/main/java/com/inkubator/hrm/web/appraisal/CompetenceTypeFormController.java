@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -28,6 +29,7 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.AppraisalCompetencyType;
+import com.inkubator.hrm.entity.AppraisalCompetencyTypeGolJab;
 import com.inkubator.hrm.entity.EmployeeType;
 import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.KlasifikasiKerja;
@@ -76,24 +78,19 @@ public class CompetenceTypeFormController extends BaseController{
     public void initialization(){
         super.initialization();
         try{
-            String orgTypeOfSpecListId = FacesUtil.getRequestParameter("execution");
+            String id = FacesUtil.getRequestParameter("execution");
             model = new AppraisalCompetencyTypeModel();
-            
-            List<GolonganJabatan> listGolonganJabatan = golonganJabatanService.getAllData();
-            //listGolonganJabatan.stream().forEach(golJabatan -> mapGolJabatan.put(golJabatan.getCode(), golJabatan.getId()));
-            
-            if(StringUtils.isNotBlank(orgTypeOfSpecListId)){
-              /*  orgTypeOfSpecList = service.getAllDataWithDetail(Long.parseLong(orgTypeOfSpecListId.substring(1)));
-                if(orgTypeOfSpecList != null){
+           
+            if(StringUtils.isNotBlank(id)){
+            	isUpdate = Boolean.TRUE;
+            	AppraisalCompetencyType appraisalCompetencyType = appraisalCompetencyTypeService.getEntiyByPK(Long.parseLong(id.substring(1)));
+                if(appraisalCompetencyType != null){
                 	isUpdate = Boolean.TRUE;
-                	model = getModelFromEntity(orgTypeOfSpecList);
-                	doDualListModelKlasifikasiKerja(isUpdate, orgTypeOfSpecList);
-                }*/
-            }else{
-            	/*isUpdate = Boolean.FALSE;
-                doDualListModelKlasifikasiKerja(isUpdate, orgTypeOfSpecList);*/
+                	model = getModelFromEntity(appraisalCompetencyType);
+                }
             }
             
+            doDualListModelKlasifikasiKerja(isUpdate, model);
             doSelectOneMenuOrgTypeOfSpecList();
         } catch (Exception e){
             LOGGER.error("error", e);
@@ -113,7 +110,7 @@ public class CompetenceTypeFormController extends BaseController{
         
     }
     
-    private AppraisalCompetencyTypeModel getModelFromEntity(OrgTypeOfSpecList entity){
+    private AppraisalCompetencyTypeModel getModelFromEntity(AppraisalCompetencyType entity){
     	AppraisalCompetencyTypeModel model = new AppraisalCompetencyTypeModel();
         model.setId(entity.getId());
         model.setCode(entity.getCode());
@@ -122,16 +119,15 @@ public class CompetenceTypeFormController extends BaseController{
         return model;
     }
     
-    private OrgTypeOfSpecList getEntityFromViewModel(OrgTypeOfSpecListModel model){
-        OrgTypeOfSpecList orgTypeofSpecList = new OrgTypeOfSpecList();
+    private AppraisalCompetencyType getEntityFromViewModel(AppraisalCompetencyTypeModel model){
+    	AppraisalCompetencyType appraisalCompetencyType = new AppraisalCompetencyType();
         if(model.getId() != null){
-            orgTypeofSpecList.setId(model.getId());
+            appraisalCompetencyType.setId(model.getId());
         }
-        orgTypeofSpecList.setCode(model.getCode());
-        orgTypeofSpecList.setName(model.getName());
-        orgTypeofSpecList.setOrgTypeOfSpec(new OrgTypeOfSpec(model.getOrgTypeOfSpecId()));
-        orgTypeofSpecList.setDescription(model.getDescription());
-        return orgTypeofSpecList;
+        appraisalCompetencyType.setCode(model.getCode());
+        appraisalCompetencyType.setName(model.getName());
+        appraisalCompetencyType.setDescription(model.getDescription());
+        return appraisalCompetencyType;
     }
     
     /*public void doSave(){
@@ -233,8 +229,6 @@ public class CompetenceTypeFormController extends BaseController{
         this.isUpdate = isUpdate;
     }
 
-   
-
     public Map<String, Long> getDropDownOrgTypeOfSpec() {
         return mapGolJabatan;
     }
@@ -243,7 +237,15 @@ public class CompetenceTypeFormController extends BaseController{
         this.mapGolJabatan = dropDownOrgTypeOfSpec;
     }
     
-    //method for add selection dropdown
+    public AppraisalCompetencyType getSelected() {
+		return selected;
+	}
+
+	public void setSelected(AppraisalCompetencyType selected) {
+		this.selected = selected;
+	}
+
+	//method for add selection dropdown
     public void doSelectOneMenuOrgTypeOfSpecList() throws Exception{
        /*orgTypeOfSpec = orgTypeOfSpecService.getAllData();
      
@@ -253,15 +255,16 @@ public class CompetenceTypeFormController extends BaseController{
     }
     
     //method for add list selection for dualListModel
-    public void doDualListModelKlasifikasiKerja(Boolean isUpdate, OrgTypeOfSpecList orgTypeOfSpecList) throws Exception{
-    	/*List<KlasifikasiKerja> sourceKlasifikasiKerja = klasifikasiKerjaService.getAllData();
+    public void doDualListModelKlasifikasiKerja(Boolean isUpdate, AppraisalCompetencyTypeModel model) throws Exception{
+    	 List<GolonganJabatan> listGolonganJabatan = golonganJabatanService.getAllData();
     	if(isUpdate){
-    		List<KlasifikasiKerja> selectedListKlasifikasiKerja = orgTypeOfSpecList.getKlasifikasiKerja();
-    		sourceKlasifikasiKerja.removeAll(selectedListKlasifikasiKerja);
-    		dualListModelGolJabatan = new DualListModel<>(sourceKlasifikasiKerja, selectedListKlasifikasiKerja);
+    		List<AppraisalCompetencyTypeGolJab> listCompTypeGolJab = appraisalCompetencyTypeGolJabService.getListByAppraisalCompetenceTypeId(model.getId());
+    		List<GolonganJabatan> listGolJabatanFromCompetencyType = listCompTypeGolJab.stream().map(AppraisalCompetencyTypeGolJab::getGolonganJabatan).collect(Collectors.toList());
+    		listGolonganJabatan.removeAll(listGolJabatanFromCompetencyType);
+    		dualListModelGolJabatan = new DualListModel<>(listGolonganJabatan, listGolJabatanFromCompetencyType);
     	}else{
-    		dualListModelGolJabatan.setSource(sourceKlasifikasiKerja);
-    	}*/
+    		dualListModelGolJabatan.setSource(listGolonganJabatan);
+    	}
     }
 
     
