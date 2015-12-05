@@ -11,4 +11,6 @@ import com.inkubator.hrm.entity.AppraisalCompetencyTypeGolJab;
  */
 public interface AppraisalCompetencyTypeGolJabDao extends IDAO<AppraisalCompetencyTypeGolJab> {
 	public List<AppraisalCompetencyTypeGolJab> getListByAppraisalCompetenceTypeId(Long appraisalCompetenceTypeId);
+	
+	public AppraisalCompetencyTypeGolJab getEntityByIdGolJabatanAndIdCompType(Long idGolJabatan, Long idCompType);
 }

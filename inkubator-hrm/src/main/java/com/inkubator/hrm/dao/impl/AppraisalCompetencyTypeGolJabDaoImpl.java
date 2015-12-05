@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.AppraisalCompetencyTypeGolJabDao;
 import com.inkubator.hrm.entity.AppraisalCompetencyTypeGolJab;
+import com.inkubator.hrm.entity.AppraisalCompetencyTypeGolJabId;
 
 /**
 *
@@ -32,6 +33,13 @@ public class AppraisalCompetencyTypeGolJabDaoImpl extends IDAOImpl<AppraisalComp
         criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
         criteria.add(Restrictions.eq("appraisalCompetencyType.id", appraisalCompetenceTypeId));
         return criteria.list();
+	}
+
+	@Override
+	public AppraisalCompetencyTypeGolJab getEntityByIdGolJabatanAndIdCompType(Long idGolJabatan, Long idCompType) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", new AppraisalCompetencyTypeGolJabId(idCompType, idGolJabatan)));
+        return (AppraisalCompetencyTypeGolJab) criteria.uniqueResult();
 	}
 
 }

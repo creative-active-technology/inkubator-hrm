@@ -95,6 +95,7 @@ public class CompetenceTypeFormController extends BaseController{
         model.setCode(entity.getCode());
         model.setName(entity.getName());
         model.setDescription(entity.getDescription());
+        model.setVisibility(entity.getVisibility());
         return model;
     }
     
@@ -116,6 +117,9 @@ public class CompetenceTypeFormController extends BaseController{
     	try {
 			List<Long> listIdGolJabatan = dualListModelGolJabatan.getTarget().stream().map(golJabatan -> golJabatan.getId()).collect(Collectors.toList());
 			if (isUpdate) {
+				appraisalCompetencyTypeService.updateDataCompetenceType(appraisalCompetencyType, listIdGolJabatan);
+				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
+	                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 			    return "/protected/appraisal/competence_type_view.htm?faces-redirect=true";
 			} else {
 				appraisalCompetencyTypeService.saveDataCompetenceType(appraisalCompetencyType, listIdGolJabatan);

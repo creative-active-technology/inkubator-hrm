@@ -17,4 +17,6 @@ public interface AppraisalCompetencyTypeDao extends IDAO<AppraisalCompetencyType
 	public List<AppraisalCompetencyType> getListByParam(AppraisalCompetencyTypeSearchParameter searchParameter,	int firstResult, int maxResult, Order order);
 	
 	public Long getTotalByParam(AppraisalCompetencyTypeSearchParameter searchParameter);
+	
+	public AppraisalCompetencyType getEntityByIdWithDetail(Long id);
 }
