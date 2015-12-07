@@ -92,11 +92,12 @@
 body{
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a7cfdf), color-stop(90%,#23538a));
     background-image: -moz-linear-gradient(top,  #a7cfdf 0%, #23538a 90%, #23538a 90%);
-    min-height:100%;
-    height: 600px;
+/*    min-height:100%;
+    height: 600px;*/
+    background-size: cover;
     background-attachment:fixed;
-    background-position:top left;
-    background-repeat:repeat;
+    /*background-position:top left;*/
+    background-repeat:no-repeat;
     background-position:center;
 
 

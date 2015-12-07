@@ -7,72 +7,72 @@
 /* FONT-FACE*/
 @font-face {
     font-family: 'ralewaybold';
-    src: url("#{resource['spark-layout:fonts/Raleway-Bold-webfont.eot']}");
-    src: url("#{resource['spark-layout:fonts/Raleway-Bold-webfont.eot']}#iefix") format('embedded-opentype'),
-        url("#{resource['spark-layout:fonts/Raleway-Bold-webfont.woff2']}") format('woff2'),
-        url("#{resource['spark-layout:fonts/Raleway-Bold-webfont.woff']}") format('woff'),
-        url("#{resource['spark-layout:fonts/Raleway-Bold-webfont.ttf']}") format('truetype'),
-        url("#{resource['spark-layout:fonts/Raleway-Bold-webfont.svg']}#ralewaybold") format('svg');
+    src: url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Bold-webfont.eot.htm?ln=spark-layout");
+    src: url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Bold-webfont.eot.htm?ln=spark-layout#iefix") format('embedded-opentype'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Bold-webfont.woff2.htm?ln=spark-layout") format('woff2'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Bold-webfont.woff.htm?ln=spark-layout") format('woff'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Bold-webfont.ttf.htm?ln=spark-layout") format('truetype'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Bold-webfont.svg.htm?ln=spark-layout#ralewaybold") format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'ralewaysemibold';
-    src: url("#{resource['spark-layout:fonts/Raleway-SemiBold-webfont.eot']}");
-    src: url("#{resource['spark-layout:fonts/Raleway-SemiBold-webfont.eot']}#iefix") format('embedded-opentype'),
-        url("#{resource['spark-layout:fonts/Raleway-SemiBold-webfont.woff2']}") format('woff2'),
-        url("#{resource['spark-layout:fonts/Raleway-SemiBold-webfont.woff']}") format('woff'),
-        url("#{resource['spark-layout:fonts/Raleway-SemiBold-webfont.ttf']}") format('truetype'),
-        url("#{resource['spark-layout:fonts/Raleway-SemiBold-webfont.svg']}#ralewaysemibold") format('svg');
+    src: url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-SemiBold-webfont.eot.htm?ln=spark-layout");
+    src: url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-SemiBold-webfont.eot.htm?ln=spark-layout#iefix") format('embedded-opentype'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-SemiBold-webfont.woff2.htm?ln=spark-layout") format('woff2'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-SemiBold-webfont.woff.htm?ln=spark-layout") format('woff'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-SemiBold-webfont.ttf.htm?ln=spark-layout") format('truetype'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-SemiBold-webfont.svg.htm?ln=spark-layout#ralewaysemibold") format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'ralewaylight';
-    src: url("#{resource['spark-layout:fonts/Raleway-Light-webfont.eot']}");
-    src: url("#{resource['spark-layout:fonts/Raleway-Light-webfont.eot']}#iefix") format('embedded-opentype'),
-        url("#{resource['spark-layout:fonts/Raleway-Light-webfont.woff2']}") format('woff2'),
-        url("#{resource['spark-layout:fonts/Raleway-Light-webfont.woff']}") format('woff'),
-        url("#{resource['spark-layout:fonts/Raleway-Light-webfont.ttf']}") format('truetype'),
-        url("#{resource['spark-layout:fonts/Raleway-Light-webfont.svg']}#ralewaylight") format('svg');
+    src: url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Light-webfont.eot.htm?ln=spark-layout");
+    src: url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Light-webfont.eot.htm?ln=spark-layout#iefix") format('embedded-opentype'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Light-webfont.woff2.htm?ln=spark-layout") format('woff2'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Light-webfont.woff.htm?ln=spark-layout") format('woff'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Light-webfont.ttf.htm?ln=spark-layout") format('truetype'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Light-webfont.svg.htm?ln=spark-layout#ralewaylight") format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'ralewaymedium';
-    src: url("#{resource['spark-layout:fonts/Raleway-Medium-webfont.eot']}");
-    src: url("#{resource['spark-layout:fonts/Raleway-Medium-webfont.eot']}#iefix") format('embedded-opentype'),
-        url("#{resource['spark-layout:fonts/Raleway-Medium-webfont.woff2']}") format('woff2'),
-        url("#{resource['spark-layout:fonts/Raleway-Medium-webfont.woff']}") format('woff'),
-        url("#{resource['spark-layout:fonts/Raleway-Medium-webfont.ttf']}") format('truetype'),
-        url("#{resource['spark-layout:fonts/Raleway-Medium-webfont.svg']}#ralewaymedium") format('svg');
+    src: url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Medium-webfont.eot.htm?ln=spark-layout");
+    src: url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Medium-webfont.eot.htm?ln=spark-layout#iefix") format('embedded-opentype'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Medium-webfont.woff2.htm?ln=spark-layout") format('woff2'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Medium-webfont.woff.htm?ln=spark-layout") format('woff'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Medium-webfont.ttf.htm?ln=spark-layout") format('truetype'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Medium-webfont.svg.htm?ln=spark-layout#ralewaymedium") format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'ralewayregular';
-    src: url("#{resource['spark-layout:fonts/Raleway-Regular-webfont.eot']}");
-    src: url("#{resource['spark-layout:fonts/Raleway-Regular-webfont.eot']}#iefix") format('embedded-opentype'),
-        url("#{resource['spark-layout:fonts/Raleway-Regular-webfont.woff2']}") format('woff2'),
-        url("#{resource['spark-layout:fonts/Raleway-Regular-webfont.woff']}") format('woff'),
-        url("#{resource['spark-layout:fonts/Raleway-Regular-webfont.ttf']}") format('truetype'),
-        url("#{resource['spark-layout:fonts/Raleway-Regular-webfont.svg']}#ralewayregular") format('svg');
+    src: url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Regular-webfont.eot.htm?ln=spark-layout");
+    src: url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Regular-webfont.eot.htm?ln=spark-layout#iefix") format('embedded-opentype'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Regular-webfont.woff2.htm?ln=spark-layout") format('woff2'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Regular-webfont.woff.htm?ln=spark-layout") format('woff'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Regular-webfont.ttf.htm?ln=spark-layout") format('truetype'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Regular-webfont.svg.htm?ln=spark-layout#ralewayregular") format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'ralewayregular';
-    src: url("#{resource['spark-layout:fonts/Raleway-Regular-webfont.eot']}");
-    src: url("#{resource['spark-layout:fonts/Raleway-Regular-webfont.eot']}#iefix") format('embedded-opentype'),
-        url("#{resource['spark-layout:fonts/Raleway-Regular-webfont.woff2']}") format('woff2'),
-        url("#{resource['spark-layout:fonts/Raleway-Regular-webfont.woff']}") format('woff'),
-        url("#{resource['spark-layout:fonts/Raleway-Regular-webfont.ttf']}") format('truetype'),
-        url("#{resource['spark-layout:fonts/Raleway-Regular-webfont.svg']}#ralewayregular") format('svg');
+    src: url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Regular-webfont.eot.htm?ln=spark-layout");
+    src: url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Regular-webfont.eot.htm?ln=spark-layout#iefix") format('embedded-opentype'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Regular-webfont.woff2.htm?ln=spark-layout") format('woff2'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Regular-webfont.woff.htm?ln=spark-layout") format('woff'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Regular-webfont.ttf.htm?ln=spark-layout") format('truetype'),
+        url("/OPTIMA-HR-MASTER/javax.faces.resource/fonts/Raleway-Regular-webfont.svg.htm?ln=spark-layout#ralewayregular") format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -87,7 +87,7 @@
 
 /*BODY*/
 body{margin:0px; 
-     /*background-image:url("#{resource['spark-layout:images/background.png']}");*/ 
+     /*background-image:url("/OPTIMA-HR-MASTER/javax.faces.resource/images/background.png.htm?ln=spark-layout");*/ 
      background-image: -moz-linear-gradient(top,  #a7cfdf 0%, #23538a 90%, #23538a 90%);
      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a7cfdf), color-stop(90%,#23538a));
      background-repeat:repeat; background-position:center; background-color:#C3CCD5; 
@@ -99,12 +99,12 @@ body{margin:0px;
 .menu-mask-open{width:100%; height:100%; opacity:0.4 !important;}
 
 /* Layout Top Bar*/
-#layout-topbar{height:100px; width:100%; border-top:solid 6px #71CC8D; background-color:#F6FAFC/*#F1F6F9*/; display:table;}
+#layout-topbar{height:100px; width:100%; border-top:solid 6px #035;background-color: #035/*#F1F6F9; */; display:table;}
 #layout-topbar-indent{width:92%; margin:0px auto;}
 #logo{height:50px; margin-top:26px;}
-#mobile-menu-button{padding:10px 15px; background-color:#5fcf80; float:right; margin-top:20px; font-size:14px; position:relative; z-index:999;}
+#mobile-menu-button{padding:10px 15px; background-color:#5fcf80; float:right; margin-top:20px;margin-right: 5px; font-size:14px; position:relative; z-index:999;}
 #mobile-menu-button:hover{color:#55AA6D;}
-#mobile-menu-button-gray{background-color:#778D9B; padding:8px 13px; float:right; margin-top:20px; font-size:14px; margin-right:10px; position:relative; z-index:999;}
+#mobile-menu-button-gray{background-color:#035; padding:4px 13px; float:left; margin-top:5px; font-size:14px; margin-right:10px; position:relative; z-index:999;}
 #mobile-menu-button-gray:hover{opacity:0.8;}
 #layout-topbar-menu{float:right; padding:0px; margin-top:35px; max-width:800px; height:auto;}
 #layout-topbar-menu>li{float:right; text-align:center; padding-bottom:10px;}
@@ -235,7 +235,7 @@ li{list-style:none;}
                    border-radius:3px; -webkit-border-radius:3px; -moz-border-radius:3px; margin-bottom:15px;}
 
 /* seperator line */
-.Seperator{border-bottom:solid 1px #C3CCD5; width:100%; overflow:hidden; height:0px; margin:15px 0px; float:left;}
+.Seperator{border-bottom:solid 1px #ffffff; width:100%; overflow:hidden; height:0px; margin:15px 0px; float:left}
 
 /* hover effect for boxlink and links */
 .HoverEffect:hover{border: solid 1px #71CC8D !important; color:#71CC8D !important; box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box;
