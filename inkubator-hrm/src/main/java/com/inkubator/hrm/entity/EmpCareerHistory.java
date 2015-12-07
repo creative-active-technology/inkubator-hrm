@@ -45,6 +45,7 @@ public class EmpCareerHistory implements java.io.Serializable {
     private EmployeeType employeeType;
      private String jabatanOldName;
      private String jabatanOldCode;
+     private String companyName;
 
     public EmpCareerHistory() {
     }
@@ -283,4 +284,15 @@ public class EmpCareerHistory implements java.io.Serializable {
     public void setEmployeeType(EmployeeType employeeType) {
         this.employeeType = employeeType;
     }
+
+    @Transient
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+    
+    
 }

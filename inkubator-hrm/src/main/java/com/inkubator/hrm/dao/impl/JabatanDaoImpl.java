@@ -157,6 +157,7 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
         criteria.setFetchMode("costCenter", FetchMode.JOIN);
         criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
         criteria.setFetchMode("department", FetchMode.JOIN);
+        criteria.setFetchMode("department.company", FetchMode.JOIN);
         criteria.setFetchMode("unitKerja", FetchMode.JOIN);
         criteria.setFetchMode("jabatan", FetchMode.JOIN);
         return (Jabatan) criteria.uniqueResult();
@@ -250,6 +251,7 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
 	     criteria.setFetchMode("costCenter", FetchMode.JOIN);
 	     criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
 	     criteria.setFetchMode("department", FetchMode.JOIN);
+	     criteria.setFetchMode("department.company", FetchMode.JOIN);
 	     criteria.setFetchMode("unitKerja", FetchMode.JOIN);
 	     criteria.setFetchMode("jabatan", FetchMode.JOIN);
 	     return (Jabatan) criteria.uniqueResult();

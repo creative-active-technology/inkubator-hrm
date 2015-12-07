@@ -82,6 +82,7 @@ public class CareerTerminationTypeServiceImpl extends IServiceImpl implements Ca
             throw new BussinessException("terminationType.error_duplicate_terminationType_code");
         }
         CareerTerminationType entityToUpdate = careerTerminationTypeDao.getEntiyByPK(entity.getId());
+        System.out.println("service 1");
         entityToUpdate.setCode(entity.getCode());
         entityToUpdate.setName(entity.getName());
         entityToUpdate.setDescription(entity.getDescription());

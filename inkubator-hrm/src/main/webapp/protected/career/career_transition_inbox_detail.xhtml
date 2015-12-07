@@ -36,7 +36,7 @@
                                     <p:outputLabel value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.empData.bioData.combineName}" styleClass="label_hrm"/>
+                                	<p:outputLabel value="#{careerTransitionInboxDetailController.selectedEmpCareerHistory.bioData.combineName}" styleClass="label_hrm"/>
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -52,7 +52,7 @@
                                     <p:outputLabel value="#{appmsg['vacancy_advertisement.effective_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.joinDate}" styleClass="label_hrm">
+                                	<p:outputLabel value="#{careerTransitionInboxDetailController.selectedEmpCareerHistory.tglPenganngkatan}" styleClass="label_hrm">
                                 		<f:convertDateTime pattern="dd MMMM yyyy"/>
                                 	</p:outputLabel>
                                 </p:column>
@@ -62,7 +62,7 @@
                                     <p:outputLabel value="#{appmsg['emp_career_transition.copy_of_letter']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:outputLabel value="#{empCareerTransitionApprovalFormController.model.copyOfLetterTo.bioData.combineName}" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{careerTransitionInboxDetailController.selectedEmpCareerHistory.copyOfLetterTo.bioData.combineName}" styleClass="label_hrm"/>
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -70,7 +70,7 @@
                                     <p:outputLabel value="#{appmsg['organizationletter.letter_number']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.noSk}" styleClass="label_hrm"/>
+                                	<p:outputLabel value="#{careerTransitionInboxDetailController.selectedEmpCareerHistory.noSk}" styleClass="label_hrm"/>
                                 </p:column>
                             </p:row>
                         </p:panelGrid>
@@ -79,10 +79,10 @@
                             <p:panelGrid style="width: 100%;" styleClass="grid_border3">
                             	<p:row>
                             		<p:column colspan="2" style="width: 16%;background-color: #4CA5B7!important;text-align:center;font-size:large;" >
-                                        <p:outputLabel  value="#{appmsg['emp_career_transition.current']}" styleClass="label_hrm"/>
+                                        <p:outputLabel  value="#{appmsg['global.previous']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column colspan="2" style="width: 16%;background-color: #4CA5B7!important;text-align:center;font-size:large;" >
-                                        <p:outputLabel  value="#{appmsg['emp_career_transition.next']}" styleClass="label_hrm"/>
+                                        <p:outputLabel  value="#{appmsg['emp_career_transition.current']}" styleClass="label_hrm"/>
                                     </p:column>
                             	</p:row>
                             	<p:row>
@@ -90,13 +90,13 @@
                                         <p:outputLabel value="#{appmsg['global.nik']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column style="width: 34%"> 
-                                    	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.currentNik}" styleClass="label_hrm"/>
+                                    	<p:outputLabel value="#{careerTransitionInboxDetailController.selectedEmpCareerHistory.nik}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column style="width: 16%;background-color: #e1f0f0!important" >
                                         <p:outputLabel value="#{appmsg['global.nik']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column style="width: 34%">
-                                    	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.nik}" styleClass="label_hrm"/>
+                                    	<p:outputLabel value="#{careerTransitionInboxDetailController.selectedEmpCareerHistory.nik}" styleClass="label_hrm"/>
                                     </p:column>
                                 </p:row>
                             	<p:row>
@@ -104,7 +104,7 @@
                                         <p:outputLabel  value="#{appmsg['organization.company_name']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column style="width: 34%"> 
-                                    	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.currentCompany}" styleClass="label_hrm"/>
+                                    	<p:outputLabel value="#{careerTransitionInboxDetailController.selectedEmpCareerHistory.jabatan.department.company.name}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column style="width: 16%;background-color: #e1f0f0!important" >
                                         <p:outputLabel  value="#{appmsg['organization.company_name']}" styleClass="label_hrm"/>
@@ -118,7 +118,7 @@
                                         <p:outputLabel  value="#{appmsg['department.department']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column style="width: 34%">
-                                    	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.currentDepartment}" styleClass="label_hrm"/>
+                                    	<p:outputLabel value="#{careerTransitionInboxDetailController.selectedEmpCareerHistory.jabatan.department.departmentName}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column style="width: 16%;background-color: #e1f0f0!important" >
                                         <p:outputLabel  value="#{appmsg['department.department']}" styleClass="label_hrm"/>
@@ -132,7 +132,7 @@
                                         <p:outputLabel  value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column style="width: 34%">
-                                    	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.currentJabatan}" styleClass="label_hrm"/>
+                                    	<p:outputLabel value="#{careerTransitionInboxDetailController.selectedEmpCareerHistory.jabatan.name}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column style="width: 16%;background-color: #e1f0f0!important" >
                                         <p:outputLabel  value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
@@ -146,7 +146,7 @@
                                         <p:outputLabel  value="#{appmsg['employeetype.employee_type']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column style="width: 34%">
-                                    	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.currentEmployeeType}" styleClass="label_hrm"/>
+                                    	<p:outputLabel value="#{careerTransitionInboxDetailController.selectedEmpCareerHistory.employeeType.name}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column style="width: 16%;background-color: #e1f0f0!important" >
                                         <p:outputLabel  value="#{appmsg['employeetype.employee_type']}" styleClass="label_hrm"/>
@@ -160,7 +160,7 @@
                                         <p:outputLabel  value="#{appmsg['functiongroup.function_group']}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column style="width: 34%">
-                                    	<p:outputLabel value="#{empCareerTransitionApprovalFormController.model.currentGolJab}" styleClass="label_hrm"/>
+                                    	<p:outputLabel value="#{careerTransitionInboxDetailController.selectedEmpCareerHistory.golonganJabatan.code} #{careerTransitionInboxDetailController.selectedEmpCareerHistory.golonganJabatan.pangkat.pangkatName}" styleClass="label_hrm"/>
                                     </p:column>
                                     <p:column style="width: 16%;background-color: #e1f0f0!important" >
                                         <p:outputLabel  value="#{appmsg['functiongroup.function_group']}" styleClass="label_hrm"/>

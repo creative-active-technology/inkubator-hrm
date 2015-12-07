@@ -33,4 +33,6 @@ public interface EmpCareerHistoryService extends IService<EmpCareerHistory>, Bas
     public List<CareerTransitionInboxViewModel> getEntityEmpCareerHistoryInboxByParam(CareerTransitionInboxSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalgetEntityEmpCareerHistoryInboxByParam(CareerTransitionInboxSearchParameter searchParameter) throws Exception;
+
+    public EmpCareerHistory getEntityByApprovalActivityNumber(String approvalActivityNumber) throws Exception;
 }

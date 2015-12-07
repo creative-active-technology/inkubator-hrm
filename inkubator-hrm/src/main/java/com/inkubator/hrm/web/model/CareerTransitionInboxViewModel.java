@@ -30,6 +30,7 @@ public class CareerTransitionInboxViewModel implements Serializable {
     private String golonganJabatanName;
     private String employeeTypeName;
     private String notes;
+    private String activityNumber;
     
     public BigInteger getApprovalActivityId() {
         return approvalActivityId;
@@ -134,6 +135,14 @@ public class CareerTransitionInboxViewModel implements Serializable {
 	public void setNotes(String notes) {
 		this.notes = notes;
 	}
-    
-    
+
+	public String getActivityNumber() {
+		return activityNumber;
+	}
+
+	public void setActivityNumber(String activityNumber) {
+		this.activityNumber = activityNumber;
+	}
+
+	
 }

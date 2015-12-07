@@ -596,4 +596,13 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
     	return empCareerHistoryDao.getTotalgetEntityEmpCareerHistoryInboxByParam(searchParameter);
     }
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public EmpCareerHistory getEntityByApprovalActivityNumber(String approvalActivityNumber) throws Exception {
+		EmpCareerHistory empCareerHistory = empCareerHistoryDao.getEntityByApprovalActivityNumber(approvalActivityNumber);
+		/*Jabatan jabatan = jabatanDao.getJabatanByIdWithDetail(empCareerHistory.getJabatan().getId());
+		empCareerHistory.setCompanyName(jabatan.getDepartment().getCompany().getName());*/
+		return empCareerHistory;
+	}
+
 }

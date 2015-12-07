@@ -31,5 +31,5 @@ public interface EmpCareerHistoryDao extends IDAO<EmpCareerHistory> {
 
     public Long getTotalgetEntityEmpCareerHistoryInboxByParam(CareerTransitionInboxSearchParameter searchParameter);
     
-    
+    public EmpCareerHistory getEntityByApprovalActivityNumber(String approvalActivityNumber);
 }
