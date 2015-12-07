@@ -31,6 +31,8 @@ import org.springframework.batch.core.launch.JobLauncher;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
+import com.inkubator.hrm.entity.ApprovalActivity;
+import com.inkubator.hrm.service.ApprovalActivityService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.FingerSwapCapturedService;
 import com.inkubator.hrm.service.LogWtAttendanceRealizationService;
@@ -72,6 +74,8 @@ public class WtPeriodEmpDetailController extends BaseController {
     private WtPeriodeService wtPeriodeService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
+    @ManagedProperty(value = "#{approvalActivityService}")
+    private ApprovalActivityService approvalActivityService;
     
     private LazyDataModel<TempAttendanceRealizationViewModel> lazyDataModel;
     private TempAttendanceRealizationViewModel selected;
@@ -215,6 +219,38 @@ public class WtPeriodEmpDetailController extends BaseController {
 					FacesContext.getCurrentInstance().validationFailed();
 			}
 			
+			//Cek jika masih ada pengajuan cuti yang masih pending pada periode berjalan, show error message
+			List<ApprovalActivity> listPendingLeaveApproval = approvalActivityService.getListLeavePendingWithImplDateBetweenRange(model.getFromPeriode(), model.getUntilPeriode());
+			if(!listPendingLeaveApproval.isEmpty()){
+				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "workingTime.attendance_realization_calc_error_leave_approval_pending_exist",
+				        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+					FacesContext.getCurrentInstance().validationFailed();
+			}
+			
+			//Cek jika masih ada pengajuan perjalanan dinas yang masih pending pada periode berjalan, show error message
+			List<ApprovalActivity> listPendingBusinessTravelApproval = approvalActivityService.getListBusinessTravelPendingWithImplDateBetweenRange(model.getFromPeriode(), model.getUntilPeriode());
+			if(!listPendingBusinessTravelApproval.isEmpty()){
+				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "workingTime.attendance_realization_calc_error_business_travel_approval_pending_exist",
+				        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+					FacesContext.getCurrentInstance().validationFailed();
+			}
+			
+			//Cek jika masih ada pengajuan izin yang masih pending pada periode berjalan, show error message
+			List<ApprovalActivity> listPendingPermitApproval = approvalActivityService.getListPermitPendingWithImplDateBetweenRange(model.getFromPeriode(), model.getUntilPeriode());
+			if(!listPendingPermitApproval.isEmpty()){
+				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "workingTime.attendance_realization_calc_error_permit_approval_pending_exist",
+				        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+					FacesContext.getCurrentInstance().validationFailed();
+			}
+			
+			//Cek jika masih ada pengajuan lembur yang masih pending pada periode berjalan, show error message
+			List<ApprovalActivity> listPendingOvertimeApproval = approvalActivityService.getListOvertimePendingWithImplDateBetweenRange(model.getFromPeriode(), model.getUntilPeriode());
+			if(!listPendingOvertimeApproval.isEmpty()){
+				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "workingTime.attendance_realization_calc_error_overtime_approval_pending_exist",
+				        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+					FacesContext.getCurrentInstance().validationFailed();
+			}
+			
 			progress = 0;
 		} catch (Exception e) {
 			LOGGER.error("Error ", e);
@@ -340,6 +376,10 @@ public class WtPeriodEmpDetailController extends BaseController {
 	public void setSearchParameter(
 			WtAttendanceCalculationSearchParameter searchParameter) {
 		this.searchParameter = searchParameter;
+	}
+
+	public void setApprovalActivityService(ApprovalActivityService approvalActivityService) {
+		this.approvalActivityService = approvalActivityService;
 	}
 
 	

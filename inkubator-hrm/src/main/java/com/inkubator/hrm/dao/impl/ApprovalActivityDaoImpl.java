@@ -422,4 +422,16 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         return (ApprovalActivity) criteria.uniqueResult();
     }
 
+	@Override
+	public List<ApprovalActivity> getAllDataPendingRequestByApprovalDefName(String approvalDefName) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("approvalDefinition", "approvalDefinition", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("approvalDefinition.name", approvalDefName));
+		Disjunction disjStatus = Restrictions.disjunction();
+		disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL));
+		disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_REVISED));
+		criteria.add(disjStatus);
+		return criteria.list();
+	}
+
 }
