@@ -376,6 +376,7 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 	        careerHistory.setSalary(empData.getBasicSalary());
 	        careerHistory.setTglPenganngkatan(model.getEffectiveDate());
 	        careerHistory.setStatus(careerTransition.getSystemCareerConst().getConstant());
+	        careerHistory.setCareerTransition(careerTransition);
 	        careerHistory.setEmployeeType(empData.getEmployeeType());
 	        careerHistory.setSalaryChangesType(model.getSalaryChangesType());
 	        careerHistory.setSalaryChangesPercent(model.getSalaryChangesPercent());
