@@ -573,4 +573,8 @@ public class HRMConstant {
     /* Constant for contextPath */
     public static final String CONTEXT_PATH = "contextPath";
     /* END */
+    
+    /* Constant Competence Visibility */
+    public static final Byte COMPETENCE_SOFT_SKILL = 0;
+    public static final Byte COMPETENCE_HARD_SKILL = 1;
 }

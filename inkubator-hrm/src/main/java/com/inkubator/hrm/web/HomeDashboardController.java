@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -22,6 +23,7 @@ import javax.faces.bean.RequestScoped;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
@@ -73,7 +75,7 @@ public class HomeDashboardController extends BaseController {
     private CartesianChartModel presensiModel;
     private CartesianChartModel persentasiKehadiranPerWeek;
     private BarChartModel barChartModel;
-    private HorizontalBarChartModel presensiBarChartModel;
+    private HorizontalBarChartModel presentationAttendancePerDayBarChartModel;
     private BarChartModel barChartDistribusiByDept;
     private List<LoginHistoryModel> logHistorys = new ArrayList<>();
     @ManagedProperty(value = "#{empDataService}")
@@ -108,8 +110,7 @@ public class HomeDashboardController extends BaseController {
              * find All holiday date based on JadwalKaryawan "DEFAULT" which is
              * OFF and public holiday
              */
-            DateTime now = new DateTime();
-            now = now.withMillisOfSecond(0).withSecondOfMinute(0).withMinuteOfHour(0).withHourOfDay(0);
+            LocalDate now = new LocalDate();
             startCalendarDate = now.dayOfMonth().withMinimumValue().toDate();
             endCalendarDate = now.dayOfMonth().withMaximumValue().toDate();
             Set<Date> holidays = wtScheduleShiftService.getAllRegulerOffDaysBetween(startCalendarDate, endCalendarDate);
@@ -213,59 +214,29 @@ public class HomeDashboardController extends BaseController {
 
                 barChartModel.addSeries(charDepartmentSeries);
             }
-
+            
+            
+            /**
+             * calculate attendance statistic from 6 days ago until yesterday
+             */
+            List<Date> listTanggalWaktuKerja = new ArrayList<>();
+            IntStream.range(1, 6).forEach(num -> listTanggalWaktuKerja.add(now.minusDays(num).toDate()));
+            List<ChartSeries> listPresentasiAttendance = empDataService.getEmployeePresentationAttendanceOnDashboard(HrmUserInfoUtil.getCompanyId() ,listTanggalWaktuKerja);
+            
+            presentationAttendancePerDayBarChartModel = new HorizontalBarChartModel();
+            listPresentasiAttendance.forEach(series -> presentationAttendancePerDayBarChartModel.addSeries(series));
+            presentationAttendancePerDayBarChartModel.setStacked(true);
+            presentationAttendancePerDayBarChartModel.setShowDatatip(true);
+            presentationAttendancePerDayBarChartModel.setLegendPosition("se");
+            presentationAttendancePerDayBarChartModel.setSeriesColors("66cc00,629de1,003366,990000,cccc00,6600cc,d500d5,ff2a55");
+            Axis xAxis = presentationAttendancePerDayBarChartModel.getAxis(AxisType.X);
+            xAxis.setMax(300);
+            xAxis.setTickInterval("20");
+            xAxis.setMin(0);
+            
         } catch (Exception e) {
             LOGGER.error("Error ", e);
         }
-
-        persentasiKehadiranPerWeek = new CartesianChartModel();
-
-        presensiModel = new CartesianChartModel();
-        presensiBarChartModel = new HorizontalBarChartModel();
-        ChartSeries cutiDanDinas = new ChartSeries();
-        cutiDanDinas.setLabel("Cuti & Dinas");
-        cutiDanDinas.set("18-03-2014", 10);
-        cutiDanDinas.set("19-03-2014", 5);
-        cutiDanDinas.set("20-03-2014", 0);
-        cutiDanDinas.set("21-03-2014", 23);
-        cutiDanDinas.set("22-03-2014", 3);
-
-        ChartSeries ijinDanSakit = new ChartSeries();
-        ijinDanSakit.setLabel("Izin & Sakit");
-        ijinDanSakit.set("18-03-2014", 3);
-        ijinDanSakit.set("19-03-2014", 20);
-        ijinDanSakit.set("20-03-2014", 13);
-        ijinDanSakit.set("21-03-2014", 3);
-        ijinDanSakit.set("22-03-2014", 3);
-
-        ChartSeries hadir = new ChartSeries();
-        ChartSeries tanpaKeterangan = new ChartSeries();
-        tanpaKeterangan.setLabel("Alpha");
-        tanpaKeterangan.set("18-03-2014", 3);
-        tanpaKeterangan.set("19-03-2014", 2);
-        tanpaKeterangan.set("20-03-2014", 1);
-        tanpaKeterangan.set("21-03-2014", 3);
-        tanpaKeterangan.set("22-03-2014", 1);
-
-        hadir.setLabel("Hadir");
-        hadir.set("18-03-2014", 193);
-        hadir.set("19-03-2014", 181);
-        hadir.set("20-03-2014", 193);
-        hadir.set("21-03-2014", 180);
-        hadir.set("22-03-2014", 200);
-        presensiBarChartModel.addSeries(hadir);
-        presensiBarChartModel.addSeries(cutiDanDinas);
-        presensiBarChartModel.addSeries(ijinDanSakit);
-        presensiBarChartModel.addSeries(tanpaKeterangan);
-        presensiBarChartModel.setStacked(true);
-        presensiBarChartModel.setShowDatatip(true);
-        presensiBarChartModel.setLegendPosition("se");
-        presensiBarChartModel.setSeriesColors("66cc00,629de1,003366,990000,cccc00,6600cc,d500d5,ff2a55");
-
-        Axis xAxis = presensiBarChartModel.getAxis(AxisType.X);
-        xAxis.setMax(300);
-        xAxis.setTickInterval("20");
-        xAxis.setMin(0);
 
     }
 
@@ -383,15 +354,16 @@ public class HomeDashboardController extends BaseController {
         this.barChartModel = barChartModel;
     }
 
-    public HorizontalBarChartModel getPresensiBarChartModel() {
-        return presensiBarChartModel;
-    }
+    public HorizontalBarChartModel getPresentationAttendancePerDayBarChartModel() {
+		return presentationAttendancePerDayBarChartModel;
+	}
 
-    public void setPresensiBarChartModel(HorizontalBarChartModel presensiBarChartModel) {
-        this.presensiBarChartModel = presensiBarChartModel;
-    }
+	public void setPresentationAttendancePerDayBarChartModel(
+			HorizontalBarChartModel presentationAttendancePerDayBarChartModel) {
+		this.presentationAttendancePerDayBarChartModel = presentationAttendancePerDayBarChartModel;
+	}
 
-    public BarChartModel getBarChartDistribusiByDept() {
+	public BarChartModel getBarChartDistribusiByDept() {
         return barChartDistribusiByDept;
     }
 

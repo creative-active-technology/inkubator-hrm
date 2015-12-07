@@ -38,11 +38,31 @@
                                     <p:outputLabel for="host1" value="#{appmsg['mechineFinger.dbhost']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber minValue="1" maxValue="255" id="host1" value="#{mecineFingerServiceFormController.mecineFingerServiceModel.host1}"  title="host1" style="width:50px;" decimalPlaces="0"/>
+                                    <!-- <pe:inputNumber minValue="1" maxValue="255" id="host1" value="#{mecineFingerServiceFormController.mecineFingerServiceModel.host1}"  title="host1" style="width:50px;" decimalPlaces="0"/>
                                     <pe:inputNumber maxValue="255" maxlength="3" id="host2" value="#{mecineFingerServiceFormController.mecineFingerServiceModel.host2}" title="host2" style="width:50px;" decimalPlaces="0"/>
                                     <pe:inputNumber maxValue="255" id="host3" value="#{mecineFingerServiceFormController.mecineFingerServiceModel.host3}" title="host3" style="width:50px;" decimalPlaces="0"/>
-                                    <pe:inputNumber maxValue="255" id="host4" value="#{mecineFingerServiceFormController.mecineFingerServiceModel.host4}" title="host4" style="width:50px;" decimalPlaces="0"/>
-                                    <p:message for="host1"/>
+                                    <pe:inputNumber maxValue="255" id="host4" value="#{mecineFingerServiceFormController.mecineFingerServiceModel.host4}" title="host4" style="width:50px;" decimalPlaces="0"/> -->
+                                    
+                                    <p:inputText id="host1" value="#{mecineFingerServiceFormController.mecineFingerServiceModel.host1}" 
+                                                 required="true" style="text-align: right;width: 50px" styleClass="isitext_hrm" >
+                                        <f:validateDoubleRange minimum="1" maximum="255"/>
+                                        <f:convertNumber groupingUsed="false"/>
+                                    </p:inputText>
+                                    <p:inputText id="host2" value="#{mecineFingerServiceFormController.mecineFingerServiceModel.host2}" 
+                                                 required="true" style="text-align: right;width: 50px" styleClass="isitext_hrm" >
+                                        <f:validateDoubleRange minimum="1" maximum="255"/>
+                                        <f:convertNumber groupingUsed="false"/>
+                                    </p:inputText>
+                                    <p:inputText id="host3" value="#{mecineFingerServiceFormController.mecineFingerServiceModel.host3}" 
+                                                 required="true" style="text-align: right;width: 50px" styleClass="isitext_hrm" >
+                                        <f:validateDoubleRange minimum="1" maximum="255"/>
+                                        <f:convertNumber groupingUsed="false"/>
+                                    </p:inputText>
+                                    <p:inputText id="host4" value="#{mecineFingerServiceFormController.mecineFingerServiceModel.host4}" 
+                                                 required="true" style="text-align: right;width: 50px" styleClass="isitext_hrm" >
+                                        <f:validateDoubleRange minimum="1" maximum="255"/>
+                                        <f:convertNumber groupingUsed="false"/>
+                                    </p:inputText>
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -50,7 +70,12 @@
                                     <p:outputLabel for="port" value="DB port" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <pe:inputNumber minValue="1" maxValue="10000" id="port" required="true" value="#{mecineFingerServiceFormController.mecineFingerServiceModel.port}"  title="port" style="width:50px;" decimalPlaces="" thousandSeparator=""/>                                    
+                                    <!-- <pe:inputNumber minValue="1" maxValue="10000" id="port" required="true" value="#{mecineFingerServiceFormController.mecineFingerServiceModel.port}"  title="port" style="width:50px;" decimalPlaces="" thousandSeparator=""/> -->
+                                    <p:inputText id="port" value="#{mecineFingerServiceFormController.mecineFingerServiceModel.port}" 
+                                                 required="true" style="text-align: right;width: 50px" styleClass="isitext_hrm" >
+                                        <f:validateDoubleRange minimum="1" maximum="10000"/>
+                                        <f:convertNumber groupingUsed="false"/>
+                                    </p:inputText>                                    
                                     <p:message for="port"/>
                                 </p:column>
                             </p:row>

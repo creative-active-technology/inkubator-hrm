@@ -20,5 +20,7 @@ public interface LeaveImplementationDateDao extends IDAO<LeaveImplementationDate
 	public List<LeaveImplementationDateModel> getAllDataWithTotalTakenLeaveByEmpDataId(Long empDataId);
 	
 	public List<LeaveImplementationDate> getAllDataByEmpDataId(Long empDataId);
+	
+	public LeaveImplementationDate getEntityByEmpDataIdAndActualDate(Long empDataId, Date actualDate);
 
 }
