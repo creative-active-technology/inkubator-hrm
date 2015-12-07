@@ -26,7 +26,7 @@ import com.inkubator.hrm.service.AnnouncementLogService;
 import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.service.RiwayatAksesService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
-import com.inkubator.hrm.util.StringsUtils;
+import com.inkubator.hrm.util.StringUtils;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -62,7 +62,7 @@ public class HomeController extends BaseController {
 //        role = role.replace("[", "");
 //        role = role.replace("]", "");
         roleUser = HrmUserInfoUtil.getRolesString();
-        roleUser = StringsUtils.substringBefore(roleUser, ",");
+        roleUser = StringUtils.substringBefore(roleUser, ",");
         /**
          * saving process of User Access History
          */

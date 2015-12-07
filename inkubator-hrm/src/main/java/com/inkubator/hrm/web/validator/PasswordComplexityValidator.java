@@ -3,7 +3,7 @@ package com.inkubator.hrm.web.validator;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.PasswordComplexity;
 import com.inkubator.hrm.service.PasswordComplexityService;
-import com.inkubator.hrm.util.StringsUtils;
+import com.inkubator.hrm.util.StringUtils;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.ServiceWebUtil;
 import java.util.Locale;
@@ -67,7 +67,7 @@ public class PasswordComplexityValidator implements Validator {
             }
 
             if (complexity.getHasUpperCase()) {
-                if (!StringsUtils.isHaveUpperCase(password)) {
+                if (!StringUtils.isHaveUpperCase(password)) {
 
                     ResourceBundle messages = ResourceBundle.getBundle("Messages", loc);
                     FacesMessage msg = new FacesMessage(messages.getString("password_config.must_have_upper"));
@@ -76,7 +76,7 @@ public class PasswordComplexityValidator implements Validator {
                 }
             }
             if (complexity.getHasLowerCase()) {
-                if (!StringsUtils.isHaveLowerCase(password)) {
+                if (!StringUtils.isHaveLowerCase(password)) {
                     
                     ResourceBundle messages = ResourceBundle.getBundle("Messages", loc);
                     FacesMessage msg = new FacesMessage(messages.getString("password_config.must_have_lower_case"));
@@ -87,7 +87,7 @@ public class PasswordComplexityValidator implements Validator {
 
             if (complexity.getHasSpecialCharacter()) {
 
-                if (!StringsUtils.isContainsSpecialChar(password)) {
+                if (!StringUtils.isContainsSpecialChar(password)) {
                     ResourceBundle messages = ResourceBundle.getBundle("Messages", loc);
                     FacesMessage msg = new FacesMessage(messages.getString("password_config.must_have_special"));
                     msg.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -96,7 +96,7 @@ public class PasswordComplexityValidator implements Validator {
             }
             if (complexity.getHasNumber()) {
 
-                if (!StringsUtils.isHaveNumber(password)) {
+                if (!StringUtils.isHaveNumber(password)) {
                     ResourceBundle messages = ResourceBundle.getBundle("Messages", loc);
                     FacesMessage msg = new FacesMessage(messages.getString("password_config.must_have_number"));
                     msg.setSeverity(FacesMessage.SEVERITY_ERROR);
