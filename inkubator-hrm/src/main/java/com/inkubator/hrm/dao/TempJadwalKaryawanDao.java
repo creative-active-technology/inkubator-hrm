@@ -47,4 +47,6 @@ public interface TempJadwalKaryawanDao extends IDAO<TempJadwalKaryawan> {
 
 	public Long getTotalByTanggalWaktuKerja(Date date, Long companyId);
 
+	public List<TempJadwalKaryawan> getAllDataByTanggalWaktuKerjaAndCompanyId(Date tanggalWaktuKerja, Long companyId);
+
 }

@@ -7,13 +7,12 @@ package com.inkubator.hrm.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  *
  * @author Deni Husni FR
  */
-public class StringsUtils extends StringUtils {
+public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     public static Boolean isHaveUpperCase(String str) {
         Boolean isCondition = Boolean.FALSE;
@@ -102,4 +101,15 @@ public class StringsUtils extends StringUtils {
         Matcher m = p.matcher(source);
         return m.find();
     }
+    
+    public static String[] suffixesDayOfMonth = {
+    //    0     1     2     3     4     5     6     7     8     9
+        "th", "st", "nd", "rd", "th", "th", "th", "tn", "th", "th",
+    //    10    11    12    13    14    15    16    17    18    19
+    	 "th", "th", "th", "th", "th", "th", "th", "tn", "th", "th",
+    //    20    21    22    23    24    25    26    27    28    29
+    	 "th", "st", "nd", "rd", "th", "th", "th", "tn", "th", "th",
+    //    30    31
+    	 "th", "st" 
+    };
 }

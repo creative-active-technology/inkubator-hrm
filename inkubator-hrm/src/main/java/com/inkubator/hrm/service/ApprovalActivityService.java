@@ -3,6 +3,8 @@ package com.inkubator.hrm.service;
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.web.search.ApprovalActivitySearchParameter;
+
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 
@@ -49,9 +51,20 @@ public interface ApprovalActivityService extends IService<ApprovalActivity> {
 
     public List<ApprovalActivity> getAllDataWaitingStatusApproval() throws Exception;
 
+
     public Long getTotalRequestHistory(String userName) throws Exception;
 
     public Long getTotalPendingRequest(String userName) throws Exception;
 
     public Long getTotalPendingTask(String userName) throws Exception;
+
+    
+    public List<ApprovalActivity> getListLeavePendingWithImplDateBetweenRange(Date startDate, Date endDate) throws Exception;
+    
+    public List<ApprovalActivity> getListBusinessTravelPendingWithImplDateBetweenRange(Date startDate, Date endDate) throws Exception;
+    
+    public List<ApprovalActivity> getListPermitPendingWithImplDateBetweenRange(Date startDate, Date endDate) throws Exception;
+    
+    public List<ApprovalActivity> getListOvertimePendingWithImplDateBetweenRange(Date startDate, Date endDate) throws Exception;
+
 }

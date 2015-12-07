@@ -146,6 +146,7 @@ public class EmpCareerHistoryDaoImpl extends IDAOImpl<EmpCareerHistory> implemen
                 "CONCAT(bioData.first_name,' ',bioData.last_name) AS empName, " +
                 "approvalActivity.approval_status AS approvalStatus, " +
                 "approvalActivity.pending_data AS jsonData, " +
+                "approvalActivity.request_time AS requestTime " +
                 "FROM approval_activity approvalActivity " +
                 "LEFT JOIN approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id " +
                 "LEFT JOIN hrm_user AS approver ON approver.user_id = approvalActivity.approved_by " +
@@ -156,9 +157,8 @@ public class EmpCareerHistoryDaoImpl extends IDAOImpl<EmpCareerHistory> implemen
                 "INNER JOIN company AS company ON department.company_id = company.id  " +
                 "LEFT JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id " +
                 "WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number) " +
-                "AND (rmbsApplication.application_status = 0 OR rmbsApplication.application_status IS NULL) " +
                 "AND approvalDefinition.name = :appDefinitionName "
-                + " AND  company.id = :companyId ");
+                );
         selectQuery.append(this.setWhereQueryCareerTransitionInboxActivityByParam(searchParameter));
         selectQuery.append("GROUP BY approvalActivity.activity_number ");
     	selectQuery.append("ORDER BY " + order);
@@ -172,7 +172,26 @@ public class EmpCareerHistoryDaoImpl extends IDAOImpl<EmpCareerHistory> implemen
 
     @Override
     public Long getTotalgetEntityEmpCareerHistoryInboxByParam(CareerTransitionInboxSearchParameter searchParameter) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    	StringBuffer selectQuery = new StringBuffer(
+    			"SELECT count(*) " +
+    					"FROM approval_activity approvalActivity " +
+    	                "LEFT JOIN approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id " +
+    	                "LEFT JOIN hrm_user AS approver ON approver.user_id = approvalActivity.approved_by " +
+    	                "LEFT JOIN hrm_user AS requester ON requester.user_id = approvalActivity.request_by " +
+    	                "LEFT JOIN emp_data AS empData ON requester.emp_data_id = empData.id " +
+    	                "INNER JOIN jabatan AS jabatan ON empData.jabatan_id = jabatan.id  " +
+    	                "INNER JOIN department AS department ON jabatan.departement_id = department.id  " +
+    	                "INNER JOIN company AS company ON department.company_id = company.id  " +
+    	                "LEFT JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id " +
+    	                "WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number) " +
+    	                "AND approvalDefinition.name = :appDefinitionName "
+    	                );    	
+    	selectQuery.append(this.setWhereQueryCareerTransitionInboxActivityByParam(searchParameter));
+    	
+    	Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString());    	
+    	hbm = this.setValueQueryCareerTransitionInboxActivityByParam(hbm, searchParameter);
+    	
+        return Long.valueOf(hbm.uniqueResult().toString());
     }
 
     private String setWhereQueryCareerTransitionInboxActivityByParam(CareerTransitionInboxSearchParameter parameter) {
@@ -206,8 +225,6 @@ public class EmpCareerHistoryDaoImpl extends IDAOImpl<EmpCareerHistory> implemen
     			hbm.setParameter("userId", parameter.getUserId());
     		} else if(StringUtils.equals(param, "appDefinitionName")){
     			hbm.setParameter("appDefinitionName", HRMConstant.EMPLOYEE_CAREER_TRANSITION);
-    		}else if(StringUtils.equals(param, "companyId")){
-    			hbm.setParameter("companyId", HrmUserInfoUtil.getCompanyId());
     		}
     	}    	
     	return hbm;

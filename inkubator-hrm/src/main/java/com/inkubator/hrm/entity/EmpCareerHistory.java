@@ -36,6 +36,7 @@ public class EmpCareerHistory implements java.io.Serializable {
     private Date createdOn;
     private String updateBy;
     private Date updatedOn;
+    private CareerTransition careerTransition;
     private String status;
     private String approvalActivityNumber;
     private String salaryChangesType;
@@ -201,7 +202,17 @@ public class EmpCareerHistory implements java.io.Serializable {
         this.status = status;
     }
     
-    @Column(name = "approval_activity_number", length = 45, unique = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "career_transition_id", nullable = false)
+    public CareerTransition getCareerTransition() {
+		return careerTransition;
+	}
+
+	public void setCareerTransition(CareerTransition careerTransition) {
+		this.careerTransition = careerTransition;
+	}
+
+	@Column(name = "approval_activity_number", length = 45, unique = true)
     public String getApprovalActivityNumber() {
         return approvalActivityNumber;
     }

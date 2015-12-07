@@ -5,7 +5,6 @@
  */
 package com.inkubator.hrm.dao.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -20,10 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.LogWtAttendanceRealizationDao;
-import com.inkubator.hrm.entity.Department;
-import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.LogWtAttendanceRealization;
-import com.inkubator.hrm.util.StringsUtils;
 import com.inkubator.hrm.web.model.LogWtAttendanceRealizationModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.search.WtAttendanceCalculationSearchParameter;
@@ -93,15 +89,15 @@ public class LogWtAttendanceRealizationDaoImpl extends IDAOImpl<LogWtAttendanceR
     private String doSearchLogWtAttendanceCalculationByParam(WtAttendanceCalculationSearchParameter searchParameter) {
         StringBuilder query = new StringBuilder();
 
-        if (!StringsUtils.equals(searchParameter.getNik(), null)) {
+        if (!StringUtils.equals(searchParameter.getNik(), null)) {
             query.append(" AND logAttendanceRealization.empNik LIKE :nik ");
         }
 
-        if (!StringsUtils.equals(searchParameter.getEmpName(), null)) {
+        if (!StringUtils.equals(searchParameter.getEmpName(), null)) {
             query.append(" AND logAttendanceRealization.empName LIKE :empName ");
         }
 
-        if (!StringsUtils.equals(searchParameter.getWtGroupWorkingName(), null)) {
+        if (!StringUtils.equals(searchParameter.getWtGroupWorkingName(), null)) {
             query.append(" AND logAttendanceRealization.wtGroupWorkingName LIKE :wtGroupWorkingName  ");
         }
 

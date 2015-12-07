@@ -544,14 +544,9 @@
                                     <h:panelGrid style="margin-bottom: 3px" columns="2">
                                         <p:outputLabel value="#{appmsg['home.employee_attendance_presentation']}" styleClass="header_big" />
                                         <p:outputLabel value=" "  styleClass="header_big"  />
-                                        <p:outputLabel value="#{appmsg['home.week_update_data']}" styleClass="header_small_no_bold" style="color: #00AEEF"/>
-                                        <p:outputLabel value="Available in version 2.0" styleClass="header_big" style="position:relative;color:red;right:-155px !important;font-style:italic"/>
+                                        <p:outputLabel value="#{homeDashboardController.presentationAttendancePerDayLabel}" styleClass="header_small_no_bold" style="color: #00AEEF"/>
                                     </h:panelGrid>
-    <!--                                <p:barChart id="basic1" value="#{homeDashboardController.presensiModel}" legendPosition="se"  stacked="true" seriesColors="66cc00,629de1,003366,990000,cccc00,6600cc,d500d5,ff2a55"   animate="false" 
-                                                showDatatip="true" orientation="horizontal" max="300" 
-                                                style="height:180px;font-size: 11px"/> -->
-                                    <!--Silahkan diactivekan jika sudah migrasi ke pp 5.2 dan yang atas di tutup-->
-                                    <p:chart type="bar" model="#{homeDashboardController.presensiBarChartModel}" style="height:180px;font-size: 11px" responsive="true"/>
+                                    <p:chart type="bar" model="#{homeDashboardController.presentationAttendancePerDayBarChartModel}" style="height:180px;font-size: 11px" responsive="true"/>
 
                                 </p:panel>
 

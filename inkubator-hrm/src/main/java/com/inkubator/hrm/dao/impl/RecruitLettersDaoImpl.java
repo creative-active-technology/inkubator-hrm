@@ -8,7 +8,7 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.RecruitLettersDao;
 import com.inkubator.hrm.entity.RecruitLetters;
-import com.inkubator.hrm.util.StringsUtils;
+import com.inkubator.hrm.util.StringUtils;
 import com.inkubator.hrm.web.search.RecrutimentLetterSearchParameter;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -81,16 +81,16 @@ public class RecruitLettersDaoImpl extends IDAOImpl<RecruitLetters> implements R
     }
 
     private void doSearchRecruitLettersByParam(RecrutimentLetterSearchParameter parameter, Criteria criteria) {
-        if (StringsUtils.isNotEmpty(parameter.getSelectionType())) {
+        if (StringUtils.isNotEmpty(parameter.getSelectionType())) {
             criteria.createAlias("recruitLetterSelections", "rs", JoinType.INNER_JOIN);
             criteria.createAlias("rs.recruitSelectionType", "se", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("se.name", parameter.getSelectionType(), MatchMode.ANYWHERE));
 
         }
-        if (StringsUtils.isNotEmpty(parameter.getLetterType())) {
+        if (StringUtils.isNotEmpty(parameter.getLetterType())) {
             criteria.add(Restrictions.eq("leterTypeId", Integer.parseInt(parameter.getLetterType())));
         }
-        if (StringsUtils.isNotEmpty(parameter.getSenderBy())) {
+        if (StringUtils.isNotEmpty(parameter.getSenderBy())) {
             criteria.createAlias("recruitLetterComChannels", "rc", JoinType.INNER_JOIN);
             criteria.createAlias("rc.recruitCommChannels", "rcom", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("rcom.channelName", parameter.getSenderBy(), MatchMode.ANYWHERE));

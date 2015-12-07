@@ -7,6 +7,7 @@ package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Date;
 
 /**
  *
@@ -16,12 +17,20 @@ public class CareerTransitionInboxViewModel implements Serializable {
     
     private BigInteger approvalActivityId;
     private BigInteger empCareerHistoryId;
+    private Integer approvalStatus;
+    private Integer transitionRole;
+
+    private Date requestTime;
+
+    private String rmbsApplicationCode;
     private String empNik;
     private String empName;
-    private String rmbsApplicationCode;
-    private Integer approvalStatus;
     private String jsonData;
-
+    private String jabatanName;
+    private String golonganJabatanName;
+    private String employeeTypeName;
+    private String notes;
+    
     public BigInteger getApprovalActivityId() {
         return approvalActivityId;
     }
@@ -77,6 +86,54 @@ public class CareerTransitionInboxViewModel implements Serializable {
     public void setJsonData(String jsonData) {
         this.jsonData = jsonData;
     }
+
+	public String getJabatanName() {
+		return jabatanName;
+	}
+
+	public void setJabatanName(String jabatanName) {
+		this.jabatanName = jabatanName;
+	}
+
+	public Date getRequestTime() {
+		return requestTime;
+	}
+
+	public void setRequestTime(Date requestTime) {
+		this.requestTime = requestTime;
+	}
+
+	public String getGolonganJabatanName() {
+		return golonganJabatanName;
+	}
+
+	public void setGolonganJabatanName(String golonganJabatanName) {
+		this.golonganJabatanName = golonganJabatanName;
+	}
+
+	public String getEmployeeTypeName() {
+		return employeeTypeName;
+	}
+
+	public void setEmployeeTypeName(String employeeTypeName) {
+		this.employeeTypeName = employeeTypeName;
+	}
+
+	public Integer getTransitionRole() {
+		return transitionRole;
+	}
+
+	public void setTransitionRole(Integer transitionRole) {
+		this.transitionRole = transitionRole;
+	}
+
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
     
     
 }

@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+       <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+            	<pe:importConstants className="com.inkubator.hrm.HRMConstant" var="hrmConstant" />
+                <p:growl id="growlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formId">
+                <div id="box_bg" style="margin: 10px">
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="bank.png" height="36" width="36"  cache="true"/>
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['career.competence_type_form']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['career.competence_type_from_application']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    
+                    <p:panelGrid style="width: 100%;margin-bottom: 20px;margin-top: 20px" styleClass="grid_border3" >
+                            
+                        <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="code" value="#{appmsg['career.competence_type_code']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 80%">
+                                <p:inputText id="code"  value="#{competenceTypeFormController.model.code}"
+                                             required="true"  maxlength="12" styleClass="isitext_hrm" style="width:210px;" />
+                            	
+                                <p:message for="code"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="name" value="#{appmsg['career.competence_type_name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 80%">
+                                <p:inputText id="name"  value="#{competenceTypeFormController.model.name}"
+                                             required="true"  maxlength="100" styleClass="isitext_hrm" style="width:210px;" />
+                            	
+                                <p:message for="name"/>
+                            </p:column>
+                        </p:row>
+                        
+                         <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="visibilityId" value="#{appmsg['career.competence_visibility']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 80%">
+                                <p:selectOneRadio id="visibilityId" styleClass="isitext_hrm"
+									required="true"
+									value="#{competenceTypeFormController.model.visibility}"
+									label="#{appmsg['career.competence_visibility']}">
+									<!--Cek HRM Constanta..-->
+									<f:selectItem itemLabel="#{appmsg['career.competence_soft']}"
+										itemValue="#{hrmConstant.COMPETENCE_SOFT_SKILL}" />
+									<f:selectItem itemLabel="#{appmsg['career.competence_hard']}"
+										itemValue="#{hrmConstant.COMPETENCE_HARD_SKILL}" />
+								</p:selectOneRadio>
+								<p:message for="visibilityId"  />
+                            </p:column>
+                        </p:row>
+                        
+                         <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="description" value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 80%">
+                                <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="225" value="#{competenceTypeFormController.model.description}" 
+                                                 style="width: 250px; height: 40px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                                 label="#{appmsg['global.description']}" title="#{appmsg['global.description']}" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                <p:outputLabel for="pickListGolonganKerja" value="#{appmsg['functiongroup.function_group']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 80%" >
+                                <p:pickList value="#{competenceTypeFormController.dualListModelGolJabatan}" var="golJabatan" itemValue="#{golJabatan}" converter="golonganJabatanConverter" id="pickListGolonganKerja"
+                                        required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['functiongroup.list_of_function_group']}" styleClass="isitext_hrm"
+                                        itemLabel="#{golJabatan.code}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                        removeLabel="#{appmsg['global.remove']}"/>
+                            	<p:message for="pickListGolonganKerja" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+                            </p:column>
+                            <p:column style="width: 80%" >
+                                <h:outputText id="counter" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+                    <p:focus context="formId" />
+                    <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
+                    <div style="margin-bottom: 5px">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
+                                         action="#{competenceTypeFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="formId" 
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formId" />  
+                        </p:commandButton>
+                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{competenceTypeFormController.doBack()}"
+                                             styleClass="label_button"/>
+                    
+                    </div>
+                    </div>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
