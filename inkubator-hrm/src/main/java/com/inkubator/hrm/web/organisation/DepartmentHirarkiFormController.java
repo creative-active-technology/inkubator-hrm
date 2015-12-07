@@ -15,7 +15,7 @@ import com.inkubator.hrm.entity.Department;
 import com.inkubator.hrm.entity.UnitKerja;
 import com.inkubator.hrm.service.DepartmentService;
 import com.inkubator.hrm.service.UnitKerjaService;
-import com.inkubator.hrm.util.StringsUtils;
+import com.inkubator.hrm.util.StringUtils;
 import com.inkubator.hrm.web.model.OrganisasiLevelModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
@@ -103,7 +103,7 @@ public class DepartmentHirarkiFormController extends BaseController {
                 organisasiLevelModel.setCompanyCode(department.getCompany().getCode());
 
                 String depCode = department.getDepartmentCode();
-                String codeToInsert = StringsUtils.substringAfter(depCode, "-");
+                String codeToInsert = StringUtils.substringAfter(depCode, "-");
                 organisasiLevelModel.setCode(codeToInsert);
                 organisasiLevelModel.setCompanyId(department.getCompany().getId());
                 organisasiLevelModel.setDepartemetId(department.getId());
