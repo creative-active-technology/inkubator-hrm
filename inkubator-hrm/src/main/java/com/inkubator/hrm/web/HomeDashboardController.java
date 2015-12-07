@@ -226,7 +226,7 @@ public class HomeDashboardController extends BaseController {
             /**
              * calculate attendance statistic from 6 days ago until yesterday
              */
-            SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy");
+            SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy",LocaleContextHolder.getLocale());
             int week = Calendar.getInstance().get(Calendar.WEEK_OF_MONTH);
             StringBuffer buff = new StringBuffer();
             buff.append(week);
