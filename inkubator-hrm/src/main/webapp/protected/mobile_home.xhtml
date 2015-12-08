@@ -201,6 +201,42 @@
                 </div>
             </div>
         </div>
+        <!--<div class="Container100 Responsive">-->
+        <!--<div class="ContainerIndent">-->
+        <div class="Seperator" ></div>
+        <div class="Container100">
+            <p:outputLabel value="#{appmsg['home.employee_distribution_by_age']}" class="Fs20 red" />
+            <h:panelGrid columns="2" style="margin-left: -3px">
+                <p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs18 black" style="margin-right: 3px"/>
+                <p:outputLabel value="#{homeMobileController.lastUpdateEmpDistByAge}" class="Fs16 black">
+                    <f:convertDateTime pattern="dd-MMMM-yyyy - HH:mm:ss"/>
+                </p:outputLabel>
+            </h:panelGrid>
+
+            <p:chart model="#{homeMobileController.pieModel}" type="pie"  style="height:220px;font-size: 11px;margin-left: -5px;margin-right: -5px" responsive="true" />
+        </div>
+        <div class="Seperator" ></div>
+        <div class="Container100">
+            <p:outputLabel value="#{appmsg['home.employee_attendance_presentation']}" class="Fs20 red" />
+            <h:panelGrid columns="2" style="margin-left: -3px">
+                <!--<p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs18 black" style="margin-right: 3px"/>-->
+                <p:outputLabel value="#{homeDashboardController.presentationAttendancePerDayLabel}" class="Fs16 black"/>
+            </h:panelGrid>
+            <p:chart type="bar" model="#{homeDashboardController.presentationAttendancePerDayBarChartModel}" style="height:180px;font-size: 11px" responsive="true"/>
+        </div>
+
+        <!--</div>-->
+        <!--</div>-->
+        <!--<h:panelGrid style="margin-bottom: 3px">-->
+<!--        <p:outputLabel value="#{appmsg['home.employee_distribution_by_age']}" styleClass="header_big" />
+        <h:panelGrid columns="2" style="margin-left:-6px;">
+            <p:outputLabel value="#{appmsg['home.updated']} :" styleClass="header_small_no_bold" style="color: #00AEEF" />
+            <p:outputLabel value="#{homeDashboardController.lastUpdateEmpDistByAge}" style="margin-left:-8px;color: #00AEEF" styleClass="header_small_no_bold" >
+                <f:convertDateTime pattern="dd-MMM-yyyy hh:mm"/>
+            </p:outputLabel>
+        </h:panelGrid>-->
+
+        <!--</h:panelGrid>-->
         <!--        <div align="center">
                     <div class="DispInlBlock TexAlLeft MarTop20" >
                         <div class="Container20" >
