@@ -247,7 +247,7 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
             criteria.add(Restrictions.in("approvalDefinition.id", ids));
             isStillHaveWaitingStatus = criteria.list().size() > 0;
         }
-        
+
         return isStillHaveWaitingStatus;
     }
 
@@ -420,6 +420,84 @@ public class ApprovalActivityDaoImpl extends IDAOImpl<ApprovalActivity> implemen
         criteria.addOrder(Order.desc("sequence"));
         criteria.setMaxResults(1);
         return (ApprovalActivity) criteria.uniqueResult();
+    }
+
+    @Override
+
+    public Long getTotalRequestHistory(String userName) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+
+        ProjectionList proList = Projections.projectionList();
+        proList.add(Property.forName("sequence").max());
+        proList.add(Projections.groupProperty("activityNumber"));
+        DetachedCriteria maxSequenceAndActivityNumber = DetachedCriteria.forClass(getEntityClass())
+                .add(Restrictions.eq("requestBy", userName))
+                .setProjection(proList);
+        String[] var = {"sequence", "activityNumber"};
+        criteria.add(Subqueries.propertiesIn(var, maxSequenceAndActivityNumber));
+
+        criteria.add(Restrictions.eq("requestBy", userName));
+        criteria.add(Restrictions.not(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL)));
+        criteria.add(Restrictions.not(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_REVISED)));
+
+//        criteria.setFetchMode("approvalDefinition", FetchMode.JOIN);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+
+    }
+
+    @Override
+    public Long getTotalPendingRequest(String userName) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+
+        ProjectionList proList = Projections.projectionList();
+        proList.add(Property.forName("sequence").max());
+        proList.add(Projections.groupProperty("activityNumber"));
+        DetachedCriteria maxSequenceAndActivityNumber = DetachedCriteria.forClass(getEntityClass())
+                .add(Restrictions.eq("requestBy", userName))
+                .setProjection(proList);
+        String[] var = {"sequence", "activityNumber"};
+        criteria.add(Subqueries.propertiesIn(var, maxSequenceAndActivityNumber));
+
+        Disjunction disjStatus = Restrictions.disjunction();
+        disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL));
+        disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_REVISED));
+        criteria.add(disjStatus);
+
+        criteria.add(Restrictions.eq("requestBy", userName));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public Long getTotalPendingTask(String userName) {
+
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+
+        Conjunction conjApprover = Restrictions.conjunction();
+        conjApprover.add(Restrictions.eq("approvedBy", userName));
+        conjApprover.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL));
+
+        Conjunction conjRequester = Restrictions.conjunction();
+        conjRequester.add(Restrictions.eq("requestBy", userName));
+        conjRequester.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_REVISED));
+
+        Disjunction disjunction = Restrictions.disjunction();
+        disjunction.add(conjRequester);
+        disjunction.add(conjApprover);
+
+        criteria.add(disjunction);
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public List<ApprovalActivity> getAllDataPendingRequestByApprovalDefName(String approvalDefName) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("approvalDefinition", "approvalDefinition", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("approvalDefinition.name", approvalDefName));
+        Disjunction disjStatus = Restrictions.disjunction();
+        disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL));
+        disjStatus.add(Restrictions.eq("approvalStatus", HRMConstant.APPROVAL_STATUS_WAITING_REVISED));
+        criteria.add(disjStatus);
+        return criteria.list();
     }
 
 }

@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.joda.time.DateTime;
 import org.primefaces.model.chart.ChartSeries;
@@ -27,9 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import ch.lambdaj.Lambda;
-import ch.lambdaj.group.Group;
 
 import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.AESUtil;
@@ -87,7 +83,7 @@ import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.util.ResourceBundleUtil;
-import com.inkubator.hrm.util.StringsUtils;
+import com.inkubator.hrm.util.StringUtils;
 import com.inkubator.hrm.web.model.BioDataModel;
 import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
@@ -110,6 +106,9 @@ import com.inkubator.hrm.web.search.SalaryConfirmationParameter;
 import com.inkubator.hrm.web.search.SearchEmployeeCandidateParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
+
+import ch.lambdaj.Lambda;
+import ch.lambdaj.group.Group;
 
 /**
  *
@@ -500,7 +499,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         Map<String, Long> results = new HashMap<String, Long>();
         for (Department department : departments) {
             Long total = empDataDao.getTotalByDepartmentId(department.getId());
-            results.put(StringsUtils.slicePerWord(department.getDepartmentName(), 25), total);
+            results.put(StringUtils.slicePerWord(department.getDepartmentName(), 25), total);
         }
         //sorting by value (dari yang besar ke yang kecil)
         results = MapUtil.sortByValueDesc(results);
@@ -980,7 +979,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         // Set Detail Position Criteria of each Data 
         for (SearchEmployeeCandidateViewModel searchEmployeeCandidateViewModel : listSearchEmployeeCandidateViewModels) {
             List<KlasifikasiKerjaJabatan> listKlasifikasiKerjaJabatans = klasifikasiKerjaJabatanDao.getByJabatanId(searchEmployeeCandidateViewModel.getIdJabatan().longValue());
-            String kriteria = StringsUtils.EMPTY;
+            String kriteria = StringUtils.EMPTY;
 
             for (KlasifikasiKerjaJabatan klasifikasiKerjaJabatan : listKlasifikasiKerjaJabatans) {
                 Boolean isNotLastRecord = listKlasifikasiKerjaJabatans.indexOf(klasifikasiKerjaJabatan) < listKlasifikasiKerjaJabatans.size() - 1;
@@ -1109,7 +1108,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
                     }
 
-                    mapResult.put(StringsUtils.slicePerWord(entry.getKey().getDepartmentName(), 25), listDepAttendance);
+                    mapResult.put(StringUtils.slicePerWord(entry.getKey().getDepartmentName(), 25), listDepAttendance);
                 } else {//jika sudah di departemen urutan ke 6 keatas, di pool ke dalam satu model
 
                     List<DepAttendanceRealizationViewModel> listDepAttendance = empDataDao.getListDepAttendanceByDepartmentIdAndRangeDate(entry.getKey().getId(), activeWtPeriode.getFromPeriode(), activeWtPeriode.getUntilPeriode());
@@ -1183,7 +1182,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
                 }
 
                 //tambah ke map yang akan ditampilkan ke chart dashboard  	
-                mapResult.put(StringsUtils.slicePerWord(entry.getKey().getDepartmentName(), 25), listDepAttendanceAfterGroupedAndSum);
+                mapResult.put(StringUtils.slicePerWord(entry.getKey().getDepartmentName(), 25), listDepAttendanceAfterGroupedAndSum);
 
             }
         }

@@ -19,7 +19,6 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.service.HrmUserService;
-import com.inkubator.hrm.util.StringsUtils;
 import com.inkubator.hrm.web.model.UserModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.WebCoreConstant;
@@ -71,7 +70,7 @@ public class UserInfoController extends BaseController {
         RequestContext context = FacesUtil.getRequestContext();
         
         //cek password lama tidak boleh sama dengan password yang baru
-        if(StringsUtils.equals(userModel.getPassword(), userModel.getOldPassword())){
+        if(StringUtils.equals(userModel.getPassword(), userModel.getOldPassword())){
         	MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_ERROR, "global.error", "error.oldpassword_and_newpassword_should_different",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         	

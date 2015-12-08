@@ -22,11 +22,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.TempAttendanceRealizationDao;
 import com.inkubator.hrm.entity.TempAttendanceRealization;
-import com.inkubator.hrm.util.HrmUserInfoUtil;
-import com.inkubator.hrm.util.StringsUtils;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationMonthEndViewModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
@@ -221,15 +218,15 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
     private String doSearchWtAttendanceCalculationByParam(WtAttendanceCalculationSearchParameter searchParameter) {
     	StringBuilder query = new StringBuilder();
     	
-    	if(!StringsUtils.equals(searchParameter.getNik(), null)){
+    	if(!StringUtils.equals(searchParameter.getNik(), null)){
     		query.append(" AND empData.nik LIKE :nik ");
     	}
     	
-    	if(!StringsUtils.equals(searchParameter.getEmpName(), null)){
+    	if(!StringUtils.equals(searchParameter.getEmpName(), null)){
     		query.append(" AND ( bioData.firstName LIKE :empName OR  bioData.lastName LIKE :empName ) ");
     	}
     	
-    	if(!StringsUtils.equals(searchParameter.getWtGroupWorkingName(), null)){
+    	if(!StringUtils.equals(searchParameter.getWtGroupWorkingName(), null)){
     		query.append(" AND  wtGroupWorking.name LIKE :wtGroupWorkingName  ");
     	}    	
     	
