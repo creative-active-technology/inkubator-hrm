@@ -37,7 +37,7 @@ public class PaySalaryGradeDaoImpl extends IDAOImpl<PaySalaryGrade> implements P
     public List<PaySalaryGrade> getByParam(PaySalaryGradeSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchPaySalaryGradeByParam(searchParameter, criteria);
-        criteria.setFetchMode("currency", FetchMode.JOIN);
+        /*criteria.setFetchMode("currency", FetchMode.JOIN);*/
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -48,11 +48,12 @@ public class PaySalaryGradeDaoImpl extends IDAOImpl<PaySalaryGrade> implements P
     public Long getTotalPaySalaryGradeByParam(PaySalaryGradeSearchParameter searchParameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         doSearchPaySalaryGradeByParam(searchParameter, criteria);
-        criteria.setFetchMode("currency", FetchMode.JOIN);
+        /*criteria.setFetchMode("currency", FetchMode.JOIN);*/
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     private void doSearchPaySalaryGradeByParam(PaySalaryGradeSearchParameter searchParameter, Criteria criteria) {
+    	criteria.createAlias("currency", "currency", JoinType.INNER_JOIN);
         BigDecimal bg = new BigDecimal("0");
         int resMinSalary = 0;
         int resMedSalary = 0;
@@ -80,8 +81,8 @@ public class PaySalaryGradeDaoImpl extends IDAOImpl<PaySalaryGrade> implements P
             criteria.add(Restrictions.eq("maxSalary", searchParameter.getMaxSalary()));
         }
         if (searchParameter.getCurrency() != null) {
-            criteria.createAlias("currency", "c", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.like("c.name", searchParameter.getCurrency(), MatchMode.START));
+            
+            criteria.add(Restrictions.like("currency.name", searchParameter.getCurrency(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

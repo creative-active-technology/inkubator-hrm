@@ -93,7 +93,7 @@ public class CareerTerminationTypeFormController extends BaseController {
 
     public void doSave() {
     	CareerTerminationType careerTerminationType = getEntityFromViewModel(careerTerminationTypeModel);
-        try {
+    	try {
             if (isUpdate) {
                 careerTerminationTypeService.update(careerTerminationType);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
