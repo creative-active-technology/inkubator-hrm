@@ -5,14 +5,17 @@
  */
 package com.inkubator.hrm.service;
 
+import java.util.Date;
+import java.util.List;
+
+import org.hibernate.criterion.Order;
+
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.web.model.CareerTransitionInboxViewModel;
 import com.inkubator.hrm.web.model.EmpCareerHistoryModel;
 import com.inkubator.hrm.web.search.CareerTransitionInboxSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpMutationParameter;
-import java.util.List;
-import org.hibernate.criterion.Order;
 
 /**
  *
@@ -35,4 +38,6 @@ public interface EmpCareerHistoryService extends IService<EmpCareerHistory>, Bas
     public Long getTotalgetEntityEmpCareerHistoryInboxByParam(CareerTransitionInboxSearchParameter searchParameter) throws Exception;
 
     public EmpCareerHistory getEntityByApprovalActivityNumber(String approvalActivityNumber) throws Exception;
+    
+    public List<EmpCareerHistory> getPreviousEmpCareerByBioDataIdAndCurrentCreatedOn(Long bioDataId, Date currentCreatedOn) throws Exception;
 }

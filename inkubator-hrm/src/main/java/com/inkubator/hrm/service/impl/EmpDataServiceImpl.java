@@ -234,6 +234,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         careerHistory.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         careerHistory.setJabatan(jabatan);
         careerHistory.setNik(entity.getNik());
+        careerHistory.setJoinDate(entity.getJoinDate());
         careerHistory.setNoSk(entity.getNoSk());
         careerHistory.setSalary(entity.getBasicSalary());
         careerHistory.setTglPenganngkatan(entity.getJoinDate());
@@ -289,6 +290,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         careerHistory.setNik(empData.getNik());
         careerHistory.setNoSk(empData.getNoSk());
         careerHistory.setStatus(empData.getStatus());
+        careerHistory.setJoinDate(empData.getJoinDate());
         careerHistory.setSalary(empData.getBasicSalary());
         careerHistory.setTglPenganngkatan(empData.getJoinDate());
         careerHistory.setUpdateBy(UserInfoUtil.getUserName());

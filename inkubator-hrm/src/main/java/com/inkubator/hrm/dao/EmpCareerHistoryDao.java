@@ -10,6 +10,8 @@ import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.web.model.CareerTransitionInboxViewModel;
 import com.inkubator.hrm.web.search.CareerTransitionInboxSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpMutationParameter;
+
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 
@@ -32,4 +34,6 @@ public interface EmpCareerHistoryDao extends IDAO<EmpCareerHistory> {
     public Long getTotalgetEntityEmpCareerHistoryInboxByParam(CareerTransitionInboxSearchParameter searchParameter);
     
     public EmpCareerHistory getEntityByApprovalActivityNumber(String approvalActivityNumber);
+    
+    public List<EmpCareerHistory> getPreviousEmpCareerByBioDataIdAndCurrentCreatedOn(Long bioDataId, Date currentCreatedOn);
 }

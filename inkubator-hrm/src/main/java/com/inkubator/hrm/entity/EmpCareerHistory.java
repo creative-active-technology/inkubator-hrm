@@ -46,7 +46,7 @@ public class EmpCareerHistory implements java.io.Serializable {
     private EmployeeType employeeType;
      private String jabatanOldName;
      private String jabatanOldCode;
-     private String companyName;
+     private Date joinDate;
 
     public EmpCareerHistory() {
     }
@@ -204,7 +204,7 @@ public class EmpCareerHistory implements java.io.Serializable {
     }
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "career_transition_id", nullable = false)
+    @JoinColumn(name = "career_transition_id", nullable = true)
     public CareerTransition getCareerTransition() {
 		return careerTransition;
 	}
@@ -296,14 +296,15 @@ public class EmpCareerHistory implements java.io.Serializable {
         this.employeeType = employeeType;
     }
 
-    @Transient
-	public String getCompanyName() {
-		return companyName;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "join_date", length = 19)
+	public Date getJoinDate() {
+		return joinDate;
 	}
 
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
+	public void setJoinDate(Date joinDate) {
+		this.joinDate = joinDate;
 	}
-    
-    
+
+	
 }

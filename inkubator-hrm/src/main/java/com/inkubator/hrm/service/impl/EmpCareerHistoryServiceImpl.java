@@ -342,7 +342,8 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 		/** start approval checking and saving data also */
         ApprovalActivity approvalActivity = this.checkApprovalIfAny(model.getEmpData().getId(), isBypassApprovalChecking);
 		if(approvalActivity == null){				
-			/** proceed of saving data(entity) to DB */            
+			/** proceed of saving data(entity) to DB */  
+			EmpCareerHistory careerHistory = new EmpCareerHistory();
 			EmployeeType employeeType = employeeTypeDao.getEntiyByPK(model.getEmployeeTypeId());
 			Jabatan jabatan = jabatanDao.getEntiyByPK(model.getJabatanId());
 			GolonganJabatan golonganJabatan = golonganJabatanDao.getEntiyByPK(model.getGolonganJabatanId());
@@ -350,6 +351,9 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 			EmpData copyOfLetterTo = empDataDao.getEntiyByPK(model.getCopyOfLetterTo().getId());
 			
 			EmpData empData = empDataDao.getEntiyByPK(model.getEmpData().getId());
+			/** save previous join date to career history */
+			careerHistory.setJoinDate(empData.getJoinDate());
+			System.out.println("ini teh join date sebelumnya" + empData.getJoinDate());
 			String salaryEncrypted = this.calculateSalaryEncrypted(empData.getBasicSalary(), model.getSalaryChangesType(), model.getSalaryChangesPercent());
 			empData.setBasicSalary(salaryEncrypted);
 			empData.setNik(model.getNik());
@@ -365,7 +369,7 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 			empData.setUpdatedOn(model.getCreatedOn() == null ? new Date() : model.getCreatedOn());
 			empDataDao.update(empData);
 			
-			EmpCareerHistory careerHistory = new EmpCareerHistory();
+			/*EmpCareerHistory careerHistory = new EmpCareerHistory();*/
 			careerHistory.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 	        careerHistory.setBioData(empData.getBioData());
 	        careerHistory.setCopyOfLetterTo(copyOfLetterTo);
@@ -604,6 +608,12 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 		/*Jabatan jabatan = jabatanDao.getJabatanByIdWithDetail(empCareerHistory.getJabatan().getId());
 		empCareerHistory.setCompanyName(jabatan.getDepartment().getCompany().getName());*/
 		return empCareerHistory;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpCareerHistory> getPreviousEmpCareerByBioDataIdAndCurrentCreatedOn(Long bioDataId, Date currentCreatedOn) throws Exception {
+		return empCareerHistoryDao.getPreviousEmpCareerByBioDataIdAndCurrentCreatedOn(bioDataId, currentCreatedOn);
 	}
 
 }
