@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -369,75 +368,93 @@ public class ApprovalActivityServiceImpl extends IServiceImpl implements Approva
         return approvalActivityDao.getAllDataWaitingStatusApproval();
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<ApprovalActivity> getListLeavePendingWithImplDateBetweenRange(Date startDate, Date endDate)	throws Exception {
-		List<ApprovalActivity> listPendingApprovalLeave = approvalActivityDao.getAllDataPendingRequestByApprovalDefName(HRMConstant.LEAVE);
-		List<ApprovalActivity> listPendingApprovalLeaveFiltered = listPendingApprovalLeave.stream()
-				.filter(appActivity -> ispendingLeaveImplDateBetweenRange(appActivity,startDate,endDate))
-				.collect(Collectors.toList());
-		
-		return listPendingApprovalLeaveFiltered;
-	}
-	
-	private Boolean ispendingLeaveImplDateBetweenRange(ApprovalActivity approvalActivity, Date startDate, Date endDate){
-		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalRequestHistory(String userName) throws Exception {
+        return approvalActivityDao.getTotalRequestHistory(userName);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalPendingRequest(String userName) throws Exception {
+        return approvalActivityDao.getTotalPendingRequest(userName);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalPendingTask(String userName) throws Exception {
+        return approvalActivityDao.getTotalPendingTask(userName);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<ApprovalActivity> getListLeavePendingWithImplDateBetweenRange(Date startDate, Date endDate) throws Exception {
+        List<ApprovalActivity> listPendingApprovalLeave = approvalActivityDao.getAllDataPendingRequestByApprovalDefName(HRMConstant.LEAVE);
+        List<ApprovalActivity> listPendingApprovalLeaveFiltered = listPendingApprovalLeave.stream()
+                .filter(appActivity -> ispendingLeaveImplDateBetweenRange(appActivity, startDate, endDate))
+                .collect(Collectors.toList());
+
+        return listPendingApprovalLeaveFiltered;
+    }
+
+    private Boolean ispendingLeaveImplDateBetweenRange(ApprovalActivity approvalActivity, Date startDate, Date endDate) {
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         LeaveImplementation entity = gson.fromJson(approvalActivity.getPendingData(), LeaveImplementation.class);
-		return entity.getStartDate().after(startDate) && entity.getStartDate().before(endDate);
-	}
+        return entity.getStartDate().after(startDate) && entity.getStartDate().before(endDate);
+    }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<ApprovalActivity> getListBusinessTravelPendingWithImplDateBetweenRange(Date startDate, Date endDate)
-			throws Exception {
-		List<ApprovalActivity> listPendingApprovalBusinessTravel = approvalActivityDao.getAllDataPendingRequestByApprovalDefName(HRMConstant.BUSINESS_TRAVEL);
-		List<ApprovalActivity> listPendingApprovalBusinessTravelFiltered = listPendingApprovalBusinessTravel.stream()
-				.filter(appActivity -> ispendingBusinessTravelImplDateBetweenRange(appActivity,startDate,endDate))
-				.collect(Collectors.toList());
-		
-		return listPendingApprovalBusinessTravelFiltered;
-	}
-	
-	private Boolean ispendingBusinessTravelImplDateBetweenRange(ApprovalActivity approvalActivity, Date startDate, Date endDate){
-		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<ApprovalActivity> getListBusinessTravelPendingWithImplDateBetweenRange(Date startDate, Date endDate)
+            throws Exception {
+        List<ApprovalActivity> listPendingApprovalBusinessTravel = approvalActivityDao.getAllDataPendingRequestByApprovalDefName(HRMConstant.BUSINESS_TRAVEL);
+        List<ApprovalActivity> listPendingApprovalBusinessTravelFiltered = listPendingApprovalBusinessTravel.stream()
+                .filter(appActivity -> ispendingBusinessTravelImplDateBetweenRange(appActivity, startDate, endDate))
+                .collect(Collectors.toList());
+
+        return listPendingApprovalBusinessTravelFiltered;
+    }
+
+    private Boolean ispendingBusinessTravelImplDateBetweenRange(ApprovalActivity approvalActivity, Date startDate, Date endDate) {
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         BusinessTravel entity = gson.fromJson(approvalActivity.getPendingData(), BusinessTravel.class);
-		return entity.getStartDate().after(startDate) && entity.getStartDate().before(endDate);
-	}
+        return entity.getStartDate().after(startDate) && entity.getStartDate().before(endDate);
+    }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<ApprovalActivity> getListPermitPendingWithImplDateBetweenRange(Date startDate, Date endDate)
-			throws Exception {
-		List<ApprovalActivity> listPendingApprovalPermit = approvalActivityDao.getAllDataPendingRequestByApprovalDefName(HRMConstant.PERMIT);
-		List<ApprovalActivity> listPendingApprovalPermitFiltered = listPendingApprovalPermit.stream()
-				.filter(appActivity -> ispendingPermitImplDateBetweenRange(appActivity,startDate,endDate))
-				.collect(Collectors.toList());
-		
-		return listPendingApprovalPermitFiltered;
-	}
-	
-	private Boolean ispendingPermitImplDateBetweenRange(ApprovalActivity approvalActivity, Date startDate, Date endDate){
-		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<ApprovalActivity> getListPermitPendingWithImplDateBetweenRange(Date startDate, Date endDate)
+            throws Exception {
+        List<ApprovalActivity> listPendingApprovalPermit = approvalActivityDao.getAllDataPendingRequestByApprovalDefName(HRMConstant.PERMIT);
+        List<ApprovalActivity> listPendingApprovalPermitFiltered = listPendingApprovalPermit.stream()
+                .filter(appActivity -> ispendingPermitImplDateBetweenRange(appActivity, startDate, endDate))
+                .collect(Collectors.toList());
+
+        return listPendingApprovalPermitFiltered;
+    }
+
+    private Boolean ispendingPermitImplDateBetweenRange(ApprovalActivity approvalActivity, Date startDate, Date endDate) {
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
         PermitImplementation entity = gson.fromJson(approvalActivity.getPendingData(), PermitImplementation.class);
-		return entity.getStartDate().after(startDate) && entity.getStartDate().before(endDate);
-	}
+        return entity.getStartDate().after(startDate) && entity.getStartDate().before(endDate);
+    }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<ApprovalActivity> getListOvertimePendingWithImplDateBetweenRange(Date startDate, Date endDate)
-			throws Exception {
-		List<ApprovalActivity> listPendingApprovalOvertime = approvalActivityDao.getAllDataPendingRequestByApprovalDefName(HRMConstant.OVERTIME);
-		List<ApprovalActivity> listPendingApprovalOvertimeFiltered = listPendingApprovalOvertime.stream()
-				.filter(appActivity -> ispendingOvertimeImplDateBetweenRange(appActivity,startDate,endDate))
-				.collect(Collectors.toList());
-		
-		return listPendingApprovalOvertimeFiltered;
-	}
-	
-	private Boolean ispendingOvertimeImplDateBetweenRange(ApprovalActivity approvalActivity, Date startDate, Date endDate){
-		Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<ApprovalActivity> getListOvertimePendingWithImplDateBetweenRange(Date startDate, Date endDate)
+            throws Exception {
+        List<ApprovalActivity> listPendingApprovalOvertime = approvalActivityDao.getAllDataPendingRequestByApprovalDefName(HRMConstant.OVERTIME);
+        List<ApprovalActivity> listPendingApprovalOvertimeFiltered = listPendingApprovalOvertime.stream()
+                .filter(appActivity -> ispendingOvertimeImplDateBetweenRange(appActivity, startDate, endDate))
+                .collect(Collectors.toList());
+
+        return listPendingApprovalOvertimeFiltered;
+    }
+
+    private Boolean ispendingOvertimeImplDateBetweenRange(ApprovalActivity approvalActivity, Date startDate, Date endDate) {
+        Gson gson = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
         ImplementationOfOverTime entity = gson.fromJson(approvalActivity.getPendingData(), ImplementationOfOverTime.class);
-		return entity.getImplementationDate().after(startDate) && entity.getImplementationDate().before(endDate);
-	}
+        return entity.getImplementationDate().after(startDate) && entity.getImplementationDate().before(endDate);
+    }
 
 }

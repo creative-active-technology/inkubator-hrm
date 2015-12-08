@@ -230,7 +230,7 @@ box-shadow: 0px 1px 0px 0px rgba(70,145,91,0.8);}
 			 border-radius:3px; -webkit-border-radius:3px; -moz-border-radius:3px; margin-bottom:15px;}
 			 
 /* seperator line */
-.Seperator{border-bottom:solid 1px #C3CCD5; width:100%; overflow:hidden; height:0px; margin:15px 0px; float:left;}
+.Seperator{border-bottom:solid 1px #ffffff; width:100%; overflow:hidden; height:0px; margin:15px 0px; float:left}
 
 /* hover effect for boxlink and links */
 .HoverEffect:hover{border: solid 1px #D0525D !important; color:#D0525D !important; box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box;
