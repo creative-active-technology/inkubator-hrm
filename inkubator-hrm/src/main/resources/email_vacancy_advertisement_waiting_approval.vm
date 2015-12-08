@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <div style="font-family:Trebuchet MS;margin-bottom: 20px;font-weight: bold;color: black;padding: 3px 3px 3px 10px;background-image: linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -o-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -moz-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -ms-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-gradient(linear,left bottom,left topcolor-stop(0.68, rgb(114,185,215)));">
+            PENGAJUAN IKLAN LOWONGAN ${nik}/${requesterName}</div>
+        <div style="padding-left: 10px;font-family: Verdana">
+            Yth ${approverName},
+            <br />
+            <br />
+            <br />
+            Pada tanggal ${applyDate}, karyawan ${nik}/${requesterName} mengajukan iklan lowongan, dengan detail sebagai berikut :<br />
+			<br />
+			<table style="margin-left: 20px;">
+				<tr>
+					<td>Tanggal Efektif</td>   
+					<td>: ${effectiveDate}</td>
+				</tr>
+				<tr>
+					<td>Sumber Media</td>   
+					<td>: ${advertisementMediaName}</td>
+				</tr>
+			</table>
+			<br/>
+			#if (!$listAdvertisementDetail.isEmpty())
+				<table style="margin-left: 20px;">
+				#foreach($data in $listAdvertisementDetail)
+					<tr>
+						<td>$velocityCount.</td> 
+						<td>Kode Permintaan</td>   
+						<td>: $data.hireApplyCode</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>Jabatan</td>   
+						<td>: $data.jabatanName</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>Mulai Publikasi</td>   
+						<td>: $dateTool.format('dd MMMM yyyy', $data.publishStart, $locale)</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>Selesai Publikasi</td>   
+						<td>: $dateTool.format('dd MMMM yyyy', $data.publishEnd, $locale)</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>Biaya</td>   
+						<td>: $numTool.format($data.cost)</td>
+					</tr>
+					<tr>
+						<td> </td>
+						<td> </td> 
+						<td> </td>
+					</tr>		
+		        #end
+		        </table> 
+            #end
+			<br />
+           Anda bisa melakukan persetujuan pada: <a href="${urlLinkToApprove}" target="_blank" style="-webkit-appearance: button;-moz-appearance: button;appearance:button;text-decoration: none;color: initial; padding: 2px 4px 2px 4px; background-color: #72b9d7; color:white;">Lakukan Persetujuan</a>
+ 			<br />
+ 			<br />
+            Demikian pemberitahuan ini disampaikan, atas perhatian dan kerjasamanya disampaikan terima kasih.
+			<br />
+ 			<br />
+			Salam,
+            <br/>
+            <br/>
+            On Behalf ${applicationName}<br/>
+            ${ownerAdministrator}
+        </div>
+        <div style="font-family:Trebuchet MS ;margin-top: 20px;font-weight: bold;color: black;padding: 3px 3px 3px 10px;background-image: linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -o-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -moz-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -ms-linear-gradient(bottom, rgb(70,162,202) 36%, rgb(114,185,215) 68%);background-image: -webkit-gradient(linear,left bottom,left topcolor-stop(0.68, rgb(114,185,215)));">${applicationName} @${ownerCompany}
+        </div>
+    </body>
+</html> 

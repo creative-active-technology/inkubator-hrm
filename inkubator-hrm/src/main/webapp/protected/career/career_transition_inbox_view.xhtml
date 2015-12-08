@@ -21,8 +21,8 @@
                             <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
                             <h:panelGroup layout="block">
                                 <h:panelGrid>
-                                    <p:outputLabel value="#{appmsg['savingType.savingType']}" styleClass="header_big" />
-                                    <p:outputLabel value="#{appmsg['savingType.savingType_header']}" styleClass="header_small_no_bold" />
+                                    <p:outputLabel value="#{appmsg['careerTransitionInbox.careerTransitionInbox']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['careerTransitionInbox.careerTransitionInbox_header']}" styleClass="header_small_no_bold" />
                                 </h:panelGrid>
                             </h:panelGroup>
                         </h:panelGrid>
@@ -33,13 +33,12 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:selectOneMenu value="#{savingTypeViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                    <p:selectOneMenu value="#{careerTransitionInboxViewController.searchParameter.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['global.code']}" itemValue="code"/>
-                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="empName"/>
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{savingTypeViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{savingTypeViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:inputText id="searchId" value="#{careerTransitionInboxViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{careerTransitionInboxViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
