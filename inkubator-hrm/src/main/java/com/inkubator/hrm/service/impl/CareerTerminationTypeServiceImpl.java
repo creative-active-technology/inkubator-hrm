@@ -86,7 +86,7 @@ public class CareerTerminationTypeServiceImpl extends IServiceImpl implements Ca
         entityToUpdate.setName(entity.getName());
         entityToUpdate.setDescription(entity.getDescription());
         entityToUpdate.setUpdatedBy(HrmUserInfoUtil.getUserName());
-        entityToUpdate.setUpdatedOn(new Date())
+        entityToUpdate.setUpdatedOn(new Date());
         entityToUpdate.setSystemLetterReference(systemLetterReferenceDao.getEntiyByPK(entity.getSystemLetterReference().getId()));
         entityToUpdate.setSystemCareerConst(systemCareerConstDao.getEntiyByPK(entity.getSystemCareerConst().getId()));
         careerTerminationTypeDao.update(entityToUpdate);
