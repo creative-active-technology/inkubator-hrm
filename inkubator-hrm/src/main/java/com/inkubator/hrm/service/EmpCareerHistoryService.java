@@ -5,6 +5,11 @@
  */
 package com.inkubator.hrm.service;
 
+import java.util.Date;
+import java.util.List;
+
+import org.hibernate.criterion.Order;
+
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.web.model.CareerTransitionInboxViewModel;
@@ -13,8 +18,6 @@ import com.inkubator.hrm.web.model.EmpEliminationViewModel;
 import com.inkubator.hrm.web.search.CareerTransitionInboxSearchParameter;
 import com.inkubator.hrm.web.search.EmpEliminationSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpMutationParameter;
-import java.util.List;
-import org.hibernate.criterion.Order;
 
 /**
  *
@@ -39,4 +42,8 @@ public interface EmpCareerHistoryService extends IService<EmpCareerHistory>, Bas
     public List<EmpEliminationViewModel> getListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
     
     public Long getTotalListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter) throws Exception;
+
+    public EmpCareerHistory getEntityByApprovalActivityNumber(String approvalActivityNumber) throws Exception;
+    
+    public List<EmpCareerHistory> getPreviousEmpCareerByBioDataIdAndCurrentCreatedOn(Long bioDataId, Date currentCreatedOn) throws Exception;
 }

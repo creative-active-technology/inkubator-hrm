@@ -45,7 +45,7 @@ public class CareerTransitionInboxLazyDataModel extends LazyDataModel<CareerTran
                 if(sortField != null){
                     order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
                 }else{
-                    order = Order.desc("empName");
+                    order = Order.desc("requestTime");
                 }
                 careerTransitionInboxList = service.getEntityEmpCareerHistoryInboxByParam(searchParameter, first, pageSize, order);
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalgetEntityEmpCareerHistoryInboxByParam(searchParameter)));

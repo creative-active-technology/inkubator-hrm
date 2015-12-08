@@ -14,6 +14,8 @@ import com.inkubator.hrm.web.model.CareerTransitionInboxViewModel;
 import com.inkubator.hrm.web.search.CareerTransitionInboxSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpMutationParameter;
 import com.inkubator.hrm.web.search.RmbsApplicationUndisbursedSearchParameter;
+
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
@@ -146,7 +148,8 @@ public class EmpCareerHistoryDaoImpl extends IDAOImpl<EmpCareerHistory> implemen
                 "CONCAT(bioData.first_name,' ',bioData.last_name) AS empName, " +
                 "approvalActivity.approval_status AS approvalStatus, " +
                 "approvalActivity.pending_data AS jsonData, " +
-                "approvalActivity.request_time AS requestTime " +
+                "approvalActivity.request_time AS requestTime, " +
+                "approvalActivity.activity_number AS activityNumber " +
                 "FROM approval_activity approvalActivity " +
                 "LEFT JOIN approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id " +
                 "LEFT JOIN hrm_user AS approver ON approver.user_id = approvalActivity.approved_by " +
@@ -229,4 +232,41 @@ public class EmpCareerHistoryDaoImpl extends IDAOImpl<EmpCareerHistory> implemen
     	}    	
     	return hbm;
     }
+
+	@Override
+	public EmpCareerHistory getEntityByApprovalActivityNumber(String approvalActivityNumber) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("approvalActivityNumber", approvalActivityNumber));
+        criteria.setFetchMode("bioData", FetchMode.JOIN);
+        criteria.setFetchMode("copyOfLetterTo", FetchMode.JOIN);
+        criteria.setFetchMode("copyOfLetterTo.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("employeeType", FetchMode.JOIN);
+        criteria.setFetchMode("jabatan", FetchMode.JOIN);
+        criteria.setFetchMode("jabatan.department", FetchMode.JOIN);
+        criteria.setFetchMode("jabatan.department.company", FetchMode.JOIN);
+        criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
+        criteria.setFetchMode("golonganJabatan.pangkat", FetchMode.JOIN);
+        criteria.setFetchMode("careerTransition", FetchMode.JOIN);
+        return (EmpCareerHistory) criteria.uniqueResult();
+	}
+
+	@Override
+	public List<EmpCareerHistory> getPreviousEmpCareerByBioDataIdAndCurrentCreatedOn(Long bioDataId, Date currentCreatedOn) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+		criteria.add(Restrictions.eq("bioData.id", bioDataId));
+		criteria.add(Restrictions.lt("createdOn", currentCreatedOn));
+		criteria.addOrder(Order.desc("createdOn"));
+        criteria.setFetchMode("copyOfLetterTo", FetchMode.JOIN);
+        criteria.setFetchMode("copyOfLetterTo.bioData", FetchMode.JOIN);
+        criteria.setFetchMode("employeeType", FetchMode.JOIN);
+        criteria.setFetchMode("jabatan", FetchMode.JOIN);
+        criteria.setFetchMode("jabatan.department", FetchMode.JOIN);
+        criteria.setFetchMode("jabatan.department.company", FetchMode.JOIN);
+        criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
+        criteria.setFetchMode("golonganJabatan.pangkat", FetchMode.JOIN);
+		/*criteria.setMaxResults(1);*/
+		return criteria.list();
+		
+	}
 }
