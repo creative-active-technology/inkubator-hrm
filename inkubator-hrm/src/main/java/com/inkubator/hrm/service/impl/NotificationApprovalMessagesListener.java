@@ -143,7 +143,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
 	                    case HRMConstant.EMP_CORRECTION_ATTENDANCE:
 	                    	List<WtEmpCorrectionAttendanceDetail> listCorrectionAttendance = gsonDateSerializer.fromJson(jsonObject.get("listCorrectionAttendance").getAsString(), new TypeToken<List<WtEmpCorrectionAttendanceDetail>>() {}.getType());
 	                        
-	                        vtm.setTemplatePath("email_recruit_applicant_waiting_approval.vm");
+	                        vtm.setTemplatePath("email_correction_attendance_waiting_approval.vm");
 	                        maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
 	                        maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
 	                        maptoSend.put("nik", requesterUser.getEmpData().getNik());
@@ -373,7 +373,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
 	                    	List<WtEmpCorrectionAttendanceDetail> listCorrectionAttendance = gsonDateSerializer.fromJson(jsonObject.get("listCorrectionAttendance").getAsString(), new TypeToken<List<WtEmpCorrectionAttendanceDetail>>() {}.getType());
 	                        
 	                        vtm.setSubject("Pengajuan Koreksi Kehadiran");
-	                        vtm.setTemplatePath("email_recruit_applicant_approved_or_rejected.vm");
+	                        vtm.setTemplatePath("email_correction_attendance_approved_or_rejected.vm");
 	                        maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
 	                        maptoSend.put("nik", requesterUser.getEmpData().getNik());
 	                        maptoSend.put("startDate", jsonObject.get("startDate").getAsString());
