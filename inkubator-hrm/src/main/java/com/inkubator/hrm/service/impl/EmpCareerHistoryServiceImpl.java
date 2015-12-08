@@ -34,7 +34,6 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
-import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.CareerTransitionDao;
 import com.inkubator.hrm.dao.EmpCareerHistoryDao;
 import com.inkubator.hrm.dao.EmpDataDao;
@@ -43,7 +42,6 @@ import com.inkubator.hrm.dao.GolonganJabatanDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
-import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.CareerTransition;
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.entity.EmpData;
@@ -55,7 +53,9 @@ import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.EmpCareerHistoryService;
 import com.inkubator.hrm.web.model.CareerTransitionInboxViewModel;
 import com.inkubator.hrm.web.model.EmpCareerHistoryModel;
+import com.inkubator.hrm.web.model.EmpEliminationViewModel;
 import com.inkubator.hrm.web.search.CareerTransitionInboxSearchParameter;
+import com.inkubator.hrm.web.search.EmpEliminationSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpMutationParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
@@ -596,5 +596,18 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
     public Long getTotalgetEntityEmpCareerHistoryInboxByParam(CareerTransitionInboxSearchParameter searchParameter) throws Exception {
     	return empCareerHistoryDao.getTotalgetEntityEmpCareerHistoryInboxByParam(searchParameter);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<EmpEliminationViewModel> getListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter, int firstResult, int maxResults, Order order)	throws Exception {
+		return new ArrayList<EmpEliminationViewModel>();
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter) throws Exception {
+		// TODO Auto-generated method stub
+		return 0l;
+	}
 
 }
