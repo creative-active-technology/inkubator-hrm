@@ -34,7 +34,6 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.ApprovalActivityDao;
-import com.inkubator.hrm.dao.BioDataDao;
 import com.inkubator.hrm.dao.CareerTransitionDao;
 import com.inkubator.hrm.dao.EmpCareerHistoryDao;
 import com.inkubator.hrm.dao.EmpDataDao;
@@ -43,7 +42,6 @@ import com.inkubator.hrm.dao.GolonganJabatanDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.entity.ApprovalActivity;
-import com.inkubator.hrm.entity.BioData;
 import com.inkubator.hrm.entity.CareerTransition;
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.entity.EmpData;
@@ -55,7 +53,9 @@ import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.EmpCareerHistoryService;
 import com.inkubator.hrm.web.model.CareerTransitionInboxViewModel;
 import com.inkubator.hrm.web.model.EmpCareerHistoryModel;
+import com.inkubator.hrm.web.model.EmpEliminationViewModel;
 import com.inkubator.hrm.web.search.CareerTransitionInboxSearchParameter;
+import com.inkubator.hrm.web.search.EmpEliminationSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpMutationParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
@@ -342,7 +342,8 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 		/** start approval checking and saving data also */
         ApprovalActivity approvalActivity = this.checkApprovalIfAny(model.getEmpData().getId(), isBypassApprovalChecking);
 		if(approvalActivity == null){				
-			/** proceed of saving data(entity) to DB */            
+			/** proceed of saving data(entity) to DB */  
+			EmpCareerHistory careerHistory = new EmpCareerHistory();
 			EmployeeType employeeType = employeeTypeDao.getEntiyByPK(model.getEmployeeTypeId());
 			Jabatan jabatan = jabatanDao.getEntiyByPK(model.getJabatanId());
 			GolonganJabatan golonganJabatan = golonganJabatanDao.getEntiyByPK(model.getGolonganJabatanId());
@@ -350,6 +351,9 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 			EmpData copyOfLetterTo = empDataDao.getEntiyByPK(model.getCopyOfLetterTo().getId());
 			
 			EmpData empData = empDataDao.getEntiyByPK(model.getEmpData().getId());
+			/** save previous join date to career history */
+			careerHistory.setJoinDate(empData.getJoinDate());
+			System.out.println("ini teh join date sebelumnya" + empData.getJoinDate());
 			String salaryEncrypted = this.calculateSalaryEncrypted(empData.getBasicSalary(), model.getSalaryChangesType(), model.getSalaryChangesPercent());
 			empData.setBasicSalary(salaryEncrypted);
 			empData.setNik(model.getNik());
@@ -365,7 +369,7 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 			empData.setUpdatedOn(model.getCreatedOn() == null ? new Date() : model.getCreatedOn());
 			empDataDao.update(empData);
 			
-			EmpCareerHistory careerHistory = new EmpCareerHistory();
+			/*EmpCareerHistory careerHistory = new EmpCareerHistory();*/
 			careerHistory.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 	        careerHistory.setBioData(empData.getBioData());
 	        careerHistory.setCopyOfLetterTo(copyOfLetterTo);
@@ -596,5 +600,32 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
     public Long getTotalgetEntityEmpCareerHistoryInboxByParam(CareerTransitionInboxSearchParameter searchParameter) throws Exception {
     	return empCareerHistoryDao.getTotalgetEntityEmpCareerHistoryInboxByParam(searchParameter);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<EmpEliminationViewModel> getListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter, int firstResult, int maxResults, Order order)	throws Exception {
+		return new ArrayList<EmpEliminationViewModel>();
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter) throws Exception {
+		// TODO Auto-generated method stub
+		return 0l;
+	}
+	
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public EmpCareerHistory getEntityByApprovalActivityNumber(String approvalActivityNumber) throws Exception {
+		EmpCareerHistory empCareerHistory = empCareerHistoryDao.getEntityByApprovalActivityNumber(approvalActivityNumber);
+		/*Jabatan jabatan = jabatanDao.getJabatanByIdWithDetail(empCareerHistory.getJabatan().getId());
+		empCareerHistory.setCompanyName(jabatan.getDepartment().getCompany().getName());*/
+		return empCareerHistory;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpCareerHistory> getPreviousEmpCareerByBioDataIdAndCurrentCreatedOn(Long bioDataId, Date currentCreatedOn) throws Exception {
+		return empCareerHistoryDao.getPreviousEmpCareerByBioDataIdAndCurrentCreatedOn(bioDataId, currentCreatedOn);
+	}
 
 }
