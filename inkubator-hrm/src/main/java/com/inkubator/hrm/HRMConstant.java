@@ -400,6 +400,7 @@ public class HRMConstant {
     public static final String PUBCIL_HOLIDAY_KODE = "LVCO";
 
     public static final String APP_NAME = "Web Destop App";
+      public static final String APP_NAME_MOBILE = "Web Mobile App";
 
     public static final Integer KLASIFIKASI_STRENGTHS = 0;
     public static final Integer KLASIFIKASI_WEAKNESSES = 1;

@@ -61,7 +61,7 @@
                             </p:graphicImage></div>
                         <div class="Container80">
                             <div class="Fright">
-                                <h2 class="black Fs24 FontRalewayMedium"> #{realName}</h2>
+                                <h2 class="blue_black Fs24 FontRalewayMedium"> #{realName}</h2>
                                 <span class="Fs15 white FontRalewayRegular DispBlock"> #{homeController.roleUser}</span>
                             </div>
                         </div>
@@ -152,15 +152,15 @@
             </div>
         </div>
         <div class="Seperator" ></div>
-        <i class="fa fa-th-list Fleft Fs16 black MarRight10 "></i>
-        <span class="Fleft Fs16 black"><p:outputLabel value="Informasi Penting Karyawan" /></span>
+        <i class="fa fa-th-list Fleft Fs16 blue_black MarRight10 "></i>
+        <span class="Fleft Fs16 blue_black"><p:outputLabel value="Informasi Penting Karyawan" /></span>
         <div class="Container25 Responsive">
             <div class="ContainerIndent">
                 <div class="Container100 TexAlCenter">
                     <div class="Container100">
 
                         <!--<div class="Wid45 BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #00AEEF">-->
-                        <a href="#" class="Wid45  BorderedBox Fleft TexAlCenter HoverEffect">
+                        <a href="#" class="Wid45  BorderedBox Fleft TexAlCenter HoverEffect" style="border-color: #00AEEF">
                             <div class="ContainerIndent">
                                 <div class="EmptyBox10"></div>
                                 <i class="fa fa-thumbs-up Fs24 animated swing infinite blue"></i>
@@ -170,7 +170,7 @@
                             </div>
                         </a>
                         <!--</div>-->
-                        <a href="#" class="Wid45 BorderedBox Fright TexAlCenter HoverEffect" style="margin-left:5%;">
+                        <a href="#" class="Wid45 BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #00AEEF">
                             <div class="ContainerIndent">
                                 <div class="EmptyBox10"></div>
                                 <i class="fa fa-tasks Fs24 animated bounceOut infinite blue"></i>
@@ -179,7 +179,7 @@
                                 <div class="EmptyBox10"></div>
                             </div>
                         </a>
-                        <a href="#" class="Wid45 BorderedBox Fleft TexAlCenter HoverEffect">
+                        <a href="#" class="Wid45 BorderedBox Fleft TexAlCenter HoverEffect" style="border-color: #00AEEF">
                             <div class="ContainerIndent">
                                 <div class="EmptyBox10"></div>
                                 <i class="fa fa-thumbs-down animated swing infinite red Fs24"></i>
@@ -188,7 +188,7 @@
                                 <div class="EmptyBox10"></div>
                             </div>
                         </a>
-                        <a href="#" class="Wid45  BorderedBox Fright TexAlCenter HoverEffect">
+                        <a href="#" class="Wid45  BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #00AEEF">
                             <div class="ContainerIndent">
                                 <div class="EmptyBox10"></div>
                                 <i class="fa fa-tachometer animated bounceIn infinite blue Fs24"></i>
@@ -205,10 +205,10 @@
         <!--<div class="ContainerIndent">-->
         <div class="Seperator" ></div>
         <div class="Container100">
-            <p:outputLabel value="#{appmsg['home.employee_distribution_by_age']}" class="Fs20 red" />
+            <p:outputLabel value="#{appmsg['home.employee_distribution_by_age']}" class="Fs18 blue_black" />
             <h:panelGrid columns="2" style="margin-left: -3px">
-                <p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs18 black" style="margin-right: 3px"/>
-                <p:outputLabel value="#{homeMobileController.lastUpdateEmpDistByAge}" class="Fs16 black">
+                <p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs16 white" style="margin-right: 3px"/>
+                <p:outputLabel value="#{homeMobileController.lastUpdateEmpDistByAge}" class="Fs16 white">
                     <f:convertDateTime pattern="dd-MMMM-yyyy - HH:mm:ss"/>
                 </p:outputLabel>
             </h:panelGrid>
@@ -217,10 +217,38 @@
         </div>
         <div class="Seperator" ></div>
         <div class="Container100">
-            <p:outputLabel value="#{appmsg['home.employee_attendance_presentation']}" class="Fs20 red" />
+            <p:outputLabel value="#{appmsg['home.employee_distribution_by_gender']}" class="Fs18 blue_black" />
+            <h:panelGrid columns="2" style="margin-left: -3px;margin-bottom: 5px">
+                <p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs16 white" style="margin-right: 3px"/>
+                <p:outputLabel value="#{homeMobileController.lastUpdateEmpDistByGender}" class="Fs16 white">
+                    <f:convertDateTime pattern="dd-MMMM-yyyy - HH:mm:ss"/>
+                </p:outputLabel>
+            </h:panelGrid>
+            <div class="Wid45 BorderedBox Fleft TexAlCenter HoverEffect" style="border-color: #00AEEF;">
+                <div class="ContainerIndent">
+                    <div class="EmptyBox10"></div>
+                    <p:graphicImage library="images" name="logo-cowo.png" width="35%" cache="true" />
+                    <!--<span class="Fs14 DispBlock black">Laki-Laki</span>-->
+                    <span class="Fs24 DispBlock red animated bounceOut infinite">#{homeMobileController.totalMale}</span>
+                    <div class="EmptyBox10"></div>
+                </div>
+            </div>
+            <div class="Wid45 BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #00AEEF">
+                <div class="ContainerIndent">
+                    <div class="EmptyBox10"></div>
+                    <p:graphicImage library="images" name="logo-cewe.png" width="36%" cache="true" />
+                    <!--<span class="Fs14 DispBlock black">Perempuan</span>-->
+                    <span class="Fs24 DispBlock red animated bounceOut infinite">#{homeMobileController.totalFemale}</span>
+                    <div class="EmptyBox10"></div>
+                </div>
+            </div>
+        </div>
+        <div class="Seperator" ></div>
+        <div class="Container100">
+            <p:outputLabel value="#{appmsg['home.employee_attendance_presentation']}" class="Fs18 blue_black" />
             <h:panelGrid columns="2" style="margin-left: -3px">
                 <!--<p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs18 black" style="margin-right: 3px"/>-->
-                <p:outputLabel value="#{homeDashboardController.presentationAttendancePerDayLabel}" class="Fs16 black"/>
+                <p:outputLabel value="#{homeDashboardController.presentationAttendancePerDayLabel}" class="Fs16 white"/>
             </h:panelGrid>
             <p:chart type="bar" model="#{homeDashboardController.presentationAttendancePerDayBarChartModel}" style="height:180px;font-size: 11px" responsive="true"/>
         </div>

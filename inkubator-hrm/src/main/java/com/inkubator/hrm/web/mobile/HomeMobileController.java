@@ -39,8 +39,11 @@ public class HomeMobileController extends BaseController {
     private Integer totalLeaveType;
     private PieChartModel pieModel;
     private Date lastUpdateEmpDistByAge;
-     @ManagedProperty(value = "#{empDataService}")
+    @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
+    private Long totalMale;
+    private Long totalFemale;
+    private Date lastUpdateEmpDistByGender;
 
     @PostConstruct
     @Override
@@ -54,7 +57,7 @@ public class HomeMobileController extends BaseController {
             List<LeaveImplementationDateModel> listLeaveImplementationDateModel = leaveImplementationDateService.getAllDataWithTotalTakenLeaveByEmpDataId(empDataId);
             totalLeaveType = listLeaveImplementationDateModel.size();
             pieModel = new PieChartModel();
-             Map<String, Long> employeesByAge = empDataService.getTotalByAge(HrmUserInfoUtil.getCompanyId());
+            Map<String, Long> employeesByAge = empDataService.getTotalByAge(HrmUserInfoUtil.getCompanyId());
             pieModel.set("< 26", employeesByAge.get("lessThan26"));
             pieModel.set("25-30", employeesByAge.get("between26And30"));
             pieModel.set("31-35", employeesByAge.get("between31And35"));
@@ -67,6 +70,10 @@ public class HomeMobileController extends BaseController {
             pieModel.setDiameter(150);
             pieModel.setSeriesColors("66cc00,629de1,003366,990000,cccc00,6600cc");
             lastUpdateEmpDistByAge = new Date(employeesByAge.get("lastUpdate"));
+            Map<String, Long> employeesByGender = empDataService.getTotalByGender(HrmUserInfoUtil.getCompanyId());
+            totalFemale = employeesByGender.get("male");
+            totalMale = employeesByGender.get("female");
+            lastUpdateEmpDistByGender = new Date(employeesByGender.get("lastUpdate"));
 
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
@@ -131,6 +138,30 @@ public class HomeMobileController extends BaseController {
 
     public void setEmpDataService(EmpDataService empDataService) {
         this.empDataService = empDataService;
+    }
+
+    public Long getTotalMale() {
+        return totalMale;
+    }
+
+    public void setTotalMale(Long totalMale) {
+        this.totalMale = totalMale;
+    }
+
+    public Long getTotalFemale() {
+        return totalFemale;
+    }
+
+    public void setTotalFemale(Long totalFemale) {
+        this.totalFemale = totalFemale;
+    }
+
+    public Date getLastUpdateEmpDistByGender() {
+        return lastUpdateEmpDistByGender;
+    }
+
+    public void setLastUpdateEmpDistByGender(Date lastUpdateEmpDistByGender) {
+        this.lastUpdateEmpDistByGender = lastUpdateEmpDistByGender;
     }
 
 }
