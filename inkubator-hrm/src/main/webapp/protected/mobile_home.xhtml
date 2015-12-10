@@ -152,8 +152,8 @@
             </div>
         </div>
         <div class="Seperator" ></div>
-        <i class="fa fa-th-list Fleft Fs16 blue_black MarRight10 "></i>
-        <span class="Fleft Fs16 blue_black"><p:outputLabel value="Informasi Penting Karyawan" /></span>
+        <i class="fa fa-list-alt Fleft Fs16 blue_black MarRight10 "></i>
+        <span class="Fleft Fs16 blue_black"><p:outputLabel value="#{appmsg['global.click_more_detail']}" /></span>
         <div class="Container25 Responsive">
             <div class="ContainerIndent">
                 <div class="Container100 TexAlCenter">
@@ -164,7 +164,7 @@
                             <div class="ContainerIndent">
                                 <div class="EmptyBox10"></div>
                                 <i class="fa fa-thumbs-up Fs24 animated swing infinite blue"></i>
-                                <span class="Fs14 DispBlock black">#{appmsg['home.request_history']} </span>
+                                <span class="Fs14 DispBlock black">#{appmsg['home.request_history']}</span>
                                 <span class="Fs24 DispBlock red">#{homeMobileController.totalRequestHistory}</span>
                                 <div class="EmptyBox10"></div>
                             </div>
@@ -188,7 +188,7 @@
                                 <div class="EmptyBox10"></div>
                             </div>
                         </a>
-                        <a href="#" class="Wid45  BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #00AEEF">
+                        <a href="#" class="Wid45 BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #00AEEF">
                             <div class="ContainerIndent">
                                 <div class="EmptyBox10"></div>
                                 <i class="fa fa-tachometer animated bounceIn infinite blue Fs24"></i>
@@ -203,17 +203,31 @@
         </div>
         <!--<div class="Container100 Responsive">-->
         <!--<div class="ContainerIndent">-->
-        <div class="Seperator" ></div>
-        <div class="Container100">
-            <p:outputLabel value="#{appmsg['home.employee_distribution_by_age']}" class="Fs18 blue_black" />
-            <h:panelGrid columns="2" style="margin-left: -3px">
-                <p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs16 white" style="margin-right: 3px"/>
-                <p:outputLabel value="#{homeMobileController.lastUpdateEmpDistByAge}" class="Fs16 white">
-                    <f:convertDateTime pattern="dd-MMMM-yyyy - HH:mm:ss"/>
-                </p:outputLabel>
-            </h:panelGrid>
 
-            <p:chart model="#{homeMobileController.pieModel}" type="pie"  style="height:220px;font-size: 11px;margin-left: -5px;margin-right: -5px" responsive="true" />
+        <div class="Seperator" ></div>
+        <div class="layout-portlets-box">
+            <div class="Container100">
+                <p:outputLabel value="#{appmsg['home.employee_distribution_by_age']}" class="Fs18 blue_black" />
+                <h:panelGrid columns="2" style="margin-left: -3px">
+                    <p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs16 blue" style="margin-right: 3px"/>
+                    <p:outputLabel value="#{homeMobileController.lastUpdateEmpDistByAge}" class="Fs16 blue">
+                        <f:convertDateTime pattern="dd-MMMM-yyyy - HH:mm:ss"/>
+                    </p:outputLabel>
+                </h:panelGrid>
+                <p:chart model="#{homeMobileController.pieModel}" type="pie"  style="height:220px;font-size: 11px;margin-left: -5px;margin-right: -5px" responsive="true" />
+            </div>
+        </div>
+
+        <div class="Seperator" ></div>
+        <div class="layout-portlets-box">
+            <div class="Container100">
+                <p:outputLabel value="#{appmsg['home.employee_attendance_presentation']}" class="Fs18 blue_black" />
+                <h:panelGrid columns="2" style="margin-left: -3px">
+                    <!--<p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs18 black" style="margin-right: 3px"/>-->
+                    <p:outputLabel value="#{homeMobileController.presentationAttendancePerDayLabel}" class="Fs16 blue"/>
+                </h:panelGrid>
+                <p:chart type="bar" model="#{homeMobileController.presentationAttendancePerDayBarChartModel}" style="height:180px;font-size: 11px" responsive="true"/>
+            </div>
         </div>
         <div class="Seperator" ></div>
         <div class="Container100">
@@ -244,15 +258,19 @@
             </div>
         </div>
         <div class="Seperator" ></div>
-        <div class="Container100">
-            <p:outputLabel value="#{appmsg['home.employee_attendance_presentation']}" class="Fs18 blue_black" />
-            <h:panelGrid columns="2" style="margin-left: -3px">
-                <!--<p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs18 black" style="margin-right: 3px"/>-->
-                <p:outputLabel value="#{homeDashboardController.presentationAttendancePerDayLabel}" class="Fs16 white"/>
-            </h:panelGrid>
-            <p:chart type="bar" model="#{homeDashboardController.presentationAttendancePerDayBarChartModel}" style="height:180px;font-size: 11px" responsive="true"/>
+        <div class="layout-portlets-box">
+            <div class="Container100">
+                <p:outputLabel value="#{appmsg['home.employee_distribution_by_department']}" class="Fs18 blue_black" />
+                <h:panelGrid columns="2" style="margin-left: -3px">
+                    <p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs16 blue" style="margin-right: 3px"/>
+                    <p:outputLabel value="#{homeMobileController.lastUpdateEmpDistByDepartment}" class="Fs16 blue">
+                        <f:convertDateTime pattern="dd-MMMM-yyyy - HH:mm:ss"/>
+                    </p:outputLabel>
+                </h:panelGrid>
+                <p:chart type="bar" model="#{homeMobileController.barChartDistribusiByDept}"  style="height:190px;font-size: 11px" responsive="true"  />
+             <!--<p:chart model="#{homeDashboardController.barChartModel}" type="bar"  style="height:220px;font-size: 11px;margin-left: -5px;margin-right: -5px" responsive="true" />-->
+            </div>
         </div>
-
         <!--</div>-->
         <!--</div>-->
         <!--<h:panelGrid style="margin-bottom: 3px">-->
