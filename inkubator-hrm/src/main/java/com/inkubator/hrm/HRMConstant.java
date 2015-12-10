@@ -573,4 +573,11 @@ public class HRMConstant {
     /* Constant for contextPath */
     public static final String CONTEXT_PATH = "contextPath";
     /* END */
+    
+    /*Constant for Appraisal PerformanceGroup*/
+    public static final String APPRAISAL_PERFORM_GROUP_PROCESS = "Process";
+    public static final String APPRAISAL_PERFORM_GROUP_RESULT = "Result";
+    public static final String APPRAISAL_PERFORM_GROUP_POSITION = "Position";
+    public static final String APPRAISAL_PERFORM_GROUP_EMPLOYEE = "Employee";
+    /* END */
 }
