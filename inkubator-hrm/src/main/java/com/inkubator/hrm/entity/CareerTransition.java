@@ -7,6 +7,8 @@ package com.inkubator.hrm.entity;
 
 import java.beans.Transient;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +16,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,6 +49,7 @@ public class CareerTransition implements java.io.Serializable {
      private Date updatedOn;
      private String description;
      private SystemLetterReference systemLetterReference;
+     private Set<CareerEmpElimination> careerEmpEliminations = new HashSet<CareerEmpElimination>(0);
 
     public CareerTransition() {
     }
@@ -214,7 +218,14 @@ public class CareerTransition implements java.io.Serializable {
 		this.systemLetterReference = systemLetterReference;
 	}
 
-
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="careerTransition")
+    public Set<CareerEmpElimination> getCareerEmpEliminations() {
+        return this.careerEmpEliminations;
+    }
+    
+    public void setCareerEmpEliminations(Set<CareerEmpElimination> careerEmpEliminations) {
+        this.careerEmpEliminations = careerEmpEliminations;
+    }
 
 
 }
