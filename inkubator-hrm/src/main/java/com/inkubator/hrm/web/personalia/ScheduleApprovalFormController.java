@@ -82,7 +82,7 @@ public class ScheduleApprovalFormController extends BaseController {
             isRequester = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getRequestBy());
 
             JSONObject jSONObject = new JSONObject(selectedApprovalActivity.getPendingData());
-            long workingGroupId = Long.parseLong(jSONObject.getString("groupWorkingId"));
+            long workingGroupId = jSONObject.getLong("groupWorkingId");
             String listEmp = jSONObject.getString("listEmpId");
             TypeToken<List<Long>> token = new TypeToken<List<Long>>() {
             };

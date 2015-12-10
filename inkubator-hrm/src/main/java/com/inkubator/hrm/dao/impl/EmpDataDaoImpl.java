@@ -1092,6 +1092,12 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         criteria.setFetchMode("bioData", FetchMode.JOIN);
+        criteria.setFetchMode("jabatanByJabatanId", FetchMode.JOIN);
+        criteria.setFetchMode("jabatanByJabatanId.department", FetchMode.JOIN);
+        criteria.setFetchMode("jabatanByJabatanId.department.company", FetchMode.JOIN);
+        criteria.setFetchMode("employeeType", FetchMode.JOIN);
+        criteria.setFetchMode("golonganJabatan", FetchMode.JOIN);
+        criteria.setFetchMode("golonganJabatan.pangkat", FetchMode.JOIN);
         criteria.add(Restrictions.eq("bioData.id", bioDataid));
         return (EmpData) criteria.uniqueResult();
     }

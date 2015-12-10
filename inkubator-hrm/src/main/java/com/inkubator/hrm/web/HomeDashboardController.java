@@ -5,7 +5,10 @@
  */
 package com.inkubator.hrm.web;
 
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -20,10 +23,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
-import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
+import org.jfree.data.time.Week;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.Weeks;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
@@ -32,6 +36,7 @@ import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.HorizontalBarChartModel;
 import org.primefaces.model.chart.PieChartModel;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import ch.lambdaj.Lambda;
 
@@ -45,6 +50,7 @@ import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.service.WtScheduleShiftService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.util.ResourceBundleUtil;
+import com.inkubator.hrm.util.StringUtils;
 import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.EmployeeResumeDashboardModel;
 import com.inkubator.hrm.web.model.LoginHistoryModel;
@@ -76,6 +82,7 @@ public class HomeDashboardController extends BaseController {
     private CartesianChartModel persentasiKehadiranPerWeek;
     private BarChartModel barChartModel;
     private HorizontalBarChartModel presentationAttendancePerDayBarChartModel;
+    private String presentationAttendancePerDayLabel;
     private BarChartModel barChartDistribusiByDept;
     private List<LoginHistoryModel> logHistorys = new ArrayList<>();
     @ManagedProperty(value = "#{empDataService}")
@@ -219,6 +226,16 @@ public class HomeDashboardController extends BaseController {
             /**
              * calculate attendance statistic from 6 days ago until yesterday
              */
+            SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy",LocaleContextHolder.getLocale());
+            int week = Calendar.getInstance().get(Calendar.WEEK_OF_MONTH);
+            StringBuffer buff = new StringBuffer();
+            buff.append(week);
+            if(LocaleContextHolder.getLocale().getLanguage().equals("en")){
+            	buff.append(StringUtils.suffixesDayOfMonth[week]);
+            }
+            Object[] parameters = {buff.toString(),formatter.format(now.toDate())};
+            ResourceBundle bundle = ResourceBundle.getBundle("Messages", LocaleContextHolder.getLocale());
+            presentationAttendancePerDayLabel = MessageFormat.format(bundle.getString("home.week_update_data"), parameters);
             List<Date> listTanggalWaktuKerja = new ArrayList<>();
             IntStream.range(1, 6).forEach(num -> listTanggalWaktuKerja.add(now.minusDays(num).toDate()));
             List<ChartSeries> listPresentasiAttendance = empDataService.getEmployeePresentationAttendanceOnDashboard(HrmUserInfoUtil.getCompanyId() ,listTanggalWaktuKerja);
@@ -435,4 +452,12 @@ public class HomeDashboardController extends BaseController {
         this.wtHolidayService = wtHolidayService;
     }
 
+	public String getPresentationAttendancePerDayLabel() {
+		return presentationAttendancePerDayLabel;
+	}
+
+	public void setPresentationAttendancePerDayLabel(String presentationAttendancePerDayLabel) {
+		this.presentationAttendancePerDayLabel = presentationAttendancePerDayLabel;
+	}
+    
 }

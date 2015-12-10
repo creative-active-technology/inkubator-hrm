@@ -5,7 +5,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:pe="http://primefaces.org/ui/extensions">
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
         <title>TODO supply a title</title>
     </h:head>
@@ -47,8 +48,8 @@
                                     <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Competence_Type"/>
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{competenceTypeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
-                                        <p:ajax event="dialogReturn" listener="#{competenceTypeViewController.onDialogReturn}"  update="tableId, growlId"/>
+                                    <p:commandButton value="#{appmsg['global.add']}" action="#{competenceTypeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <!-- <p:ajax event="dialogReturn" listener="#{competenceTypeViewController.onDialogReturn}"  update="tableId, growlId"/> -->
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{careerAwardTypeViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                     
@@ -85,27 +86,29 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['career.competence_visibility']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.visibility}" />
+                                <h:outputLabel value= "#{data.visibility}" >
+                                	<f:converter converterId="competenceVisibilityConverter" />
+                                </h:outputLabel>
                             </p:column>
 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 14%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                  onclick="PF('statusDialog').show()"  oncomplete="PF('detail').show()" update=":detailPanel"
-                                                 style="font-size: 10px!important" action="#{careerAwardTypeViewController.doSelectEntity()}">                        
-                                    <f:setPropertyActionListener value="#{data}" target="#{careerAwardTypeViewController.selected}" />
+                                                 style="font-size: 10px!important" action="#{competenceTypeViewController.doSelectEntity()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{competenceTypeViewController.selected}" />
                                 </p:commandButton>
                                 - 
                                 <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
                                 				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
-                                                                 action="#{careerAwardTypeViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDelete').show()">
-                                    <f:setPropertyActionListener value="#{data}" target="#{careerAwardTypeViewController.selected}" />
+                                                                 action="#{competenceTypeViewController.doSelectEntity()}" onclick="PF('statusDialog').show()"  oncomplete="PF('dialogConfirmDelete').show()">
+                                    <f:setPropertyActionListener value="#{data}" target="#{competenceTypeViewController.selected}" />
                                 </p:commandButton>
                                 -
-                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" ajax="true"
-                                                  action="#{careerAwardTypeViewController.doEdit()}" >
-                                    <f:setPropertyActionListener value="#{data}" target="#{careerAwardTypeViewController.selected}" />
-                                    <p:ajax event="dialogReturn" listener="#{careerAwardTypeViewController.onDialogReturn}"  update="tableId, :formId:growlId"/>
+                                <p:commandButton  icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                  action="#{competenceTypeViewController.doEdit()}" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{competenceTypeViewController.selected}" />
                                 </p:commandButton> 
+                                
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
@@ -148,7 +151,7 @@
                         <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmDelete').hide()" icon="ui-icon-close" />                     	
                     </div>
                 </p:dialog>
-                <p:dialog widgetVar="detail" header="#{appmsg['careerawardtype.detail']}" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                <p:dialog widgetVar="detail" header="#{appmsg['career.competence_type_detail']}" width="550" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
                           showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
                     <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
                         <p:row>
@@ -160,17 +163,25 @@
                             <p:column><p:outputLabel value="#{competenceTypeViewController.selected.name}"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['careerawardtype.letter_reference']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{competenceTypeViewController.selected.visibility}"/> </p:column>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['career.competence_visibility']}" styleClass="label_hrm"/></p:column>
+                            <p:column>
+                            	<p:outputLabel value="#{competenceTypeViewController.selected.visibility}">
+                            		<f:converter converterId="competenceVisibilityConverter" />
+                            	 </p:outputLabel>
+                             </p:column>
                         </p:row>
-                        <!-- <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['careerawardtype.validity']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{careerAwardTypeViewController.selected.validity} #{appmsg['global.month']}"/> </p:column>
+                         <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{competenceTypeViewController.selected.description}" /> </p:column>
                         </p:row>
                         <p:row>
-                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{careerAwardTypeViewController.selected.description}"/> </p:column>
-                        </p:row> -->
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['functiongroup.function_group']}" styleClass="label_hrm"/></p:column>
+                            <p:column>
+                            	<c:forEach   var="dataRender" items="#{competenceTypeViewController.selected.appraisalCompetencyTypeGolJabs}" id="repeat" begin="0"  end="#{competenceTypeViewController.selected.appraisalCompetencyTypeGolJabs.size()-1}" varStatus="loop"  >
+                            		<p:outputLabel value="#{dataRender.golonganJabatan.code}" />,
+                            	</c:forEach>
+                             </p:column>
+                        </p:row>
 
                         <f:facet name="footer">
                             <p:row>

@@ -17,6 +17,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.AppraisalCompetencyType;
 import com.inkubator.hrm.service.AppraisalCompetencyTypeService;
@@ -60,7 +61,7 @@ public class CompetenceTypeViewController extends BaseController{
     
     public void doSelectEntity(){
         try{
-            selected = appraisalCompetencyTypeService.getEntiyByPK(selected.getId());
+            selected = appraisalCompetencyTypeService.getEntityByIdWithDetail(selected.getId());
         } catch (Exception ex){
             LOGGER.error("Error", ex);
         }
@@ -75,31 +76,21 @@ public class CompetenceTypeViewController extends BaseController{
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             LOGGER.error("Error", ex);
+        } catch (BussinessException ex) {
+            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex){
             LOGGER.error("Error", ex);
         }
     }
     
-    public void showDialog(Map<String, List<String>> params){
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        options.put("draggable", true);
-        options.put("resizable", true);
-        options.put("contentWidth", 470);
-        options.put("contentHeight", 530);
-        RequestContext.getCurrentInstance().openDialog("competence_type_form", options, params);
-    }
     
-    public void doAdd(){
-        showDialog(null);
+    public String doAdd(){
+    	return "/protected/appraisal/competence_type_form.htm?faces-redirect=true";
+       // showDialog(null);
     }
             
-    public void doEdit(){
-        Map<String, List<String>> dataToSend = new HashMap<>();
-        List<String> dataIsi = new ArrayList<>();
-        dataIsi.add(String.valueOf(selected.getId()));
-        dataToSend.put("careerAwardTypeId", dataIsi);
-        showDialog(dataToSend);
+    public String doEdit(){
+    	return "/protected/appraisal/competence_type_form.htm?faces-redirect=true&execution=e" + selected.getId();
     }
     
     @Override

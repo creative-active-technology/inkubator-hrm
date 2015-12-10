@@ -54,7 +54,7 @@ public class CareerTransitionInboxViewController extends BaseController {
     
     public String doDetail(){
     	if(selected.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_APPROVED){
-    		return "/protected/career/career_transition_inbox_detail.htm?faces-redirect=true&execution=e"+selected.getApprovalActivityId();
+    		return "/protected/career/career_transition_inbox_detail.htm?faces-redirect=true&execution=e"+selected.getActivityNumber();
     	}else{
     		return "/protected/career/emp_career_transition_approval_form.htm?faces-redirect=true&execution=e"+selected.getApprovalActivityId();
     	}

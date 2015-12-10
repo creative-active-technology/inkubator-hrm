@@ -12,7 +12,7 @@ import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.util.CustomAuthenticationSuccessHandler;
 import com.inkubator.hrm.util.ResourceBundleUtil;
-import com.inkubator.hrm.util.StringsUtils;
+import com.inkubator.hrm.util.StringUtils;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
@@ -100,7 +100,7 @@ public class LoginController extends BaseController {
 //        if (StringsUtils.isContain(userAgent, "Chrome") || StringsUtils.isContain(userAgent, "Firefox")) {
 //            info = ResourceBundleUtil.getAsString("browser.info");
 //        }
-        if (StringsUtils.isContain(userAgent, "Edge")) {
+        if (StringUtils.isContain(userAgent, "Edge")) {
             info = ResourceBundleUtil.getAsString("browser.info_invalid");
         }
 
@@ -165,7 +165,7 @@ public class LoginController extends BaseController {
         String bahasa1 = (String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE);
         FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(bahasa1));
         String userAgent = FacesUtil.getRequest().getHeader("User-Agent");
-        if (StringsUtils.isContain(userAgent, "Edge")) {
+        if (StringUtils.isContain(userAgent, "Edge")) {
             info = ResourceBundleUtil.getAsString("browser.info_invalid");
         }
     }

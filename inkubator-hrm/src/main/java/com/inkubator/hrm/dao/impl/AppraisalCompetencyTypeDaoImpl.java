@@ -4,6 +4,7 @@ package com.inkubator.hrm.dao.impl;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -56,5 +57,13 @@ public class AppraisalCompetencyTypeDaoImpl extends IDAOImpl<AppraisalCompetency
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
+
+	@Override
+	public AppraisalCompetencyType getEntityByIdWithDetail(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("appraisalCompetencyTypeGolJabs", FetchMode.JOIN);
+        return (AppraisalCompetencyType) criteria.uniqueResult();
+	}
 
 }

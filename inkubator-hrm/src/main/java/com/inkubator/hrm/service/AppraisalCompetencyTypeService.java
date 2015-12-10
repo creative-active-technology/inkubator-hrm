@@ -16,4 +16,10 @@ public interface AppraisalCompetencyTypeService extends IService<AppraisalCompet
 	public List<AppraisalCompetencyType> getListByParam(AppraisalCompetencyTypeSearchParameter searchParameter, int firstResult, int maxResult, Order order) throws Exception;
 	
 	public Long getTotalByParam(AppraisalCompetencyTypeSearchParameter searchParameter) throws Exception;
+	
+	public String saveDataCompetenceType(AppraisalCompetencyType competencyType, List<Long> listIdGolonganJabatan ) throws Exception;
+	
+	public String updateDataCompetenceType(AppraisalCompetencyType competencyType, List<Long> listIdGolonganJabatan ) throws Exception;
+	
+	public AppraisalCompetencyType getEntityByIdWithDetail(Long id) throws Exception;
 }

@@ -16,12 +16,12 @@ import org.joda.time.DateTime;
 public class KodefikasiUtil {
 
     public static String getKodefikasi(int maxNumerData, String pattern) {
-        String afterString = StringsUtils.substringAfter(pattern, "[");
-        String beforeString = StringsUtils.substringBefore(pattern, "[");
-        String removeParenties1 = StringsUtils.remove(afterString, "[");
-        String removeParenties2 = StringsUtils.remove(removeParenties1, "]");
-        int numberOfYear = StringsUtils.countMatches(removeParenties2, "Y");
-        int numberofN = StringsUtils.countMatches(removeParenties2, "N");
+        String afterString = StringUtils.substringAfter(pattern, "[");
+        String beforeString = StringUtils.substringBefore(pattern, "[");
+        String removeParenties1 = StringUtils.remove(afterString, "[");
+        String removeParenties2 = StringUtils.remove(removeParenties1, "]");
+        int numberOfYear = StringUtils.countMatches(removeParenties2, "Y");
+        int numberofN = StringUtils.countMatches(removeParenties2, "N");
 
         int currentNumber = maxNumerData + 1;
         int numberofNEx = String.valueOf(currentNumber).length();
@@ -35,7 +35,7 @@ public class KodefikasiUtil {
         if (selisih == 0) {
             numberInString = String.valueOf(currentNumber);
         } else {
-            numberInString = StringsUtils.leftPad(String.valueOf(currentNumber), numberofN, "0");
+            numberInString = StringUtils.leftPad(String.valueOf(currentNumber), numberofN, "0");
         }
         DateTime jodaTime = new DateTime();
         int year = jodaTime.getYear();
@@ -63,25 +63,25 @@ public class KodefikasiUtil {
         } else {
             dayInString = String.valueOf(day);
         }
-        String output1 = StringsUtils.replaceOnce(removeParenties2, "Y", yearInString);
-        String output2 = StringsUtils.remove(output1, "Y");
-        String output3 = StringsUtils.replaceOnce(output2, "M", montInString);
-        String output4 = StringsUtils.remove(output3, "M");
-        String output5 = StringsUtils.replaceOnce(output4, "D", dayInString);
-        String output6 = StringsUtils.remove(output5, "D");
-        String output7 = StringsUtils.replaceOnce(output6, "N", numberInString);
-        String output8 = StringsUtils.remove(output7, "N");
+        String output1 = StringUtils.replaceOnce(removeParenties2, "Y", yearInString);
+        String output2 = StringUtils.remove(output1, "Y");
+        String output3 = StringUtils.replaceOnce(output2, "M", montInString);
+        String output4 = StringUtils.remove(output3, "M");
+        String output5 = StringUtils.replaceOnce(output4, "D", dayInString);
+        String output6 = StringUtils.remove(output5, "D");
+        String output7 = StringUtils.replaceOnce(output6, "N", numberInString);
+        String output8 = StringUtils.remove(output7, "N");
         return beforeString + output8;
 
     }
 
     public static String getKodefikasiOnlyPattern(String pattern) {
-        String afterString = StringsUtils.substringAfter(pattern, "[");
-        String beforeString = StringsUtils.substringBefore(pattern, "[");
-        String removeParenties1 = StringsUtils.remove(afterString, "[");
-        String removeParenties2 = StringsUtils.remove(removeParenties1, "]");
-        int numberOfYear = StringsUtils.countMatches(removeParenties2, "Y");
-        int numberofN = StringsUtils.countMatches(removeParenties2, "N");
+        String afterString = StringUtils.substringAfter(pattern, "[");
+        String beforeString = StringUtils.substringBefore(pattern, "[");
+        String removeParenties1 = StringUtils.remove(afterString, "[");
+        String removeParenties2 = StringUtils.remove(removeParenties1, "]");
+        int numberOfYear = StringUtils.countMatches(removeParenties2, "Y");
+        int numberofN = StringUtils.countMatches(removeParenties2, "N");
 
 //        int currentNumber = maxNumerData + 1;
 //        int numberofNEx = String.valueOf(currentNumber).length();
@@ -123,12 +123,12 @@ public class KodefikasiUtil {
         } else {
             dayInString = String.valueOf(day);
         }
-        String output1 = StringsUtils.replaceOnce(removeParenties2, "Y", yearInString);
-        String output2 = StringsUtils.remove(output1, "Y");
-        String output3 = StringsUtils.replaceOnce(output2, "M", montInString);
-        String output4 = StringsUtils.remove(output3, "M");
-        String output5 = StringsUtils.replaceOnce(output4, "D", dayInString);
-        String output6 = StringsUtils.remove(output5, "D");
+        String output1 = StringUtils.replaceOnce(removeParenties2, "Y", yearInString);
+        String output2 = StringUtils.remove(output1, "Y");
+        String output3 = StringUtils.replaceOnce(output2, "M", montInString);
+        String output4 = StringUtils.remove(output3, "M");
+        String output5 = StringUtils.replaceOnce(output4, "D", dayInString);
+        String output6 = StringUtils.remove(output5, "D");
 //        String output7 = StringsUtils.replaceOnce(output6, "N", numberInString);
 //        String output8 = StringsUtils.remove(output7, "N");
         return beforeString + output6;

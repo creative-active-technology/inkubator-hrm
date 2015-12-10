@@ -51,234 +51,353 @@
     <ui:define name="content">
 
         <!-- BOX START -->
-        <div class="layout-portlets-box">
-            <div class="Container20 Responsive">
-                <div class="ContainerIndent">
+        <div class="Container25 Responsive">
+            <div class="ContainerIndent">
+                <div class="Container100 TexAlCenter">
+                    <div class="DispInlBlock TexAlLeft MarTop20" >
+                        <div class="Container20" >
+                            <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="50" width="50" cache="true" style="border:  1px solid #ffffff !important; border-radius: 4px !important;margin-right: 6px"    >
+                                <f:param name="id" value="#{BIODATA_ID}"/>
+                            </p:graphicImage></div>
+                        <div class="Container80">
+                            <div class="Fright">
+                                <h2 class="blue_black Fs24 FontRalewayMedium"> #{realName}</h2>
+                                <span class="Fs15 white FontRalewayRegular DispBlock"> #{homeController.roleUser}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Seperator" ></div>
+                    <i class="fa fa-clock-o Fleft Fs15 red MarRight10 MarBot10"></i>
+                    <span class="Fleft Fs13 red"><p:outputLabel value="#{appmsg['master_layout.login_at']} #{login_date}" /></span>
+                    <div class="EmptyBox10"></div>
+                    <div class="Container100">
+                        <div class="Wid45 BorderedBox Fleft TexAlCenter" style="border-color: #00AEEF">
+                            <div class="ContainerIndent">
+                                <h:outputLink value="${request.contextPath}/protected/account/user_view.htm">
+                                    <p:graphicImage library="images" name="user_account.png"  width="50px" height="50px" cache="true" />
+                                </h:outputLink>
+                                <div class="Fs16 black FontRalewayRegular animated pulse infinite">#{appmsg['menu.user_account']}</div>
+
+                            </div>
+                        </div>
+                        <div class="Wid45 BorderedBox Fright TexAlCenter" style="border-color: #00AEEF">
+                            <div class="ContainerIndent">
+                                <h:outputLink value="${request.contextPath}/protected/account/user_view.htm">
+                                    <p:graphicImage library="images" name="user.png"  width="50px" height="50px" cache="true" />
+                                </h:outputLink>
+                                <div class="Fs16 black FontRalewayRegular animated pulse infinite">#{appmsg['global.employee']}</div>
+                            </div>
+                        </div>
+                        <div class="Wid45 BorderedBox Fleft TexAlCenter" style="border-color: #00AEEF">
+                            <div class="ContainerIndent">
+                                <!--<div class="EmptyBox10"></div>-->
+                                <h:outputLink value="${request.contextPath}/protected/account/user_view.htm">
+                                    <p:graphicImage library="images" name="holiday.png"  width="50px" height="50px" cache="true" />
+                                </h:outputLink>
+                                <div class="Fs16 black FontRalewayRegular animated pulse infinite">#{appmsg['global.leave']}</div>
+                                <!--<div class="EmptyBox10"></div>-->
+                            </div>
+                        </div>
+                        <div class="Wid45 BorderedBox Fright TexAlCenter" style="border-color: #00AEEF">
+                            <div class="ContainerIndent">
+                                <!--<div class="EmptyBox10"></div>-->
+
+                                <p:graphicImage library="images" name="nurse.png"  width="50px" height="50px" cache="true" />
+                                <div class="Fs16 black FontRalewayRegular animated pulse infinite">#{appmsg['global.permit']}</div>
+                                <!--<div class="EmptyBox10"></div>-->
+                            </div>
+                        </div>
+                        <div class="Wid45 BorderedBox Fleft TexAlCenter" style="border-color: #00AEEF">
+                            <div class="ContainerIndent">
+                                <!--<div class="EmptyBox10"></div>-->
+
+                                <p:graphicImage library="images" name="business_travel.png"  width="50px" height="50px" cache="true" />
+                                <div class="Fs16 black FontRalewayRegular animated pulse infinite">#{appmsg['businesstravel.business_travel']}</div>
+                                <!--<div class="EmptyBox10"></div>-->
+                            </div>
+                        </div>
+                        <div class="Wid45 BorderedBox Fright TexAlCenter" style="border-color: #00AEEF">
+                            <div class="ContainerIndent">
+                                <!--<div class="EmptyBox10"></div>-->
+
+                                <p:graphicImage library="images" name="reimbursement.png"  width="50px" height="50px" cache="true" />
+                                <div class="Fs16 black FontRalewayRegular animated pulse infinite">#{appmsg['menu.reimbursement']}</div>
+                                <!--<div class="EmptyBox10"></div>-->
+                            </div>
+                        </div>
+                        <div class="Wid45 BorderedBox Fleft TexAlCenter" style="border-color: #00AEEF">
+                            <div class="ContainerIndent">
+                                <!--<div class="EmptyBox10"></div>-->
+
+                                <p:graphicImage library="images" name="overtime.png"  width="50px" height="50px" cache="true" />
+                                <div class="Fs16 black FontRalewayRegular animated pulse infinite">#{appmsg['overtime.overtime']}</div>
+                                <!--<div class="EmptyBox10"></div>-->
+                            </div>
+                        </div>
+                        <div class="Wid45 BorderedBox Fright TexAlCenter" style="border-color: #00AEEF">
+                            <div class="ContainerIndent">
+                                <!--<div class="EmptyBox10"></div>-->
+
+                                <p:graphicImage library="images" name="loan.png"  width="50px" height="50px" cache="true" />
+                                <div class="Fs16 black FontRalewayRegular animated pulse infinite">#{appmsg['placement.pinjaman']}</div>
+
+                                <!--<div class="EmptyBox10"></div>-->
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!--<div class="Container100 TexAlCenter MarTop20"><p:button value="Get All Stats"></p:button></div>-->
+            </div>
+        </div>
+        <div class="Seperator" ></div>
+        <i class="fa fa-th-list Fleft Fs16 blue_black MarRight10 "></i>
+        <span class="Fleft Fs16 blue_black"><p:outputLabel value="Informasi Penting Karyawan" /></span>
+        <div class="Container25 Responsive">
+            <div class="ContainerIndent">
+                <div class="Container100 TexAlCenter">
                     <div class="Container100">
 
-                        <div class="DispInlBlock MarTop10">
-                            <!--<div class="Container20">-->
-                            <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="40" width="40" cache="true" style="border:  1px solid #ffffff !important; border-radius: 4px !important"    >
+                        <!--<div class="Wid45 BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #00AEEF">-->
+                        <a href="#" class="Wid45  BorderedBox Fleft TexAlCenter HoverEffect" style="border-color: #00AEEF">
+                            <div class="ContainerIndent">
+                                <div class="EmptyBox10"></div>
+                                <i class="fa fa-thumbs-up Fs24 animated swing infinite blue"></i>
+                                <span class="Fs14 DispBlock black">#{appmsg['home.request_history']} </span>
+                                <span class="Fs24 DispBlock red">#{homeMobileController.totalRequestHistory}</span>
+                                <div class="EmptyBox10"></div>
+                            </div>
+                        </a>
+                        <!--</div>-->
+                        <a href="#" class="Wid45 BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #00AEEF">
+                            <div class="ContainerIndent">
+                                <div class="EmptyBox10"></div>
+                                <i class="fa fa-tasks Fs24 animated bounceOut infinite blue"></i>
+                                <span class="Fs14 DispBlock black">#{appmsg['home.pending_task']}</span>
+                                <span class="Fs24 DispBlock red">#{homeMobileController.totalPendingTask}</span>
+                                <div class="EmptyBox10"></div>
+                            </div>
+                        </a>
+                        <a href="#" class="Wid45 BorderedBox Fleft TexAlCenter HoverEffect" style="border-color: #00AEEF">
+                            <div class="ContainerIndent">
+                                <div class="EmptyBox10"></div>
+                                <i class="fa fa-thumbs-down animated swing infinite red Fs24"></i>
+                                <span class="Fs14 DispBlock black">#{appmsg['home.pending_request']}</span>
+                                <span class="Fs24 DispBlock red">#{homeMobileController.totalPendingRequest}</span>
+                                <div class="EmptyBox10"></div>
+                            </div>
+                        </a>
+                        <a href="#" class="Wid45  BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #00AEEF">
+                            <div class="ContainerIndent">
+                                <div class="EmptyBox10"></div>
+                                <i class="fa fa-tachometer animated bounceIn infinite blue Fs24"></i>
+                                <span class="Fs14 DispBlock black">#{appmsg['resumeLeaveEmployee.leave_usage']}</span>
+                                <span class="Fs24 DispBlock red">#{homeMobileController.totalLeaveType}</span>
+                                <div class="EmptyBox10"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="Container100 Responsive">-->
+        <!--<div class="ContainerIndent">-->
+        <div class="Seperator" ></div>
+        <div class="Container100">
+            <p:outputLabel value="#{appmsg['home.employee_distribution_by_age']}" class="Fs18 blue_black" />
+            <h:panelGrid columns="2" style="margin-left: -3px">
+                <p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs16 white" style="margin-right: 3px"/>
+                <p:outputLabel value="#{homeMobileController.lastUpdateEmpDistByAge}" class="Fs16 white">
+                    <f:convertDateTime pattern="dd-MMMM-yyyy - HH:mm:ss"/>
+                </p:outputLabel>
+            </h:panelGrid>
+
+            <p:chart model="#{homeMobileController.pieModel}" type="pie"  style="height:220px;font-size: 11px;margin-left: -5px;margin-right: -5px" responsive="true" />
+        </div>
+        <div class="Seperator" ></div>
+        <div class="Container100">
+            <p:outputLabel value="#{appmsg['home.employee_distribution_by_gender']}" class="Fs18 blue_black" />
+            <h:panelGrid columns="2" style="margin-left: -3px;margin-bottom: 5px">
+                <p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs16 white" style="margin-right: 3px"/>
+                <p:outputLabel value="#{homeMobileController.lastUpdateEmpDistByGender}" class="Fs16 white">
+                    <f:convertDateTime pattern="dd-MMMM-yyyy - HH:mm:ss"/>
+                </p:outputLabel>
+            </h:panelGrid>
+            <div class="Wid45 BorderedBox Fleft TexAlCenter HoverEffect" style="border-color: #00AEEF;">
+                <div class="ContainerIndent">
+                    <div class="EmptyBox10"></div>
+                    <p:graphicImage library="images" name="logo-cowo.png" width="35%" cache="true" />
+                    <!--<span class="Fs14 DispBlock black">Laki-Laki</span>-->
+                    <span class="Fs24 DispBlock red animated bounceOut infinite">#{homeMobileController.totalMale}</span>
+                    <div class="EmptyBox10"></div>
+                </div>
+            </div>
+            <div class="Wid45 BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #00AEEF">
+                <div class="ContainerIndent">
+                    <div class="EmptyBox10"></div>
+                    <p:graphicImage library="images" name="logo-cewe.png" width="36%" cache="true" />
+                    <!--<span class="Fs14 DispBlock black">Perempuan</span>-->
+                    <span class="Fs24 DispBlock red animated bounceOut infinite">#{homeMobileController.totalFemale}</span>
+                    <div class="EmptyBox10"></div>
+                </div>
+            </div>
+        </div>
+        <div class="Seperator" ></div>
+        <div class="Container100">
+            <p:outputLabel value="#{appmsg['home.employee_attendance_presentation']}" class="Fs18 blue_black" />
+            <h:panelGrid columns="2" style="margin-left: -3px">
+                <!--<p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs18 black" style="margin-right: 3px"/>-->
+                <p:outputLabel value="#{homeDashboardController.presentationAttendancePerDayLabel}" class="Fs16 white"/>
+            </h:panelGrid>
+            <p:chart type="bar" model="#{homeDashboardController.presentationAttendancePerDayBarChartModel}" style="height:180px;font-size: 11px" responsive="true"/>
+        </div>
+
+        <!--</div>-->
+        <!--</div>-->
+        <!--<h:panelGrid style="margin-bottom: 3px">-->
+<!--        <p:outputLabel value="#{appmsg['home.employee_distribution_by_age']}" styleClass="header_big" />
+        <h:panelGrid columns="2" style="margin-left:-6px;">
+            <p:outputLabel value="#{appmsg['home.updated']} :" styleClass="header_small_no_bold" style="color: #00AEEF" />
+            <p:outputLabel value="#{homeDashboardController.lastUpdateEmpDistByAge}" style="margin-left:-8px;color: #00AEEF" styleClass="header_small_no_bold" >
+                <f:convertDateTime pattern="dd-MMM-yyyy hh:mm"/>
+            </p:outputLabel>
+        </h:panelGrid>-->
+
+        <!--</h:panelGrid>-->
+        <!--        <div align="center">
+                    <div class="DispInlBlock TexAlLeft MarTop20" >
+                        <div class="Container20" >
+                            <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="50" width="50" cache="true" style="border:  1px solid #ffffff !important; border-radius: 4px !important;margin-right: 6px"    >
                                 <f:param name="id" value="#{BIODATA_ID}"/>
                             </p:graphicImage>
-                            <!--</div>-->
-                            <!--<div class="Container80">-->
-                            <div class="Fright" style="margin-left: 10px">
-                                <h1 class="blue Fs24 FontRalewayMedium">#{realName}</h1>
-                                <span class="Fs15 gray FontRalewayRegular DispBlock">#{homeController.roleUser}</span>
+                        </div>
+                        <div class="Container80">
+                            <div class="Fright">
+                                <h2 class="black Fs24 FontRalewayMedium">Informasi Penting</h2>
+                                <span class="Fs15 white FontRalewayRegular DispBlock">Data Pribadi </span>
                             </div>
-                            <!--</div>-->
                         </div>
-                        <div class="Seperator"></div>
-                        <i class="fa fa-clock-o Fleft Fs15 blue MarRight10"></i>
-                        <span class="Fleft Fs12 orange"><p:outputLabel value="#{appmsg['master_layout.login_at']} #{login_date}" /></span>
-                        <div class="Container100 MarTop20">
-                            <a href="#" class="Wid30 Responsive BorderedBox Fleft TexAlCenter HoverEffect">
-                                <div class="ContainerIndent">
-                                    <div class="EmptyBox10"></div>
-                                    <i class="fa fa-thumbs-up Fs24 animated swing infinite blue"></i>
-                                    <span class="Fs14 DispBlock black">#{appmsg['home.request_history']} </span>
-                                    <span class="Fs24 DispBlock red">24</span>
-                                    <div class="EmptyBox10"></div>
-                                </div>
-                            </a>
-                            <a href="#" class="Wid30 Responsive BorderedBox Fleft TexAlCenter HoverEffect" style="margin-left:5%;">
-                                <div class="ContainerIndent">
-                                    <div class="EmptyBox10"></div>
-                                       <i class="fa fa-tasks Fs24 animated bounceOut infinite blue"></i>
-                                    <span class="Fs14 DispBlock black">#{appmsg['home.pending_task']}</span>
-                                    <span class="Fs24 DispBlock red">19</span>
-                                    <div class="EmptyBox10"></div>
-                                </div>
-                            </a>
-                            <a href="#" class="Wid30 Responsive BorderedBox Fright TexAlCenter HoverEffect">
-                                <div class="ContainerIndent">
-                                    <div class="EmptyBox10"></div>
-                                    <i class="fa fa-thumbs-down animated swing infinite red Fs24"></i>
-                                    <span class="Fs14 DispBlock black">#{appmsg['home.pending_request']}</span>
-                                    <span class="Fs24 DispBlock red">26</span>
-                                    <div class="EmptyBox10"></div>
-                                </div>
-                            </a>
-                            <a href="#" class="Wid30 Responsive BorderedBox Fright TexAlCenter HoverEffect">
-                                <div class="ContainerIndent">
-                                    <div class="EmptyBox10"></div>
-                                    <i class="fa fa-tachometer animated bounceIn infinite blue Fs24"></i>
-                                    <span class="Fs14 DispBlock black">#{appmsg['resumeLeaveEmployee.leave_usage']}</span>
-                                    <span class="Fs24 DispBlock red">26</span>
-                                    <div class="EmptyBox10"></div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="Container100 MarTop20 TexAlLeft">
-                            <div class="Fs16 gray FontRalewayRegular"><i class="fa fa-star MarRight10 orange"></i>Your Latest Links</div>
-                            <div class="Seperator"></div>
-                            <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Sales Reports</a>
-                            <div class="EmptyBox10"></div>
-                            <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Dealers Map And Info</a>
-                            <div class="EmptyBox10"></div>
-                            <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Marketing Strategies News</a>
-                            <div class="EmptyBox10"></div>
-                            <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Company Turnover Info</a>
-                            <div class="EmptyBox10"></div>
-                            <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Dealers Map And Info</a>
-                            <div class="EmptyBox10"></div>
-                            <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Marketing Strategies News</a>
-                            <div class="EmptyBox10"></div>
-                            <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Company Turnover Info</a>
-                        </div>
-
                     </div>
-                </div>
-            </div>
-            <div class="Container25 Responsive">
-                <div class="ContainerIndent">
-                    <div class="Container100 TexAlCenter">
+                </div>-->
 
-                        <div class="DispInlBlock TexAlLeft MarTop20">
-                            <div class="Container20"><i class="fa fa-line-chart Fs40 orange Fleft MarRight10"></i></div>
-                            <div class="Container80">
-                                <div class="Fright">
-                                    <h2 class="black Fs24 FontRalewayMedium">Visitors Stats</h2>
-                                    <span class="Fs15 gray FontRalewayRegular DispBlock">Today, Overall And Online</span>
+        <!--        <div class="layout-portlets-box">
+                    <div class="Container20 Responsive">
+                        <div class="ContainerIndent">
+                            <div class="Container100">
+        
+                                <div class="DispInlBlock MarTop10">
+                                    <div class="Container20">
+                                    <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="40" width="40" cache="true" style="border:  1px solid #ffffff !important; border-radius: 4px !important"    >
+                                        <f:param name="id" value="#{BIODATA_ID}"/>
+                                    </p:graphicImage>
+                                    </div>
+                                    <div class="Container80">
+                                    <div class="Fright" style="margin-left: 10px">
+                                        <h1 class="blue Fs24 FontRalewayMedium">#{realName}</h1>
+                                        <span class="Fs15 gray FontRalewayRegular DispBlock">#{homeController.roleUser}</span>
+                                    </div>
+                                    </div>
                                 </div>
+                                <div class="Seperator"></div>
+                                <i class="fa fa-clock-o Fleft Fs15 blue MarRight10"></i>
+                                <span class="Fleft Fs12 orange"><p:outputLabel value="#{appmsg['master_layout.login_at']} #{login_date}" /></span>
+        
+                                <div class="Container100 MarTop20 TexAlLeft">
+                                    <div class="Fs16 gray FontRalewayRegular"><i class="fa fa-star MarRight10 orange"></i>Your Latest Links</div>
+                                    <div class="Seperator"></div>
+                                    <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Sales Reports</a>
+                                    <div class="EmptyBox10"></div>
+                                    <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Dealers Map And Info</a>
+                                    <div class="EmptyBox10"></div>
+                                    <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Marketing Strategies News</a>
+                                    <div class="EmptyBox10"></div>
+                                    <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Company Turnover Info</a>
+                                    <div class="EmptyBox10"></div>
+                                    <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Dealers Map And Info</a>
+                                    <div class="EmptyBox10"></div>
+                                    <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Marketing Strategies News</a>
+                                    <div class="EmptyBox10"></div>
+                                    <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Company Turnover Info</a>
+                                </div>
+        
                             </div>
                         </div>
-                        <div class="Seperator"></div>
-                        <div class="Container100">
-                            <div class="Wid45 BorderedBox Fleft TexAlCenter">
-                                <div class="ContainerIndent">
-                                    <div class="EmptyBox10"></div>
-                                    <div class="Fs14 gray FontRalewayRegular">Today’s Visits</div>
-                                    <div class="EmptyBox10"></div>
-                                    <div class="Fs30 blue FontRalewayLight">795</div>
-                                    <div class="EmptyBox10"></div>
-                                </div>
-                            </div>
-                            <div class="Wid45 BorderedBox Fright TexAlCenter">
-                                <div class="ContainerIndent">
-                                    <div class="EmptyBox10"></div>
-                                    <div class="Fs14 gray FontRalewayRegular">Overall Visits</div>
-                                    <div class="EmptyBox10"></div>
-                                    <div class="Fs30 blue FontRalewayLight">3.455</div>
-                                    <div class="EmptyBox10"></div>
-                                </div>
-                            </div>
-                            <div class="Wid45 BorderedBox Fleft TexAlCenter">
-                                <div class="ContainerIndent">
-                                    <div class="EmptyBox10"></div>
-                                    <div class="Fs14 gray FontRalewayRegular">Online Visitors</div>
-                                    <div class="EmptyBox10"></div>
-                                    <div class="Fs30 red FontRalewayLight animated pulse infinite"><i class="fa fa-desktop Fs24"></i> 795</div>
-                                    <div class="EmptyBox10"></div>
-                                </div>
-                            </div>
-                            <div class="Wid45 BorderedBox Fright TexAlCenter">
-                                <div class="ContainerIndent">
-                                    <div class="EmptyBox10"></div>
-                                    <div class="Fs14 gray FontRalewayRegular">Last Year</div>
-                                    <div class="EmptyBox10"></div>
-                                    <div class="Fs30 orange FontRalewayLight">23.189</div>
-                                    <div class="EmptyBox10"></div>
-                                </div>
-                            </div>
-                            <div class="Wid45 BorderedBox Fleft TexAlCenter">
-                                <div class="ContainerIndent">
-                                    <div class="EmptyBox10"></div>
-                                    <div class="Fs14 gray FontRalewayRegular">Last Month</div>
-                                    <div class="EmptyBox10"></div>
-                                    <div class="Fs30 orange FontRalewayLight">7.789</div>
-                                    <div class="EmptyBox10"></div>
-                                </div>
-                            </div>
-                            <div class="Wid45 BorderedBox Fright TexAlCenter">
-                                <div class="ContainerIndent">
-                                    <div class="EmptyBox10"></div>
-                                    <div class="Fs14 gray FontRalewayRegular">Last Week</div>
-                                    <div class="EmptyBox10"></div>
-                                    <div class="Fs30 orange FontRalewayLight">1.517</div>
-                                    <div class="EmptyBox10"></div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
-                    <div class="Container100 TexAlCenter MarTop20"><p:button value="Get All Stats"></p:button></div>
-                </div>
-            </div>
-            <!--            <div class="Container25 Responsive">
-                            <div class="ContainerIndent">
-                                <div class="Container100 TexAlCenter">
-            
-                                    <div class="DispInlBlock TexAlLeft MarTop20">
-                                        <i class="fa fa-car Fs40 gray Fleft MarRight10"></i>
-                                        <div class="Fleft">
-                                            <h2 class="black Fs24 FontRalewayMedium">Sales Reports</h2>
-                                            <span class="Fs15 gray FontRalewayRegular DispBlock">USA, Europe, Asia..</span>
+        
+                                <div class="Container25 Responsive">
+                                    <div class="ContainerIndent">
+                                        <div class="Container100 TexAlCenter">
+                    
+                                            <div class="DispInlBlock TexAlLeft MarTop20">
+                                                <i class="fa fa-car Fs40 gray Fleft MarRight10"></i>
+                                                <div class="Fleft">
+                                                    <h2 class="black Fs24 FontRalewayMedium">Sales Reports</h2>
+                                                    <span class="Fs15 gray FontRalewayRegular DispBlock">USA, Europe, Asia..</span>
+                                                </div>
+                                            </div>
+                                            <div class="Seperator"></div>
+                                            <div class="Container100">
+                                                <a href="#" class="Wid45 BorderedBox Fleft TexAlCenter HoverEffect">
+                                                    <div class="ContainerIndent">
+                                                        <div class="EmptyBox10"></div>
+                                                        <h:graphicImage name="images/usa.svg" styleClass="Fleft Wid60" library="demo"/>
+                                                        <div class="Fs14 gray">USA</div>
+                                                        <div class="Fs24 red FontRalewayRegular">34.657</div>
+                                                        <div class="EmptyBox10"></div>
+                                                    </div>
+                                                </a>
+                                                <a href="#" class="Wid45 BorderedBox Fright TexAlCenter HoverEffect">
+                                                    <div class="ContainerIndent">
+                                                        <div class="EmptyBox10"></div>
+                                                        <h:graphicImage name="images/southamerica.svg" styleClass="Fleft Wid60" library="demo"/>
+                                                        <div class="Fs14 gray">South America</div>
+                                                        <div class="Fs24 red FontRalewayRegular">43.365</div>
+                                                        <div class="EmptyBox10"></div>
+                                                    </div>
+                                                </a>
+                                                <a href="#" class="Wid45 BorderedBox Fleft TexAlCenter HoverEffect">
+                                                    <div class="ContainerIndent">
+                                                        <div class="EmptyBox10"></div>
+                                                        <h:graphicImage name="images/europe.svg" styleClass="Fleft Wid60" library="demo"/>
+                                                        <div class="Fs14 gray">Europe</div>
+                                                        <div class="Fs24 red FontRalewayRegular">29.456</div>
+                                                        <div class="EmptyBox10"></div>
+                                                    </div>
+                                                </a>
+                                                <a href="#" class="Wid45 BorderedBox Fright TexAlCenter HoverEffect">
+                                                    <div class="ContainerIndent">
+                                                        <div class="EmptyBox10"></div>
+                                                        <h:graphicImage name="images/africa.svg" styleClass="Fleft Wid60" library="demo" />
+                                                        <div class="Fs14 gray">Africa</div>
+                                                        <div class="Fs24 red FontRalewayRegular">4.657</div>
+                                                        <div class="EmptyBox10"></div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                    
                                         </div>
                                     </div>
-                                    <div class="Seperator"></div>
-                                    <div class="Container100">
-                                        <a href="#" class="Wid45 BorderedBox Fleft TexAlCenter HoverEffect">
-                                            <div class="ContainerIndent">
-                                                <div class="EmptyBox10"></div>
-                                                <h:graphicImage name="images/usa.svg" styleClass="Fleft Wid60" library="demo"/>
-                                                <div class="Fs14 gray">USA</div>
-                                                <div class="Fs24 red FontRalewayRegular">34.657</div>
-                                                <div class="EmptyBox10"></div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="Wid45 BorderedBox Fright TexAlCenter HoverEffect">
-                                            <div class="ContainerIndent">
-                                                <div class="EmptyBox10"></div>
-                                                <h:graphicImage name="images/southamerica.svg" styleClass="Fleft Wid60" library="demo"/>
-                                                <div class="Fs14 gray">South America</div>
-                                                <div class="Fs24 red FontRalewayRegular">43.365</div>
-                                                <div class="EmptyBox10"></div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="Wid45 BorderedBox Fleft TexAlCenter HoverEffect">
-                                            <div class="ContainerIndent">
-                                                <div class="EmptyBox10"></div>
-                                                <h:graphicImage name="images/europe.svg" styleClass="Fleft Wid60" library="demo"/>
-                                                <div class="Fs14 gray">Europe</div>
-                                                <div class="Fs24 red FontRalewayRegular">29.456</div>
-                                                <div class="EmptyBox10"></div>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="Wid45 BorderedBox Fright TexAlCenter HoverEffect">
-                                            <div class="ContainerIndent">
-                                                <div class="EmptyBox10"></div>
-                                                <h:graphicImage name="images/africa.svg" styleClass="Fleft Wid60" library="demo" />
-                                                <div class="Fs14 gray">Africa</div>
-                                                <div class="Fs24 red FontRalewayRegular">4.657</div>
-                                                <div class="EmptyBox10"></div>
-                                            </div>
-                                        </a>
-                                    </div>
-            
                                 </div>
-                            </div>
-                        </div>-->
-            <!--            <div class="Container30 Responsive100">
-                            <div class="ContainerIndent">
-                                <div class="Container100 TexAlCenter">
-                                    
-                                    <div class="DispInlBlock TexAlLeft MarTop20">
-                                        <i class="fa fa-calendar Fs40 blue Fleft MarRight10"></i>
-                                        <div class="Fleft">
-                                            <h2 class="black Fs24 FontRalewayMedium">Dealers Meetings</h2>
-                                            <span class="Fs15 gray FontRalewayRegular DispBlock">Specified For All Countries</span>
+                                <div class="Container30 Responsive100">
+                                    <div class="ContainerIndent">
+                                        <div class="Container100 TexAlCenter">
+                                            
+                                            <div class="DispInlBlock TexAlLeft MarTop20">
+                                                <i class="fa fa-calendar Fs40 blue Fleft MarRight10"></i>
+                                                <div class="Fleft">
+                                                    <h2 class="black Fs24 FontRalewayMedium">Dealers Meetings</h2>
+                                                    <span class="Fs15 gray FontRalewayRegular DispBlock">Specified For All Countries</span>
+                                                </div>
+                                            </div>
+                                            <div class="Seperator"></div>
+                                            <div class="Wid100 Fleft">
+                                                <p:schedule id="schedule" value="#{scheduleView.eventModel}" />
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="Seperator"></div>
-                                    <div class="Wid100 Fleft">
-                                        <p:schedule id="schedule" value="#{scheduleView.eventModel}" />
-                                    </div>
                                 </div>
-                            </div>
-                        </div>-->
-        </div>
+                </div>-->
         <!-- BOX END -->
 
         <!-- BOX START -->
