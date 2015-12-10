@@ -1,31 +1,17 @@
 package com.inkubator.hrm.web.career;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import org.hibernate.exception.ConstraintViolationException;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
-import org.springframework.dao.DataIntegrityViolationException;
 
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.AppraisalCompetencyType;
-import com.inkubator.hrm.service.AppraisalCompetencyTypeService;
-import com.inkubator.hrm.web.lazymodel.AppraisalCompetencyTypeLazyDataModel;
-import com.inkubator.hrm.web.search.AppraisalCompetencyTypeSearchParameter;
+import com.inkubator.hrm.service.EmpCareerHistoryService;
+import com.inkubator.hrm.web.lazymodel.EmpEliminationLazyDataModel;
+import com.inkubator.hrm.web.model.EmpEliminationViewModel;
+import com.inkubator.hrm.web.search.EmpEliminationSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
-import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
 *
@@ -35,23 +21,23 @@ import com.inkubator.webcore.util.MessagesResourceUtil;
 @ManagedBean(name = "empEliminationViewController")
 @ViewScoped
 public class EmpEliminationViewController extends BaseController{
-	@ManagedProperty(value = "#{appraisalCompetencyTypeService}")
-	private AppraisalCompetencyTypeService appraisalCompetencyTypeService;
-	private	AppraisalCompetencyTypeSearchParameter searchParameter;
-	private LazyDataModel<AppraisalCompetencyType> lazy;
-	private AppraisalCompetencyType selected;
+	@ManagedProperty(value = "#{empCareerHistoryService}")
+	private EmpCareerHistoryService empCareerHistoryService;
+	private	EmpEliminationSearchParameter searchParameter;
+	private LazyDataModel<EmpEliminationViewModel> lazy;
+	private EmpEliminationViewModel selected;
 	
 	@Override
     public void initialization(){
         super.initialization();
-        searchParameter = new AppraisalCompetencyTypeSearchParameter();
+        searchParameter = new EmpEliminationSearchParameter();
     }
 	
 	@PreDestroy
     private void cleanAndExit(){
         searchParameter = null;
         lazy = null;
-        appraisalCompetencyTypeService = null;
+        empCareerHistoryService = null;
         selected = null;
     }
 	
@@ -59,82 +45,40 @@ public class EmpEliminationViewController extends BaseController{
         lazy = null;
     }
     
-    public void doSelectEntity(){
-        try{
-            selected = appraisalCompetencyTypeService.getEntityByIdWithDetail(selected.getId());
-        } catch (Exception ex){
-            LOGGER.error("Error", ex);
-        }
-    }
-    
-    public void doDelete(){
-        try{
-            this.appraisalCompetencyTypeService.delete(selected);
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.delete", "global.delete_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        } catch (ConstraintViolationException | DataIntegrityViolationException ex){
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", "error.delete_constraint",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            LOGGER.error("Error", ex);
-        } catch (BussinessException ex) {
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        } catch (Exception ex){
-            LOGGER.error("Error", ex);
-        }
-    }
-    
-    
-    public String doAdd(){
-    	return "/protected/appraisal/competence_type_form.htm?faces-redirect=true";
-       // showDialog(null);
-    }
             
-    public String doEdit(){
-    	return "/protected/appraisal/competence_type_form.htm?faces-redirect=true&execution=e" + selected.getId();
+    public String doDetail(){
+    	return "/protected/career/emp_elimination_form.htm?faces-redirect=true&execution=e" + selected.getEmpCareerHistoryId();
     }
     
-    @Override
-    public void onDialogReturn(SelectEvent event){
-        lazy = null;
-        super.onDialogReturn(event);
-    }
-    
-    public void onDelete(){
-        try{
-            selected = this.appraisalCompetencyTypeService.getEntiyByPK(selected.getId());
-        } catch (Exception ex){
-            LOGGER.error("Error", ex);
-        }
-    }
 
-	public void setAppraisalCompetencyTypeService(AppraisalCompetencyTypeService appraisalCompetencyTypeService) {
-		this.appraisalCompetencyTypeService = appraisalCompetencyTypeService;
+	public void setEmpCareerHistoryService(EmpCareerHistoryService empCareerHistoryService) {
+		this.empCareerHistoryService = empCareerHistoryService;
 	}
 
-	public AppraisalCompetencyTypeSearchParameter getSearchParameter() {
+	public EmpEliminationSearchParameter getSearchParameter() {
 		return searchParameter;
 	}
 
-	public void setSearchParameter(AppraisalCompetencyTypeSearchParameter searchParameter) {
+	public void setSearchParameter(EmpEliminationSearchParameter searchParameter) {
 		this.searchParameter = searchParameter;
 	}
 
-	public LazyDataModel<AppraisalCompetencyType> getLazy() {
+	public LazyDataModel<EmpEliminationViewModel> getLazy() {
 		 if(lazy == null){
-			 lazy = new AppraisalCompetencyTypeLazyDataModel(searchParameter, appraisalCompetencyTypeService);
+			 lazy = new EmpEliminationLazyDataModel(searchParameter, empCareerHistoryService);
 	     }
 		return lazy;
 	}
 
-	public void setLazy(LazyDataModel<AppraisalCompetencyType> lazy) {
+	public void setLazy(LazyDataModel<EmpEliminationViewModel> lazy) {
 		this.lazy = lazy;
 	}
 
-	public AppraisalCompetencyType getSelected() {
+	public EmpEliminationViewModel getSelected() {
 		return selected;
 	}
 
-	public void setSelected(AppraisalCompetencyType selected) {
+	public void setSelected(EmpEliminationViewModel selected) {
 		this.selected = selected;
 	}
 	

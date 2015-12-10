@@ -400,6 +400,7 @@ public class HRMConstant {
     public static final String PUBCIL_HOLIDAY_KODE = "LVCO";
 
     public static final String APP_NAME = "Web Destop App";
+      public static final String APP_NAME_MOBILE = "Web Mobile App";
 
     public static final Integer KLASIFIKASI_STRENGTHS = 0;
     public static final Integer KLASIFIKASI_WEAKNESSES = 1;
@@ -572,6 +573,13 @@ public class HRMConstant {
     
     /* Constant for contextPath */
     public static final String CONTEXT_PATH = "contextPath";
+    /* END */
+    
+    /*Constant for Appraisal PerformanceGroup*/
+    public static final String APPRAISAL_PERFORM_GROUP_PROCESS = "Process";
+    public static final String APPRAISAL_PERFORM_GROUP_RESULT = "Result";
+    public static final String APPRAISAL_PERFORM_GROUP_POSITION = "Position";
+    public static final String APPRAISAL_PERFORM_GROUP_EMPLOYEE = "Employee";
     /* END */
     
     /* Constant Competence Visibility */

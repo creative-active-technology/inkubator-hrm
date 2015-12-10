@@ -216,21 +216,27 @@ public class JobJabatanFormController implements Serializable {
 	            
 				List<KlasifikasiKerja> source = klasifikasiKerjaService.getAllData();
 	            dualListModelKlasifikasiKerja.setSource(source);
+	            dualListModelKlasifikasiKerja.setTarget(new ArrayList<>());
 	            
 	            List<EducationLevel> listSourceEducationLevel = educationLevelService.getAllData();
 	            dualListModelEducationLevel.setSource(listSourceEducationLevel);
+	            dualListModelEducationLevel.setTarget(new ArrayList<>());
 	            
 	            List<OccupationType> listSourceOccupationType = occupationTypeService.getAllData();
 	            dualListModelOccupationType.setSource(listSourceOccupationType);
+	            dualListModelOccupationType.setTarget(new ArrayList<>());
 	            
 	            List<Major> listSourceMajor = majorService.getAllData();
 	            dualListModelMajor.setSource(listSourceMajor);
+	            dualListModelMajor.setTarget(new ArrayList<>());
 	            
 	            List<Faculty> listSourceFaculty = facultyService.getAllData();
 	            dualListModelFaculty.setSource(listSourceFaculty);
+	            dualListModelFaculty.setTarget(new ArrayList<>());
 	            
 	            List<KlasifikasiKerja> listSourceKlasifikasiKerja = klasifikasiKerjaService.getAllData();
 	            dualListModelKlasifikasiKerja.setSource(listSourceKlasifikasiKerja);
+	            dualListModelKlasifikasiKerja.setTarget(new ArrayList<>());
 	            
 	            jobJabatanModel.setListJabatanDeskripsi(new ArrayList<JabatanDeskripsi>());
 	            jobJabatanModel.setListJabatanSpesifikasi(new ArrayList<JabatanSpesifikasi>());

@@ -13,13 +13,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.faces.context.ExternalContext;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.tools.generic.DateTool;
+import org.apache.velocity.tools.generic.NumberTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -41,7 +41,7 @@ import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.WtEmpCorrectionAttendanceDetail;
 import com.inkubator.hrm.json.util.DateJsonDeserializer;
 import com.inkubator.hrm.json.util.JsonUtil;
-import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.hrm.web.model.VacancyAdvertisementDetailModel;
 
 /**
  *
@@ -76,6 +76,7 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.setDateFormat("dd-MMMM-yyyy");
             Gson gson = gsonBuilder.create();
+            Gson gsonDateSerializer = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
             JsonObject jsonObject = (JsonObject) gson.fromJson(json, JsonObject.class);
             String locale = jsonObject.get("locale").getAsString();
           
@@ -122,12 +123,27 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                 if (Objects.equals(appActivity.getApprovalStatus(), HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL)) {
                     //configure email parameter based on approval name
                     switch (appActivity.getApprovalDefinition().getName()) {
+	                    case HRMConstant.VACANCY_ADVERTISEMENT:
+	                    	List<VacancyAdvertisementDetailModel> listAdvertisementDetail = gsonDateSerializer.fromJson(jsonObject.get("listAdvertisementDetail").getAsString(), new TypeToken<List<VacancyAdvertisementDetailModel>>() {}.getType());
+	                        
+	                        vtm.setSubject("Pengajuan Iklan Lowongan");
+	                        vtm.setTemplatePath("email_vacancy_advertisement_waiting_approval.vm");
+	                        maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+	                        maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+	                        maptoSend.put("nik", requesterUser.getEmpData().getNik());
+	                        maptoSend.put("effectiveDate", jsonObject.get("effectiveDate").getAsString());
+	                        maptoSend.put("advertisementMediaName", jsonObject.get("advertisementMediaName").getAsString());
+	                        maptoSend.put("applyDate", jsonObject.get("applyDate").getAsString());
+	                        maptoSend.put("listAdvertisementDetail", listAdvertisementDetail);
+	                        maptoSend.put("dateTool", new DateTool());
+	                        maptoSend.put("numTool", new NumberTool());
+	                        maptoSend.put("locale", new Locale(locale));
+	                        break;
+                        
 	                    case HRMConstant.EMP_CORRECTION_ATTENDANCE:
-	                    	Gson gsonDateSerializer = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
 	                    	List<WtEmpCorrectionAttendanceDetail> listCorrectionAttendance = gsonDateSerializer.fromJson(jsonObject.get("listCorrectionAttendance").getAsString(), new TypeToken<List<WtEmpCorrectionAttendanceDetail>>() {}.getType());
-                            
-	                        vtm.setSubject("Pengajuan Koreksi Kehadiran");
-	                        vtm.setTemplatePath("email_recruit_applicant_waiting_approval.vm");
+	                        
+	                        vtm.setTemplatePath("email_correction_attendance_waiting_approval.vm");
 	                        maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
 	                        maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
 	                        maptoSend.put("nik", requesterUser.getEmpData().getNik());
@@ -335,12 +351,29 @@ public class NotificationApprovalMessagesListener extends IServiceImpl implement
                         || (appActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_REJECTED)) {
                     //configure email parameter based on approval name	
                     switch (appActivity.getApprovalDefinition().getName()) {
+	                    case HRMConstant.VACANCY_ADVERTISEMENT:
+	                    	List<VacancyAdvertisementDetailModel> listAdvertisementDetail = gsonDateSerializer.fromJson(jsonObject.get("listAdvertisementDetail").getAsString(), new TypeToken<List<VacancyAdvertisementDetailModel>>() {}.getType());
+
+	                    	vtm.setSubject("Pengajuan Iklan Lowongan");
+	                        vtm.setTemplatePath("email_vacancy_advertisement_approved_or_rejected.vm");
+	                        maptoSend.put("approverName", approverUser.getEmpData().getBioData().getFullName());
+	                        maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
+	                        maptoSend.put("nik", requesterUser.getEmpData().getNik());
+	                        maptoSend.put("effectiveDate", jsonObject.get("effectiveDate").getAsString());
+	                        maptoSend.put("advertisementMediaName", jsonObject.get("advertisementMediaName").getAsString());
+	                        maptoSend.put("applyDate", jsonObject.get("applyDate").getAsString());
+	                        maptoSend.put("listAdvertisementDetail", listAdvertisementDetail);
+	                        maptoSend.put("dateTool", new DateTool());
+	                        maptoSend.put("numTool", new NumberTool());
+	                        maptoSend.put("locale", new Locale(locale));
+	                        maptoSend.put("statusDesc", getStatusDesc(appActivity.getApprovalStatus(), locale));
+	                        break;
+                        
 	                    case HRMConstant.EMP_CORRECTION_ATTENDANCE:
-	                    	Gson gsonDateSerializer = JsonUtil.getHibernateEntityGsonBuilder().registerTypeAdapter(Date.class, new DateJsonDeserializer()).create();
 	                    	List<WtEmpCorrectionAttendanceDetail> listCorrectionAttendance = gsonDateSerializer.fromJson(jsonObject.get("listCorrectionAttendance").getAsString(), new TypeToken<List<WtEmpCorrectionAttendanceDetail>>() {}.getType());
 	                        
 	                        vtm.setSubject("Pengajuan Koreksi Kehadiran");
-	                        vtm.setTemplatePath("email_recruit_applicant_approved_or_rejected.vm");
+	                        vtm.setTemplatePath("email_correction_attendance_approved_or_rejected.vm");
 	                        maptoSend.put("requesterName", requesterUser.getEmpData().getBioData().getFullName());
 	                        maptoSend.put("nik", requesterUser.getEmpData().getNik());
 	                        maptoSend.put("startDate", jsonObject.get("startDate").getAsString());

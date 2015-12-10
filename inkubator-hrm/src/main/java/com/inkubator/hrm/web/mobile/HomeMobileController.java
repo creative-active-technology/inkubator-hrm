@@ -6,16 +6,20 @@
 package com.inkubator.hrm.web.mobile;
 
 import com.inkubator.hrm.service.ApprovalActivityService;
+import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.LeaveImplementationDateService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.LeaveImplementationDateModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import org.primefaces.model.chart.PieChartModel;
 
 /**
  *
@@ -33,6 +37,13 @@ public class HomeMobileController extends BaseController {
     private Long totalPendingTask;
     private Long totalPendingRequest;
     private Integer totalLeaveType;
+    private PieChartModel pieModel;
+    private Date lastUpdateEmpDistByAge;
+    @ManagedProperty(value = "#{empDataService}")
+    private EmpDataService empDataService;
+    private Long totalMale;
+    private Long totalFemale;
+    private Date lastUpdateEmpDistByGender;
 
     @PostConstruct
     @Override
@@ -45,10 +56,25 @@ public class HomeMobileController extends BaseController {
             Long empDataId = HrmUserInfoUtil.getEmpId();
             List<LeaveImplementationDateModel> listLeaveImplementationDateModel = leaveImplementationDateService.getAllDataWithTotalTakenLeaveByEmpDataId(empDataId);
             totalLeaveType = listLeaveImplementationDateModel.size();
-            System.out.println(" Jumlah nya adalah " + totalRequestHistory);
-            System.out.println(" Jumlah nya adalah " + totalPendingTask);
-            System.out.println(" Jumlah nya adalah " + totalPendingRequest);
-            System.out.println(" Jumlah nya adalah " + totalLeaveType);
+            pieModel = new PieChartModel();
+            Map<String, Long> employeesByAge = empDataService.getTotalByAge(HrmUserInfoUtil.getCompanyId());
+            pieModel.set("< 26", employeesByAge.get("lessThan26"));
+            pieModel.set("25-30", employeesByAge.get("between26And30"));
+            pieModel.set("31-35", employeesByAge.get("between31And35"));
+            pieModel.set("36-40", employeesByAge.get("between36And40"));
+            pieModel.set("> 40", employeesByAge.get("moreThan40"));
+            pieModel.setLegendPosition("e");
+            pieModel.setFill(true);
+            pieModel.setShowDataLabels(true);
+            pieModel.setSliceMargin(4);
+            pieModel.setDiameter(150);
+            pieModel.setSeriesColors("66cc00,629de1,003366,990000,cccc00,6600cc");
+            lastUpdateEmpDistByAge = new Date(employeesByAge.get("lastUpdate"));
+            Map<String, Long> employeesByGender = empDataService.getTotalByGender(HrmUserInfoUtil.getCompanyId());
+            totalFemale = employeesByGender.get("male");
+            totalMale = employeesByGender.get("female");
+            lastUpdateEmpDistByGender = new Date(employeesByGender.get("lastUpdate"));
+
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }
@@ -92,6 +118,50 @@ public class HomeMobileController extends BaseController {
 
     public void setTotalLeaveType(Integer totalLeaveType) {
         this.totalLeaveType = totalLeaveType;
+    }
+
+    public PieChartModel getPieModel() {
+        return pieModel;
+    }
+
+    public void setPieModel(PieChartModel pieModel) {
+        this.pieModel = pieModel;
+    }
+
+    public Date getLastUpdateEmpDistByAge() {
+        return lastUpdateEmpDistByAge;
+    }
+
+    public void setLastUpdateEmpDistByAge(Date lastUpdateEmpDistByAge) {
+        this.lastUpdateEmpDistByAge = lastUpdateEmpDistByAge;
+    }
+
+    public void setEmpDataService(EmpDataService empDataService) {
+        this.empDataService = empDataService;
+    }
+
+    public Long getTotalMale() {
+        return totalMale;
+    }
+
+    public void setTotalMale(Long totalMale) {
+        this.totalMale = totalMale;
+    }
+
+    public Long getTotalFemale() {
+        return totalFemale;
+    }
+
+    public void setTotalFemale(Long totalFemale) {
+        this.totalFemale = totalFemale;
+    }
+
+    public Date getLastUpdateEmpDistByGender() {
+        return lastUpdateEmpDistByGender;
+    }
+
+    public void setLastUpdateEmpDistByGender(Date lastUpdateEmpDistByGender) {
+        this.lastUpdateEmpDistByGender = lastUpdateEmpDistByGender;
     }
 
 }

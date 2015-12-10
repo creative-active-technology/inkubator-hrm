@@ -118,7 +118,7 @@
                                     <p:outputLabel  value="#{appmsg['jabatan.jabatan_deparment_boss']}"  for="atasanId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu style="margin-right: 3px;width: 353px"  value="#{jobJabatanModel.jabatanAtasanId}" id="atasanId" required="false"
+                                    <p:selectOneMenu style="margin-right: 3px;width: 353px"  value="#{jobJabatanModel.jabatanAtasanId}" id="atasanId" required="true"
                                                      disabled="#{jobJabatanFormController.isDisable}" filter="true" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{jabatanAtasans}" />
