@@ -30,7 +30,6 @@ public class ApprovalDefinitionConverter implements Converter{
 	
 	@Override
 	public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object value){
-		System.out.println(HRMConstant.APPROVAL_TYPE_DEPARTMENT + "=================================");
 		ResourceBundle resourceBundle = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
 		String messages = StringUtils.EMPTY;
 		String data = (String) value;
