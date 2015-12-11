@@ -46,7 +46,7 @@
                                                 completeMethod="#{ohsaEmpInvolveFormController.completeEmpData}"
                                                 var="employee" emptyMessage="Employee Not Found"
                                                 maxResults="8" itemValue="#{employee}"
-                                                itemLabel="#{employee.nik} #{employee.bioData.firstName} #{employee.bioData.lastName}"
+                                                itemLabel="#{employee.nik} #{employee.bioData.firstName} #{employee.bioData.middleName} #{employee.bioData.lastName}"
                                                 converter="empDataConverter" required="true" 
                                                 requiredMessage="#{appmsg['publicHolidayException.publicHolidayException_emp_should_not_be_empty']}" 
                                                 styleClass="isitext_hrm" size="35" style="width:250px;" />

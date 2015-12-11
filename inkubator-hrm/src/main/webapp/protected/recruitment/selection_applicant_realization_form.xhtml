@@ -169,7 +169,7 @@
 	                                	<p:autoComplete id="scoringByEmpData" value="#{data.scoringByEmpData}"
                                                 completeMethod="#{selectionApplicantRealizationFormController.doAutoCompleteEmployee}"                                                
                                                 var="empData" itemValue="#{empData}"
-                                                itemLabel="#{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                itemLabel="#{empData.bioData.firstName} #{employee.bioData.middleName} #{empData.bioData.lastName}"
                                                 converter="empDataConverter" style="margin-left:5px;" styleClass="isitext_hrm" size="17"/>
                                      	<p:message for="scoringByEmpData" />
 	                                </f:facet>
