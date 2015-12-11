@@ -62,7 +62,7 @@
                             <div class="Container80">
                                 <div class="Fright">
                                     <h2 class="blue_black Fs24 FontRalewayMedium"> #{realName}</h2>
-                                    <span class="Fs15 white FontRalewayRegular DispBlock"> #{homeController.roleUser}</span>
+                                    <span class="Fs15 orange FontRalewayRegular DispBlock"> #{homeController.roleUser}</span>
                                 </div>
                             </div>
                         </div>
@@ -212,7 +212,7 @@
                         <p:outputLabel value="#{appmsg['loginhistory.list_of_user_login_history']}" class="Fs16 blue"/>
                     </h:panelGrid>
                     <p:dataTable id="logHistoryId" var="data" style="margin-bottom: 12px" initMode="load" reflow="false"
-                                 value="#{homeHistoryController.loginHistories}">
+                                 value="#{homeMobileController.loginHistories}">
                         <p:column  style="text-align: center">
                             <f:facet name="header">  
                                 <h:outputText value="Tanggal"  class="Fs18"/>
@@ -231,7 +231,16 @@
                     </p:dataTable>
                 </div>
             </div>
-
+            <div class="layout-portlets-box" style="margin-bottom: 15px">
+                <div class="Container100" style="margin-top: 4px">
+                    <p:outputLabel value="#{appmsg['home.employee_attendance_history']}" class="Fs18 blue_black bold" />
+                    <h:panelGrid columns="2" style="margin-left: -3px">
+                        <!--<p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs18 black" style="margin-right: 3px"/>-->
+                        <p:outputLabel value="#{appmsg['home.on_each_department']}" class="Fs16 blue"/>
+                    </h:panelGrid>
+                    <p:chart type="bar" model="#{homeMobileController.barChartModel}"  style="height:210px;font-size: 11px" responsive="true"  />
+                </div>
+            </div>
             <!--<div class="Seperator" ></div>-->
             <div class="layout-portlets-box" style="margin-bottom: 15px">
                 <div class="Container100" style="margin-top: 4px">
@@ -297,7 +306,7 @@
                             <f:convertDateTime pattern="dd-MMMM-yyyy - HH:mm:ss"/>
                         </p:outputLabel>
                     </h:panelGrid>
-                    <p:chart type="bar" model="#{homeMobileController.barChartDistribusiByDept}"  style="height:190px;font-size: 11px" responsive="true"  />
+                    <p:chart type="bar" model="#{homeMobileController.barChartDistribusiByDept}"  style="height:230px;font-size: 11px" responsive="true"   />
                  <!--<p:chart model="#{homeDashboardController.barChartModel}" type="bar"  style="height:220px;font-size: 11px;margin-left: -5px;margin-right: -5px" responsive="true" />-->
                 </div>
             </div>
@@ -333,7 +342,7 @@
 
                     <p:separator style="margin-left: 4px;margin-right: 2px;margin-top: 2px"/>
                     <h:panelGrid columns="1" style="margin-bottom: 9px;margin-top: 9px">
-                        <p:outputLabel value="#{appmsg['home.employee_nearest_birtdate']}" class="Fs18 blue bold"/>
+                        <p:outputLabel value="#{appmsg['home.employee_nearest_birtdate']}" class="Fs18 green bold"/>
                         <p:outputLabel value="#{homeDashboardController.employeeResumeModel.nearestBirthday}"  class="Fs18 orange"/>
                     </h:panelGrid>
 
