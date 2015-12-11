@@ -57,7 +57,7 @@
                                                 required="true"
                                                 var="empData"
                                                 itemValue="#{empData}"
-                                                itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                itemLabel="#{empData.nik} #{empData.bioData.firstName} #{employee.bioData.middleName} #{empData.bioData.lastName}"
                                                 converter="empDataConverter"
                                                 requiredMessage="#{appmsg['personachievement.person_achievement_should_not_be_empty']}"
                                                 styleClass="isitext_hrm" size="40">

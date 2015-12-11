@@ -159,8 +159,9 @@ public class HomeDashboardController extends BaseController {
             barChartDistribusiByDept.setLegendPosition("ne");
             barChartDistribusiByDept.setStacked(false);
             barChartDistribusiByDept.setShowDatatip(true);
-            barChartDistribusiByDept.setLegendCols(8);
-            barChartDistribusiByDept.setSeriesColors("66cc00,629de1,003366,990000,cccc00,6600cc,006666");
+            barChartDistribusiByDept.setLegendCols(4);
+            barChartDistribusiByDept.setLegendRows(2);
+            barChartDistribusiByDept.setSeriesColors("66cc00,629de1,003366,990000,cccc00,6600cc,006666,660066");
             lastUpdateEmpDistByDepartment = new Date(employeesByDepartment.get("lastUpdate"));
 
             /**
@@ -238,7 +239,7 @@ public class HomeDashboardController extends BaseController {
             presentationAttendancePerDayLabel = MessageFormat.format(bundle.getString("home.week_update_data"), parameters);
             List<Date> listTanggalWaktuKerja = new ArrayList<>();
             IntStream.range(1, 6).forEach(num -> listTanggalWaktuKerja.add(now.minusDays(num).toDate()));
-            List<ChartSeries> listPresentasiAttendance = empDataService.getEmployeePresentationAttendanceOnDashboard(HrmUserInfoUtil.getCompanyId() ,listTanggalWaktuKerja);
+            List<ChartSeries> listPresentasiAttendance = empDataService.getEmployeePresentationAttendanceOnDashboard(HrmUserInfoUtil.getCompanyId() ,listTanggalWaktuKerja,"dd MMM yyyy");
             
             presentationAttendancePerDayBarChartModel = new HorizontalBarChartModel();
             listPresentasiAttendance.forEach(series -> presentationAttendancePerDayBarChartModel.addSeries(series));

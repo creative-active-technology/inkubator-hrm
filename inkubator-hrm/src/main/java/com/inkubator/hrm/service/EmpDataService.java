@@ -201,6 +201,6 @@ public interface EmpDataService extends IService<EmpData> {
     
     public List<EmpData> getListEmpDataWhichNotExistOnFingerEmpMatch() throws Exception;
 
-	public List<ChartSeries> getEmployeePresentationAttendanceOnDashboard(Long companyId, List<Date> listDate) throws Exception;
+	public List<ChartSeries> getEmployeePresentationAttendanceOnDashboard(Long companyId, List<Date> listDate, String datePattern) throws Exception;
         
 }
