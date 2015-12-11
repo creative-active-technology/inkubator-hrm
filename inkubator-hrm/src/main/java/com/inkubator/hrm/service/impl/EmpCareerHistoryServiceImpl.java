@@ -604,14 +604,16 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<EmpEliminationViewModel> getListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter, int firstResult, int maxResults, Order order)	throws Exception {
-		return new ArrayList<EmpEliminationViewModel>();
+		//return new ArrayList<EmpEliminationViewModel>();
+		
+		List<EmpEliminationViewModel> listEmpEliminationViewModel = empCareerHistoryDao.getListEmpEliminationViewModelByParam(searchParameter, firstResult, maxResults, order);
+		return listEmpEliminationViewModel;
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter) throws Exception {
-		// TODO Auto-generated method stub
-		return 0l;
+		return empCareerHistoryDao.getTotalListEmpEliminationViewModelByParam(searchParameter);
 	}
 	
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)

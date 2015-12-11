@@ -21,7 +21,7 @@
         </property>
         <property name="redeliveryPolicy">
             <bean class="org.apache.activemq.RedeliveryPolicy">
-                <property name="initialRedeliveryDelay" value="1000"/>
+                <property name="initialRedeliveryDelay" value="10000"/>
                 <property name="maximumRedeliveries" value="10"/>
                 <property name="useExponentialBackOff" value="false"/>
             </bean>
@@ -36,7 +36,7 @@
         </property>
         <property name="redeliveryPolicy">
             <bean class="org.apache.activemq.RedeliveryPolicy">
-                <property name="initialRedeliveryDelay" value="1000"/>
+                <property name="initialRedeliveryDelay" value="10000"/>
                 <property name="maximumRedeliveries" value="10"/>
                 <property name="useExponentialBackOff" value="false"/>
             </bean>

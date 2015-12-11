@@ -11,9 +11,10 @@ import com.inkubator.hrm.dao.EmpCareerHistoryDao;
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.CareerTransitionInboxViewModel;
+import com.inkubator.hrm.web.model.EmpEliminationViewModel;
 import com.inkubator.hrm.web.search.CareerTransitionInboxSearchParameter;
+import com.inkubator.hrm.web.search.EmpEliminationSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpMutationParameter;
-import com.inkubator.hrm.web.search.RmbsApplicationUndisbursedSearchParameter;
 
 import java.util.Date;
 import java.util.List;
@@ -269,4 +270,81 @@ public class EmpCareerHistoryDaoImpl extends IDAOImpl<EmpCareerHistory> implemen
 		return criteria.list();
 		
 	}
+
+	@Override
+	public List<EmpEliminationViewModel> getListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+		
+		final StringBuilder query = new StringBuilder("SELECT empCareerHistory.id AS empCareerHistoryId,");
+		query.append(" bioData.id AS bioDataId,");
+		query.append(" careerTransition.id AS careerTransitionId,");
+		query.append(" jabatan.id AS lastJabatanId,");
+		query.append(" empCareerHistory.nik as nik,");
+		query.append(" jabatan.name AS jabatanName,");
+		query.append(" empCareerHistory.joinDate AS joinDate");
+		query.append(" FROM EmpCareerHistory empCareerHistory");
+		query.append(" INNER JOIN empCareerHistory.bioData bioData");
+		query.append(" INNER JOIN empCareerHistory.careerTransition careerTransition");
+		query.append(" INNER JOIN empCareerHistory.jabatan jabatan");
+		query.append(" INNER JOIN careerTransition.systemCareerConst systemCareerConst");
+		query.append(" WHERE systemCareerConst.isWork = 0 ");
+		
+		//filter by search param
+        query.append(doSearchEmpEliminationViewModelByParam(searchParameter));
+        query.append("ORDER BY " + order);
+        
+        Query hbm = getCurrentSession().createQuery(query.toString());
+        hbm = this.setValueQueryEmpEliminationViewModelByParam(hbm, searchParameter);
+        
+		return hbm.setMaxResults(maxResults).setFirstResult(firstResult)
+				.setResultTransformer(Transformers.aliasToBean(EmpEliminationViewModel.class)).list();
+	}
+
+	@Override
+	public Long getTotalListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter) {
+		final StringBuilder query = new StringBuilder("SELECT COUNT(*) ");
+		query.append(" FROM EmpCareerHistory empCareerHistory");
+		query.append(" INNER JOIN empCareerHistory.bioData bioData");
+		query.append(" INNER JOIN empCareerHistory.careerTransition careerTransition");
+		query.append(" INNER JOIN empCareerHistory.jabatan jabatan");
+		query.append(" INNER JOIN careerTransition.systemCareerConst systemCareerConst");
+		query.append(" WHERE systemCareerConst.isWork = 0 ");
+		
+		//filter by search param
+        query.append(doSearchEmpEliminationViewModelByParam(searchParameter));
+        
+        Query hbm = getCurrentSession().createQuery(query.toString());
+        hbm = this.setValueQueryEmpEliminationViewModelByParam(hbm, searchParameter);
+        return Long.valueOf(hbm.uniqueResult().toString());
+	}
+	
+	private String doSearchEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter) {
+        StringBuilder query = new StringBuilder();
+
+        if (!StringUtils.equals(searchParameter.getNik(), null)) {
+            query.append(" AND empCareerHistory.empNik LIKE :nik ");
+        }
+
+        if (!StringUtils.equals(searchParameter.getEmpName(), null)) {
+            query.append(" AND ( bioData.firstName LIKE :empName OR bioData.lastName LIKE :empName ");
+        }
+
+        if (!StringUtils.equals(searchParameter.getLastJabatanName(), null)) {
+            query.append(" AND jabatan.name LIKE :lastJabatanName  ");
+        }
+
+        return query.toString();
+    }
+
+    private Query setValueQueryEmpEliminationViewModelByParam(Query hbm, EmpEliminationSearchParameter parameter) {
+        for (String param : hbm.getNamedParameters()) {
+            if (StringUtils.equals(param, "empName")) {
+                hbm.setParameter("empName", "%" + parameter.getEmpName() + "%");
+            } else if (StringUtils.equals(param, "nik")) {
+                hbm.setParameter("nik", "%" + parameter.getNik() + "%");
+            } else if (StringUtils.equals(param, "lastJabatanName")) {
+                hbm.setParameter("lastJabatanName", "%" + parameter.getLastJabatanName() + "%");
+            }
+        }
+        return hbm;
+    }
 }
