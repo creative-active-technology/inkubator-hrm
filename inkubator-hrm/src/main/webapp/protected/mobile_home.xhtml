@@ -152,8 +152,8 @@
                 </div>
             </div>
             <div class="Seperator" ></div>
-            <i class="fa fa-list-alt Fleft Fs16 blue_black MarRight10 "></i>
-            <span class="Fleft Fs16 blue_black"><p:outputLabel value="#{appmsg['global.click_more_detail']}" /></span>
+            <!--            <i class="fa fa-list-alt Fleft Fs16 blue_black MarRight10 "></i>
+                        <span class="Fleft Fs16 blue_black"><p:outputLabel value="#{appmsg['global.click_more_detail']}" /></span>-->
             <div class="Container25 Responsive">
                 <div class="ContainerIndent">
                     <div class="Container100 TexAlCenter">
@@ -203,11 +203,39 @@
             </div>
             <!--<div class="Container100 Responsive">-->
             <!--<div class="ContainerIndent">-->
-
             <div class="Seperator" ></div>
-            <div class="layout-portlets-box">
-                <div class="Container100">
-                    <p:outputLabel value="#{appmsg['home.employee_distribution_by_age']}" class="Fs18 blue_black" />
+            <div class="layout-portlets-box" style="margin-bottom: 15px">
+                <div class="Container100" style="margin-top: 4px">
+                    <p:outputLabel value="#{appmsg['loginhistory.login_history']}" class="Fs18 blue_black bold" />
+                    <h:panelGrid columns="2" style="margin-left: -3px">
+                        <!--<p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs16 blue" style="margin-right: 3px"/>-->
+                        <p:outputLabel value="#{appmsg['loginhistory.list_of_user_login_history']}" class="Fs16 blue"/>
+                    </h:panelGrid>
+                    <p:dataTable id="logHistoryId" var="data" style="margin-bottom: 12px" initMode="load" reflow="false"
+                                 value="#{homeHistoryController.loginHistories}">
+                        <p:column  style="text-align: center">
+                            <f:facet name="header">  
+                                <h:outputText value="Tanggal"  class="Fs18"/>
+                            </f:facet>
+                            <p:outputLabel value="#{data.loginDate}" class="Fs18" >
+                                <f:convertDateTime pattern="dd-MMM-yyyy HH:mm:ss aa" />
+                            </p:outputLabel>
+                        </p:column>
+                        <p:column >
+                            <f:facet name="header">
+                                <h:outputText value="User Name" class="Fs18" />
+                            </f:facet>
+                            <p:outputLabel value="#{data.hrmUser.realName}" class="Fs18" />
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+            </div>
+
+            <!--<div class="Seperator" ></div>-->
+            <div class="layout-portlets-box" style="margin-bottom: 15px">
+                <div class="Container100" style="margin-top: 4px">
+                    <p:outputLabel value="#{appmsg['home.employee_distribution_by_age']}" class="Fs18 blue_black bold" />
                     <h:panelGrid columns="2" style="margin-left: -3px">
                         <p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs16 blue" style="margin-right: 3px"/>
                         <p:outputLabel value="#{homeMobileController.lastUpdateEmpDistByAge}" class="Fs16 blue">
@@ -218,10 +246,10 @@
                 </div>
             </div>
 
-            <div class="Seperator" ></div>
-            <div class="layout-portlets-box">
-                <div class="Container100">
-                    <p:outputLabel value="#{appmsg['home.employee_attendance_presentation']}" class="Fs18 blue_black" />
+            <!--<div class="Seperator" ></div>-->
+            <div class="layout-portlets-box" style="margin-bottom: 15px">
+                <div class="Container100" style="margin-top: 4px">
+                    <p:outputLabel value="#{appmsg['home.employee_attendance_presentation']}" class="Fs18 blue_black bold" />
                     <h:panelGrid columns="2" style="margin-left: -3px">
                         <!--<p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs18 black" style="margin-right: 3px"/>-->
                         <p:outputLabel value="#{homeMobileController.presentationAttendancePerDayLabel}" class="Fs16 blue"/>
@@ -229,38 +257,40 @@
                     <p:chart type="bar" model="#{homeMobileController.presentationAttendancePerDayBarChartModel}" style="height:180px;font-size: 11px" responsive="true"/>
                 </div>
             </div>
-            <div class="Seperator" ></div>
-            <div class="Container100">
-                <p:outputLabel value="#{appmsg['home.employee_distribution_by_gender']}" class="Fs18 blue_black" />
-                <h:panelGrid columns="2" style="margin-left: -3px;margin-bottom: 5px">
-                    <p:outputLabel value="#{appmsg['home.updated']} : " class="Fs16 blue" style="margin-right: 3px"/>
-                    <p:outputLabel value="#{homeMobileController.lastUpdateEmpDistByGender}" class="Fs16 blue">
-                        <f:convertDateTime pattern="dd-MMMM-yyyy - HH:mm:ss"/>
-                    </p:outputLabel>
-                </h:panelGrid>
-                <div class="Wid45 BorderedBox Fleft TexAlCenter HoverEffect" style="border-color: #00AEEF;">
-                    <div class="ContainerIndent">
-                        <div class="EmptyBox10"></div>
-                        <p:graphicImage library="images" name="logo-cowo.png" width="35%" cache="true" />
-                        <!--<span class="Fs14 DispBlock black">Laki-Laki</span>-->
-                        <span class="Fs24 DispBlock red animated bounceOut infinite">#{homeMobileController.totalMale}</span>
-                        <div class="EmptyBox10"></div>
+            <!--<div class="Seperator" ></div>-->
+            <div class="layout-portlets-box" style="margin-bottom: 15px">
+                <div class="Container100" style="margin-top: 4px">
+                    <p:outputLabel value="#{appmsg['home.employee_distribution_by_gender']}" class="Fs18 blue_black bold" />
+                    <h:panelGrid columns="2" style="margin-left: -3px;margin-bottom: 5px">
+                        <p:outputLabel value="#{appmsg['home.updated']} : " class="Fs16 blue" style="margin-right: 3px"/>
+                        <p:outputLabel value="#{homeMobileController.lastUpdateEmpDistByGender}" class="Fs16 blue">
+                            <f:convertDateTime pattern="dd-MMMM-yyyy - HH:mm:ss"/>
+                        </p:outputLabel>
+                    </h:panelGrid>
+                    <div class="Wid45 BorderedBox Fleft TexAlCenter HoverEffect" style="border-color: #00AEEF;">
+                        <div class="ContainerIndent" style="margin-top: 4px">
+                            <div class="EmptyBox10"></div>
+                            <p:graphicImage library="images" name="logo-cowo.png" width="35%" cache="true" />
+                            <!--<span class="Fs14 DispBlock black">Laki-Laki</span>-->
+                            <span class="Fs24 DispBlock red animated bounceOut infinite">#{homeMobileController.totalMale}</span>
+                            <div class="EmptyBox10"></div>
+                        </div>
                     </div>
-                </div>
-                <div class="Wid45 BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #00AEEF">
-                    <div class="ContainerIndent">
-                        <div class="EmptyBox10"></div>
-                        <p:graphicImage library="images" name="logo-cewe.png" width="36%" cache="true" />
-                        <!--<span class="Fs14 DispBlock black">Perempuan</span>-->
-                        <span class="Fs24 DispBlock red animated bounceOut infinite">#{homeMobileController.totalFemale}</span>
-                        <div class="EmptyBox10"></div>
+                    <div class="Wid45 BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #00AEEF">
+                        <div class="ContainerIndent" style="margin-top: 4px">
+                            <div class="EmptyBox10"></div>
+                            <p:graphicImage library="images" name="logo-cewe.png" width="36%" cache="true" />
+                            <!--<span class="Fs14 DispBlock black">Perempuan</span>-->
+                            <span class="Fs24 DispBlock red animated bounceOut infinite">#{homeMobileController.totalFemale}</span>
+                            <div class="EmptyBox10"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="Seperator" ></div>
-            <div class="layout-portlets-box">
-                <div class="Container100">
-                    <p:outputLabel value="#{appmsg['home.employee_distribution_by_department']}" class="Fs18 blue_black" />
+            <!--<div class="Seperator" ></div>-->
+            <div class="layout-portlets-box" style="margin-bottom: 15px">
+                <div class="Container100" style="margin-top: 4px">
+                    <p:outputLabel value="#{appmsg['home.employee_distribution_by_department']}" class="Fs18 blue_black bold" />
                     <h:panelGrid columns="2" style="margin-left: -3px">
                         <p:outputLabel value="#{appmsg['home.updated']} : " class="Fs16 blue" style="margin-right: 3px"/>
                         <p:outputLabel value="#{homeMobileController.lastUpdateEmpDistByDepartment}" class="Fs16 blue">
@@ -271,8 +301,48 @@
                  <!--<p:chart model="#{homeDashboardController.barChartModel}" type="bar"  style="height:220px;font-size: 11px;margin-left: -5px;margin-right: -5px" responsive="true" />-->
                 </div>
             </div>
+
+            <div class="layout-portlets-box" style="margin-bottom: 15px">
+                <div class="Container100">
+                    <!--<p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height: 242px;">--> 
+                    <h:panelGrid style="margin-bottom: 3px">                                    
+                        <p:outputLabel value="#{appmsg['home.employee_resume_data']}"  class="Fs18 blue_black bold" />
+                        <p:outputLabel value="#{appmsg['home.information_statistic']}" class="Fs16 blue" />
+                    </h:panelGrid>
+                    <h:panelGrid columns="3">
+                        <p:outputLabel value="#{appmsg['employee.employee']}" class="Fs18 blue_black"/>
+                        <p:outputLabel value=":" class="Fs18 blue_black" />
+                        <p:outputLabel value="#{homeDashboardController.employeeResumeModel.totalEmployee} Orang" class="Fs18 blue_black" />
+
+                        <p:outputLabel value="#{appmsg['home.today_leave']}" class="Fs18 blue_black" />
+                        <p:outputLabel value=":" class="Fs18 blue_black" />
+                        <p:outputLabel value="#{homeDashboardController.employeeResumeModel.todayLeave} Orang" class="Fs18 blue_black" />
+
+                        <p:outputLabel value="#{appmsg['home.today_on_duty']}" class="Fs18 blue_black" />
+                        <p:outputLabel value=":" class="Fs18 blue_black" />
+                        <p:outputLabel value="#{homeDashboardController.employeeResumeModel.todayBusinessTravel} Orang" class="Fs18 blue_black" />
+
+                        <p:outputLabel value="#{appmsg['home.yesteday_attendance']}" class="Fs18 blue_black" />
+                        <p:outputLabel value=":" class="Fs18 blue_black" />
+                        <p:outputLabel value="#{homeDashboardController.employeeResumeModel.yesterdayAttendance} %" class="Fs18 blue_black" />
+
+                        <p:outputLabel value="#{appmsg['home.today_attendance_prediction']}" class="Fs18 blue_black" />
+                        <p:outputLabel value=":" class="Fs18 blue_black" />
+                        <p:outputLabel value="#{homeDashboardController.employeeResumeModel.todayAttendance} %" class="Fs18 blue_black" />
+                    </h:panelGrid>
+
+                    <p:separator style="margin-left: 4px;margin-right: 2px;margin-top: 2px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 9px;margin-top: 9px">
+                        <p:outputLabel value="#{appmsg['home.employee_nearest_birtdate']}" class="Fs18 blue bold"/>
+                        <p:outputLabel value="#{homeDashboardController.employeeResumeModel.nearestBirthday}"  class="Fs18 orange"/>
+                    </h:panelGrid>
+
+                    <!--</p:panel>-->
+
+                </div>
+            </div>
             <!--<div class="Seperator" ></div>-->
-      
+
             <!--</div>-->
             <!--</div>-->
             <!--<h:panelGrid style="margin-bottom: 3px">-->
