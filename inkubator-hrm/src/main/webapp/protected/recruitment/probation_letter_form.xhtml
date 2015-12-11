@@ -112,7 +112,10 @@
                                                     converter="empDataConverter" required="true" 
                                                     requiredMessage="#{appmsg['publicHolidayException.publicHolidayException_emp_should_not_be_empty']}" 
                                                     styleClass="isitext_hrm" size="28"  style="width:290px;" >
+                                         <p:ajax update="warningNullSignature" event="itemSelect" listener="#{offeringAndProhabitFormController.doWarningNullSignature}"/>
                                     </p:autoComplete>
+                                    <p:outputLabel id="warningNullSignature" value="#{offeringAndProhabitFormController.warningMessage}" style="margin-left: -80px!important;color: red;" styleClass="label_hrm"/>
+                                	
                                     <p:message for="empId"/>
                                 </p:column>
                             </p:row> 
@@ -208,15 +211,15 @@
                                 <p:outputLabel value="#{appmsg['offering_module.letter_number']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":" styleClass="label_hrm"/>
                                 <p:outputLabel value="{%LetterNumber%}" />
-                                <p:outputLabel value="#{appmsg['offering_module.selection_date']}" styleClass="label_hrm"/>
+                                <!-- <p:outputLabel value="#{appmsg['offering_module.selection_date']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":" styleClass="label_hrm"/>
-                                <p:outputLabel value="{%DateOfSelectionSchedulle%}" />
-                                <p:outputLabel value="#{appmsg['offering_module.evaluation_date']}" styleClass="label_hrm"/>
+                                <p:outputLabel value="{%DateOfSelectionSchedulle%}" /> -->
+                                <!-- <p:outputLabel value="#{appmsg['offering_module.evaluation_date']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":" styleClass="label_hrm"/>
                                 <p:outputLabel value="{%DateOfSelectionEvaluation%}" />
                                 <p:outputLabel value="#{appmsg['offering_module.pic_name']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":" styleClass="label_hrm"/>
-                                <p:outputLabel value="{%PICName%}" />
+                                <p:outputLabel value="{%PICName%}" /> -->
                                 <p:outputLabel value="#{appmsg['offering_module.date_generated']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":" styleClass="label_hrm"/>
                                 <p:outputLabel value="{%DateOfDocument%}" />
