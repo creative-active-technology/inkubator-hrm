@@ -51,7 +51,7 @@
                                                 completeMethod="#{businessTravelFormController.doAutoCompletEmployee}"                                                
                                                 var="empData"
                                                 itemValue="#{empData}"
-                                                itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.middleName} #{empData.bioData.lastName}"
                                                 converter="empDataConverter"
                                                 readonly="#{not (businessTravelModel.isAdministator and not businessTravelModel.isRevised)}" required="true" styleClass="isitext_hrm" size="46">
                                     	<p:ajax event="itemSelect" listener="#{businessTravelFormController.doResetTravelComponentList(flowRequestContext)}" />

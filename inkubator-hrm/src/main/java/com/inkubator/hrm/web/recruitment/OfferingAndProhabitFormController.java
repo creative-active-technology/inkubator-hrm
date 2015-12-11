@@ -5,7 +5,22 @@
  */
 package com.inkubator.hrm.web.recruitment;
 
-import ch.lambdaj.Lambda;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+
+import org.apache.commons.lang3.StringUtils;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DualListModel;
+
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
@@ -22,24 +37,11 @@ import com.inkubator.hrm.service.RecruitCommChannelsService;
 import com.inkubator.hrm.service.RecruitLettersService;
 import com.inkubator.hrm.service.RecruitSelectionTypeService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.web.model.OfferingAndProhabitModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
-import org.apache.commons.lang3.StringUtils;
-import org.primefaces.model.DualListModel;
 
 /**
  *
@@ -61,6 +63,7 @@ public class OfferingAndProhabitFormController extends BaseController {
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
     private Boolean isEdit;
+    private String warningMessage;
 
     @PostConstruct
     @Override
@@ -88,7 +91,7 @@ public class OfferingAndProhabitFormController extends BaseController {
                 dualListModel.setSource(sourceDualLis);
                 dualListModelCom.setSource(sourceDualLisCom);
             }
-
+            warningMessage = "";
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }
@@ -149,6 +152,16 @@ public class OfferingAndProhabitFormController extends BaseController {
         return null;
     }
 
+    public void doWarningNullSignature(SelectEvent e){
+    	EmpData empData = (EmpData) e.getObject();
+    	System.out.println(empData.getNik());
+    	if(offeringAndProhabitModel.getEmpData().getBioData().getPathSignature() == null){
+    		warningMessage = ResourceBundleUtil.getAsString("offeringLetter.warning_null_signature");
+    	}else{
+    		warningMessage = "Ok";
+    	}
+    }
+    
     public void setEmpDataService(EmpDataService empDataService) {
         this.empDataService = empDataService;
     }
@@ -288,4 +301,14 @@ public class OfferingAndProhabitFormController extends BaseController {
     public String doBack() {
         return "/protected/recruitment/offering_letter_view.htm?faces-redirect=true";
     }
+
+	public String getWarningMessage() {
+		return warningMessage;
+	}
+
+	public void setWarningMessage(String warningMessage) {
+		this.warningMessage = warningMessage;
+	}
+    
+    
 }

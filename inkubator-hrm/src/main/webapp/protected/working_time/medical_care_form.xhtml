@@ -43,7 +43,7 @@
                                                     completeMethod="#{medicalCareFormController.doAutoCompleteEmployee}"                                                
                                                     var="empDataByEmpDataId"
                                                     itemValue="#{empDataByEmpDataId}"
-                                                    itemLabel="#{empDataByEmpDataId.nik} #{empDataByEmpDataId.bioData.firstName} #{empDataByEmpDataId.bioData.lastName}"
+                                                    itemLabel="#{empDataByEmpDataId.nik} #{empDataByEmpDataId.bioData.firstName} #{empDataByEmpDataId.bioData.middleName} #{empDataByEmpDataId.bioData.lastName}"
                                                     converter="empDataConverter"
                                                     required="true" styleClass="isitext_hrm" size="45">
                                         <p:ajax event="itemSelect" listener="#{medicalCareFormController.onChangeEmployee}" update="jabatanId"/>
@@ -221,7 +221,7 @@
                                                     completeMethod="#{medicalCareFormController.doAutoCompleteEmployee}"                                                
                                                     var="empDataByTemporaryActingId"
                                                     itemValue="#{empDataByTemporaryActingId}"
-                                                    itemLabel="#{empDataByTemporaryActingId.nik} #{empDataByTemporaryActingId.bioData.firstName} #{empDataByTemporaryActingId.bioData.lastName}"
+                                                    itemLabel="#{empDataByTemporaryActingId.nik} #{empDataByTemporaryActingId.bioData.firstName} #{empDataByEmpDataId.bioData.middleName} #{empDataByTemporaryActingId.bioData.lastName}"
                                                     converter="empDataConverter"
                                                     required="true" styleClass="isitext_hrm" size="45">
                                     </p:autoComplete>

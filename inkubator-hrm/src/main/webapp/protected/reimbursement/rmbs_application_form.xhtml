@@ -61,7 +61,7 @@
                                 <p:column  style="width: 80%">
                                     <p:autoComplete id="employeeId" title="#{appmsg['global.employee']}" value="#{rmbsApplicationFormController.model.empData}"
                                                     completeMethod="#{rmbsApplicationFormController.doAutoCompleteEmployee}"                                                
-                                                    var="empData" itemValue="#{empData}" itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                    var="empData" itemValue="#{empData}" itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.middleName} #{empData.bioData.lastName}"
                                                     converter="empDataConverter" styleClass="isitext_hrm" size="45" 
                                                     required="true" readonly="#{not (rmbsApplicationFormController.isAdministator and not rmbsApplicationFormController.isRevised)}">
                                         <p:ajax event="itemSelect" listener="#{rmbsApplicationFormController.onChangeEmployee()}" update="rmbsSchemaId,rmbsTypeId,submissionDeadlineId,tableApproverId"/>
