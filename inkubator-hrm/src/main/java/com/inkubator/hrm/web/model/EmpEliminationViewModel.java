@@ -3,6 +3,10 @@ package com.inkubator.hrm.web.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.util.ResourceBundleUtil;
+import com.inkubator.webcore.util.FacesUtil;
+
 /**
  *
  * @author Ahmad Mudzakkir Amal
@@ -11,6 +15,7 @@ public class EmpEliminationViewModel implements Serializable {
 
     private Long empCareerHistoryId;
     private Long empDataId;
+    private Long  bioDataId;
     private Long careerTransitionId;
     private Long lastJabatanId;
     private Long lastWtPeriodId;
@@ -102,8 +107,12 @@ public class EmpEliminationViewModel implements Serializable {
 	public void setStartDateLastWtPeriod(Date startDateLastWtPeriod) {
 		this.startDateLastWtPeriod = startDateLastWtPeriod;
 	}
-    
-    
+	public Long getBioDataId() {
+		return bioDataId;
+	}
+	public void setBioDataId(Long bioDataId) {
+		this.bioDataId = bioDataId;
+	}
 
     
     

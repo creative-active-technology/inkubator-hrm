@@ -575,6 +575,13 @@ public class HRMConstant {
     public static final String CONTEXT_PATH = "contextPath";
     /* END */
     
+    /*Constant for Appraisal PerformanceGroup*/
+    public static final String APPRAISAL_PERFORM_GROUP_PROCESS = "Process";
+    public static final String APPRAISAL_PERFORM_GROUP_RESULT = "Result";
+    public static final String APPRAISAL_PERFORM_GROUP_POSITION = "Position";
+    public static final String APPRAISAL_PERFORM_GROUP_EMPLOYEE = "Employee";
+    /* END */
+    
     /* Constant Competence Visibility */
     public static final Byte COMPETENCE_SOFT_SKILL = 0;
     public static final Byte COMPETENCE_HARD_SKILL = 1;

@@ -20,7 +20,9 @@
 
     <h:body>    
         <div id="menu-mask"></div>
-
+        <p:socket onMessage="handleLogin" channel="/notificationsLogin" /> 
+        <p:growl id="socketNotificationGrowlId" widgetVar="socketNotificationGrowl"  showDetail="true" showSummary="true" life="4000" />
+        <p:growl id="mainGrowl" showDetail="true" globalOnly="true"  />
         <ui:include src="topbar.xhtml" />
 
         <!--<ui:include src="layoutmenu.xhtml" />-->
@@ -49,6 +51,8 @@
         <h:outputStylesheet name="css/font-awesome.css" library="spark-layout" />
         <h:outputStylesheet name="css/animate.css" library="spark-layout" />
         <h:outputStylesheet name="css/spark-layout.css" library="spark-layout" />
+        <h:outputScript library="js" name="login_socket.js"/>
+        <h:outputScript library="js" name="indonesia_locale.js" />
     </h:body>
 
 </html>
