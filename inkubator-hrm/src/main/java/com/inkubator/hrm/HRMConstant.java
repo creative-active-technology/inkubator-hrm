@@ -212,6 +212,10 @@ public class HRMConstant {
     public static final String EMP_ROTATION = "EMP_ROTATION";
     public static final String EMP_TERMINATION = "EMP_TERMINATION";
     public static final String EMP_NEW_HIRE = "EMP_NEW_HIRE";
+    public static final String EMP_STOP_CONTRACT = "EMP_STOP_CONTRACT";
+    public static final String EMP_LAID_OFF = "EMP_LAID_OFF";
+    public static final String EMP_PENSION = "EMP_PENSION";
+    public static final String EMP_DISCHAGED = "EMP_DISCHAGED";
     /* END */
 
  /* Constant for  Model Component */

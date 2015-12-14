@@ -27,6 +27,7 @@ public class EmpEliminationViewModel implements Serializable {
     private Date startDateLastWtPeriod;
     private String reason;
     private String status;
+    private String empCareerHistoryStatus;
     
 	public Long getEmpCareerHistoryId() {
 		return empCareerHistoryId;
@@ -113,7 +114,13 @@ public class EmpEliminationViewModel implements Serializable {
 	public void setBioDataId(Long bioDataId) {
 		this.bioDataId = bioDataId;
 	}
-
+	public String getEmpCareerHistoryStatus() {
+		return empCareerHistoryStatus;
+	}
+	public void setEmpCareerHistoryStatus(String empCareerHistoryStatus) {
+		this.empCareerHistoryStatus = empCareerHistoryStatus;
+	}
+	
     
     
 }
