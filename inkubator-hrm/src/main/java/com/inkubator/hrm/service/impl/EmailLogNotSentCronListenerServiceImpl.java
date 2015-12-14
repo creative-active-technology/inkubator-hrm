@@ -1,8 +1,8 @@
 package com.inkubator.hrm.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
-import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
@@ -18,34 +18,48 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.EmailLogDao;
 import com.inkubator.hrm.entity.EmailLog;
 import com.inkubator.hrm.entity.EmailLogAttachment;
+import com.inkubator.hrm.entity.SchedulerLog;
 
 /**
  *
  * @author rizkykojek
  */
-public class NotificationSendingEmailLogMessagesListener extends IServiceImpl implements MessageListener {
+public class EmailLogNotSentCronListenerServiceImpl extends BaseSchedulerDinamicListenerImpl implements MessageListener {
 
 	private String ownerEmail;
 	
 	@Autowired
-	private JavaMailSender javaMailSender;
-	@Autowired
 	private EmailLogDao emailLogDao;
+	@Autowired
+	private JavaMailSender javaMailSender;
 	
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, timeout = 50, rollbackFor = Exception.class)
-	public void onMessage(Message mes) {
-		TextMessage textMessage = (TextMessage) mes;
-		try {
-			LOGGER.warn("------------- BEGIN of Sending EmailLog, with id:"+textMessage.getText() + " ------------");
-			
-			Long id = Long.parseLong(textMessage.getText());
-			EmailLog emailLog = emailLogDao.getEntiyByPK(id);
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+	public void onMessage(Message message) {
+		SchedulerLog log = null;
+        try {
+            TextMessage textMessage = (TextMessage) message;
+            log = schedulerLogDao.getEntiyByPK(Long.parseLong(textMessage.getText()));
+            this.sendingAllEmailNotSent();
+            log.setStatusMessages("FINISH");
+            super.doUpdateSchedulerLogSchedulerLog(log);
+        } catch (Exception ex) {
+            if (log != null) {
+                log.setStatusMessages(ex.getMessage());
+                super.doUpdateSchedulerLogSchedulerLog(log);
+            }
+            LOGGER.error(ex, ex);
+        }
+	}
 
+	private void sendingAllEmailNotSent() throws MessagingException {
+		LOGGER.warn("Process Checking Email Log not sent ===========================================================");
+		List<EmailLog> listAllEmailNotSent = emailLogDao.getAllDataEmailNotSent();
+		
+		for(EmailLog emailLog : listAllEmailNotSent){
 			// use the true flag to indicate you need a multipart message
 			MimeMessage message = javaMailSender.createMimeMessage();
 			MimeMessageHelper helper ;
@@ -79,8 +93,7 @@ public class NotificationSendingEmailLogMessagesListener extends IServiceImpl im
             			helper.addAttachment(attachment.getFileName(), is, attachment.getContentType());
             		}
             	}
-            }
-			
+            }			
 	        this.javaMailSender.send(message);
 	        
 	        
@@ -88,14 +101,6 @@ public class NotificationSendingEmailLogMessagesListener extends IServiceImpl im
 	        emailLog.setSentOn(new Date());
 	        emailLog.setSentStatus(Boolean.TRUE);
 	        emailLogDao.update(emailLog);
-	        
-	        
-	        LOGGER.warn("------------- END of Sending EmailLog, with id:"+textMessage.getText() + " ------------");
-		} catch (JMSException e) {
-			LOGGER.error("Error", e);
-		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 

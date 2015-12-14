@@ -9,6 +9,7 @@ import com.inkubator.common.CommonUtilConstant;
 import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.SchedulerConfigDao;
 import com.inkubator.hrm.dao.SchedulerLogDao;
 import com.inkubator.hrm.entity.SchedulerConfig;
@@ -70,6 +71,8 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
     private JmsTemplate jmsTemplatePasswordComplexity;
     @Autowired
     private JmsTemplate jmsTemplateRecruitmetConfigEmp;
+    @Autowired
+    private JmsTemplate jmsTemplateEmailLogNotSent;
     @Autowired
     protected SchedulerLogDao schedulerLogDao;
 //    @Override
@@ -454,7 +457,15 @@ public class ScheduleDinamicServiceImpl extends IServiceImpl implements Schedule
 
                     @Override
                     public Message createMessage(Session session) throws JMSException {
-                        System.out.println(" Jsms trigerereddd");
+                        return session.createTextMessage(String.valueOf(log.getId()));
+                    }
+                });
+                break;
+            case HRMConstant.SCHEDULER_CHECKING_EMAIL_NOT_SENT:
+                jmsTemplateEmailLogNotSent.send(new MessageCreator() {
+
+                    @Override
+                    public Message createMessage(Session session) throws JMSException {
                         return session.createTextMessage(String.valueOf(log.getId()));
                     }
                 });
