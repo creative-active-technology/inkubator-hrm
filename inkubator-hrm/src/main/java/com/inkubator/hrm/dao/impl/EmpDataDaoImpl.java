@@ -308,7 +308,10 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
          * duplicate association path
          */
         criteria = this.addJoinRelationsOfCompanyId(criteria, companyId);
-        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+        //criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+        criteria.add(Restrictions.isNotNull("status"));
+        criteria.add(Restrictions.not(Restrictions.in("status", Arrays.asList(HRMConstant.EMP_TERMINATION, HRMConstant.EMP_DISCHAGED, 
+        		HRMConstant.EMP_LAID_OFF, HRMConstant.EMP_STOP_CONTRACT, HRMConstant.EMP_PENSION))));
 
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         Disjunction disjunction = Restrictions.disjunction();
@@ -323,7 +326,10 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public List<EmpData> getAllDataByNameOrNik(String param) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+        //criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
+        criteria.add(Restrictions.isNotNull("status"));
+        criteria.add(Restrictions.not(Restrictions.in("status", Arrays.asList(HRMConstant.EMP_TERMINATION, HRMConstant.EMP_DISCHAGED, 
+        		HRMConstant.EMP_LAID_OFF, HRMConstant.EMP_STOP_CONTRACT, HRMConstant.EMP_PENSION))));
 
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         Disjunction disjunction = Restrictions.disjunction();
@@ -2328,5 +2334,6 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 			.setFetchMode("jabatanByJabatanId", FetchMode.JOIN);
 		return criteria.list();
 	}
+
     
 }
