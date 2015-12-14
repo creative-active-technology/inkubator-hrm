@@ -9,6 +9,10 @@
         <title>#{appmsg['global.header_app']}</title>
         <link rel="stylesheet" href="${request.contextPath}/resources/css/login.css" type="text/css" media="screen" />
         <link rel="shortcut icon" href="./hr.ico" type="image/x-icon" />
+        <h:outputStylesheet name="css/core-layout.css" library="spark-layout"   rendered="true"/>
+        <h:outputStylesheet name="css/font-awesome.css" library="spark-layout"  rendered="true"/>
+        <h:outputStylesheet name="css/animate.css" library="spark-layout"  rendered="true"/>
+        <h:outputStylesheet name="css/spark-layout_login.css" library="spark-layout"  rendered="true"/>
     </h:head>
     <h:body  rendered="#{!loginController.isMobile}">
         <div id="art-page-background-middle-texture" >
@@ -231,19 +235,13 @@
                                 requiredMessage="#{appmsg['loginform.password_mandatory']}"  placeholder="Password" styleClass="Container96 Fnone MarAuto Fs18" feedback="false"/>
 
                     <!--<div align="left">-->
-                        <p:commandButton  value="#{appmsg['loginform.login']}" styleClass="Fnone Fs18" icon="ui-icon-lock fa fa-lock Fs19"  update="mobileLoginForm" action="#{loginController.doLoginMobile()}"
-                                          ajax="true" type="submit"   style="margin-top: 15px;width: 98%"  />
-                    <!--</div>-->
+                    <p:commandButton  value="#{appmsg['loginform.login']}" styleClass="Fnone Fs18" icon="ui-icon-lock fa fa-lock Fs19"  update="mobileLoginForm" action="#{loginController.doLoginMobile()}"
+                                      ajax="true" type="submit"   style="margin-top: 15px;width: 98%"  />
 
-                    <div class="EmptyBox20"></div>
-                
-                    <div class="EmptyBox30"></div>
-                    <!--                    <p:button  value="Forgot Password ?" styleClass="Fs16 RedButton" href="dashboard.xhtml"></p:button>
-                                        <p:button  value="Contact Admin ?" styleClass="Fs16 OrangeButton" href="dashboard.xhtml"></p:button>-->
-                    <div class="EmptyBox40"></div>
+                    <div class="EmptyBox100"></div>
 
                 </div>
-                
+
                 <div align="center" style="font-size: 9px;text-shadow: none;bottom: 0px;position: relative">
                     <h:panelGrid style="text-align: center">
                         <p:outputLabel value="OPTIMAHR. PT.Indonesia Inkubator Teknologi" style="color: #ffffff;font-size: 11px" />
@@ -253,9 +251,6 @@
                 </div>
             </div>
         </h:form>
-        <h:outputStylesheet name="css/core-layout.css" library="spark-layout"   rendered="true"/>
-        <h:outputStylesheet name="css/font-awesome.css" library="spark-layout"  rendered="true"/>
-        <h:outputStylesheet name="css/animate.css" library="spark-layout"  rendered="true"/>
-        <h:outputStylesheet name="css/spark-layout_login.css" library="spark-layout"  rendered="true"/>
+
     </h:body>
 </html>
