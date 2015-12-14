@@ -111,7 +111,7 @@
                                                     completeMethod="#{approvalDefinitionPopupFormController.doAutoCompleteUser}"                                                
                                                     disabled="#{approvalDefinitionPopupFormController.approverTypeIndividual}"
                                                     var="hrmUser" itemValue="#{hrmUser}"
-                                                    itemLabel="#{hrmUser.empData.nik} #{hrmUser.empData.bioData.firstName} #{hrmUser.empData.bioData.lastName}"
+                                                    itemLabel="#{hrmUser.empData.nik} #{hrmUser.empData.bioData.firstName} #{hrmUser.empData.bioData.middleName} #{hrmUser.empData.bioData.lastName}"
                                                     converter="hrmUserConverter"
                                                     required="true" styleClass="isitext_hrm" size="45">
                                     </p:autoComplete>
@@ -179,7 +179,7 @@
                                                     completeMethod="#{approvalDefinitionPopupFormController.doAutoCompleteUser}"                                                
                                                     disabled="#{approvalDefinitionPopupFormController.onBehalfApproverTypeIndividual}"
                                                     var="hrmUser" itemValue="#{hrmUser}"
-                                                    itemLabel="#{hrmUser.empData.nik} #{hrmUser.empData.bioData.firstName} #{hrmUser.empData.bioData.lastName}"
+                                                    itemLabel="#{hrmUser.empData.nik} #{hrmUser.empData.bioData.firstName} #{hrmUser.empData.bioData.middleName} #{hrmUser.empData.bioData.lastName}"
                                                     converter="hrmUserConverter"
                                                     required="true" styleClass="isitext_hrm" size="45">
                                     </p:autoComplete>

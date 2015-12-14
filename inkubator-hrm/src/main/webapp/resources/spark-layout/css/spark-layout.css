@@ -188,7 +188,7 @@ body{margin:0px;
 }  
 /*Layout Portlets Cover*/
 #layout-portlets-cover{width:92%; margin:0px auto; display: block;}
-.layout-portlets-box{width:97%; padding:1% 1.5%; margin:8px auto; float:left; background-color:#F6FAFC/*#F1F6F9*/; border-radius:3px; -webkit-border-radius:3px; -moz-border-radius:3px;
+.layout-portlets-box{width:97%; padding:1% 1.5%; margin:8px auto; float:left; background-color:#F6FAFC/*#F1F6F9*/; border-radius:4px; -webkit-border-radius:4px; -moz-border-radius:4px;border-color: #D9E3E8;
                      -webkit-box-shadow: 0px 1px 0px 0px rgba(159,172,183,0.7);
                      -moz-box-shadow: 0px 1px 0px 0px rgba(159,172,183,0.7);
                      box-shadow: 0px 1px 0px 0px rgba(159,172,183,0.7);}
@@ -216,6 +216,7 @@ li{list-style:none;}
 .softgray{color:#C3CCD5;}
 .gray{color:#778D9B;}
 .black{color:#3B3D3F;}
+.blue_black{color: #036;}
 
 /* big topic */
 .BigTopic{font-size:24px; color:#3B3D3F; font-family: 'ralewaymedium'; display:block; width:100%; border-bottom:solid 1px #C3CCD5; padding:10px 0px; margin-bottom:10px !important; overflow: hidden; font-weight:bold;}
@@ -229,8 +230,9 @@ li{list-style:none;}
              box-shadow: 0px 1px 0px 0px rgba(70,145,91,0.8);}
 
 /* bordered box */
-.BorderedBox{border:solid 1px #D9E3E8; background-color:#EDF3F6; box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box;
-             border-radius:3px; -webkit-border-radius:3px; -moz-border-radius:3px; margin-bottom:15px;}
+.BorderedBox{border:solid 1px; background-color:#ffffff;background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a7cfdf), color-stop(90%,#def7f7));
+             box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; border-color: #ffffff;
+             border-radius:6px; -webkit-border-radius:6px; -moz-border-radius:6px; margin-bottom:15px;}
 .BottomBorderedBox{border-bottom:solid 1px #D9E3E8; box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box;
                    border-radius:3px; -webkit-border-radius:3px; -moz-border-radius:3px; margin-bottom:15px;}
 

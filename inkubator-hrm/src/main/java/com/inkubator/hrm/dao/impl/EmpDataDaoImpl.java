@@ -516,6 +516,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         criteria.createAlias("golonganJabatan", "goljab", JoinType.INNER_JOIN);
         criteria.add(Property.forName("id").notIn(listEmp));
+        criteria.add(Restrictions.eq("status", HRMConstant.EMP_TERMINATION));
         //ambil yg working groupnya bukan yg dipilih, dan belum punya working group
 //        if (model.getLeaveSchemeId() != 0 || model.getLeaveSchemeId() != null) {
 //            Disjunction disjunction = Restrictions.disjunction();

@@ -331,7 +331,7 @@ public class LoanApplicationFormController extends BaseController {
 
                 loanNewSchemaListOfType = loanNewSchemaListOfTypeService.getEntityByLoanNewTypeIdWithDetail(loanNewTypeId);
             } else {
-
+            	
                 loanNewSchemaListOfType = loanNewSchemaListOfTypeService.getEntityByIdWithDetail(loanNewTypeId);
             }
 

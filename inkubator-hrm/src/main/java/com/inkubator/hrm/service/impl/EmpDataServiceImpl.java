@@ -1357,10 +1357,10 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 	}
 	
 	@Override
-	@Cacheable(value = "employeePresentationAttendanceOnDashboard", key = "#companyId")
+	@Cacheable(value = "employeePresentationAttendanceOnDashboard", key = "{#companyId,#datePattern}")
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<ChartSeries> getEmployeePresentationAttendanceOnDashboard(Long companyId, List<Date> listDate) throws Exception {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy", FacesUtil.getFacesContext().getViewRoot().getLocale());
+	public List<ChartSeries> getEmployeePresentationAttendanceOnDashboard(Long companyId, List<Date> listDate,String datePattern) throws Exception {
+		SimpleDateFormat formatter = new SimpleDateFormat(datePattern, FacesUtil.getFacesContext().getViewRoot().getLocale());
 		ChartSeries leaveAndTravel = new ChartSeries();
 		ChartSeries permitAndSick = new ChartSeries();
 		ChartSeries attend = new ChartSeries();

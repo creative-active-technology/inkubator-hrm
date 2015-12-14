@@ -104,7 +104,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             loginHistory.setIpAddress(ipHere);
             loginHistory.setLoginDate(new Date());
             loginHistory.setHrmUser(new HrmUser(authentication.getName()));
-            loginHistory.setAppName(HRMConstant.APP_NAME);
+            loginHistory.setAppName(HRMConstant.APP_NAME_MOBILE);
             this.loginHistoryService.saveAndPushMessage(loginHistory);;
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

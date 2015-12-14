@@ -12,16 +12,45 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
             <meta name="apple-mobile-web-app-capable" content="yes" />
         </f:facet>
-        <title>PrimeFaces Spark</title>
+        <title>Optima HR Mobile</title>
         <h:outputScript name="js/layout.js" library="spark-layout" />
-
         <ui:insert name="head" />
+        <h:outputStylesheet name="css/core-layout.css" library="spark-layout" />
+        <h:outputStylesheet name="css/font-awesome.css" library="spark-layout" />
+        <h:outputStylesheet name="css/animate.css" library="spark-layout" />
+        <h:outputStylesheet name="css/spark-layout.css" library="spark-layout" />
     </h:head>
 
     <h:body>    
         <div id="menu-mask"></div>
-
+        <p:socket onMessage="handleApproval" channel="/notificationsApproval" />
+        <p:socket onMessage="handleLogin" channel="/notificationsLogin" /> 
+        <p:socket onMessage="handleCheckInOut" channel="/checkInChekOut" />
+        <p:growl id="socketNotificationGrowlId" widgetVar="socketNotificationGrowl"  showDetail="true" showSummary="true" life="4000" />
+        <p:growl id="mainGrowl" showDetail="true" globalOnly="true"  />
         <ui:include src="topbar.xhtml" />
+        <h:form>
+            <p:idleMonitor timeout="1740000" onidle="PF('infoSession').show()"/>
+            <!--<p:growl id="socketNotificationGrowlId" widgetVar="socketNotificationGrowl"  showDetail="true" showSummary="true" life="5500" />-->
+            <p:remoteCommand name="approvalRC" action="#{approvalRemoteCommand.showNotification}" update="socketNotificationGrowlId"/>
+
+            <p:dialog header="#{appmsg['master_layout.session_information']}" widgetVar="infoSession" modal="true" width="200"
+                      id="infoSessionId"
+                      appendTo="@(body)" resizable="false" closable="false">
+                <div align="center">
+                    <h:outputLabel value="#{appmsg['master_layout.session_expired']}" style="margin-top: 5px"/>
+                </div>
+                <br/>
+                <div align="center">
+                    <h:panelGrid columns="1">
+                        <p:graphicImage library="images" name="session_wait.gif" style="width: 64px;height: 64px" />
+                        <p:button href="${request.contextPath}/logout.htm" value="#{appmsg['global.ok']}" icon="ui-icon-power" style="width: 70px;margin-top: 5px" 
+                                  title="#{appmsg['global.ok']}"/>
+                    </h:panelGrid>
+                </div>
+            </p:dialog>
+
+        </h:form>
 
         <!--<ui:include src="layoutmenu.xhtml" />-->
 
@@ -45,10 +74,12 @@
             </f:facet>
         </p:ajaxStatus>
 
-        <h:outputStylesheet name="css/core-layout.css" library="spark-layout" />
-        <h:outputStylesheet name="css/font-awesome.css" library="spark-layout" />
-        <h:outputStylesheet name="css/animate.css" library="spark-layout" />
-        <h:outputStylesheet name="css/spark-layout.css" library="spark-layout" />
+
+        <h:outputScript library="js" name="checkinout_socket.js"/>
+        <h:outputScript library="js" name="login_socket.js"/>
+        <h:outputScript library="js" name="approval_notification_socket.js"/>
+        <h:outputScript library="js" name="indonesia_locale.js" />
+        <h:outputScript library="js" name="validation_in.js" />
     </h:body>
 
 </html>

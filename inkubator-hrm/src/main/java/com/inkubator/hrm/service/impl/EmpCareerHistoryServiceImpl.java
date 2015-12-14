@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -604,14 +605,54 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<EmpEliminationViewModel> getListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter, int firstResult, int maxResults, Order order)	throws Exception {
-		return new ArrayList<EmpEliminationViewModel>();
+		
+		ResourceBundle resourceBundle = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+		List<EmpEliminationViewModel> listEmpEliminationViewModel = empCareerHistoryDao.getListEmpEliminationViewModelByParam(searchParameter, firstResult, maxResults, order);
+		
+		for(EmpEliminationViewModel model : listEmpEliminationViewModel){
+			EmpData empData = empDataDao.getByEmpDataByBioDataId(model.getBioDataId());
+			model.setEmpName(empData.getBioData().getFullName());
+			model.setJoinDate(empData.getJoinDate());
+			model.setReason(getReasonByEmpCareerHistoryStatus(model.getEmpCareerHistoryStatus(), resourceBundle));
+		}
+		return listEmpEliminationViewModel;
 	}
-
+	
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter) throws Exception {
-		// TODO Auto-generated method stub
-		return 0l;
+		return empCareerHistoryDao.getTotalListEmpEliminationViewModelByParam(searchParameter);
+	}
+	
+	private String getReasonByEmpCareerHistoryStatus(String status, ResourceBundle resourceBundle){
+		String reason = StringUtils.EMPTY;
+		
+		switch (status) {
+		case HRMConstant.EMP_STOP_CONTRACT:
+			reason = resourceBundle.getString("career.employee_elimination_status_stop_contract");
+			break;
+			
+		case HRMConstant.EMP_TERMINATION:
+			reason = resourceBundle.getString("career.employee_elimination_status_resign");
+			break;
+			
+		case HRMConstant.EMP_LAID_OFF:
+			reason = resourceBundle.getString("career.employee_elimination_status_laid_off");
+			break;
+			
+		case HRMConstant.EMP_PENSION:
+			reason = resourceBundle.getString("finance.pension");
+			break;
+			
+		case HRMConstant.EMP_DISCHAGED:
+			reason = resourceBundle.getString("career.employee_elimination_status_discharge");
+			break;
+
+		default:
+			break;
+		}
+		
+		return reason;
 	}
 	
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
