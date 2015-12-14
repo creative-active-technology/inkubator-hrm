@@ -245,6 +245,77 @@
                     <p:chart type="bar" model="#{homeMobileController.barChartModel}"  style="height:210px;font-size: 11px" responsive="true"  />
                 </div>
             </div>
+            <div class="layout-portlets-box" style="margin-bottom: 15px">
+                <div class="Container100" style="margin-top: 4px">
+                    <p:outputLabel value="#{appmsg['home.attendance_prediction_period']}" class="Fs18 blue_black bold" />
+                    <h:panelGrid columns="3" style="margin-left: -3px">
+                        <!--<p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs18 black" style="margin-right: 3px"/>-->
+                        <p:outputLabel id="codeId" value="#{homeDashboardController.attendanceModel.stardDate}" class="Fs16 blue">
+                            <f:convertDateTime pattern="dd MMMM yyyy" />
+                        </p:outputLabel>
+                        <p:outputLabel value="-" class="Fs16 blue"/>
+                        <p:outputLabel  value="#{homeDashboardController.attendanceModel.endDate}" class="Fs16 blue" >
+                            <f:convertDateTime pattern="dd MMMM yyyy" />
+                        </p:outputLabel>
+                    </h:panelGrid>
+                    <div align="center" style="margin-top: 15px;margin-bottom: 15px">
+                        <h:panelGrid columns="6" >
+                            <h:panelGrid columns="1" style="text-align: center;margin-bottom: 10px;margin-top: 10px">
+                                <p:graphicImage library="images" name="holiday.png"  cache="true" height="64" width="64"  />                                                 
+                                <h:panelGroup layout="block">
+                                    <h:panelGrid columns="3" style="text-align: left">
+                                        <h:outputLabel value="Cuti" class="Fs18 blue_black bold" />
+                                        <h:outputLabel value=":" class="Fs18 blue_black bold" />
+                                        <h:outputLabel value="#{homeDashboardController.attendanceModel.totalCuti}" class="Fs18 blue_black bold" />
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1" style="text-align: center">
+                                <p:graphicImage library="images" name="nurse2.png"  cache="true" height="64" width="64"  /> 
+                                <h:panelGroup layout="block">
+                                    <h:panelGrid columns="3" style="text-align: center">
+                                        <h:outputLabel value="#{appmsg['global.sick']}" class="Fs18 blue_black bold" />
+                                        <h:outputLabel value=":" styleClass="header_big"/>
+                                        <h:outputLabel value="#{homeDashboardController.attendanceModel.totalSick}" class="Fs18 blue_black bold"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1" style="text-align: center">
+                                <p:graphicImage library="images" name="permit_absen.png"  cache="true" height="64" width="64"  /> 
+                                <h:panelGroup layout="block">
+                                    <h:panelGrid columns="3" style="text-align: center">
+                                        <h:outputLabel value="#{appmsg['global.permit']}" class="Fs18 blue_black bold" />
+                                        <h:outputLabel value=":" class="Fs18 blue_black bold" />
+                                        <h:outputLabel value="#{homeDashboardController.attendanceModel.totalIzin}" class="Fs18 blue_black bold" />
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1" style="text-align: center">
+                                <p:graphicImage library="images" name="on_duty.png"  cache="true" height="64" width="64"  /> 
+                                <h:panelGroup layout="block">
+                                    <h:panelGrid columns="3" style="text-align: center">
+                                        <h:outputLabel value="#{appmsg['home.on_duty']}" class="Fs18 blue_black bold" />
+                                        <h:outputLabel value=":" styleClass="header_big"/>
+                                        <h:outputLabel value="#{homeDashboardController.attendanceModel.totalOnDuty}" class="Fs18 blue_black bold" />
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                            <!--                            <h:panelGrid columns="1" style="text-align: center;border-width: 1px!important">
+                                                            <p:graphicImage library="images" name="persentase.png"  cache="true" height="64" width="64"  /> 
+                                                            <h:panelGroup layout="block">
+                                                                <h:panelGrid columns="3" style="text-align: center">
+                                                                    <h:outputLabel value="#{appmsg['home.attendance']}" styleClass="header_big"/>
+                                                                    <h:outputLabel value=":" styleClass="header_big"/>
+                                                                    <p:outputLabel value="#{homeDashboardController.totalPersent}" styleClass="header_big">
+                                                                        <f:convertNumber  type="percent" />
+                                                                    </p:outputLabel>
+                                                                </h:panelGrid>
+                                                            </h:panelGroup>
+                                                        </h:panelGrid>-->
+                        </h:panelGrid>
+                    </div>
+                </div>
+            </div>
             <!--<div class="Seperator" ></div>-->
             <div class="layout-portlets-box" style="margin-bottom: 15px">
                 <div class="Container100" style="margin-top: 4px">
