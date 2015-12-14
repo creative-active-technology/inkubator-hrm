@@ -1,7 +1,10 @@
 package com.inkubator.hrm.service.impl;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -11,11 +14,15 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.CareerEmpEliminationDao;
+import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.entity.CareerEmpElimination;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.service.CareerEmpEliminationService;
 import com.inkubator.hrm.web.model.EmpEliminationViewModel;
 import com.inkubator.hrm.web.search.EmpEliminationSearchParameter;
+import com.inkubator.webcore.util.FacesUtil;
 
 /**
 *
@@ -27,6 +34,9 @@ public class CareerEmpEliminationServiceImpl extends IServiceImpl implements Car
 	
 	@Autowired
 	private CareerEmpEliminationDao careerEmpEliminationDao;
+	
+	@Autowired
+	private EmpDataDao empDataDao;
 
 	@Override
 	public void delete(CareerEmpElimination arg0) throws Exception {
@@ -226,13 +236,56 @@ public class CareerEmpEliminationServiceImpl extends IServiceImpl implements Car
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<EmpEliminationViewModel> getListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter, int firstResult, int maxResults, Order order)	throws Exception {
-		return careerEmpEliminationDao.getListEmpEliminationViewModelByParam(searchParameter, firstResult, maxResults, order);
+		/*List<EmpEliminationViewModel> listModel =  careerEmpEliminationDao.getListEmpEliminationViewModelByParam(searchParameter, firstResult, maxResults, order);
+		return listModel;*/
+		
+		ResourceBundle resourceBundle = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
+		List<EmpEliminationViewModel> listEmpEliminationViewModel = careerEmpEliminationDao.getListEmpEliminationViewModelByParam(searchParameter, firstResult, maxResults, order);
+		
+		for(EmpEliminationViewModel model : listEmpEliminationViewModel){
+			EmpData empData = empDataDao.getByEmpDataByBioDataId(model.getBioDataId());
+			model.setEmpName(empData.getBioData().getFullName());
+			model.setReason(getReasonByEmpCareerHistoryStatus(model.getEmpCareerHistoryStatus(), resourceBundle));
+		}
+		
+		return listEmpEliminationViewModel;
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter) throws Exception {
 		return careerEmpEliminationDao.getTotalListEmpEliminationViewModelByParam(searchParameter);
+	}
+	
+	private String getReasonByEmpCareerHistoryStatus(String status, ResourceBundle resourceBundle){
+		String reason = StringUtils.EMPTY;
+		
+		switch (status) {
+		case HRMConstant.EMP_STOP_CONTRACT:
+			reason = resourceBundle.getString("career.employee_elimination_status_stop_contract");
+			break;
+			
+		case HRMConstant.EMP_TERMINATION:
+			reason = resourceBundle.getString("career.employee_elimination_status_resign");
+			break;
+			
+		case HRMConstant.EMP_LAID_OFF:
+			reason = resourceBundle.getString("career.employee_elimination_status_laid_off");
+			break;
+			
+		case HRMConstant.EMP_PENSION:
+			reason = resourceBundle.getString("finance.pension");
+			break;
+			
+		case HRMConstant.EMP_DISCHAGED:
+			reason = resourceBundle.getString("career.employee_elimination_status_discharge");
+			break;
+
+		default:
+			break;
+		}
+		
+		return reason;
 	}
 
 }

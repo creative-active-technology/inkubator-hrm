@@ -28,6 +28,7 @@ public class CareerEmpElimination  implements java.io.Serializable {
      private Integer version;
      private CareerTransition careerTransition;
      private WtPeriode wtPeriode;
+     private EmpData empData;
      private Long pendingLoan;
      private Long separationPay;
      private Date createdOn;
@@ -76,7 +77,7 @@ public class CareerEmpElimination  implements java.io.Serializable {
         this.version = version;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="career_transition_id")
     public CareerTransition getCareerTransition() {
         return this.careerTransition;
@@ -86,7 +87,7 @@ public class CareerEmpElimination  implements java.io.Serializable {
         this.careerTransition = careerTransition;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="last_salary_periode_id")
     public WtPeriode getWtPeriode() {
         return this.wtPeriode;
@@ -95,9 +96,19 @@ public class CareerEmpElimination  implements java.io.Serializable {
     public void setWtPeriode(WtPeriode wtPeriode) {
         this.wtPeriode = wtPeriode;
     }
-
     
-    @Column(name="pending_loan", precision=10, scale=0)
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="emp_data_id")
+    public EmpData getEmpData() {
+		return empData;
+	}
+    
+	public void setEmpData(EmpData empData) {
+		this.empData = empData;
+	}
+
+
+	@Column(name="pending_loan", precision=10, scale=0)
     public Long getPendingLoan() {
         return this.pendingLoan;
     }

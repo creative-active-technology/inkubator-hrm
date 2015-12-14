@@ -12,7 +12,8 @@ import com.inkubator.webcore.util.FacesUtil;
  * @author Ahmad Mudzakkir Amal
  */
 public class EmpEliminationViewModel implements Serializable {
-
+	
+	private Long id;
     private Long empCareerHistoryId;
     private Long empDataId;
     private Long  bioDataId;
@@ -29,6 +30,14 @@ public class EmpEliminationViewModel implements Serializable {
     private String status;
     private String empCareerHistoryStatus;
     
+    
+    
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public Long getEmpCareerHistoryId() {
 		return empCareerHistoryId;
 	}
