@@ -28,5 +28,7 @@ public interface RecruitLettersDao extends IDAO<RecruitLetters> {
     public List<RecruitLetters> getByParam(RecrutimentLetterSearchParameter parameter, int firstResult, int maxResults, Order orderable);
 
     public Long getTotalByParam(RecrutimentLetterSearchParameter parameter);
+    
+    public RecruitLetters getEntityMostUpdatedByLetterTypeId(Integer letterTypeId);
 
 }

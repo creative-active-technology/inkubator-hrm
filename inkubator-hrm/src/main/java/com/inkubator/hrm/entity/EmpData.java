@@ -96,6 +96,7 @@ public class EmpData implements java.io.Serializable {
     private Set<TempAttendanceRealization> tempAttendanceRealizations = new HashSet<TempAttendanceRealization>(0);
     private Set<RecruitSelectionApplicantSchedulleDetail> recruitSelectionApplicantSchedulleDetails = new HashSet<RecruitSelectionApplicantSchedulleDetail>(0);
     private Set<RecruitSelectionApplicantSchedulle> recruitSelectionApplicantSchedulles = new HashSet<RecruitSelectionApplicantSchedulle>(0);
+    private Set<CareerEmpElimination> careerEmpEliminations = new HashSet<CareerEmpElimination>(0);
     public EmpData() {
     }
 
@@ -659,8 +660,18 @@ public class EmpData implements java.io.Serializable {
     public void setRecruitSelectionApplicantSchedulles(Set<RecruitSelectionApplicantSchedulle> recruitSelectionApplicantSchedulles) {
         this.recruitSelectionApplicantSchedulles = recruitSelectionApplicantSchedulles;
     }
+    
+    
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="empData")
+    public Set<CareerEmpElimination> getCareerEmpEliminations() {
+		return careerEmpEliminations;
+	}
 
-    @Transient
+	public void setCareerEmpEliminations(Set<CareerEmpElimination> careerEmpEliminations) {
+		this.careerEmpEliminations = careerEmpEliminations;
+	}
+
+	@Transient
     public String getPtkpNumberLabel() {
         String message = "";
         ResourceBundle messages = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
