@@ -54,18 +54,21 @@
             <div class="Container25 Responsive">
                 <div class="ContainerIndent">
                     <div class="Container100 TexAlCenter">
-                        <div class="DispInlBlock TexAlLeft MarTop20" >
-                            <div class="Container20" >
-                                <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="50" width="50" cache="true" style="border:  1px solid #ffffff !important; border-radius: 4px !important;margin-right: 6px"    >
-                                    <f:param name="id" value="#{BIODATA_ID}"/>
-                                </p:graphicImage></div>
-                            <div class="Container80">
-                                <div class="Fright">
-                                    <h2 class="blue_black Fs24 FontRalewayMedium"> #{realName}</h2>
-                                    <span class="Fs15 orange FontRalewayRegular DispBlock"> #{homeController.roleUser}</span>
-                                </div>
+                        <!--<div class="DispInlBlock  MarTop20" >-->
+                        <div class="Container100" >
+                            <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="80" width="80" cache="true" style="border:  3px solid #ffffff !important; border-radius: 80px !important;margin-right: 6px"    >
+                                <f:param name="id" value="#{BIODATA_ID}"/>
+                            </p:graphicImage>
+                            <div style="border: #ffffff;border-width: 1px;border-style: solid;margin-top: -50px;margin-left: -20px;margin-right: -20px"/>
+                        </div>
+                        <div class="Container100">
+                            <div  style="margin-top: 50px">
+                                <h2 class="blue_black Fs22 FontRalewayMedium"> #{realName}</h2>
+                                <span class="Fs15 white FontRalewayRegular DispBlock"> #{homeController.roleUser}</span>
                             </div>
                         </div>
+                        <!--</div>-->
+                        <div class="EmptyBox20"></div>
                         <div class="Seperator" ></div>
                         <i class="fa fa-clock-o Fleft Fs15 red MarRight10 MarBot10"></i>
                         <span class="Fleft Fs13 red"><p:outputLabel value="#{appmsg['master_layout.login_at']} #{login_date}" /></span>
@@ -350,7 +353,7 @@
 
                 </div>
             </div>
-         
+
             <!-- BOX END -->
             <script type="text/javascript">
                 function holidaysDisabled(date) {
