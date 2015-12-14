@@ -3,12 +3,19 @@ package com.inkubator.hrm.service.impl;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.CareerEmpEliminationDao;
 import com.inkubator.hrm.entity.CareerEmpElimination;
 import com.inkubator.hrm.service.CareerEmpEliminationService;
+import com.inkubator.hrm.web.model.EmpEliminationViewModel;
+import com.inkubator.hrm.web.search.EmpEliminationSearchParameter;
 
 /**
 *
@@ -17,6 +24,9 @@ import com.inkubator.hrm.service.CareerEmpEliminationService;
 @Service(value = "careerEmpEliminationService")
 @Lazy
 public class CareerEmpEliminationServiceImpl extends IServiceImpl implements CareerEmpEliminationService {
+	
+	@Autowired
+	private CareerEmpEliminationDao careerEmpEliminationDao;
 
 	@Override
 	public void delete(CareerEmpElimination arg0) throws Exception {
@@ -211,6 +221,18 @@ public class CareerEmpEliminationServiceImpl extends IServiceImpl implements Car
 	public CareerEmpElimination updateData(CareerEmpElimination arg0) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<EmpEliminationViewModel> getListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter, int firstResult, int maxResults, Order order)	throws Exception {
+		return careerEmpEliminationDao.getListEmpEliminationViewModelByParam(searchParameter, firstResult, maxResults, order);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter) throws Exception {
+		return careerEmpEliminationDao.getTotalListEmpEliminationViewModelByParam(searchParameter);
 	}
 
 }
