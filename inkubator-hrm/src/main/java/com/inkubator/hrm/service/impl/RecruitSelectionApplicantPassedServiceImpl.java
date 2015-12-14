@@ -1,15 +1,29 @@
 package com.inkubator.hrm.service.impl;
 
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
+
+import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -21,6 +35,7 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.BioDataDao;
+import com.inkubator.hrm.dao.EmailLogDao;
 import com.inkubator.hrm.dao.EmpCareerHistoryDao;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.EmployeeTypeDao;
@@ -28,13 +43,14 @@ import com.inkubator.hrm.dao.GolonganJabatanDao;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.RecruitApplicantDao;
-import com.inkubator.hrm.dao.RecruitHireApplyDao;
+import com.inkubator.hrm.dao.RecruitLettersDao;
 import com.inkubator.hrm.dao.RecruitSelectionApplicantPassedDao;
 import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDao;
-import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDetailDao;
 import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDetailRealizationDao;
 import com.inkubator.hrm.dao.RecruitmenSelectionSeriesDetailDao;
 import com.inkubator.hrm.entity.BioData;
+import com.inkubator.hrm.entity.EmailLog;
+import com.inkubator.hrm.entity.EmailLogAttachment;
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.EmployeeType;
@@ -43,17 +59,17 @@ import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.entity.RecruitApplicant;
 import com.inkubator.hrm.entity.RecruitHireApply;
+import com.inkubator.hrm.entity.RecruitLetterComChannel;
+import com.inkubator.hrm.entity.RecruitLetters;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantPassed;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantPassedId;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulle;
-import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulleDetail;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulleDetailRealization;
-import com.inkubator.hrm.entity.RecruitSelectionType;
 import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetail;
 import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetailId;
-import com.inkubator.hrm.entity.WtGroupWorking;
 import com.inkubator.hrm.service.RecruitSelectionApplicantPassedService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.util.StringUtils;
 import com.inkubator.hrm.web.model.RecruitSelectionApplicantPassedModel;
 import com.inkubator.hrm.web.model.RecruitSelectionApplicantPassedViewModel;
 import com.inkubator.hrm.web.search.RecruitSelectionApplicantPassedSearchParameter;
@@ -93,6 +109,12 @@ public class RecruitSelectionApplicantPassedServiceImpl extends IServiceImpl imp
 	private JabatanDao jabatanDao;
 	@Autowired
 	private PaySalaryGradeDao paySalaryGradeDao;
+	@Autowired
+	private RecruitLettersDao recruitLettersDao;
+	@Autowired
+	private EmailLogDao emailLogDao;
+	@Autowired
+	private JmsTemplate jmsTemplateSendingEmailLog;
 	
 	@Override
 	public RecruitSelectionApplicantPassed getEntiyByPK(String id) throws Exception {
@@ -293,6 +315,8 @@ public class RecruitSelectionApplicantPassedServiceImpl extends IServiceImpl imp
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(Long selectionScheduleId, List<Long> listApplicantId) throws Exception {
+		List<Long> listEmailLogId = new ArrayList<>();
+		
 		RecruitSelectionApplicantSchedulle selectionApplicantSchedulle = recruitSelectionApplicantSchedulleDao.getEntiyByPK(selectionScheduleId);
 		RecruitHireApply hireApply = selectionApplicantSchedulle.getHireApply();
 		for(Long applicantId : listApplicantId){
@@ -325,11 +349,77 @@ public class RecruitSelectionApplicantPassedServiceImpl extends IServiceImpl imp
 			selectionApplicantPassed.setLetterExpired(letterExpired);
 			selectionApplicantPassed.setPlacementStatus(HRMConstant.SELECTION_APPLICANT_PASSED_STATUS_PENDING);
 			selectionApplicantPassed.setCreatedBy(UserInfoUtil.getUserName());
-			selectionApplicantPassed.setCreatedOn(new Date());
-			
+			selectionApplicantPassed.setCreatedOn(new Date());			
 			recruitSelectionApplicantPassedDao.save(selectionApplicantPassed);
+			
+			/** inisialisasi data untuk sending email surat penawaran 
+			 *  di cek konfigurasinya, harus aktif dan sent channelnya via email */
+			RecruitLetters recruitLetters =  recruitLettersDao.getEntityMostUpdatedByLetterTypeId(HRMConstant.LETTER_TYPE_OFFERING);
+			if(recruitLetters != null){
+				Boolean isSentByEmail = Lambda.exists(recruitLetters.getRecruitLetterComChannels(), Lambda.having(Lambda.on(RecruitLetterComChannel.class).getRecruitCommChannels().getChannelName(), Matchers.equalToIgnoringCase("Email")));
+				if(recruitLetters.getIsActive() && isSentByEmail) {
+					LocalDate now = LocalDate.now();
+					LocalDate expired = now.plusDays(recruitLetters.getExpiryDays());
+					
+					String[] searchList = new String[]{"[YY]", "[MM]", "[NNNN]"};
+					String[] replacementList = new String[]{now.format(DateTimeFormatter.ofPattern("yy")), now.format(DateTimeFormatter.ofPattern("MM")), String.valueOf(applicant.getId())};
+					String letterNumber = StringUtils.replaceEach(recruitLetters.getFormatNumber(), searchList, replacementList);
+					
+					searchList = new String[]{"{%ApplicantName%}", "{%LetterNumber%}", "{%DateOfDocument%}", "{%DateOfDocumentExpire%}"};
+					replacementList = new String[]{applicant.getBioData().getFullName(), letterNumber, now.format(DateTimeFormatter.ofPattern("dd MMMM yyyy")), expired.format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))};
+					String mailContent = StringUtils.replaceEach(recruitLetters.getContentHtml(), searchList, replacementList);
+					
+					EmailLog emailLog = new EmailLog();
+					emailLog.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+					emailLog.setMailTo(applicant.getBioData().getPersonalEmail());
+					emailLog.setIsContentHtml(Boolean.TRUE);
+					emailLog.setSentStatus(Boolean.FALSE);
+					emailLog.setReferenceClass(RecruitSelectionApplicantPassed.class.getSimpleName());
+					emailLog.setReferenceId(selectionApplicantPassed.getId().getHireApplyId());
+					
+					String pathSignature = recruitLetters.getEmpData().getBioData().getPathSignature();
+					if(StringUtils.isNotEmpty(pathSignature)){
+						//include kan image signature
+						mailContent = StringUtils.replace(mailContent, "{%SignAndName%}", "<img src='cid:sign_identifier' height='50' width='80'></img><br/>" + recruitLetters.getEmpData().getBioData().getFullName());
+						Path path = Paths.get(pathSignature);
+						EmailLogAttachment attachment = new EmailLogAttachment();
+						attachment.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+						attachment.setAttachment(Files.readAllBytes(path));
+						attachment.setContentType(Files.probeContentType(path));
+						attachment.setEmailLog(emailLog);
+						attachment.setIsInlineResources(Boolean.TRUE);
+						attachment.setFileName(StringUtils.substringAfterLast(pathSignature, "/"));
+						attachment.setContentId("sign_identifier");
+						
+						Set<EmailLogAttachment> mailAttachments = new HashSet<>();
+						mailAttachments.add(attachment);
+						emailLog.setEmailLogAttachments(mailAttachments);
+					} else {
+						//karena tidak memiliki image signature, maka replace dengan name saja
+						mailContent = StringUtils.replace(mailContent, "{%SignAndName%}", "<br/>" + recruitLetters.getEmpData().getBioData().getFullName());
+					}
+					
+					emailLog.setMailSubject("Surat Penawaran Kerja");
+					emailLog.setMailContent("<html><body>" + mailContent + "</body></html>");
+					emailLogDao.save(emailLog);
+					
+					listEmailLogId.add(emailLog.getId());
+				}
+			}
 		}
 		
+		
+		/** send messaging, to trigger sending email 
+		 *  kenapa ditaruh di paling bawah, agar jika ada error roolback system tidak mengirim email di tengah2 proses roolback*/
+		for(Long id : listEmailLogId){
+			this.jmsTemplateSendingEmailLog.send(new MessageCreator() {
+	            @Override
+	            public Message createMessage(Session session) throws JMSException {
+	                return session.createTextMessage(String.valueOf(id));
+	            }
+	        });	
+		}
+        
 	}
 
 	@Override
