@@ -105,4 +105,19 @@ public class RecruitLettersDaoImpl extends IDAOImpl<RecruitLetters> implements R
         return letters;
     }
 
+	@Override
+	public RecruitLetters getEntityMostUpdatedByLetterTypeId(Integer letterTypeId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("leterTypeId", letterTypeId));
+        criteria.addOrder(Order.desc("createdOn"));
+        criteria.setMaxResults(1);
+        
+        RecruitLetters entity = null;
+        List<RecruitLetters> list = criteria.list();
+        if(!list.isEmpty()){
+        	entity = list.get(0);
+        }
+        return entity;
+	}
+
 }
