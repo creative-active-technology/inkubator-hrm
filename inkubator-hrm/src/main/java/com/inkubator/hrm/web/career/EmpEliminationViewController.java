@@ -7,6 +7,7 @@ import javax.faces.bean.ViewScoped;
 
 import org.primefaces.model.LazyDataModel;
 
+import com.inkubator.hrm.service.CareerEmpEliminationService;
 import com.inkubator.hrm.service.EmpCareerHistoryService;
 import com.inkubator.hrm.web.lazymodel.EmpEliminationLazyDataModel;
 import com.inkubator.hrm.web.model.EmpEliminationViewModel;
@@ -21,6 +22,8 @@ import com.inkubator.webcore.controller.BaseController;
 @ManagedBean(name = "empEliminationViewController")
 @ViewScoped
 public class EmpEliminationViewController extends BaseController{
+	@ManagedProperty(value = "#{careerEmpEliminationService}")
+	private CareerEmpEliminationService careerEmpEliminationService;
 	@ManagedProperty(value = "#{empCareerHistoryService}")
 	private EmpCareerHistoryService empCareerHistoryService;
 	private	EmpEliminationSearchParameter searchParameter;
@@ -37,7 +40,7 @@ public class EmpEliminationViewController extends BaseController{
     private void cleanAndExit(){
         searchParameter = null;
         lazy = null;
-        empCareerHistoryService = null;
+        careerEmpEliminationService = null;
         selected = null;
     }
 	
@@ -50,6 +53,11 @@ public class EmpEliminationViewController extends BaseController{
     	return "/protected/career/emp_elimination_form.htm?faces-redirect=true&execution=e" + selected.getEmpCareerHistoryId();
     }
     
+	public void setCareerEmpEliminationService(CareerEmpEliminationService careerEmpEliminationService) {
+		this.careerEmpEliminationService = careerEmpEliminationService;
+	}
+	
+	
 
 	public void setEmpCareerHistoryService(EmpCareerHistoryService empCareerHistoryService) {
 		this.empCareerHistoryService = empCareerHistoryService;
@@ -65,7 +73,7 @@ public class EmpEliminationViewController extends BaseController{
 
 	public LazyDataModel<EmpEliminationViewModel> getLazy() {
 		 if(lazy == null){
-			 lazy = new EmpEliminationLazyDataModel(searchParameter, empCareerHistoryService);
+			 lazy = new EmpEliminationLazyDataModel(searchParameter, careerEmpEliminationService);
 	     }
 		return lazy;
 	}

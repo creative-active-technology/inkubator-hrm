@@ -4,6 +4,7 @@
  */
 package com.inkubator.hrm.web.lazymodel;
 
+import com.inkubator.hrm.service.CareerEmpEliminationService;
 import com.inkubator.hrm.service.EmpCareerHistoryService;
 import com.inkubator.hrm.web.model.EmpEliminationViewModel;
 import com.inkubator.hrm.web.search.EmpEliminationSearchParameter;
@@ -24,11 +25,11 @@ import org.primefaces.model.SortOrder;
 public class EmpEliminationLazyDataModel extends LazyDataModel<EmpEliminationViewModel> implements Serializable{
     private static final Logger LOGGER = Logger.getLogger(EmpEliminationLazyDataModel.class);
     private final EmpEliminationSearchParameter searchParameter;
-    private final EmpCareerHistoryService service;
+    private final CareerEmpEliminationService service;
     private List<EmpEliminationViewModel> listEmpEliminationViewModel = new ArrayList<>();
     private Integer jumlahData;
 
-    public EmpEliminationLazyDataModel(EmpEliminationSearchParameter searchParameter, EmpCareerHistoryService service) {
+    public EmpEliminationLazyDataModel(EmpEliminationSearchParameter searchParameter, CareerEmpEliminationService service) {
         this.searchParameter = searchParameter;
         this.service = service;
     }
@@ -55,7 +56,7 @@ public class EmpEliminationLazyDataModel extends LazyDataModel<EmpEliminationVie
             }
         } else {
             try {
-                listEmpEliminationViewModel = service.getListEmpEliminationViewModelByParam(searchParameter, first, pageSize, Order.desc("nik"));
+                listEmpEliminationViewModel = service.getListEmpEliminationViewModelByParam(searchParameter, first, pageSize, Order.desc("empData.nik"));
                 jumlahData = Integer.parseInt(String.valueOf(service.getTotalListEmpEliminationViewModelByParam(searchParameter)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
@@ -70,13 +71,13 @@ public class EmpEliminationLazyDataModel extends LazyDataModel<EmpEliminationVie
     
     @Override
     public Object getRowKey(EmpEliminationViewModel empEliminationViewModel) {
-        return empEliminationViewModel.getEmpCareerHistoryId();
+        return empEliminationViewModel.getId();
     }
 
     @Override
     public EmpEliminationViewModel getRowData(String id) {
         for (EmpEliminationViewModel empEliminationViewModel : listEmpEliminationViewModel) {
-            if (id.equals(String.valueOf(empEliminationViewModel.getEmpCareerHistoryId()))) {
+            if (id.equals(String.valueOf(empEliminationViewModel.getId()))) {
                 return empEliminationViewModel;
             }
         }
