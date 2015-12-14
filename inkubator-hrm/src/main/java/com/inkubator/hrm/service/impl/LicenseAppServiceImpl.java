@@ -6,12 +6,17 @@
 package com.inkubator.hrm.service.impl;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.LicenseAppDao;
 import com.inkubator.hrm.entity.LicenseApp;
 import com.inkubator.hrm.service.LicenseAppService;
 import java.util.List;
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -19,7 +24,10 @@ import org.springframework.stereotype.Service;
  */
 @Service(value = "licenseAppService")
 @Lazy
-public class LicenseAppServiceImpl extends IServiceImpl implements LicenseAppService{
+public class LicenseAppServiceImpl extends IServiceImpl implements LicenseAppService {
+
+    @Autowired
+    private LicenseAppDao licenseAppDao;
 
     @Override
     public LicenseApp getEntiyByPK(String id) throws Exception {
@@ -180,5 +188,11 @@ public class LicenseAppServiceImpl extends IServiceImpl implements LicenseAppSer
     public List<LicenseApp> getAllDataPageAbleIsActive(int firstResult, int maxResults, Order order, Byte isActive) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public LicenseApp getByStatus(String status)  throws Exception{
+        return licenseAppDao.getByStatus(status);
+    }
+
 }
