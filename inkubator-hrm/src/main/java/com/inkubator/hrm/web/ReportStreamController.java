@@ -139,8 +139,10 @@ public class ReportStreamController extends BaseController {
     	params.put("companyId", HrmUserInfoUtil.getCompanyId());
     	params.put("contentSurat", contentSurat);
     	params.put("penandaTangan", penandaTangan);
-    	params.put("signature", signature);
-        file = CommonReportUtil.exportReportToPDFStream("offering_letter_report.jasper", params, "Test.pdf");
+    	if(signature == null){
+    		params.put("signature", signature);
+    	}
+    	file = CommonReportUtil.exportReportToPDFStream("offering_letter_report.jasper", params, "Test.pdf");
         return file;
     }
     
@@ -156,7 +158,9 @@ public class ReportStreamController extends BaseController {
     	params.put("companyId", HrmUserInfoUtil.getCompanyId());
     	params.put("contentSurat", contentSurat);
     	params.put("penandaTangan", penandaTangan);
-    	params.put("signature", signature);
+    	if(signature == null){
+    		params.put("signature", signature);
+    	}
         file = CommonReportUtil.exportReportToPDFStream("system_letter_report.jasper", params, "Test.pdf");
         return file;
     }

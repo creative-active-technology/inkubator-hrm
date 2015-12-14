@@ -112,12 +112,14 @@
                                                     completeMethod="#{offeringAndProhabitFormController.completeEmpData}"
                                                     var="employee" emptyMessage="#{appmsg['employee.employee_not_found']}"
                                                     maxResults="8" itemValue="#{employee}"                                            
-                                                    itemLabel="#{employee.nik} #{employee.bioData.firstName} #{employee.bioData.lastName}"
+                                                    itemLabel="#{employee.nik} #{employee.bioData.firstName} #{employee.bioData.middleName} #{employee.bioData.lastName}"
                                                     converter="empDataConverter" required="true" 
                                                     requiredMessage="#{appmsg['publicHolidayException.publicHolidayException_emp_should_not_be_empty']}" 
                                                     styleClass="isitext_hrm" size="28"  style="width:290px;" >
+                                         <p:ajax update="warningNullSignature" event="itemSelect" listener="#{offeringAndProhabitFormController.doWarningNullSignature}"/>
                                     </p:autoComplete>
-                                    <p:message for="empId"/>
+                                    <p:outputLabel id="warningNullSignature" value="#{offeringAndProhabitFormController.warningMessage}" style="margin-left: -80px!important;color: red;" styleClass="label_hrm"/>
+                                	<p:message for="empId"/>
                                 </p:column>
                             </p:row> 
                             <p:row>
@@ -216,6 +218,13 @@
                                 <p:outputLabel value="#{appmsg['offering_module.selection_date']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":" styleClass="label_hrm"/>
                                 <p:outputLabel value="{%DateOfSelectionSchedulle%}" />
+                                <p:outputLabel value="#{appmsg['overtime.start_time']}" styleClass="label_hrm"/>
+                                <p:outputLabel value=":" styleClass="label_hrm"/>
+                                <p:outputLabel value="{%StartTimeOfSelectionSchedulle%}" />
+                                
+                                <p:outputLabel value="#{appmsg['overtime.end_time']}" styleClass="label_hrm"/>
+                                <p:outputLabel value=":" styleClass="label_hrm"/>
+                                <p:outputLabel value="{%FinishTimeOfSelectionSchedulle%}" />
                                 <p:outputLabel value="#{appmsg['offering_module.evaluation_date']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":" styleClass="label_hrm"/>
                                 <p:outputLabel value="{%DateOfSelectionEvaluation%}" />
@@ -225,9 +234,9 @@
                                 <p:outputLabel value="#{appmsg['offering_module.date_generated']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":" styleClass="label_hrm"/>
                                 <p:outputLabel value="{%DateOfDocument%}" />
-                                <p:outputLabel value="#{appmsg['offering_module.expired_date_document']}" styleClass="label_help"/>
+                                <p:outputLabel value="#{appmsg['offering_module.expired_date_document']}" styleClass="label_hrm"/>
                                 <p:outputLabel value=":" styleClass="label_hrm"/>
-                                <p:outputLabel value="{%DateOfDocumentExpire%}" sytelClass="label_help"/>
+                                <p:outputLabel value="{%DateOfDocumentExpire%}" styleClass="label_hrm"  />
                             </h:panelGrid>
                         </p:dialog>
                     </div>

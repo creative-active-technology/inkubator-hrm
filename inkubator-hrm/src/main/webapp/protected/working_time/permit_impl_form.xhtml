@@ -57,7 +57,7 @@
                                                     completeMethod="#{permitImplementationFormController.doAutoCompleteEmployee}"                                                
                                                     var="empData"
                                                     itemValue="#{empData}"
-                                                    itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                    itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.middleName} #{empData.bioData.lastName}"
                                                     converter="empDataConverter"
                                                     required="true" styleClass="isitext_hrm" size="45">
                                         <p:ajax event="itemSelect" listener="#{permitImplementationFormController.onChangeEmployee}" update="permitId,totalWorkingDaysId"/>

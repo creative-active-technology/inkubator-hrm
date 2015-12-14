@@ -73,7 +73,7 @@
                                                 var="empData"
                                                 itemValue="#{empData}"
                                                 converter="empDataConverter"
-                                                itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.middleName} #{empData.bioData.lastName}"
                                                 required="true" styleClass="isitext_hrm" size="46">
                                     	<!-- <p:ajax event="itemSelect" listener="#{businessTravelFormController.doResetTravelComponentList(flowRequestContext)}" /> -->
                                     </p:autoComplete>
@@ -126,7 +126,7 @@
                                                 completeMethod="#{recruitmentScheduleSettingFormController.doAutoCompleteEmployeeCoordinator}"                                                
                                                 var="empData"
                                                 itemValue="#{empData}"
-                                                itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.lastName}"
+                                                itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.middleName} #{empData.bioData.lastName}"
                                                 converter="empDataConverter"
                                                 required="true" styleClass="isitext_hrm" >
                                     </p:autoComplete>
