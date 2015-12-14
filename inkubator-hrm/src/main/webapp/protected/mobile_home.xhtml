@@ -218,8 +218,8 @@
                     <p:dataTable id="logHistoryId" var="data" style="margin-bottom: 12px" initMode="load" reflow="false"
                                  value="#{homeMobileController.loginHistories}">
                         <p:column  style="text-align: center">
-                            <f:facet name="header">  
-                                <h:outputText value="Tanggal"  class="Fs18"/>
+                            <f:facet name="header">
+                                <h:outputText value="#{appmsg['loginhistory.login_date']}"  class="Fs18"/>
                             </f:facet>
                             <p:outputLabel value="#{data.loginDate}" class="Fs18" >
                                 <f:convertDateTime pattern="dd-MMM-yyyy HH:mm:ss aa" />
@@ -227,7 +227,7 @@
                         </p:column>
                         <p:column >
                             <f:facet name="header">
-                                <h:outputText value="User Name" class="Fs18" />
+                                <h:outputText value="#{appmsg['global.username']}" class="Fs18" />
                             </f:facet>
                             <p:outputLabel value="#{data.hrmUser.realName}" class="Fs18" />
                         </p:column>
