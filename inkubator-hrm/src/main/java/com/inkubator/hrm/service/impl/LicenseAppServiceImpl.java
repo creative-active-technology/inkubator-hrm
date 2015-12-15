@@ -191,8 +191,8 @@ public class LicenseAppServiceImpl extends IServiceImpl implements LicenseAppSer
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public LicenseApp getByStatus(String status)  throws Exception{
-        return licenseAppDao.getByStatus(status);
+    public LicenseApp getByStatusAndName(String status, String name)  throws Exception{
+        return licenseAppDao.getByStatusAndName(status,name);
     }
 
 }

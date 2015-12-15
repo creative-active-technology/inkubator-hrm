@@ -13,5 +13,5 @@ import com.inkubator.hrm.entity.LicenseApp;
  * @author denifahri
  */
 public interface LicenseAppDao extends IDAO<LicenseApp>{
-     public LicenseApp getByStatus(String status);
+     public LicenseApp getByStatusAndName(String status, String name);
 }

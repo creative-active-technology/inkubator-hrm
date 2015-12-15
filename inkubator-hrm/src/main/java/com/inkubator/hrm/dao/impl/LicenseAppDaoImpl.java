@@ -27,9 +27,10 @@ public class LicenseAppDaoImpl extends IDAOImpl<LicenseApp> implements LicenseAp
     }
 
     @Override
-    public LicenseApp getByStatus(String status) {
+    public LicenseApp getByStatusAndName(String status, String name) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("licenseStatus", status));
+        criteria.add(Restrictions.eq("name", name));
         return (LicenseApp) criteria.uniqueResult();
 
     }

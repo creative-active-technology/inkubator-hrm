@@ -14,5 +14,5 @@ import com.inkubator.hrm.entity.LicenseApp;
  */
 public interface LicenseAppService extends IService<LicenseApp> {
 
-    public LicenseApp getByStatus(String status) throws Exception;
+    public LicenseApp getByStatusAndName(String status, String name) throws Exception;
 }

@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
 /**
@@ -18,7 +17,6 @@ import javax.persistence.Version;
 @Entity
 @Table(name="license_app"
     ,catalog="hrm"
-    , uniqueConstraints = @UniqueConstraint(columnNames="name") 
 )
 public class LicenseApp  implements java.io.Serializable {
 
@@ -80,7 +78,7 @@ public class LicenseApp  implements java.io.Serializable {
     }
 
     
-    @Column(name="name", unique=true, length=45)
+    @Column(name="name", length=45)
     public String getName() {
         return this.name;
     }
@@ -183,5 +181,4 @@ public class LicenseApp  implements java.io.Serializable {
 
 
 }
-
 

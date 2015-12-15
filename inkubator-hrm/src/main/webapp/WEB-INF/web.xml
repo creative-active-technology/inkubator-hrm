@@ -301,7 +301,7 @@
     </mime-mapping>
     
 
-<!--    <error-page>
+    <error-page>
         <error-code>403</error-code>
         <location>/error/error.htm</location>
     </error-page>
@@ -312,7 +312,7 @@
     <error-page>
         <error-code>500</error-code>
         <location>/error/error_500.htm</location>
-    </error-page> -->
+    </error-page> 
     <error-page>
         <exception-type>javax.faces.application.ViewExpiredException</exception-type>
         <location>/login.htm</location>

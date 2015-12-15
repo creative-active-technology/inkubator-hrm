@@ -10,19 +10,15 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.service.HrmUserService;
-import com.inkubator.hrm.service.LicenseAppService;
 import com.inkubator.hrm.util.CustomAuthenticationSuccessHandler;
 import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.util.StringUtils;
-import com.inkubator.webcore.WebCoreConstant;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -66,55 +62,38 @@ public class LoginController extends BaseController {
     private AuthenticationManager authenticationManager;
     @ManagedProperty(value = "#{myHandlerSuccessLogin}")
     private CustomAuthenticationSuccessHandler myHandlerSuccessLogin;
-    @ManagedProperty(value = "#{licenseAppService}")
-    private LicenseAppService licenseAppService;
+    
 
     @PostConstruct
     @Override
     public void initialization() {
-        try {
-            super.initialisasi(licenseAppService.getByStatus(WebCoreConstant.LICENSE_ACTIVE).getLicenseValue());
-            Device device = deviceResolver.resolveDevice(FacesUtil.getRequest());
-            LOGGER.error("Login di aksesss");
-            if (FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE) == null) {
-                selectedLanguage = "in";
-                FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, selectedLanguage);
-            } else {
-                selectedLanguage = (String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE);
-            }
-            FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(selectedLanguage));
-            
-            if (device.isMobile()) {
-//            try {
-LOGGER.info("Mobile");
-isMobile = Boolean.TRUE;
-//                FacesUtil.getExternalContext().redirect("/mobile_login.htm");
-//            } catch (IOException ex) {
-//                LOGGER.error(ex, ex);
-//            }
-            }
-            if (device.isNormal()) {
-                LOGGER.error("NOrmal Desktop");
-                isMobile = Boolean.FALSE;
-                
-            }
-            if (device.isTablet()) {
-                LOGGER.info("TABLET");
-            }
-            
-            String userAgent = FacesUtil.getRequest().getHeader("User-Agent");
-            
-            LOGGER.info("Data " + userAgent);
-//        if (StringsUtils.isContain(userAgent, "Chrome") || StringsUtils.isContain(userAgent, "Firefox")) {
-//            info = ResourceBundleUtil.getAsString("browser.info");
-//        }
-if (StringUtils.isContain(userAgent, "Edge")) {
-    info = ResourceBundleUtil.getAsString("browser.info_invalid");
-}
-        } catch (Exception ex) {
-            LOGGER.error(ex, ex);
+        Device device = deviceResolver.resolveDevice(FacesUtil.getRequest());
+        LOGGER.error("Login di aksesss");
+        if (FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE) == null) {
+            selectedLanguage = "in";
+            FacesUtil.setSessionAttribute(HRMConstant.BAHASA_ACTIVE, selectedLanguage);
+        } else {
+            selectedLanguage = (String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE);
+        }
+        FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(selectedLanguage));
+        super.initialization();
+        if (device.isMobile()) {
+            LOGGER.info("Mobile");
+            isMobile = Boolean.TRUE;
+        }
+        if (device.isNormal()) {
+            LOGGER.error("NOrmal Desktop");
+            isMobile = Boolean.FALSE;
+        }
+        if (device.isTablet()) {
+            LOGGER.info("TABLET");
         }
 
+        String userAgent = FacesUtil.getRequest().getHeader("User-Agent");
+        LOGGER.info("Data " + userAgent);
+        if (StringUtils.isContain(userAgent, "Edge")) {
+            info = ResourceBundleUtil.getAsString("browser.info_invalid");
+        }
     }
 
     @PreDestroy
@@ -193,7 +172,7 @@ if (StringUtils.isContain(userAgent, "Edge")) {
         }
         FacesUtil.setSessionAttribute(HRMConstant.LOGIN_DATE, dateFormatter.getDateFullAsStringsWithActiveLocale(new Date(),
                 new Locale(selectedLanguage)));
-
+        System.out.println(" tanggal nya  : "+dateFormatter.getDateFullAsStringsWithActiveLocale(new Date(),  new Locale(selectedLanguage)));
         FacesUtil.getFacesContext().responseComplete();
         return null;
     }
@@ -261,8 +240,5 @@ if (StringUtils.isContain(userAgent, "Edge")) {
         this.myHandlerSuccessLogin = myHandlerSuccessLogin;
     }
 
-    public void setLicenseAppService(LicenseAppService licenseAppService) {
-        this.licenseAppService = licenseAppService;
-    }
-
+   
 }
