@@ -609,7 +609,7 @@
         <constructor-arg name="path" value="#{jobParameters['input.file.path']}"/>
         <property name="createdBy" value="#{jobParameters['createdBy']}"/>
         <property name="createdOn" value="#{jobParameters['createdOn']}"/>
-        <property name="vacancyAdvertisementId" value="#{jobParameters['vacancyAdvertisementId']}"/>
+        <property name="vacancyAdvertisementDetailId" value="#{jobParameters['vacancyAdvertisementDetailId']}"/>
     </bean>
     <bean id="customRecruitApplicantItemWriter" class="org.springframework.batch.item.adapter.ItemWriterAdapter" lazy-init="true">
         <property name="targetObject" ref="recruitApplicantService" />
