@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:o="http://omnifaces.org/ui"
+	  xmlns:of="http://omnifaces.org/functions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+				Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlLeaveFormlId" globalOnly="true" showDetail="true"/>                
+                <o:form id="formLeaveFormId">
+                	<p:focus context="formLeaveFormId"/>
+                	<div id="box_bg" style="margin: 10px">
+	                    <h:panelGrid columns="2">
+	                        <p:graphicImage library="images" name="permit.png" height="36" width="36" />
+	                        <h:panelGroup layout="block">
+	                            <h:panelGrid>
+	                                <p:outputLabel value="#{appmsg['career.employee_elimination_form']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['career.employee_elimination_form_from_career']}" styleClass="header_small_no_bold" />
+	                            </h:panelGrid>
+	                        </h:panelGroup>
+	                    </h:panelGrid>
+	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:20px;">
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="employeeId" value="#{appmsg['employee.employee_name']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	 <p:autoComplete id="employeeId" title="#{appmsg['global.employee']}" value="#{empEliminationFormController.model.empData}"
+                                                    completeMethod="#{empEliminationFormController.doAutoCompleteEmployee}"                                                
+                                                    var="empData" itemValue="#{empData}" itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.middleName} #{empData.bioData.lastName}"
+                                                    converter="empDataConverter" styleClass="isitext_hrm" size="41" 
+                                                    required="true" >
+                                        <p:ajax event="itemSelect" listener="#{empEliminationFormController.onChangeEmployee()}" />
+                                    </p:autoComplete>
+                                    <p:message for="employeeId"/>
+	                            </p:column>
+	                        </p:row>   
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="jabatanId" value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="jabatanId" title="#{appmsg['jabatan.jabatan']}" value="#{empEliminationFormController.model.jabatanName}" 
+	                                    		 readonly="true" styleClass="isitext_hrm" style="width:290px;">
+	                                </p:inputText>
+	                                <p:message for="jabatanId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="bossNameid" value="#{appmsg['career.employee_elimination_boss_name']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="bossNameid" title="#{appmsg['career.employee_elimination_boss_name']}" value="#{empEliminationFormController.model.atasanName}" 
+	                                    		 readonly="true" styleClass="isitext_hrm" style="width:290px;">
+	                                </p:inputText>
+	                                <p:message for="bossNameid"/>
+	                            </p:column>
+	                        </p:row> 
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="bossJabatanid" value="#{appmsg['jabatan.jabatan_deparment_boss']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="bossJabatanid" title="#{appmsg['jabatan.jabatan_deparment_boss']}" value="#{empEliminationFormController.model.jabatanAtasanName}" 
+	                                    		 readonly="true" styleClass="isitext_hrm" style="width:290px;">
+	                                </p:inputText>
+	                                <p:message for="bossJabatanid"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="departmentId" value="#{appmsg['menu.department']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="departmentId" title="#{appmsg['menu.department']}" value="#{empEliminationFormController.model.departmentName}" 
+	                                    		 readonly="true" styleClass="isitext_hrm" style="width:290px;">
+	                                </p:inputText>
+	                                <p:message for="departmentId"/>
+	                            </p:column>
+	                        </p:row> 
+	                        
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="terminationTypeId" value="#{appmsg['terminate.termination_type']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	 <p:selectOneMenu id="terminationTypeId" styleClass="isitext_hrm" required="true"  value="#{empEliminationFormController.model.terminationTypeId}" style="width:290px;">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{empEliminationFormController.listTerminationType}" var="terminationType" itemValue="#{terminationType.id}" itemLabel="#{terminationType.name}"/>
+                                    </p:selectOneMenu> 
+                                    <p:message for="terminationTypeId"/>
+	                            </p:column>
+	                        </p:row> 
+	                       <!-- 
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="reasonId" value="#{appmsg['career.employee_elimination_termination_reason']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	 <p:selectOneMenu id="terminationTypeId" styleClass="isitext_hrm" required="true"  value="#{empEliminationFormController.model.terminationTypeId}" style="width:290px;">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{empEliminationFormController.listTerminationType}" var="terminationType" itemValue="#{terminationType.id}" itemLabel="#{terminationType.name}"/>
+                                    </p:selectOneMenu> 
+                                    <p:message for="rmbsTypeId"/>
+	                            </p:column>
+	                        </p:row>  -->
+	                       
+	                 	</p:panelGrid>	
+	                 	
+	                 	<p:outputLabel value="#{appmsg['approvaldefinition.list_of_approval_definition']}" styleClass="header_big"/>
+	                    <p:separator/>
+	                 	
+	                 	
+                        
+	                 	                    
+	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formLeaveFormId,:growlLeaveFormlId"
+	                                         action="#{empEliminationFormController.doSave()}" styleClass="isitext_hrm"
+	                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+	                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formLeaveFormId" action="#{empEliminationFormController.doReset()}"
+                                                 icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+	                            <p:resetInput target="formLeaveFormId" />  
+	                        </p:commandButton>
+	                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{empEliminationFormController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	                    </div>
+                    </div>
+                </o:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

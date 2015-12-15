@@ -34,7 +34,6 @@ public class CompanyPolicyDaoImpl extends IDAOImpl<CompanyPolicy> implements Com
     @Override
     public List<CompanyPolicy> getByParam(CompanyPolicySearchParameter parameter, int firstResult, int maxResults, Order orderable) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.createAlias("department", "department", JoinType.INNER_JOIN);
         doSearchByParam(parameter, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
@@ -50,7 +49,7 @@ public class CompanyPolicyDaoImpl extends IDAOImpl<CompanyPolicy> implements Com
     }
 
     private void doSearchByParam(CompanyPolicySearchParameter parameter, Criteria criteria) {
-    	
+    	criteria.createAlias("department", "department", JoinType.INNER_JOIN);
         if (StringUtils.isNotEmpty(parameter.getSubject())) {
             criteria.add(Restrictions.like("subjectTitle", parameter.getSubject(), MatchMode.ANYWHERE));
         }

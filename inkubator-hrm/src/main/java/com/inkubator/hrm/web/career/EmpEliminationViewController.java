@@ -48,9 +48,12 @@ public class EmpEliminationViewController extends BaseController{
         lazy = null;
     }
     
+	public String doAdd() {
+        return "/protected/career/emp_elimination_form.htm?faces-redirect=true";
+    }
             
     public String doDetail(){
-    	return "/protected/career/emp_elimination_form.htm?faces-redirect=true&execution=e" + selected.getEmpCareerHistoryId();
+    	return "/protected/career/emp_elimination_detail.htm?faces-redirect=true&execution=e" + selected.getEmpCareerHistoryId();
     }
     
 	public void setCareerEmpEliminationService(CareerEmpEliminationService careerEmpEliminationService) {
