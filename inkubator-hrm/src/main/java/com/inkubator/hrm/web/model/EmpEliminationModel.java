@@ -1,8 +1,11 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.entity.LogMonthEndPayroll;
 
 /**
  *
@@ -21,6 +24,10 @@ public class EmpEliminationModel implements Serializable {
     private String atasanName;
     private String departmentName;
     private String reason;
+    private Double basicSalary;
+    private List<LogMonthEndPayroll> listMonthEndPayroll = new ArrayList<LogMonthEndPayroll>();
+    private List<LogMonthEndPayroll> listMonthEndPayrollTunjangan = new ArrayList<LogMonthEndPayroll>();
+    private List<LogMonthEndPayroll> listMonthEndPayrollPotongan = new ArrayList<LogMonthEndPayroll>();
 	public Long getId() {
 		return id;
 	}
@@ -88,5 +95,30 @@ public class EmpEliminationModel implements Serializable {
 	public void setTerminationTypeId(Long terminationTypeId) {
 		this.terminationTypeId = terminationTypeId;
 	}
+	public Double getBasicSalary() {
+		return basicSalary;
+	}
+	public void setBasicSalary(Double basicSalary) {
+		this.basicSalary = basicSalary;
+	}
+	public List<LogMonthEndPayroll> getListMonthEndPayroll() {
+		return listMonthEndPayroll;
+	}
+	public void setListMonthEndPayroll(List<LogMonthEndPayroll> listMonthEndPayroll) {
+		this.listMonthEndPayroll = listMonthEndPayroll;
+	}
+	public List<LogMonthEndPayroll> getListMonthEndPayrollTunjangan() {
+		return listMonthEndPayrollTunjangan;
+	}
+	public void setListMonthEndPayrollTunjangan(List<LogMonthEndPayroll> listMonthEndPayrollTunjangan) {
+		this.listMonthEndPayrollTunjangan = listMonthEndPayrollTunjangan;
+	}
+	public List<LogMonthEndPayroll> getListMonthEndPayrollPotongan() {
+		return listMonthEndPayrollPotongan;
+	}
+	public void setListMonthEndPayrollPotongan(List<LogMonthEndPayroll> listMonthEndPayrollPotongan) {
+		this.listMonthEndPayrollPotongan = listMonthEndPayrollPotongan;
+	}
     
+	
 }

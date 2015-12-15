@@ -60,4 +60,6 @@ public interface LogMonthEndPayrollDao extends IDAO<LogMonthEndPayroll> {
     
     public Collection<Long> getAllDataEmpIdByParam(ReportSalaryNoteSearchParameter searchParameter);
     
+    public List<LogMonthEndPayroll> getListByEmpDataIdAndWtPeriodId(Long empDataId, Long wtPeriodeId);
+    
 }
