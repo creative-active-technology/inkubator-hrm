@@ -20,9 +20,9 @@ public interface TempJadwalKaryawanDao extends IDAO<TempJadwalKaryawan> {
     public List<TempJadwalKaryawan> getAllByEmpId(long empId);
 
     public List<TempJadwalKaryawan> getAllByEmpIdWithDetail(long empId);
-    
+
     public List<TempJadwalKaryawan> getAllByEmpIdWithDetailWithFromAndUntilPeriod(long empId, Date from, Date until);
-    
+
     public List<TempJadwalKaryawan> getByGroupKerjadId(long kerjaId);
 
     public void deleteBacth(List<TempJadwalKaryawan> jadwalKaryawans);
@@ -38,15 +38,17 @@ public interface TempJadwalKaryawanDao extends IDAO<TempJadwalKaryawan> {
     public List<TempJadwalKaryawan> getAllDataByEmpIdAndPeriodDate(Long empDataId, Date startDate, Date endDate);
 
     public TempJadwalKaryawan getByEmpId(Long id, Date implementationDate);
-    
+
     public List<TempJadwalKaryawan> getByMonthDif(int value);
 
-	public List<TempJadwalKaryawan> getAllDataByEmpIdAndPeriodDateAndNotOffDay(Long empDataid, Date startDate, Date endDate);
-	
-	public List<TempJadwalKaryawan> getAllDataByEmpIdAndPeriodDateAndOffDay(Long empDataid, Date startDate, Date endDate);
+    public List<TempJadwalKaryawan> getAllDataByEmpIdAndPeriodDateAndNotOffDay(Long empDataid, Date startDate, Date endDate);
 
-	public Long getTotalByTanggalWaktuKerja(Date date, Long companyId);
+    public List<TempJadwalKaryawan> getAllDataByEmpIdAndPeriodDateAndOffDay(Long empDataid, Date startDate, Date endDate);
 
-	public List<TempJadwalKaryawan> getAllDataByTanggalWaktuKerjaAndCompanyId(Date tanggalWaktuKerja, Long companyId);
+    public Long getTotalByTanggalWaktuKerja(Date date, Long companyId);
+
+    public List<TempJadwalKaryawan> getAllDataByTanggalWaktuKerjaAndCompanyId(Date tanggalWaktuKerja, Long companyId);
+
+    public void deleteTempJadwalBeforeTMB();
 
 }
