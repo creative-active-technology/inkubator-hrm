@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.hibernate.criterion.Order;
 import org.joda.time.DateTime;
@@ -51,9 +52,12 @@ import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.dao.KlasifikasiKerjaJabatanDao;
 import com.inkubator.hrm.dao.LeaveImplementationDateDao;
+import com.inkubator.hrm.dao.LoanNewApplicationDao;
+import com.inkubator.hrm.dao.LoanNewApplicationInstallmentDao;
 import com.inkubator.hrm.dao.LogMonthEndPayrollDao;
 import com.inkubator.hrm.dao.LogWtProcessReadFingerDao;
 import com.inkubator.hrm.dao.MedicalCareDao;
+import com.inkubator.hrm.dao.PaySalaryComponentDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.PermitImplementationDao;
 import com.inkubator.hrm.dao.TaxFreeDao;
@@ -76,8 +80,11 @@ import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.KlasifikasiKerjaJabatan;
+import com.inkubator.hrm.entity.LoanNewApplication;
+import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
 import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.entity.LogWtProcessReadFinger;
+import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.entity.TaxFree;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
@@ -95,6 +102,7 @@ import com.inkubator.hrm.web.model.EmpDataMatrixModel;
 import com.inkubator.hrm.web.model.EmpEliminationModel;
 import com.inkubator.hrm.web.model.EmployeeRestModel;
 import com.inkubator.hrm.web.model.EmployeeResumeDashboardModel;
+import com.inkubator.hrm.web.model.LoanUnpaidForEmpTerminationViewModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.model.RecruitAgreementNoticeViewModel;
@@ -174,7 +182,13 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private LogWtProcessReadFingerDao logWtProcessReadFingerDao;
     @Autowired
     private LogMonthEndPayrollDao logMonthEndPayrollDao;
-
+    @Autowired
+    private PaySalaryComponentDao paySalaryComponentDao;
+    @Autowired
+    private LoanNewApplicationDao loanNewApplicationDao;
+    @Autowired
+    private LoanNewApplicationInstallmentDao loanNewApplicationInstallmentDao;
+    
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -1483,19 +1497,25 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     	Jabatan jabatan = jabatanDao.getJabatanByIdWithDetail(empData.getJabatanByJabatanId().getId());
     	List<EmpData> listAtasan = empDataDao.getAllDataByJabatanId(jabatan.getJabatan().getId(), Order.desc("joinDate"));
     	
-    	WtPeriode wtPeriodePayrollActive = wtPeriodeDao.getEntityByPayrollTypeActive();
-    	Date basedDate = DateTimeUtil.addDays(wtPeriodePayrollActive.getFromPeriode(), -1);
+    	//Get "first previous WtPeriod" from  current PayrollActivePeriod based on actual start Date and End Date
+    	WtPeriode firstPreviousPeriodFromCurrentPeriod = getFirstPreviousWtPeriodFromCurrentPayrollActiveWtPeriod();
     	
-    	Calendar calendarStartDate = Calendar.getInstance();
-    	calendarStartDate.setTime(basedDate);
-    	calendarStartDate.set(Calendar.DAY_OF_MONTH, calendarStartDate.getActualMinimum(Calendar.DAY_OF_MONTH));
+    	//get List LogMonthEndPayroll on selected period, and selected empDataId
+    	List<LogMonthEndPayroll> listMonthEndPayroll = logMonthEndPayrollDao.getListByEmpDataIdAndWtPeriodId(empDataId, firstPreviousPeriodFromCurrentPeriod.getId());
     	
-    	Calendar calendarEndDate = Calendar.getInstance();
-    	calendarEndDate.setTime(basedDate);
-    	calendarEndDate.set(Calendar.DAY_OF_MONTH, calendarEndDate.getActualMaximum(Calendar.DAY_OF_MONTH));
+    	List<LogMonthEndPayroll> listMonthEndPotongan = listMonthEndPayroll.stream()
+    			.filter(monthEndPayroll -> getComponentCategoryFromLog(monthEndPayroll.getPaySalaryCompId()) == HRMConstant.PAY_SALARY_COMPONENT_POTONGAN)
+    			.collect(Collectors.toList());
     	
-    	WtPeriode wtPeriod = wtPeriodeDao.getEntityByFromPeriodeAndUntilPeriode(calendarStartDate.getTime(), calendarEndDate.getTime());
-    	List<LogMonthEndPayroll> listMonthEndPayroll = logMonthEndPayrollDao.getListByEmpDataIdAndWtPeriodId(empDataId, wtPeriod.getId());
+    	List<LogMonthEndPayroll> listMonthEndTunjangan = listMonthEndPayroll.stream()
+    			.filter(monthEndPayroll -> getComponentCategoryFromLog(monthEndPayroll.getPaySalaryCompId()) == HRMConstant.PAY_SALARY_COMPONENT_TUNJANGAN)
+    			.collect(Collectors.toList());
+    	
+    	List<LogMonthEndPayroll> listMonthEndSubsidi = listMonthEndPayroll.stream()
+    			.filter(monthEndPayroll -> getComponentCategoryFromLog(monthEndPayroll.getPaySalaryCompId()) == HRMConstant.PAY_SALARY_COMPONENT_SUBSIDI)
+    			.collect(Collectors.toList());
+    	
+    	List<LoanUnpaidForEmpTerminationViewModel> listLoanModel = generateListLoanUnpaidModel(empDataId);
     	
     	model.setJabatanId(jabatan.getId());
     	model.setJabatanName(jabatan.getName());
@@ -1503,8 +1523,11 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     	model.setJabatanAtasanName(jabatan.getJabatan().getName());
     	model.setDepartmentId(jabatan.getDepartment().getId());
     	model.setDepartmentName(jabatan.getDepartment().getDepartmentName());
-    	model.setBasicSalary(Double.valueOf(empData.getBasicSalaryDecrypted()));
-    	model.setListMonthEndPayroll(listMonthEndPayroll);
+    	model.setListMonthEndPayrollAll(listMonthEndPayroll);
+    	model.setListMonthEndPayrollPotongan(listMonthEndPotongan);
+    	model.setListMonthEndPayrollSubsidi(listMonthEndSubsidi);
+    	model.setListMonthEndPayrollTunjangan(listMonthEndTunjangan);
+    	model.setListLoanModel(listLoanModel);
     	
     	if(!listAtasan.isEmpty()){
     		EmpData atasan = empDataDao.getByEmpIdWithDetail(listAtasan.get(0).getId());
@@ -1512,5 +1535,47 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     	}
 		return model;
 	}
-
+	
+	private WtPeriode getFirstPreviousWtPeriodFromCurrentPayrollActiveWtPeriod(){
+		WtPeriode wtPeriodePayrollActive = wtPeriodeDao.getEntityByPayrollTypeActive();
+    	Date basedDate = DateTimeUtil.addDays(wtPeriodePayrollActive.getFromPeriode(), -1);
+    	
+    	//Get Actual Start Date on "first previous WtPeriod" from current PayrollActivePeriod
+    	Calendar calendarStartDate = Calendar.getInstance();
+    	calendarStartDate.setTime(basedDate);
+    	calendarStartDate.set(Calendar.DAY_OF_MONTH, calendarStartDate.getActualMinimum(Calendar.DAY_OF_MONTH));
+    	
+    	//Get Actual End Date on "first previous WtPeriod" from current PayrollActivePeriod
+    	Calendar calendarEndDate = Calendar.getInstance();
+    	calendarEndDate.setTime(basedDate);
+    	calendarEndDate.set(Calendar.DAY_OF_MONTH, calendarEndDate.getActualMaximum(Calendar.DAY_OF_MONTH));
+    	
+    	//Get "first previous WtPeriod" from current PayrollActivePeriod based on actual start Date and End Date
+    	WtPeriode firstPreviousPeriodFromCurrentPayrollActivePeriod = wtPeriodeDao.getEntityByFromPeriodeAndUntilPeriode(calendarStartDate.getTime(), calendarEndDate.getTime());
+    	return firstPreviousPeriodFromCurrentPayrollActivePeriod;
+	}
+	
+	private Integer getComponentCategoryFromLog(Long paySalaryCompId){
+		PaySalaryComponent paySalaryComponent = paySalaryComponentDao.getEntiyByPK(paySalaryCompId);
+		return paySalaryComponent.getComponentCategory();
+	}
+	
+	private List<LoanUnpaidForEmpTerminationViewModel> generateListLoanUnpaidModel(Long empDataId){
+		List<LoanUnpaidForEmpTerminationViewModel> listLoanModel = new ArrayList<LoanUnpaidForEmpTerminationViewModel>();
+		
+		List<LoanNewApplication> listLoanNewApplication = loanNewApplicationDao.getListUnpaidLoanByEmpDataId(empDataId);
+    	for(LoanNewApplication loan : listLoanNewApplication){
+    		LoanUnpaidForEmpTerminationViewModel loanModel = new LoanUnpaidForEmpTerminationViewModel();
+    		LoanNewApplicationInstallment lastPaidInstallment = loanNewApplicationInstallmentDao.getLastPaidTerminInstallment(loan.getId());
+    		loanModel.setLoanNewApplicationId(loan.getId());
+    		loanModel.setLoanNewTypeName(loan.getLoanNewType().getLoanTypeCode() + " - " + loan.getLoanNewType().getLoanTypeName());
+    		loanModel.setTotalPrincipal(loan.getNominalPrincipal());
+    		loanModel.setTotalOutstanding(lastPaidInstallment.getRemainingBasic());
+    		loanModel.setTotalNumberOfInstallment(loan.getTermin());
+    		loanModel.setLastPaidTermin(lastPaidInstallment.getNumOfInstallment());
+    		listLoanModel.add(loanModel);
+    	}
+    	
+		return listLoanModel;
+	}
 }

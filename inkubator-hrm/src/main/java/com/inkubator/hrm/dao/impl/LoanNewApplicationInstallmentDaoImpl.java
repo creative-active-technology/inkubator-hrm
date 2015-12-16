@@ -12,11 +12,17 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.LoanNewApplicationInstallmentDao;
 import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
+import com.inkubator.hrm.entity.WtPeriode;
 
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -67,6 +73,25 @@ public class LoanNewApplicationInstallmentDaoImpl extends IDAOImpl<LoanNewApplic
 		criteria.createAlias("loanNewApplication", "loanNewApplication", JoinType.INNER_JOIN);
 		criteria.add(Restrictions.eq("loanNewApplication.id", loanNewApplicationId));
 		return criteria.list();
+	}
+
+	@Override
+	public LoanNewApplicationInstallment getLastPaidTerminInstallment(Integer LoanNewApplicationid) {
+		
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.createAlias("loanNewApplication", "loanNewApplication", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("loanNewApplication.id", LoanNewApplicationid));
+        
+        DetachedCriteria criteriaWtPeriod = DetachedCriteria.forClass(WtPeriode.class)
+                .add(Restrictions.eq("payrollType", HRMConstant.PERIODE_PAYROLL_ACTIVE))
+                .setProjection(Property.forName("fromPeriode"));
+        
+        criteria.add(Subqueries.propertyLt("installmentDate", criteriaWtPeriod));
+        criteria.addOrder(Order.desc("numOfInstallment"));
+        criteria.setMaxResults(1);
+        
+        LoanNewApplicationInstallment currentNextInstallment = (LoanNewApplicationInstallment) criteria.uniqueResult();
+        return currentNextInstallment;
 	}
     
 }
