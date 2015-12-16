@@ -445,20 +445,20 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         WtOverTime selectTedWtOverTime = wtOverTimeDao.getEntiyByPK(overTimeId);
         Date currentDate = new Date();
         Integer selisihWaktu = DateTimeUtil.getTotalDayDifference(currentDate, entity.getImplementationDate());
-        System.out.println(selisihWaktu + " selisih waktu");
+ 
         if (selisihWaktu > 0) {
-        	System.out.println(selisihWaktu + " > " + selectTedWtOverTime.getBatasMaju() );
+        	
             if (selisihWaktu > selectTedWtOverTime.getBatasMaju()) {
-            	System.out.println("masuk if >");
+            
                 throw new BussinessException("implementOt.implementation_date_outofrange");
             }
         }
         
         if (selisihWaktu < 0) {
             selisihWaktu=selisihWaktu*(-1);
-            System.out.println(selisihWaktu + " > " + selectTedWtOverTime.getBatasMaju() );
+    
             if (selisihWaktu >selectTedWtOverTime.getBatasMudur()) {
-            	System.out.println("masuk if <");
+            
                 throw new BussinessException("implementOt.implementation_date_outofrange");
             }
         }
@@ -497,7 +497,7 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
                 throw new BussinessException("implementationovertime.time_is_in_your_working_hours");
             }
         } else {
-        	System.out.println("masuk jadwalKaryawan == null");
+        	
             throw new BussinessException("implementationovertime.employee_working_schedule_has_not_been_created", new SimpleDateFormat("dd MMMM yyyy").format(entity.getImplementationDate()));
         }
 

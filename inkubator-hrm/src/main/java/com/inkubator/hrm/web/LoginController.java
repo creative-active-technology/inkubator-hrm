@@ -62,7 +62,6 @@ public class LoginController extends BaseController {
     private AuthenticationManager authenticationManager;
     @ManagedProperty(value = "#{myHandlerSuccessLogin}")
     private CustomAuthenticationSuccessHandler myHandlerSuccessLogin;
-    
 
     @PostConstruct
     @Override
@@ -172,7 +171,7 @@ public class LoginController extends BaseController {
         }
         FacesUtil.setSessionAttribute(HRMConstant.LOGIN_DATE, dateFormatter.getDateFullAsStringsWithActiveLocale(new Date(),
                 new Locale(selectedLanguage)));
-        System.out.println(" tanggal nya  : "+dateFormatter.getDateFullAsStringsWithActiveLocale(new Date(),  new Locale(selectedLanguage)));
+
         FacesUtil.getFacesContext().responseComplete();
         return null;
     }
@@ -240,5 +239,4 @@ public class LoginController extends BaseController {
         this.myHandlerSuccessLogin = myHandlerSuccessLogin;
     }
 
-   
 }

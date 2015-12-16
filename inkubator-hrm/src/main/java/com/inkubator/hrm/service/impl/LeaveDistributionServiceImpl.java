@@ -88,7 +88,7 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
     }
 
     private Boolean isAppliedOrPending(Long id, String name){
-    	System.out.println(name + " namaaa");
+   
     	Boolean isAppliedOrPending = Boolean.FALSE;
     	//check if employee has been applied leave and has been approved
     	if(isAppliedOrPending == Boolean.FALSE){
@@ -100,7 +100,7 @@ public class LeaveDistributionServiceImpl extends IServiceImpl implements LeaveD
     	
     	//check if employee has applied leave with status pending
     	if(isAppliedOrPending == Boolean.FALSE){
-	    	System.out.println("if kedua");
+	    	
 			HrmUser requester = hrmUserDao.getByEmpDataId(id);
 			List<ApprovalActivity> listApprovalActivities = approvalActivityDao.getAllDataNotApprovedYet(requester.getUserId(), HRMConstant.LEAVE);
 			for(ApprovalActivity appActivity : listApprovalActivities){

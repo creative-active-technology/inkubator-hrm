@@ -404,7 +404,7 @@ public class BioBankAccountFormController extends BaseController {
     
     public void onChangeCountries() {
         try {
-        	System.out.println("masuk onChangeCountries");
+        	
         	disabledProvince = Boolean.FALSE;
             provinces.clear();
             citys.clear();

@@ -289,7 +289,7 @@ public class ApprovalActivityNotSendListenerServiceImpl extends BaseSchedulerDin
                 }
                 if (jsonObject.get(HRMConstant.CONTEXT_PATH).getAsString() != null) {
                     String urlLinkToApprove = serverName + "" + jsonObject.get(HRMConstant.CONTEXT_PATH).getAsString() + "" + HRMConstant.REIMBURSMENT_APPROVAL_PAGE + "" + "?faces-redirect=true&execution=e" + appActivity.getId();
-                    System.out.println(" Ini adlaaha link nya : " + urlLinkToApprove);
+        
                     maptoSend.put("urlLinkToApprove", urlLinkToApprove);
                 } else {
                     maptoSend.put("urlLinkToApprove", applicationUrl);

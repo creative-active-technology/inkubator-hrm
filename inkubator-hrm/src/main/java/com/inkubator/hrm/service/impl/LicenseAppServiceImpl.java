@@ -12,6 +12,7 @@ import com.inkubator.hrm.service.LicenseAppService;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -191,8 +192,9 @@ public class LicenseAppServiceImpl extends IServiceImpl implements LicenseAppSer
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public LicenseApp getByStatusAndName(String status, String name)  throws Exception{
-        return licenseAppDao.getByStatusAndName(status,name);
+    @Cacheable(value = "checkLicense")
+    public LicenseApp getByStatusAndName(String status, String name) throws Exception {
+        return licenseAppDao.getByStatusAndName(status, name);
     }
 
 }

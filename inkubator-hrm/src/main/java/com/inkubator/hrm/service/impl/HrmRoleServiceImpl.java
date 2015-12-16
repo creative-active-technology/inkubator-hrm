@@ -94,7 +94,6 @@ public class HrmRoleServiceImpl extends IServiceImpl implements HrmRoleService {
         hrmRoleToUpdate.setRoleName(entity.getRoleName());
         hrmRoleToUpdate.setUpdatedBy(UserInfoUtil.getUserName());
         hrmRoleToUpdate.setUpdatedOn(new Date());
-        System.out.println(" Nilia namaya role nya "+hrmRoleToUpdate.getRoleName());
         this.hrmRoleDao.update(hrmRoleToUpdate);
     }
     

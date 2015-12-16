@@ -53,35 +53,35 @@ public class IpPermitServiceImpl extends IServiceImpl implements IpPermitService
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(IpPermit entity) throws Exception {
-    	System.out.println("masuk service");
+    	
         //validate if ipAddress lebih besar dari 255.255.255
         if(entity.getFromAddress1() > 255255255){
-        	System.out.println("ip address lebih besar dari 255");
+        	
             throw new BussinessException("ippermit.ip_address_is_bigger_255255255");
         }
         //validate if ipAddress dari sama dengan ipAddress sampai
         if(entity.getUntilAddress1().equals(entity.getUntilAddress2())){
-        	System.out.println("ip address ssama valuenya");
+        	
             throw new BussinessException("ippermit.ip_permit_is_same_value");
         }
         
         //validate if ipAddress dari lebih besar dari ipAddress sampai
         if(entity.getUntilAddress1() > entity.getUntilAddress2()){
-        	System.out.println("ip address lebih kecil");
+        	
             throw new BussinessException("ippermit.ip_permit_is_smaller");
         }
         
         List<IpPermit> listIpPermit = ipPermitDao.getAllData();
         for (IpPermit ipPermit : listIpPermit) {
             if(entity.getFromAddress1().equals(ipPermit.getFromAddress1()) && entity.getUntilAddress1() > ipPermit.getUntilAddress1()){
-            	System.out.println("ip address udah ada");
+            	
                 throw new BussinessException("ippermit.range_api_adress_sudah_ada");
             }else if(entity.getFromAddress2().equals(ipPermit.getFromAddress2()) && entity.getUntilAddress2() < ipPermit.getUntilAddress2()){
-            	System.out.println("ip address udah ada");
+            	
                 throw new BussinessException("ippermit.range_api_adress_sudah_ada");
             }
         }
-        System.out.println("abis kondisi save");
+   
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setCreatedBy(UserInfoUtil.getUserName());
         entity.setCreatedOn(new Date());

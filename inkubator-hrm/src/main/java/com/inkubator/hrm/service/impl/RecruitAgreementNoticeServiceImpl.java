@@ -46,7 +46,7 @@ public class RecruitAgreementNoticeServiceImpl extends IServiceImpl implements R
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(RecruitAgreementNotice entity) throws Exception {
-    	System.out.println(entity.getUploadedCv() + " hoohohohohoh" + entity.getExpectedSalary());
+    	
     	entity.setBioData(bioDataDao.getEntiyByPK(entity.getBioData().getId()));
     	entity.setCreatedBy(UserInfoUtil.getUserName());
     	entity.setCreatedOn(new Date());

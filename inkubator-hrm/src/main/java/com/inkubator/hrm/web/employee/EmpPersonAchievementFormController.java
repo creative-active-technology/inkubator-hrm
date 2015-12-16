@@ -168,7 +168,7 @@ public class EmpPersonAchievementFormController extends BaseController {
     
         for(CareerAwardType careerAwardType : awardList){
             dropDownAwardList.put(careerAwardType.getName(), careerAwardType.getId());
-            System.out.println("============================ " + dropDownAwardList.size());
+       
         }
     }
 

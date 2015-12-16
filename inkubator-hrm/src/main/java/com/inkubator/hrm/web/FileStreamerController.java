@@ -96,14 +96,14 @@ public class FileStreamerController extends BaseController {
     }
     
     public StreamedContent getFileCv() throws NumberFormatException, Exception{
-    	System.out.println("hahahihihuhuhehehoho");
+    	
     	FacesContext context = FacesUtil.getFacesContext();
         String bioDataId = context.getExternalContext().getRequestParameterMap().get("bioDataId");
-        System.out.println(bioDataId + " bioData dari fielStreamerController");
+ 
         StreamedContent streamedContent = new DefaultStreamedContent();
         RecruitAgreementNotice entity = recruitAgreementNoticeService.getEntityByBioDataId(Long.parseLong(bioDataId));
         
-        System.out.println(entity.getUploadedCv() + " file CV");
+    
         String fileName = "";
         if (entity != null) {
             try {

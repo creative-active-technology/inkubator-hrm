@@ -602,8 +602,7 @@ public class RecruitApplicantServiceImpl extends IServiceImpl implements Recruit
 		RadarChartData data = new RadarChartData(listSpec.size());
 		int i=0;
 		for(OrgTypeOfSpec spec : listSpec){
-			System.out.println(spec.getName() + " internal  " + recruitApplicantDao.getTotalByCareerCandidateAndOrgTypeOfSpecId(HRMConstant.RECRUIT_APPLICANT_CAREER_CANDIDATE_INTERNAL, spec.getId()));
-			System.out.println(spec.getName() + " external  " + recruitApplicantDao.getTotalByCareerCandidateAndOrgTypeOfSpecId(HRMConstant.RECRUIT_APPLICANT_CAREER_CANDIDATE_EXTERNAL, spec.getId()));
+			
 			data.addLabel(i, spec.getName());
 			internal.addData(String.valueOf(recruitApplicantDao.getTotalByCareerCandidateAndOrgTypeOfSpecId(HRMConstant.RECRUIT_APPLICANT_CAREER_CANDIDATE_INTERNAL, spec.getId())));
 			external.addData(String.valueOf(recruitApplicantDao.getTotalByCareerCandidateAndOrgTypeOfSpecId(HRMConstant.RECRUIT_APPLICANT_CAREER_CANDIDATE_EXTERNAL, spec.getId())));

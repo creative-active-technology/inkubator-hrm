@@ -134,7 +134,7 @@ public class ReportStreamController extends BaseController {
     	String contentSurat = context.getExternalContext().getRequestParameterMap().get("contentSurat");
     	String penandaTangan = context.getExternalContext().getRequestParameterMap().get("penandaTangan");
     	String signature = context.getExternalContext().getRequestParameterMap().get("signature");
-    	System.out.println(signature + " signature" + " penanda tangan " + penandaTangan + " content " + contentSurat);
+    	
     	// parameter
     	params.put("companyId", HrmUserInfoUtil.getCompanyId());
     	params.put("contentSurat", contentSurat);
@@ -153,7 +153,7 @@ public class ReportStreamController extends BaseController {
     	String contentSurat = context.getExternalContext().getRequestParameterMap().get("contentSurat");
     	String penandaTangan = context.getExternalContext().getRequestParameterMap().get("penandaTangan");
     	String signature = context.getExternalContext().getRequestParameterMap().get("signature");
-    	System.out.println(signature);
+    	
     	// parameter
     	params.put("companyId", HrmUserInfoUtil.getCompanyId());
     	params.put("contentSurat", contentSurat);
