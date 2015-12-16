@@ -114,7 +114,7 @@ public class OrgTypeOfSpecListServiceImpl extends IServiceImpl implements OrgTyp
         update.setUpdatedBy(UserInfoUtil.getUserName());
         this.orgTypeOfSpecListDao.saveAndMerge(update);
         Set<OrgTypeOfSpecListKlasifikasi> dataToSave = entity.getOrgTypeOfSpecListKlasifikasis();
-        System.out.println(dataToSave.size() + " size dari service");
+
         for (OrgTypeOfSpecListKlasifikasi orgTypeOfSpecListKlasifikasi : dataToSave) {
         	orgTypeOfSpecListKlasifikasi.setOrgTypeOfSpecList(update);
             this.orgTypeOfSpecListKlasifikasiDao.save(orgTypeOfSpecListKlasifikasi);

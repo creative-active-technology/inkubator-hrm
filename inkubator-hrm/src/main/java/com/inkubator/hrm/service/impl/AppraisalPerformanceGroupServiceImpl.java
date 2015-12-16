@@ -195,7 +195,7 @@ public class AppraisalPerformanceGroupServiceImpl extends IServiceImpl implement
 		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
 		entity.setCreatedBy(UserInfoUtil.getUserName());
 		entity.setCreatedOn(new Date());
-		System.out.println("Appraiser dari service : ========== " + entity.getAppraiser());
+	
 		this.appraisalPerformanceGroupDao.save(entity);
 	}
 

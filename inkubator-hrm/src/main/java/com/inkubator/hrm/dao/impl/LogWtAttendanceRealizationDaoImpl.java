@@ -164,7 +164,7 @@ public class LogWtAttendanceRealizationDaoImpl extends IDAOImpl<LogWtAttendanceR
 //        criteria.add(Restrictions.ge("periodeDateStart", model.getStartPeriod()));
 //        criteria.add(Restrictions.lt("periodeDateEnd", model.getEndPeriod()));
 //        criteria.add(Restrictions.eq("wtPeriodeId", model.getWtPeriodeId()));
-        System.out.println(" daftar nama dep" + model.getListDeptName());
+  
         if (model.getWtPeriodeId() != null) {
             criteria.add(Restrictions.eq("wtPeriodeId", model.getWtPeriodeId()));
         }

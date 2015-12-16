@@ -58,13 +58,12 @@ public class LoanDetailController extends BaseController {
             } else {
                 /* parameter (activityNumber) ini datangnya dari home approval request history View */
                 selectedLoan = loanService.getEntityByApprovalActivityNumberWithDetail(execution.substring(1));
-                  System.out.println("Approval Activi numbernya  adalaha =================================================== " + execution.substring(1));
-                System.out.println("Objectnya adalaha =================================================== " + selectedLoan);
+              
             }
 
             selectedApprovalActivity = approvalActivityService.getEntityByActivityNumberLastSequence(selectedLoan.getApprovalActivityNumber());
             loanPaymentDetails = loanPaymentDetailService.getAllDataByLoanId(selectedLoan.getId());
-            System.out.println("Ukurannya adalaha " + loanPaymentDetails.size());
+        
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
 

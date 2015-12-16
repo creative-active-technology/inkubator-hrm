@@ -144,16 +144,16 @@ public class PersonalDisciplineFormController extends BaseController{
     
     public void doSave() throws Exception {
         PersonalDiscipline  personalDiscipline = getEntityFromViewModel(model);
-        System.out.println("Masuk Method DoSave dari Form Controller");
+    
         try {
             if (isUpdate) {
                 personalDisciplineService.update(personalDiscipline);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
-                System.out.println("Masuk jika is update dari form controller");;
+            
             } else {
                 personalDisciplineService.save(personalDiscipline);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
-                System.out.println("Masuk jika buka is update dari form controller");
+           
             }
             cleanAndExit();
         } catch (BussinessException ex) { 
@@ -164,7 +164,7 @@ public class PersonalDisciplineFormController extends BaseController{
     }
 
     private PersonalDiscipline getEntityFromViewModel(PersonalDisciplineModel model) throws Exception {
-    	System.out.println("Masuk method getEntityFromViewModel dari form controller");
+    	
         PersonalDiscipline personalDiscipline = new PersonalDiscipline();
         if (model.getId() != null) {
             personalDiscipline.setId(model.getId());
@@ -176,7 +176,7 @@ public class PersonalDisciplineFormController extends BaseController{
         personalDiscipline.setExpiredDate(model.getExpireDate());
 //        personalDiscipline.setAdmonitionType(new AdmonitionType(model.getAdmonitionType()));
         personalDiscipline.setCareerDisciplineType(new CareerDisciplineType(model.getCareerDisciplineTypeId()));
-        System.out.println("proses setelah set id untuk career discipline type");
+       
         return personalDiscipline;
     }
 

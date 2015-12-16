@@ -45,7 +45,7 @@ public class UserDetailController extends BaseController {
         try {
             super.initialization();
             String userId = FacesUtil.getRequestParameter("execution");
-            System.out.println(" Niai nya juga guery" + FacesUtil.getRequest().getQueryString());
+           
             selectedHrmUser = hrmUserService.getEntiyByPkWithDetail(Long.parseLong(userId.substring(1)));
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

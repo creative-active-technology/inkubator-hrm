@@ -68,7 +68,7 @@ public class RecruitLettersServiceImpl extends IServiceImpl implements RecruitLe
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public void save(RecruitLetters entity) throws Exception {
-    	System.out.println("dosave serivce");
+    	
         long totalDuplicates = recruitLettersDao.getTotalByCode(entity.getCode());
         if (totalDuplicates > 0) {
             throw new BussinessException("race.error_duplicate_race_code");
@@ -354,10 +354,9 @@ public class RecruitLettersServiceImpl extends IServiceImpl implements RecruitLe
 //        for (RecruitLetterSelection recruitLetterSelection : recruitLetterSelections) {
 //            recruitSelectionTypes.add(recruitLetterSelection.getRecruitSelectionType());
 //        }
-//        System.out.println(" Ukuran nya " + recruitSelectionTypes.size());
+// 
         for (Long selectionTypeId : data) {
-//            System.out.println(" Data nya adalah "+recruitSelectionType.getId());
-//            System.out.println(" Ukuran nya " + recruitSelectionTypes.size());
+//            
             List<RecruitmenSelectionSeriesDetail> recruitmenSelectionSeriesDetails = recruitmenSelectionSeriesDetailDao.getAllByRecruitRecruitSelectionTypeId(selectionTypeId);
             for (RecruitmenSelectionSeriesDetail recruitmenSelectionSeriesDetail : recruitmenSelectionSeriesDetails) {
                 recruitmenSelectionSeriesDetail.setRecruitLettersByAcceptLetterId(new RecruitLetters());
@@ -385,8 +384,7 @@ public class RecruitLettersServiceImpl extends IServiceImpl implements RecruitLe
     public void doDistributionRescruitLetter(RecruitLetters letters) throws Exception {
 
         List<RecruitmenSelectionSeriesDetail> dataToSetNull = recruitmenSelectionSeriesDetailDao.getAllWithLetterSpesific(letters.getLeterTypeId());
-        System.out.println(" Ukuran nya yang akan di delete adalah " + dataToSetNull.size());
-        System.out.println(" Jenis Suratnya " + letters.getLeterTypeId());
+      
         for (RecruitmenSelectionSeriesDetail dataToSetNull1 : dataToSetNull) {
             if (letters.getLeterTypeId().equals(HRMConstant.LETTER_TYPE_OFFERING)) {
                 dataToSetNull1.setRecruitLettersByAcceptLetterId(null);

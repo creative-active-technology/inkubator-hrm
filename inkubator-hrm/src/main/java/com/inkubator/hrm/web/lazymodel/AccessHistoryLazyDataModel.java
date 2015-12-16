@@ -35,9 +35,9 @@ public class AccessHistoryLazyDataModel extends LazyDataModel<RiwayatAkses> impl
                 order = Order.desc("dateAccess");
             }
             riwayatAksesList = service.getByParam(searchParameter, first, pageSize, order);
-            System.out.println(" Jumlah List nya "+riwayatAksesList.size());
+         
             total = Integer.parseInt(String.valueOf(service.getTotalByParam(searchParameter)));
-            System.out.println(" Total Datanya "+total);
+     
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
         }

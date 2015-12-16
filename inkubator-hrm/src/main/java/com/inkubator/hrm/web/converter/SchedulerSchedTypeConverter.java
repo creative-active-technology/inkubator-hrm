@@ -28,7 +28,7 @@ public class SchedulerSchedTypeConverter implements Converter{
 		
 		String message = StringUtils.EMPTY;
         String data = (String) value;
-        System.out.println("ini value untuk data : " + data);
+    
         switch(data){
         	case "REPEAT"	:
         		message = resourceBundle.getString("scheduler.repeat");

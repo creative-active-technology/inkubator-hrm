@@ -126,7 +126,7 @@ public class NotificationUserMessagesListener extends IServiceImpl implements Me
                 maptoSend.put("applicationName", applicationName);
 //                try {
                     velocityTemplateSender.sendMail(vtm, maptoSend);
-                    System.out.println(" Suskses kirimm  email");
+                
 //                } catch (Exception ex) {
 //                    LOGGER.error("Error", ex);
 //                }

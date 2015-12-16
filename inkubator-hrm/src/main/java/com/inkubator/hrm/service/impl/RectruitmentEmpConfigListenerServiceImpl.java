@@ -1,18 +1,11 @@
 package com.inkubator.hrm.service.impl;
 
-import com.inkubator.common.CommonUtilConstant;
-import com.inkubator.common.util.DateTimeUtil;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.RecruitSelectionApplicantPassedDao;
 import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDao;
 import com.inkubator.hrm.dao.RecruitSelectionApplicantSchedulleDetailDao;
 import com.inkubator.hrm.dao.RecruitmenSelectionSeriesDetailDao;
-import com.inkubator.hrm.entity.RecruitLetters;
 import com.inkubator.hrm.entity.RecruitSelectionApplicantPassed;
-import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulle;
-import com.inkubator.hrm.entity.RecruitSelectionApplicantSchedulleDetail;
-import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetail;
-import com.inkubator.hrm.entity.RecruitmenSelectionSeriesDetailId;
 import com.inkubator.hrm.entity.SchedulerLog;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,7 +37,7 @@ public class RectruitmentEmpConfigListenerServiceImpl extends BaseSchedulerDinam
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ, noRollbackFor = Exception.class)
     public void onMessage(Message msg) {
-        System.out.println(" On messages do.........................................................................................");
+     
         SchedulerLog log = null;
         try {
             TextMessage textMessage = (TextMessage) msg;

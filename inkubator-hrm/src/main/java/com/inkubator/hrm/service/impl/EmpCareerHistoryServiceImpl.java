@@ -354,7 +354,7 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 			EmpData empData = empDataDao.getEntiyByPK(model.getEmpData().getId());
 			/** save previous join date to career history */
 			careerHistory.setJoinDate(empData.getJoinDate());
-			System.out.println("ini teh join date sebelumnya" + empData.getJoinDate());
+			
 			String salaryEncrypted = this.calculateSalaryEncrypted(empData.getBasicSalary(), model.getSalaryChangesType(), model.getSalaryChangesPercent());
 			empData.setBasicSalary(salaryEncrypted);
 			empData.setNik(model.getNik());
@@ -579,7 +579,7 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
     public List<CareerTransitionInboxViewModel> getEntityEmpCareerHistoryInboxByParam(CareerTransitionInboxSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception{
     	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
     	List<CareerTransitionInboxViewModel> listModel = empCareerHistoryDao.getEntityEmpCareerHistoryInboxByParam(searchParameter, firstResult, maxResults, order);
-    	System.out.println(listModel.size());
+    	
     	for(CareerTransitionInboxViewModel careerTransitionInbox : listModel){
     		EmpCareerHistoryModel model = this.convertJsonToModel(careerTransitionInbox.getJsonData());
     		Jabatan jabatan = jabatanDao.getEntiyByPK(model.getJabatanId());

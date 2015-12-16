@@ -162,7 +162,8 @@ public class HomeMobileController extends BaseController {
             barChartModel = new BarChartModel();
             barChartModel.setStacked(false);
             barChartModel.setLegendPosition("ne");
-            barChartModel.setLegendCols(6);
+            barChartModel.setLegendCols(4);
+            barChartModel.setLegendRows(2);
             barChartModel.setSeriesColors("66cc00,629de1,003366,990000,cccc00,6600cc");
             barChartModel.setShowDatatip(true);
             barChartModel.setShadow(true);

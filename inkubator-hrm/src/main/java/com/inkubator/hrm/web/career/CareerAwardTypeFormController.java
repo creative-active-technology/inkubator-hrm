@@ -105,7 +105,7 @@ public class CareerAwardTypeFormController  extends BaseController{
             if(isUpdate){
                 service.update(careerAwardType);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
-                System.out.println("update");
+      
             } else {
                 service.save(careerAwardType);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
