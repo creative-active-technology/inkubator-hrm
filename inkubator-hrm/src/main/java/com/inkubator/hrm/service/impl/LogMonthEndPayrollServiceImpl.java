@@ -466,4 +466,10 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
     public Long getTotalReportDataKomponenByParam(ReportDataComponentSearchParameter searchParameter) {
         return this.logMonthEndPayrollDao.getTotalReportDataKomponenByParam(searchParameter);
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<LogMonthEndPayroll> getListByEmpDataIdAndWtPeriodId(Long empDataId, Long wtPeriodeId) throws Exception {
+		return logMonthEndPayrollDao.getListByEmpDataIdAndWtPeriodId(empDataId, wtPeriodeId);
+	}
 }

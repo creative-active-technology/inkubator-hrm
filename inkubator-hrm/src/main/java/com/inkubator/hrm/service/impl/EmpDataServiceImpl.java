@@ -10,6 +10,7 @@ import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +51,7 @@ import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.dao.KlasifikasiKerjaJabatanDao;
 import com.inkubator.hrm.dao.LeaveImplementationDateDao;
+import com.inkubator.hrm.dao.LogMonthEndPayrollDao;
 import com.inkubator.hrm.dao.LogWtProcessReadFingerDao;
 import com.inkubator.hrm.dao.MedicalCareDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
@@ -74,6 +76,7 @@ import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.KlasifikasiKerjaJabatan;
+import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.entity.LogWtProcessReadFinger;
 import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.entity.TaxFree;
@@ -89,6 +92,7 @@ import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
+import com.inkubator.hrm.web.model.EmpEliminationModel;
 import com.inkubator.hrm.web.model.EmployeeRestModel;
 import com.inkubator.hrm.web.model.EmployeeResumeDashboardModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
@@ -168,6 +172,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private MedicalCareDao medicalCareDao;
     @Autowired
     private LogWtProcessReadFingerDao logWtProcessReadFingerDao;
+    @Autowired
+    private LogMonthEndPayrollDao logMonthEndPayrollDao;
 
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
@@ -1460,6 +1466,51 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 		}
 		
 		return isEmployeeOnLeaveOrTravel;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<EmpData> getAllDataByJabatanIdOrderDescJoinDate(Long id) throws Exception {
+		return empDataDao.getAllDataByJabatanId(id, Order.desc("joinDate"));
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public EmpEliminationModel generateEmpEliminationModelByEmpDataId(Long empDataId) throws Exception {
+		EmpEliminationModel model = new EmpEliminationModel();
+		
+		EmpData empData = empDataDao.getByEmpIdWithDetail(empDataId);
+    	Jabatan jabatan = jabatanDao.getJabatanByIdWithDetail(empData.getJabatanByJabatanId().getId());
+    	List<EmpData> listAtasan = empDataDao.getAllDataByJabatanId(jabatan.getJabatan().getId(), Order.desc("joinDate"));
+    	
+    	WtPeriode wtPeriodePayrollActive = wtPeriodeDao.getEntityByPayrollTypeActive();
+    	Date basedDate = DateTimeUtil.addDays(wtPeriodePayrollActive.getFromPeriode(), -1);
+    	
+    	Calendar calendarStartDate = Calendar.getInstance();
+    	calendarStartDate.setTime(basedDate);
+    	calendarStartDate.set(Calendar.DAY_OF_MONTH, calendarStartDate.getActualMinimum(Calendar.DAY_OF_MONTH));
+    	
+    	Calendar calendarEndDate = Calendar.getInstance();
+    	calendarEndDate.setTime(basedDate);
+    	calendarEndDate.set(Calendar.DAY_OF_MONTH, calendarEndDate.getActualMaximum(Calendar.DAY_OF_MONTH));
+    	
+    	WtPeriode wtPeriod = wtPeriodeDao.getEntityByFromPeriodeAndUntilPeriode(calendarStartDate.getTime(), calendarEndDate.getTime());
+    	List<LogMonthEndPayroll> listMonthEndPayroll = logMonthEndPayrollDao.getListByEmpDataIdAndWtPeriodId(empDataId, wtPeriod.getId());
+    	
+    	model.setJabatanId(jabatan.getId());
+    	model.setJabatanName(jabatan.getName());
+    	model.setJabatanAtasanId(jabatan.getJabatan().getId());
+    	model.setJabatanAtasanName(jabatan.getJabatan().getName());
+    	model.setDepartmentId(jabatan.getDepartment().getId());
+    	model.setDepartmentName(jabatan.getDepartment().getDepartmentName());
+    	model.setBasicSalary(Double.valueOf(empData.getBasicSalaryDecrypted()));
+    	model.setListMonthEndPayroll(listMonthEndPayroll);
+    	
+    	if(!listAtasan.isEmpty()){
+    		EmpData atasan = empDataDao.getByEmpIdWithDetail(listAtasan.get(0).getId());
+    		model.setAtasanName(atasan.getBioData().getFullName());
+    	}
+		return model;
 	}
 
 }
