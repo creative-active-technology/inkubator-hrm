@@ -56,7 +56,9 @@ public class DeleteTempEmpShceduleListenerServiceImpl extends BaseSchedulerDinam
         List<TempJadwalKaryawan> dataToDelete = tempJadwalKaryawanDao.getByMonthDif(difNumberOfMonthTempEmployeeScheduleToDelete);
         LOGGER.warn("Size of Data to Delete " + dataToDelete.size());
         tempJadwalKaryawanDao.deleteBacth(dataToDelete);
+        tempJadwalKaryawanDao.deleteTempJadwalBeforeTMB();
         LOGGER.warn("Finish Running Delete Temporary Employee Schedule");
+
     }
 
     public void setDifNumberOfMonthTempEmployeeScheduleToDelete(int difNumberOfMonthTempEmployeeScheduleToDelete) {

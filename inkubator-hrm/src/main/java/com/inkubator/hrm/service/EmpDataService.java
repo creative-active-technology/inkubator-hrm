@@ -22,6 +22,7 @@ import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
+import com.inkubator.hrm.web.model.EmpEliminationModel;
 import com.inkubator.hrm.web.model.EmployeeRestModel;
 import com.inkubator.hrm.web.model.EmployeeResumeDashboardModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
@@ -202,5 +203,9 @@ public interface EmpDataService extends IService<EmpData> {
     public List<EmpData> getListEmpDataWhichNotExistOnFingerEmpMatch() throws Exception;
 
 	public List<ChartSeries> getEmployeePresentationAttendanceOnDashboard(Long companyId, List<Date> listDate, String datePattern) throws Exception;
+	
+	public List<EmpData> getAllDataByJabatanIdOrderDescJoinDate(Long id) throws Exception;
+	
+	public EmpEliminationModel generateEmpEliminationModelByEmpDataId(Long empDataId) throws Exception;
         
 }

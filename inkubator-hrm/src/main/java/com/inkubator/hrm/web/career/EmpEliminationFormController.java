@@ -11,28 +11,18 @@ import javax.faces.bean.ViewScoped;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.gson.Gson;
-import com.inkubator.exception.BussinessException;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.ApprovalDefinition;
 import com.inkubator.hrm.entity.AttendanceStatus;
 import com.inkubator.hrm.entity.CareerTerminationType;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.Leave;
-import com.inkubator.hrm.entity.RmbsSchemaListOfEmp;
-import com.inkubator.hrm.entity.RmbsSchemaListOfType;
-import com.inkubator.hrm.entity.RmbsType;
-import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.CareerEmpEliminationService;
 import com.inkubator.hrm.service.CareerTerminationTypeService;
-import com.inkubator.hrm.service.EmpCareerHistoryService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.EmpEliminationModel;
 import com.inkubator.hrm.web.model.LeaveModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
-import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -45,8 +35,6 @@ public class EmpEliminationFormController extends BaseController {
     private EmpEliminationModel model;
     @ManagedProperty(value = "#{careerEmpEliminationService}")
     private CareerEmpEliminationService careerEmpEliminationService;
-    @ManagedProperty(value = "#{empCareerHistoryService}")
-    private EmpCareerHistoryService empCareerHistoryService;
     @ManagedProperty(value = "#{empDataService}")
     private EmpDataService empDataService;
     @ManagedProperty(value = "#{careerTerminationTypeService}")
@@ -70,7 +58,8 @@ public class EmpEliminationFormController extends BaseController {
     @PreDestroy
     public void cleanAndExit() {
         careerEmpEliminationService = null;
-        empCareerHistoryService = null;
+        careerTerminationTypeService = null;
+        empDataService = null;
         model = null;
     }
 
@@ -148,26 +137,16 @@ public class EmpEliminationFormController extends BaseController {
 
     public void onChangeEmployee() {
         try {
-        	/*model.setRmbsTypeId(null);
-        	rmbsSchemaListOfType = null;
-        	totalRequestThisMoth = new BigDecimal(0);
-            RmbsSchemaListOfEmp rmbsSchemaListOfEmp = rmbsSchemaListOfEmpService.getEntityByEmpDataId(model.getEmpData().getId());
-            if (rmbsSchemaListOfEmp != null) {
-                rmbsSchema = rmbsSchemaListOfEmp.getRmbsSchema();
-                listRmbsType = Lambda.extract(rmbsSchemaListOfTypeService.getAllDataByRmbsSchemaId(rmbsSchema.getId()), Lambda.on(RmbsSchemaListOfType.class).getRmbsType());
-                listApprover = rmbsApplicationService.getListApproverByEmpDataId(model.getEmpData().getId());
-            } else {
-                rmbsSchema = null;
-                listRmbsType = new ArrayList<RmbsType>();
-                listApprover = new ArrayList<EmpData>();
-            }*/
+        	
+        	EmpData empData = empDataService.getByEmpIdWithDetail(model.getEmpData().getId());
+        	model = empDataService.generateEmpEliminationModelByEmpDataId(empData.getId());
+        	
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
     }
 
-    
-    public EmpEliminationModel getModel() {
+	public EmpEliminationModel getModel() {
         return model;
     }
 
@@ -177,10 +156,6 @@ public class EmpEliminationFormController extends BaseController {
     
 	public void setCareerEmpEliminationService(CareerEmpEliminationService careerEmpEliminationService) {
 		this.careerEmpEliminationService = careerEmpEliminationService;
-	}
-
-	public void setEmpCareerHistoryService(EmpCareerHistoryService empCareerHistoryService) {
-		this.empCareerHistoryService = empCareerHistoryService;
 	}
 
 	public void setEmpDataService(EmpDataService empDataService) {

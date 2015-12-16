@@ -57,5 +57,6 @@ public interface LogMonthEndPayrollService extends IService<LogMonthEndPayroll> 
         public List<ReportDataKomponenModel> getReportDataKomponenByParam(ReportDataComponentSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
         public Long getTotalReportDataKomponenByParam(ReportDataComponentSearchParameter searchParameter);
-
+    
+   public List<LogMonthEndPayroll> getListByEmpDataIdAndWtPeriodId(Long empDataId, Long wtPeriodeId) throws Exception;
 }

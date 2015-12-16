@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matchers;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -1020,6 +1021,14 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
 	  	hbm = this.setValueQueryByParamForReportSalaryNote(hbm, searchParameter);
 	
 	  	return hbm.list();
+	}
+
+	@Override
+	public List<LogMonthEndPayroll> getListByEmpDataIdAndWtPeriodId(Long empDataId, Long wtPeriodeId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empDataId", empDataId));
+        criteria.add(Restrictions.eq("periodeId", wtPeriodeId));
+        return criteria.list();
 	}
     
 

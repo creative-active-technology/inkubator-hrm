@@ -31,6 +31,7 @@ public class CareerEmpElimination  implements java.io.Serializable {
      private EmpData empData;
      private Long pendingLoan;
      private Long separationPay;
+     private String reason;
      private Date createdOn;
      private String createdBy;
      private Date updatedOn;
@@ -126,8 +127,20 @@ public class CareerEmpElimination  implements java.io.Serializable {
     public void setSeparationPay(Long separationPay) {
         this.separationPay = separationPay;
     }
+    
+    
+    @Column(name = "reason", length = 225)
+    public String getReason() {
+		return reason;
+	}
 
-    @Temporal(TemporalType.TIMESTAMP)
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
+
+	@Temporal(TemporalType.TIMESTAMP)
     @Column(name="created_on", length=19)
     public Date getCreatedOn() {
         return this.createdOn;
