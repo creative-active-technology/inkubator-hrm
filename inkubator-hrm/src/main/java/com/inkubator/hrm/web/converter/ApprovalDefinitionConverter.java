@@ -67,6 +67,9 @@ public class ApprovalDefinitionConverter implements Converter{
 			case HRMConstant.EMPLOYEE_CAREER_TRANSITION							:
 				messages = resourceBundle.getString("emp_career_transition.career_transition");
 				break;
+			case HRMConstant.EMPLOYEE_ELIMINATION							:
+				messages = resourceBundle.getString("approvaldefinition.process_request_career_elimination");
+				break;
 			case HRMConstant.APPROVAL_PROCESS				:
 				messages = resourceBundle.getString("approvaldefinition.approval_process");
 				break;

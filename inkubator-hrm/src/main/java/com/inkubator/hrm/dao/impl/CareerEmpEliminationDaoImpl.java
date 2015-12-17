@@ -33,7 +33,6 @@ public class CareerEmpEliminationDaoImpl extends IDAOImpl<CareerEmpElimination> 
 	@Override
 	public List<EmpEliminationViewModel> getListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
 		final StringBuilder query = new StringBuilder("SELECT careerEmpElimination.id AS id,");
-		query.append(" careerTransition.id AS careerTransitionId,");
 		query.append(" wtPeriode.id AS lastWtPeriodId,");
 		query.append(" wtPeriode.fromPeriode AS startDateLastWtPeriod,");
 		query.append(" empData.id AS empDataId,");
@@ -43,12 +42,12 @@ public class CareerEmpEliminationDaoImpl extends IDAOImpl<CareerEmpElimination> 
 		query.append(" empData.nik AS nik, ");
 		query.append(" jabatan.name AS jabatanName ");
 		query.append(" FROM CareerEmpElimination careerEmpElimination");
-		query.append(" INNER JOIN careerEmpElimination.careerTransition careerTransition");
+		query.append(" INNER JOIN careerEmpElimination.careerTerminationType careerTerminationType");
 		query.append(" INNER JOIN careerEmpElimination.empData empData");
 		query.append(" INNER JOIN empData.bioData bioData");
 		query.append(" INNER JOIN empData.jabatanByJabatanId jabatan");
 		query.append(" INNER JOIN careerEmpElimination.wtPeriode wtPeriode");
-		query.append(" INNER JOIN careerTransition.systemCareerConst systemCareerConst");
+		query.append(" INNER JOIN careerTerminationType.systemCareerConst systemCareerConst");
 		query.append(" WHERE systemCareerConst.isWork = 0 ");
 		
 		//filter by search param
@@ -66,12 +65,12 @@ public class CareerEmpEliminationDaoImpl extends IDAOImpl<CareerEmpElimination> 
 	public Long getTotalListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter) {
 		final StringBuilder query = new StringBuilder("SELECT COUNT(*) ");
 		query.append(" FROM CareerEmpElimination careerEmpElimination");
-		query.append(" INNER JOIN careerEmpElimination.careerTransition careerTransition");
+		query.append(" INNER JOIN careerEmpElimination.careerTerminationType careerTerminationType");
 		query.append(" INNER JOIN careerEmpElimination.empData empData");
 		query.append(" INNER JOIN empData.bioData bioData");
 		query.append(" INNER JOIN empData.jabatanByJabatanId jabatan");
 		query.append(" INNER JOIN careerEmpElimination.wtPeriode wtPeriode");
-		query.append(" INNER JOIN careerTransition.systemCareerConst systemCareerConst");
+		query.append(" INNER JOIN careerTerminationType.systemCareerConst systemCareerConst");
 		query.append(" WHERE systemCareerConst.isWork = 0 ");
 		
 		//filter by search param

@@ -19,6 +19,7 @@ public class EmpEliminationModel implements Serializable {
     private Long jabatanAtasanId;
     private Long departmentId;
     private Long terminationTypeId;
+    private Long wtPeriodeId;
     private String jabatanName;
     private String jabatanAtasanName;
     private String atasanName;
@@ -26,6 +27,7 @@ public class EmpEliminationModel implements Serializable {
     private String reason;
     private Double totalOutstandingLoan;
     private Double separationPay;
+    private Double remainSeparationPay;
     private List<LogMonthEndPayroll> listMonthEndPayrollAll = new ArrayList<LogMonthEndPayroll>();
     private List<LogMonthEndPayroll> listMonthEndPayrollSubsidi = new ArrayList<LogMonthEndPayroll>();
     private List<LogMonthEndPayroll> listMonthEndPayrollTunjangan = new ArrayList<LogMonthEndPayroll>();
@@ -140,6 +142,18 @@ public class EmpEliminationModel implements Serializable {
 	}
 	public void setListLoanModel(List<LoanUnpaidForEmpTerminationViewModel> listLoanModel) {
 		this.listLoanModel = listLoanModel;
+	}
+	public Double getRemainSeparationPay() {
+		return remainSeparationPay;
+	}
+	public void setRemainSeparationPay(Double remainSeparationPay) {
+		this.remainSeparationPay = remainSeparationPay;
+	}
+	public Long getWtPeriodeId() {
+		return wtPeriodeId;
+	}
+	public void setWtPeriodeId(Long wtPeriodeId) {
+		this.wtPeriodeId = wtPeriodeId;
 	}
 	
 }

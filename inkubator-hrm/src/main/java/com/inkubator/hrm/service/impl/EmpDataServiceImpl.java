@@ -1457,7 +1457,9 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     			.collect(Collectors.toList());
     	
     	List<LoanUnpaidForEmpTerminationViewModel> listLoanModel = generateListLoanUnpaidModel(empDataId);
-    	
+    	Double totalOutstandingLoan = listLoanModel.stream().mapToDouble((loanModel) -> loanModel.getTotalOutstanding()).sum();
+    	System.out.println("totalOutstandingLoan : " + totalOutstandingLoan);
+    	model.setWtPeriodeId(firstPreviousPeriodFromCurrentPeriod.getId());
     	model.setJabatanId(jabatan.getId());
     	model.setJabatanName(jabatan.getName());
     	model.setJabatanAtasanId(jabatan.getJabatan().getId());
@@ -1469,6 +1471,10 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     	model.setListMonthEndPayrollSubsidi(listMonthEndSubsidi);
     	model.setListMonthEndPayrollTunjangan(listMonthEndTunjangan);
     	model.setListLoanModel(listLoanModel);
+    	model.setTotalOutstandingLoan(totalOutstandingLoan);
+    	model.setSeparationPay(0.0);
+    	model.setRemainSeparationPay(model.getSeparationPay() - model.getTotalOutstandingLoan());
+    	
     	
     	if(!listAtasan.isEmpty()){
     		EmpData atasan = empDataDao.getByEmpIdWithDetail(listAtasan.get(0).getId());

@@ -12,9 +12,11 @@ import javax.faces.bean.ViewScoped;
 import org.apache.commons.lang3.StringUtils;
 
 import com.inkubator.hrm.entity.AttendanceStatus;
+import com.inkubator.hrm.entity.CareerEmpElimination;
 import com.inkubator.hrm.entity.CareerTerminationType;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.Leave;
+import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.CareerEmpEliminationService;
 import com.inkubator.hrm.service.CareerTerminationTypeService;
 import com.inkubator.hrm.service.EmpDataService;
@@ -76,23 +78,24 @@ public class EmpEliminationFormController extends BaseController {
 
 
 	public void doReset() {
-       
+       model = new EmpEliminationModel();
+       isEmployeeSelected = Boolean.FALSE;
     }
 
     public String doSave() {
-       /* Leave leave = getEntityFromViewModel(model);
-        try {
+    	CareerEmpElimination careerEmpElimination = getEntityFromViewModel(model);
+        /*try {
             if (isUpdate) {
-                leaveService.update(leave, appDefs);
+                leaveService.update(careerEmpElimination, appDefs);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
 
             } else {
-                leaveService.save(leave, appDefs);
+                leaveService.save(careerEmpElimination, appDefs);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             }
-            return "/protected/working_time/leave_detail.htm?faces-redirect=true&execution=e" + leave.getId();
+            return "/protected/working_time/leave_detail.htm?faces-redirect=true&execution=e" + careerEmpElimination.getId();
         } catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
@@ -101,34 +104,18 @@ public class EmpEliminationFormController extends BaseController {
         return null;
     }
 
-    private Leave getEntityFromViewModel(LeaveModel model) {
-        Leave leave = new Leave();
+    private CareerEmpElimination getEntityFromViewModel(EmpEliminationModel model) {
+    	CareerEmpElimination careerEmpElimination = new CareerEmpElimination();
         if (model.getId() != null) {
-            leave.setId(model.getId());
+            careerEmpElimination.setId(model.getId());
         }
-        leave.setCode(model.getCode());
-        leave.setName(model.getName());
-        leave.setDescription(model.getDescription());
-        leave.setDayType(model.getDayType());
-        leave.setCalculation(model.getCalculation());
-        leave.setAttendanceStatus(new AttendanceStatus(model.getAttendanceStatusId()));
-        leave.setPeriodBase(model.getPeriodBase());
-        leave.setAvailability(model.getAvailability());
-        leave.setAvailabilityAtSpecificDate(model.getAvailabilityAtSpecificDate());
-        leave.setIsTakingLeaveToNextYear(model.getIsTakingLeaveToNextYear());
-        leave.setMaxTakingLeaveToNextYear(model.getMaxTakingLeaveToNextYear());
-        leave.setBackwardPeriodLimit(model.getBackwardPeriodLimit());
-        leave.setIsAllowedMinus(model.getIsAllowedMinus());
-        leave.setMaxAllowedMinus(model.getMaxAllowedMinus());
-        leave.setEffectiveFrom(model.getEffectiveFrom());
-        leave.setSubmittedLimit(model.getSubmittedLimit());
-        leave.setIsQuotaReduction(model.getIsQuotaReduction());
-        leave.setEndOfPeriod(model.getEndOfPeriod());
-        leave.setEndOfPeriodMonth(model.getEndOfPeriodMonth());
-        leave.setIsOnlyOncePerEmployee(model.getIsOnlyOncePerEmployee());
-        leave.setIsActive(model.getIsActive());
-        leave.setQuotaPerPeriod(model.getQuotaPerPeriod());
-        return leave;
+        careerEmpElimination.setCareerTerminationType(new CareerTerminationType(model.getTerminationTypeId()));
+        careerEmpElimination.setEmpData(new EmpData(model.getEmpData().getId()));
+        careerEmpElimination.setPendingLoan(model.getTotalOutstandingLoan());
+        careerEmpElimination.setReason(model.getReason());
+        careerEmpElimination.setSeparationPay(model.getSeparationPay());
+        careerEmpElimination.setWtPeriode(new WtPeriode(model.getWtPeriodeId()));
+        return careerEmpElimination;
     }
 
    
@@ -145,6 +132,11 @@ public class EmpEliminationFormController extends BaseController {
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
+    }
+    
+    public void onChangeSeparationPay(){
+    	Double remainSeparationPay = model.getSeparationPay() - model.getTotalOutstandingLoan();
+    	model.setRemainSeparationPay(remainSeparationPay);
     }
 
 	public EmpEliminationModel getModel() {

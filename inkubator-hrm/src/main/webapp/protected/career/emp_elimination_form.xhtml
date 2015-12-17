@@ -43,7 +43,7 @@
                                                     var="empData" itemValue="#{empData}" itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.middleName} #{empData.bioData.lastName}"
                                                     converter="empDataConverter" styleClass="isitext_hrm" size="41" 
                                                     required="true" >
-                                        <p:ajax event="itemSelect" listener="#{empEliminationFormController.onChangeEmployee()}" update="jabatanId,bossNameid,bossJabatanid,departmentId,fieldSetDataSalary, panelTunjangan,panelPotongan,panelSubsidi,panelLoanDetail" />
+                                        <p:ajax event="itemSelect" listener="#{empEliminationFormController.onChangeEmployee()}" update="jabatanId,bossNameid,bossJabatanid,departmentId,fieldSetDataSalary, panelTunjangan,panelPotongan,panelSubsidi,panelLoanDetail,totalOutstandingLoanId,separationPayId,remainSeparationPayId" />
                                     </p:autoComplete>
                                     <p:message for="employeeId"/>
 	                            </p:column>
@@ -208,9 +208,8 @@
                                 </p:column>
                                 <p:column id="listLoanId" style="width: 75%">
                                 	<h:panelGrid  columns="1" style="margin-left: -10px;">
-                                        <p:dataTable  id="tableLoanId" var="data"  value="#{empEliminationFormController.model.listLoanModel}" lazy="false" paginator="false" pageLinks="7"
-                                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
-                                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                        <p:dataTable  id="tableLoanId" var="data"  value="#{empEliminationFormController.model.listLoanModel}" lazy="false" paginator="false" 
+                                                        style="margin-top: 10px;margin-bottom: 10px"
                                                       rowIndexVar="no"> 
                                             <p:column style="text-align: center;width: 5%">
                                                 <f:facet name="header">  
@@ -223,6 +222,7 @@
                                                     <h:outputText value="#{appmsg['loan.loan_new_type_name']}"/>
                                                 </f:facet>
                                                 <h:outputLabel value= "#{data.loanNewTypeName}" />
+                                               
                                             </p:column>
                                             <p:column style="text-align: center;width: 20%">
                                                 <f:facet name="header">  
@@ -231,6 +231,7 @@
                                                 <h:outputLabel value= "#{data.totalPrincipal}" >
                                                 	<f:convertNumber pattern="###,###" type="currency"/>
                                                 </h:outputLabel>
+                                               
                                             </p:column>
                                             <p:column style="text-align: center;width: 20%">
                                                 <f:facet name="header">  
@@ -239,18 +240,59 @@
                                                 <h:outputLabel value= "#{data.totalOutstanding}" >
                                                 	<f:convertNumber pattern="###,###" type="currency"/>
                                                 </h:outputLabel>
+                                               
                                             </p:column>
                                             <p:column style="text-align: center;width: 20%">
                                                 <f:facet name="header">  
                                                     <h:outputText value="#{appmsg['loan.termin_progress']}"/>
                                                 </f:facet>
                                                 <h:outputLabel value= "#{data.lastPaidTermin} / #{data.totalNumberOfInstallment}" />
-                                                	
+                                                
                                             </p:column>
                                         </p:dataTable>
                                     </h:panelGrid> 
                                 </p:column>
                             </p:row>
+                             <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['career.employee_elimination_total_loan_outstanding']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	 <p:inputText id="totalOutstandingLoanId" title="#{appmsg['career.employee_elimination_total_loan_outstanding']}" value="#{empEliminationFormController.model.totalOutstandingLoan}"  
+                                                 style="text-align: right;width: 290px" readonly="true" styleClass="isitext_hrm" >
+	                                     <f:validateDoubleRange/>
+	                                     <f:convertNumber />
+	                                 </p:inputText>
+	                                <p:message for="totalOutstandingLoanId"/>
+	                            </p:column>
+	                        </p:row> 
+                            <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="separationPayId" value="#{appmsg['career.employee_elimination_pesangon']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	 <p:inputText id="separationPayId"  title="#{appmsg['career.employee_elimination_pesangon']}" value="#{empEliminationFormController.model.separationPay}"  
+                                                 style="text-align: right;width: 290px" required="true" styleClass="isitext_hrm" >
+                                         <p:ajax listener="#{empEliminationFormController.onChangeSeparationPay()}"  update="remainSeparationPayId"/>
+	                                     <f:validateDoubleRange minimum="0"/>
+	                                     <f:convertNumber groupingUsed="true" type="currency" pattern="###.###" minFractionDigits="2"/>
+	                                 </p:inputText>
+	                                <p:message for="separationPayId"/>
+	                            </p:column>
+	                        </p:row> 
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['career.employee_elimination_remainder_payable']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	 <p:inputText id="remainSeparationPayId" title="#{appmsg['career.employee_elimination_remainder_payable']}" value="#{empEliminationFormController.model.remainSeparationPay}"  
+                                                 style="text-align: right;width: 290px" readonly="true" styleClass="isitext_hrm" >
+	                                     <f:validateDoubleRange/>
+	                                     <f:convertNumber minFractionDigits="2"/>
+	                                 </p:inputText>
+	                                <p:message for="remainSeparationPayId"/>
+	                            </p:column>
+	                        </p:row>
 	                 	 	</p:panelGrid>
 	                 	 </p:fieldset>
 	                 	

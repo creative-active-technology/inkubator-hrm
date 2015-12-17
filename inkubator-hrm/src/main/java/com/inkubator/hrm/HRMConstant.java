@@ -189,6 +189,7 @@ public class HRMConstant {
     public static final String OVERTIME = "OVERTIME";
     public static final String VACANCY_ADVERTISEMENT = "VACANCY_ADVERTISEMENT";
     public static final String EMPLOYEE_CAREER_TRANSITION = "EMPLOYEE_CAREER_TRANSITION";
+    public static final String EMPLOYEE_ELIMINATION = "EMPLOYEE_ELIMINATION";
     public static final String APPROVAL_PROCESS = "APPROVAL_PROCESS";
     public static final String ON_APPROVE_INFO = "ON_APPROVE_INFO";
     public static final String ON_REJECT_INFO = "ON_REJECT_INFO";
