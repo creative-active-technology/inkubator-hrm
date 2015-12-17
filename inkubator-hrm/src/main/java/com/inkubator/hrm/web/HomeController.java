@@ -113,6 +113,7 @@ public class HomeController extends BaseController {
     }
 
     public void doAnnouncementExecute() {
+        System.out.println(" Eksekusisisi ");
         try {
             announcementLogService.execute(announcementLog);
             announcementLog = announcementLogService.getEntityWebView(announcementLog.getEmpData().getId(), announcementLog.getPlanExecutionDate());
