@@ -29,4 +29,5 @@ public interface LoanNewApplicationInstallmentDao extends IDAO<LoanNewApplicatio
 	
 	public List<LoanNewApplicationInstallment> getListByLoanNewApplicationId(Integer loanNewApplicationId);
 	
+	public LoanNewApplicationInstallment getLastPaidTerminInstallment(Integer LoanNewApplicationid);
 }

@@ -24,10 +24,13 @@ public class EmpEliminationModel implements Serializable {
     private String atasanName;
     private String departmentName;
     private String reason;
-    private Double basicSalary;
-    private List<LogMonthEndPayroll> listMonthEndPayroll = new ArrayList<LogMonthEndPayroll>();
+    private Double totalOutstandingLoan;
+    private Double separationPay;
+    private List<LogMonthEndPayroll> listMonthEndPayrollAll = new ArrayList<LogMonthEndPayroll>();
+    private List<LogMonthEndPayroll> listMonthEndPayrollSubsidi = new ArrayList<LogMonthEndPayroll>();
     private List<LogMonthEndPayroll> listMonthEndPayrollTunjangan = new ArrayList<LogMonthEndPayroll>();
     private List<LogMonthEndPayroll> listMonthEndPayrollPotongan = new ArrayList<LogMonthEndPayroll>();
+    private List<LoanUnpaidForEmpTerminationViewModel> listLoanModel = new ArrayList<LoanUnpaidForEmpTerminationViewModel>();
 	public Long getId() {
 		return id;
 	}
@@ -95,17 +98,24 @@ public class EmpEliminationModel implements Serializable {
 	public void setTerminationTypeId(Long terminationTypeId) {
 		this.terminationTypeId = terminationTypeId;
 	}
-	public Double getBasicSalary() {
-		return basicSalary;
+	
+	public Double getTotalOutstandingLoan() {
+		return totalOutstandingLoan;
 	}
-	public void setBasicSalary(Double basicSalary) {
-		this.basicSalary = basicSalary;
+	public void setTotalOutstandingLoan(Double totalOutstandingLoan) {
+		this.totalOutstandingLoan = totalOutstandingLoan;
 	}
-	public List<LogMonthEndPayroll> getListMonthEndPayroll() {
-		return listMonthEndPayroll;
+	public Double getSeparationPay() {
+		return separationPay;
 	}
-	public void setListMonthEndPayroll(List<LogMonthEndPayroll> listMonthEndPayroll) {
-		this.listMonthEndPayroll = listMonthEndPayroll;
+	public void setSeparationPay(Double separationPay) {
+		this.separationPay = separationPay;
+	}
+	public List<LogMonthEndPayroll> getListMonthEndPayrollAll() {
+		return listMonthEndPayrollAll;
+	}
+	public void setListMonthEndPayrollAll(List<LogMonthEndPayroll> listMonthEndPayrollAll) {
+		this.listMonthEndPayrollAll = listMonthEndPayrollAll;
 	}
 	public List<LogMonthEndPayroll> getListMonthEndPayrollTunjangan() {
 		return listMonthEndPayrollTunjangan;
@@ -119,6 +129,17 @@ public class EmpEliminationModel implements Serializable {
 	public void setListMonthEndPayrollPotongan(List<LogMonthEndPayroll> listMonthEndPayrollPotongan) {
 		this.listMonthEndPayrollPotongan = listMonthEndPayrollPotongan;
 	}
-    
+	public List<LogMonthEndPayroll> getListMonthEndPayrollSubsidi() {
+		return listMonthEndPayrollSubsidi;
+	}
+	public void setListMonthEndPayrollSubsidi(List<LogMonthEndPayroll> listMonthEndPayrollSubsidi) {
+		this.listMonthEndPayrollSubsidi = listMonthEndPayrollSubsidi;
+	}
+	public List<LoanUnpaidForEmpTerminationViewModel> getListLoanModel() {
+		return listLoanModel;
+	}
+	public void setListLoanModel(List<LoanUnpaidForEmpTerminationViewModel> listLoanModel) {
+		this.listLoanModel = listLoanModel;
+	}
 	
 }
