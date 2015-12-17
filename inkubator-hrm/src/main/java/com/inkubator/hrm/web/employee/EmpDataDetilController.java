@@ -313,7 +313,7 @@ public class EmpDataDetilController extends BaseController {
     }
 
     public void doSelectEmpCardName() {
-        System.out.println(" eksekusi kartu nama");
+     
         try {
             selectedEmpData = empDataService.getByEmpIdWithDetail(selectedEmpData.getId());
         } catch (Exception e) {

@@ -13,12 +13,15 @@ import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.util.CustomAuthenticationSuccessHandler;
 import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.util.StringUtils;
+import com.inkubator.webcore.WebCoreConstant;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -62,7 +65,6 @@ public class LoginController extends BaseController {
     private AuthenticationManager authenticationManager;
     @ManagedProperty(value = "#{myHandlerSuccessLogin}")
     private CustomAuthenticationSuccessHandler myHandlerSuccessLogin;
-    
 
     @PostConstruct
     @Override
@@ -77,6 +79,7 @@ public class LoginController extends BaseController {
         }
         FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(selectedLanguage));
         super.initialization();
+        
         if (device.isMobile()) {
             LOGGER.info("Mobile");
             isMobile = Boolean.TRUE;
@@ -93,6 +96,11 @@ public class LoginController extends BaseController {
         LOGGER.info("Data " + userAgent);
         if (StringUtils.isContain(userAgent, "Edge")) {
             info = ResourceBundleUtil.getAsString("browser.info_invalid");
+        }
+        try {
+            userService.licenseUpdate(WebCoreConstant.LICENSE_ACTIVE, WebCoreConstant.IIT_OPTIMAHR);
+        } catch (Exception ex) {
+          LOGGER.error(ex, ex);
         }
     }
 
@@ -172,7 +180,7 @@ public class LoginController extends BaseController {
         }
         FacesUtil.setSessionAttribute(HRMConstant.LOGIN_DATE, dateFormatter.getDateFullAsStringsWithActiveLocale(new Date(),
                 new Locale(selectedLanguage)));
-        System.out.println(" tanggal nya  : "+dateFormatter.getDateFullAsStringsWithActiveLocale(new Date(),  new Locale(selectedLanguage)));
+
         FacesUtil.getFacesContext().responseComplete();
         return null;
     }
@@ -240,5 +248,4 @@ public class LoginController extends BaseController {
         this.myHandlerSuccessLogin = myHandlerSuccessLogin;
     }
 
-   
 }

@@ -40,13 +40,14 @@ public class EmpEliminationFormController extends BaseController {
     @ManagedProperty(value = "#{careerTerminationTypeService}")
     private CareerTerminationTypeService careerTerminationTypeService;
     private List<CareerTerminationType> listTerminationType;
+    private Boolean isEmployeeSelected;
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
         try {
-
             model = new EmpEliminationModel();
+            isEmployeeSelected = Boolean.FALSE;
             String param = FacesUtil.getRequestParameter("execution");
             listTerminationType = careerTerminationTypeService.getAllData();
             
@@ -140,7 +141,7 @@ public class EmpEliminationFormController extends BaseController {
         	
         	EmpData empData = empDataService.getByEmpIdWithDetail(model.getEmpData().getId());
         	model = empDataService.generateEmpEliminationModelByEmpDataId(empData.getId());
-        	
+        	isEmployeeSelected = Boolean.TRUE;
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
@@ -172,6 +173,14 @@ public class EmpEliminationFormController extends BaseController {
 
 	public void setListTerminationType(List<CareerTerminationType> listTerminationType) {
 		this.listTerminationType = listTerminationType;
+	}
+
+	public Boolean getIsEmployeeSelected() {
+		return isEmployeeSelected;
+	}
+
+	public void setIsEmployeeSelected(Boolean isEmployeeSelected) {
+		this.isEmployeeSelected = isEmployeeSelected;
 	}
 	
 	

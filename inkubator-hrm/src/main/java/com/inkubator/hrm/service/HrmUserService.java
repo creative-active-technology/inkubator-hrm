@@ -54,6 +54,8 @@ public interface HrmUserService extends IService<HrmUser> {
     public String getCompanyName(String userId) throws Exception;
 
     public HrmUser getByNameWithRoles(String userId) throws Exception;
+    
+    public void licenseUpdate(String status, String name)throws Exception;
 
 
 }

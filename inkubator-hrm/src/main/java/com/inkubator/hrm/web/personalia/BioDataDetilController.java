@@ -286,7 +286,7 @@ public class BioDataDetilController extends BaseController {
             //Inisialisasi Riwayat Dinas
             businessTravelList = businessTravelService.getAllDataByEmpDataId(selectedEmpData.getId());
             
-            System.out.println("setelah inisialisasi list, dan sebelum looping ");
+      
             //Looping List Dinas dan hitung Total Biaya dari masing - masing Dinas
             for (BusinessTravel businessTravel : businessTravelList) {
                 countTotalAmoutOfBusinessTravel(businessTravel);
@@ -300,7 +300,7 @@ public class BioDataDetilController extends BaseController {
                 }
             }
             
-            System.out.println("setelah inisialisasi list dan  looping ");
+      
 
         } catch (Exception ex) {
             LOGGER.error("Error", ex);

@@ -67,13 +67,13 @@ public class IpPermitFormController extends BaseController {
     public void doSave() {
        
         IpPermit ipPermit = getEntityFromViewModel(model);
-        System.out.println(ipPermit.getUntilAddress2() + " masuk save");
+   
         try {
             if (isUpdate) {
                 service.update(ipPermit);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.UPDATE_CONDITION);
             } else {
-            	System.out.println("masuk save else");
+            	
                 service.save(ipPermit);
                 RequestContext.getCurrentInstance().closeDialog(HRMConstant.SAVE_CONDITION);
             }

@@ -9,9 +9,13 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.LicenseAppDao;
 import com.inkubator.hrm.entity.LicenseApp;
 import com.inkubator.hrm.service.LicenseAppService;
+import com.inkubator.webcore.model.LiscenseModel;
+import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.LicenseUtil;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -190,9 +194,11 @@ public class LicenseAppServiceImpl extends IServiceImpl implements LicenseAppSer
     }
 
     @Override
-    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public LicenseApp getByStatusAndName(String status, String name)  throws Exception{
-        return licenseAppDao.getByStatusAndName(status,name);
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Cacheable(value = "checkLicense")
+    public LicenseApp getByStatusAndName(String status, String name) throws Exception {;
+        return licenseAppDao.getByStatusAndName(status, name);
+
     }
 
 }

@@ -12,7 +12,6 @@ import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.LeaveImplementationDateService;
 import com.inkubator.hrm.service.LoginHistoryService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
-import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.util.StringUtils;
 import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.LeaveImplementationDateModel;
@@ -162,7 +161,8 @@ public class HomeMobileController extends BaseController {
             barChartModel = new BarChartModel();
             barChartModel.setStacked(false);
             barChartModel.setLegendPosition("ne");
-            barChartModel.setLegendCols(6);
+            barChartModel.setLegendCols(4);
+            barChartModel.setLegendRows(2);
             barChartModel.setSeriesColors("66cc00,629de1,003366,990000,cccc00,6600cc");
             barChartModel.setShowDatatip(true);
             barChartModel.setShadow(true);
@@ -325,6 +325,22 @@ public class HomeMobileController extends BaseController {
         leaveImplementationDateService = null;
         empDataService = null;
         loginHistoryService = null;
+        totalRequestHistory = null;
+        totalPendingTask = null;
+        totalPendingRequest = null;
+        totalLeaveType = null;
+        pieModel = null;
+        lastUpdateEmpDistByAge = null;
+        totalMale=null;
+        totalFemale=null;
+        lastUpdateEmpDistByGender=null;
+        presentationAttendancePerDayLabel=null;
+        presentationAttendancePerDayBarChartModel=null;
+        barChartDistribusiByDept=null;
+        lastUpdateEmpDistByDepartment=null;
+        loginHistories=null;
+        barChartModel=null;
+
     }
 
     public BarChartModel getBarChartModel() {

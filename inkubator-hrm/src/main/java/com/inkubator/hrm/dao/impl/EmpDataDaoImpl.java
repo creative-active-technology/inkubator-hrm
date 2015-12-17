@@ -2288,7 +2288,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 	}
 	
     public Long getTotalAllEmployeeForRecruitAggrementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter){
-    	System.out.println(searchParameter.getEmpDataName() + " hohoho");
+    	
     	final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT emp.id as employeeId, bio.id as bioDataId, bio.first_name as firstName, bio.last_name as lastName, jabatan.name as jabatanName, pangkat.pangkat_name as pangkatName, ");
         query.append(" (SELECT pangkat2.pangkat_name FROM pangkat pangkat2");
 		query.append(" WHERE pangkat2.level < pangkat.level ORDER BY LEVEL DESC LIMIT 1) as jabatanDituju,");

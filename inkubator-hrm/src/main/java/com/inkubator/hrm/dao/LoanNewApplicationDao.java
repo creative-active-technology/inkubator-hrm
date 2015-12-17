@@ -54,4 +54,6 @@ public interface LoanNewApplicationDao extends IDAO<LoanNewApplication> {
         
         public LoanNewApplication getEntityWithDetailByActivityNumber(String activityNumber);
         
+        public List<LoanNewApplication> getListUnpaidLoanByEmpDataId(Long empDataId);
+        
 }

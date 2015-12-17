@@ -423,4 +423,18 @@ public class LoanNewApplicationDaoImpl extends IDAOImpl<LoanNewApplication> impl
         criteria.setFetchMode("loanNewType", FetchMode.JOIN);
         return (LoanNewApplication) criteria.uniqueResult();
 	}
+
+	@Override
+	public List<LoanNewApplication> getListUnpaidLoanByEmpDataId(Long empDataId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("loanNewType", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.add(Restrictions.ne("loanStatus", HRMConstant.LOAN_PAID));
+        criteria.add(Restrictions.ne("loanStatus", HRMConstant.LOAN_CANCELED));
+        criteria.add(Restrictions.ne("loanStatus", HRMConstant.LOAN_REJECTED));
+        criteria.add(Restrictions.ne("loanStatus", HRMConstant.LOAN_UNDISBURSED));
+        return criteria.list();
+	}
 }
