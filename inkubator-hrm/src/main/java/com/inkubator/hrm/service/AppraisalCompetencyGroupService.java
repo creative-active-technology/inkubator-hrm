@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.AppraisalCompetencyGroup;
+import com.inkubator.hrm.entity.KlasifikasiKerja;
 import com.inkubator.hrm.web.search.CompetencyGroupSearchParameter;
 
 /**
@@ -18,6 +19,10 @@ public interface AppraisalCompetencyGroupService extends IService<AppraisalCompe
 	
 	public Long getTotalByParam(CompetencyGroupSearchParameter searchParameter)  throws Exception;
 
-	public AppraisalCompetencyGroup getEntityByIdWithDetail(Long id);
+	public AppraisalCompetencyGroup getEntityByIdWithDetail(Long id) throws Exception;
+
+	public void update(AppraisalCompetencyGroup competencyGroup, List<KlasifikasiKerja> listKlasifikasiKerja) throws Exception;
+
+	public void save(AppraisalCompetencyGroup competencyGroup, List<KlasifikasiKerja> listKlasifikasiKerja) throws Exception;
 	
 }

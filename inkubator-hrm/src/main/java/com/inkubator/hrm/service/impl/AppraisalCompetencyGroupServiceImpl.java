@@ -1,5 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -10,11 +11,21 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.AppraisalCompetencyGroupDao;
+import com.inkubator.hrm.dao.AppraisalCompetencyGroupKlasifikasiKerjaDao;
+import com.inkubator.hrm.dao.AppraisalCompetencyTypeDao;
+import com.inkubator.hrm.dao.KlasifikasiKerjaDao;
 import com.inkubator.hrm.entity.AppraisalCompetencyGroup;
+import com.inkubator.hrm.entity.AppraisalCompetencyGroupKlasifikasiKerja;
+import com.inkubator.hrm.entity.AppraisalCompetencyGroupKlasifikasiKerjaId;
+import com.inkubator.hrm.entity.AppraisalCompetencyType;
+import com.inkubator.hrm.entity.KlasifikasiKerja;
 import com.inkubator.hrm.service.AppraisalCompetencyGroupService;
 import com.inkubator.hrm.web.search.CompetencyGroupSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -26,6 +37,12 @@ public class AppraisalCompetencyGroupServiceImpl extends IServiceImpl implements
 
 	@Autowired
 	private AppraisalCompetencyGroupDao appraisalCompetencyGroupDao;
+	@Autowired
+	private AppraisalCompetencyGroupKlasifikasiKerjaDao appraisalCompetencyGroupKlasifikasiKerjaDao;
+	@Autowired
+	private AppraisalCompetencyTypeDao appraisalCompetencyTypeDao;
+	@Autowired
+	private KlasifikasiKerjaDao klasifikasiKerjaDao;
 	
 	@Override
 	public AppraisalCompetencyGroup getEntiyByPK(String id) throws Exception {
@@ -136,8 +153,9 @@ public class AppraisalCompetencyGroupServiceImpl extends IServiceImpl implements
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void delete(AppraisalCompetencyGroup entity) throws Exception {
-		// TODO Auto-generated method stub
+		appraisalCompetencyGroupDao.delete(entity);
 
 	}
 
@@ -239,8 +257,79 @@ public class AppraisalCompetencyGroupServiceImpl extends IServiceImpl implements
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public AppraisalCompetencyGroup getEntityByIdWithDetail(Long id) {
+	public AppraisalCompetencyGroup getEntityByIdWithDetail(Long id) throws Exception {
 		return appraisalCompetencyGroupDao.getEntityByIdWithDetail(id);
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void update(AppraisalCompetencyGroup competencyGroup, List<KlasifikasiKerja> listKlasifikasiKerja) throws Exception {
+		// check duplicate name
+		long totalDuplicates = appraisalCompetencyGroupDao.getTotalByNameAndNotId(competencyGroup.getName(), competencyGroup.getId());
+		if (totalDuplicates > 0) {
+			throw new BussinessException("competency_group.error_name_duplicate");
+		}
+		// check duplicate code
+		totalDuplicates = appraisalCompetencyGroupDao.getTotalByCodeAndNotId(competencyGroup.getCode(), competencyGroup.getId());
+		if (totalDuplicates > 0) {
+			throw new BussinessException("competency_group.error_code_duplicate");
+		}
+		
+		AppraisalCompetencyGroup update = appraisalCompetencyGroupDao.getEntiyByPK(competencyGroup.getId());
+		update.setCode(competencyGroup.getCode());
+		update.setName(competencyGroup.getName());
+		update.setDescription(competencyGroup.getDescription());
+		update.setCompetencyType(appraisalCompetencyTypeDao.getEntiyByPK(competencyGroup.getCompetencyType().getId()));
+		update.setUpdatedBy(UserInfoUtil.getUserName());
+		update.setUpdatedOn(new Date());
+		appraisalCompetencyGroupDao.update(update);
+		
+		//delete first, then save it again
+		appraisalCompetencyGroupKlasifikasiKerjaDao.deleteByCompetencyGroupId(update.getId());
+		
+		for(KlasifikasiKerja klasifikasiKerja : listKlasifikasiKerja){
+			AppraisalCompetencyGroupKlasifikasiKerja manyToMany = new AppraisalCompetencyGroupKlasifikasiKerja();
+			manyToMany.setId(new AppraisalCompetencyGroupKlasifikasiKerjaId(competencyGroup.getId(), klasifikasiKerja.getId()));
+			manyToMany.setAppraisalCompetencyGroup(update);
+			manyToMany.setKlasifikasiKerja(klasifikasiKerjaDao.getEntiyByPK(klasifikasiKerja.getId()));
+			manyToMany.setCreatedBy(UserInfoUtil.getUserName());
+			manyToMany.setCreatedOn(new Date());
+			appraisalCompetencyGroupKlasifikasiKerjaDao.save(manyToMany);
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void save(AppraisalCompetencyGroup competencyGroup, List<KlasifikasiKerja> listKlasifikasiKerja) throws Exception {
+		// check duplicate name
+		long totalDuplicates = appraisalCompetencyGroupDao.getTotalByName(competencyGroup.getName());
+		if (totalDuplicates > 0) {
+			throw new BussinessException("competency_group.error_name_duplicate");
+		}
+		// check duplicate code
+		totalDuplicates = appraisalCompetencyGroupDao.getTotalByCode(competencyGroup.getCode());
+		if (totalDuplicates > 0) {
+			throw new BussinessException("competency_group.error_code_duplicate");
+		}
+		
+		AppraisalCompetencyType competencyType = appraisalCompetencyTypeDao.getEntiyByPK(competencyGroup.getCompetencyType().getId());
+		
+		competencyGroup.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+		competencyGroup.setCompetencyType(competencyType);
+		competencyGroup.setCreatedBy(UserInfoUtil.getUserName());
+		competencyGroup.setCreatedOn(new Date());
+		appraisalCompetencyGroupDao.save(competencyGroup);
+		
+		for(KlasifikasiKerja klasifikasiKerja : listKlasifikasiKerja){
+			AppraisalCompetencyGroupKlasifikasiKerja manyToMany = new AppraisalCompetencyGroupKlasifikasiKerja();
+			manyToMany.setId(new AppraisalCompetencyGroupKlasifikasiKerjaId(competencyGroup.getId(), klasifikasiKerja.getId()));
+			manyToMany.setAppraisalCompetencyGroup(competencyGroup);
+			manyToMany.setKlasifikasiKerja(klasifikasiKerjaDao.getEntiyByPK(klasifikasiKerja.getId()));
+			manyToMany.setCreatedBy(UserInfoUtil.getUserName());
+			manyToMany.setCreatedOn(new Date());
+			appraisalCompetencyGroupKlasifikasiKerjaDao.save(manyToMany);
+			
+		}
 	}
 
 }
