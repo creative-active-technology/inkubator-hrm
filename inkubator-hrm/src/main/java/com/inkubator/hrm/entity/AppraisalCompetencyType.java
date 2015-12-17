@@ -42,7 +42,9 @@ public class AppraisalCompetencyType  implements java.io.Serializable {
     public AppraisalCompetencyType() {
     }
 
-	
+    public AppraisalCompetencyType(long id) {
+        this.id = id;
+    }
     public AppraisalCompetencyType(long id, String code) {
         this.id = id;
         this.code = code;

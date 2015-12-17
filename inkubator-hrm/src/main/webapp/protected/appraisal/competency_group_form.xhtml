@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+				Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlId" globalOnly="true" showDetail="true"/>                
+                <h:form id="formId">
+                	<p:focus context="formId"/>
+                	<div id="box_bg" style="margin: 10px">
+	                    <h:panelGrid columns="2">
+	                        <p:graphicImage library="images" name="bank.png" height="36" width="36" />
+	                        <h:panelGroup layout="block">
+	                            <h:panelGrid>
+	                                <p:outputLabel value="#{appmsg['competency_group.form_competency_group']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['competency_group.competency_group_from_setting']}" styleClass="header_small_no_bold" />
+	                            </h:panelGrid>
+	                        </h:panelGroup>
+	                    </h:panelGrid>
+	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:20px;">
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="codeId" value="#{appmsg['competency_group.code']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="codeId" title="#{appmsg['competency_group.code']}" value="#{competencyGroupFormController.model.code}" 
+	                                    		 required="true" maxlength="12" styleClass="isitext_hrm" style="width:290px;" />
+	                                <p:message for="codeId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="nameId" value="#{appmsg['competency_group.name']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="nameId" title="#{appmsg['competency_group.name']}" value="#{competencyGroupFormController.model.name}" 
+	                                    		 required="true" maxlength="100" styleClass="isitext_hrm" style="width:290px;" />
+	                                <p:message for="nameId"/>
+	                            </p:column>
+	                        </p:row>	
+	                        <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="competencyTypeId" value="#{appmsg['competency_group.competency_type']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:selectOneMenu id="competencyTypeId" styleClass="isitext_hrm" required="true"  value="#{competencyGroupFormController.model.competencyTypeId}" style="width:270px;">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{competencyGroupFormController.model.listCompetencyType}" var="competencyType" itemValue="#{competencyType.id}" itemLabel="#{competencyType.name}"/>
+                                    </p:selectOneMenu> 
+                                    <p:message for="competencyTypeId"/>
+                                </p:column>
+                            </p:row>                         
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputTextarea id="descriptionId" rows="5" cols="37" counter="counter" maxlength="225" value="#{competencyGroupFormController.model.description}" 
+                                                 	 style="width: 290px; height: 40px;" counterTemplate="#{appmsg['global.remaining']}" autoResize="true" required="false"
+                                                 	 label="#{appmsg['global.description']}" title="#{appmsg['global.description']}" />
+                                    <p:message for="descriptionId"/>
+                                    <h:outputText id="counter" />
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="klasifikasiKerjaId" value="#{appmsg['klasifikasiKerja.klasifikasiKerja']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:pickList id="klasifikasiKerjaId" converter="klasifikasiKerjaConverter" value="#{competencyGroupFormController.model.dualListModelKlasifikasiKerja}" required="true" var="klasifikasiKerja" itemLabel="#{klasifikasiKerja.name}" itemValue="#{klasifikasiKerja}">
+	                            		<f:facet name="sourceCaption"><p:outputLabel value="#{appmsg['klasifikasiKerja.list_of_klasifikasiKerja']}" styleClass="label_hrm"/></f:facet>
+        								<f:facet name="targetCaption"><p:outputLabel value="#{appmsg['global.selected_items']}" styleClass="label_hrm"/></f:facet>
+	                            	</p:pickList>
+	                                <p:message for="klasifikasiKerjaId"/>
+	                            </p:column>
+	                        </p:row>
+	                 	</p:panelGrid>	
+	                 	                    
+	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
+	                                         action="#{competencyGroupFormController.doSave()}" styleClass="isitext_hrm"
+	                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+	                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId"
+                                                 icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+	                            <p:resetInput target="formId" />  
+	                        </p:commandButton>
+	                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{competencyGroupFormController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	                    </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

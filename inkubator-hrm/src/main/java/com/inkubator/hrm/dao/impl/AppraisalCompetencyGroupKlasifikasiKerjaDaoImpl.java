@@ -1,5 +1,6 @@
 package com.inkubator.hrm.dao.impl;
 
+import org.hibernate.Query;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +21,13 @@ public class AppraisalCompetencyGroupKlasifikasiKerjaDaoImpl extends IDAOImpl<Ap
 	public Class<AppraisalCompetencyGroupKlasifikasiKerja> getEntityClass() {
 		// TODO Auto-generated method stub
 		return AppraisalCompetencyGroupKlasifikasiKerja.class;
+	}
+
+	@Override
+	public void deleteByCompetencyGroupId(Long competencyGroupId) {
+		Query query = getCurrentSession().createQuery("DELETE FROM AppraisalCompetencyGroupKlasifikasiKerja temp WHERE temp.appraisalCompetencyGroup.id = :competencyGroupId")
+				.setLong("competencyGroupId", competencyGroupId);
+        query.executeUpdate();		
 	}
 
 }

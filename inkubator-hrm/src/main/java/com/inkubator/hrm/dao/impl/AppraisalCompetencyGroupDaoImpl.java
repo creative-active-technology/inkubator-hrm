@@ -52,13 +52,13 @@ public class AppraisalCompetencyGroupDaoImpl extends IDAOImpl<AppraisalCompetenc
 	private void doSearchByParam(CompetencyGroupSearchParameter parameter, Criteria criteria) {
         criteria.createAlias("competencyType", "competencyType", JoinType.INNER_JOIN);
 		
-		if (StringUtils.isEmpty(parameter.getName())) {
+		if (StringUtils.isNotEmpty(parameter.getName())) {
             criteria.add(Restrictions.like("name", parameter.getName(), MatchMode.ANYWHERE));
         }
-        if (StringUtils.isEmpty(parameter.getCode())){
+        if (StringUtils.isNotEmpty(parameter.getCode())){
             criteria.add(Restrictions.like("code", parameter.getCode(), MatchMode.ANYWHERE));
         }
-        if (StringUtils.isEmpty(parameter.getCompetencyTypeName())){
+        if (StringUtils.isNotEmpty(parameter.getCompetencyTypeName())){
             criteria.add(Restrictions.like("competencyType.name", parameter.getCode(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
@@ -69,6 +69,8 @@ public class AppraisalCompetencyGroupDaoImpl extends IDAOImpl<AppraisalCompetenc
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("id", id));
 		criteria.setFetchMode("competencyType", FetchMode.JOIN);
+		criteria.setFetchMode("klasifikasiKerjas", FetchMode.JOIN);
+		criteria.setFetchMode("klasifikasiKerjas.klasifikasiKerja", FetchMode.JOIN);
 		return (AppraisalCompetencyGroup) criteria.uniqueResult();
 	}
 
