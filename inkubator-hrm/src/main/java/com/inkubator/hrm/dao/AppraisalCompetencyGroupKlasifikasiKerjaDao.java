@@ -9,4 +9,6 @@ import com.inkubator.hrm.entity.AppraisalCompetencyGroupKlasifikasiKerja;
  */
 public interface AppraisalCompetencyGroupKlasifikasiKerjaDao extends IDAO<AppraisalCompetencyGroupKlasifikasiKerja> {
 
+	public void deleteByCompetencyGroupId(Long competencyGroupId);
+	
 }

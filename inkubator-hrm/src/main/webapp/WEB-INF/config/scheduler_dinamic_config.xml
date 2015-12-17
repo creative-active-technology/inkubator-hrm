@@ -30,6 +30,10 @@
    
     <bean id="schedulerConfigInitService" class="com.inkubator.hrm.service.impl.SchedulerConfigInitialisasiServiceImpl" lazy-init="false"  init-method="initMethode" />
     <bean id="scheduleDinamicService" class="com.inkubator.hrm.service.impl.ScheduleDinamicServiceImpl" lazy-init="false"  />
+    <bean id="sendNotificationLicense" class="com.inkubator.hrm.service.impl.SendNotificationLicenseImpl" lazy-init="false"  >
+        <property name="applicationUrl" value="${email_param_application_url}"/>
+        <property name="ownerEmail" value="${email_param_owner_email}"/>
+    </bean>
     
     <bean id="jmsTemplateUserPassNotif" class="org.springframework.jms.core.JmsTemplate" lazy-init="true">
         <constructor-arg name="connectionFactory" ref="connectionFactoryExpose"/>
@@ -210,7 +214,7 @@
     </bean>
     <bean id="rectruitmentEmpConfigListenerServiceImpl" class="com.inkubator.hrm.service.impl.RectruitmentEmpConfigListenerServiceImpl" lazy-init="true" />
     <bean id="emailLogNotSentCronListenerServiceImpl" class="com.inkubator.hrm.service.impl.EmailLogNotSentCronListenerServiceImpl" lazy-init="true">
-    	<property name="ownerEmail" value="${email_param_owner_email}"/>
+        <property name="ownerEmail" value="${email_param_owner_email}"/>
     </bean>
     
 </beans>
