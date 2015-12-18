@@ -43,7 +43,7 @@ http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">-->
     <!--    <factory>
         <exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory</exception-handler-factory>
     </factory>-->
-     <name>primefaces-spark</name>
+<!--     <name>primefaces-spark</name>
     <component>
         <component-type>org.primefaces.component.SparkMenu</component-type>
         <component-class>org.primefaces.spark.component.menu.SparkMenu</component-class>
@@ -55,5 +55,5 @@ http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">-->
             <renderer-type>org.primefaces.component.SparkMenuRenderer</renderer-type>
             <renderer-class>org.primefaces.spark.component.menu.SparkMenuRenderer</renderer-class>
         </renderer>
-    </render-kit>
+    </render-kit>-->
 </faces-config>

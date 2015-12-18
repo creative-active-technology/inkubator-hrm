@@ -19,10 +19,10 @@
         <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
         <param-value>client</param-value>
     </context-param>
-    <context-param>
+<!--    <context-param>
         <param-name>javax.faces.FACELETS_LIBRARIES</param-name>
         <param-value>/WEB-INF/primefaces-spark.taglib.xml</param-value>
-    </context-param>
+    </context-param>-->
     <context-param>
         <param-name>org.omnifaces.CACHE_SETTING_SESSION_MAX_CAPACITY</param-name>
         <param-value>4</param-value>
