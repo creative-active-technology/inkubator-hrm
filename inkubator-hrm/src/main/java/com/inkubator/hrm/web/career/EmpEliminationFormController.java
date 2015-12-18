@@ -5,12 +5,15 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.AttendanceStatus;
 import com.inkubator.hrm.entity.CareerEmpElimination;
 import com.inkubator.hrm.entity.CareerTerminationType;
@@ -25,6 +28,7 @@ import com.inkubator.hrm.web.model.EmpEliminationModel;
 import com.inkubator.hrm.web.model.LeaveModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.MessagesResourceUtil;
 
 /**
  *
@@ -84,23 +88,27 @@ public class EmpEliminationFormController extends BaseController {
 
     public String doSave() {
     	CareerEmpElimination careerEmpElimination = getEntityFromViewModel(model);
-        /*try {
-            if (isUpdate) {
-                leaveService.update(careerEmpElimination, appDefs);
-                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
-                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-
-            } else {
-                leaveService.save(careerEmpElimination, appDefs);
-                MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-            }
-            return "/protected/working_time/leave_detail.htm?faces-redirect=true&execution=e" + careerEmpElimination.getId();
+    	String path = StringUtils.EMPTY;
+        try {
+        	
+			String result = careerEmpEliminationService.saveCareerEmpEliminationWithApproval(careerEmpElimination);
+			if (StringUtils.equals(result, "success_need_approval")) {
+				path = "/protected/career/emp_elimination_view.htm?faces-redirect=true";
+				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info","global.added_successfully_and_requires_approval",
+						FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+			} else {
+				path = "/protected/career/emp_elimination_view.htm?faces-redirect=true";
+				MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info","global.added_successfully",
+						FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+			}
+            
+            cleanAndExit();
+            return path;
         } catch (BussinessException ex) { 
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
             LOGGER.error("Error", ex);
-        }*/
+        }
         return null;
     }
 
@@ -115,6 +123,7 @@ public class EmpEliminationFormController extends BaseController {
         careerEmpElimination.setReason(model.getReason());
         careerEmpElimination.setSeparationPay(model.getSeparationPay());
         careerEmpElimination.setWtPeriode(new WtPeriode(model.getWtPeriodeId()));
+        careerEmpElimination.setCreatedBy(HrmUserInfoUtil.getUserName());
         return careerEmpElimination;
     }
 
@@ -174,6 +183,5 @@ public class EmpEliminationFormController extends BaseController {
 	public void setIsEmployeeSelected(Boolean isEmployeeSelected) {
 		this.isEmployeeSelected = isEmployeeSelected;
 	}
-	
-	
+
 }

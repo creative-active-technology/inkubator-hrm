@@ -32,6 +32,8 @@ public class CareerEmpElimination  implements java.io.Serializable {
      private Double pendingLoan;
      private Double separationPay;
      private String reason;
+     private String approvalActivityNumber;
+     private Integer eliminationStatus;
      private Date createdOn;
      private String createdBy;
      private Date updatedOn;
@@ -141,6 +143,25 @@ public class CareerEmpElimination  implements java.io.Serializable {
 
 	public void setReason(String reason) {
 		this.reason = reason;
+	}
+
+	@Column(name = "approval_activity_number", length = 45, unique = true)
+    public String getApprovalActivityNumber() {
+        return approvalActivityNumber;
+    }
+
+    public void setApprovalActivityNumber(String approvalActivityNumber) {
+        this.approvalActivityNumber = approvalActivityNumber;
+    }
+    
+    @Column(name = "elimination_status")
+	public Integer getEliminationStatus() {
+		return eliminationStatus;
+	}
+
+
+	public void setEliminationStatus(Integer eliminationStatus) {
+		this.eliminationStatus = eliminationStatus;
 	}
 
 

@@ -591,4 +591,9 @@ public class HRMConstant {
     /* Constant Competence Visibility */
     public static final Byte COMPETENCE_SOFT_SKILL = 0;
     public static final Byte COMPETENCE_HARD_SKILL = 1;
+    
+    /* Employee Elimination Status */
+    public static final Integer EMP_ELIMINATION_APPROVED = 1;
+    public static final Integer EMP_ELIMINATION_REJECTED = 0;
+    
 }
