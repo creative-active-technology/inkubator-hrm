@@ -17,6 +17,7 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.CareerEmpEliminationDao;
 import com.inkubator.hrm.dao.EmpDataDao;
+import com.inkubator.hrm.entity.ApprovalActivity;
 import com.inkubator.hrm.entity.CareerEmpElimination;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.service.CareerEmpEliminationService;
@@ -30,7 +31,7 @@ import com.inkubator.webcore.util.FacesUtil;
 */
 @Service(value = "careerEmpEliminationService")
 @Lazy
-public class CareerEmpEliminationServiceImpl extends IServiceImpl implements CareerEmpEliminationService {
+public class CareerEmpEliminationServiceImpl extends BaseApprovalServiceImpl  implements CareerEmpEliminationService {
 	
 	@Autowired
 	private CareerEmpEliminationDao careerEmpEliminationDao;
@@ -287,5 +288,44 @@ public class CareerEmpEliminationServiceImpl extends IServiceImpl implements Car
 		
 		return reason;
 	}
+	
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public String saveCareerEmpEliminationWithApproval(CareerEmpElimination careerEmpElimination) throws Exception {
+		String result = "error";
+		return result;
+	}
+	
+	@Override
+	public void approved(long approvalActivityId, String pendingDataUpdate, String comment) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void rejected(long approvalActivityId, String comment) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void diverted(long approvalActivityId) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void sendingApprovalNotification(ApprovalActivity appActivity) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected String getDetailSmsContentOfActivity(ApprovalActivity appActivity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 
 }

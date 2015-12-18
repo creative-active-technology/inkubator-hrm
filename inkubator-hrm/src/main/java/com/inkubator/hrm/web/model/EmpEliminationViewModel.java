@@ -17,7 +17,7 @@ public class EmpEliminationViewModel implements Serializable {
     private Long empCareerHistoryId;
     private Long empDataId;
     private Long  bioDataId;
-    private Long careerTransitionId;
+    //private Long careerTransitionId;
     private Long lastJabatanId;
     private Long lastWtPeriodId;
     private String nik;
@@ -50,12 +50,12 @@ public class EmpEliminationViewModel implements Serializable {
 	public void setEmpDataId(Long empDataId) {
 		this.empDataId = empDataId;
 	}
-	public Long getCareerTransitionId() {
+	/*public Long getCareerTransitionId() {
 		return careerTransitionId;
 	}
 	public void setCareerTransitionId(Long careerTransitionId) {
 		this.careerTransitionId = careerTransitionId;
-	}
+	}*/
 	public Long getLastJabatanId() {
 		return lastJabatanId;
 	}

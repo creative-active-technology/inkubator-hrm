@@ -49,7 +49,6 @@ public class CareerTransition implements java.io.Serializable {
      private Date updatedOn;
      private String description;
      private SystemLetterReference systemLetterReference;
-     private Set<CareerEmpElimination> careerEmpEliminations = new HashSet<CareerEmpElimination>(0);
 
     public CareerTransition() {
     }
@@ -217,15 +216,6 @@ public class CareerTransition implements java.io.Serializable {
 	public void setSystemLetterReference(SystemLetterReference systemLetterReference) {
 		this.systemLetterReference = systemLetterReference;
 	}
-
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="careerTransition")
-    public Set<CareerEmpElimination> getCareerEmpEliminations() {
-        return this.careerEmpEliminations;
-    }
-    
-    public void setCareerEmpEliminations(Set<CareerEmpElimination> careerEmpEliminations) {
-        this.careerEmpEliminations = careerEmpEliminations;
-    }
 
 
 }

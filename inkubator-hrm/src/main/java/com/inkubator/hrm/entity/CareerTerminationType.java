@@ -45,6 +45,7 @@ public class CareerTerminationType implements java.io.Serializable {
      private String name;
      private String description;
      private Set<CareerTransition> careerTransitions = new HashSet<CareerTransition>(0);
+     private Set<CareerEmpElimination> careerEmpEliminations = new HashSet<CareerEmpElimination>(0);
 
     public CareerTerminationType() {
     }
@@ -178,7 +179,7 @@ public class CareerTerminationType implements java.io.Serializable {
         this.description = description;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="careerTerminationType")
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="careerTerminationType")
     public Set<CareerTransition> getCareerTransitions() {
         return this.careerTransitions;
     }
@@ -186,6 +187,16 @@ public class CareerTerminationType implements java.io.Serializable {
     public void setCareerTransitions(Set<CareerTransition> careerTransitions) {
         this.careerTransitions = careerTransitions;
     }
+
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="careerTerminationType")
+	public Set<CareerEmpElimination> getCareerEmpEliminations() {
+		return careerEmpEliminations;
+	}
+
+
+	public void setCareerEmpEliminations(Set<CareerEmpElimination> careerEmpEliminations) {
+		this.careerEmpEliminations = careerEmpEliminations;
+	}
 
 
 
