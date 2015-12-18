@@ -86,7 +86,7 @@
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                 </p:column>
                                 <p:column>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{paySalaryExecuteController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{paySalaryExecuteController.doSearch()}" update="tableId,tableIdForExport"  styleClass="label_button" icon="ui-icon-search"/>
                                 </p:column>
                             </p:row>
 
@@ -188,9 +188,7 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['salaryCalculation.jumlah_nominal']}"/>
                                 </f:facet>
-                                    <h:outputLabel value= "#{data.nominal}" >
-                                        <f:convertNumber pattern="###,###" type="currency"/>
-                                    </h:outputLabel>
+                                    <h:outputLabel value= "#{data.nominal}"/>
                             </p:column> 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>

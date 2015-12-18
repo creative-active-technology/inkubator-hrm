@@ -26,84 +26,84 @@
                         </h:panelGroup>
                     </h:panelGrid>
 
-                        <p:separator/>
-                         <h:form id="formReportEmpGroupWorkingViewId">
-                    	<p:focus context="formReportEmpGroupWorkingViewId"/>
+                    <p:separator/>
+                    <h:form id="formReportEmpGroupWorkingViewId">
+                        <p:focus context="formReportEmpGroupWorkingViewId"/>
                         <p:panelGrid style="width: 100%;margin-top: 20px;margin-bottom: 15px" styleClass="grid_border3">
                             <p:row>
-                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="#{appmsg['menu.period']}" style="font-weight: bold"/>
-                                    </p:column>
-                                    <p:column style="text-align: left;">
-                                        <p:calendar  id="startDate" pattern="dd MMMM yyyy" value="#{reportDataComponentViewController.searchParameter.startDate}"  readonly="false" >                                    
-                                        </p:calendar>
-                                        <p:outputLabel  value=" #{appmsg['global.to']} " style="font-weight: bold"/>
-                                        <p:calendar  id="endDate" pattern="dd MMMM yyyy" value="#{reportDataComponentViewController.searchParameter.endDate}"  readonly="false" >                                    
-                                        </p:calendar>
-                                    </p:column>
-                             </p:row>
-                          
-                            <p:row>
                                 <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="#{appmsg['department.department']}" style="font-weight: bold"/>
-                                    </p:column>
-                                    <p:column style="text-align: center;">
-                                         <p:pickList value="#{reportDataComponentViewController.dualListModelDepartment}" var="department" itemValue="#{department}" converter="departmentConverter" id="picklistEmpDepartment"
-                                         style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
-                                        itemLabel="#{department.departmentName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
-                                        removeLabel="#{appmsg['global.remove']}" immediate="true"/>
-                            
-                                    </p:column>
+                                    <p:outputLabel  value="#{appmsg['menu.period']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="text-align: left;">
+                                    <p:calendar  id="startDate" pattern="dd MMMM yyyy" value="#{reportDataComponentViewController.searchParameter.startDate}"  readonly="false" >                                    
+                                    </p:calendar>
+                                    <p:outputLabel  value=" #{appmsg['global.to']} " style="font-weight: bold"/>
+                                    <p:calendar  id="endDate" pattern="dd MMMM yyyy" value="#{reportDataComponentViewController.searchParameter.endDate}"  readonly="false" >                                    
+                                    </p:calendar>
+                                </p:column>
                             </p:row>
-                            <p:row>
-                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="#{appmsg['inclusionReimbursment.salary_component']}" style="font-weight: bold"/>
-                                    </p:column>
-                                    <p:column style="text-align: center;">
-                                        <p:pickList value="#{reportDataComponentViewController.dualListSalaryComponent}" var="paySalaryComp" itemValue="#{paySalaryComp}" converter="paySalaryComponentPickListConverter" id="picklistKomponenGaji"
-                                         style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
-                                        itemLabel="#{paySalaryComp.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
-                                        removeLabel="#{appmsg['global.remove']}" immediate="true"/>
-                            
-                                    </p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}" style="font-weight: bold"/>
-                                    </p:column>
-                                    <p:column style="text-align: center;">
-                                        <p:pickList value="#{reportDataComponentViewController.dualListGolJabatan}" var="golJabatan" itemValue="#{golJabatan}" converter="golonganJabatanPicklistConverter" id="picklistGolonganjabatan"
-                                         style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
-                                        itemLabel="#{golJabatan.code}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
-                                        removeLabel="#{appmsg['global.remove']}" immediate="true"/>
-                            
-                                    </p:column>
-                            </p:row>
-                            <p:row>
-                                    <p:column style="width: 13%;background-color: #e1f0f0!important" >
-                                        <p:outputLabel  value="#{appmsg['unregSalary.employeeStatus']}" style="font-weight: bold"/>
-                                    </p:column>
-                                    <p:column style="text-align: center;">
-                                    <p:pickList value="#{reportDataComponentViewController.dualListModelEmpType}" var="empType" itemValue="#{empType}" converter="employeeTypeConverter" id="picklistEmpStatus"
-                                        style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
-                                        itemLabel="#{empType.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
-                                        removeLabel="#{appmsg['global.remove']}"/>
 
-                                    </p:column>
-                                
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['department.department']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="text-align: center;">
+                                    <p:pickList value="#{reportDataComponentViewController.dualListModelDepartment}" var="department" itemValue="#{department}" converter="departmentConverter" id="picklistEmpDepartment"
+                                                style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                                itemLabel="#{department.departmentName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                removeLabel="#{appmsg['global.remove']}" immediate="true"/>
+
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['inclusionReimbursment.salary_component']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="text-align: center;">
+                                    <p:pickList value="#{reportDataComponentViewController.dualListSalaryComponent}" var="paySalaryComp" itemValue="#{paySalaryComp}" converter="paySalaryComponentPickListConverter" id="picklistKomponenGaji"
+                                                style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                                itemLabel="#{paySalaryComp.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                removeLabel="#{appmsg['global.remove']}" immediate="true"/>
+
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="text-align: center;">
+                                    <p:pickList value="#{reportDataComponentViewController.dualListGolJabatan}" var="golJabatan" itemValue="#{golJabatan}" converter="golonganJabatanPicklistConverter" id="picklistGolonganjabatan"
+                                                style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                                itemLabel="#{golJabatan.code}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                removeLabel="#{appmsg['global.remove']}" immediate="true"/>
+
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['unregSalary.employeeStatus']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="text-align: center;">
+                                    <p:pickList value="#{reportDataComponentViewController.dualListModelEmpType}" var="empType" itemValue="#{empType}" converter="employeeTypeConverter" id="picklistEmpStatus"
+                                                style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                                itemLabel="#{empType.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                removeLabel="#{appmsg['global.remove']}"/>
+
+                                </p:column>
+
                             </p:row>
                         </p:panelGrid>                        
-                        <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" ajax="true" title="#{appmsg['global.search']}" action="#{reportDataComponentViewController.doSearch()}" update="tableReportId"  styleClass="label_button" icon="ui-icon-search"/>
-                     
-                    <p:separator/>
+                        <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" ajax="true" title="#{appmsg['global.search']}" action="#{reportDataComponentViewController.doSearch()}" update="tableReportId,exportId"  styleClass="label_button" icon="ui-icon-search"/>
+
+                        <p:separator/>
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >     
                                     <p:commandButton value="#{appmsg['global.print']}" type="button" icon="ui-icon-print" style="margin-right: 5px">
-    						<p:printer target="tableReportId"  />
-				    </p:commandButton>
+                                        <p:printer target="tableReportId"  />
+                                    </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="#{appmsg['global.export']}" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableReportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Data_Component"/>
+                                        <pe:exporter target="exportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Data_Component"/>
                                     </p:commandButton>                                    
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{reportDataComponentViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
@@ -129,11 +129,11 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{dataKomponen.namaProsesGaji}" />                             
                             </p:column>
-                              <p:column sortBy="#{dataKomponen.department}"  style="width: 13%">
+                            <p:column sortBy="#{dataKomponen.department}"  style="width: 13%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['menu.department']}"/>
                                 </f:facet>
-                                  <h:outputLabel value= "#{dataKomponen.department}" />                             
+                                <h:outputLabel value= "#{dataKomponen.department}" />                             
                             </p:column>
                             <p:column sortBy="#{dataKomponen.jabatan}"  style="width: 15%">
                                 <f:facet name="header">  
@@ -141,18 +141,18 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{dataKomponen.jabatan}" />                             
                             </p:column>
-                             <p:column sortBy="#{dataKomponen.golonganJabatan}"  style="width: 10%">
+                            <p:column sortBy="#{dataKomponen.golonganJabatan}"  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['functiongroup.function_group']}"/>
                                 </f:facet>
-                                 <h:outputLabel value= "#{dataKomponen.golonganJabatan}" />                             
+                                <h:outputLabel value= "#{dataKomponen.golonganJabatan}" />                             
                             </p:column>
                             <p:column sortBy="#{dataKomponen.karyawan}"  style="width: 13%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['employee.employee']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{dataKomponen.karyawan}" />
-                                
+
                             </p:column>
                             <p:column sortBy="#{dataKomponen.namaKomponen}"  style="width: 15%">
                                 <f:facet name="header">  
@@ -168,7 +168,70 @@
                                     <f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>  
-                                         
+
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{reportDataComponentViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:dataTable  id="exportId" var="dataKomponen"  value="#{reportDataComponentViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7" rendered="false"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['report.data_component_list']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}."/>
+                            </p:column>
+                            <p:column sortBy="#{dataKomponen.namaProsesGaji}"  style="width: 22%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['report.salary_process_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{dataKomponen.namaProsesGaji}" />                             
+                            </p:column>
+                            <p:column sortBy="#{dataKomponen.department}"  style="width: 13%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['menu.department']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{dataKomponen.department}" />                             
+                            </p:column>
+                            <p:column sortBy="#{dataKomponen.jabatan}"  style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{dataKomponen.jabatan}" />                             
+                            </p:column>
+                            <p:column sortBy="#{dataKomponen.golonganJabatan}"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['functiongroup.function_group']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{dataKomponen.golonganJabatan}" />                             
+                            </p:column>
+                            <p:column sortBy="#{dataKomponen.karyawan}"  style="width: 13%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['employee.employee']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{dataKomponen.karyawan}" />
+
+                            </p:column>
+                            <p:column sortBy="#{dataKomponen.namaKomponen}"  style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['paySalaryComponent.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{dataKomponen.namaKomponen}"/>
+                            </p:column>
+                            <p:column sortBy="#{dataKomponen.nominal}"  style="width: 12%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['componentException.nominal']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{dataKomponen.nominal}"/>
+                            </p:column>  
+
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
                                 <p:outputLabel value="#{reportDataComponentViewController.lazyDataModel.rowCount}"/>

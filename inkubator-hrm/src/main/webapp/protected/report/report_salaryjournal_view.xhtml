@@ -28,17 +28,17 @@
                     <p:separator/>
 
                     <h:form id="formId">
-                    	<p:focus context="formId"/>
+                        <p:focus context="formId"/>
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="left">
-                            	<p:panelGrid style="width: 100%;" styleClass="grid_no_border">
-                            	</p:panelGrid>
+                                <p:panelGrid style="width: 100%;" styleClass="grid_no_border">
+                                </p:panelGrid>
                             </p:toolbarGroup>
-                            
+
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableReportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Report_Salary_Journal"/>
+                                        <pe:exporter target="exportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Report_Salary_Journal"/>
                                     </p:commandButton>                                    
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{reportSalaryJournalViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
@@ -63,7 +63,7 @@
                                     <h:outputText value="#{appmsg['payroll.payroll_period']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.payrollPeriod}">
-                                	<f:convertDateTime pattern="MMMM yyyy" />
+                                    <f:convertDateTime pattern="MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
                             <p:column sortBy="#{data.payrollDate}" style="width: 30%">
@@ -71,7 +71,7 @@
                                     <h:outputText value="#{appmsg['payroll.payroll_date']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.payrollDate}">
-                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column> 
                             <p:column sortBy="#{data.balance}" style="width: 30%">
@@ -80,12 +80,60 @@
                                 </f:facet>
                                 <h:outputText value="Rp. "/>
                                 <h:outputLabel value= "#{data.balance}">
-                                	<f:convertNumber pattern="###,###" type="currency"/>
+                                    <f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>    
                             <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
-                                				 style="font-size: 10px!important" action="#{reportSalaryJournalViewController.doDetail()}">                        
+                                                 style="font-size: 10px!important" action="#{reportSalaryJournalViewController.doDetail()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{reportSalaryJournalViewController.selectedModel}" />
+                                </p:commandButton>
+                            </p:column>                                               
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{reportSalaryJournalViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:dataTable  id="exportId" var="data" value="#{reportSalaryJournalViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7" rendered="false"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['global.list']} #{appmsg['payroll.payroll_period']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}."/>
+                            </p:column>
+                            <p:column sortBy="#{data.payrollPeriod}" style="width: 30%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['payroll.payroll_period']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.payrollPeriod}">
+                                    <f:convertDateTime pattern="MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="#{data.payrollDate}" style="width: 30%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['payroll.payroll_date']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.payrollDate}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column> 
+                            <p:column sortBy="#{data.balance}" style="width: 30%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['payroll.balance']}"/>
+                                </f:facet>
+                          
+                                <h:outputLabel value= "#{data.balance}"/>
+                            </p:column>    
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 12%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                 style="font-size: 10px!important" action="#{reportSalaryJournalViewController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{data}" target="#{reportSalaryJournalViewController.selectedModel}" />
                                 </p:commandButton>
                             </p:column>                                               
