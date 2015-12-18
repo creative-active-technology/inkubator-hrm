@@ -28,44 +28,44 @@
                     <p:separator/>
 
                     <h:form id="formReportEmpGroupWorkingViewId">
-                    	<p:focus context="formReportEmpGroupWorkingViewId"/>
-                        
+                        <p:focus context="formReportEmpGroupWorkingViewId"/>
+
                         <p:toolbar  style="margin-top: 10px">
-                             <p:toolbarGroup align="left">
+                            <p:toolbarGroup align="left">
                                 <h:panelGrid columns="5" >
-                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" />
                                     <p:inputText id="searchId" value="#{reportPayrollHistoryViewController.searchParameter}" style="width: 180px" styleClass="label_button"/>
-                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reportPayrollHistoryViewController.doSearch()}" update="tableReportId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reportPayrollHistoryViewController.doSearch()}" update="tableReportId,exportId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
-                            	<p:panelGrid style="width: 100%;" styleClass="grid_no_border">
-                            	</p:panelGrid>
+                                <p:panelGrid style="width: 100%;" styleClass="grid_no_border">
+                                </p:panelGrid>
                             </p:toolbarGroup>
-                            
+
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['global.chart']}" style="margin-right: 5px" icon="ui-icon-calculator" title="#{appmsg['global.chart']}"  action="#{reportPayrollHistoryViewController.doShowChart()}" />                                        
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="#{appmsg['global.export']}" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableReportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Report_Payroll_History"/>
+                                        <pe:exporter target="exportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Report_Payroll_History"/>
                                     </p:commandButton>                                    
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{reportPayrollHistoryViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
-<!--                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3">
-                          
-                            
-                            <p:row>
-                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                    
-                                </p:column>
-                                <p:column>
-                                    <p:commandButton id="btnSearchId" style="margin-left:0px;" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reportPayrollHistoryViewController.doSearch()}" update="tableReportId"  styleClass="label_button" icon="ui-icon-search"/>
-                                </p:column>
-                            </p:row>
-                        </p:panelGrid>-->
+                        <!--                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3">
+                                                  
+                                                    
+                                                    <p:row>
+                                                        <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                                            
+                                                        </p:column>
+                                                        <p:column>
+                                                            <p:commandButton id="btnSearchId" style="margin-left:0px;" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reportPayrollHistoryViewController.doSearch()}" update="tableReportId"  styleClass="label_button" icon="ui-icon-search"/>
+                                                        </p:column>
+                                                    </p:row>
+                                                </p:panelGrid>-->
 
                         <p:dataTable  id="tableReportId" var="payrollHistData"  value="#{reportPayrollHistoryViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -84,7 +84,7 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['menu.period']}"/>
                                 </f:facet>
-                                  <h:outputLabel value= "#{payrollHistData.tglAwalPeriode}" >
+                                <h:outputLabel value= "#{payrollHistData.tglAwalPeriode}" >
                                     <f:convertDateTime pattern="MMMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
@@ -110,16 +110,76 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['salaryConfirmation.paid_salary']}"/>
                                 </f:facet>
-                                <h:outputLabel value="#{payrollHistData.nominal.longValue()}" >
-                                    <f:convertNumber pattern="###,###" type="currency"/>
-                                </h:outputLabel>
+                                <div align="right">
+                                    <h:outputLabel value="#{payrollHistData.nominal}" >
+                                        <f:convertNumber pattern="###,###" type="currency"/>
+                                    </h:outputLabel>
+                                </div>
                             </p:column>  
-                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
                                                   action="#{reportPayrollHistoryViewController.doDetail()}" style="width: 15%;font-size: 10px!important" >                        
                                     <f:setPropertyActionListener value="#{payrollHistData}" target="#{reportPayrollHistoryViewController.selectedPayrollHistData}" />
                                 </p:commandButton>
-                                 
+
+                            </p:column>                 
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{reportPayrollHistoryViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:dataTable  id="exportId" var="payrollHistData"  value="#{reportPayrollHistoryViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7" rendered="false"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['payroll.payroll_history_list']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}."/>
+                            </p:column>
+                            <p:column sortBy="#{payrollHistData.tglAwalPeriode}"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['menu.period']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{payrollHistData.tglAwalPeriode}" >
+                                    <f:convertDateTime pattern="MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="#{payrollHistData.tglAwalPeriode}"  style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['menu.work_period']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{payrollHistData.tglAwalPeriode}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                                <h:outputLabel value= " - " />                                 
+                                <h:outputLabel value= "#{payrollHistData.tglAkhirPeriode}" >
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="#{payrollHistData.jumlahKaryawan}"  style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['paysalaryupload.total_employee']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{payrollHistData.jumlahKaryawan}"/>
+                            </p:column>
+                            <p:column sortBy="#{payrollHistData.nominal}"  style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['salaryConfirmation.paid_salary']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{payrollHistData.nominal}"/>
+                            </p:column>  
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"
+                                                  action="#{reportPayrollHistoryViewController.doDetail()}" style="width: 15%;font-size: 10px!important" >                        
+                                    <f:setPropertyActionListener value="#{payrollHistData}" target="#{reportPayrollHistoryViewController.selectedPayrollHistData}" />
+                                </p:commandButton>
+
                             </p:column>                 
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>

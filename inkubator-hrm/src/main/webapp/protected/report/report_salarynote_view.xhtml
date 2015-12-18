@@ -101,15 +101,15 @@
 
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="4" >
-                                	<p:commandButton icon="ui-icon-document" value="#{appmsg['payroll.mass_print']}" title="#{appmsg['payroll.mass_print']}" label="#{appmsg['payroll.mass_print']}" 
-	                                                 ajax="false" immediate="true">
-	                                    <p:fileDownload value="#{reportSalaryNoteViewController.doPrintMassSlip()}"/>                                    
-	                                </p:commandButton>
+                                    <p:commandButton icon="ui-icon-document" value="#{appmsg['payroll.mass_print']}" title="#{appmsg['payroll.mass_print']}" label="#{appmsg['payroll.mass_print']}" 
+                                                     ajax="false" immediate="true">
+                                        <p:fileDownload value="#{reportSalaryNoteViewController.doPrintMassSlip()}"/>                                    
+                                    </p:commandButton>
                                     <p:commandButton value="Export to PDF" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to PDF" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
                                         <pe:exporter target="tableReportId" type="pdf" pageOnly="false" selectionOnly="false" fileName="List_Report_Salary_Note"/>
                                     </p:commandButton>
                                     <p:commandButton value="Export to XLS" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableReportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Report_Salary_Note"/>
+                                        <pe:exporter target="exportdId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Report_Salary_Note"/>
                                     </p:commandButton>                                    
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{reportSalaryNoteViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
@@ -197,6 +197,86 @@
                                 <h:outputLabel value= "#{data.takeHomePay}">
                                     <f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
+                            </p:column>
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 5%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-document" title="#{appmsg['global.print']}" label="#{appmsg['global.print']}" 
+                                                 style="font-size: 10px!important" ajax="false" immediate="true">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{reportSalaryNoteViewController.selectedModel}" />
+                                    <p:fileDownload value="#{reportSalaryNoteViewController.doPrintSlip()}"/>                                    
+                                </p:commandButton>
+                            </p:column>                                               
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{reportSalaryNoteViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:dataTable  id="exportdId" var="data" value="#{reportSalaryNoteViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7" rendered="false"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['employee.list_of_employee']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}."/>
+                            </p:column>
+                            <p:column sortBy="#{data.periodStart}" style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['salaryCalculation.period']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.periodStart}">
+                                    <f:convertDateTime pattern="dd MMM yyyy"/>
+                                </h:outputLabel>
+                                <h:outputLabel value= " - "/>
+                                <h:outputLabel value= "#{data.periodEnd}">
+                                    <f:convertDateTime pattern="dd MMM yyyy"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="#{data.empName}" style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.employee']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empName}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.empGolJab}" style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['functiongroup.function_group']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empGolJab}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.basicSalary}" style="width: 8%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['payroll.basic_salary']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.basicSalary}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.income}" style="width: 8%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['payroll.income']}"/>
+                                </f:facet>
+                                <p:outputLabel value= "#{data.income}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.deduction}" style="width: 8%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['payroll.deduction']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.deduction}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.tax}" style="width: 8%">
+                                <f:facet name="header">  
+                                    <h:outputText value="PPh"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.tax}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.takeHomePay}" style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['payroll.take_home_pay']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.takeHomePay}"/>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 5%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-document" title="#{appmsg['global.print']}" label="#{appmsg['global.print']}" 
