@@ -48,7 +48,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Reimbursment_Undisbursed"/>
+                                        <pe:exporter target="exportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Reimbursment_Undisbursed"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{rmbsApplicationUndisbursedViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
@@ -98,16 +98,16 @@
                                     <h:outputText value="#{appmsg['biodocument.attachments']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.isHaveAttachment}">
-                                	<f:converter converterId="booleanMessageConverter"/>
+                                    <f:converter converterId="booleanMessageConverter"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column style="width: 10%">
+                            <p:column style="width: 10%" exportable="false">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.nominal']}"/>
                                 </f:facet>
                                 <p:outputLabel value="Rp. "/>
                                 <h:outputLabel value= "#{data.nominal}">
-                                	<f:convertNumber pattern="###,###" type="currency"/>
+                                    <f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>
                             <p:column style="width: 15%">
@@ -115,16 +115,91 @@
                                     <h:outputText value="#{appmsg['global.status']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.approvalStatus}">
-                                	<f:converter converterId="approvalStatusConverter" />
+                                    <f:converter converterId="approvalStatusConverter" />
                                 </h:outputLabel>
                             </p:column> 
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important" 
-                                				 rendered="#{data.rmbsApplicationId == null}" action="#{rmbsApplicationUndisbursedViewController.doDetailApproval()}">                        
+                                                 rendered="#{data.rmbsApplicationId == null}" action="#{rmbsApplicationUndisbursedViewController.doDetailApproval()}">                        
                                     <f:setPropertyActionListener value="#{data}" target="#{rmbsApplicationUndisbursedViewController.selected}" />
                                 </p:commandButton>
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important"
-                                				 rendered="#{data.rmbsApplicationId != null}" action="#{rmbsApplicationUndisbursedViewController.doDetailEntity()}">                        
+                                                 rendered="#{data.rmbsApplicationId != null}" action="#{rmbsApplicationUndisbursedViewController.doDetailEntity()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{rmbsApplicationUndisbursedViewController.selected}" />
+                                </p:commandButton>
+                            </p:column>                        
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{rmbsApplicationUndisbursedViewController.lazyData.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:dataTable  id="exportId" var="data"  value="#{rmbsApplicationUndisbursedViewController.lazyData}" lazy="true" paginator="true" pageLinks="7" rendered="false"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['rmbs_application.list_of_reimbursement_request']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="#{data.empNik}" style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.nik']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empNik}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.empName}" style="width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.employee']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empName}"/>
+                            </p:column>
+                            <p:column style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number2']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.rmbsApplicationCode}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.rmbsTypeName}" style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['rmbs_type.reimbursement_type']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.rmbsTypeName}"/>
+                            </p:column>
+                            <p:column style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['biodocument.attachments']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.isHaveAttachment}">
+                                    <f:converter converterId="booleanMessageConverter"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column style="width: 10%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.nominal']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.nominal}"/>
+                            </p:column>
+                            <p:column style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.status']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.approvalStatus}">
+                                    <f:converter converterId="approvalStatusConverter" />
+                                </h:outputLabel>
+                            </p:column> 
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important" 
+                                                 rendered="#{data.rmbsApplicationId == null}" action="#{rmbsApplicationUndisbursedViewController.doDetailApproval()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{rmbsApplicationUndisbursedViewController.selected}" />
+                                </p:commandButton>
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important"
+                                                 rendered="#{data.rmbsApplicationId != null}" action="#{rmbsApplicationUndisbursedViewController.doDetailEntity()}">                        
                                     <f:setPropertyActionListener value="#{data}" target="#{rmbsApplicationUndisbursedViewController.selected}" />
                                 </p:commandButton>
                             </p:column>                        

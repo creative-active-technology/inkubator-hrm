@@ -39,26 +39,26 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:pickList value="#{loanStatusViewController.dualListDepartment}" var="department" itemValue="#{department}" converter="departmentConverter" id="departmentPickList"
-                                        required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
-                                        itemLabel="#{department.departmentName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
-                                        removeLabel="#{appmsg['global.remove']}"/>
-                            		<p:message for="departmentPickList" />
+                                                required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                                itemLabel="#{department.departmentName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                removeLabel="#{appmsg['global.remove']}"/>
+                                    <p:message for="departmentPickList" />
                                 </p:column>
                             </p:row>
-                            
+
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['functiongroup.function_group']}" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:pickList value="#{loanStatusViewController.dualListGolonganJabatan}" var="golJab" itemValue="#{golJab}" converter="golonganJabatanConverter" id="pickListGolonganJabatan"
-                                        required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
-                                        itemLabel="#{golJab.code}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
-                                        removeLabel="#{appmsg['global.remove']}"/>
-                            		<p:message for="pickListGolonganJabatan" />
+                                                required="true"  style="margin-top: 15px;margin-bottom: 15px" label="#{appmsg['role_view.header1']}" styleClass="isitext_hrm"
+                                                itemLabel="#{golJab.code}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                removeLabel="#{appmsg['global.remove']}"/>
+                                    <p:message for="pickListGolonganJabatan" />
                                 </p:column>
                             </p:row>
-                            
+
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['loanStatusMessage.loan_date_range']}" styleClass="label_hrm" />
@@ -73,7 +73,7 @@
                                     </p:calendar>
                                 </p:column>
                             </p:row>
-                            
+
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                     <p:outputLabel  value="#{appmsg['loanStatusMessage.loan_nominal_range']}" styleClass="label_hrm" />
@@ -83,59 +83,59 @@
                                                   required="true" id="startNominal" >
                                         <p:clientValidator/>
                                     </pe:inputNumber> -->
-                                 
+
                                     <p:inputText label="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}" id="startNominal" title="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}" value="#{loanStatusViewController.loanStatusSearchParameter.startNominal}"  
                                                  style="text-align: right;width: 200px" required="true" styleClass="isitext_hrm" >
-	                                     <f:validateDoubleRange/>
-	                                     <f:convertNumber />
-	                                     <p:clientValidator/>
-                                 	</p:inputText>
-                                 	
-                                 	
+                                        <f:validateDoubleRange/>
+                                        <f:convertNumber />
+                                        <p:clientValidator/>
+                                    </p:inputText>
+
+
                                     -
                                     <!-- <pe:inputNumber  value="#{loanStatusViewController.loanStatusSearchParameter.endNominal}" styleClass="isitext_hrm" style="width: 50px;margin-right: 3px" label="#{appmsg['user_form.phone_number']}"
                                                   required="true" id="endNominal" >
                                         <p:clientValidator/>
                                     </pe:inputNumber> -->
-                                   
+
                                     <p:inputText label="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}" id="endNominal"  title="#{appmsg['benefitGroupRate.benefitGroupRate_nominal']}" value="#{loanStatusViewController.loanStatusSearchParameter.endNominal}"  
                                                  style="text-align: right;width: 200px" required="true" styleClass="isitext_hrm" >
-	                                     <f:validateDoubleRange/>
-	                                     <f:convertNumber />
-	                                     <p:clientValidator/>
-                                 	</p:inputText>
-                                 	<p:message for="startNominal" />
-                            		<p:message for="endNominal" />
+                                        <f:validateDoubleRange/>
+                                        <f:convertNumber />
+                                        <p:clientValidator/>
+                                    </p:inputText>
+                                    <p:message for="startNominal" />
+                                    <p:message for="endNominal" />
                                 </p:column>
                             </p:row>
 
-							<p:row>
+                            <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important" >
                                 </p:column>
                                 <p:column style="width: 80%">
-                                	<p:commandButton value="#{appmsg['global.search']}" ajax="true" action="#{loanStatusViewController.doSearch()}"
-                                             styleClass="isitext_hrm" id="buttonSearchId"
-                                             style="margin-right: 5px" label="#{appmsg['global.search']}" update="formId, tableId"
-                                             icon="ui-icon-search" title="#{appmsg['global.search']}"/>
+                                    <p:commandButton value="#{appmsg['global.search']}" ajax="true" action="#{loanStatusViewController.doSearch()}"
+                                                     styleClass="isitext_hrm" id="buttonSearchId"
+                                                     style="margin-right: 5px" label="#{appmsg['global.search']}" update="formId, tableId,exportId"
+                                                     icon="ui-icon-search" title="#{appmsg['global.search']}"/>
                                 </p:column>
                             </p:row>                            
-                            
-                            
+
+
                         </p:panelGrid>
-                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <p:toolbar  style="margin-top: 10px">
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Loan_Status"/>
+                                        <pe:exporter target="exportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Loan_Status"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{religionViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
                         <p:focus context="formId" />
-                       
-                        
+
+
                         <p:dataTable  var="data"  value="#{loanStatusViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
@@ -166,7 +166,7 @@
                                     <h:outputText value="#{appmsg['reimbursement.nominal']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{data.nominalPrincipal}" >
-                                	<f:convertNumber pattern="###,###"/>
+                                    <f:convertNumber pattern="###,###"/>
                                 </h:outputLabel>
                             </p:column>
                             <p:column sortBy="#{data.termin}" style="width: 10%">
@@ -182,10 +182,64 @@
                                 <h:outputLabel value="#{data.approvalMessage}" />
                                 <h:outputLabel value=" " />
                                 <h:outputLabel rendered="#{data.isRendered}" value="#{data.dibursmentDate}" >
-									<f:convertDateTime pattern="dd-MMMM-yyyy" />
-								</h:outputLabel>
+                                    <f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                </h:outputLabel>
                             </p:column>
-                            
+
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{loanStatusViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:dataTable  var="data"  value="#{loanStatusViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7" rendered="false"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="exportId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['loanStatusMessage.list_loan_status']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="#{data.firstName}" style="width: 25%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['employee.employee_name']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.firstName} #{data.lastName}" />
+                            </p:column>
+                            <p:column sortBy="#{data.loanSchemaName}" style="width: 25%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['loanSchema.name']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.loanSchemaName}" />
+                            </p:column>
+                            <p:column sortBy="#{data.nominalPrincipal}" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['reimbursement.nominal']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.nominalPrincipal}" />
+                            </p:column>
+                            <p:column sortBy="#{data.termin}" style="width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['loan.termin']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.termin}" />/<h:outputLabel value="#{data.totalTermin}" />
+                            </p:column>
+                            <p:column style="width: 30%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['loanStatusMessage.header']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.approvalMessage}" />
+                                <h:outputLabel value=" " />
+                                <h:outputLabel rendered="#{data.isRendered}" value="#{data.dibursmentDate}" >
+                                    <f:convertDateTime pattern="dd-MMMM-yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
                                 <p:outputLabel value="#{loanStatusViewController.lazyDataModel.rowCount}"/>
@@ -200,7 +254,7 @@
                         </p:blockUI>
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            
+
                             <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}"  immediate="true" action="#{reimbursmentSchemaFormController.doBack()}"
                                              styleClass="label_button"/>
                         </div>
