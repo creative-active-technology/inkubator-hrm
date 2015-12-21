@@ -12,4 +12,7 @@ public interface AppraisalSystemScoringService extends IService<AppraisalSystemS
 	public List<AppraisalSystemScoring> getByParam(AppraisalSystemScoringSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
     public Long getTotalByParam(AppraisalSystemScoringSearchParameter searchParameter) throws Exception;
+    
+    public void save(AppraisalSystemScoring entity, Integer totalOption, String labels[], Integer scaleValue[], String description[]) throws Exception;
+
 }
