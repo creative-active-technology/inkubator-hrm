@@ -16,6 +16,7 @@ import com.inkubator.hrm.web.search.CareerTransitionInboxSearchParameter;
 import com.inkubator.hrm.web.search.EmpEliminationSearchParameter;
 import com.inkubator.hrm.web.search.ReportEmpMutationParameter;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
@@ -280,7 +281,8 @@ public class EmpCareerHistoryDaoImpl extends IDAOImpl<EmpCareerHistory> implemen
 		query.append(" jabatan.id AS lastJabatanId,");
 		query.append(" empCareerHistory.nik as nik,");
 		query.append(" jabatan.name AS jabatanName,");
-		query.append(" empCareerHistory.joinDate AS joinDate");
+		query.append(" empCareerHistory.status AS empCareerHistoryStatus,");
+		query.append(" empCareerHistory.tglPenganngkatan AS terminationDate");
 		query.append(" FROM EmpCareerHistory empCareerHistory");
 		query.append(" INNER JOIN empCareerHistory.bioData bioData");
 		query.append(" INNER JOIN empCareerHistory.careerTransition careerTransition");
@@ -331,7 +333,8 @@ public class EmpCareerHistoryDaoImpl extends IDAOImpl<EmpCareerHistory> implemen
         if (!StringUtils.equals(searchParameter.getLastJabatanName(), null)) {
             query.append(" AND jabatan.name LIKE :lastJabatanName  ");
         }
-
+        
+        query.append(" AND empCareerHistory.status IN :listCareerHistoryStatus  ");
         return query.toString();
     }
 
@@ -345,6 +348,9 @@ public class EmpCareerHistoryDaoImpl extends IDAOImpl<EmpCareerHistory> implemen
                 hbm.setParameter("lastJabatanName", "%" + parameter.getLastJabatanName() + "%");
             }
         }
+        
+        hbm.setParameterList("listCareerHistoryStatus", Arrays.asList(HRMConstant.EMP_TERMINATION, 
+        		HRMConstant.EMP_STOP_CONTRACT, HRMConstant.EMP_LAID_OFF, HRMConstant.EMP_PENSION, HRMConstant.EMP_DISCHAGED));
         return hbm;
     }
 }

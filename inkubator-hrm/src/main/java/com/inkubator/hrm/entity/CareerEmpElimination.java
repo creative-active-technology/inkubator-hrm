@@ -26,10 +26,14 @@ public class CareerEmpElimination  implements java.io.Serializable {
 
      private long id;
      private Integer version;
-     private CareerTransition careerTransition;
+     private CareerTerminationType careerTerminationType;
      private WtPeriode wtPeriode;
-     private Long pendingLoan;
-     private Long separationPay;
+     private EmpData empData;
+     private Double pendingLoan;
+     private Double separationPay;
+     private String reason;
+     private String approvalActivityNumber;
+     private Integer eliminationStatus;
      private Date createdOn;
      private String createdBy;
      private Date updatedOn;
@@ -42,10 +46,10 @@ public class CareerEmpElimination  implements java.io.Serializable {
     public CareerEmpElimination(long id) {
         this.id = id;
     }
-    public CareerEmpElimination(long id, CareerTransition careerTransition, WtPeriode wtPeriode, Long pendingLoan, Long separationPay, Date createdOn, String createdBy, Date updatedOn, String updatedBy) {
+    public CareerEmpElimination(long id,  WtPeriode wtPeriode, CareerTerminationType careerTerminationType, Double pendingLoan, Double separationPay, Date createdOn, String createdBy, Date updatedOn, String updatedBy) {
        this.id = id;
-       this.careerTransition = careerTransition;
        this.wtPeriode = wtPeriode;
+       this.careerTerminationType = careerTerminationType;
        this.pendingLoan = pendingLoan;
        this.separationPay = separationPay;
        this.createdOn = createdOn;
@@ -76,17 +80,21 @@ public class CareerEmpElimination  implements java.io.Serializable {
         this.version = version;
     }
 
-@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="career_transition_id")
-    public CareerTransition getCareerTransition() {
-        return this.careerTransition;
-    }
+   
     
-    public void setCareerTransition(CareerTransition careerTransition) {
-        this.careerTransition = careerTransition;
-    }
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="career_termination_type_id")
+    public CareerTerminationType getCareerTerminationType() {
+		return careerTerminationType;
+	}
 
-@ManyToOne(fetch=FetchType.LAZY)
+
+	public void setCareerTerminationType(CareerTerminationType careerTerminationType) {
+		this.careerTerminationType = careerTerminationType;
+	}
+
+
+	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="last_salary_periode_id")
     public WtPeriode getWtPeriode() {
         return this.wtPeriode;
@@ -95,28 +103,69 @@ public class CareerEmpElimination  implements java.io.Serializable {
     public void setWtPeriode(WtPeriode wtPeriode) {
         this.wtPeriode = wtPeriode;
     }
-
     
-    @Column(name="pending_loan", precision=10, scale=0)
-    public Long getPendingLoan() {
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="emp_data_id")
+    public EmpData getEmpData() {
+		return empData;
+	}
+    
+	public void setEmpData(EmpData empData) {
+		this.empData = empData;
+	}
+
+
+	@Column(name="pending_loan", precision=10, scale=0)
+    public Double getPendingLoan() {
         return this.pendingLoan;
     }
     
-    public void setPendingLoan(Long pendingLoan) {
+    public void setPendingLoan(Double pendingLoan) {
         this.pendingLoan = pendingLoan;
     }
 
     
     @Column(name="separation_pay", precision=10, scale=0)
-    public Long getSeparationPay() {
+    public Double getSeparationPay() {
         return this.separationPay;
     }
     
-    public void setSeparationPay(Long separationPay) {
+    public void setSeparationPay(Double separationPay) {
         this.separationPay = separationPay;
     }
+    
+    
+    @Column(name = "reason", length = 225)
+    public String getReason() {
+		return reason;
+	}
 
-    @Temporal(TemporalType.TIMESTAMP)
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
+	@Column(name = "approval_activity_number", length = 45, unique = true)
+    public String getApprovalActivityNumber() {
+        return approvalActivityNumber;
+    }
+
+    public void setApprovalActivityNumber(String approvalActivityNumber) {
+        this.approvalActivityNumber = approvalActivityNumber;
+    }
+    
+    @Column(name = "elimination_status")
+	public Integer getEliminationStatus() {
+		return eliminationStatus;
+	}
+
+
+	public void setEliminationStatus(Integer eliminationStatus) {
+		this.eliminationStatus = eliminationStatus;
+	}
+
+
+	@Temporal(TemporalType.TIMESTAMP)
     @Column(name="created_on", length=19)
     public Date getCreatedOn() {
         return this.createdOn;

@@ -235,12 +235,12 @@
                                           ajax="true" type="submit"   style="margin-top: 15px;width: 98%"  />
                     <!--</div>-->
 
-                    <div class="EmptyBox20"></div>
+                    <!--<div class="EmptyBox20"></div>-->
                 
-                    <div class="EmptyBox30"></div>
+                    <!--<div class="EmptyBox30"></div>-->
                     <!--                    <p:button  value="Forgot Password ?" styleClass="Fs16 RedButton" href="dashboard.xhtml"></p:button>
                                         <p:button  value="Contact Admin ?" styleClass="Fs16 OrangeButton" href="dashboard.xhtml"></p:button>-->
-                    <div class="EmptyBox40"></div>
+                    <div class="EmptyBox100"></div>
 
                 </div>
                 
@@ -253,9 +253,9 @@
                 </div>
             </div>
         </h:form>
-        <h:outputStylesheet name="css/core-layout.css" library="spark-layout"   rendered="true"/>
-        <h:outputStylesheet name="css/font-awesome.css" library="spark-layout"  rendered="true"/>
-        <h:outputStylesheet name="css/animate.css" library="spark-layout"  rendered="true"/>
-        <h:outputStylesheet name="css/spark-layout_login.css" library="spark-layout"  rendered="true"/>
+        <h:outputStylesheet name="css/core-layout.css" library="spark-layout"   rendered="#{loginController.isMobile}"/>
+        <h:outputStylesheet name="css/font-awesome.css" library="spark-layout"  rendered="#{loginController.isMobile}"/>
+        <h:outputStylesheet name="css/animate.css" library="spark-layout"  rendered="#{loginController.isMobile}"/>
+        <h:outputStylesheet name="css/spark-layout_login.css" library="spark-layout"  rendered="#{loginController.isMobile}"/>
     </h:body>
 </html>

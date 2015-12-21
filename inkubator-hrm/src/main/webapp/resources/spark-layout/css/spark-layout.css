@@ -230,7 +230,8 @@ li{list-style:none;}
              box-shadow: 0px 1px 0px 0px rgba(70,145,91,0.8);}
 
 /* bordered box */
-.BorderedBox{border:solid 1px #D9E3E8; background-color:#EDF3F6; box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box;
+.BorderedBox{border:solid 1px; background-color:#ffffff;background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a7cfdf), color-stop(90%,#def7f7));
+             box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; border-color: #ffffff;
              border-radius:6px; -webkit-border-radius:6px; -moz-border-radius:6px; margin-bottom:15px;}
 .BottomBorderedBox{border-bottom:solid 1px #D9E3E8; box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box;
                    border-radius:3px; -webkit-border-radius:3px; -moz-border-radius:3px; margin-bottom:15px;}

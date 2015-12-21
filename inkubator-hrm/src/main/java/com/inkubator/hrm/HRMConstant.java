@@ -189,6 +189,7 @@ public class HRMConstant {
     public static final String OVERTIME = "OVERTIME";
     public static final String VACANCY_ADVERTISEMENT = "VACANCY_ADVERTISEMENT";
     public static final String EMPLOYEE_CAREER_TRANSITION = "EMPLOYEE_CAREER_TRANSITION";
+    public static final String EMPLOYEE_ELIMINATION = "EMPLOYEE_ELIMINATION";
     public static final String APPROVAL_PROCESS = "APPROVAL_PROCESS";
     public static final String ON_APPROVE_INFO = "ON_APPROVE_INFO";
     public static final String ON_REJECT_INFO = "ON_REJECT_INFO";
@@ -212,6 +213,10 @@ public class HRMConstant {
     public static final String EMP_ROTATION = "EMP_ROTATION";
     public static final String EMP_TERMINATION = "EMP_TERMINATION";
     public static final String EMP_NEW_HIRE = "EMP_NEW_HIRE";
+    public static final String EMP_STOP_CONTRACT = "EMP_STOP_CONTRACT";
+    public static final String EMP_LAID_OFF = "EMP_LAID_OFF";
+    public static final String EMP_PENSION = "EMP_PENSION";
+    public static final String EMP_DISCHAGED = "EMP_DISCHAGED";
     /* END */
 
  /* Constant for  Model Component */
@@ -517,6 +522,7 @@ public class HRMConstant {
     public static final String SCHEDULER_MONITORING_LOG_DELETE = "MONITORING_SCHEDULE_LOG_DELETE";
     public static final String SCHEDULER_PASSWORD_COMPLEXITY = "PASSWORD_COMPLEXITY_NOTIF";
     public static final String SCHEDULER_RECRUITMENT_CONFIG_EMP = "RECRUITMENT_CONFIG_EMP";
+    public static final String SCHEDULER_CHECKING_EMAIL_NOT_SENT = "CHECKING_EMAIL_NOT_SENT";
     /* END */
 
  /* Constant for Recruit Applicant */
@@ -585,4 +591,9 @@ public class HRMConstant {
     /* Constant Competence Visibility */
     public static final Byte COMPETENCE_SOFT_SKILL = 0;
     public static final Byte COMPETENCE_HARD_SKILL = 1;
+    
+    /* Employee Elimination Status */
+    public static final Integer EMP_ELIMINATION_APPROVED = 1;
+    public static final Integer EMP_ELIMINATION_REJECTED = 0;
+    
 }

@@ -154,7 +154,7 @@ public class OfferingAndProhabitFormController extends BaseController {
 
     public void doWarningNullSignature(SelectEvent e){
     	EmpData empData = (EmpData) e.getObject();
-    	System.out.println(empData.getNik());
+    
     	if(offeringAndProhabitModel.getEmpData().getBioData().getPathSignature() == null){
     		warningMessage = ResourceBundleUtil.getAsString("offeringLetter.warning_null_signature");
     	}else{
@@ -176,7 +176,7 @@ public class OfferingAndProhabitFormController extends BaseController {
     }
 
     public void doGetValue(){
-    	System.out.println(offeringAndProhabitModel.getCode() + " hahihuheho");
+    	
     }
     
     private RecruitLetters getEntityFromViewModel(OfferingAndProhabitModel model) {
@@ -230,17 +230,17 @@ public class OfferingAndProhabitFormController extends BaseController {
                 recruitLetterComChannels.add(comChannel);
             }
             letters.setRecruitLetterComChannels(recruitLetterComChannels);
-            System.out.println("dosave");
+       
             recruitLettersService.save(letters);
-            System.out.println("abis dosave");
+     
             MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                     FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             return "/protected/recruitment/offering_prohabit_detail.htm?faces-redirect=true&execution=e" + letters.getId();
         } catch (BussinessException ex) {
-        	System.out.println("error business");
+        	
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         } catch (Exception ex) {
-        	System.out.println("error exception");
+        	
             LOGGER.error("Error", ex);
         }
         return null;

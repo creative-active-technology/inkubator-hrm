@@ -10,11 +10,13 @@ import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.hibernate.criterion.Order;
 import org.joda.time.DateTime;
@@ -50,8 +52,12 @@ import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.dao.KlasifikasiKerjaJabatanDao;
 import com.inkubator.hrm.dao.LeaveImplementationDateDao;
+import com.inkubator.hrm.dao.LoanNewApplicationDao;
+import com.inkubator.hrm.dao.LoanNewApplicationInstallmentDao;
+import com.inkubator.hrm.dao.LogMonthEndPayrollDao;
 import com.inkubator.hrm.dao.LogWtProcessReadFingerDao;
 import com.inkubator.hrm.dao.MedicalCareDao;
+import com.inkubator.hrm.dao.PaySalaryComponentDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.PermitImplementationDao;
 import com.inkubator.hrm.dao.TaxFreeDao;
@@ -74,7 +80,11 @@ import com.inkubator.hrm.entity.GolonganJabatan;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.KlasifikasiKerjaJabatan;
+import com.inkubator.hrm.entity.LoanNewApplication;
+import com.inkubator.hrm.entity.LoanNewApplicationInstallment;
+import com.inkubator.hrm.entity.LogMonthEndPayroll;
 import com.inkubator.hrm.entity.LogWtProcessReadFinger;
+import com.inkubator.hrm.entity.PaySalaryComponent;
 import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.entity.TaxFree;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
@@ -89,8 +99,10 @@ import com.inkubator.hrm.web.model.DepAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.DistributionLeaveSchemeModel;
 import com.inkubator.hrm.web.model.DistributionOvetTimeModel;
 import com.inkubator.hrm.web.model.EmpDataMatrixModel;
+import com.inkubator.hrm.web.model.EmpEliminationModel;
 import com.inkubator.hrm.web.model.EmployeeRestModel;
 import com.inkubator.hrm.web.model.EmployeeResumeDashboardModel;
+import com.inkubator.hrm.web.model.LoanUnpaidForEmpTerminationViewModel;
 import com.inkubator.hrm.web.model.PermitDistributionModel;
 import com.inkubator.hrm.web.model.PlacementOfEmployeeWorkScheduleModel;
 import com.inkubator.hrm.web.model.RecruitAgreementNoticeViewModel;
@@ -168,7 +180,15 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     private MedicalCareDao medicalCareDao;
     @Autowired
     private LogWtProcessReadFingerDao logWtProcessReadFingerDao;
-
+    @Autowired
+    private LogMonthEndPayrollDao logMonthEndPayrollDao;
+    @Autowired
+    private PaySalaryComponentDao paySalaryComponentDao;
+    @Autowired
+    private LoanNewApplicationDao loanNewApplicationDao;
+    @Autowired
+    private LoanNewApplicationInstallmentDao loanNewApplicationInstallmentDao;
+    
     @Override
     public EmpData getEntiyByPK(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -554,7 +574,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     public List<EmpData> getAllDataByNameOrNik(String param, Long companyId) throws Exception {
         return empDataDao.getAllDataByNameOrNik(param, companyId);
     }
-    
+
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<EmpData> getAllDataByNameOrNik(String param) throws Exception {
@@ -975,7 +995,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<SearchEmployeeCandidateViewModel> getAllDataEmpCandidateByParamWithDetail(SearchEmployeeCandidateParameter searchEmployeeCandidateParameter) throws Exception {
         List<SearchEmployeeCandidateViewModel> listSearchEmployeeCandidateViewModels = this.empDataDao.getAllDataEmpCandidateByParamWithDetail(searchEmployeeCandidateParameter);
-      
+
         // Set Detail Position Criteria of each Data 
         for (SearchEmployeeCandidateViewModel searchEmployeeCandidateViewModel : listSearchEmployeeCandidateViewModels) {
             List<KlasifikasiKerjaJabatan> listKlasifikasiKerjaJabatans = klasifikasiKerjaJabatanDao.getByJabatanId(searchEmployeeCandidateViewModel.getIdJabatan().longValue());
@@ -986,7 +1006,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
                 kriteria += klasifikasiKerjaJabatan.getKlasifikasiKerja().getDescription() + (isNotLastRecord ? ", " : "");
             }
             searchEmployeeCandidateViewModel.setKriteria(kriteria);
-            
+
             EducationLevel educationLevel = educationLevelDao.getEntiyByPK(searchEmployeeCandidateViewModel.getLastEducationLevelId().longValue());
             searchEmployeeCandidateViewModel.setLastEducationLevelName(educationLevel.getName());
 
@@ -1314,152 +1334,257 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
         return this.empDataDao.getAllByJabatanAndCompanyAndStatus(jabataId, status);
     }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalKaryawanByJabatanIdWithJoinDateBeforeOrEqualDate(Long jabatanId, Date joinDateLimit) throws Exception {
-		return this.empDataDao.getTotalKaryawanByJabatanIdWithJoinDateBeforeOrEqualDate(jabatanId, joinDateLimit);
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalKaryawanByJabatanIdWithJoinDateBeforeOrEqualDate(Long jabatanId, Date joinDateLimit) throws Exception {
+        return this.empDataDao.getTotalKaryawanByJabatanIdWithJoinDateBeforeOrEqualDate(jabatanId, joinDateLimit);
+    }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<EmpData> getAllEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter,int firstResult, int maxResults, Order orderable) {
-		return empDataDao.getAllEmployeeForRecruitAggrementNotice(searchParameter, firstResult, maxResults, orderable);
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) {
+        return empDataDao.getAllEmployeeForRecruitAggrementNotice(searchParameter, firstResult, maxResults, orderable);
+    }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalAllEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter) throws Exception {
-		return empDataDao.getTotalAllEmployeeForRecruitAggrementNotice(searchParameter);
-	}
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalAllEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter) throws Exception {
+        return empDataDao.getTotalAllEmployeeForRecruitAggrementNotice(searchParameter);
+    }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
     public EmpData getEmpDataWithBioDataAndMaritalStatusById(long id) throws Exception {
-		return empDataDao.getEmpDataWithBioDataAndMaritalStatusById(id);
-	}
+        return empDataDao.getEmpDataWithBioDataAndMaritalStatusById(id);
+    }
 
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<RecruitAgreementNoticeViewModel> getAllEmployeeForRecruitAggrementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) throws Exception {
-		return empDataDao.getAllEmployeeForRecruitAggrementNoticeWithNativeQuery(searchParameter, firstResult, maxResults, orderable);
-	}
+        return empDataDao.getAllEmployeeForRecruitAggrementNoticeWithNativeQuery(searchParameter, firstResult, maxResults, orderable);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public Long getTotalAllEmployeeForRecruitAggrementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter) throws Exception {
+        return empDataDao.getTotalAllEmployeeForRecruitAggrementNoticeWithNativeQuery(searchParameter);
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getListEmpDataWhichNotExistOnFingerEmpMatch() throws Exception {
+        return empDataDao.getListEmpDataWhichNotExistOnFingerEmpMatch();
+    }
+
+    @Override
+    @Cacheable(value = "employeePresentationAttendanceOnDashboard", key = "{#companyId,#datePattern}")
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<ChartSeries> getEmployeePresentationAttendanceOnDashboard(Long companyId, List<Date> listDate, String datePattern) throws Exception {
+        SimpleDateFormat formatter = new SimpleDateFormat(datePattern, FacesUtil.getFacesContext().getViewRoot().getLocale());
+        ChartSeries leaveAndTravel = new ChartSeries();
+        ChartSeries permitAndSick = new ChartSeries();
+        ChartSeries attend = new ChartSeries();
+        ChartSeries notAttend = new ChartSeries();
+
+        leaveAndTravel.setLabel(ResourceBundleUtil.getAsString("attendance.leave_or_travel"));
+        permitAndSick.setLabel(ResourceBundleUtil.getAsString("attendance.permit_or_sick"));
+        attend.setLabel(ResourceBundleUtil.getAsString("attendance.attend"));
+        notAttend.setLabel(ResourceBundleUtil.getAsString("attendance.not_attend"));
+
+        for (Date tanggalWaktuKerja : listDate) {
+            Long totalLeaveAndTravel = 0L;
+            Long totalPermitAndSick = 0L;
+            Long totalAttend = 0L;
+            Long totalNotAttend = 0L;
+
+            /**
+             * mulai perhitungan kehadiran, dengan prioritas (seandainya di
+             * semua kategori ada, walau real case tidak mungkin) : 1. Cuti 2.
+             * Perjalanan Dinas 3. Sakit 4. Ijin 5. Hadir
+             */
+            List<TempJadwalKaryawan> listJadwalKaryawan = tempJadwalKaryawanDao.getAllDataByTanggalWaktuKerjaAndCompanyId(tanggalWaktuKerja, companyId);
+            for (TempJadwalKaryawan jadwalKaryawan : listJadwalKaryawan) {
+                if (this.isEmployeeOnLeaveOrTravel(jadwalKaryawan.getEmpData().getId(), tanggalWaktuKerja)) {
+                    totalLeaveAndTravel++;
+                } else if (this.isEmployeeOnPermitOrSick(jadwalKaryawan.getEmpData().getId(), tanggalWaktuKerja)) {
+                    totalPermitAndSick++;
+                } else if (this.isEmployeeAttend(jadwalKaryawan.getEmpData().getId(), tanggalWaktuKerja)) {
+                    totalAttend++;
+                } else {
+                    totalNotAttend++;
+                }
+            }
+
+            leaveAndTravel.set(formatter.format(tanggalWaktuKerja), totalLeaveAndTravel);
+            permitAndSick.set(formatter.format(tanggalWaktuKerja), totalPermitAndSick);
+            attend.set(formatter.format(tanggalWaktuKerja), totalAttend);
+            notAttend.set(formatter.format(tanggalWaktuKerja), totalNotAttend);
+        }
+
+        List<ChartSeries> listPresentasiAttendance = new ArrayList<>();
+        listPresentasiAttendance.add(leaveAndTravel);
+        listPresentasiAttendance.add(permitAndSick);
+        listPresentasiAttendance.add(attend);
+        listPresentasiAttendance.add(notAttend);
+        return listPresentasiAttendance;
+    }
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalAllEmployeeForRecruitAggrementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter) throws Exception {
-		return empDataDao.getTotalAllEmployeeForRecruitAggrementNoticeWithNativeQuery(searchParameter);
-	}
-
-	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<EmpData> getListEmpDataWhichNotExistOnFingerEmpMatch() throws Exception {
-		return empDataDao.getListEmpDataWhichNotExistOnFingerEmpMatch();
+	public EmpEliminationModel generateEmpEliminationModelByEmpDataId(Long empDataId) throws Exception {
+		EmpEliminationModel model = new EmpEliminationModel();
+		
+		EmpData empData = empDataDao.getByEmpIdWithDetail(empDataId);
+    	Jabatan jabatan = jabatanDao.getJabatanByIdWithDetail(empData.getJabatanByJabatanId().getId());
+    	List<EmpData> listAtasan = empDataDao.getAllDataByJabatanId(jabatan.getJabatan().getId(), Order.desc("joinDate"));
+    	
+    	//Get "first previous WtPeriod" from  current PayrollActivePeriod based on actual start Date and End Date
+    	WtPeriode firstPreviousPeriodFromCurrentPeriod = getFirstPreviousWtPeriodFromCurrentPayrollActiveWtPeriod();
+    	
+    	//get List LogMonthEndPayroll on selected period, and selected empDataId
+    	List<LogMonthEndPayroll> listMonthEndPayroll = logMonthEndPayrollDao.getListByEmpDataIdAndWtPeriodId(empDataId, firstPreviousPeriodFromCurrentPeriod.getId());
+    	
+    	List<LogMonthEndPayroll> listMonthEndPotongan = listMonthEndPayroll.stream()
+    			.filter(monthEndPayroll -> getComponentCategoryFromLog(monthEndPayroll.getPaySalaryCompId()) == HRMConstant.PAY_SALARY_COMPONENT_POTONGAN)
+    			.collect(Collectors.toList());
+    	
+    	List<LogMonthEndPayroll> listMonthEndTunjangan = listMonthEndPayroll.stream()
+    			.filter(monthEndPayroll -> getComponentCategoryFromLog(monthEndPayroll.getPaySalaryCompId()) == HRMConstant.PAY_SALARY_COMPONENT_TUNJANGAN)
+    			.collect(Collectors.toList());
+    	
+    	List<LogMonthEndPayroll> listMonthEndSubsidi = listMonthEndPayroll.stream()
+    			.filter(monthEndPayroll -> getComponentCategoryFromLog(monthEndPayroll.getPaySalaryCompId()) == HRMConstant.PAY_SALARY_COMPONENT_SUBSIDI)
+    			.collect(Collectors.toList());
+    	
+    	List<LoanUnpaidForEmpTerminationViewModel> listLoanModel = generateListLoanUnpaidModel(empDataId);
+    	Double totalOutstandingLoan = listLoanModel.stream().mapToDouble((loanModel) -> loanModel.getTotalOutstanding()).sum();
+    	System.out.println("totalOutstandingLoan : " + totalOutstandingLoan);
+    	model.setWtPeriodeId(firstPreviousPeriodFromCurrentPeriod.getId());
+    	model.setJabatanId(jabatan.getId());
+    	model.setJabatanName(jabatan.getName());
+    	model.setJabatanAtasanId(jabatan.getJabatan().getId());
+    	model.setJabatanAtasanName(jabatan.getJabatan().getName());
+    	model.setDepartmentId(jabatan.getDepartment().getId());
+    	model.setDepartmentName(jabatan.getDepartment().getDepartmentName());
+    	model.setListMonthEndPayrollAll(listMonthEndPayroll);
+    	model.setListMonthEndPayrollPotongan(listMonthEndPotongan);
+    	model.setListMonthEndPayrollSubsidi(listMonthEndSubsidi);
+    	model.setListMonthEndPayrollTunjangan(listMonthEndTunjangan);
+    	model.setListLoanModel(listLoanModel);
+    	model.setTotalOutstandingLoan(totalOutstandingLoan);
+    	model.setSeparationPay(0.0);
+    	model.setRemainSeparationPay(model.getSeparationPay() - model.getTotalOutstandingLoan());
+    	
+    	
+    	if(!listAtasan.isEmpty()){
+    		EmpData atasan = empDataDao.getByEmpIdWithDetail(listAtasan.get(0).getId());
+    		model.setAtasanName(atasan.getBioData().getFullName());
+    	}
+		return model;
 	}
 	
-	@Override
-	@Cacheable(value = "employeePresentationAttendanceOnDashboard", key = "{#companyId,#datePattern}")
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<ChartSeries> getEmployeePresentationAttendanceOnDashboard(Long companyId, List<Date> listDate,String datePattern) throws Exception {
-		SimpleDateFormat formatter = new SimpleDateFormat(datePattern, FacesUtil.getFacesContext().getViewRoot().getLocale());
-		ChartSeries leaveAndTravel = new ChartSeries();
-		ChartSeries permitAndSick = new ChartSeries();
-		ChartSeries attend = new ChartSeries();
-		ChartSeries notAttend = new ChartSeries();
+	private WtPeriode getFirstPreviousWtPeriodFromCurrentPayrollActiveWtPeriod(){
+		WtPeriode wtPeriodePayrollActive = wtPeriodeDao.getEntityByPayrollTypeActive();
+    	Date basedDate = DateTimeUtil.addDays(wtPeriodePayrollActive.getFromPeriode(), -1);
+    	
+    	//Get Actual Start Date on "first previous WtPeriod" from current PayrollActivePeriod
+    	Calendar calendarStartDate = Calendar.getInstance();
+    	calendarStartDate.setTime(basedDate);
+    	calendarStartDate.set(Calendar.DAY_OF_MONTH, calendarStartDate.getActualMinimum(Calendar.DAY_OF_MONTH));
+    	
+    	//Get Actual End Date on "first previous WtPeriod" from current PayrollActivePeriod
+    	Calendar calendarEndDate = Calendar.getInstance();
+    	calendarEndDate.setTime(basedDate);
+    	calendarEndDate.set(Calendar.DAY_OF_MONTH, calendarEndDate.getActualMaximum(Calendar.DAY_OF_MONTH));
+    	
+    	//Get "first previous WtPeriod" from current PayrollActivePeriod based on actual start Date and End Date
+    	WtPeriode firstPreviousPeriodFromCurrentPayrollActivePeriod = wtPeriodeDao.getEntityByFromPeriodeAndUntilPeriode(calendarStartDate.getTime(), calendarEndDate.getTime());
+    	return firstPreviousPeriodFromCurrentPayrollActivePeriod;
+	}
+	
+	private Integer getComponentCategoryFromLog(Long paySalaryCompId){
+		PaySalaryComponent paySalaryComponent = paySalaryComponentDao.getEntiyByPK(paySalaryCompId);
+		return paySalaryComponent.getComponentCategory();
+	}
+	
+	private List<LoanUnpaidForEmpTerminationViewModel> generateListLoanUnpaidModel(Long empDataId){
+		List<LoanUnpaidForEmpTerminationViewModel> listLoanModel = new ArrayList<LoanUnpaidForEmpTerminationViewModel>();
 		
-		leaveAndTravel.setLabel(ResourceBundleUtil.getAsString("attendance.leave_or_travel"));
-		permitAndSick.setLabel(ResourceBundleUtil.getAsString("attendance.permit_or_sick"));
-		attend.setLabel(ResourceBundleUtil.getAsString("attendance.attend"));
-		notAttend.setLabel(ResourceBundleUtil.getAsString("attendance.not_attend"));
-		
-		for(Date tanggalWaktuKerja : listDate){
-			Long totalLeaveAndTravel = 0L;
-			Long totalPermitAndSick = 0L;
-			Long totalAttend = 0L;
-			Long totalNotAttend = 0L;
-			
-			/** mulai perhitungan kehadiran, dengan prioritas (seandainya di semua kategori ada, walau real case tidak mungkin) :
-			 * 1. Cuti 
-			 * 2. Perjalanan Dinas
-			 * 3. Sakit 
-			 * 4. Ijin
-			 * 5. Hadir */
-			List<TempJadwalKaryawan> listJadwalKaryawan = tempJadwalKaryawanDao.getAllDataByTanggalWaktuKerjaAndCompanyId(tanggalWaktuKerja, companyId);
-			for(TempJadwalKaryawan jadwalKaryawan : listJadwalKaryawan){
-				if(this.isEmployeeOnLeaveOrTravel(jadwalKaryawan.getEmpData().getId(), tanggalWaktuKerja)) {
-					totalLeaveAndTravel++;
-				} else if(this.isEmployeeOnPermitOrSick(jadwalKaryawan.getEmpData().getId(), tanggalWaktuKerja)) {
-					totalPermitAndSick++;
-				} else if(this.isEmployeeAttend(jadwalKaryawan.getEmpData().getId(), tanggalWaktuKerja)) {
-					totalAttend++;
-				} else {
-					totalNotAttend++;
-				}				
-			}
-			
-			leaveAndTravel.set(formatter.format(tanggalWaktuKerja), totalLeaveAndTravel);
-			permitAndSick.set(formatter.format(tanggalWaktuKerja), totalPermitAndSick);
-			attend.set(formatter.format(tanggalWaktuKerja), totalAttend);
-			notAttend.set(formatter.format(tanggalWaktuKerja), totalNotAttend);
-		}
-		
-		List<ChartSeries> listPresentasiAttendance = new ArrayList<>();
-		listPresentasiAttendance.add(leaveAndTravel);
-		listPresentasiAttendance.add(permitAndSick);
-		listPresentasiAttendance.add(attend);
-		listPresentasiAttendance.add(notAttend);
-		return listPresentasiAttendance;
+		List<LoanNewApplication> listLoanNewApplication = loanNewApplicationDao.getListUnpaidLoanByEmpDataId(empDataId);
+    	for(LoanNewApplication loan : listLoanNewApplication){
+    		LoanUnpaidForEmpTerminationViewModel loanModel = new LoanUnpaidForEmpTerminationViewModel();
+    		LoanNewApplicationInstallment lastPaidInstallment = loanNewApplicationInstallmentDao.getLastPaidTerminInstallment(loan.getId());
+    		loanModel.setLoanNewApplicationId(loan.getId());
+    		loanModel.setLoanNewTypeName(loan.getLoanNewType().getLoanTypeCode() + " - " + loan.getLoanNewType().getLoanTypeName());
+    		loanModel.setTotalPrincipal(loan.getNominalPrincipal());
+    		loanModel.setTotalOutstanding(lastPaidInstallment.getRemainingBasic());
+    		loanModel.setTotalNumberOfInstallment(loan.getTermin());
+    		loanModel.setLastPaidTermin(lastPaidInstallment.getNumOfInstallment());
+    		listLoanModel.add(loanModel);
+    	}
+    	
+		return listLoanModel;
 	}
 
-	private boolean isEmployeeAttend(Long empDataId, Date tanggalWaktuKerja) {
-		Boolean isEmployeeAttend = Boolean.FALSE;
-		
-		/** jika tanggalWaktuKerja di periode waktu kerja AKTIF, maka ambil dari table temporary(TempProcessReadFinger)
-		 *  tapi jika tanggalWaktuKerja di periode waktu kerja VOID(tidak Aktif), maka ambil dari table log(LogWtProcessReadFinger)*/
-		WtPeriode periode = wtPeriodeDao.getEntityByDateBetween(tanggalWaktuKerja);
-		if(periode==null || StringUtils.equals(periode.getAbsen(), HRMConstant.PERIODE_ABSEN_ACTIVE)) {
-			TempProcessReadFinger readFinger = tempProcessReadFingerDao.getEntityByEmpDataIdAndScheduleDate(empDataId, tanggalWaktuKerja);
-			if(readFinger == null){
-				isEmployeeAttend = Boolean.FALSE;
-			} else if(readFinger.getFingerIn() != null || readFinger.getFingerOut() != null || readFinger.getWebCheckIn() != null || readFinger.getWebCheckOut() != null){
-				isEmployeeAttend = Boolean.TRUE;
-			}
-			
-		} else {
-			LogWtProcessReadFinger readFinger = logWtProcessReadFingerDao.getEntityByEmpDataIdAndScheduleDate(empDataId, tanggalWaktuKerja);
-			if(readFinger == null){
-				isEmployeeAttend = Boolean.FALSE;
-			} else if(readFinger.getFingerIn() != null || readFinger.getFingerOut() != null || readFinger.getWebCheckIn() != null || readFinger.getWebCheckOut() != null){
-				isEmployeeAttend = Boolean.TRUE;
-			}
-		}
-		
-		return isEmployeeAttend;
-	}
+    private boolean isEmployeeAttend(Long empDataId, Date tanggalWaktuKerja) {
+        Boolean isEmployeeAttend = Boolean.FALSE;
 
-	private boolean isEmployeeOnPermitOrSick(Long empDataId, Date tanggalWaktuKerja) {
-		Boolean isEmployeeOnPermitOrSick = Boolean.FALSE;
-		
-		if(medicalCareDao.getByEmpIdAndDate(empDataId, tanggalWaktuKerja) != null){
-			isEmployeeOnPermitOrSick = Boolean.TRUE;
-			
-		} else if(permitImplementationDao.getByEmpStardDateEndDate(empDataId, tanggalWaktuKerja) != null){
-			isEmployeeOnPermitOrSick = Boolean.TRUE;
-		}
-		
-		return isEmployeeOnPermitOrSick;
-	}
+        /**
+         * jika tanggalWaktuKerja di periode waktu kerja AKTIF, maka ambil dari
+         * table temporary(TempProcessReadFinger) tapi jika tanggalWaktuKerja di
+         * periode waktu kerja VOID(tidak Aktif), maka ambil dari table log(LogWtProcessReadFinger)
+         */
+        WtPeriode periode = wtPeriodeDao.getEntityByDateBetween(tanggalWaktuKerja);
+        if (periode == null || StringUtils.equals(periode.getAbsen(), HRMConstant.PERIODE_ABSEN_ACTIVE)) {
+            TempProcessReadFinger readFinger = tempProcessReadFingerDao.getEntityByEmpDataIdAndScheduleDate(empDataId, tanggalWaktuKerja);
+            if (readFinger == null) {
+                isEmployeeAttend = Boolean.FALSE;
+            } else if (readFinger.getFingerIn() != null || readFinger.getFingerOut() != null || readFinger.getWebCheckIn() != null || readFinger.getWebCheckOut() != null) {
+                isEmployeeAttend = Boolean.TRUE;
+            }
 
-	private boolean isEmployeeOnLeaveOrTravel(Long empDataId, Date tanggalWaktuKerja) {
-		Boolean isEmployeeOnLeaveOrTravel = Boolean.FALSE;
-		
-		if(leaveImplementationDateDao.getEntityByEmpDataIdAndActualDate(empDataId, tanggalWaktuKerja) != null){
-			isEmployeeOnLeaveOrTravel = Boolean.TRUE;
-			
-		} else if(businessTravelDao.getByEmpIdAndDate(empDataId, tanggalWaktuKerja) != null){
-			isEmployeeOnLeaveOrTravel = Boolean.TRUE;
-		}
-		
-		return isEmployeeOnLeaveOrTravel;
-	}
+        } else {
+            LogWtProcessReadFinger readFinger = logWtProcessReadFingerDao.getEntityByEmpDataIdAndScheduleDate(empDataId, tanggalWaktuKerja);
+            if (readFinger == null) {
+                isEmployeeAttend = Boolean.FALSE;
+            } else if (readFinger.getFingerIn() != null || readFinger.getFingerOut() != null || readFinger.getWebCheckIn() != null || readFinger.getWebCheckOut() != null) {
+                isEmployeeAttend = Boolean.TRUE;
+            }
+        }
+
+        return isEmployeeAttend;
+    }
+
+    private boolean isEmployeeOnPermitOrSick(Long empDataId, Date tanggalWaktuKerja) {
+        Boolean isEmployeeOnPermitOrSick = Boolean.FALSE;
+
+        if (medicalCareDao.getByEmpIdAndDate(empDataId, tanggalWaktuKerja) != null) {
+            isEmployeeOnPermitOrSick = Boolean.TRUE;
+
+        } else if (permitImplementationDao.getByEmpStardDateEndDate(empDataId, tanggalWaktuKerja) != null) {
+            isEmployeeOnPermitOrSick = Boolean.TRUE;
+        }
+
+        return isEmployeeOnPermitOrSick;
+    }
+
+    private boolean isEmployeeOnLeaveOrTravel(Long empDataId, Date tanggalWaktuKerja) {
+        Boolean isEmployeeOnLeaveOrTravel = Boolean.FALSE;
+
+        if (leaveImplementationDateDao.getEntityByEmpDataIdAndActualDate(empDataId, tanggalWaktuKerja) != null) {
+            isEmployeeOnLeaveOrTravel = Boolean.TRUE;
+
+        } else if (businessTravelDao.getByEmpIdAndDate(empDataId, tanggalWaktuKerja) != null) {
+            isEmployeeOnLeaveOrTravel = Boolean.TRUE;
+        }
+
+        return isEmployeeOnLeaveOrTravel;
+    }
+
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<EmpData> getAllDataByJabatanIdOrderDescJoinDate(Long id) throws Exception {
+        return empDataDao.getAllDataByJabatanId(id, Order.desc("joinDate"));
+    }
 
 }

@@ -175,7 +175,7 @@ public class LoanApplicationFormController extends BaseController {
             String path = StringUtils.EMPTY;
             LoanNewApplication loanNewApplication = getEntityFromModel(model);
             try {
-
+            	
                 String result = loanNewApplicationService.saveWithApproval(loanNewApplication);
 
                 if (StringUtils.equals(result, "success_need_approval")) {
@@ -331,7 +331,7 @@ public class LoanApplicationFormController extends BaseController {
 
                 loanNewSchemaListOfType = loanNewSchemaListOfTypeService.getEntityByLoanNewTypeIdWithDetail(loanNewTypeId);
             } else {
-
+            	
                 loanNewSchemaListOfType = loanNewSchemaListOfTypeService.getEntityByIdWithDetail(loanNewTypeId);
             }
 

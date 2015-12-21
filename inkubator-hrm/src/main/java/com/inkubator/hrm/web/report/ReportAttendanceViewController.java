@@ -60,7 +60,7 @@ public class ReportAttendanceViewController extends BaseController {
             List<WtPeriode> dataToShow = wtPeriodeService.getAllWithStatusAbsen(HRMConstant.PERIODE_ABSEN_VOID);
             data = dataToShow;
             dataToShow.stream().forEach((wtPeriode) -> {
-                System.out.println(" Keterangan " + wtPeriode.getBulanAsLabel() + " " + wtPeriode.getTahun());
+          
                 wtPeriodeCombo.put(wtPeriode.getBulan(), wtPeriode.getId());
             });
             departmentSource = departmentService.getAllData();

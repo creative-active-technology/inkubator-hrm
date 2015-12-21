@@ -54,24 +54,28 @@
             <div class="Container25 Responsive">
                 <div class="ContainerIndent">
                     <div class="Container100 TexAlCenter">
-                        <div class="DispInlBlock TexAlLeft MarTop20" >
-                            <div class="Container20" >
-                                <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="50" width="50" cache="true" style="border:  1px solid #ffffff !important; border-radius: 4px !important;margin-right: 6px"    >
-                                    <f:param name="id" value="#{BIODATA_ID}"/>
-                                </p:graphicImage></div>
-                            <div class="Container80">
-                                <div class="Fright">
-                                    <h2 class="blue_black Fs24 FontRalewayMedium"> #{realName}</h2>
-                                    <span class="Fs15 white FontRalewayRegular DispBlock"> #{homeController.roleUser}</span>
-                                </div>
+                        <!--<div class="DispInlBlock  MarTop20" >-->
+                        <div class="Container100" >
+                            <div class="EmptyBox10"></div>
+                            <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="80" width="80" cache="true" style="border:  3px solid #ffffff !important; border-radius: 80px !important;margin-right: 6px"    >
+                                <f:param name="id" value="#{BIODATA_ID}"/>
+                            </p:graphicImage>
+                            <div style="border: #ffffff;border-width: 1px;border-style: solid;margin-top: -50px;margin-left: -20px;margin-right: -20px"/>
+                        </div>
+                        <div class="Container100">
+                            <div  style="margin-top: 50px">
+                                <h2 class="blue_black Fs22 FontRalewayMedium"> #{realName}</h2>
+                                <span class="Fs15 white FontRalewayRegular DispBlock"> #{homeController.roleUser}</span>
                             </div>
                         </div>
-                        <div class="Seperator" ></div>
-                        <i class="fa fa-clock-o Fleft Fs15 red MarRight10 MarBot10"></i>
-                        <span class="Fleft Fs13 red"><p:outputLabel value="#{appmsg['master_layout.login_at']} #{login_date}" /></span>
+                        <!--</div>-->
+                        <div class="EmptyBox30"></div>
+                        <!--<div class="Seperator" ></div>-->
+                        <!--<i class="fa fa-clock-o Fleft Fs15 red MarRight10 MarBot10"></i>-->
+                        <span class="Fleft Fs13 red"><p:outputLabel value="#{appmsg['master_layout.login_at']} : #{login_date}" /></span>
                         <div class="EmptyBox10"></div>
                         <div class="Container100">
-                            <div class="Wid45 BorderedBox Fleft TexAlCenter" style="border-color: #00AEEF">
+                            <div class="Wid45 BorderedBox Fleft TexAlCenter" style="border-color: #006699">
                                 <div class="ContainerIndent">
                                     <h:outputLink value="${request.contextPath}/protected/account/user_view.htm">
                                         <p:graphicImage library="images" name="user_account.png"  width="50px" height="50px" cache="true" />
@@ -80,7 +84,7 @@
 
                                 </div>
                             </div>
-                            <div class="Wid45 BorderedBox Fright TexAlCenter" style="border-color: #00AEEF">
+                            <div class="Wid45 BorderedBox Fright TexAlCenter" style="border-color: #006699">
                                 <div class="ContainerIndent">
                                     <h:outputLink value="${request.contextPath}/protected/account/user_view.htm">
                                         <p:graphicImage library="images" name="user.png"  width="50px" height="50px" cache="true" />
@@ -88,7 +92,7 @@
                                     <div class="Fs16 black FontRalewayRegular animated pulse infinite">#{appmsg['global.employee']}</div>
                                 </div>
                             </div>
-                            <div class="Wid45 BorderedBox Fleft TexAlCenter" style="border-color: #00AEEF">
+                            <div class="Wid45 BorderedBox Fleft TexAlCenter" style="border-color: #006699">
                                 <div class="ContainerIndent">
                                     <!--<div class="EmptyBox10"></div>-->
                                     <h:outputLink value="${request.contextPath}/protected/account/user_view.htm">
@@ -98,7 +102,7 @@
                                     <!--<div class="EmptyBox10"></div>-->
                                 </div>
                             </div>
-                            <div class="Wid45 BorderedBox Fright TexAlCenter" style="border-color: #00AEEF">
+                            <div class="Wid45 BorderedBox Fright TexAlCenter" style="border-color: #006699">
                                 <div class="ContainerIndent">
                                     <!--<div class="EmptyBox10"></div>-->
 
@@ -107,7 +111,7 @@
                                     <!--<div class="EmptyBox10"></div>-->
                                 </div>
                             </div>
-                            <div class="Wid45 BorderedBox Fleft TexAlCenter" style="border-color: #00AEEF">
+                            <div class="Wid45 BorderedBox Fleft TexAlCenter" style="border-color: #006699">
                                 <div class="ContainerIndent">
                                     <!--<div class="EmptyBox10"></div>-->
 
@@ -116,7 +120,7 @@
                                     <!--<div class="EmptyBox10"></div>-->
                                 </div>
                             </div>
-                            <div class="Wid45 BorderedBox Fright TexAlCenter" style="border-color: #00AEEF">
+                            <div class="Wid45 BorderedBox Fright TexAlCenter" style="border-color: #006699">
                                 <div class="ContainerIndent">
                                     <!--<div class="EmptyBox10"></div>-->
 
@@ -125,7 +129,7 @@
                                     <!--<div class="EmptyBox10"></div>-->
                                 </div>
                             </div>
-                            <div class="Wid45 BorderedBox Fleft TexAlCenter" style="border-color: #00AEEF">
+                            <div class="Wid45 BorderedBox Fleft TexAlCenter" style="border-color: #006699">
                                 <div class="ContainerIndent">
                                     <!--<div class="EmptyBox10"></div>-->
 
@@ -134,7 +138,7 @@
                                     <!--<div class="EmptyBox10"></div>-->
                                 </div>
                             </div>
-                            <div class="Wid45 BorderedBox Fright TexAlCenter" style="border-color: #00AEEF">
+                            <div class="Wid45 BorderedBox Fright TexAlCenter" style="border-color: #006699">
                                 <div class="ContainerIndent">
                                     <!--<div class="EmptyBox10"></div>-->
 
@@ -152,15 +156,15 @@
                 </div>
             </div>
             <div class="Seperator" ></div>
-            <i class="fa fa-list-alt Fleft Fs16 blue_black MarRight10 "></i>
-            <span class="Fleft Fs16 blue_black"><p:outputLabel value="#{appmsg['global.click_more_detail']}" /></span>
+            <!--            <i class="fa fa-list-alt Fleft Fs16 blue_black MarRight10 "></i>
+                        <span class="Fleft Fs16 blue_black"><p:outputLabel value="#{appmsg['global.click_more_detail']}" /></span>-->
             <div class="Container25 Responsive">
                 <div class="ContainerIndent">
                     <div class="Container100 TexAlCenter">
                         <div class="Container100">
 
-                            <!--<div class="Wid45 BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #00AEEF">-->
-                            <a href="#" class="Wid45  BorderedBox Fleft TexAlCenter HoverEffect" style="border-color: #00AEEF">
+                            <!--<div class="Wid45 BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #006699">-->
+                            <a href="#" class="Wid45  BorderedBox Fleft TexAlCenter HoverEffect" style="border-color: #006699">
                                 <div class="ContainerIndent">
                                     <div class="EmptyBox10"></div>
                                     <i class="fa fa-thumbs-up Fs24 animated swing infinite blue"></i>
@@ -170,7 +174,7 @@
                                 </div>
                             </a>
                             <!--</div>-->
-                            <a href="#" class="Wid45 BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #00AEEF">
+                            <a href="#" class="Wid45 BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #006699">
                                 <div class="ContainerIndent">
                                     <div class="EmptyBox10"></div>
                                     <i class="fa fa-tasks Fs24 animated bounceOut infinite blue"></i>
@@ -179,7 +183,7 @@
                                     <div class="EmptyBox10"></div>
                                 </div>
                             </a>
-                            <a href="#" class="Wid45 BorderedBox Fleft TexAlCenter HoverEffect" style="border-color: #00AEEF">
+                            <a href="#" class="Wid45 BorderedBox Fleft TexAlCenter HoverEffect" style="border-color: #006699">
                                 <div class="ContainerIndent">
                                     <div class="EmptyBox10"></div>
                                     <i class="fa fa-thumbs-down animated swing infinite red Fs24"></i>
@@ -188,7 +192,7 @@
                                     <div class="EmptyBox10"></div>
                                 </div>
                             </a>
-                            <a href="#" class="Wid45 BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #00AEEF">
+                            <a href="#" class="Wid45 BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #006699">
                                 <div class="ContainerIndent">
                                     <div class="EmptyBox10"></div>
                                     <i class="fa fa-tachometer animated bounceIn infinite blue Fs24"></i>
@@ -203,11 +207,119 @@
             </div>
             <!--<div class="Container100 Responsive">-->
             <!--<div class="ContainerIndent">-->
-
             <div class="Seperator" ></div>
-            <div class="layout-portlets-box">
-                <div class="Container100">
-                    <p:outputLabel value="#{appmsg['home.employee_distribution_by_age']}" class="Fs18 blue_black" />
+            <div class="layout-portlets-box" style="margin-bottom: 15px">
+                <div class="Container100" style="margin-top: 4px">
+                    <p:outputLabel value="#{appmsg['loginhistory.login_history']}" class="Fs18 blue_black bold" />
+                    <h:panelGrid columns="2" style="margin-left: -3px">
+                        <!--<p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs16 blue" style="margin-right: 3px"/>-->
+                        <p:outputLabel value="#{appmsg['loginhistory.list_of_user_login_history']}" class="Fs16 blue"/>
+                    </h:panelGrid>
+                    <p:dataTable id="logHistoryId" var="data" style="margin-bottom: 12px" initMode="load" reflow="false"
+                                 value="#{homeMobileController.loginHistories}">
+                        <p:column  style="text-align: center">
+                            <f:facet name="header">
+                                <h:outputText value="#{appmsg['loginhistory.login_date']}"  class="Fs18"/>
+                            </f:facet>
+                            <p:outputLabel value="#{data.loginDate}" class="Fs18" >
+                                <f:convertDateTime pattern="dd-MMM-yyyy HH:mm:ss aa" />
+                            </p:outputLabel>
+                        </p:column>
+                        <p:column >
+                            <f:facet name="header">
+                                <h:outputText value="#{appmsg['global.username']}" class="Fs18" />
+                            </f:facet>
+                            <p:outputLabel value="#{data.hrmUser.realName}" class="Fs18" />
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+            </div>
+            <div class="layout-portlets-box" style="margin-bottom: 15px">
+                <div class="Container100" style="margin-top: 4px">
+                    <p:outputLabel value="#{appmsg['home.employee_attendance_history']}" class="Fs18 blue_black bold" />
+                    <h:panelGrid columns="2" style="margin-left: -3px">
+                        <!--<p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs18 black" style="margin-right: 3px"/>-->
+                        <p:outputLabel value="#{appmsg['home.on_each_department']}" class="Fs16 blue"/>
+                    </h:panelGrid>
+                    <p:chart type="bar" model="#{homeMobileController.barChartModel}"  style="height:210px;font-size: 11px" responsive="true"  />
+                </div>
+            </div>
+            <div class="layout-portlets-box" style="margin-bottom: 15px">
+                <div class="Container100" style="margin-top: 4px">
+                    <p:outputLabel value="#{appmsg['home.attendance_prediction_period']}" class="Fs18 blue_black bold" />
+                    <h:panelGrid columns="3" style="margin-left: -3px">
+                        <!--<p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs18 black" style="margin-right: 3px"/>-->
+                        <p:outputLabel id="codeId" value="#{homeDashboardController.attendanceModel.stardDate}" class="Fs16 blue">
+                            <f:convertDateTime pattern="dd MMMM yyyy" />
+                        </p:outputLabel>
+                        <p:outputLabel value="-" class="Fs16 blue"/>
+                        <p:outputLabel  value="#{homeDashboardController.attendanceModel.endDate}" class="Fs16 blue" >
+                            <f:convertDateTime pattern="dd MMMM yyyy" />
+                        </p:outputLabel>
+                    </h:panelGrid>
+                    <div align="center" style="margin-top: 15px;margin-bottom: 15px">
+                        <h:panelGrid columns="6" >
+                            <h:panelGrid columns="1" style="text-align: center;margin-bottom: 10px;margin-top: 10px">
+                                <p:graphicImage library="images" name="holiday.png"  cache="true" height="64" width="64"  />                                                 
+                                <h:panelGroup layout="block">
+                                    <h:panelGrid columns="3" style="text-align: left">
+                                        <h:outputLabel value="Cuti" class="Fs18 blue_black bold" />
+                                        <h:outputLabel value=":" class="Fs18 blue_black bold" />
+                                        <h:outputLabel value="#{homeDashboardController.attendanceModel.totalCuti}" class="Fs18 blue_black bold" />
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1" style="text-align: center">
+                                <p:graphicImage library="images" name="nurse2.png"  cache="true" height="64" width="64"  /> 
+                                <h:panelGroup layout="block">
+                                    <h:panelGrid columns="3" style="text-align: center">
+                                        <h:outputLabel value="#{appmsg['global.sick']}" class="Fs18 blue_black bold" />
+                                        <h:outputLabel value=":" styleClass="header_big"/>
+                                        <h:outputLabel value="#{homeDashboardController.attendanceModel.totalSick}" class="Fs18 blue_black bold"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1" style="text-align: center">
+                                <p:graphicImage library="images" name="permit_absen.png"  cache="true" height="64" width="64"  /> 
+                                <h:panelGroup layout="block">
+                                    <h:panelGrid columns="3" style="text-align: center">
+                                        <h:outputLabel value="#{appmsg['global.permit']}" class="Fs18 blue_black bold" />
+                                        <h:outputLabel value=":" class="Fs18 blue_black bold" />
+                                        <h:outputLabel value="#{homeDashboardController.attendanceModel.totalIzin}" class="Fs18 blue_black bold" />
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1" style="text-align: center">
+                                <p:graphicImage library="images" name="on_duty.png"  cache="true" height="64" width="64"  /> 
+                                <h:panelGroup layout="block">
+                                    <h:panelGrid columns="3" style="text-align: center">
+                                        <h:outputLabel value="#{appmsg['home.on_duty']}" class="Fs18 blue_black bold" />
+                                        <h:outputLabel value=":" styleClass="header_big"/>
+                                        <h:outputLabel value="#{homeDashboardController.attendanceModel.totalOnDuty}" class="Fs18 blue_black bold" />
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                            <!--                            <h:panelGrid columns="1" style="text-align: center;border-width: 1px!important">
+                                                            <p:graphicImage library="images" name="persentase.png"  cache="true" height="64" width="64"  /> 
+                                                            <h:panelGroup layout="block">
+                                                                <h:panelGrid columns="3" style="text-align: center">
+                                                                    <h:outputLabel value="#{appmsg['home.attendance']}" styleClass="header_big"/>
+                                                                    <h:outputLabel value=":" styleClass="header_big"/>
+                                                                    <p:outputLabel value="#{homeDashboardController.totalPersent}" styleClass="header_big">
+                                                                        <f:convertNumber  type="percent" />
+                                                                    </p:outputLabel>
+                                                                </h:panelGrid>
+                                                            </h:panelGroup>
+                                                        </h:panelGrid>-->
+                        </h:panelGrid>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="Seperator" ></div>-->
+            <div class="layout-portlets-box" style="margin-bottom: 15px">
+                <div class="Container100" style="margin-top: 4px">
+                    <p:outputLabel value="#{appmsg['home.employee_distribution_by_age']}" class="Fs18 blue_black bold" />
                     <h:panelGrid columns="2" style="margin-left: -3px">
                         <p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs16 blue" style="margin-right: 3px"/>
                         <p:outputLabel value="#{homeMobileController.lastUpdateEmpDistByAge}" class="Fs16 blue">
@@ -218,10 +330,10 @@
                 </div>
             </div>
 
-            <div class="Seperator" ></div>
-            <div class="layout-portlets-box">
-                <div class="Container100">
-                    <p:outputLabel value="#{appmsg['home.employee_attendance_presentation']}" class="Fs18 blue_black" />
+            <!--<div class="Seperator" ></div>-->
+            <div class="layout-portlets-box" style="margin-bottom: 15px">
+                <div class="Container100" style="margin-top: 4px">
+                    <p:outputLabel value="#{appmsg['home.employee_attendance_presentation']}" class="Fs18 blue_black bold" />
                     <h:panelGrid columns="2" style="margin-left: -3px">
                         <!--<p:outputLabel value="#{appmsg['home.updated']} :  " class="Fs18 black" style="margin-right: 3px"/>-->
                         <p:outputLabel value="#{homeMobileController.presentationAttendancePerDayLabel}" class="Fs16 blue"/>
@@ -229,505 +341,91 @@
                     <p:chart type="bar" model="#{homeMobileController.presentationAttendancePerDayBarChartModel}" style="height:180px;font-size: 11px" responsive="true"/>
                 </div>
             </div>
-            <div class="Seperator" ></div>
-            <div class="Container100">
-                <p:outputLabel value="#{appmsg['home.employee_distribution_by_gender']}" class="Fs18 blue_black" />
-                <h:panelGrid columns="2" style="margin-left: -3px;margin-bottom: 5px">
-                    <p:outputLabel value="#{appmsg['home.updated']} : " class="Fs16 blue" style="margin-right: 3px"/>
-                    <p:outputLabel value="#{homeMobileController.lastUpdateEmpDistByGender}" class="Fs16 blue">
-                        <f:convertDateTime pattern="dd-MMMM-yyyy - HH:mm:ss"/>
-                    </p:outputLabel>
-                </h:panelGrid>
-                <div class="Wid45 BorderedBox Fleft TexAlCenter HoverEffect" style="border-color: #00AEEF;">
-                    <div class="ContainerIndent">
-                        <div class="EmptyBox10"></div>
-                        <p:graphicImage library="images" name="logo-cowo.png" width="35%" cache="true" />
-                        <!--<span class="Fs14 DispBlock black">Laki-Laki</span>-->
-                        <span class="Fs24 DispBlock red animated bounceOut infinite">#{homeMobileController.totalMale}</span>
-                        <div class="EmptyBox10"></div>
+            <!--<div class="Seperator" ></div>-->
+            <div class="layout-portlets-box" style="margin-bottom: 15px">
+                <div class="Container100" style="margin-top: 4px">
+                    <p:outputLabel value="#{appmsg['home.employee_distribution_by_gender']}" class="Fs18 blue_black bold" />
+                    <h:panelGrid columns="2" style="margin-left: -3px;margin-bottom: 5px">
+                        <p:outputLabel value="#{appmsg['home.updated']} : " class="Fs16 blue" style="margin-right: 3px"/>
+                        <p:outputLabel value="#{homeMobileController.lastUpdateEmpDistByGender}" class="Fs16 blue">
+                            <f:convertDateTime pattern="dd-MMMM-yyyy - HH:mm:ss"/>
+                        </p:outputLabel>
+                    </h:panelGrid>
+                    <div class="Wid45 BorderedBox Fleft TexAlCenter HoverEffect" style="border-color: #006699;">
+                        <div class="ContainerIndent" style="margin-top: 4px">
+                            <div class="EmptyBox10"></div>
+                            <p:graphicImage library="images" name="logo-cowo.png" width="35%" cache="true" />
+                            <!--<span class="Fs14 DispBlock black">Laki-Laki</span>-->
+                            <span class="Fs24 DispBlock red animated bounceOut infinite">#{homeMobileController.totalMale}</span>
+                            <div class="EmptyBox10"></div>
+                        </div>
                     </div>
-                </div>
-                <div class="Wid45 BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #00AEEF">
-                    <div class="ContainerIndent">
-                        <div class="EmptyBox10"></div>
-                        <p:graphicImage library="images" name="logo-cewe.png" width="36%" cache="true" />
-                        <!--<span class="Fs14 DispBlock black">Perempuan</span>-->
-                        <span class="Fs24 DispBlock red animated bounceOut infinite">#{homeMobileController.totalFemale}</span>
-                        <div class="EmptyBox10"></div>
+                    <div class="Wid45 BorderedBox Fright TexAlCenter HoverEffect" style="border-color: #006699">
+                        <div class="ContainerIndent" style="margin-top: 4px">
+                            <div class="EmptyBox10"></div>
+                            <p:graphicImage library="images" name="logo-cewe.png" width="36%" cache="true" />
+                            <!--<span class="Fs14 DispBlock black">Perempuan</span>-->
+                            <span class="Fs24 DispBlock red animated bounceOut infinite">#{homeMobileController.totalFemale}</span>
+                            <div class="EmptyBox10"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="Seperator" ></div>
-            <div class="layout-portlets-box">
-                <div class="Container100">
-                    <p:outputLabel value="#{appmsg['home.employee_distribution_by_department']}" class="Fs18 blue_black" />
+            <!--<div class="Seperator" ></div>-->
+            <div class="layout-portlets-box" style="margin-bottom: 15px">
+                <div class="Container100" style="margin-top: 4px">
+                    <p:outputLabel value="#{appmsg['home.employee_distribution_by_department']}" class="Fs18 blue_black bold" />
                     <h:panelGrid columns="2" style="margin-left: -3px">
                         <p:outputLabel value="#{appmsg['home.updated']} : " class="Fs16 blue" style="margin-right: 3px"/>
                         <p:outputLabel value="#{homeMobileController.lastUpdateEmpDistByDepartment}" class="Fs16 blue">
                             <f:convertDateTime pattern="dd-MMMM-yyyy - HH:mm:ss"/>
                         </p:outputLabel>
                     </h:panelGrid>
-                    <p:chart type="bar" model="#{homeMobileController.barChartDistribusiByDept}"  style="height:190px;font-size: 11px" responsive="true"  />
+                    <p:chart type="bar" model="#{homeMobileController.barChartDistribusiByDept}"  style="height:220px;font-size: 11px" responsive="true"   />
                  <!--<p:chart model="#{homeDashboardController.barChartModel}" type="bar"  style="height:220px;font-size: 11px;margin-left: -5px;margin-right: -5px" responsive="true" />-->
                 </div>
             </div>
-            <!--<div class="Seperator" ></div>-->
-      
-            <!--</div>-->
-            <!--</div>-->
-            <!--<h:panelGrid style="margin-bottom: 3px">-->
-    <!--        <p:outputLabel value="#{appmsg['home.employee_distribution_by_age']}" styleClass="header_big" />
-            <h:panelGrid columns="2" style="margin-left:-6px;">
-                <p:outputLabel value="#{appmsg['home.updated']} :" styleClass="header_small_no_bold" style="color: #00AEEF" />
-                <p:outputLabel value="#{homeDashboardController.lastUpdateEmpDistByAge}" style="margin-left:-8px;color: #00AEEF" styleClass="header_small_no_bold" >
-                    <f:convertDateTime pattern="dd-MMM-yyyy hh:mm"/>
-                </p:outputLabel>
-            </h:panelGrid>-->
 
-            <!--</h:panelGrid>-->
-            <!--        <div align="center">
-                        <div class="DispInlBlock TexAlLeft MarTop20" >
-                            <div class="Container20" >
-                                <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="50" width="50" cache="true" style="border:  1px solid #ffffff !important; border-radius: 4px !important;margin-right: 6px"    >
-                                    <f:param name="id" value="#{BIODATA_ID}"/>
-                                </p:graphicImage>
-                            </div>
-                            <div class="Container80">
-                                <div class="Fright">
-                                    <h2 class="black Fs24 FontRalewayMedium">Informasi Penting</h2>
-                                    <span class="Fs15 white FontRalewayRegular DispBlock">Data Pribadi </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
+            <div class="layout-portlets-box" style="margin-bottom: 15px">
+                <div class="Container100">
+                    <!--<p:panel  style="margin-left: 10px;margin-right: 0px;margin-top: 10px;height: 242px;">--> 
+                    <h:panelGrid style="margin-bottom: 3px">                                    
+                        <p:outputLabel value="#{appmsg['home.employee_resume_data']}"  class="Fs18 blue_black bold" />
+                        <p:outputLabel value="#{appmsg['home.information_statistic']}" class="Fs16 blue" />
+                    </h:panelGrid>
+                    <h:panelGrid columns="3">
+                        <p:outputLabel value="#{appmsg['employee.employee']}" class="Fs18 blue_black"/>
+                        <p:outputLabel value=":" class="Fs18 blue_black" />
+                        <p:outputLabel value="#{homeDashboardController.employeeResumeModel.totalEmployee} Orang" class="Fs18 blue_black" />
 
-            <!--        <div class="layout-portlets-box">
-                        <div class="Container20 Responsive">
-                            <div class="ContainerIndent">
-                                <div class="Container100">
-            
-                                    <div class="DispInlBlock MarTop10">
-                                        <div class="Container20">
-                                        <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="40" width="40" cache="true" style="border:  1px solid #ffffff !important; border-radius: 4px !important"    >
-                                            <f:param name="id" value="#{BIODATA_ID}"/>
-                                        </p:graphicImage>
-                                        </div>
-                                        <div class="Container80">
-                                        <div class="Fright" style="margin-left: 10px">
-                                            <h1 class="blue Fs24 FontRalewayMedium">#{realName}</h1>
-                                            <span class="Fs15 gray FontRalewayRegular DispBlock">#{homeController.roleUser}</span>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div class="Seperator"></div>
-                                    <i class="fa fa-clock-o Fleft Fs15 blue MarRight10"></i>
-                                    <span class="Fleft Fs12 orange"><p:outputLabel value="#{appmsg['master_layout.login_at']} #{login_date}" /></span>
-            
-                                    <div class="Container100 MarTop20 TexAlLeft">
-                                        <div class="Fs16 gray FontRalewayRegular"><i class="fa fa-star MarRight10 orange"></i>Your Latest Links</div>
-                                        <div class="Seperator"></div>
-                                        <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Sales Reports</a>
-                                        <div class="EmptyBox10"></div>
-                                        <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Dealers Map And Info</a>
-                                        <div class="EmptyBox10"></div>
-                                        <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Marketing Strategies News</a>
-                                        <div class="EmptyBox10"></div>
-                                        <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Company Turnover Info</a>
-                                        <div class="EmptyBox10"></div>
-                                        <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Dealers Map And Info</a>
-                                        <div class="EmptyBox10"></div>
-                                        <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Marketing Strategies News</a>
-                                        <div class="EmptyBox10"></div>
-                                        <a href="#" class="Fs14 blue DispBlock FontRalewayRegular Fleft HoverLink"><i class="fa fa-tag"></i> Company Turnover Info</a>
-                                    </div>
-            
-                                </div>
-                            </div>
-                        </div>
-            
-                                    <div class="Container25 Responsive">
-                                        <div class="ContainerIndent">
-                                            <div class="Container100 TexAlCenter">
-                        
-                                                <div class="DispInlBlock TexAlLeft MarTop20">
-                                                    <i class="fa fa-car Fs40 gray Fleft MarRight10"></i>
-                                                    <div class="Fleft">
-                                                        <h2 class="black Fs24 FontRalewayMedium">Sales Reports</h2>
-                                                        <span class="Fs15 gray FontRalewayRegular DispBlock">USA, Europe, Asia..</span>
-                                                    </div>
-                                                </div>
-                                                <div class="Seperator"></div>
-                                                <div class="Container100">
-                                                    <a href="#" class="Wid45 BorderedBox Fleft TexAlCenter HoverEffect">
-                                                        <div class="ContainerIndent">
-                                                            <div class="EmptyBox10"></div>
-                                                            <h:graphicImage name="images/usa.svg" styleClass="Fleft Wid60" library="demo"/>
-                                                            <div class="Fs14 gray">USA</div>
-                                                            <div class="Fs24 red FontRalewayRegular">34.657</div>
-                                                            <div class="EmptyBox10"></div>
-                                                        </div>
-                                                    </a>
-                                                    <a href="#" class="Wid45 BorderedBox Fright TexAlCenter HoverEffect">
-                                                        <div class="ContainerIndent">
-                                                            <div class="EmptyBox10"></div>
-                                                            <h:graphicImage name="images/southamerica.svg" styleClass="Fleft Wid60" library="demo"/>
-                                                            <div class="Fs14 gray">South America</div>
-                                                            <div class="Fs24 red FontRalewayRegular">43.365</div>
-                                                            <div class="EmptyBox10"></div>
-                                                        </div>
-                                                    </a>
-                                                    <a href="#" class="Wid45 BorderedBox Fleft TexAlCenter HoverEffect">
-                                                        <div class="ContainerIndent">
-                                                            <div class="EmptyBox10"></div>
-                                                            <h:graphicImage name="images/europe.svg" styleClass="Fleft Wid60" library="demo"/>
-                                                            <div class="Fs14 gray">Europe</div>
-                                                            <div class="Fs24 red FontRalewayRegular">29.456</div>
-                                                            <div class="EmptyBox10"></div>
-                                                        </div>
-                                                    </a>
-                                                    <a href="#" class="Wid45 BorderedBox Fright TexAlCenter HoverEffect">
-                                                        <div class="ContainerIndent">
-                                                            <div class="EmptyBox10"></div>
-                                                            <h:graphicImage name="images/africa.svg" styleClass="Fleft Wid60" library="demo" />
-                                                            <div class="Fs14 gray">Africa</div>
-                                                            <div class="Fs24 red FontRalewayRegular">4.657</div>
-                                                            <div class="EmptyBox10"></div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                        
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="Container30 Responsive100">
-                                        <div class="ContainerIndent">
-                                            <div class="Container100 TexAlCenter">
-                                                
-                                                <div class="DispInlBlock TexAlLeft MarTop20">
-                                                    <i class="fa fa-calendar Fs40 blue Fleft MarRight10"></i>
-                                                    <div class="Fleft">
-                                                        <h2 class="black Fs24 FontRalewayMedium">Dealers Meetings</h2>
-                                                        <span class="Fs15 gray FontRalewayRegular DispBlock">Specified For All Countries</span>
-                                                    </div>
-                                                </div>
-                                                <div class="Seperator"></div>
-                                                <div class="Wid100 Fleft">
-                                                    <p:schedule id="schedule" value="#{scheduleView.eventModel}" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                    </div>-->
-            <!-- BOX END -->
+                        <p:outputLabel value="#{appmsg['home.today_leave']}" class="Fs18 blue_black" />
+                        <p:outputLabel value=":" class="Fs18 blue_black" />
+                        <p:outputLabel value="#{homeDashboardController.employeeResumeModel.todayLeave} Orang" class="Fs18 blue_black" />
 
-            <!-- BOX START -->
-            <!--        <div class="layout-portlets-box">
-                        <div class="Container30 Responsive50">
-                            <div class="ContainerIndent">
-                                <div class="BigTopic">
-                                    <h2 class="black Fs24 FontRalewayMedium"><i class="fa fa-ioxhost Fleft red MarRight10"></i> Stock Exchanges</h2>
-                                    <span class="Fs15 gray FontRalewayRegular DispBlock">NASDAQ, Dow Jones, NIKKEI, DAX</span>
-                                </div>
-                                <div class="EmptyBox10"></div>
-                                <div class="Container100">
-                                    <div class="Fleft MarRight20 MarBot10">
-                                        <span class="gray Fs21 FontRalewayMedium DispBlock">USD ($)</span>
-                                        <span class="green FontRalewayBold Fs20">2,6378 <i class="fa fa-caret-up"></i></span>
-                                    </div>
-                                    <div class="Fleft MarRight20 MarBot10">
-                                        <span class="gray Fs21 FontRalewayMedium DispBlock">EURO (€)</span>
-                                        <span class="red FontRalewayBold Fs20">2,5673 <i class="fa fa-caret-down"></i></span>
-                                    </div>
-                                    <div class="Fleft MarBot10">
-                                        <span class="gray Fs21 FontRalewayMedium DispBlock">GOLD</span>
-                                        <span class="orange FontRalewayBold Fs20">97,989 <i class="fa fa-caret-left"></i> <i class="fa fa-caret-right"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="Container70 Responsive50">
-                            <div class="ContainerIndent">
-                                <div class="Container20 BorderedBox Responsive TexAlCenter">
-                                    <div class="ContainerIndent">
-                                        <span class="gray Fs18 FontRalewayMedium DispBlock">AAPL</span>
-                                        <span class="green FontRalewayBold Fs18">123,08 <i class="fa fa-caret-up"></i></span>
-                                    </div>
-                                </div>
-                                <div class="Container20 BorderedBox Responsive TexAlCenter">
-                                    <div class="ContainerIndent">
-                                        <span class="gray Fs18 FontRalewayMedium DispBlock">GOOG</span>
-                                        <span class="red FontRalewayBold Fs18">98,67 <i class="fa fa-caret-down"></i></span>
-                                    </div>
-                                </div>
-                                <div class="Container20 BorderedBox Responsive TexAlCenter">
-                                    <div class="ContainerIndent">
-                                        <span class="gray Fs18 FontRalewayMedium DispBlock">YHOO</span>
-                                        <span class="orange FontRalewayBold Fs18">99,456 <i class="fa fa-caret-left"></i> <i class="fa fa-caret-right"></i></span>
-                                    </div>
-                                </div>
-                                <div class="Container20 BorderedBox Responsive TexAlCenter">
-                                    <div class="ContainerIndent">
-                                        <span class="gray Fs18 FontRalewayMedium DispBlock">PRFCS</span>
-                                        <span class="green FontRalewayBold Fs18">178,80 <i class="fa fa-caret-up"></i></span>
-                                    </div>
-                                </div>
-                                <div class="Container20 BorderedBox Responsive TexAlCenter">
-                                    <div class="ContainerIndent">
-                                        <span class="gray Fs18 FontRalewayMedium DispBlock">FTSE 100</span>
-                                        <span class="red FontRalewayBold Fs18">98,67 <i class="fa fa-caret-down"></i></span>
-                                    </div>
-                                </div>
-                                <div class="Container20 BorderedBox Responsive TexAlCenter">
-                                    <div class="ContainerIndent">
-                                        <span class="gray Fs18 FontRalewayMedium DispBlock">DAX</span>
-                                        <span class="orange FontRalewayBold Fs18">99,456 <i class="fa fa-caret-left"></i> <i class="fa fa-caret-right"></i></span>
-                                    </div>
-                                </div>
-                                <div class="Container20 BorderedBox Responsive TexAlCenter">
-                                    <div class="ContainerIndent">
-                                        <span class="gray Fs18 FontRalewayMedium DispBlock">NIKKEI</span>
-                                        <span class="red FontRalewayBold Fs18">98,67 <i class="fa fa-caret-down"></i></span>
-                                    </div>
-                                </div>
-                                <div class="Container20 BorderedBox Responsive TexAlCenter">
-                                    <div class="ContainerIndent">
-                                        <span class="gray Fs18 FontRalewayMedium DispBlock">DOW J</span>
-                                        <span class="green FontRalewayBold Fs18">123,08 <i class="fa fa-caret-up"></i></span>
-                                    </div>
-                                </div>
-                                <div class="Container20 BorderedBox Responsive TexAlCenter">
-                                    <div class="ContainerIndent">
-                                        <span class="gray Fs18 FontRalewayMedium DispBlock">YHOO</span>
-                                        <span class="orange FontRalewayBold Fs18">99,456 <i class="fa fa-caret-left"></i> <i class="fa fa-caret-right"></i></span>
-                                    </div>
-                                </div>
-                                <div class="Container20 BorderedBox Responsive TexAlCenter">
-                                    <div class="ContainerIndent">
-                                        <span class="gray Fs18 FontRalewayMedium DispBlock">PRFCS</span>
-                                        <span class="green FontRalewayBold Fs18">178,80 <i class="fa fa-caret-up"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
-            <!-- BOX END -->
+                        <p:outputLabel value="#{appmsg['home.today_on_duty']}" class="Fs18 blue_black" />
+                        <p:outputLabel value=":" class="Fs18 blue_black" />
+                        <p:outputLabel value="#{homeDashboardController.employeeResumeModel.todayBusinessTravel} Orang" class="Fs18 blue_black" />
 
-            <!-- BOX START -->
-            <!--        <div class="layout-portlets-box">
-                        <div class="Container50 Responsive50">
-                            <div class="ContainerIndent">
-                                <h3 class="BigTopic">
-                                    <div class="Wid50 Responsive50 Fleft">Car Sales Ranks</div>
-                                    <div class="Wid50 Fright Responsive50">
-                                        <p:button value="Today" styleClass="Fright"></p:button>
-                                        <p:button value="Weekly" styleClass="Fright"></p:button>
-                                        <p:button value="Monthly" styleClass="Fright"></p:button>
-                                    </div>
-                                </h3>
-                                <h:form id="form">
-                                    <p:dataTable id="singleDT" var="car" value="#{dtSelectionView.cars2}" selectionMode="single" selection="#{dtSelectionView.selectedCar}" rowKey="#{car.id}"
-                                                 rows="5" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                                 rowsPerPageTemplate="5,10,15" emptyMessage="No cars found with given criteria" reflow="true">
-                                        <f:facet name="header">
-                                            List Of Total Sold Cars
-                                        </f:facet>
-            
-                                        <p:column headerText="Id" sortBy="#{car.id}">
-                                            <h:outputText value="#{car.id}" />
-                                        </p:column>
-                                        <p:column headerText="Year" sortBy="#{car.year}">
-                                            <h:outputText value="#{car.year}" />
-                                        </p:column>
-                                        <p:column headerText="Brand" sortBy="#{car.brand}">
-                                            <h:outputText value="#{car.brand}" />
-                                        </p:column>
-                                        <p:column headerText="Color" sortBy="#{car.color}">
-                                            <h:outputText value="#{car.color}" />
-                                        </p:column>
-                                        <f:facet name="footer">
-                                            <p:commandButton process="singleDT" update=":form:carDetail" value="View" oncomplete="PF('carDialog').show()" />
-                                        </f:facet>
-                                    </p:dataTable>
-            
-                                    <p:dialog header="Car Info" widgetVar="carDialog" responsive="true" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                                        <p:outputPanel id="carDetail" style="text-align:center;">
-                                            <p:panelGrid  columns="2" rendered="#{not empty dtSelectionView.selectedCar}">
-                                                <h:outputText value="Id:" />
-                                                <h:outputText value="#{dtSelectionView.selectedCar.id}" />
-            
-                                                <h:outputText value="Year" />
-                                                <h:outputText value="#{dtSelectionView.selectedCar.year}" />
-            
-                                                <h:outputText value="Color:" />
-                                                <h:outputText value="#{dtSelectionView.selectedCar.color}" style="color:#{dtSelectionView.selectedCar.color}"/>
-            
-                                                <h:outputText value="Price" />
-                                                <h:outputText value="\$#{dtSelectionView.selectedCar.price}" />
-                                            </p:panelGrid>
-                                        </p:outputPanel>
-                                    </p:dialog>
-            
-                                    <div class="EmptyBox20"></div>
-            
-                                </h:form>
-                            </div>
-                        </div>
-                        <div class="Container50 Responsive50">
-                            <div class="ContainerIndent">
-                                <h3 class="BigTopic">
-                                    <div class="Wid50 Responsive50 Fleft">Monthly Sales Chart</div>
-                                    <div class="Wid50 Fright Responsive50">
-                                        <p:selectOneMenu id="car" styleClass="Fright" style="min-width: 150px;">
-                                            <f:selectItem itemLabel="Select One" itemValue="" />
-                                            <f:selectItems value="#{selectOneMenuView.cars}" />
-                                        </p:selectOneMenu>
-                                    </div>
-                                </h3>
-                                <div class="Wid100">
-                                    <p:chart type="line" model="#{chartView.lineModel1}" style="height:300px;margin-top:10px" responsive="true"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
-            <!-- BOX END -->
+                        <p:outputLabel value="#{appmsg['home.yesteday_attendance']}" class="Fs18 blue_black" />
+                        <p:outputLabel value=":" class="Fs18 blue_black" />
+                        <p:outputLabel value="#{homeDashboardController.employeeResumeModel.yesterdayAttendance} %" class="Fs18 blue_black" />
 
-            <!-- BOX START -->
-            <!--        <div class="layout-portlets-box">
-                        <div class="Container50 Responsive50">
-                            <div class="ContainerIndent">
-                                <h3 class="BigTopic">
-                                    Successful Dealers Of The Month
-                                </h3>
-                                <div class="Wid45 Responsive50 Fleft">
-                                    <p:fieldset legend="Brian Connoly" toggleable="true" toggleSpeed="500" style="margin-bottom:15px;">
-                                        <div class="Fs16 gray FontRalewaySemiBold">Atlanta Area Tesla Dealer</div>
-                                        <div class="EmptyBox10"></div>
-                                        <div class="Fs14">Whatever your budget and whatever the size of car you are looking for, we are sure we can help you find what’s 
-                                            right for you. To fully appreciate the range of cars we have on offer please visit one of our showrooms.</div>
-                                        <div class="Seperator"></div>
-                                        <div class="Wid100 Fs20">Total Sales <span class="Fright orange">20</span></div>
-                                        <div class="Wid100 Fs20">Total Turnover <span class="Fright orange">$ 1.365 K</span></div>
-                                    </p:fieldset>
-                                    <p:fieldset legend="Brian Connoly" toggleable="true" toggleSpeed="500" style="margin-bottom:15px;">
-                                        <div class="Fs16 gray FontRalewaySemiBold">Atlanta Area Tesla Dealer</div>
-                                        <div class="EmptyBox10"></div>
-                                        <div class="Fs14">Whatever your budget and whatever the size of car you are looking for, we are sure we can help you find what’s 
-                                            right for you. To fully appreciate the range of cars we have on offer please visit one of our showrooms.</div>
-                                        <div class="Seperator"></div>
-                                        <div class="Wid100 Fs20">Total Sales <span class="Fright orange">20</span></div>
-                                        <div class="Wid100 Fs20">Total Turnover <span class="Fright orange">$ 1.365 K</span></div>
-                                    </p:fieldset>
-                                </div>
-                                <div class="Wid45 Responsive50 Fright">
-                                    <p:fieldset legend="Brian Connoly" toggleable="true" toggleSpeed="500" style="margin-bottom:15px;">
-                                        <div class="Fs16 gray FontRalewaySemiBold">Atlanta Area Tesla Dealer</div>
-                                        <div class="EmptyBox10"></div>
-                                        <div class="Fs14">Whatever your budget and whatever the size of car you are looking for, we are sure we can help you find what’s 
-                                            right for you. To fully appreciate the range of cars we have on offer please visit one of our showrooms.</div>
-                                        <div class="Seperator"></div>
-                                        <div class="Wid100 Fs20">Total Sales <span class="Fright orange">20</span></div>
-                                        <div class="Wid100 Fs20">Total Turnover <span class="Fright orange">$ 1.365 K</span></div>
-                                    </p:fieldset>
-                                    <p:fieldset legend="Brian Connoly" toggleable="true" toggleSpeed="500" style="margin-bottom:15px;">
-                                        <div class="Fs16 gray FontRalewaySemiBold">Atlanta Area Tesla Dealer</div>
-                                        <div class="EmptyBox10"></div>
-                                        <div class="Fs14">Whatever your budget and whatever the size of car you are looking for, we are sure we can help you find what’s 
-                                            right for you. To fully appreciate the range of cars we have on offer please visit one of our showrooms.</div>
-                                        <div class="Seperator"></div>
-                                        <div class="Wid100 Fs20">Total Sales <span class="Fright orange">20</span></div>
-                                        <div class="Wid100 Fs20">Total Turnover <span class="Fright orange">$ 1.365 K</span></div>
-                                    </p:fieldset>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="Container50 Responsive50">
-                            <div class="ContainerIndent">
-                                <h3 class="BigTopic">
-                                    Messages From Dealers
-                                </h3>
-                                <h:form>
-                                    <p:accordionPanel multiple="false">
-                                        <p:tab title="About Weekly Sales From Canada ">
-                                            <h:panelGrid columns="2" cellpadding="10">
-                                                <div class="Fs16 gray MarBot10 FontRalewaySemiBold">Canada Dealers Sales Increasing - 18.08.2015</div>
-                                                <div class="Fs14">Whatever your budget and whatever the size of car you are looking for, we are sure we can help you find what’s right
-                                                for you. To fully appreciate the range of cars we have on offer please visit one of our showrooms. Whatever your budget and
-                                                whatever the size of car you are looking for, we are sure we can help you find what’s right for you. To fully appreciate the
-                                                range of cars we have on offer please visit one of our showrooms. Whatever your budget and whatever the size of car you
-                                                are looking for, we are sure we can help you find what’s right for you. To fully appreciate the range of cars we have on offer
-                                                please visit one of our showrooms..<br/><br/>
-                                                - George Sandy  |  Dealer Of Canada Motors</div>
-                                            </h:panelGrid>
-                                        </p:tab>
-                                        <p:tab title="Latest Sales Reports">
-                                            <h:panelGrid columns="2" cellpadding="10">
-                                                <div class="Fs16 gray MarBot10 FontRalewaySemiBold">Canada Dealers Sales Increasing - 18.08.2015</div>
-                                                <div class="Fs14">Whatever your budget and whatever the size of car you are looking for, we are sure we can help you find what’s right
-                                                for you. To fully appreciate the range of cars we have on offer please visit one of our showrooms. Whatever your budget and
-                                                whatever the size of car you are looking for, we are sure we can help you find what’s right for you. To fully appreciate the
-                                                range of cars we have on offer please visit one of our showrooms. Whatever your budget and whatever the size of car you
-                                                are looking for, we are sure we can help you find what’s right for you. To fully appreciate the range of cars we have on offer
-                                                please visit one of our showrooms..<br/><br/>
-                                                - George Sandy  |  Dealer Of Canada Motors</div>
-                                            </h:panelGrid>
-                                        </p:tab>
-                                        <p:tab title="February New Models Of Ford">
-                                            <h:panelGrid columns="2" cellpadding="10">
-                                                <div class="Fs16 gray MarBot10 FontRalewaySemiBold">Canada Dealers Sales Increasing - 18.08.2015</div>
-                                                <div class="Fs14">Whatever your budget and whatever the size of car you are looking for, we are sure we can help you find what’s right
-                                                for you. To fully appreciate the range of cars we have on offer please visit one of our showrooms. Whatever your budget and
-                                                whatever the size of car you are looking for, we are sure we can help you find what’s right for you. To fully appreciate the
-                                                range of cars we have on offer please visit one of our showrooms. Whatever your budget and whatever the size of car you
-                                                are looking for, we are sure we can help you find what’s right for you. To fully appreciate the range of cars we have on offer
-                                                please visit one of our showrooms..<br/><br/>
-                                                - George Sandy  |  Dealer Of Canada Motors</div>
-                                            </h:panelGrid>
-                                        </p:tab>
-                                        <p:tab title="Last Week Meeting Notes">
-                                            <h:panelGrid columns="2" cellpadding="10">
-                                                <div class="Fs16 gray MarBot10 FontRalewaySemiBold">Canada Dealers Sales Increasing - 18.08.2015</div>
-                                                <div class="Fs14">Whatever your budget and whatever the size of car you are looking for, we are sure we can help you find what’s right
-                                                for you. To fully appreciate the range of cars we have on offer please visit one of our showrooms. Whatever your budget and
-                                                whatever the size of car you are looking for, we are sure we can help you find what’s right for you. To fully appreciate the
-                                                range of cars we have on offer please visit one of our showrooms. Whatever your budget and whatever the size of car you
-                                                are looking for, we are sure we can help you find what’s right for you. To fully appreciate the range of cars we have on offer
-                                                please visit one of our showrooms..<br/><br/>
-                                                - George Sandy  |  Dealer Of Canada Motors</div>
-                                            </h:panelGrid>
-                                        </p:tab>
-                                    </p:accordionPanel>
-                                    
-                                    <div class="EmptyBox20"></div>
-                                    
-                                    <div class="Container100">
-                                        <div class="Container40 Responsive50">
-                                            <p:selectOneMenu id="console" value="#{selectOneMenuView.console}" style="width:90%; float: left;">
-                                                <f:selectItem itemLabel="To;" itemValue="" />
-                                                <f:selectItem itemLabel="Brian Connely" itemValue="Brian Connely" />
-                                                <f:selectItem itemLabel="Tony Parker" itemValue="Tony Parker" />
-                                                <f:selectItem itemLabel="Jack O'Neill" itemValue="Jack O'Neill" />
-                                                <f:selectItem itemLabel="Louis Alberto" itemValue="Louis Alberto" />
-                                            </p:selectOneMenu>
-                                            <div class="EmptyBox10"></div>
-                                            <p:inputText styleClass="Fleft Wid90" placeholder="Subject;"/>
-                                            <div class="EmptyBox30"></div>
-                                            <p:selectBooleanCheckbox value="accept" styleClass="Fleft" itemLabel="Send To All Dealers"/>
-                                        </div>
-                                        <div class="EmptyBox10 ShowOnMobile"></div>
-                                        <div class="Container60 Responsive50">
-                                            <p:inputTextarea rows="5" placeholder="Message;" styleClass="Wid90 Fright FloatNoneOnMobile"/>
-                                        </div>
-                                    </div>
-                                    <div class="EmptyBox20"></div>
-                                    <div class="DispInlBlock Fright FloatNoneOnMobile">
-                                        <p:button value="Clear" styleClass="RedButton Fright"/>
-                                        <p:button value="Reset" styleClass="OrangeButton Fright"/>
-                                        <p:button value="Send" styleClass="GreenButton Fright"/>
-                                    </div>
-                                </h:form>
-                            </div>
-                        </div>
-                    </div>-->
+                        <p:outputLabel value="#{appmsg['home.today_attendance_prediction']}" class="Fs18 blue_black" />
+                        <p:outputLabel value=":" class="Fs18 blue_black" />
+                        <p:outputLabel value="#{homeDashboardController.employeeResumeModel.todayAttendance} %" class="Fs18 blue_black" />
+                    </h:panelGrid>
+
+                    <p:separator style="margin-left: 4px;margin-right: 2px;margin-top: 2px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 9px;margin-top: 9px">
+                        <p:outputLabel value="#{appmsg['home.employee_nearest_birtdate']}" class="Fs18 green bold"/>
+                        <p:outputLabel value="#{homeDashboardController.employeeResumeModel.nearestBirthday}"  class="Fs18 orange"/>
+                    </h:panelGrid>
+
+                    <!--</p:panel>-->
+
+                </div>
+            </div>
+
             <!-- BOX END -->
             <script type="text/javascript">
                 function holidaysDisabled(date) {

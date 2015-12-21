@@ -514,10 +514,10 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
             jsonObj.put("materialJobsAbandoned", leaveImplementation.getMaterialJobsAbandoned());
             jsonObj.put("cancellationDate", cancellationDate);
             if(appActivity.getApprovalDefinition().getName().equals(HRMConstant.LEAVE_CANCELLATION)){
-            	System.out.println("if hohoho");
+            	
             	jsonObj.put("urlLinkToApprove", FacesUtil.getRequest().getContextPath() + "" + HRMConstant.LEAVE_CANCELLATION_APPROVAL_PAGE + "" +"?faces-redirect=true&execution=e" + appActivity.getId());
             }else{
-            	System.out.println("else hohohoh");
+            	
             	jsonObj.put("urlLinkToApprove", FacesUtil.getRequest().getContextPath() + "" + HRMConstant.LEAVE_APPROVAL_PAGE + "" +"?faces-redirect=true&execution=e" + appActivity.getId());
                 
             }
@@ -752,16 +752,16 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
         LeaveImplementation leaveImplementation = leaveImplementationDao.getEntiyByPK(leaveImplementationId);
 
         if (isNeedApprovalChecking) {
-        	System.out.println("if isNeedApprovalChecking");
+        	
             //check approval process
             HrmUser requestUser = hrmUserDao.getByEmpDataId(leaveImplementation.getEmpData().getId());
             ApprovalActivity approvalActivity = super.checkApprovalProcess(HRMConstant.LEAVE_CANCELLATION, requestUser.getUserId());
             if (approvalActivity == null) {
-            	System.out.println("if approvalActivity null");
+            	
                 this.cancellationProcess(leaveImplementationId, actualLeaves, cancellationLeaves, cancellationDescription);
 
             } else {
-            	System.out.println("if else");
+            	
                 //parsing object to json and save to approval activity 
                 JsonParser parser = new JsonParser();
                 Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
@@ -792,7 +792,7 @@ public class LeaveImplementationServiceImpl extends BaseApprovalServiceImpl impl
                 this.sendingApprovalNotification(approvalActivity);
             }
         } else {
-        	System.out.println("else");
+        	
             this.cancellationProcess(leaveImplementationId, actualLeaves, cancellationLeaves, cancellationDescription);
         }
 

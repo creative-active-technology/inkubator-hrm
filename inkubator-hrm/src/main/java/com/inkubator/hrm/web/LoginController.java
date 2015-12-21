@@ -13,12 +13,15 @@ import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.util.CustomAuthenticationSuccessHandler;
 import com.inkubator.hrm.util.ResourceBundleUtil;
 import com.inkubator.hrm.util.StringUtils;
+import com.inkubator.webcore.WebCoreConstant;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.application.FacesMessage;
@@ -75,35 +78,30 @@ public class LoginController extends BaseController {
             selectedLanguage = (String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE);
         }
         FacesUtil.getFacesContext().getViewRoot().setLocale(new Locale(selectedLanguage));
-
+        super.initialization();
+        
         if (device.isMobile()) {
-//            try {
             LOGGER.info("Mobile");
             isMobile = Boolean.TRUE;
-//                FacesUtil.getExternalContext().redirect("/mobile_login.htm");
-//            } catch (IOException ex) {
-//                LOGGER.error(ex, ex);
-//            }
         }
         if (device.isNormal()) {
             LOGGER.error("NOrmal Desktop");
             isMobile = Boolean.FALSE;
-
         }
         if (device.isTablet()) {
             LOGGER.info("TABLET");
         }
 
         String userAgent = FacesUtil.getRequest().getHeader("User-Agent");
-
         LOGGER.info("Data " + userAgent);
-//        if (StringsUtils.isContain(userAgent, "Chrome") || StringsUtils.isContain(userAgent, "Firefox")) {
-//            info = ResourceBundleUtil.getAsString("browser.info");
-//        }
         if (StringUtils.isContain(userAgent, "Edge")) {
             info = ResourceBundleUtil.getAsString("browser.info_invalid");
         }
-
+        try {
+            userService.licenseUpdate(WebCoreConstant.LICENSE_ACTIVE, WebCoreConstant.IIT_OPTIMAHR);
+        } catch (Exception ex) {
+          LOGGER.error(ex, ex);
+        }
     }
 
     @PreDestroy

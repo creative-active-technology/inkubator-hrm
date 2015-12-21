@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -353,7 +354,7 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 			EmpData empData = empDataDao.getEntiyByPK(model.getEmpData().getId());
 			/** save previous join date to career history */
 			careerHistory.setJoinDate(empData.getJoinDate());
-			System.out.println("ini teh join date sebelumnya" + empData.getJoinDate());
+			
 			String salaryEncrypted = this.calculateSalaryEncrypted(empData.getBasicSalary(), model.getSalaryChangesType(), model.getSalaryChangesPercent());
 			empData.setBasicSalary(salaryEncrypted);
 			empData.setNik(model.getNik());
@@ -578,7 +579,7 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
     public List<CareerTransitionInboxViewModel> getEntityEmpCareerHistoryInboxByParam(CareerTransitionInboxSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception{
     	Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
     	List<CareerTransitionInboxViewModel> listModel = empCareerHistoryDao.getEntityEmpCareerHistoryInboxByParam(searchParameter, firstResult, maxResults, order);
-    	System.out.println(listModel.size());
+    	
     	for(CareerTransitionInboxViewModel careerTransitionInbox : listModel){
     		EmpCareerHistoryModel model = this.convertJsonToModel(careerTransitionInbox.getJsonData());
     		Jabatan jabatan = jabatanDao.getEntiyByPK(model.getJabatanId());
@@ -604,16 +605,54 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<EmpEliminationViewModel> getListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter, int firstResult, int maxResults, Order order)	throws Exception {
-		//return new ArrayList<EmpEliminationViewModel>();
 		
+		ResourceBundle resourceBundle = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
 		List<EmpEliminationViewModel> listEmpEliminationViewModel = empCareerHistoryDao.getListEmpEliminationViewModelByParam(searchParameter, firstResult, maxResults, order);
+		
+		for(EmpEliminationViewModel model : listEmpEliminationViewModel){
+			EmpData empData = empDataDao.getByEmpDataByBioDataId(model.getBioDataId());
+			model.setEmpName(empData.getBioData().getFullName());
+			model.setJoinDate(empData.getJoinDate());
+			model.setReason(getReasonByEmpCareerHistoryStatus(model.getEmpCareerHistoryStatus(), resourceBundle));
+		}
 		return listEmpEliminationViewModel;
 	}
-
+	
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter) throws Exception {
 		return empCareerHistoryDao.getTotalListEmpEliminationViewModelByParam(searchParameter);
+	}
+	
+	private String getReasonByEmpCareerHistoryStatus(String status, ResourceBundle resourceBundle){
+		String reason = StringUtils.EMPTY;
+		
+		switch (status) {
+		case HRMConstant.EMP_STOP_CONTRACT:
+			reason = resourceBundle.getString("career.employee_elimination_status_stop_contract");
+			break;
+			
+		case HRMConstant.EMP_TERMINATION:
+			reason = resourceBundle.getString("career.employee_elimination_status_resign");
+			break;
+			
+		case HRMConstant.EMP_LAID_OFF:
+			reason = resourceBundle.getString("career.employee_elimination_status_laid_off");
+			break;
+			
+		case HRMConstant.EMP_PENSION:
+			reason = resourceBundle.getString("finance.pension");
+			break;
+			
+		case HRMConstant.EMP_DISCHAGED:
+			reason = resourceBundle.getString("career.employee_elimination_status_discharge");
+			break;
+
+		default:
+			break;
+		}
+		
+		return reason;
 	}
 	
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)

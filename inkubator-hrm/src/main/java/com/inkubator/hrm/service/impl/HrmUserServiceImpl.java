@@ -16,18 +16,22 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.HrmUserDao;
 import com.inkubator.hrm.dao.HrmUserRoleDao;
+import com.inkubator.hrm.dao.LicenseAppDao;
 import com.inkubator.hrm.dao.PasswordComplexityDao;
 import com.inkubator.hrm.dao.PasswordHistoryDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmRole;
 import com.inkubator.hrm.entity.HrmUser;
 import com.inkubator.hrm.entity.HrmUserRole;
+import com.inkubator.hrm.entity.LicenseApp;
 import com.inkubator.hrm.entity.PasswordComplexity;
 import com.inkubator.hrm.entity.PasswordHistory;
 import com.inkubator.hrm.service.HrmUserService;
 import com.inkubator.hrm.web.search.HrmUserSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
+import com.inkubator.webcore.model.LiscenseModel;
 import com.inkubator.webcore.util.FacesUtil;
+import com.inkubator.webcore.util.LicenseUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +41,7 @@ import javax.jms.Message;
 import javax.jms.Session;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
@@ -69,6 +74,8 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     private JmsTemplate jmsTemplateSMS;
     @Autowired
     private PasswordComplexityDao passwordComplexityDao;
+    @Autowired
+    private LicenseAppDao licenseAppDao;
 
     @Override
     public HrmUser getEntiyByPK(String id) throws Exception {
@@ -95,7 +102,6 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(HrmUser entity) throws Exception {
-        System.out.println("update service");
         HrmUser hrmUser = this.hrmUserDao.getEntiyByPK(entity.getId());
         hrmUser.getHrmUserRoles().clear();
         if (entity.getEmpData() != null) {
@@ -577,5 +583,19 @@ public class HrmUserServiceImpl extends IServiceImpl implements HrmUserService {
 
         hrmUser.setRoles(hrmRoles);
         return hrmUser;
+    }
+
+    @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Cacheable(value = "updateLicense")
+    public void licenseUpdate(String status, String name) throws Exception {
+        LicenseApp licenseApp = licenseAppDao.getByStatusAndName(status, name);
+        LiscenseModel liscenseModel = LicenseUtil.getLicenseFromString(licenseApp.getLicenseValue());
+        licenseApp.setEndDate(liscenseModel.getEndDate());
+        licenseApp.setLicenseStatus(liscenseModel.getLicenseStatus());
+        licenseApp.setLicenseType(liscenseModel.getLicenseType());
+        licenseApp.setStartDate(liscenseModel.getStartDate());
+        licenseApp.setName(liscenseModel.getName());
+        licenseAppDao.update(licenseApp);
     }
 }

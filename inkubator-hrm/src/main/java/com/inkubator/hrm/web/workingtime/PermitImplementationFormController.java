@@ -71,7 +71,7 @@ public class PermitImplementationFormController extends BaseController {
     @PostConstruct
     @Override
     public void initialization() {
-        System.out.println("Inisisisifsdifjsdifjdsifd");
+        
         super.initialization();
         try {
             isUpdate = Boolean.FALSE;
@@ -342,7 +342,7 @@ public class PermitImplementationFormController extends BaseController {
     }
 
     public void onChangeStartOrEndDate() {
-        System.out.println(" Kalkulasi di esekseusisisisii");
+       
         try {
             if (model.getStartDate() != null && model.getEndDate() != null && model.getEmpData() != null && model.getPermitId() != null) {
                 double actualPermit = permitImplementationService.getTotalActualPermit(model.getEmpData().getId(), model.getPermitId(), model.getStartDate(), model.getEndDate());

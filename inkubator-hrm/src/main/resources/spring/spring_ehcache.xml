@@ -73,4 +73,14 @@
            timeToLiveSeconds="86400" overflowToDisk="false"
            memoryStoreEvictionPolicy="LFU">
     </cache>
+    <cache name="checkLicense"
+           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
+           timeToLiveSeconds="86400" overflowToDisk="false"
+           memoryStoreEvictionPolicy="LFU">
+    </cache>
+     <cache name="updateLicense"
+           maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="600"
+           timeToLiveSeconds="86400" overflowToDisk="false"
+           memoryStoreEvictionPolicy="LFU">
+    </cache>
 </ehcache>

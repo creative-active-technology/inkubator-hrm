@@ -59,7 +59,6 @@ public class UserFormController extends BaseController {
     @ManagedProperty(value = "#{passwordComplexityService}")
     private PasswordComplexityService passwordComplexityService;
     private Boolean isEdit;
-  
 
     @PostConstruct
     @Override
@@ -73,8 +72,8 @@ public class UserFormController extends BaseController {
                 userModel = getUserModelFromEntity(selectedHrmUser);
                 List<HrmRole> sourceSpiRole = this.hrmRoleService.getAllData();
                 List<HrmRole> targetRole = selectedHrmUser.getRoles();
-                boolean a=sourceSpiRole.removeAll(targetRole);
-                
+                boolean a = sourceSpiRole.removeAll(targetRole);
+
                 dualListModel = new DualListModel<>(sourceSpiRole, targetRole);
             } else {
                 List<HrmRole> sourceSpiRole = this.hrmRoleService.getAllData();
@@ -87,7 +86,7 @@ public class UserFormController extends BaseController {
             LOGGER.error("Error", ex);
         }
     }
-    
+
     @PreDestroy
     public void cleanAndExit() {
         dualListModel = null;
@@ -98,11 +97,11 @@ public class UserFormController extends BaseController {
         userModel = null;
         isEdit = null;
     }
-    
+
     public void setPasswordComplexityService(PasswordComplexityService passwordComplexityService) {
         this.passwordComplexityService = passwordComplexityService;
     }
-   
+
     public void setHrmUserService(HrmUserService hrmUserService) {
         this.hrmUserService = hrmUserService;
     }
@@ -126,7 +125,7 @@ public class UserFormController extends BaseController {
     public void setUserModel(UserModel userModel) {
         this.userModel = userModel;
     }
-    
+
     public Boolean getIsEdit() {
         return isEdit;
     }
@@ -134,7 +133,7 @@ public class UserFormController extends BaseController {
     public void setIsEdit(Boolean isEdit) {
         this.isEdit = isEdit;
     }
-    
+
     public PasswordComplexity getPasswordComplexity() {
         return passwordComplexity;
     }
@@ -158,7 +157,7 @@ public class UserFormController extends BaseController {
 
     private String doInsert(HrmUser hrmUser) {
         hrmUser.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
-        
+
         try {
             boolean isDuplicateUserId = hrmUserService.getByUserId(hrmUser.getUserId()) != null;
             boolean isDuplicateEmailAddress = hrmUserService.getByEmailAddress(hrmUser.getEmailAddress()) != null;
@@ -194,7 +193,7 @@ public class UserFormController extends BaseController {
     }
 
     private String doUpdate(HrmUser hrmUser) {
-    	System.out.println("update");
+
         try {
             HrmUser hrmUserExixting = hrmUserService.getEntiyByPK(hrmUser.getId());
             boolean isDuplicateUserId = (hrmUserService.getByUserId(hrmUser.getUserId()) != null && !StringUtils.equals(hrmUserExixting.getUserId(), hrmUser.getUserId()));
@@ -217,7 +216,7 @@ public class UserFormController extends BaseController {
                     hrmUserRole.setHrmUser(hrmUser);
                     dataToSave.add(hrmUserRole);
                 }
-                
+
                 hrmUser.setHrmUserRoles(dataToSave);
                 hrmUserService.update(hrmUser);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
@@ -229,8 +228,8 @@ public class UserFormController extends BaseController {
         }
         return null;
     }
-    
-    public void doSearchEmployee() {        
+
+    public void doSearchEmployee() {
         Map<String, Object> options = new HashMap<>();
         options.put("modal", false);
         options.put("draggable", true);
@@ -249,7 +248,7 @@ public class UserFormController extends BaseController {
 
     public HrmUser getEntityFromView(UserModel userModel) {
         HrmUser hrmUser = new HrmUser();
-        String phoneNumber = userModel.getCountryPhoneCode()+""+userModel.getPhoneNumber().substring(1);
+        String phoneNumber = userModel.getCountryPhoneCode() + "" + userModel.getPhoneNumber().substring(1);
         if (userModel.getId() != null) {
             hrmUser.setId(userModel.getId());
         }
@@ -276,21 +275,21 @@ public class UserFormController extends BaseController {
         hrmUser.setPhoneCode(userModel.getCountryPhoneCode());
         hrmUser.setRealName(userModel.getRealName());
         hrmUser.setUserId(userModel.getUserId());
-        if(userModel.getEmpDataId() != null){
-        	hrmUser.setEmpData(new EmpData(userModel.getEmpDataId()));
+        if (userModel.getEmpDataId() != null) {
+            hrmUser.setEmpData(new EmpData(userModel.getEmpDataId()));
         }
         return hrmUser;
     }
 
     public UserModel getUserModelFromEntity(HrmUser hrmUser) {
         UserModel us = new UserModel();
-    	//replace phone number, ex: from +6285720123456 to 085720123456
-        if(hrmUser.getPhoneNumber() != null && hrmUser.getPhoneCode() != null){
-	    	String phoneWithCode = hrmUser.getPhoneNumber();
-	    	String phoneNumberWithoutCode = phoneWithCode.substring(hrmUser.getPhoneCode().length(), hrmUser.getPhoneNumber().length());
-	        us.setPhoneNumber("0"+phoneNumberWithoutCode);
-	        us.setCountryPhoneCode(hrmUser.getPhoneCode());
-    	}
+        //replace phone number, ex: from +6285720123456 to 085720123456
+        if (hrmUser.getPhoneNumber() != null && hrmUser.getPhoneCode() != null) {
+            String phoneWithCode = hrmUser.getPhoneNumber();
+            String phoneNumberWithoutCode = phoneWithCode.substring(hrmUser.getPhoneCode().length(), hrmUser.getPhoneNumber().length());
+            us.setPhoneNumber("0" + phoneNumberWithoutCode);
+            us.setCountryPhoneCode(hrmUser.getPhoneCode());
+        }
         us.setId(hrmUser.getId());
         us.setEmailAddress(hrmUser.getEmailAddress());
         if (Objects.equals(hrmUser.getIsActive(), HRMConstant.ACTIVE)) {
@@ -312,10 +311,10 @@ public class UserFormController extends BaseController {
         /*us.setPhoneNumber(hrmUser.getPhoneNumber());*/
         us.setRealName(hrmUser.getRealName());
         us.setUserId(hrmUser.getUserId());
-        if(hrmUser.getEmpData() != null){
-	        us.setEmpDataId(hrmUser.getEmpData().getId());
-	        us.setEmpDataFullName(hrmUser.getEmpData().getNikWithFullName());
+        if (hrmUser.getEmpData() != null) {
+            us.setEmpDataId(hrmUser.getEmpData().getId());
+            us.setEmpDataFullName(hrmUser.getEmpData().getNikWithFullName());
         }
         return us;
-    }    
+    }
 }

@@ -76,7 +76,7 @@ public class PermitClassificationFormController extends BaseController {
             MapUtil.sortByValue(attendanceStatuss);
 
             if (param != null) {
-                System.out.println(" Kondisi is updatae");
+           
                 try {
                     PermitClassification permitClassification = permitClassificationService.getEntityByPkFetchApprovalDefinition(Long.parseLong(param.substring(1)));
                     permitClassificationModel.setId(permitClassification.getId());
@@ -209,12 +209,12 @@ public class PermitClassificationFormController extends BaseController {
             PermitClassification permitClassification = getEntityFromViewModel(permitClassificationModel);
 
             if (isUpdate) {
-                System.out.println(" Kondisi is updatae");
+           
                 permitClassificationService.update(permitClassification, appDefs);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.update_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
             } else {
-                System.out.println(" Kondisi is saveee");
+           
                 permitClassificationService.save(permitClassification, appDefs);
                 MessagesResourceUtil.setMessagesFlas(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
                         FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());

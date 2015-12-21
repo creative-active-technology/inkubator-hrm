@@ -32,7 +32,7 @@ public class CareerTransitionInboxDetailController extends BaseController {
 			previousEmpDataHistory = empCareerHistoryService.getPreviousEmpCareerByBioDataIdAndCurrentCreatedOn(currentEmpDataHistory.getBioData().getId(), currentEmpDataHistory.getCreatedOn()).get(0);
 			//get all previous career without previousEmpDataHistory
 			listAllPreviousCareer = empCareerHistoryService.getPreviousEmpCareerByBioDataIdAndCurrentCreatedOn(previousEmpDataHistory.getBioData().getId(), previousEmpDataHistory.getCreatedOn());
-			System.out.println(listAllPreviousCareer.size() + " hohohoho");
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

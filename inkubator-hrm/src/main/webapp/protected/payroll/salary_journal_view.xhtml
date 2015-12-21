@@ -46,13 +46,13 @@
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name"/>
                                     </p:selectOneMenu>-->
                                     <p:inputText id="searchId" value="#{salaryJournalViewController.searchParameter}" style="width: 250px" styleClass="label_button"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{salaryJournalViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{salaryJournalViewController.doSearch()}" update="tableId,exportId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Salary_Journal"/>
+                                        <pe:exporter target="exportId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Salary_Journal"/>
                                     </p:commandButton>
 <!--                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{savingTypeViewController.doAdd()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
                                         <p:ajax event="dialogReturn" listener="#{savingTypeViewController.onDialogReturn}"  update="tableId, growlId"/>
@@ -116,7 +116,63 @@
                                     <f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>
-                            
+
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{salaryJournalViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <p:dataTable  var="data"  value="#{salaryJournalViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7" rendered="false"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="exportId" rows="11" rowsPerPageTemplate="3,5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['salaryJournal.salaryJournal_list']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="#{data.costCenterCode}" style="width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['salaryJournal.costCenterCode']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.costCenterCode}" />
+                            </p:column>
+                            <p:column sortBy="#{data.costCenterName}" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['salaryJournal.costCenterName']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.costCenterName}" />
+                            </p:column>
+                            <p:column sortBy="#{data.jurnalCode}" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['salaryJournal.journalCode']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.jurnalCode}" />
+                            </p:column>
+                            <p:column sortBy="#{data.jurnalName}" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['salaryJournal.journalName']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.jurnalName}" />
+                            </p:column>
+                            <p:column sortBy="#{data.debet2}" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['salaryJournal.debit']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.debet}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.kredit}" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['salaryJournal.credit']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.kredit}" />
+                            </p:column>
+
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
                                 <p:outputLabel value="#{salaryJournalViewController.lazyDataModel.rowCount}"/>

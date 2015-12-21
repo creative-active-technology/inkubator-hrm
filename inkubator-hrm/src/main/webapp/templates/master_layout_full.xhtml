@@ -47,17 +47,21 @@
         <p:socket onMessage="handleLogin" channel="/notificationsLogin" /> 
         <p:socket onMessage="handleCheckInOut" channel="/checkInChekOut" />     
         <p:growl id="mainGrowl" showDetail="true" globalOnly="true"  />
-        <h:panelGroup id="panelGroupAnnouncement" rendered="#{homeController.isRenderAnnouncement}">
+        <!--<h:panelGroup id="panelGroupAnnouncement" rendered="#{homeController.isRenderAnnouncement}">-->
+        <!--<p:panel id="panelGroupAnnouncement" rendered="#{homeController.isRenderAnnouncement}"  style="margin-top: -50px">--> 
             <!--<h:outputScript library="js" name="announcement.js" />-->
-            <p:notificationBar position="top" effect="slide" widgetVar="announcementNotif" >
+            <!--<p:scrollPanel >-->
+            <p:notificationBar position="top" effect="slide" widgetVar="announcementNotif"  autoDisplay="true" id="panelGroupAnnouncement" rendered="#{homeController.isRenderAnnouncement}" style="margin-left: -11px;margin-top: -12px">
                 <p:panel>
                     <p:outputLabel value="#{homeController.announcementLog.announcement.announcementContent}" escape="false"></p:outputLabel>
                     <br/>
-                    <p:commandButton value="#{appmsg['announcement.hide']}" onclick="PF('announcementNotif').hide()" update="panelGroupAnnouncement" type="button" icon="ui-icon-arrow-1-n"/>
+                    <p:commandButton value="#{appmsg['announcement.hide']}"  action="#{homeController.doAnnouncementExecute()}" onclick="PF('announcementNotif').hide()" update="panelGroupAnnouncement"  icon="ui-icon-arrow-1-n"/>
                 </p:panel>
             </p:notificationBar>
-            <p:commandButton value="#{appmsg['announcement.show']}" action="#{homeController.doAnnouncementExecute()}" oncomplete="PF('announcementNotif').show()" icon="ui-icon-arrow-1-s"/>
-        </h:panelGroup>
+            <!--</p:scrollPanel>-->
+            <!--<p:commandButton value="#{appmsg['announcement.show']}" action="#{homeController.doAnnouncementExecute()}" oncomplete="PF('announcementNotif').show()" icon="ui-icon-arrow-1-s"/>-->
+            <!--</h:panelGroup>-->
+        <!--</p:panel>-->
         <!-- input hidden disini untuk memaksa view ini memanggil homeController yg bertujuan untuk memaksa nge-set default language/locale -->
         <h:inputHidden value="#{homeController.bahasa}" />
         <!--<p:growl id="growl" showDetail="true" globalOnly="true" />--> 
@@ -159,7 +163,7 @@
                                         <p:clientValidator/>
                                     </p:inputText>
                                     <p:inputText value="#{userInfoController.userModel.phoneNumber}" styleClass="isitext_hrm" style="width: 186px;" label="#{appmsg['user_form.phone_number']}"
-                                                  required="true" id="phone" >
+                                                 required="true" id="phone" >
                                     </p:inputText>
                                     <p:message for="countryPhoneCode"/>
                                     <p:message for="phone"/>
@@ -241,7 +245,7 @@
                     <div id="art-main">
                         <div style="float:left">
                             <h:panelGrid style="margin-left: 50px;padding-top: 8px" columns="2">
-                                  <p:commandLink >
+                                <p:commandLink >
                                     <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="22" width="22" cache="true" style="border:  1px solid #ffffff !important; border-radius: 4px !important"    >
                                         <f:param name="id" value="#{BIODATA_ID}"/>
                                     </p:graphicImage>  
@@ -339,7 +343,7 @@
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['menu.approvalPattern']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['approvaldefinition.approval_definition']}"  style="color: #003366" title="#{appmsg['approvaldefinition.approval_definition']}" url="/protected/approval/approval_definition_view.htm"  icon="img-approval-definition"/> 
-                                    
+
                                                 <p:menuitem value="#{appmsg['approvalActivity.approvalActivityHistory']}"  style="color: #003366" title="#{appmsg['approvalActivity.approvalActivityHistory']}" url="/protected/approval/approval_activity_view.htm" icon="img-approval-activity" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['menu.applicationMenu']}"  styleClass="menu_child" >
@@ -357,7 +361,7 @@
                                                 <p:menuitem value="#{appmsg['checkIn.checkIn_application']}"  style="color: #003366" title="#{appmsg['checkIn.checkIn_application']}" url="/protected/account/check_in_view.htm" icon="img-login-history" />                                          
                                                 <p:menuitem value="#{appmsg['transactionCodefication.transactionCodefication']}" icon="img-transaction_codefication" style="font-size: 12px !important;color: #003366" title="#{appmsg['transactionCodefication.transactionCodefication']}" url="/protected/reference/codefication_view.htm" />
                                                 <p:menuitem value="#{appmsg['batchJobExecution.batchMonitoring']}" style="color: #003366" title="#{appmsg['batchJobExecution.batchMonitoring']}" url="/protected/batch/batch_job_execution.htm" icon="img-login-history"/>
-                                                
+
                                             </p:submenu>
                                         </p:submenu> 
                                         <!--                                        <p:submenu label="Approval Matrix"  styleClass="menu" icon="img-approval-matrix">
@@ -596,11 +600,11 @@
                                             <p:menuitem value="#{appmsg['employee.employee_work_schedule']}" icon="img-task" style="font-size: 12px !important;color: #003366" title="#{appmsg['employee.employee_work_schedule']}" url="/protected/employee/emp_schedule_view.htm" />
                                             <p:menuitem value="#{appmsg['employee.employee_work_exception']}" icon="img-task-exception" style="font-size: 12px !important;color: #003366" title="#{appmsg['employee.employee_work_exception']}" url="/protected/employee/schedule_exception_view.htm" />
                                             <p:menuitem value="#{appmsg['fingerException.fingerExceptionMenu']}" icon="img-wt_finger_exception" style="font-size: 12px !important;color: #003366" title="#{appmsg['fingerException.fingerExceptionMenu']}" url="/protected/working_time/wt_finger_ex_view.htm" />
-                                            
+
                                             <p:menuitem value="#{appmsg['medicalcare.medical_care']}" icon="img-medical_care" style="font-size: 12px !important;color: #003366" title="#{appmsg['medicalcare.medical_care']}" url="/protected/working_time/medical_care_view.htm" />
                                             <!-- <p:menuitem value="#{appmsg['leave.leave_history_report']}" icon="img-leave_history_report" style="font-size: 12px !important;color: #003366" title="#{appmsg['leave.leave_history_report']}" url="/protected/report/report_leave_hist_view.htm" />
                                             <p:menuitem value="#{appmsg['leave.permit_history_report']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['leave.permit_history_report']}" url="/protected/report/report_permit_hist_view.htm" /> -->
-                                            
+
                                             <p:submenu label="#{appmsg['businesstravel.business_travel']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['bussinesstravel.application_form']}" icon="img-travel-type" style="font-size: 12px !important;color: #003366" title="#{appmsg['bussinesstravel.application_form']}" url="/flow-protected/business_travel" /> 
                                                 <p:menuitem value="#{appmsg['bussinesstravel.bussiness_travel_inbox']}" icon="img-travel-zone" style="font-size: 12px !important;color: #003366" title="#{appmsg['bussinesstravel.bussiness_travel_inbox']}" url="/protected/personalia/business_travel_view.htm" />
@@ -629,7 +633,7 @@
                                             <p:submenu label="#{appmsg['workingTime.attendance']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['workingTime.data_log_interface']}" icon="img-data_log_interface" style="font-size: 12px !important;color: #003366" title="#{appmsg['workingTime.data_log_interface']}" url="/protected/working_time/finger_swap_captured_view.htm" />
                                                 <p:menuitem value="#{appmsg['workingTime.data_finger_realisasi']}" icon="img-data_realisasi" style="font-size: 12px !important;color: #003366" title="#{appmsg['workingTime.data_finger_realisasi']}" url="/protected/working_time/data_finger_real_view.htm" />
-                                            	<p:menuitem value="#{appmsg['workingTime.attendance_correction']}" icon="img-koreksi_realisasi" style="font-size: 12px !important;color: #003366" title="#{appmsg['workingTime.attendance_correction']}" url="/protected/employee/emp_attendance_realization.htm" />
+                                                <p:menuitem value="#{appmsg['workingTime.attendance_correction']}" icon="img-koreksi_realisasi" style="font-size: 12px !important;color: #003366" title="#{appmsg['workingTime.attendance_correction']}" url="/protected/employee/emp_attendance_realization.htm" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['emp_correction_attendance.correction_attendance']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['emp_correction_attendance.form_correction_attendance']}" icon="img-data_log_interface" style="font-size: 12px !important;color: #003366" title="#{appmsg['emp_correction_attendance.form_correction_attendance']}" url="/protected/working_time/emp_correction_attendance_form.htm" />
@@ -655,12 +659,12 @@
                                                 <p:menuitem value="#{appmsg['menu.adv_source_category']}" icon="img-admonition" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.adv_source_category']}" url="/protected/recruitment/recruitment_category_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['menu.advertising_media']}" icon="img-termination_type" style="font-size: 12px !important;color: #003366" title="#{appmsg['advertismentMedia.advertismentMedia']}" url="/protected/recruitment/recruitment_media_view.htm" />
                                                 <p:submenu label="#{appmsg['recruitment.letter']}"  styleClass="menu_child" >
-                                                	<p:menuitem value="#{appmsg['recruitment.probation_letter']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.probation_letter']}" url="/protected/recruitment/offering_letter_view.htm" /> 
-                                                	<p:menuitem value="#{appmsg['recruitment.rejection_letter']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.rejection_letter']}" url="/protected/recruitment/offering_letter_view.htm" /> 
-                                                	<p:menuitem value="#{appmsg['recruitment.employee_acceptance_report']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.employee_acceptance_report']}" url="#" /> 
-                                                	<p:menuitem value="#{appmsg['recruitment.test_schedule']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.test_schedule']}" url="#" />
-                                                	<p:menuitem value="#{appmsg['recruitment.offering_letter']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.offering_letter']}" url="/protected/recruitment/offering_letter_view.htm" />
-                                           		 </p:submenu>	
+                                                    <p:menuitem value="#{appmsg['recruitment.probation_letter']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.probation_letter']}" url="/protected/recruitment/offering_letter_view.htm" /> 
+                                                    <p:menuitem value="#{appmsg['recruitment.rejection_letter']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.rejection_letter']}" url="/protected/recruitment/offering_letter_view.htm" /> 
+                                                    <p:menuitem value="#{appmsg['recruitment.employee_acceptance_report']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.employee_acceptance_report']}" url="#" /> 
+                                                    <p:menuitem value="#{appmsg['recruitment.test_schedule']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.test_schedule']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['recruitment.offering_letter']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.offering_letter']}" url="/protected/recruitment/offering_letter_view.htm" />
+                                                </p:submenu>	
                                                 <p:menuitem value="#{appmsg['menu.selection_type']}" icon="img-reimburstment_schema" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.selection_type']}" url="/protected/recruitment/recruit_selection_view.htm" />
                                                 <p:menuitem value="#{appmsg['menu.selection_type_series']}" icon="img-loan_schema" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.selection_type_series']}" url="/protected/recruitment/recruit_selection_series_view.htm" />
                                                 <p:menuitem value="#{appmsg['menu.selection_type_library']}" icon="img-loan_schema" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.selection_type_library']}" url="/protected/recruitment/selection_type_view.htm" />
@@ -685,13 +689,13 @@
                                             <p:submenu label="#{appmsg['recruitment.applicant_tracker']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['recruitment.applicant_information']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.applicant_information']}" url="/protected/recruitment/recruit_agreement_notice_view.htm" /> 
                                                 <p:menuitem value="#{appmsg['recruitment.applicant_upload']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.applicant_upload']}" url="/protected/recruitment/recruit_applicant_view.htm" /> 
-                                                 <p:menuitem value="#{appmsg['recruitment.applicant_statistic']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.applicant_statistic']}" url="/protected/recruitment/applicant_statistic_view.htm" /> 
-                                                 <p:menuitem value="#{appmsg['recruitment.applicant_competency']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.applicant_competency']}" url="#" /> 
+                                                <p:menuitem value="#{appmsg['recruitment.applicant_statistic']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.applicant_statistic']}" url="/protected/recruitment/applicant_statistic_view.htm" /> 
+                                                <p:menuitem value="#{appmsg['recruitment.applicant_competency']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.applicant_competency']}" url="#" /> 
 
                                                 <p:menuitem value="#{appmsg['recruitment.applicant_searching']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.applicant_searching']}" url="#" />
                                                 <p:menuitem value="#{appmsg['recruitment.applicant_competency_matching']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.applicant_competency_matching']}" url="#" />  
                                             </p:submenu>
-                                             <p:submenu label="#{appmsg['recruitment.selection_process']}"  styleClass="menu_child" >
+                                            <p:submenu label="#{appmsg['recruitment.selection_process']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['recruitment.initial_filtering']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.initial_filtering']}" url="/protected/recruitment/recruit_initial_selection_form.htm" /> 
                                                 <p:menuitem value="#{appmsg['recruitment.set_schedule']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.set_schedule']}" url="/protected/recruitment/recruitment_schedule_setting.htm" /> 
                                                 <p:menuitem value="#{appmsg['recruitment.applicant_review_process']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.applicant_review_process']}" url="/protected/recruitment/selection_applicant_realization_view.htm" /> 
@@ -748,8 +752,8 @@
                                             <!-- <p:menuitem value="#{appmsg['reimbursement.reimbursement_verification_approval']}" icon="img-reimbursement" style="font-size: 12px !important;color: #003366" title="#{appmsg['reimbursement.reimbursement_verification_approval']}" url="#" /> 
                                             <p:menuitem value="#{appmsg['reimbursement.reimbursement_status']}" icon="img-reimbursement" style="font-size: 12px !important;color: #003366" title="#{appmsg['reimbursement.reimbursement_status']}" url="#" /> -->
                                             <p:submenu label="#{appmsg['reimbursement.disbursement']}"  styleClass="menu_child" >
-	                                            <p:menuitem value="#{appmsg['reimbursement.disbursement_form']}" icon="img-disbursement" style="font-size: 12px !important;color: #003366" title="#{appmsg['reimbursement.disbursement_form']}" url="/protected/reimbursement/rmbs_disbursement_form.htm" />
-	                                            <p:menuitem value="#{appmsg['reimbursement.disbursement_inbox']}" icon="img-disbursement" style="font-size: 12px !important;color: #003366" title="#{appmsg['reimbursement.disbursement_inbox']}" url="/protected/reimbursement/rmbs_disbursement_view.htm" />
+                                                <p:menuitem value="#{appmsg['reimbursement.disbursement_form']}" icon="img-disbursement" style="font-size: 12px !important;color: #003366" title="#{appmsg['reimbursement.disbursement_form']}" url="/protected/reimbursement/rmbs_disbursement_form.htm" />
+                                                <p:menuitem value="#{appmsg['reimbursement.disbursement_inbox']}" icon="img-disbursement" style="font-size: 12px !important;color: #003366" title="#{appmsg['reimbursement.disbursement_inbox']}" url="/protected/reimbursement/rmbs_disbursement_view.htm" />
                                             </p:submenu>
                                             <!-- <p:submenu label="#{appmsg['reimbursement.reimbursement_report']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['reimbursement.report_details']}" icon="img-emp-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['reimbursement.report_details']}" url="" />  
@@ -888,51 +892,53 @@
                                             </p:submenu>
                                         </p:submenu>-->
                                         <p:submenu label="#{appmsg['menu.more']}"  styleClass="menu" icon="img-user-account">
-                                       <p:submenu label="#{appmsg['menu.career_management']}"  styleClass="menu_child" icon="img-user-account">
-                                       		<p:submenu label="#{appmsg['global.setting']}"  styleClass="menu_child" icon="img-user-account">
-                                       			<p:menuitem value="#{appmsg['careerawardtype.career_award_type']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['careerawardtype.career_award_type']}" url="/protected/career/career_award_view.htm" />
-                                            	<p:menuitem value="#{appmsg['careerdisciplinetype.career_discipline_type']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['careerdisciplinetype.career_discipline_type']}" url="/protected/career/career_discipline_view.htm" />
-                                            	<!-- <p:menuitem value="#{appmsg['career.career_rotation']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.career_rotation']}" url="#" /> -->
-                                                <p:menuitem value="#{appmsg['career_emp_status.employee_career_status']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['career_emp_status.employee_career_status']}" url="/protected/career/career_emp_status_view.htm" />
-                                                <p:menuitem value="#{appmsg['menu.employee_status_role']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_status_role']}" url="#" />
-                                                <p:menuitem value="#{appmsg['careerTransition.emp_termination']}" icon="img-termination_type" style="font-size: 12px !important;color: #003366" title="#{appmsg['careerTransition.emp_termination']}" url="/protected/career/career_termination_type_view.htm" />
-                                                <p:menuitem value="#{appmsg['emp_career_transition.career_transition']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['emp_career_transition.career_transition']}" url="/protected/career/career_transition_view.htm" />
-                                                <p:menuitem value="#{appmsg['emp_career_transition.detail_career_transition']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['emp_career_transition.detail_career_transition']}" url="#" />
-                                                <p:menuitem value="#{appmsg['menu.career_data_changes']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.career_data_changes']}" url="#" />
-                                  	         	<p:menuitem value="#{appmsg['menu.succession_parameter']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.succession_parameter']}" url="#" />
-                                  	    	</p:submenu>
-                                  	    	<p:submenu label="#{appmsg['emp_career_transition.career_transition']}"  styleClass="menu_child" icon="img-user-account">
-                                  	    		<p:menuitem value="#{appmsg['career.career_history_inbox']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.career_history_inbox']}" url="#" />
-                                  	    		<p:menuitem value="#{appmsg['emp_career_transition.form_career_transition']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['emp_career_transition.form_career_transition']}" url="/protected/career/emp_career_transition_form.htm" />
-                                  	    		<p:menuitem value="#{appmsg['career.career_transition_revision']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.career_transition_revision']}" url="#" />
-                                  	    	</p:submenu>
-                                  	    	<p:menuitem value="#{appmsg['personachievement.personachievement']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['personachievement.personachievement']}" url="/protected/employee/emp_achievement_view.htm" />
-                                  	    	<p:menuitem value="#{appmsg['menu.rules_violation']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.rules_violation']}" url="/protected/personalia/personal_discipline_view.htm" />
-                                  	    	<p:menuitem value="#{appmsg['career.employee_elimination']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.employee_elimination']}" url="/protected/career/emp_elimination_view.htm" />
-                                  	    	<p:menuitem value="#{appmsg['career.succession_planning']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.succession_planning']}" url="#" />
-                                       </p:submenu>
-                                       <p:submenu label="#{appmsg['career.work_result_management']}"  styleClass="menu_child" icon="img-user-account">
-                                       		<p:submenu label="#{appmsg['global.setting']}"  styleClass="menu_child" icon="img-user-account">
-                                       			<p:menuitem value="#{appmsg['career.planning']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.planning']}" url="#" />
-                                       			<p:menuitem value="#{appmsg['career.competence_type']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.competence_type']}" url="/protected/appraisal/competence_type_view.htm" />
-                                       			<p:menuitem value="#{appmsg['career.appraisal']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.appraisal']}" url="#" />
-                                       			<p:menuitem value="#{appmsg['career.assessment']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.assessment']}" url="#" />
-                                       			<p:menuitem value="#{appmsg['performancegroup.performance_group']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['performancegroup.performance_group']}" url="/protected/appraisal/appraisal_perform_group_view.htm" />
-                                       		</p:submenu>
-                                       		<p:menuitem value="#{appmsg['career.planning_form']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.planning_form']}" url="#" />
-                                       		<p:menuitem value="#{appmsg['career.work_result_form']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.work_result_form']}" url="#" />
-                                       </p:submenu>
-                                       <p:submenu label="#{appmsg['career.training_management']}"  styleClass="menu_child" icon="img-user-account">
-                                       		<p:submenu label="#{appmsg['global.setting']}"  styleClass="menu_child" icon="img-user-account">
-                                       		</p:submenu>
-                                       		<p:menuitem value="#{appmsg['career.training_plan']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.training_plan']}" url="#" />
-                                       </p:submenu>
-                                       </p:submenu>
-                                            
+                                            <p:submenu label="#{appmsg['menu.career_management']}"  styleClass="menu_child" icon="img-user-account">
+                                                <p:submenu label="#{appmsg['global.setting']}"  styleClass="menu_child" icon="img-user-account">
+                                                    <p:menuitem value="#{appmsg['careerawardtype.career_award_type']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['careerawardtype.career_award_type']}" url="/protected/career/career_award_view.htm" />
+                                                    <p:menuitem value="#{appmsg['careerdisciplinetype.career_discipline_type']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['careerdisciplinetype.career_discipline_type']}" url="/protected/career/career_discipline_view.htm" />
+                                                    <!-- <p:menuitem value="#{appmsg['career.career_rotation']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.career_rotation']}" url="#" /> -->
+                                                    <p:menuitem value="#{appmsg['career_emp_status.employee_career_status']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['career_emp_status.employee_career_status']}" url="/protected/career/career_emp_status_view.htm" />
+                                                    <p:menuitem value="#{appmsg['menu.employee_status_role']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.employee_status_role']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['careerTransition.emp_termination']}" icon="img-termination_type" style="font-size: 12px !important;color: #003366" title="#{appmsg['careerTransition.emp_termination']}" url="/protected/career/career_termination_type_view.htm" />
+                                                    <p:menuitem value="#{appmsg['emp_career_transition.career_transition']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['emp_career_transition.career_transition']}" url="/protected/career/career_transition_view.htm" />
+                                                    <p:menuitem value="#{appmsg['emp_career_transition.detail_career_transition']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['emp_career_transition.detail_career_transition']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.career_data_changes']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.career_data_changes']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['menu.succession_parameter']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.succession_parameter']}" url="#" />
+                                                </p:submenu>
+                                                <p:submenu label="#{appmsg['emp_career_transition.career_transition']}"  styleClass="menu_child" icon="img-user-account">
+                                                    <p:menuitem value="#{appmsg['career.career_history_inbox']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.career_history_inbox']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['emp_career_transition.form_career_transition']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['emp_career_transition.form_career_transition']}" url="/protected/career/emp_career_transition_form.htm" />
+                                                    <p:menuitem value="#{appmsg['career.career_transition_revision']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.career_transition_revision']}" url="#" />
+                                                </p:submenu>
+                                                <p:menuitem value="#{appmsg['personachievement.personachievement']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['personachievement.personachievement']}" url="/protected/employee/emp_achievement_view.htm" />
+                                                <p:menuitem value="#{appmsg['menu.rules_violation']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.rules_violation']}" url="/protected/personalia/personal_discipline_view.htm" />
+                                                <p:menuitem value="#{appmsg['career.employee_elimination']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.employee_elimination']}" url="/protected/career/emp_elimination_view.htm" />
+                                                <p:menuitem value="#{appmsg['career.succession_planning']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.succession_planning']}" url="#" />
+                                            </p:submenu>
+                                            <p:submenu label="#{appmsg['career.work_result_management']}"  styleClass="menu_child" icon="img-user-account">
+                                                <p:submenu label="#{appmsg['global.setting']}"  styleClass="menu_child" icon="img-user-account">
+                                                    <p:menuitem value="#{appmsg['career.planning']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.planning']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['career.competence_type']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.competence_type']}" url="/protected/appraisal/competence_type_view.htm" />
+                                                    <p:menuitem value="#{appmsg['competency_group.competency_group']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['competency_group.competency_group']}" url="/protected/appraisal/competency_group_view.htm" />
+                                                    <p:menuitem value="#{appmsg['competency_unit.competency_data']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['competency_unit.competency_data']}" url="/protected/appraisal/competency_unit_view.htm" />
+                                                    <p:menuitem value="#{appmsg['career.appraisal']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.appraisal']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['career.assessment']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.assessment']}" url="#" />
+                                                    <p:menuitem value="#{appmsg['performancegroup.performance_group']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['performancegroup.performance_group']}" url="/protected/appraisal/appraisal_perform_group_view.htm" />
+                                                </p:submenu>
+                                                <p:menuitem value="#{appmsg['career.planning_form']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.planning_form']}" url="#" />
+                                                <p:menuitem value="#{appmsg['career.work_result_form']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.work_result_form']}" url="#" />
+                                            </p:submenu>
+                                            <p:submenu label="#{appmsg['career.training_management']}"  styleClass="menu_child" icon="img-user-account">
+                                                <p:submenu label="#{appmsg['global.setting']}"  styleClass="menu_child" icon="img-user-account">
+                                                </p:submenu>
+                                                <p:menuitem value="#{appmsg['career.training_plan']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.training_plan']}" url="#" />
+                                            </p:submenu>
+                                        </p:submenu>
+
                                         <p:menuitem value="Logout" icon="ui-icon-power" styleClass="menu" style="color: #ff9933 !important;font-size: 14px!important" title="Logout and Exit" url="/logout.htm" />  
                                     </p:menubar>  
                                 </h:form>
-                                
+
                                 <div class="art-header" id="logoId">
                                     <div class="art-header-jpeg"></div>
                                     <div class="art-logo" style="float: right">

@@ -28,6 +28,8 @@ import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.TempJadwalKaryawanDao;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.TempJadwalKaryawan;
+import com.inkubator.hrm.web.model.EmpDataMatrixModel;
+import org.hibernate.transform.Transformers;
 
 /**
  *
@@ -84,7 +86,7 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
         int counter = 0;
         for (TempJadwalKaryawan jadwalKaryawan : jadwalKaryawans) {
             getCurrentSession().delete(jadwalKaryawan);
-            
+
             counter++;
             if (counter % 20 == 0) {
                 getCurrentSession().flush();
@@ -156,28 +158,28 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
         criteria.setFetchMode("wtWorkingHour", FetchMode.JOIN);
         return (TempJadwalKaryawan) criteria.uniqueResult();
     }
-    
+
     @Override
     public List<TempJadwalKaryawan> getByMonthDif(int value) {
         Date dateUntil = new Date();
         Date dateFrom = DateTimeUtil.getDateFrom(dateUntil, -value, CommonUtilConstant.DATE_FORMAT_MONTH);
-         
-        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());         
-        criteria.add(Restrictions.lt("tanggalWaktuKerja", dateFrom));       
+
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.lt("tanggalWaktuKerja", dateFrom));
         return criteria.list();
     }
 
-	@Override
-	public List<TempJadwalKaryawan> getAllDataByEmpIdAndPeriodDateAndNotOffDay(Long empDataId, Date startDate, Date endDate) {
-		 
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-	    criteria.add(Restrictions.eq("empData.id", empDataId));
-	    criteria.add(Restrictions.ge("tanggalWaktuKerja", startDate));
-	    criteria.add(Restrictions.le("tanggalWaktuKerja", endDate));
-	    criteria.createAlias("wtWorkingHour", "wtWorkingHour", JoinType.INNER_JOIN);
-	    criteria.add(Restrictions.ne("wtWorkingHour.code", "OFF"));
-	    return criteria.list();
-	}
+    @Override
+    public List<TempJadwalKaryawan> getAllDataByEmpIdAndPeriodDateAndNotOffDay(Long empDataId, Date startDate, Date endDate) {
+
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.add(Restrictions.ge("tanggalWaktuKerja", startDate));
+        criteria.add(Restrictions.le("tanggalWaktuKerja", endDate));
+        criteria.createAlias("wtWorkingHour", "wtWorkingHour", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.ne("wtWorkingHour.code", "OFF"));
+        return criteria.list();
+    }
 
     @Override
     public List<TempJadwalKaryawan> getAllByEmpIdWithDetailWithFromAndUntilPeriod(long empId, Date from, Date until) {
@@ -192,41 +194,49 @@ public class TempJadwalKaryawanDaoImpl extends IDAOImpl<TempJadwalKaryawan> impl
         return criteria.list();
     }
 
-	@Override
-	public List<TempJadwalKaryawan> getAllDataByEmpIdAndPeriodDateAndOffDay(
-			Long empDataid, Date startDate, Date endDate) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-	    criteria.add(Restrictions.eq("empData.id", empDataid));
-	    criteria.add(Restrictions.ge("tanggalWaktuKerja", startDate));
-	    criteria.add(Restrictions.le("tanggalWaktuKerja", endDate));
-	    criteria.createAlias("wtWorkingHour", "wtWorkingHour", JoinType.INNER_JOIN);
-	    criteria.add(Restrictions.eq("wtWorkingHour.code", "OFF"));
-	    return criteria.list();
-	}
-	
-	@Override
-	public Long getTotalByTanggalWaktuKerja(Date date, Long companyId) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
-		criteria.createAlias("empData.jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+    @Override
+    public List<TempJadwalKaryawan> getAllDataByEmpIdAndPeriodDateAndOffDay(
+            Long empDataid, Date startDate, Date endDate) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", empDataid));
+        criteria.add(Restrictions.ge("tanggalWaktuKerja", startDate));
+        criteria.add(Restrictions.le("tanggalWaktuKerja", endDate));
+        criteria.createAlias("wtWorkingHour", "wtWorkingHour", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("wtWorkingHour.code", "OFF"));
+        return criteria.list();
+    }
+
+    @Override
+    public Long getTotalByTanggalWaktuKerja(Date date, Long companyId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
         criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
         criteria.createAlias("department.company", "company", JoinType.INNER_JOIN);
-        criteria.add(Restrictions.eq("tanggalWaktuKerja", date));  
+        criteria.add(Restrictions.eq("tanggalWaktuKerja", date));
         criteria.add(Restrictions.eq("company.id", companyId));
         criteria.add(Restrictions.not(Restrictions.eq("empData.status", HRMConstant.EMP_TERMINATION)));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-	}
-	
-	@Override
-	public List<TempJadwalKaryawan> getAllDataByTanggalWaktuKerjaAndCompanyId(Date tanggalWaktuKerja, Long companyId){
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
-		criteria.createAlias("empData.jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+    }
+
+    @Override
+    public List<TempJadwalKaryawan> getAllDataByTanggalWaktuKerjaAndCompanyId(Date tanggalWaktuKerja, Long companyId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+        criteria.createAlias("empData.jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
         criteria.createAlias("jabatanByJabatanId.department", "department", JoinType.INNER_JOIN);
         criteria.createAlias("department.company", "company", JoinType.INNER_JOIN);
-		criteria.add(Restrictions.eq("tanggalWaktuKerja", tanggalWaktuKerja));  
+        criteria.add(Restrictions.eq("tanggalWaktuKerja", tanggalWaktuKerja));
         criteria.add(Restrictions.eq("company.id", companyId));
-		return criteria.list();
-	}
+        return criteria.list();
+    }
+
+    @Override
+    public void deleteTempJadwalBeforeTMB() {
+        final StringBuilder query = new StringBuilder("DELETE j.* FROM temp_jadwal_karyawan j ");
+        query.append("LEFT join emp_data d on j.emp_id=d.id ");
+        query.append("where j.tanggal_waktu_kerja < d.join_date");
+        getCurrentSession().createSQLQuery(query.toString()).executeUpdate();
+    }
 
 }
