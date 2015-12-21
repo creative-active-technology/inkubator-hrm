@@ -158,6 +158,7 @@
     	<transition on="back" to="add_job_jabatan_spesification" />
 		<transition on="add" to="doAddJabatanSpesification" />
 		<transition on="edit" to="doEditJabatanSpesification" />
+		<transition on="end" to="end" />
     </view-state>
     
     <action-state id="doAddJabatanSpesification">
@@ -205,6 +206,7 @@
     	</on-entry>
     	<transition on="back" to="add_job_jabatan_type_spec" />
 		<transition on="add" to="doAddJabatanTypeSpec" />
+		<transition on="end" to="end" />
     </view-state>
     
     <action-state id="doAddJabatanTypeSpec">
