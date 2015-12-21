@@ -147,6 +147,9 @@ public class HomeApproalActivityController extends BaseController {
                 case HRMConstant.EMPLOYEE_CAREER_TRANSITION:
                 	redirect = "/protected/career/emp_career_transition_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
+                case HRMConstant.EMPLOYEE_ELIMINATION:
+                	redirect = "/protected/career/emp_elimination_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
                 default:
                     break;
             }
@@ -209,6 +212,9 @@ public class HomeApproalActivityController extends BaseController {
                     break;
                 case HRMConstant.EMPLOYEE_CAREER_TRANSITION:                    
                 	redirect = "/protected/career/emp_career_transition_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
+                    break;
+                case HRMConstant.EMPLOYEE_ELIMINATION:
+                	redirect = "/protected/career/emp_elimination_approval_form.htm?faces-redirect=true&execution=e" + selectedApprovalActivity.getId();
                     break;
                 default:
                     break;

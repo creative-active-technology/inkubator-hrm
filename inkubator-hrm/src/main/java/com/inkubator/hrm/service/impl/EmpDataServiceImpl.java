@@ -1458,7 +1458,6 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     	
     	List<LoanUnpaidForEmpTerminationViewModel> listLoanModel = generateListLoanUnpaidModel(empDataId);
     	Double totalOutstandingLoan = listLoanModel.stream().mapToDouble((loanModel) -> loanModel.getTotalOutstanding()).sum();
-    	System.out.println("totalOutstandingLoan : " + totalOutstandingLoan);
     	model.setWtPeriodeId(firstPreviousPeriodFromCurrentPeriod.getId());
     	model.setJabatanId(jabatan.getId());
     	model.setJabatanName(jabatan.getName());
