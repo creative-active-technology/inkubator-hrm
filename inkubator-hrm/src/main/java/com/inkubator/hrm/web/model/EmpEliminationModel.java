@@ -19,6 +19,7 @@ public class EmpEliminationModel implements Serializable {
     private Long jabatanAtasanId;
     private Long departmentId;
     private Long terminationTypeId;
+    private String terminationTypeName;
     private Long wtPeriodeId;
     private String jabatanName;
     private String jabatanAtasanName;
@@ -154,6 +155,12 @@ public class EmpEliminationModel implements Serializable {
 	}
 	public void setWtPeriodeId(Long wtPeriodeId) {
 		this.wtPeriodeId = wtPeriodeId;
+	}
+	public String getTerminationTypeName() {
+		return terminationTypeName;
+	}
+	public void setTerminationTypeName(String terminationTypeName) {
+		this.terminationTypeName = terminationTypeName;
 	}
 	
 }

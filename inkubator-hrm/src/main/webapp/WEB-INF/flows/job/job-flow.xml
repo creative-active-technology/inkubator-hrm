@@ -110,6 +110,7 @@
     	<transition on="back" to="add_job_jabatan_description" />
 		<transition on="add" to="doAddJabatanDescription" />
 		<transition on="edit" to="doEditJabatanDescription" />
+		<transition on="end" to="end" />
     </view-state>
     
      <action-state id="doAddJabatanDescription">
@@ -150,12 +151,14 @@
 		<transition  on="delete" to="doDeleteJabatanSpesification" />
 		<transition on="back" to="add_job_jabatan_description" />
 		<transition on="next" to="doCheckIsListJabatanSpecificationEmpty" />
+		<transition on="end" to="end" />
     </view-state>
     
     <view-state id="jabatan_specification_form" view="job_jabatan_spesification_form.xhtml">
     	<transition on="back" to="add_job_jabatan_spesification" />
 		<transition on="add" to="doAddJabatanSpesification" />
 		<transition on="edit" to="doEditJabatanSpesification" />
+		<transition on="end" to="end" />
     </view-state>
     
     <action-state id="doAddJabatanSpesification">
@@ -203,6 +206,7 @@
     	</on-entry>
     	<transition on="back" to="add_job_jabatan_type_spec" />
 		<transition on="add" to="doAddJabatanTypeSpec" />
+		<transition on="end" to="end" />
     </view-state>
     
     <action-state id="doAddJabatanTypeSpec">
