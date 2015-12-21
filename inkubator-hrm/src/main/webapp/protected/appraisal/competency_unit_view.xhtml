@@ -77,7 +77,7 @@
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['competency_group.competency_type']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.competencyType.name}"/>
+                                <h:outputLabel value= "#{data.competencyGroup.competencyType.name}"/>
                             </p:column>  
                             <p:column sortBy="#{data.competencyGroup.name}"  style="width: 27%">
                                 <f:facet name="header">  
@@ -93,7 +93,7 @@
                             </p:column>   
                             <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important" 
-                                                  action="#{competencyUnitViewController.doDetail()}" >
+                                                  action="#{competencyUnitViewController.doSelectEntity()}" >
                                     <f:setPropertyActionListener value="#{data}" target="#{competencyUnitViewController.selected}" />
                                 </p:commandButton>
                                 - 

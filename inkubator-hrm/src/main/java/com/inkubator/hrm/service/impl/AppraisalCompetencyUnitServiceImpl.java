@@ -1,5 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -10,11 +11,15 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
+import com.inkubator.hrm.dao.AppraisalCompetencyGroupDao;
 import com.inkubator.hrm.dao.AppraisalCompetencyUnitDao;
 import com.inkubator.hrm.entity.AppraisalCompetencyUnit;
 import com.inkubator.hrm.service.AppraisalCompetencyUnitService;
 import com.inkubator.hrm.web.search.CompetencyUnitSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 /**
  *
@@ -26,6 +31,8 @@ public class AppraisalCompetencyUnitServiceImpl extends IServiceImpl implements 
 
 	@Autowired
 	private AppraisalCompetencyUnitDao appraisalCompetencyUnitDao;
+	@Autowired
+	private AppraisalCompetencyGroupDao appraisalCompetencyGroupDao;
 	
 	@Override
 	public AppraisalCompetencyUnit getEntiyByPK(String id) throws Exception {
@@ -40,21 +47,45 @@ public class AppraisalCompetencyUnitServiceImpl extends IServiceImpl implements 
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public AppraisalCompetencyUnit getEntiyByPK(Long id) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return appraisalCompetencyUnitDao.getEntiyByPK(id);
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void save(AppraisalCompetencyUnit entity) throws Exception {
-		// TODO Auto-generated method stub
+		// check duplicate name
+		long totalDuplicates = appraisalCompetencyUnitDao.getTotalByName(entity.getName());
+		if (totalDuplicates > 0) {
+			throw new BussinessException("competency_unit.error_name_duplicate");
+		}
+		
+		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+		entity.setCompetencyGroup(appraisalCompetencyGroupDao.getEntiyByPK(entity.getCompetencyGroup().getId()));
+		entity.setCreatedBy(UserInfoUtil.getUserName());
+		entity.setCreatedOn(new Date());
+		appraisalCompetencyUnitDao.save(entity);
 
 	}
 
 	@Override
-	public void update(AppraisalCompetencyUnit entity) throws Exception {
-		// TODO Auto-generated method stub
-
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void update(AppraisalCompetencyUnit u) throws Exception {
+		// check duplicate name
+		long totalDuplicates = appraisalCompetencyUnitDao.getTotalByNameAndNotId(u.getName(), u.getId());
+		if (totalDuplicates > 0) {
+			throw new BussinessException("competency_unit.error_name_duplicate");
+		}
+		
+		AppraisalCompetencyUnit entity = appraisalCompetencyUnitDao.getEntiyByPK(u.getId());
+		entity.setName(u.getName());
+		entity.setDescription(u.getDescription());
+		entity.setCompetencyGroup(appraisalCompetencyGroupDao.getEntiyByPK(u.getCompetencyGroup().getId()));
+		entity.setUpdatedBy(UserInfoUtil.getUserName());
+		entity.setUpdatedOn(new Date());
+		appraisalCompetencyUnitDao.update(entity);
 	}
 
 	@Override

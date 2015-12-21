@@ -74,4 +74,11 @@ public class AppraisalCompetencyGroupDaoImpl extends IDAOImpl<AppraisalCompetenc
 		return (AppraisalCompetencyGroup) criteria.uniqueResult();
 	}
 
+	@Override
+	public List<AppraisalCompetencyGroup> getAllDataByCompetencyTypeId(Long competencyTypeId) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.add(Restrictions.eq("competencyType.id", competencyTypeId));
+		return criteria.list();
+	}
+
 }

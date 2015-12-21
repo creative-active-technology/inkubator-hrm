@@ -332,4 +332,11 @@ public class AppraisalCompetencyGroupServiceImpl extends IServiceImpl implements
 		}
 	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<AppraisalCompetencyGroup> getAllDataByCompetencyTypeId(Long competencyTypeId) throws Exception {
+		
+		return appraisalCompetencyGroupDao.getAllDataByCompetencyTypeId(competencyTypeId);
+	}
+
 }

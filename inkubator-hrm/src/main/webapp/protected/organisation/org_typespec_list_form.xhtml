@@ -60,7 +60,7 @@
                                 <p:outputLabel for="departmentId" value="#{appmsg['org_type_of_spec_list.job_specification_type']}" styleClass="label_hrm"/>
                             </p:column>
                             <p:column style="width: 80%">
-                                <p:selectOneMenu id="departmentId" value="#{orgTypeOfSpecListFormController.model.orgTypeOfSpecId}" style="width: 156px" >
+                                <p:selectOneMenu id="departmentId" required="true" value="#{orgTypeOfSpecListFormController.model.orgTypeOfSpecId}" style="width: 156px" >
                                                 <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                                 <f:selectItems value="#{orgTypeOfSpecListFormController.dropDownOrgTypeOfSpec}"/>
                                             </p:selectOneMenu>
