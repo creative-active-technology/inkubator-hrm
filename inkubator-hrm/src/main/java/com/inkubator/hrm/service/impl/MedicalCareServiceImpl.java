@@ -347,7 +347,7 @@ public class MedicalCareServiceImpl extends IServiceImpl implements MedicalCareS
         medicalCare.setEmpData(empDataDao.getEntiyByPK(b.getEmpData().getId()));
         medicalCare.setTemporaryActing(empDataDao.getEntiyByPK(b.getTemporaryActing().getId()));
         medicalCare.setDisease(diseaseDao.getEntiyByPK(b.getDisease().getId()));
-        medicalCare.setHospital(hospitalDao.getEntiyByPK(b.getHospital().getId()));
+        medicalCare.setHospital(b.getHospital() == null ? null : hospitalDao.getEntiyByPK(b.getHospital().getId()));
         medicalCare.setDocterName(b.getDocterName());
         medicalCare.setEndDate(b.getEndDate());
         medicalCare.setMaterialJobsAbandoned(b.getMaterialJobsAbandoned());

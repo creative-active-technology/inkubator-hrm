@@ -66,7 +66,9 @@
                                     <p:outputLabel for="requestDateId" value="#{appmsg['medicalcare.filling_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:calendar id="requestDateId" required="true" pattern="dd MMMM yyyy" value="#{medicalCareFormController.model.requestDate}"/>
+                                    <p:calendar id="requestDateId" required="true" pattern="dd MMMM yyyy" value="#{medicalCareFormController.model.requestDate}"
+                                    			mindate="#{medicalCareFormController.minDate}" maxdate="#{medicalCareFormController.maxDate}">
+                                    </p:calendar>
                                     <p:message for="requestDateId"/>
                                 </p:column>
                             </p:row>  
@@ -81,12 +83,12 @@
                                     <p:outputLabel for="startDateId" value="#{appmsg['global.start_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:calendar id="startDateId" required="true" pattern="dd MMMM yyyy" value="#{medicalCareFormController.model.startDate}">
+                                    <p:calendar id="startDateId" required="true" pattern="dd MMMM yyyy" value="#{medicalCareFormController.model.startDate}" 
+                                    		  	mindate="#{medicalCareFormController.minDate}" maxdate="#{medicalCareFormController.maxDate}">
                                         <p:ajax event="dateSelect" listener="#{medicalCareFormController.onChangeStartOrEndDate()}" update="totalDaysId,startDateId"/>
                                         <f:validator validatorId="dateBetweenValidator"  />
                                         <f:attribute name="endTime" value="#{endDateId}"/>
                                         <f:attribute name="dateBetweenValidatorMessage" value="#{appmsg['publicHoliday.publicHoliday_dateValidator']}"/>
-                                        <f:validator validatorId="backDateValidator"  />	                                    
                                     </p:calendar>
                                     <p:message for="startDateId"/>
                                 </p:column>
@@ -96,8 +98,8 @@
                                     <p:outputLabel for="endDateId" value="#{appmsg['global.end_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:calendar id="endDateId" binding="#{endDateId}" required="true" pattern="dd MMMM yyyy" value="#{medicalCareFormController.model.endDate}">
-                                        <f:validator validatorId="backDateValidator"  />
+                                    <p:calendar id="endDateId" binding="#{endDateId}" required="true" pattern="dd MMMM yyyy" value="#{medicalCareFormController.model.endDate}"
+                                    			mindate="#{medicalCareFormController.minDate}" maxdate="#{medicalCareFormController.maxDate}">
                                         <p:ajax event="dateSelect" listener="#{medicalCareFormController.onChangeStartOrEndDate()}" update="totalDaysId"/>
 
                                     </p:calendar>
@@ -131,9 +133,9 @@
                                 <p:column  style="width: 80%">
                                     <p:row>
                                         <p:column>
-                                            <p:selectBooleanButton value="#{medicalCareFormController.disabledHospital}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
+                                            <p:selectBooleanButton value="#{medicalCareFormController.isUseHospital}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" onIcon="ui-icon-check" 
                                                                    offIcon="ui-icon-close" styleClass="label_button" >
-                                                <p:ajax update="hospitalId" listener="#{medicalCareFormController.onChangeHospitalCheckbox()}" />
+                                                <p:ajax update="hospitalId"/>
                                             </p:selectBooleanButton>
         <!--                                    <p:autoComplete id="hospitalId" title="#{appmsg['global.employee']}" disabled="#{!medicalCareFormController.disabledHospital}"
                                                             value="#{medicalCareFormController.model.hospitalId}"
@@ -147,13 +149,14 @@
                                         </p:column>
                                         &nbsp;
                                         <p:column>
-                                            <p:selectOneMenu id="hospitalId" value="#{medicalCareFormController.model.hospital}" disabled="#{!medicalCareFormController.disabledHospital}" style="width: 156px;margin-bottom: -9px;" >
+                                            <p:selectOneMenu id="hospitalId" value="#{medicalCareFormController.model.hospital}" required="#{medicalCareFormController.isUseHospital}" disabled="#{!medicalCareFormController.isUseHospital}" style="width: 156px;margin-bottom: -9px;" >
                                                 <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                                 <f:selectItems value="#{medicalCareFormController.dropDownHospital}"/>
                                             </p:selectOneMenu>
+                                            <p:message for="hospitalId"/>
                                         </p:column>
                                     </p:row>
-                                    <p:message for="hospitalId"/>
+                                    
                                 </p:column>
                             </p:row> 
                             <p:row>
