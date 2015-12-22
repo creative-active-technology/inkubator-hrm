@@ -2,20 +2,17 @@ package com.inkubator.hrm.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
 /**
@@ -23,36 +20,33 @@ import javax.persistence.Version;
  * @author rizkykojek
  */
 @Entity
-@Table(name = "appraisal_competency_unit", catalog = "hrm"
-)
-public class AppraisalCompetencyUnit implements Serializable {
+@Table(name = "appraisal_competency_unit_jabatan_indicator", catalog = "hrm", uniqueConstraints = @UniqueConstraint(columnNames = {"jabatan_id", "competency_unit_indicator_id"}))
+public class AppraisalCompetencyUnitJabatanIndicator implements Serializable {
 
-	private Long id;
+	private long id;
     private Integer version;
-    private String name;
-    private String description;
-    private AppraisalCompetencyGroup competencyGroup;
+    private AppraisalCompetencyUnitIndicator appraisalCompetencyUnitIndicator;
+    private Jabatan jabatan;
     private String createdBy;
     private String updatedBy;
     private Date createdOn;
     private Date updatedOn;
-    private Set<AppraisalCompetencyUnitIndicator> unitIndicators = new HashSet<AppraisalCompetencyUnitIndicator>(0);
     
-    public AppraisalCompetencyUnit(){
+    public AppraisalCompetencyUnitJabatanIndicator(){
     	
     }
     
-    public AppraisalCompetencyUnit(Long id){
+    public AppraisalCompetencyUnitJabatanIndicator(Long id){
     	this.id = id;
     }
     
     @Id 
     @Column(name="id", unique=true, nullable=false)
-    public Long getId() {
+    public long getId() {
         return this.id;
     }
     
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -65,52 +59,36 @@ public class AppraisalCompetencyUnit implements Serializable {
     public void setVersion(Integer version) {
         this.version = version;
     }
-
-    @Column(name="name", unique=true, nullable=false, length=100)
-    public String getName() {
-        return this.name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Column(name="description", length = 65535, columnDefinition = "Text")
-    public String getDescription() {
-        return this.description;
-    }
-    
-    public void setDescription(String description) {
-        this.description = description;
-    }
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "competency_group_id", nullable=false)
-    public AppraisalCompetencyGroup getCompetencyGroup() {
-		return competencyGroup;
+    @JoinColumn(name = "competency_unit_indicator_id", nullable=false)
+	public AppraisalCompetencyUnitIndicator getAppraisalCompetencyUnitIndicator() {
+		return appraisalCompetencyUnitIndicator;
 	}
 
-	public void setCompetencyGroup(AppraisalCompetencyGroup competencyGroup) {
-		this.competencyGroup = competencyGroup;
+	public void setAppraisalCompetencyUnitIndicator(AppraisalCompetencyUnitIndicator appraisalCompetencyUnitIndicator) {
+		this.appraisalCompetencyUnitIndicator = appraisalCompetencyUnitIndicator;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "appraisalCompetencyUnit", cascade = CascadeType.REMOVE)
-	public Set<AppraisalCompetencyUnitIndicator> getUnitIndicators() {
-		return unitIndicators;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "jabatan_id", nullable=false)
+	public Jabatan getJabatan() {
+		return jabatan;
 	}
 
-	public void setUnitIndicators(Set<AppraisalCompetencyUnitIndicator> unitIndicators) {
-		this.unitIndicators = unitIndicators;
+	public void setJabatan(Jabatan jabatan) {
+		this.jabatan = jabatan;
 	}
-	
+
 	@Column(name="created_by", length=45)
     public String getCreatedBy() {
         return this.createdBy;
     }
     
-	public void setCreatedBy(String createdBy) {
+    public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
+
     
     @Column(name="updated_by", length=45)
     public String getUpdatedBy() {

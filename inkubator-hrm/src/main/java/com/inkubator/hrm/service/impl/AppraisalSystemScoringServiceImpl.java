@@ -1,5 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -10,11 +11,15 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.AppraisalSystemScoringDao;
+import com.inkubator.hrm.dao.AppraisalSystemScoringIndexDao;
 import com.inkubator.hrm.entity.AppraisalSystemScoring;
+import com.inkubator.hrm.entity.AppraisalSystemScoringIndex;
 import com.inkubator.hrm.service.AppraisalSystemScoringService;
 import com.inkubator.hrm.web.search.AppraisalSystemScoringSearchParameter;
+import com.inkubator.securitycore.util.UserInfoUtil;
 
 @Service(value = "appraisalSystemScoringService")
 @Lazy
@@ -22,6 +27,8 @@ public class AppraisalSystemScoringServiceImpl extends IServiceImpl implements A
 
 	@Autowired
 	private AppraisalSystemScoringDao appraisalSystemScoringDao;
+	@Autowired
+	private AppraisalSystemScoringIndexDao appraisalSystemScoringIndexDao;
 	
 	@Override
 	public AppraisalSystemScoring getEntiyByPK(String id) throws Exception {
@@ -36,9 +43,9 @@ public class AppraisalSystemScoringServiceImpl extends IServiceImpl implements A
 	}
 
 	@Override
-	public AppraisalSystemScoring getEntiyByPK(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+    public AppraisalSystemScoring getEntiyByPK(Long id) throws Exception {
+		return appraisalSystemScoringDao.getEntiyByPK(id);
 	}
 
 	@Override
@@ -132,9 +139,9 @@ public class AppraisalSystemScoringServiceImpl extends IServiceImpl implements A
 	}
 
 	@Override
-	public void delete(AppraisalSystemScoring entity) throws Exception {
-		// TODO Auto-generated method stub
-		
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void delete(AppraisalSystemScoring entity) throws Exception {
+		this.appraisalSystemScoringDao.delete(entity);
 	}
 
 	@Override
@@ -229,6 +236,30 @@ public class AppraisalSystemScoringServiceImpl extends IServiceImpl implements A
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public Long getTotalByParam(AppraisalSystemScoringSearchParameter searchParameter) throws Exception {
 		return appraisalSystemScoringDao.getTotalByParam(searchParameter);
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void save(AppraisalSystemScoring entity, Integer totalOption, String[] label, Integer[] scaleValue, String[] description) throws Exception {
+		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        entity.setCreatedBy(UserInfoUtil.getUserName());
+        entity.setCreatedOn(new Date());
+        entity.setName(entity.getName());        
+        appraisalSystemScoringDao.save(entity);
+        
+        AppraisalSystemScoringIndex appraisalSystemScoringIndex;
+        for(int i = 0; i < totalOption; i++){
+        	appraisalSystemScoringIndex = new AppraisalSystemScoringIndex();
+        	appraisalSystemScoringIndex.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
+        	appraisalSystemScoringIndex.setAppraisalSystemScoring(entity);
+        	appraisalSystemScoringIndex.setLabelMask(label[i]);
+        	appraisalSystemScoringIndex.setValue(scaleValue[i]);
+        	appraisalSystemScoringIndex.setDescription(description[i]);
+        	appraisalSystemScoringIndex.setCreatedBy(UserInfoUtil.getUserName());
+        	appraisalSystemScoringIndex.setCreatedOn(new Date());
+        	appraisalSystemScoringIndexDao.save(appraisalSystemScoringIndex);
+        }
+        
 	}
 
 }

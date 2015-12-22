@@ -19,5 +19,7 @@ public interface AppraisalCompetencyGroupDao extends IDAO<AppraisalCompetencyGro
 	public Long getTotalByParam(CompetencyGroupSearchParameter searchParameter);
 
 	public AppraisalCompetencyGroup getEntityByIdWithDetail(Long id);
+	
+	public List<AppraisalCompetencyGroup> getAllDataByCompetencyTypeId(Long competencyTypeId);
 
 }

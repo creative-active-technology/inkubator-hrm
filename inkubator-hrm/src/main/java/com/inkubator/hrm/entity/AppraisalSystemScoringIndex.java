@@ -16,7 +16,7 @@ import javax.persistence.Version;
 @Entity
 @Table(name = "appraisal_system_scoring_index", catalog = "hrm")
 public class AppraisalSystemScoringIndex implements java.io.Serializable {
-	private long id;
+	private Long id;
 	private Integer version;
 	private AppraisalSystemScoring appraisalSystemScoring;
 	private Integer value;
@@ -30,11 +30,11 @@ public class AppraisalSystemScoringIndex implements java.io.Serializable {
 	@Id
 
 	@Column(name = "id", unique = true, nullable = false)
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

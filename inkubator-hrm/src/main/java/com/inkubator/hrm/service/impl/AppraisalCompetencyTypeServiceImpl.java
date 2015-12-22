@@ -319,6 +319,7 @@ public class AppraisalCompetencyTypeServiceImpl extends IServiceImpl implements 
 		compTypeToUpdate.setCode(competencyType.getCode());
 		compTypeToUpdate.setName(competencyType.getName());
 		compTypeToUpdate.setDescription(competencyType.getDescription());
+		compTypeToUpdate.setVisibility(competencyType.getVisibility());
 		compTypeToUpdate.setUpdatedBy(updatedBy);
 		compTypeToUpdate.setUpdatedOn(updatedOn);
 		appraisalCompetencyTypeDao.update(compTypeToUpdate);

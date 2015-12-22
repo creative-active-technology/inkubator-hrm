@@ -25,4 +25,6 @@ public interface AppraisalCompetencyGroupService extends IService<AppraisalCompe
 
 	public void save(AppraisalCompetencyGroup competencyGroup, List<KlasifikasiKerja> listKlasifikasiKerja) throws Exception;
 	
+	public List<AppraisalCompetencyGroup> getAllDataByCompetencyTypeId(Long competencyTypeId) throws Exception;
+	
 }

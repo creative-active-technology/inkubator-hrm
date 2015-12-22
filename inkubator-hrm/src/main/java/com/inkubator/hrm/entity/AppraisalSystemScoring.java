@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,7 +24,7 @@ import javax.persistence.Version;
 )
 public class AppraisalSystemScoring implements java.io.Serializable {
 	
-	private long id;
+	private Long id;
     private Integer version;
     private String name;
     private String createdBy;
@@ -33,10 +35,10 @@ public class AppraisalSystemScoring implements java.io.Serializable {
     
     @Id 
     @Column(name="id", unique=true, nullable=false)
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
@@ -93,7 +95,7 @@ public class AppraisalSystemScoring implements java.io.Serializable {
 		this.updatedOn = updatedOn;
 	}
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="appraisalSystemScoring")
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="appraisalSystemScoring", cascade =  CascadeType.ALL, orphanRemoval = true)
 	public Set<AppraisalSystemScoringIndex> getAppraisalSystemScoringIndexes() {
 		return appraisalSystemScoringIndexes;
 	}

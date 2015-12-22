@@ -61,7 +61,7 @@
                                     <p:outputLabel  value="#{appmsg['functiongroup.function_group']}"  for="golJabatanId" styleClass="label_hrm" />
                                 </p:column>
                                 <p:column style="width: 80%">
-                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="golJabatanId" filter="true" required="true"
+                                    <p:selectOneMenu  style="margin-right: 3px;width: 353px" id="golJabatanId" filter="true" filterMatchMode="contains" required="true"
                                                       value="#{jobJabatanModel.golonganJabatanId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{golJabatans}" />
@@ -119,7 +119,7 @@
                                 </p:column>
                                 <p:column style="width: 80%">
                                     <p:selectOneMenu style="margin-right: 3px;width: 353px"  value="#{jobJabatanModel.jabatanAtasanId}" id="atasanId" required="true"
-                                                     disabled="#{jobJabatanFormController.isDisable}" filter="true" >
+                                                     disabled="#{jobJabatanFormController.isDisable}" filterMatchMode="contains" filter="true" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{jabatanAtasans}" />
                                     </p:selectOneMenu>

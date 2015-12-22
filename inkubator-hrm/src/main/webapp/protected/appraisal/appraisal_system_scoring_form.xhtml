@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlSpecAbilityFormlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formSpecAbilityFormId">
+                	<p:focus context="formSpecAbilityFormId"/>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="specification.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['ratingability.rating_ability']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['ratingability.rating_ability_header']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="nameId" value="#{appmsg['ratingability.rating_ability']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                	<p:inputText id="nameId" title="#{appmsg['ratingability.rating_ability']}" value="#{appraisalSystemScoringFormController.appraisalSystemScoringModel.name}" 
+                                                     required="true" requiredMessage="#{appmsg['ratingability.rating_ability_should_not_be_empty']}" maxlength="30" styleClass="isitext_hrm" style="width:290px;" />
+                                    <p:message for="nameId"/>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel for="optionId" value="#{appmsg['specificationability.option']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 80%">
+                                	<p:spinner id="optionId" value="#{appraisalSystemScoringFormController.appraisalSystemScoringModel.totalOption}" min="0" max="11" required="true" size="2" 
+                                               validatorMessage="#{appmsg['specificationability.specification_option_should_greater_than_zero']}">
+                                    	<f:validateLongRange minimum="1" maximum="11"/>
+                                        <p:ajax update="optionsGroupId,btnSaveId" process="@this" listener="#{appraisalSystemScoringFormController.doAdjustScaleValue()}"/>
+                                    </p:spinner>
+                                    <p:message for="optionId"/>                            
+                                </p:column>
+                            </p:row>                     
+                        </p:panelGrid>
+                        <p:panelGrid id="optionsGroupId" styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-top: 5px">
+                            <c:forEach begin="0" end="#{appraisalSystemScoringFormController.appraisalSystemScoringModel.totalOption - 1}" var="i">
+                                <p:row>
+                                    <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                        <p:outputLabel value="#{appmsg['specificationability.scale_value']}" styleClass="label_hrm" rendered="#{i == 0}"/>
+                                    </p:column>
+		                                	
+                                    <p:column style="width: 80%">
+                                        <p:inputText id="${'optionId'.concat(i)}" placeholder="#{appmsg['specificationability.option']}" title="#{appmsg['specificationability.option']}" 
+                                        			value="#{appraisalSystemScoringFormController.appraisalSystemScoringModel.labels[i]}" 
+                                                     required="true" requiredMessage="#{appmsg['specificationability.option_name_should_not_be_empty']}" 
+                                                     maxlength="30" styleClass="isitext_hrm"  style="width:150px;"/>
+                                        <p:outputLabel value="&nbsp;-&nbsp;"/>
+                                        <p:inputText id="${'descriptionId'.concat(i)}" placeholder="#{appmsg['global.description']}" title="#{appmsg['global.description']}" 
+                                        			 value="#{appraisalSystemScoringFormController.appraisalSystemScoringModel.description[i]}" 
+		                                                     required="true" requiredMessage="#{appmsg['ratingability.rating_ability_should_not_be_empty']}" maxlength="30" styleClass="isitext_hrm" style="width:150px;" />
+		                                    
+		                                <p:outputLabel value="&nbsp;/&nbsp;"/>    
+                                        <p:inputText title="#{appmsg['ratingability.rating_ability']}" value="#{appraisalSystemScoringFormController.appraisalSystemScoringModel.scaleValue[i]}" 
+                                                     maxlength="30" readonly="true" styleClass="isitext_disabled_hrm" style="width:50px;" />
+                                        <p:message for="${'optionId'.concat(i)}"/>
+                                        <p:message for="${'descriptionId'.concat(i)}"/>
+                                    </p:column>
+                                </p:row>
+                            </c:forEach>							
+                        </p:panelGrid>
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formSpecAbilityFormId,:growlSpecAbilityFormlId"
+                                             action="#{appraisalSystemScoringFormController.doSave()}" styleClass="isitext_hrm" disabled="#{appraisalSystemScoringFormController.isDisable}"
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" id="btnSaveId"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formSpecAbilityFormId" action="#{appraisalSystemScoringFormController.doReset()}"
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+                                <p:resetInput target="formSpecAbilityFormId" />  
+                            </p:commandButton>
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{appraisalSystemScoringFormController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
