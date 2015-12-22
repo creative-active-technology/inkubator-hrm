@@ -36,6 +36,7 @@ public class AppraisalCompetencyUnitIndicator implements Serializable {
     private String updatedBy;
     private Date createdOn;
     private Date updatedOn;
+    private Set<AppraisalCompetencyUnitJabatanIndicator> unitJabatanIndicators = new HashSet<AppraisalCompetencyUnitJabatanIndicator>(0);
     
     public AppraisalCompetencyUnitIndicator(){
     	
@@ -74,7 +75,7 @@ public class AppraisalCompetencyUnitIndicator implements Serializable {
 		this.levelIndex = levelIndex;
 	}
 
-	@Column(name="indicator", length = 65535, columnDefinition = "Text")
+	@Column(name="indicator", length = 65535, columnDefinition = "Text", unique = true)
 	public String getIndicator() {
 		return indicator;
 	}
@@ -91,6 +92,15 @@ public class AppraisalCompetencyUnitIndicator implements Serializable {
 
 	public void setAppraisalCompetencyUnit(AppraisalCompetencyUnit appraisalCompetencyUnit) {
 		this.appraisalCompetencyUnit = appraisalCompetencyUnit;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "appraisalCompetencyUnitIndicator", cascade = CascadeType.REMOVE)
+	public Set<AppraisalCompetencyUnitJabatanIndicator> getUnitJabatanIndicators() {
+		return unitJabatanIndicators;
+	}
+
+	public void setUnitJabatanIndicators(Set<AppraisalCompetencyUnitJabatanIndicator> unitJabatanIndicators) {
+		this.unitJabatanIndicators = unitJabatanIndicators;
 	}
 
 	@Column(name="created_by", length=45)
