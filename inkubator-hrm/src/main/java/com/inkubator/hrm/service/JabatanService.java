@@ -9,6 +9,7 @@ import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.web.model.JobJabatanModel;
 import com.inkubator.hrm.web.search.JabatanSearchParameter;
+import com.inkubator.hrm.web.search.KompetensiJabatanSearchParameter;
 
 import java.util.List;
 
@@ -53,4 +54,8 @@ public interface JabatanService extends IService<Jabatan> {
 	public Jabatan getJabatanByCode(String code) throws Exception;
 	
 	public void updateDataJabatan(JobJabatanModel jobJabatanModel) throws Exception;
+	
+	public List<Jabatan> getByParamForKompetensiJabatan(KompetensiJabatanSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+
+	public Long getTotalByParamForKompetensiJabatan(KompetensiJabatanSearchParameter searchParameter) throws Exception;
 }

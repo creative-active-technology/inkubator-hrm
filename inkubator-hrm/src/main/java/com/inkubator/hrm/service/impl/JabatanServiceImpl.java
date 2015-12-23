@@ -5,7 +5,20 @@
  */
 package com.inkubator.hrm.service.impl;
 
-import ch.lambdaj.Lambda;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
+import org.hamcrest.Matchers;
+import org.hibernate.criterion.Order;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
@@ -13,6 +26,7 @@ import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.CostCenterDao;
 import com.inkubator.hrm.dao.DepartmentDao;
 import com.inkubator.hrm.dao.EducationLevelDao;
+import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.dao.FacultyDao;
 import com.inkubator.hrm.dao.GolonganJabatanDao;
 import com.inkubator.hrm.dao.JabatanDao;
@@ -31,7 +45,6 @@ import com.inkubator.hrm.dao.OrgTypeOfSpecListDao;
 import com.inkubator.hrm.dao.PaySalaryGradeDao;
 import com.inkubator.hrm.dao.SpecificationAbilityDao;
 import com.inkubator.hrm.dao.UnitKerjaDao;
-import com.inkubator.hrm.entity.BioEmergencyContact;
 import com.inkubator.hrm.entity.EducationLevel;
 import com.inkubator.hrm.entity.Faculty;
 import com.inkubator.hrm.entity.GolonganJabatan;
@@ -54,28 +67,15 @@ import com.inkubator.hrm.entity.Major;
 import com.inkubator.hrm.entity.OccupationType;
 import com.inkubator.hrm.entity.OrgTypeOfSpecJabatan;
 import com.inkubator.hrm.entity.OrgTypeOfSpecJabatanId;
-import com.inkubator.hrm.entity.OrgTypeOfSpecList;
 import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.JobJabatanModel;
 import com.inkubator.hrm.web.search.JabatanSearchParameter;
+import com.inkubator.hrm.web.search.KompetensiJabatanSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
-import org.hamcrest.Matchers;
-import org.hibernate.criterion.Order;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import ch.lambdaj.Lambda;
 
 /**
  *
@@ -127,6 +127,8 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
     private OrgTypeOfSpecListDao orgTypeOfSpecListDao;
     @Autowired
     private OrgTypeOfSpecJabatanDao orgTypeOfSpecJabatanDao;
+    @Autowired
+    private EmpDataDao empDataDao;
 
 
     @Override
@@ -813,6 +815,25 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Jabatan getJabatanByCode(String code) throws Exception {
 		return jabatanDao.getJabatanByCode(code);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<Jabatan> getByParamForKompetensiJabatan(KompetensiJabatanSearchParameter searchParameter,
+			int firstResult, int maxResults, Order order) throws Exception {
+		System.out.println("MASUK==================================SERVICE");
+		List<Jabatan> listJabatan = jabatanDao.getByParamForKompetensiJabatan(searchParameter, firstResult, maxResults, order);
+		for(Jabatan jabatan : listJabatan){
+			Long total = empDataDao.getTotalKaryawanByJabatanId(jabatan.getId());
+			jabatan.setTotalPejabat(total.intValue());
+		}
+		return listJabatan;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByParamForKompetensiJabatan(KompetensiJabatanSearchParameter searchParameter) throws Exception {
+		return this.jabatanDao.getTotalByParamForKompetensiJabatan(searchParameter);
 	}
 
 	
