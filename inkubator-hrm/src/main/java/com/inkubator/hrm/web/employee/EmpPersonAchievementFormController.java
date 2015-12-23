@@ -108,28 +108,6 @@ public class EmpPersonAchievementFormController extends BaseController {
 		return empDatas;
 	}
 
-    public List<String> completeAchievement(String query) {
-        try {
-            List<EmpPersonAchievement> allBioMedicalHistory;
-            allBioMedicalHistory = empPersonAchievementService.getAllData();
-            List<String> queried = new ArrayList<>();
-
-            for (EmpPersonAchievement personAchievement : allBioMedicalHistory) {
-                if (personAchievement.getAchievementName().toLowerCase().startsWith(query) || personAchievement.getAchievementName().startsWith(query)) {
-                    queried.add(personAchievement.getAchievementName());
-                }
-            }
-            Set<String> setCompany = new HashSet<>(queried);
-            List<String> listCompany = new ArrayList<>(setCompany);
-            return listCompany;
-
-        } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(EmpPersonAchievementFormController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return null;
-    }
-
     public void doSave() throws Exception {
         EmpPersonAchievement empPersonAchievement = getEntityFromViewModel(model);
         try {
@@ -154,7 +132,6 @@ public class EmpPersonAchievementFormController extends BaseController {
             personAchievement.setId(model.getId());
         }
         personAchievement.setEmpData(model.getEmpData());
-        personAchievement.setAchievementName(model.getAchievementName());
         personAchievement.setDateAchievement(model.getDateAchievement());
         personAchievement.setDescription(model.getDescription());
         personAchievement.setCareerAwardType(new CareerAwardType(model.getCareerAwardTypeId()));

@@ -10,6 +10,7 @@ import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.search.JabatanSearchParameter;
+import com.inkubator.hrm.web.search.KompetensiJabatanSearchParameter;
 
 import java.util.List;
 
@@ -255,6 +256,42 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
 	     criteria.setFetchMode("unitKerja", FetchMode.JOIN);
 	     criteria.setFetchMode("jabatan", FetchMode.JOIN);
 	     return (Jabatan) criteria.uniqueResult();
+	}
+
+	@Override
+	public List<Jabatan> getByParamForKompetensiJabatan(KompetensiJabatanSearchParameter searchParameter,
+			int firstResult, int maxResults, Order order) {
+		System.out.println("Masuk====================================DAO");
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		doSearchByParamForKompetensiJabatan(searchParameter, criteria);
+		criteria.addOrder(order);
+		criteria.setFirstResult(firstResult);
+		criteria.setMaxResults(maxResults);
+		System.out.println("Size :::::::::::::::::::::::: " + criteria.list().size());
+		return criteria.list();
+	}
+
+	@Override
+	public Long getTotalByParamForKompetensiJabatan(KompetensiJabatanSearchParameter searchParameter) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		doSearchByParamForKompetensiJabatan(searchParameter, criteria);
+		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+		
+	}
+	
+	private void doSearchByParamForKompetensiJabatan(KompetensiJabatanSearchParameter searchParameter, Criteria criteria){
+		criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.INNER_JOIN);
+		
+		if(searchParameter.getCode() != null){
+			criteria.add(Restrictions.like("code", searchParameter.getCode()));
+		}
+		if(searchParameter.getName() != null){
+			criteria.add(Restrictions.like("name", searchParameter.getName()));
+		}
+		if(searchParameter.getGolonganJabatan() != null){
+			criteria.add(Restrictions.like("golonganJabatan.code", searchParameter.getParameter(), MatchMode.ANYWHERE));
+		}
+		
 	}
 
 }

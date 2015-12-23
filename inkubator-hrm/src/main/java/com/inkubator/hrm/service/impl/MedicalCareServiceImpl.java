@@ -374,7 +374,7 @@ public class MedicalCareServiceImpl extends IServiceImpl implements MedicalCareS
     }
 
 	@Override
-	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<MedicalCare> getByParamForReportSickData(ReportSickDataSearchParameter searchParameter, int firstResult,
 			int maxResults, Order orderable) throws Exception{
 		return this.medicalCareDao.getByParamForReportSickData(searchParameter, firstResult, maxResults, orderable);

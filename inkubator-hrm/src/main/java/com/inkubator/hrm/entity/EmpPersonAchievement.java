@@ -31,7 +31,6 @@ public class EmpPersonAchievement implements java.io.Serializable {
     private long id;
     private Integer version;
     private EmpData empData;
-    private String achievementName;
     private String description;
     private Date dateAchievement;
     private String createdBy;
@@ -47,11 +46,10 @@ public class EmpPersonAchievement implements java.io.Serializable {
         this.id = id;
     }
 
-    public EmpPersonAchievement(long id, Integer version, EmpData empData, String achievementName, String description, Date dateAchievement, String createdBy, Date createdOn, String updatedBy, Date updatedOn, CareerAwardType careerAwardType) {
+    public EmpPersonAchievement(long id, Integer version, EmpData empData, String description, Date dateAchievement, String createdBy, Date createdOn, String updatedBy, Date updatedOn, CareerAwardType careerAwardType) {
         this.id = id;
         this.version = version;
         this.empData = empData;
-        this.achievementName = achievementName;
         this.description = description;
         this.dateAchievement = dateAchievement;
         this.createdBy = createdBy;
@@ -91,15 +89,6 @@ public class EmpPersonAchievement implements java.io.Serializable {
 
     public void setEmpData(EmpData empData) {
         this.empData = empData;
-    }
-
-    @Column(name="achievement_name", length=60)
-    public String getAchievementName() {
-        return achievementName;
-    }
-
-    public void setAchievementName(String achievementName) {
-        this.achievementName = achievementName;
     }
 
     @Column(name="description", length=65535, columnDefinition = "Text")

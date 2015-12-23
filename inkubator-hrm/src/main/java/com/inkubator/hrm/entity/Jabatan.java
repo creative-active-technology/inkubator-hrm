@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,6 +48,7 @@ public class Jabatan implements java.io.Serializable {
     private String updatedBy;
     private Date updatedOn;
     private Integer levelJabatan;
+    private Integer totalPejabat;
     private Set<Jabatan> jabatans = new HashSet<>(0);
     private Set<JabatanDeskripsi> jabatanDeskripsis = new HashSet<>(0);
     private Set<JabatanSpesifikasi> jabatanSpesifikasis = new HashSet<>(0);
@@ -340,8 +342,17 @@ public class Jabatan implements java.io.Serializable {
     public void setJabatanEdukasis(Set<JabatanEdukasi> jabatanEdukasis) {
         this.jabatanEdukasis = jabatanEdukasis;
     }
+    
+    @Transient
+    public Integer getTotalPejabat() {
+		return totalPejabat;
+	}
 
-    @Override
+	public void setTotalPejabat(Integer totalPejabat) {
+		this.totalPejabat = totalPejabat;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 5;
         hash = 83 * hash + (int) (this.id ^ (this.id >>> 32));
@@ -373,6 +384,8 @@ public class Jabatan implements java.io.Serializable {
             return false;
         }
         return true;
+        
+        
     }
 
   
