@@ -35,7 +35,7 @@
                                     <p:outputLabel value=":" />
                                     <p:selectOneMenu value="#{empPersonAchievementViewController.search.keyParam}" style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['personachievement.achievement']}" itemValue="achievementName"/>
+                                        <f:selectItem itemLabel="#{appmsg['personachievement.achievement']}" itemValue="careerAwardTypeName"/>
                                         <f:selectItem itemLabel="#{appmsg['personachievement.employee_name']}" itemValue="empData"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{empPersonAchievementViewController.search.parameter}" style="width: 250px" styleClass="label_button"/>
@@ -143,7 +143,7 @@
                         <h:panelGrid id="confirmDeletePanel"  columns="3">
                             <p:outputLabel value="#{appmsg['personachievement.achievement']}"  style="font-weight: bold"/>
                             <p:outputLabel value=":"  style="font-weight: bold"/>
-                            <p:outputLabel value="#{empPersonAchievementViewController.selected.achievementName}" styleClass="label_hrm"/>
+                            <p:outputLabel value="#{empPersonAchievementViewController.selected.careerAwardType.name}" styleClass="label_hrm"/>
                         </h:panelGrid>
                         <p:separator/>
                         <p:commandButton value="#{appmsg['global.yes']}" action="#{empPersonAchievementViewController.doDelete()}" update="formId"
@@ -157,7 +157,7 @@
 
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['personachievement.achievement']}" styleClass="label_hrm"/></p:column>
-                            <p:column><p:outputLabel value="#{empPersonAchievementViewController.selected.achievementName}"/> </p:column>
+                            <p:column><p:outputLabel value="#{empPersonAchievementViewController.selected.careerAwardType.name}"/> </p:column>
                         </p:row>
                         <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['personachievement.achievement_date']}" styleClass="label_hrm"/></p:column>
