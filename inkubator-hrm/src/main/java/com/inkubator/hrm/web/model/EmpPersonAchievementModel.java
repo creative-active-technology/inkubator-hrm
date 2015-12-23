@@ -15,7 +15,6 @@ import java.util.Date;
 public class EmpPersonAchievementModel implements Serializable{
     private Long id;
     private long empDataId;
-    private String achievementName;
     private String description;
     private Date dateAchievement;
     private EmpData empData;
@@ -28,14 +27,6 @@ public class EmpPersonAchievementModel implements Serializable{
 
     public void setEmpDataId(long empDataId) {
         this.empDataId = empDataId;
-    }
-
-    public String getAchievementName() {
-        return achievementName;
-    }
-
-    public void setAchievementName(String achievementName) {
-        this.achievementName = achievementName;
     }
 
     public String getDescription() {

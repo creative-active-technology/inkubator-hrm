@@ -45,6 +45,7 @@ import com.inkubator.hrm.entity.JabatanFakulty;
 import com.inkubator.hrm.entity.JabatanMajor;
 import com.inkubator.hrm.entity.JabatanProfesi;
 import com.inkubator.hrm.entity.JabatanSpesifikasi;
+import com.inkubator.hrm.entity.JabatanSpesifikasiId;
 import com.inkubator.hrm.entity.KlasifikasiKerja;
 import com.inkubator.hrm.entity.KlasifikasiKerjaJabatan;
 import com.inkubator.hrm.entity.Major;
@@ -754,12 +755,17 @@ public class JobJabatanFormController implements Serializable {
 	 }
 	 
 	 public void initialEditJabatanSpesificationFlow(RequestContext context) {
-		 JabatanSpesifikasiModel jabatanSpesifikasiModel = (JabatanSpesifikasiModel) context.getFlowScope().get("jabatanSpesifikasiModel");
-		 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
-		 JabatanSpesifikasi selectedJabatanSpesifikasi = jobJabatanModel.getListJabatanSpesifikasi().get(selectedIndexJabatanSpesifikasi);
-		 jabatanSpesifikasiModel = convertJabatanSpesifikasiToModel(selectedJabatanSpesifikasi);
-		 jabatanSpesifikasiModel.setIsUpdate(Boolean.TRUE);
-		 context.getFlowScope().put("jabatanSpesifikasiModel", jabatanSpesifikasiModel);
+		 try {
+			JabatanSpesifikasiModel jabatanSpesifikasiModel = (JabatanSpesifikasiModel) context.getFlowScope().get("jabatanSpesifikasiModel");
+			 JobJabatanModel jobJabatanModel = (JobJabatanModel) context.getFlowScope().get("jobJabatanModel");
+			 JabatanSpesifikasi selectedJabatanSpesifikasi = jobJabatanModel.getListJabatanSpesifikasi().get(selectedIndexJabatanSpesifikasi);
+			 jabatanSpesifikasiModel = convertJabatanSpesifikasiToModel(selectedJabatanSpesifikasi);
+			 jabatanSpesifikasiModel.setIsUpdate(Boolean.TRUE);
+			 context.getFlowScope().put("jabatanSpesifikasiModel", jabatanSpesifikasiModel);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	 }
 	 
 	 public String doAddJabatanSpesification(RequestContext context){
@@ -877,6 +883,7 @@ public class JobJabatanFormController implements Serializable {
 			JabatanSpesifikasi jabatanSpesifikasi = new JabatanSpesifikasi();
 			 SpecificationAbility specificationAbility = specificationAbilityService.getEntiyByPK(jabatanSpesifikasiModel.getSpecId());
 			 jabatanSpesifikasi.setSpecificationAbility(specificationAbility);
+			 jabatanSpesifikasi.setId(new JabatanSpesifikasiId(0, jabatanSpesifikasiModel.getSpecId()));
 			 jabatanSpesifikasi.setValue(jabatanSpesifikasiModel.getValue());
 			 jabatanSpesifikasi.setOptionAbility(jabatanSpesifikasiModel.getOptionAbility());
 			 return jabatanSpesifikasi;
@@ -886,10 +893,9 @@ public class JobJabatanFormController implements Serializable {
 		}
 	 }
 	 
-	 public JabatanSpesifikasiModel convertJabatanSpesifikasiToModel(JabatanSpesifikasi jabatanSpesifikasi){
+	 public JabatanSpesifikasiModel convertJabatanSpesifikasiToModel(JabatanSpesifikasi jabatanSpesifikasi) throws Exception{
 		 
 		 JabatanSpesifikasiModel jabatanSpesifikasiModel = new JabatanSpesifikasiModel();
-		 jabatanSpesifikasiModel.setJabatanId(jabatanSpesifikasi.getId().getJabatanId());
 		 jabatanSpesifikasiModel.setSpecId(jabatanSpesifikasi.getId().getSpecificationId());
 		 jabatanSpesifikasiModel.setValue(jabatanSpesifikasi.getValue());
 		 jabatanSpesifikasiModel.setOptionAbility(jabatanSpesifikasi.getOptionAbility());

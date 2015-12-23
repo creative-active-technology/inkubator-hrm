@@ -41,7 +41,7 @@
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.name']}" itemValue="name"/>
                                     </p:selectOneMenu>
-                                    <p:selectOneMenu id="scheduleSearchName"  styleClass="isitext_hrm"  value="#{schedulerLogViewController.searchParameter.parameter}" filter="true"  filterMatchMode="contains" required="true">
+                                    <p:selectOneMenu id="scheduleSearchName"  styleClass="isitext_hrm"  value="#{schedulerLogViewController.searchParameter.parameter}" filter="true"  filterMatchMode="contains" required="false">
 
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['scheduler_config.user_password_notification_scheduler_process']}" itemValue="#{hrmConstant.SCHEDULER_CONFIG_NAME_USER_PASSWORD_NOTIFICATION}" />

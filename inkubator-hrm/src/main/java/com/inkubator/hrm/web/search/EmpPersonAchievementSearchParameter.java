@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class EmpPersonAchievementSearchParameter extends SearchParameter{
     private String empData;
-    private String achievementName;
+    private String careerAwardTypeName;
 
     public String getEmpData() {
         if(StringUtils.equalsIgnoreCase(getKeyParam(), "empData")){
@@ -28,18 +28,17 @@ public class EmpPersonAchievementSearchParameter extends SearchParameter{
         this.empData = empData;
     }
 
-    public String getAchievementName() {
-        if(StringUtils.equalsIgnoreCase(getKeyParam(), "achievementName")){
-			achievementName = getParameter();
+	public String getCareerAwardTypeName() {
+		if(StringUtils.equalsIgnoreCase(getKeyParam(), "careerAwardTypeName")){
+			careerAwardTypeName = getParameter();
         } else {
-                achievementName = null;
+        	careerAwardTypeName = null;
         }
-        return achievementName;
-    }
+        return careerAwardTypeName;
+	}
 
-    public void setAchievementName(String achievementName) {
-        this.achievementName = achievementName;
-    }
-    
-    
+	public void setCareerAwardTypeName(String careerAwardTypeName) {
+		this.careerAwardTypeName = careerAwardTypeName;
+	}
+
 }

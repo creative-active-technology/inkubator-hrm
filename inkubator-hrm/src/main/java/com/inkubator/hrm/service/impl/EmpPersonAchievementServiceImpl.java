@@ -87,7 +87,6 @@ public class EmpPersonAchievementServiceImpl extends IServiceImpl implements Emp
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(EmpPersonAchievement entity) throws Exception {
         EmpPersonAchievement update = this.achievementDao.getEntiyByPK(entity.getId());
-        update.setAchievementName(entity.getAchievementName());
         update.setDateAchievement(entity.getDateAchievement());
         update.setDescription(entity.getDescription());
         update.setEmpData(empDataDao.getEntiyByPK(entity.getEmpData().getId()));
