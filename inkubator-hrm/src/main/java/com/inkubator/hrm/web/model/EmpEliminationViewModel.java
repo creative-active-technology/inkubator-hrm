@@ -3,10 +3,6 @@ package com.inkubator.hrm.web.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.inkubator.hrm.util.HrmUserInfoUtil;
-import com.inkubator.hrm.util.ResourceBundleUtil;
-import com.inkubator.webcore.util.FacesUtil;
-
 /**
  *
  * @author Ahmad Mudzakkir Amal
@@ -17,7 +13,6 @@ public class EmpEliminationViewModel implements Serializable {
     private Long empCareerHistoryId;
     private Long empDataId;
     private Long  bioDataId;
-    //private Long careerTransitionId;
     private Long lastJabatanId;
     private Long lastWtPeriodId;
     private String nik;
@@ -27,7 +22,7 @@ public class EmpEliminationViewModel implements Serializable {
     private Date terminationDate;
     private Date startDateLastWtPeriod;
     private String reason;
-    private String status;
+    private Integer status;
     private String empCareerHistoryStatus;
     
     
@@ -50,12 +45,7 @@ public class EmpEliminationViewModel implements Serializable {
 	public void setEmpDataId(Long empDataId) {
 		this.empDataId = empDataId;
 	}
-	/*public Long getCareerTransitionId() {
-		return careerTransitionId;
-	}
-	public void setCareerTransitionId(Long careerTransitionId) {
-		this.careerTransitionId = careerTransitionId;
-	}*/
+	
 	public Long getLastJabatanId() {
 		return lastJabatanId;
 	}
@@ -99,10 +89,10 @@ public class EmpEliminationViewModel implements Serializable {
 	public void setReason(String reason) {
 		this.reason = reason;
 	}
-	public String getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 	public Long getLastWtPeriodId() {
@@ -130,6 +120,5 @@ public class EmpEliminationViewModel implements Serializable {
 		this.empCareerHistoryStatus = empCareerHistoryStatus;
 	}
 	
-    
-    
+	
 }

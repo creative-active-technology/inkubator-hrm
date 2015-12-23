@@ -80,6 +80,16 @@
                                     <p:outputLabel value="#{empEliminationApprovalFormController.model.terminationTypeName}" />
                                 </p:column>
                             </p:row>
+                             <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['career.employee_elimination_termination_date']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{empEliminationApprovalFormController.model.effectiveDate}" >
+                                    	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
                             <p:row>
                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
                                     <p:outputLabel value="#{appmsg['career.employee_elimination_termination_reason']}" styleClass="label_hrm"/>

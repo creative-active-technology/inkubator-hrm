@@ -38,6 +38,7 @@ public class CareerEmpElimination  implements java.io.Serializable {
      private String createdBy;
      private Date updatedOn;
      private String updatedBy;
+     private Date effectiveDate;
 
     public CareerEmpElimination() {
     }
@@ -205,7 +206,17 @@ public class CareerEmpElimination  implements java.io.Serializable {
         this.updatedBy = updatedBy;
     }
 
+    @Temporal(TemporalType.DATE)
+    @Column(name = "effective_date", length = 10)
+	public Date getEffectiveDate() {
+		return effectiveDate;
+	}
 
+	public void setEffectiveDate(Date effectiveDate) {
+		this.effectiveDate = effectiveDate;
+	}
+
+    
 
 
 }
