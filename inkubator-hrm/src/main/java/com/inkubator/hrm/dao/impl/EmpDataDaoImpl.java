@@ -249,7 +249,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.setFetchMode("wtGroupWorking", FetchMode.JOIN);
         return (EmpData) criteria.uniqueResult();
     }
-    
+
     @Override
     public EmpData getEmpDataWithBioDataAndMaritalStatusById(long id) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
@@ -310,8 +310,8 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria = this.addJoinRelationsOfCompanyId(criteria, companyId);
         //criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         criteria.add(Restrictions.isNotNull("status"));
-        criteria.add(Restrictions.not(Restrictions.in("status", Arrays.asList(HRMConstant.EMP_TERMINATION, HRMConstant.EMP_DISCHAGED, 
-        		HRMConstant.EMP_LAID_OFF, HRMConstant.EMP_STOP_CONTRACT, HRMConstant.EMP_PENSION))));
+        criteria.add(Restrictions.not(Restrictions.in("status", Arrays.asList(HRMConstant.EMP_TERMINATION, HRMConstant.EMP_DISCHAGED,
+                HRMConstant.EMP_LAID_OFF, HRMConstant.EMP_STOP_CONTRACT, HRMConstant.EMP_PENSION))));
 
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         Disjunction disjunction = Restrictions.disjunction();
@@ -322,14 +322,14 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.setMaxResults(20);
         return criteria.list();
     }
-    
+
     @Override
     public List<EmpData> getAllDataByNameOrNik(String param) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         //criteria.add(Restrictions.neOrIsNotNull("status", HRMConstant.EMP_TERMINATION));
         criteria.add(Restrictions.isNotNull("status"));
-        criteria.add(Restrictions.not(Restrictions.in("status", Arrays.asList(HRMConstant.EMP_TERMINATION, HRMConstant.EMP_DISCHAGED, 
-        		HRMConstant.EMP_LAID_OFF, HRMConstant.EMP_STOP_CONTRACT, HRMConstant.EMP_PENSION))));
+        criteria.add(Restrictions.not(Restrictions.in("status", Arrays.asList(HRMConstant.EMP_TERMINATION, HRMConstant.EMP_DISCHAGED,
+                HRMConstant.EMP_LAID_OFF, HRMConstant.EMP_STOP_CONTRACT, HRMConstant.EMP_PENSION))));
 
         criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
         Disjunction disjunction = Restrictions.disjunction();
@@ -575,7 +575,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
     @Override
     public List<EmpData> getEmployeeByOtSearchParameter(DistributionOvetTimeModel model) {
-    	DetachedCriteria listEmp = DetachedCriteria.forClass(OverTimeDistribution.class)
+        DetachedCriteria listEmp = DetachedCriteria.forClass(OverTimeDistribution.class)
                 .setProjection(Property.forName("empData.id"))
                 .createAlias("wtOverTime", "wtOverTime", JoinType.INNER_JOIN)
                 .add(Restrictions.eq("wtOverTime.id", model.getOverTimeId()));
@@ -1468,7 +1468,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public List<EmpData> getAllDataByDepartmentAndReligionAndGolJabAndEmpType(List<Long> departmentIds, List<Long> religionIds, List<Long> golJabIds, List<Long> empTypeIds) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        
+
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
 
         criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
@@ -1531,7 +1531,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
 
-        criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
+//        criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("employeeType", "employeeType", JoinType.LEFT_OUTER_JOIN);
 //        criteria.createCriteria("bioData", "bio", JoinType.LEFT_OUTER_JOIN);
@@ -1552,7 +1552,10 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
         }
         if (listAge.get(0) != 0) {
-            criteria.add(Restrictions.sqlRestriction("DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(biodata1_.date_of_birth)), '%Y')+0 in (" + ageList.toString() + ")", listAge.toArray(), typeAge));
+//            criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
+            Criteria criteriaBiodata = criteria.createCriteria("bioData", JoinType.LEFT_OUTER_JOIN);
+//            criteria.createCriteria("bioData", JoinType.LEFT_OUTER_JOIN);
+            criteriaBiodata.add(Restrictions.sqlRestriction("DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS({alias}.date_of_birth)), '%Y')+0 in (" + ageList.toString() + ")", listAge.toArray(), typeAge));
         }
 
         if (!listNik.isEmpty()) {
@@ -1603,7 +1606,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
 
-        criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
+//        criteria.createAlias("bioData", "bioData", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.LEFT_OUTER_JOIN);
         criteria.createAlias("employeeType", "employeeType", JoinType.LEFT_OUTER_JOIN);
 //        criteria.createCriteria("bioData", "bio", JoinType.LEFT_OUTER_JOIN);
@@ -1624,7 +1627,9 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
         }
         if (listAge.get(0) != 0) {
-            criteria.add(Restrictions.sqlRestriction("DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(biodata1_.date_of_birth)), '%Y')+0 in (" + ageList.toString() + ")", listAge.toArray(), typeAge));
+            Criteria criteriaBiodata = criteria.createCriteria("bioData", JoinType.LEFT_OUTER_JOIN);
+//            criteria.createCriteria("bioData", JoinType.LEFT_OUTER_JOIN);
+            criteriaBiodata.add(Restrictions.sqlRestriction("DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS({alias}.date_of_birth)), '%Y')+0 in (" + ageList.toString() + ")", listAge.toArray(), typeAge));
         }
 
         if (!listNik.isEmpty()) {
@@ -1778,34 +1783,34 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
     @Override
     public List<SearchEmployeeCandidateViewModel> getAllDataEmpCandidateByParamWithDetail(SearchEmployeeCandidateParameter searchEmployeeCandidateParameter) {
-        
-    	String listEducationId = Lambda.join(searchEmployeeCandidateParameter.getListEducationlevelId(), "','");
+
+        String listEducationId = Lambda.join(searchEmployeeCandidateParameter.getListEducationlevelId(), "','");
         StringBuffer selectQuery = new StringBuffer(
-        		 			  " SELECT empData.id AS empDataId, empData.nik AS nik, "
-        	                + " bioData.first_name AS firstName, bioData.last_name AS lastName, "
-        	                + " jabatan.id AS idJabatan, jabatan.name AS jabatanName, "
-        	                + "  (	SELECT educationLevelInner.id FROM bio_education_history bioEduInner "
-        	                + "  	INNER JOIN education_level educationLevelInner ON bioEduInner.pendidikan_level_id =  educationLevelInner.id "
-        	                + " 	INNER JOIN bio_data bioDataInner ON bioEduInner.biodata_id = bioDataInner.id  "
-        	                + " 	WHERE bioDataInner.id = bioData.id "
-        	                + "		AND educationLevelInner.id IN ('" + listEducationId + "') "
-        	                + " 	AND bioEduInner.score > " + searchEmployeeCandidateParameter.getGpa() + "  LIMIT 1 "
-        	                + "  ) 	AS lastEducationLevelId, "
-        	                + " religion.id AS idReligion, religion.name AS religionName "
-        	                + " FROM emp_data empData "
-        	                + " INNER JOIN  jabatan jabatan ON empData.jabatan_id = jabatan.id "
-        	                + " INNER JOIN department department ON jabatan.departement_id = department.id "
-        	                + " INNER JOIN company company  ON department.company_id = company.id "
-        	                + " LEFT OUTER JOIN bio_data bioData ON empData.bio_data_id = bioData.id "
-        	                + " INNER JOIN religion religion ON bioData.agama_id = religion.id "
-        	                + " WHERE company.id = '" + HrmUserInfoUtil.getCompanyId() + "' " );
-        
+                " SELECT empData.id AS empDataId, empData.nik AS nik, "
+                + " bioData.first_name AS firstName, bioData.last_name AS lastName, "
+                + " jabatan.id AS idJabatan, jabatan.name AS jabatanName, "
+                + "  (	SELECT educationLevelInner.id FROM bio_education_history bioEduInner "
+                + "  	INNER JOIN education_level educationLevelInner ON bioEduInner.pendidikan_level_id =  educationLevelInner.id "
+                + " 	INNER JOIN bio_data bioDataInner ON bioEduInner.biodata_id = bioDataInner.id  "
+                + " 	WHERE bioDataInner.id = bioData.id "
+                + "		AND educationLevelInner.id IN ('" + listEducationId + "') "
+                + " 	AND bioEduInner.score > " + searchEmployeeCandidateParameter.getGpa() + "  LIMIT 1 "
+                + "  ) 	AS lastEducationLevelId, "
+                + " religion.id AS idReligion, religion.name AS religionName "
+                + " FROM emp_data empData "
+                + " INNER JOIN  jabatan jabatan ON empData.jabatan_id = jabatan.id "
+                + " INNER JOIN department department ON jabatan.departement_id = department.id "
+                + " INNER JOIN company company  ON department.company_id = company.id "
+                + " LEFT OUTER JOIN bio_data bioData ON empData.bio_data_id = bioData.id "
+                + " INNER JOIN religion religion ON bioData.agama_id = religion.id "
+                + " WHERE company.id = '" + HrmUserInfoUtil.getCompanyId() + "' ");
+
         selectQuery.append(setQueryParamForEmpCandidateSearchQuery(searchEmployeeCandidateParameter));
         Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString());
         return hbm.setResultTransformer(Transformers.aliasToBean(SearchEmployeeCandidateViewModel.class)).list();
 
     }
-    
+
     @Override
     public Long getTotalEmpCandidateByParamWithDetail(SearchEmployeeCandidateParameter searchEmployeeCandidateParameter) {
 
@@ -1818,60 +1823,60 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
                 + " LEFT OUTER JOIN bio_data bioData ON empData.bio_data_id = bioData.id "
                 + " INNER JOIN religion religion ON bioData.agama_id = religion.id "
                 + " WHERE company.id = '" + HrmUserInfoUtil.getCompanyId() + "' ");
-        
+
         selectQuery.append(setQueryParamForEmpCandidateSearchQuery(searchEmployeeCandidateParameter));
         selectQuery.append(" ) as totalRows");
         Query hbm = getCurrentSession().createSQLQuery(selectQuery.toString());
         return Long.valueOf(hbm.uniqueResult().toString());
     }
-    
-    private String setQueryParamForEmpCandidateSearchQuery(SearchEmployeeCandidateParameter searchEmployeeCandidateParameter){
-    	
-    	StringBuffer stringBuffer =  new StringBuffer();
-    	String listEducationlevelId = Lambda.join(searchEmployeeCandidateParameter.getListEducationlevelId(), "','");
-    	String listAges = Lambda.join(searchEmployeeCandidateParameter.getListAge(), "','");
-    	String listJabatanId = Lambda.join(searchEmployeeCandidateParameter.getListJabatanId(), "','");
-    	String listReligionId = Lambda.join(searchEmployeeCandidateParameter.getListReligionId(), "','");
-    	String listJoinDate = Lambda.join(searchEmployeeCandidateParameter.getListJoinDate(), "','");
-    	
-    	stringBuffer.append( " AND  EXISTS "
-            + " 	( SELECT bioEduGpa.score FROM bio_education_history bioEduGpa "
-            + " 	  INNER JOIN education_level eduGpa ON bioEduGpa.pendidikan_level_id = eduGpa.id  "
-            + " 	  INNER JOIN bio_data bioDataInnerGpa ON bioEduGpa.biodata_id = bioDataInnerGpa.id "
-            + " 	  WHERE bioDataInnerGpa.id = bioData.id AND eduGpa.id IN ( '" + listEducationlevelId + "' ) "
-            + "       AND bioEduGpa.score > " + searchEmployeeCandidateParameter.getGpa()
-            + "     ) ");
-    	  
-    	//Filter by gender
+
+    private String setQueryParamForEmpCandidateSearchQuery(SearchEmployeeCandidateParameter searchEmployeeCandidateParameter) {
+
+        StringBuffer stringBuffer = new StringBuffer();
+        String listEducationlevelId = Lambda.join(searchEmployeeCandidateParameter.getListEducationlevelId(), "','");
+        String listAges = Lambda.join(searchEmployeeCandidateParameter.getListAge(), "','");
+        String listJabatanId = Lambda.join(searchEmployeeCandidateParameter.getListJabatanId(), "','");
+        String listReligionId = Lambda.join(searchEmployeeCandidateParameter.getListReligionId(), "','");
+        String listJoinDate = Lambda.join(searchEmployeeCandidateParameter.getListJoinDate(), "','");
+
+        stringBuffer.append(" AND  EXISTS "
+                + " 	( SELECT bioEduGpa.score FROM bio_education_history bioEduGpa "
+                + " 	  INNER JOIN education_level eduGpa ON bioEduGpa.pendidikan_level_id = eduGpa.id  "
+                + " 	  INNER JOIN bio_data bioDataInnerGpa ON bioEduGpa.biodata_id = bioDataInnerGpa.id "
+                + " 	  WHERE bioDataInnerGpa.id = bioData.id AND eduGpa.id IN ( '" + listEducationlevelId + "' ) "
+                + "       AND bioEduGpa.score > " + searchEmployeeCandidateParameter.getGpa()
+                + "     ) ");
+
+        //Filter by gender
         if (!StringUtils.equals("Any", searchEmployeeCandidateParameter.getGender())) {
             if (StringUtils.equals("Male", searchEmployeeCandidateParameter.getGender())) {
-            	stringBuffer.append("AND bioData.gender =  " + HRMConstant.GLOBAL_MALE);
+                stringBuffer.append("AND bioData.gender =  " + HRMConstant.GLOBAL_MALE);
             } else if (StringUtils.equals("Female", searchEmployeeCandidateParameter.getGender())) {
-            	stringBuffer.append("AND bioData.gender = " + HRMConstant.GLOBAL_FEMALE);
+                stringBuffer.append("AND bioData.gender = " + HRMConstant.GLOBAL_FEMALE);
             }
         }
-    	
+
         //filter by ages range
         if (!searchEmployeeCandidateParameter.getListAge().isEmpty()) {
-        	stringBuffer.append("AND umur(bioData.date_of_birth , NOW()) in ( '" + listAges + "' ) ");
+            stringBuffer.append("AND umur(bioData.date_of_birth , NOW()) in ( '" + listAges + "' ) ");
         }
-        
+
         //filter by jabatan range
         if (!searchEmployeeCandidateParameter.getListJabatanId().isEmpty()) {
-        	stringBuffer.append("AND jabatan.id IN ( '" + listJabatanId + "' ) ");
+            stringBuffer.append("AND jabatan.id IN ( '" + listJabatanId + "' ) ");
         }
-        
+
         //filter by religion range
         if (!searchEmployeeCandidateParameter.getListReligionId().isEmpty()) {
-        	stringBuffer.append("AND religion.id IN ( '" + listReligionId + "' ) ");
+            stringBuffer.append("AND religion.id IN ( '" + listReligionId + "' ) ");
         }
 
         //filter by joinDate (convert to total working in years) range
         if (searchEmployeeCandidateParameter.getListJoinDate().get(0) != 0) {
-        	stringBuffer.append(" AND DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(empData.join_date)), '%Y')+0 in ( '" + listJoinDate + "' ) ");
+            stringBuffer.append(" AND DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(empData.join_date)), '%Y')+0 in ( '" + listJoinDate + "' ) ");
         }
-        
-    	return stringBuffer.toString();
+
+        return stringBuffer.toString();
     }
 
     @Override
@@ -2219,121 +2224,120 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         return criteria.list();
     }
 
-	@Override
-	public List<EmpData> getAllEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter,int firstResult, int maxResults, Order orderable) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		doSearchEmployeeForRecruitAggrementNotice(searchParameter, criteria);
+    @Override
+    public List<EmpData> getAllEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchEmployeeForRecruitAggrementNotice(searchParameter, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
         return criteria.list();
-	}
+    }
 
-	@Override
-	public Long getTotalAllEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		doSearchEmployeeForRecruitAggrementNotice(searchParameter, criteria);
+    @Override
+    public Long getTotalAllEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        doSearchEmployeeForRecruitAggrementNotice(searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-	}
-	
-	public void doSearchEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter, Criteria criteria){
-		criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
-		criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
-		
+    }
+
+    public void doSearchEmployeeForRecruitAggrementNotice(RecruitAgreementNoticeSearchParameter searchParameter, Criteria criteria) {
+        criteria.createAlias("bioData", "bioData", JoinType.INNER_JOIN);
+        criteria.createAlias("jabatanByJabatanId", "jabatanByJabatanId", JoinType.INNER_JOIN);
+
         if (searchParameter.getEmpDataName() != null) {
             criteria.add(Restrictions.ilike("bioData.combineName", searchParameter.getEmpDataName().toLowerCase(), MatchMode.ANYWHERE));
         }
-	}
-	
-	public List<RecruitAgreementNoticeViewModel> getAllEmployeeForRecruitAggrementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter, int firstResult, int maxResults, Order orderable){
-		 final StringBuilder query = new StringBuilder("SELECT emp.id as employeeId, bio.id as bioDataId, bio.first_name as firstName, bio.last_name as lastName, jabatan.name as jabatanName, pangkat.pangkat_name as pangkatName, bio.date_of_birth as birthOfDate,");
-	        query.append(" (SELECT pangkat2.pangkat_name FROM pangkat pangkat2");
-			query.append(" WHERE pangkat2.level < pangkat.level ORDER BY LEVEL DESC LIMIT 1) as jabatanDituju,");
-			query.append(" pangkat.level,");
-			query.append(" (SELECT el.name FROM education_level el ");
-			query.append(" INNER JOIN bio_education_history beh ON el.id = beh.pendidikan_level_id");
-			query.append(" INNER JOIN bio_data bio2 ON bio2.id = beh.biodata_id");
-			query.append(" WHERE beh.biodata_id = bio.id ORDER by el.name DESC LIMIT 1 ) as lastEducationLevel");
-			query.append(" FROM bio_data bio ");
-			query.append(" LEFT JOIN emp_data emp ON bio.id = emp.bio_data_id");
-/*			query.append(" INNER JOIN bio_education_history beh ON beh.biodata_id = bio.id");
-			query.append(" INNER JOIN education_level el ON el.id = beh.pendidikan_level_id");*/
-			query.append(" LEFT JOIN jabatan jabatan ON emp.jabatan_id = jabatan.id");
-			query.append(" LEFT JOIN golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
-			query.append(" LEFT JOIN pangkat pangkat ON goljab.pangkat_id = pangkat.id");
-			//query for action searching
-			doSearchEmployeeForRecruitAgreementNoticeWithNativeQuery(searchParameter, query);
-			//order query base on orderable
-			query.append(" ORDER BY ");
-			  
-			if (StringUtils.equals("firstName", orderable.getPropertyName())) {
-	            query.append("firstName ");
-	        }else if (StringUtils.equals("jabatanName", orderable.getPropertyName())) {
-	            query.append("jabatanName ");
-	        }else if (StringUtils.equals("jabatanDituju", orderable.getPropertyName())) {
-	            query.append("jabatanDituju ");
-	        }else if (StringUtils.equals("lastEducationLevel", orderable.getPropertyName())) {
-	            query.append("lastEducationLevel ");
-	        }else if (StringUtils.equals("birthOfDate", orderable.getPropertyName())) {
-	            query.append("birthOfDate ");
-	        }
+    }
 
-	        query.append(orderable.isAscending() ? " ASC " : " DESC ");
-	        
-			//Limit query based on paging parameter
-	        query.append(" LIMIT ").append(firstResult).append(",").append(maxResults).append(" ");
-			return getCurrentSession().createSQLQuery(query.toString())
-	                .setResultTransformer(Transformers.aliasToBean(RecruitAgreementNoticeViewModel.class))
-	                .list();
-	}
-	
-    public Long getTotalAllEmployeeForRecruitAggrementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter){
-    	
-    	final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT emp.id as employeeId, bio.id as bioDataId, bio.first_name as firstName, bio.last_name as lastName, jabatan.name as jabatanName, pangkat.pangkat_name as pangkatName, ");
+    public List<RecruitAgreementNoticeViewModel> getAllEmployeeForRecruitAggrementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) {
+        final StringBuilder query = new StringBuilder("SELECT emp.id as employeeId, bio.id as bioDataId, bio.first_name as firstName, bio.last_name as lastName, jabatan.name as jabatanName, pangkat.pangkat_name as pangkatName, bio.date_of_birth as birthOfDate,");
         query.append(" (SELECT pangkat2.pangkat_name FROM pangkat pangkat2");
-		query.append(" WHERE pangkat2.level < pangkat.level ORDER BY LEVEL DESC LIMIT 1) as jabatanDituju,");
-		query.append(" pangkat.level,");
-		query.append(" (SELECT pangkat2.level FROM pangkat pangkat2");
-		query.append(" WHERE pangkat2.level < pangkat.level ORDER BY LEVEL DESC LIMIT 1) as levelDituju,");
-		query.append(" (SELECT el.name FROM education_level el ");
-		query.append(" INNER JOIN bio_education_history beh ON el.id = beh.pendidikan_level_id");
-		query.append(" INNER JOIN bio_data bio2 ON bio2.id = beh.biodata_id");
-		query.append(" WHERE beh.biodata_id = bio.id ORDER by el.name DESC LIMIT 1 ) as lastEducationLevel");		
-		query.append(" FROM bio_data bio ");
-		query.append(" LEFT JOIN emp_data emp ON bio.id = emp.bio_data_id");
-		query.append(" LEFT JOIN jabatan jabatan ON emp.jabatan_id = jabatan.id");
-		query.append(" LEFT JOIN golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
-		query.append(" LEFT JOIN pangkat pangkat ON goljab.pangkat_id = pangkat.id");
-		//query for action searching
-		doSearchEmployeeForRecruitAgreementNoticeWithNativeQuery(searchParameter, query);
-		query.append(" ) as totalRows");
-		return Long.valueOf(getCurrentSession().createSQLQuery(query.toString()).uniqueResult().toString());
+        query.append(" WHERE pangkat2.level < pangkat.level ORDER BY LEVEL DESC LIMIT 1) as jabatanDituju,");
+        query.append(" pangkat.level,");
+        query.append(" (SELECT el.name FROM education_level el ");
+        query.append(" INNER JOIN bio_education_history beh ON el.id = beh.pendidikan_level_id");
+        query.append(" INNER JOIN bio_data bio2 ON bio2.id = beh.biodata_id");
+        query.append(" WHERE beh.biodata_id = bio.id ORDER by el.name DESC LIMIT 1 ) as lastEducationLevel");
+        query.append(" FROM bio_data bio ");
+        query.append(" LEFT JOIN emp_data emp ON bio.id = emp.bio_data_id");
+        /*			query.append(" INNER JOIN bio_education_history beh ON beh.biodata_id = bio.id");
+			query.append(" INNER JOIN education_level el ON el.id = beh.pendidikan_level_id");*/
+        query.append(" LEFT JOIN jabatan jabatan ON emp.jabatan_id = jabatan.id");
+        query.append(" LEFT JOIN golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
+        query.append(" LEFT JOIN pangkat pangkat ON goljab.pangkat_id = pangkat.id");
+        //query for action searching
+        doSearchEmployeeForRecruitAgreementNoticeWithNativeQuery(searchParameter, query);
+        //order query base on orderable
+        query.append(" ORDER BY ");
+
+        if (StringUtils.equals("firstName", orderable.getPropertyName())) {
+            query.append("firstName ");
+        } else if (StringUtils.equals("jabatanName", orderable.getPropertyName())) {
+            query.append("jabatanName ");
+        } else if (StringUtils.equals("jabatanDituju", orderable.getPropertyName())) {
+            query.append("jabatanDituju ");
+        } else if (StringUtils.equals("lastEducationLevel", orderable.getPropertyName())) {
+            query.append("lastEducationLevel ");
+        } else if (StringUtils.equals("birthOfDate", orderable.getPropertyName())) {
+            query.append("birthOfDate ");
+        }
+
+        query.append(orderable.isAscending() ? " ASC " : " DESC ");
+
+        //Limit query based on paging parameter
+        query.append(" LIMIT ").append(firstResult).append(",").append(maxResults).append(" ");
+        return getCurrentSession().createSQLQuery(query.toString())
+                .setResultTransformer(Transformers.aliasToBean(RecruitAgreementNoticeViewModel.class))
+                .list();
     }
 
-    public void doSearchEmployeeForRecruitAgreementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter, StringBuilder query){
-    	/*StringBuilder query = new StringBuilder();*/
-    	//query for action searching
-		if(searchParameter.getEmpDataName() != null){
-			query.append(" WHERE bio.first_name like '%" + searchParameter.getEmpDataName() + "%'");
-		}else if(searchParameter.getJabatan() != null){
-			query.append(" WHERE jabatan.name like '%" + searchParameter.getJabatan() + "%'");
-		}
+    public Long getTotalAllEmployeeForRecruitAggrementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter) {
+
+        final StringBuilder query = new StringBuilder("SELECT count(*) FROM (SELECT emp.id as employeeId, bio.id as bioDataId, bio.first_name as firstName, bio.last_name as lastName, jabatan.name as jabatanName, pangkat.pangkat_name as pangkatName, ");
+        query.append(" (SELECT pangkat2.pangkat_name FROM pangkat pangkat2");
+        query.append(" WHERE pangkat2.level < pangkat.level ORDER BY LEVEL DESC LIMIT 1) as jabatanDituju,");
+        query.append(" pangkat.level,");
+        query.append(" (SELECT pangkat2.level FROM pangkat pangkat2");
+        query.append(" WHERE pangkat2.level < pangkat.level ORDER BY LEVEL DESC LIMIT 1) as levelDituju,");
+        query.append(" (SELECT el.name FROM education_level el ");
+        query.append(" INNER JOIN bio_education_history beh ON el.id = beh.pendidikan_level_id");
+        query.append(" INNER JOIN bio_data bio2 ON bio2.id = beh.biodata_id");
+        query.append(" WHERE beh.biodata_id = bio.id ORDER by el.name DESC LIMIT 1 ) as lastEducationLevel");
+        query.append(" FROM bio_data bio ");
+        query.append(" LEFT JOIN emp_data emp ON bio.id = emp.bio_data_id");
+        query.append(" LEFT JOIN jabatan jabatan ON emp.jabatan_id = jabatan.id");
+        query.append(" LEFT JOIN golongan_jabatan goljab ON goljab.id = emp.gol_jab_id");
+        query.append(" LEFT JOIN pangkat pangkat ON goljab.pangkat_id = pangkat.id");
+        //query for action searching
+        doSearchEmployeeForRecruitAgreementNoticeWithNativeQuery(searchParameter, query);
+        query.append(" ) as totalRows");
+        return Long.valueOf(getCurrentSession().createSQLQuery(query.toString()).uniqueResult().toString());
     }
 
-	@Override
-	public List<EmpData> getListEmpDataWhichNotExistOnFingerEmpMatch() {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		
-		DetachedCriteria fingerMatchEmpCriteria = DetachedCriteria.forClass(FingerMatchEmp.class)
-				.createAlias("empData", "empData",JoinType.INNER_JOIN)
-				.setProjection(Projections.property("empData.id"));
-		
-		String[] propertyEmpDataId = {"id"};
-		criteria.add(Subqueries.propertiesNotIn(propertyEmpDataId, fingerMatchEmpCriteria))
-			.setFetchMode("bioData", FetchMode.JOIN)
-			.setFetchMode("jabatanByJabatanId", FetchMode.JOIN);
-		return criteria.list();
-	}
+    public void doSearchEmployeeForRecruitAgreementNoticeWithNativeQuery(RecruitAgreementNoticeSearchParameter searchParameter, StringBuilder query) {
+        /*StringBuilder query = new StringBuilder();*/
+        //query for action searching
+        if (searchParameter.getEmpDataName() != null) {
+            query.append(" WHERE bio.first_name like '%" + searchParameter.getEmpDataName() + "%'");
+        } else if (searchParameter.getJabatan() != null) {
+            query.append(" WHERE jabatan.name like '%" + searchParameter.getJabatan() + "%'");
+        }
+    }
 
-    
+    @Override
+    public List<EmpData> getListEmpDataWhichNotExistOnFingerEmpMatch() {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+
+        DetachedCriteria fingerMatchEmpCriteria = DetachedCriteria.forClass(FingerMatchEmp.class)
+                .createAlias("empData", "empData", JoinType.INNER_JOIN)
+                .setProjection(Projections.property("empData.id"));
+
+        String[] propertyEmpDataId = {"id"};
+        criteria.add(Subqueries.propertiesNotIn(propertyEmpDataId, fingerMatchEmpCriteria))
+                .setFetchMode("bioData", FetchMode.JOIN)
+                .setFetchMode("jabatanByJabatanId", FetchMode.JOIN);
+        return criteria.list();
+    }
+
 }
