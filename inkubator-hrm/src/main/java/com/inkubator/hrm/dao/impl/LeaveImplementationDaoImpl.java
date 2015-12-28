@@ -73,11 +73,13 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
             criteria.add(Restrictions.like("leave.name", parameter.getLeave(), MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotEmpty(parameter.getEmployee())) {
-            Disjunction disjunction = Restrictions.disjunction();
+            /*Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("empData.nik", parameter.getEmployee(), MatchMode.ANYWHERE));
             disjunction.add(Restrictions.like("bioData.firstName", parameter.getEmployee(), MatchMode.ANYWHERE));
             disjunction.add(Restrictions.like("bioData.lastName", parameter.getEmployee(), MatchMode.ANYWHERE));
-            criteria.add(disjunction);
+            criteria.add(disjunction);*/
+            
+            criteria.add(Restrictions.ilike("bioData.combineName", parameter.getEmployee().toLowerCase(), MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotEmpty(parameter.getNumberFilling())) {
             criteria.add(Restrictions.like("numberFilling", parameter.getNumberFilling(), MatchMode.ANYWHERE));

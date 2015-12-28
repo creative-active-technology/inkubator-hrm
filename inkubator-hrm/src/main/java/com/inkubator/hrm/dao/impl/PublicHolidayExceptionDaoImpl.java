@@ -53,8 +53,10 @@ public class PublicHolidayExceptionDaoImpl extends IDAOImpl<PublicHolidayExcepti
         criteria.createAlias("publicHoliday.leave", "leave", JoinType.INNER_JOIN);
         
         if (parameter.getEmpDataName()!= null) {
-            criteria.add(Restrictions.or(Restrictions.like("bioData.firstName", parameter.getEmpDataName(), MatchMode.ANYWHERE),
-                    Restrictions.like("bioData.lastName", parameter.getEmpDataName(), MatchMode.ANYWHERE)));
+            /*criteria.add(Restrictions.or(Restrictions.like("bioData.firstName", parameter.getEmpDataName(), MatchMode.ANYWHERE),
+                    Restrictions.like("bioData.lastName", parameter.getEmpDataName(), MatchMode.ANYWHERE)));*/
+            
+            criteria.add(Restrictions.ilike("bioData.combineName", parameter.getEmpDataName().toLowerCase(), MatchMode.ANYWHERE));
             criteria.add(Restrictions.isNotNull("empData.nik"));
         }
         
