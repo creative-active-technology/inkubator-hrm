@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/dialog_layout.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlPoupId" globalOnly="true" showDetail="true"/>                
+                <h:form id="formPopupId">
+                	<p:focus context="formPopupId"/>
+                    <h:panelGrid  columns="2">
+                        <p:graphicImage library="images" name="bank_ico.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="#{appmsg['competency_unit.form_competency_indicator']}" styleClass="header_big" />
+                                <p:outputLabel value="#{appmsg['competency_unit.competency_data_from_setting']}" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                    </h:panelGrid> 
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                        <p:row>
+                            <p:column style="width: 39%">
+                                <p:outputLabel value="#{appmsg['competency_unit.type_or_competency_group']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 60%">
+                            	<p:outputLabel value="#{competencyUnitIndicatorFormController.model.competencyTypeName} / #{competencyUnitIndicatorFormController.model.competencyGroupName}" />                              
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 39%">
+                                <p:outputLabel value="#{appmsg['competency_unit.name']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 60%">
+                            	<p:outputLabel value="#{competencyUnitIndicatorFormController.model.competencyUnitName}"/>                              
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 39%">
+                                <p:outputLabel for="indicator" value="#{appmsg['competency_unit.competency_indicator']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="indicator" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 60%">
+                            	<p:inputTextarea id="indicator" rows="5" cols="37" counter="counter" maxlength="225" value="#{competencyUnitIndicatorFormController.model.indicator}" 
+                                                 style="width: 250px; height: 40px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="true"
+                                                 label="#{appmsg['competency_unit.competency_indicator']}" title="#{appmsg['competency_unit.competency_indicator']}" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="indicator"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 39%">
+                                <p:outputLabel  value="" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel  value=""  styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 60%" >
+                                <h:outputText id="counter" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width: 39%">
+                                <p:outputLabel for="levelIndex" value="#{appmsg['competency_unit.index_level']}" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column style="width: 1%">
+                                <h:outputLabel for="levelIndex" value=":" styleClass="label_hrm"/>
+                            </p:column>
+                            <p:column  style="width: 60%">
+                                 <p:spinner id="levelIndex" value="#{competencyUnitIndicatorFormController.model.levelIndex}" styleClass="isitext_hrm" 
+	                                		required="true" stepFactor="1" size="4" min="0" max="30"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:message for="levelIndex"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:separator style="margin-top: 10px;margin-bottom: 10px"/>
+                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formPopupId,:growlPoupId"
+                                         action="#{competencyUnitIndicatorFormController.doSave()}" styleClass="isitext_hrm"
+                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formPopupId"
+                                         icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                            <p:resetInput target="formPopupId" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

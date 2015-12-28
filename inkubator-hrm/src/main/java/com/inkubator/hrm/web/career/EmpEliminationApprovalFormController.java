@@ -64,18 +64,7 @@ public class EmpEliminationApprovalFormController extends BaseController {
             model = new EmpEliminationModel();
             isWaitingApproval = selectedApprovalActivity.getApprovalStatus() == HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL;
             isApprover = StringUtils.equals(UserInfoUtil.getUserName(), selectedApprovalActivity.getApprovedBy());
-            /*Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
-            CareerEmpElimination selectedCareerEmpElimination = gson.fromJson(selectedApprovalActivity.getPendingData(), CareerEmpElimination.class);
-            EmpData empData = empDataService.getByIdWithDetail(selectedCareerEmpElimination.getEmpData().getId());
-            CareerTerminationType careerTerminationType = careerTerminationTypeService.getEntiyByPK(selectedCareerEmpElimination.getCareerTerminationType().getId());
-            model = empDataService.generateEmpEliminationModelByEmpDataId(empData.getId());
-            model.setEmpData(empData);
-            model.setJabatanName(empData.getJabatanByJabatanId().getName());
-            model.setTerminationTypeId(selectedCareerEmpElimination.getCareerTerminationType().getId());
-            model.setTerminationTypeName(careerTerminationType.getName());
-            model.setReason(selectedCareerEmpElimination.getReason());
-            model.setSeparationPay(selectedCareerEmpElimination.getSeparationPay());
-            model.setRemainSeparationPay(selectedCareerEmpElimination.getSeparationPay() - selectedCareerEmpElimination.getPendingLoan());*/
+            
             generateEmpEliminationModel();
             
         } catch (Exception ex) {
@@ -97,6 +86,7 @@ public class EmpEliminationApprovalFormController extends BaseController {
          model.setReason(selectedCareerEmpElimination.getReason());
          model.setSeparationPay(selectedCareerEmpElimination.getSeparationPay());
          model.setRemainSeparationPay(selectedCareerEmpElimination.getSeparationPay() - selectedCareerEmpElimination.getPendingLoan());
+         model.setEffectiveDate(selectedCareerEmpElimination.getEffectiveDate());
     }
 
     @PreDestroy

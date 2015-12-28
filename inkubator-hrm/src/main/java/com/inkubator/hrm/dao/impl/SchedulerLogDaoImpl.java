@@ -5,25 +5,24 @@
  */
 package com.inkubator.hrm.dao.impl;
 
-import com.inkubator.common.CommonUtilConstant;
-import com.inkubator.common.util.DateTimeUtil;
+import java.util.Date;
 import java.util.List;
 
-import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.dao.SchedulerLogDao;
-import com.inkubator.hrm.entity.LoginHistory;
-import com.inkubator.hrm.entity.SchedulerLog;
-import com.inkubator.hrm.web.search.SchedulerLogSearchParameter;
-import java.util.Date;
-
 import org.hibernate.Criteria;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
+
+import com.inkubator.common.CommonUtilConstant;
+import com.inkubator.common.util.DateTimeUtil;
+import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.dao.SchedulerLogDao;
+import com.inkubator.hrm.entity.SchedulerLog;
+import com.inkubator.hrm.util.StringUtils;
+import com.inkubator.hrm.web.search.SchedulerLogSearchParameter;
 
 /**
  *
@@ -57,7 +56,7 @@ public class SchedulerLogDaoImpl extends IDAOImpl<SchedulerLog> implements Sched
 
     private void doSearchByParam(SchedulerLogSearchParameter searchParameter, Criteria criteria) {
         criteria.createAlias("schedulerConfig", "schedulerConfig", JoinType.INNER_JOIN);
-        if (searchParameter.getName() != null) {
+        if (StringUtils.isNotEmpty(searchParameter.getName())) {
             criteria.add(Restrictions.eq("schedulerConfig.name", searchParameter.getName()));
         }
         criteria.add(Restrictions.isNotNull("id"));

@@ -71,11 +71,9 @@ public class EmpPersonAchievementDaoImpl extends IDAOImpl<EmpPersonAchievement> 
 
     private void doSearchEmpPersonAchievementByParam(EmpPersonAchievementSearchParameter searchParameter, Criteria criteria) {
     	criteria.createAlias("careerAwardType", "careerAwardType", JoinType.INNER_JOIN);
-        if (searchParameter.getAchievementName() != null) {
-            criteria.add(Restrictions.like("achievementName", searchParameter.getAchievementName(), MatchMode.START));
+        if (searchParameter.getCareerAwardTypeName() != null) {
+            criteria.add(Restrictions.like("careerAwardType.name", searchParameter.getCareerAwardTypeName(), MatchMode.START));
         }
-        //criteria.createAlias("empData", "ed", JoinType.INNER_JOIN);
-        //criteria.createAlias("ed.bioData", "bd", JoinType.INNER_JOIN);
         if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.START));

@@ -3,6 +3,10 @@ package com.inkubator.hrm.web.workingtime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.TreeMap;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -12,35 +16,28 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hamcrest.Matchers;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
-import ch.lambdaj.Lambda;
 import com.inkubator.common.util.DateTimeUtil;
-
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.Disease;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.Hospital;
-import com.inkubator.hrm.entity.PermitClassification;
-import com.inkubator.hrm.entity.PermitDistribution;
 import com.inkubator.hrm.entity.MedicalCare;
+import com.inkubator.hrm.entity.PermitClassification;
+import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.DiseaseService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.HospitalService;
-import com.inkubator.hrm.service.PermitDistributionService;
 import com.inkubator.hrm.service.MedicalCareService;
+import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.util.UploadFilesUtil;
 import com.inkubator.hrm.web.model.MedicalCareModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.TreeMap;
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -53,6 +50,10 @@ public class MedicalCareFormController extends BaseController {
     private MedicalCareModel model;
     private Boolean isUpdate;
     private List<PermitClassification> permits;
+    private Date minDate;
+    private Date maxDate;
+    private Boolean isUseHospital;
+    
     @ManagedProperty(value = "#{medicalCareService}")
     private MedicalCareService medicalCareService;
     @ManagedProperty(value = "#{empDataService}")
@@ -64,7 +65,8 @@ public class MedicalCareFormController extends BaseController {
     private UploadedFile documentFile;
     @ManagedProperty(value = "#{uploadFilesUtil}")
     private UploadFilesUtil uploadFilesUtil;
-    private Boolean disabledHospital;
+    @ManagedProperty(value = "#{wtPeriodeService}")
+    private WtPeriodeService wtPeriodeService;
 
     private List<Hospital> hospitals = new ArrayList<Hospital>();
     private Map<String, Long> dropDownHospital = new TreeMap<String, Long>();
@@ -118,7 +120,7 @@ public class MedicalCareFormController extends BaseController {
         try {
             isUpdate = Boolean.FALSE;
             model = new MedicalCareModel();
-            disabledHospital = Boolean.FALSE;
+            isUseHospital = Boolean.FALSE;
 
             String param = FacesUtil.getRequestParameter("execution");
             if (StringUtils.isNotEmpty(param)) {
@@ -129,6 +131,13 @@ public class MedicalCareFormController extends BaseController {
 
                 }
             }
+            
+            //pembatasan waktu input di periode waktu kerja hanya ketika tambah data, bukan update data
+            WtPeriode workingTimePeriod =  wtPeriodeService.getEntityByAbsentTypeActive();
+            if (!isUpdate) {
+				minDate = workingTimePeriod.getFromPeriode();
+				maxDate = workingTimePeriod.getUntilPeriode();
+			}
 
             doSelectOneMenuHospital();
         } catch (Exception e) {
@@ -143,11 +152,14 @@ public class MedicalCareFormController extends BaseController {
         permits = null;
         medicalCareService = null;
         documentFile = null;
-        disabledHospital = Boolean.FALSE;
+        isUseHospital = null;
         hospitals = null;
         dropDownHospital = null;
         dropDownDisease = null;
         diseases = null;
+        minDate = null;
+        maxDate = null;
+        wtPeriodeService = null;
     }
 
     public MedicalCareModel getModel() {
@@ -158,15 +170,15 @@ public class MedicalCareFormController extends BaseController {
         this.model = model;
     }
 
-    public Boolean getDisabledHospital() {
-        return disabledHospital;
-    }
+	public Boolean getIsUseHospital() {
+		return isUseHospital;
+	}
 
-    public void setDisabledHospital(Boolean disabledHospital) {
-        this.disabledHospital = disabledHospital;
-    }
+	public void setIsUseHospital(Boolean isUseHospital) {
+		this.isUseHospital = isUseHospital;
+	}
 
-    public Boolean getIsUpdate() {
+	public Boolean getIsUpdate() {
         return isUpdate;
     }
 
@@ -181,8 +193,32 @@ public class MedicalCareFormController extends BaseController {
     public void setPermits(List<PermitClassification> permits) {
         this.permits = permits;
     }
+    
+	public Date getMinDate() {
+		return minDate;
+	}
 
-    public void setMedicalCareService(
+	public void setMinDate(Date minDate) {
+		this.minDate = minDate;
+	}
+
+	public Date getMaxDate() {
+		return maxDate;
+	}
+
+	public void setMaxDate(Date maxDate) {
+		this.maxDate = maxDate;
+	}
+
+	public WtPeriodeService getWtPeriodeService() {
+		return wtPeriodeService;
+	}
+
+	public void setWtPeriodeService(WtPeriodeService wtPeriodeService) {
+		this.wtPeriodeService = wtPeriodeService;
+	}
+
+	public void setMedicalCareService(
             MedicalCareService medicalCareService) {
         this.medicalCareService = medicalCareService;
     }
@@ -262,9 +298,7 @@ public class MedicalCareFormController extends BaseController {
         medicalCare.setEmpData(model.getEmpDataByEmpDataId());
         medicalCare.setTemporaryActing(model.getEmpDataByTemporaryActingId());
 //        medicalCare.setHospital(model.getHospitalId());
-        if (model.getHospital() != null) {
-            medicalCare.setHospital(new Hospital(model.getHospital()));
-        }
+        medicalCare.setHospital(isUseHospital ? new Hospital(model.getHospital()) : null);
         medicalCare.setDocterName(model.getDocterName());
         medicalCare.setStartDate(model.getStartDate());
         medicalCare.setEndDate(model.getEndDate());
@@ -285,16 +319,16 @@ public class MedicalCareFormController extends BaseController {
         model.setEmpDataByTemporaryActingId(medicalCare.getTemporaryActing());
         model.setStartDate(medicalCare.getStartDate());
         model.setEndDate(medicalCare.getEndDate());
-        model.setHospitalId(medicalCare.getHospital());
-        model.setHospital(medicalCare.getHospital().getId());
+        if(medicalCare.getHospital() != null){
+        	model.setHospitalId(medicalCare.getHospital());
+            model.setHospital(medicalCare.getHospital().getId());
+        }
+        isUseHospital = medicalCare.getHospital() != null;
         model.setMaterialJobsAbandoned(medicalCare.getMaterialJobsAbandoned());
         model.setRequestDate(medicalCare.getRequestDate());
         model.setTotalDays(medicalCare.getTotalDays());
         model.setUploadPath(medicalCare.getUploadPath());
-
-        if (StringUtils.isNotEmpty(String.valueOf(model.getHospital()))) {
-            disabledHospital = Boolean.TRUE;
-        }
+        
     }
 
     public String doBack() {
@@ -393,10 +427,6 @@ public class MedicalCareFormController extends BaseController {
         } catch (Exception e) {
             LOGGER.error("Error", e);
         }
-    }
-
-    public void onChangeHospitalCheckbox() {
-
     }
 
     public void onChangeStartOrEndDate() {

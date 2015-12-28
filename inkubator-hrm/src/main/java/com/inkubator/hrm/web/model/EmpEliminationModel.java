@@ -2,6 +2,7 @@ package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.inkubator.hrm.entity.EmpData;
@@ -29,6 +30,7 @@ public class EmpEliminationModel implements Serializable {
     private Double totalOutstandingLoan;
     private Double separationPay;
     private Double remainSeparationPay;
+    private Date effectiveDate;
     private List<LogMonthEndPayroll> listMonthEndPayrollAll = new ArrayList<LogMonthEndPayroll>();
     private List<LogMonthEndPayroll> listMonthEndPayrollSubsidi = new ArrayList<LogMonthEndPayroll>();
     private List<LogMonthEndPayroll> listMonthEndPayrollTunjangan = new ArrayList<LogMonthEndPayroll>();
@@ -162,5 +164,12 @@ public class EmpEliminationModel implements Serializable {
 	public void setTerminationTypeName(String terminationTypeName) {
 		this.terminationTypeName = terminationTypeName;
 	}
+	public Date getEffectiveDate() {
+		return effectiveDate;
+	}
+	public void setEffectiveDate(Date effectiveDate) {
+		this.effectiveDate = effectiveDate;
+	}
+	
 	
 }
