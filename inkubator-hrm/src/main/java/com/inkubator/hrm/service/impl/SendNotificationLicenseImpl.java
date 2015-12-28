@@ -58,7 +58,7 @@ public class SendNotificationLicenseImpl extends IServiceImpl implements SendNot
         Map maptoSend = new HashMap();
         maptoSend.put("sendDate", new Date());
         maptoSend.put("ipAddress", ip.getHostAddress());
-        maptoSend.put("serverName", ip.getHostAddress());
+        maptoSend.put("serverName", ip.getHostName());
         maptoSend.put("appName", WebCoreConstant.IIT_OPTIMAHR);
         maptoSend.put("startDate", liscenseModel.getStartDate());
         maptoSend.put("endDate", liscenseModel.getEndDate());
