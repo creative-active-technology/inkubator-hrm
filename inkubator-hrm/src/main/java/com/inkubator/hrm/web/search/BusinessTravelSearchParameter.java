@@ -15,6 +15,7 @@ public class BusinessTravelSearchParameter extends SearchParameter {
     private String businessTravelNumber;
     private String employee;
     private String destination;
+    private String travelTypeName;
     
 	
     public String getUserId() {
@@ -70,6 +71,19 @@ public class BusinessTravelSearchParameter extends SearchParameter {
 
 	public void setDestination(String destination) {
 		this.destination = destination;
+	}
+
+	public String getTravelTypeName() {
+		if (StringUtils.equalsIgnoreCase(getKeyParam(), "travelTypeName")) {
+			travelTypeName = getParameter();
+        } else {
+        	travelTypeName = null;
+        }
+		return travelTypeName;
+	}
+
+	public void setTravelTypeName(String travelTypeName) {
+		this.travelTypeName = travelTypeName;
 	}
 	
 }
