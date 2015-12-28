@@ -38,11 +38,10 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" title="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:selectOneMenu value="#{businessTravelViewController.searchParameter.keyParam}" style="margin-right: 3px" >
+                                    <p:selectOneMenu value="#{businessTravelViewController.searchParameter.keyParam}" style="margin-right: 3px;width: 150px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <!-- <f:selectItem itemLabel="#{appmsg['businesstravel.business_travel_number']}" itemValue="businessTravelNumber"/> -->
                                         <f:selectItem itemLabel="#{appmsg['businesstravel.employee']}" itemValue="employee"/>
-                                        <!-- <f:selectItem itemLabel="#{appmsg['businesstravel.destination']}" itemValue="destination"/> -->
+                                        <f:selectItem itemLabel="#{appmsg['businesstravel.travel_type']}" itemValue="travelTypeName"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{businessTravelViewController.searchParameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{businessTravelViewController.doSearch()}" update="tableBusinessTravelId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -73,7 +72,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column style="width: 20%">
+                            <p:column style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['businesstravel.business_travel_number']}"/>
                                 </f:facet>
@@ -85,13 +84,19 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{businessTravelData.empNik} #{businessTravelData.empName}"/>
                             </p:column> 
-                            <p:column style="width: 20%">
+                            <p:column style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['businesstravel.destination']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{businessTravelData.destination}"/>
                             </p:column>
-                            <p:column style="width: 20%">
+                            <p:column style="width: 15%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['businesstravel.travel_type']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{businessTravelData.travelTypeName}"/>
+                            </p:column>
+                            <p:column style="width: 15%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.status']}"/>
                                 </f:facet>

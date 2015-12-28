@@ -704,7 +704,7 @@ public class BusinessTravelServiceImpl extends BaseApprovalServiceImpl implement
 				/** set value from json */
 				model.setDestination(entity.getDestination());
 				model.setBusinessTravelNo(entity.getBusinessTravelNo());	
-				
+				model.setTravelTypeName(entity.getTravelType().getName());
 			} 
 		}
 		
