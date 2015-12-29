@@ -1900,12 +1900,6 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public List<EmpData> getAllDataNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter, int firstResult, int maxResult, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        /**
-         * automatically get relations of jabatanByJabatanId, department,
-         * company don't create alias for that entity, or will get error :
-         * duplicate association path
-         */
-        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
         if (parameter.getNik() != null) {
             criteria.add(Restrictions.like("nik", parameter.getNik(), MatchMode.ANYWHERE));
@@ -1913,10 +1907,14 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
         criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
         if (parameter.getName() != null) {
 //            criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.ilike("bio.combineName", parameter.getName().toLowerCase(), MatchMode.ANYWHERE));
+        	Disjunction orCondition = Restrictions.disjunction();
+        	orCondition.add(Restrictions.ilike("bio.combineName", parameter.getName().toLowerCase(), MatchMode.ANYWHERE));
+        	orCondition.add(Restrictions.like("nik", parameter.getName(), MatchMode.ANYWHERE));
+            criteria.add(orCondition);
         }
 
-        String sorting = "bio." + order;
+        //String sorting = "bio." + order;
+        criteria.addOrder(order);
 //        if (order==null) {
 //            criteria.addOrder(order);
 //        } else {
@@ -1969,12 +1967,7 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     @Override
     public Long getTotalNotTerminatePaging(TempAttendanceRealizationSearchParameter parameter) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        /**
-         * automatically get relations of jabatanByJabatanId, department,
-         * company don't create alias for that entity, or will get error :
-         * duplicate association path
-         */
-        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
         if (parameter.getNik() != null) {
             criteria.add(Restrictions.like("nik", parameter.getNik(), MatchMode.ANYWHERE));
@@ -1982,7 +1975,10 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
 
         if (parameter.getName() != null) {
             criteria.createAlias("bioData", "bio", JoinType.INNER_JOIN);
-            criteria.add(Restrictions.ilike("bio.combineName", parameter.getName().toLowerCase(), MatchMode.ANYWHERE));
+            Disjunction orCondition = Restrictions.disjunction();
+        	orCondition.add(Restrictions.ilike("bio.combineName", parameter.getName().toLowerCase(), MatchMode.ANYWHERE));
+        	orCondition.add(Restrictions.like("nik", parameter.getName(), MatchMode.ANYWHERE));
+            criteria.add(orCondition);
         }
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
