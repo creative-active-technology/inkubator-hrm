@@ -73,7 +73,7 @@ public class LeaveDistributionDaoImpl extends IDAOImpl<LeaveDistribution> implem
             criteria.add(Restrictions.ilike("bioData.combineName", searchParameter.getEmpData().toLowerCase(), MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotEmpty(searchParameter.getLeave())) {
-            criteria.add(Restrictions.like("leave.name", searchParameter.getLeave(), MatchMode.START));
+            criteria.add(Restrictions.like("leave.name", searchParameter.getLeave(), MatchMode.ANYWHERE));
         }
         if (searchParameter.getNik() != null) {
             criteria.add(Restrictions.like("empData.nik", searchParameter.getNik(), MatchMode.ANYWHERE));
