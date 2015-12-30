@@ -38,6 +38,7 @@
                                         <f:selectItem itemLabel="#{appmsg['global.nik']}" itemValue="nik"/>
                                         <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="empData"/>
                                         <f:selectItem itemLabel="#{appmsg['permitbalance.permit_type']}" itemValue="permitName"/>
+                                        <f:selectItem itemLabel="#{appmsg['jabatan.jabatan']}" itemValue="jabatanName"/>
                                     </p:selectOneMenu>
                                     <p:inputText id="searchId" value="#{neracaPermitViewController.searchParameter.parameter}" style="width: 250px" styleClass="label_button"/>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{neracaPermitViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
@@ -89,7 +90,7 @@
                             </p:column>
                             <p:column sortBy="#{data.jabatanByJabatanId.name}" style="width: 30%">
                                 <f:facet name="header">
-                                    <h:outputText value="Jabatan"/>
+                                    <h:outputText value="#{appmsg['jabatan.jabatan']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.permitDistribution.empData.jabatanByJabatanId.name}" />
                             </p:column>

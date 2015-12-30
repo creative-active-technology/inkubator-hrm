@@ -16,6 +16,7 @@ public class NeracaPermitSearchParameter extends SearchParameter{
     private String empData;
     private String permit;
     private String nik;
+    private String jabatanName;
 
     public String getEmpData() {
         if (StringUtils.equalsIgnoreCase(getKeyParam(), "empData")) {
@@ -56,6 +57,20 @@ public class NeracaPermitSearchParameter extends SearchParameter{
         this.nik = nik;
     }
 
+	public String getJabatanName() {
+		if (StringUtils.equalsIgnoreCase(getKeyParam(), "jabatanName")) {
+			jabatanName = getParameter();
+        } else {
+        	jabatanName = null;
+        }
+		return jabatanName;
+	}
+
+	public void setJabatanName(String jabatanName) {
+		this.jabatanName = jabatanName;
+	}
+
+    
     
     
     
