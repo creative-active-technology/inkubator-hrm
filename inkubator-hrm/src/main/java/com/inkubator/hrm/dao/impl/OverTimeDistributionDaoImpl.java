@@ -84,17 +84,18 @@ public class OverTimeDistributionDaoImpl extends IDAOImpl<OverTimeDistribution> 
         criteria.createAlias("wtOverTime", "wtOverTime", JoinType.INNER_JOIN);
         if (searchParameter.getEmpData() != null) {
 
-            Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.START));
-            disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmpData(), MatchMode.START));
-            criteria.add(disjunction);
+//            Disjunction disjunction = Restrictions.disjunction();
+//            disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.START));
+//            disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmpData(), MatchMode.START));
+//            criteria.add(disjunction);
+            criteria.add(Restrictions.ilike("bioData.combineName", searchParameter.getEmpData().toLowerCase(), MatchMode.ANYWHERE));
         }
-        if (searchParameter.getNik() != null) {            
+        if (searchParameter.getNik() != null) {
             criteria.add(Restrictions.like("empData.nik", searchParameter.getNik(), MatchMode.START));
         }
         if (StringUtils.isNotEmpty(searchParameter.getWtOverTime())) {
-            
-            criteria.add(Restrictions.like("wtOverTime.name", searchParameter.getWtOverTime(), MatchMode.START));
+
+            criteria.add(Restrictions.like("wtOverTime.name", searchParameter.getWtOverTime(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }
@@ -120,13 +121,13 @@ public class OverTimeDistributionDaoImpl extends IDAOImpl<OverTimeDistribution> 
         return (OverTimeDistribution) criteria.uniqueResult();
     }
 
-	@Override
-	public List<OverTimeDistribution> getAllDataByEmpDataIdAndIsActive(Long empDataId, Boolean isActive) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("empData.id", empDataId));
-		criteria.createAlias("wtOverTime", "wtOverTime", JoinType.INNER_JOIN);
+    @Override
+    public List<OverTimeDistribution> getAllDataByEmpDataIdAndIsActive(Long empDataId, Boolean isActive) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.createAlias("wtOverTime", "wtOverTime", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("wtOverTime.isActive", isActive));
-		return criteria.list();
-	}
+        return criteria.list();
+    }
 
 }

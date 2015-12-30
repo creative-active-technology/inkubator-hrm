@@ -52,7 +52,7 @@ public class LoanNewSchemaDaoImpl extends IDAOImpl<LoanNewSchema> implements Loa
 
     public void doSearchByParam(LoanNewSchemaSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getName() != null) {
-            criteria.add(Restrictions.like("loanSchemaName", searchParameter.getName(), MatchMode.START));
+            criteria.add(Restrictions.like("loanSchemaName", searchParameter.getName(), MatchMode.ANYWHERE));
         }
         if (searchParameter.getCode() != null) {
             criteria.add(Restrictions.like("loanSchemaCode", searchParameter.getCode(), MatchMode.START));
