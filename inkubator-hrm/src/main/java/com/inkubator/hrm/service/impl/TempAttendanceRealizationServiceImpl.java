@@ -1177,7 +1177,7 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
 
 //            Long totalOverTime = tempAttendanceRealizationDao.getTotalOverTime(emp.getId());
 //            deviation.setTotalOverTime(totalOverTime);
-            deviation.setEmpRealName(emp.getBioData().getFirstName() + " " + emp.getBioData().getLastName());
+            deviation.setEmpRealName(emp.getNik() + " - " + emp.getBioData().getFirstName() + " " + emp.getBioData().getLastName());
             if (totalDeviation != null) {
                 deviation.setTotalDeviation(totalDeviation);
 //                if (totalDeviation < 0) {

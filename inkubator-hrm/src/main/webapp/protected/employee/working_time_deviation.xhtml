@@ -85,8 +85,7 @@
                                     <p:selectOneMenu id="pencarianSelectId" value="#{workingTimeDeviationController.tempAttendanceRealizationSearchParameter.keyParam}"
                                                      style="width: 150px;margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
-                                        <f:selectItem itemLabel="#{appmsg['placement.nik']}" itemValue="nik"/>
-                                        <f:selectItem itemLabel="#{appmsg['global.name']}" itemValue="name" />
+                                        <f:selectItem itemLabel="#{appmsg['global.employee']}" itemValue="name" />
 <!--                                        <f:selectItem itemLabel="No Jabatan" itemValue="noJab" />
                                         <f:selectItem itemLabel="#{appmsg['placement.jabatan_name']}" itemValue="jabatan" />-->
                                     </p:selectOneMenu>
@@ -119,7 +118,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column style="width: 30%" sortBy="#{timeRealization.firstName}">
+                            <p:column style="width: 30%" sortBy="#{timeRealization.bio.firstName}">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.name']}"/>
                                 </f:facet>

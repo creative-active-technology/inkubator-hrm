@@ -35,9 +35,24 @@
                                 <h:panelGrid columns="5">
                                     <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm" />
                                     <p:outputLabel value=":" />
-                                    <p:inputText id="searchId" disabled="#{not empCorrectionAttendanceViewController.isAdministator}" value="#{empCorrectionAttendanceViewController.parameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
+                                    <p:selectOneMenu value="#{empCorrectionAttendanceViewController.parameter.keyParam}" style="width: 150px;margin-right: 3px" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItem itemLabel="#{appmsg['global.employee']}" itemValue="employee"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.status']}" itemValue="status"/>
+                                        <p:ajax update="groupSearchId"/>
+                                    </p:selectOneMenu>
+                                    <h:panelGroup id="groupSearchId">
+                                    	<p:inputText id="searchTextId" rendered="#{empCorrectionAttendanceViewController.parameter.keyParam != 'status'}" 
+                                    			 	 value="#{empCorrectionAttendanceViewController.parameter.parameter}"  style="width: 250px" styleClass="label_button"/>
+                                    	<p:selectOneMenu id="searchDropDownId" rendered="#{empCorrectionAttendanceViewController.parameter.keyParam == 'status'}"
+                                    					 value="#{empCorrectionAttendanceViewController.parameter.parameter}" style="width: 150px;margin-right: 3px" >	                                        
+	                                        <f:selectItem itemLabel="#{appmsg['approvalactivity.approved']}" itemValue="0"/>
+	                                        <f:selectItem itemLabel="#{appmsg['approvalactivity.reject']}" itemValue="1"/>
+	                                        <f:selectItem itemLabel="#{appmsg['approvalactivity.cancelled']}" itemValue="2"/>
+	                                    </p:selectOneMenu>
+                                    </h:panelGroup>
                                     <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{empCorrectionAttendanceViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
-                                </h:panelGrid>
+                            	</h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
@@ -48,7 +63,6 @@
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
-                        <p:focus for="searchId" />
 
                         <p:dataTable  id="tableId" var="data"  value="#{empCorrectionAttendanceViewController.lazyData}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
