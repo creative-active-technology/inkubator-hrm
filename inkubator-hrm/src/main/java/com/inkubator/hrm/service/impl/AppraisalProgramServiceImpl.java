@@ -3,12 +3,18 @@ package com.inkubator.hrm.service.impl;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.AppraisalProgramDao;
 import com.inkubator.hrm.entity.AppraisalProgram;
 import com.inkubator.hrm.service.AppraisalProgramService;
+import com.inkubator.hrm.web.search.AppraisalProgramSearchParameter;
 
 /**
  *
@@ -19,6 +25,9 @@ import com.inkubator.hrm.service.AppraisalProgramService;
 @Lazy
 public class AppraisalProgramServiceImpl extends IServiceImpl implements AppraisalProgramService {
 
+	@Autowired
+	private AppraisalProgramDao appraisalProgramDao;
+	
 	@Override
 	public AppraisalProgram getEntiyByPK(String id) throws Exception {
 		// TODO Auto-generated method stub
@@ -32,9 +41,10 @@ public class AppraisalProgramServiceImpl extends IServiceImpl implements Apprais
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public AppraisalProgram getEntiyByPK(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return appraisalProgramDao.getEntiyByPK(id);
 	}
 
 	@Override
@@ -128,9 +138,10 @@ public class AppraisalProgramServiceImpl extends IServiceImpl implements Apprais
 	}
 
 	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void delete(AppraisalProgram entity) throws Exception {
-		// TODO Auto-generated method stub
-
+		
+		appraisalProgramDao.delete(entity);
 	}
 
 	@Override
@@ -212,6 +223,27 @@ public class AppraisalProgramServiceImpl extends IServiceImpl implements Apprais
 			Byte isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<AppraisalProgram> getAllDataByParam(AppraisalProgramSearchParameter searchParameter, int firstResult, int maxResult, Order order) throws Exception {
+		
+		return appraisalProgramDao.getAllDataByParam(searchParameter, firstResult, maxResult, order);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByParam(AppraisalProgramSearchParameter searchParameter) throws Exception {
+
+		return appraisalProgramDao.getTotalByParam(searchParameter);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public AppraisalProgram getEntityByIdWithDetail(Long id) throws Exception {
+		
+		return appraisalProgramDao.getEntityByIdWithDetail(id);
 	}
 
 }
