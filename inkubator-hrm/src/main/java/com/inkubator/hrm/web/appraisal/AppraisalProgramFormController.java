@@ -5,6 +5,7 @@
  */
 package com.inkubator.hrm.web.appraisal;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,8 +20,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.entity.AppraisalAchievementProgram;
-import com.inkubator.hrm.entity.AppraisalIndisciplineProgram;
 import com.inkubator.hrm.entity.AppraisalProgram;
 import com.inkubator.hrm.service.AppraisalProgramService;
 import com.inkubator.hrm.service.CareerAwardTypeService;
@@ -29,8 +28,6 @@ import com.inkubator.hrm.web.model.AppraisalProgramModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
-
-import ch.lambdaj.Lambda;
 
 /**
  *
@@ -66,10 +63,10 @@ public class AppraisalProgramFormController extends BaseController{
                 	model = getModelFromEntity(appraisalProgram);
                 }
                 
-            } else {
-            	model.setListCareerAward(careerAwardTypeService.getAllData());
-            	model.setListCareerDiscipline(careerDisciplineTypeService.getAllData());
             }
+            
+            this.onChangeIsIndiscipline();
+            this.onChangeIsAchievement();
             
         } catch (Exception e){
             LOGGER.error("error", e);
@@ -98,20 +95,16 @@ public class AppraisalProgramFormController extends BaseController{
         model.setIsIndiscipline(appraisalProgram.getIsIndiscipline());
         model.setIsPerformanceScoring(appraisalProgram.getIsPerformanceScoring());
         
-        Map<Long, Double> achievements = new HashMap<>();
-        appraisalProgram.getAppraisalAchievementPrograms().forEach(entity -> achievements.put(entity.getId(), entity.getScore()));
+        Map<Long, BigDecimal> achievements = new HashMap<>();
+        appraisalProgram.getAppraisalAchievementPrograms().forEach(entity -> achievements.put(entity.getCareerAwardType().getId(), new BigDecimal(entity.getScore())));
         model.setListAchievementScore(achievements);
         
-        Map<Long, Double> indisciplines = new HashMap<>();
-        appraisalProgram.getAppraisalIndisciplinePrograms().forEach(entity -> indisciplines.put(entity.getId(), entity.getScore()));
+        Map<Long, BigDecimal> indisciplines = new HashMap<>();
+        appraisalProgram.getAppraisalIndisciplinePrograms().forEach(entity -> indisciplines.put(entity.getCareerDisciplineType().getId(), new BigDecimal(entity.getScore())));
         model.setListIndisciplineScore(indisciplines);
         
-        model.setListCareerDiscipline(Lambda.extract(appraisalProgram.getAppraisalIndisciplinePrograms(), Lambda.on(AppraisalIndisciplineProgram.class).getCareerDisciplineType()));
-        model.setListCareerAward(Lambda.extract(appraisalProgram.getAppraisalAchievementPrograms(), Lambda.on(AppraisalAchievementProgram.class).getCareerAwardType()));
         return model;
     }
-    
-    
     
     public String doSave(){
     	try {
@@ -130,9 +123,33 @@ public class AppraisalProgramFormController extends BaseController{
 		} catch (BussinessException ex) {
             MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_ERROR, "global.error", ex.getErrorKeyMessage(), FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
         }catch (Exception e) {
-			e.printStackTrace();
+        	LOGGER.error("error", e);
 		}
     	return null;
+    }
+    
+    public void onChangeIsIndiscipline(){
+    	try {
+    		if(model.getIsIndiscipline()) {
+	            model.setListCareerDiscipline(careerDisciplineTypeService.getAllData());
+    		} else {
+    			model.getListCareerDiscipline().clear();
+    		}
+    	}catch (Exception e) {
+    		LOGGER.error("error", e);
+		}
+    }
+    
+    public void onChangeIsAchievement(){
+    	try {
+    		if(model.getIsAchievement()) {
+		    	model.setListCareerAward(careerAwardTypeService.getAllData());
+    		} else {
+    			model.getListCareerAward().clear();
+    		}
+    	}catch (Exception e) {
+    		LOGGER.error("error", e);
+		}
     }
     
 	public String doBack(){

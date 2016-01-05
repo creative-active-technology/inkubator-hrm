@@ -9,4 +9,8 @@ import com.inkubator.hrm.entity.AppraisalAchievementProgram;
  */
 public interface AppraisalAchievementProgramDao extends IDAO<AppraisalAchievementProgram> {
 
+	public AppraisalAchievementProgram getEntityByAppraisalProgramIdAndAwardTypeId(Long appraisalProgramId, Long awardTypeId);
+	
+	public void deleteByAppraisalProgramId(Long appraisalProgramId);
+	
 }

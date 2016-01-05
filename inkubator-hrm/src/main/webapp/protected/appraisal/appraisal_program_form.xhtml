@@ -91,7 +91,9 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:selectBooleanButton value="#{appraisalProgramFormController.model.isAchievement}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" 
-	                            						   onIcon="ui-icon-check" offIcon="ui-icon-close" styleClass="label_button"/>
+	                            						   onIcon="ui-icon-check" offIcon="ui-icon-close" styleClass="label_button">
+	                            		<p:ajax listener="#{appraisalProgramFormController.onChangeIsAchievement()}" update="tableAchievement"/>
+	                           		</p:selectBooleanButton>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>
@@ -130,7 +132,9 @@
 	                            </p:column>
 	                            <p:column  style="width: 80%">
 	                            	<p:selectBooleanButton value="#{appraisalProgramFormController.model.isIndiscipline}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" 
-	                            						   onIcon="ui-icon-check" offIcon="ui-icon-close" styleClass="label_button"/>
+	                            						   onIcon="ui-icon-check" offIcon="ui-icon-close" styleClass="label_button">
+	                          			<p:ajax listener="#{appraisalProgramFormController.onChangeIsIndiscipline()}" update="tableDiscipline"/>
+	                         		</p:selectBooleanButton>
 	                            </p:column>
 	                        </p:row>
 	                        <p:row>

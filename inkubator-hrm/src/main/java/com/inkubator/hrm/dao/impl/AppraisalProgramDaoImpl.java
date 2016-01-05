@@ -3,6 +3,7 @@ package com.inkubator.hrm.dao.impl;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -60,6 +61,8 @@ public class AppraisalProgramDaoImpl extends IDAOImpl<AppraisalProgram> implemen
 	public AppraisalProgram getEntityByIdWithDetail(Long id) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("id", id));
+		criteria.setFetchMode("appraisalAchievementPrograms", FetchMode.JOIN);
+		criteria.setFetchMode("appraisalIndisciplinePrograms", FetchMode.JOIN);
 		return (AppraisalProgram) criteria.uniqueResult();
 	}
 

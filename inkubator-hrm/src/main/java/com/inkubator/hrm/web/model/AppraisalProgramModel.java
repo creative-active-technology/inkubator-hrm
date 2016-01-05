@@ -1,6 +1,7 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,8 +27,8 @@ public class AppraisalProgramModel implements Serializable {
     private Boolean isPerformanceScoring;
     private Boolean isAchievement;
     private Boolean isIndiscipline;
-    private Map<Long, Double> listAchievementScore = new HashMap<>();
-    private Map<Long, Double> listIndisciplineScore = new HashMap<>();
+    private Map<Long, BigDecimal> listAchievementScore = new HashMap<>();
+    private Map<Long, BigDecimal> listIndisciplineScore = new HashMap<>();
     
     //not persisted
     private List<CareerAwardType> listCareerAward = new ArrayList<>();
@@ -93,16 +94,16 @@ public class AppraisalProgramModel implements Serializable {
 	public void setIsIndiscipline(Boolean isIndiscipline) {
 		this.isIndiscipline = isIndiscipline;
 	}
-	public Map<Long, Double> getListAchievementScore() {
+	public Map<Long, BigDecimal> getListAchievementScore() {
 		return listAchievementScore;
 	}
-	public void setListAchievementScore(Map<Long, Double> listAchievementScore) {
+	public void setListAchievementScore(Map<Long, BigDecimal> listAchievementScore) {
 		this.listAchievementScore = listAchievementScore;
 	}
-	public Map<Long, Double> getListIndisciplineScore() {
+	public Map<Long, BigDecimal> getListIndisciplineScore() {
 		return listIndisciplineScore;
 	}
-	public void setListIndisciplineScore(Map<Long, Double> listIndisciplineScore) {
+	public void setListIndisciplineScore(Map<Long, BigDecimal> listIndisciplineScore) {
 		this.listIndisciplineScore = listIndisciplineScore;
 	}
 	public List<CareerAwardType> getListCareerAward() {
