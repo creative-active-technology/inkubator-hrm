@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.AppraisalProgram;
+import com.inkubator.hrm.web.model.AppraisalProgramModel;
 import com.inkubator.hrm.web.search.AppraisalProgramSearchParameter;
 
 /**
@@ -19,5 +20,9 @@ public interface AppraisalProgramService extends IService<AppraisalProgram> {
 	public Long getTotalByParam(AppraisalProgramSearchParameter searchParameter) throws Exception;
 
 	public AppraisalProgram getEntityByIdWithDetail(Long id) throws Exception;
+
+	public void update(AppraisalProgramModel model) throws Exception;
+
+	public void save(AppraisalProgramModel model) throws Exception;
 	
 }

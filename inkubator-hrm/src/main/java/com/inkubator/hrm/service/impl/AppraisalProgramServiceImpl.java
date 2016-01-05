@@ -14,6 +14,7 @@ import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.AppraisalProgramDao;
 import com.inkubator.hrm.entity.AppraisalProgram;
 import com.inkubator.hrm.service.AppraisalProgramService;
+import com.inkubator.hrm.web.model.AppraisalProgramModel;
 import com.inkubator.hrm.web.search.AppraisalProgramSearchParameter;
 
 /**
@@ -244,6 +245,20 @@ public class AppraisalProgramServiceImpl extends IServiceImpl implements Apprais
 	public AppraisalProgram getEntityByIdWithDetail(Long id) throws Exception {
 		
 		return appraisalProgramDao.getEntityByIdWithDetail(id);
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void update(AppraisalProgramModel model) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void save(AppraisalProgramModel model) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
