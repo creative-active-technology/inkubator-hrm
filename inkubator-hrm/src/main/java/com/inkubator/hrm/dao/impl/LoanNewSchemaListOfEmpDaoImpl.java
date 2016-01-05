@@ -48,6 +48,7 @@ public class LoanNewSchemaListOfEmpDaoImpl extends IDAOImpl<LoanNewSchemaListOfE
         }else if(parameter.getCode()!= null){
             query.append(" WHERE goljab.code like '%" + parameter.getCode()+ "%'");
         }else if(parameter.getNoSk()!= null){
+            System.out.println(" Herererer");
             query.append(" WHERE newSchema.nomor_sk like '%" + parameter.getNoSk()+ "%'");
         }
         query.append(" LIMIT " + firstResult + ", " + maxResults);
