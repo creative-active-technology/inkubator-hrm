@@ -10,60 +10,56 @@ import com.inkubator.webcore.util.SearchParameter;
  */
 public class RmbsApplicationUndisbursedSearchParameter extends SearchParameter {
 
-	private String userId;
+    private String userId;
     private String empNik;
     private String empName;
     private String rmbsType;
 
-	public String getUserId() {
-		return userId;
-	}
+    public String getUserId() {
+        return userId;
+    }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-	public String getEmpName() {
-		if (StringUtils.equalsIgnoreCase(getKeyParam(), "empName")) {
-			empName = getParameter();
+    public String getEmpName() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "empName")) {
+            empName = getParameter();
         } else {
-        	empName = null;
+            empName = null;
         }
-		return empName;
-	}
+        return empName;
+    }
 
-	public void setEmpName(String empName) {
-		this.empName = empName;
-	}
+    public void setEmpName(String empName) {
+        this.empName = empName;
+    }
 
-	public String getEmpNik() {
-		if (StringUtils.equalsIgnoreCase(getKeyParam(), "empNik")) {
-			empNik = getParameter();
+    public String getEmpNik() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "empNik")) {
+            empNik = getParameter();
         } else {
-        	empNik = null;
+            empNik = null;
         }
-		return empNik;
-	}
+        return empNik;
+    }
 
-	public void setEmpNik(String empNik) {
-		this.empNik = empNik;
-	}
+    public void setEmpNik(String empNik) {
+        this.empNik = empNik;
+    }
 
-	public String getRmbsType() {
-		if (StringUtils.equalsIgnoreCase(getKeyParam(), "rmbsType")) {
-			rmbsType = getParameter();
+    public String getRmbsType() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "rmbsType")) {
+            rmbsType = getParameter();
         } else {
-        	rmbsType = null;
+            rmbsType = null;
         }
-		return rmbsType;
-	}
+        return rmbsType;
+    }
 
-	public void setRmbsType(String rmbsType) {
-		this.rmbsType = rmbsType;
-	}
+    public void setRmbsType(String rmbsType) {
+        this.rmbsType = rmbsType;
+    }
 
-	
-
-	
-    
 }
