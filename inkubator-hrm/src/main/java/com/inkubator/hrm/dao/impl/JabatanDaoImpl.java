@@ -104,6 +104,10 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
         if (StringUtils.isNotEmpty(parameter.getCode())) {
             criteria.add(Restrictions.like("code", parameter.getCode(), MatchMode.ANYWHERE));
         }
+        
+         if (StringUtils.isNotEmpty(parameter.getGolJab())) {
+            criteria.add(Restrictions.like("golonganJabatan.code", parameter.getGolJab(), MatchMode.ANYWHERE));
+        }
         if (StringUtils.isNotEmpty(parameter.getName())) {
             criteria.add(Restrictions.like("name", parameter.getName(), MatchMode.ANYWHERE));
         }
