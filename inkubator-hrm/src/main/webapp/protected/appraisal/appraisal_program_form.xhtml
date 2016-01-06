@@ -53,6 +53,18 @@
 	                        </p:row>
 	                        <p:row>
 	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="performanceGroupId" value="#{appmsg['performancegroup.performance_group']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneMenu id="performanceGroupId" styleClass="isitext_hrm" required="true"  value="#{appraisalProgramFormController.model.appraisalPerformanceGroupId}" style="width:290px;">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{appraisalProgramFormController.model.listPerformanceGroup}" var="performanceGroup" itemValue="#{performanceGroup.id}" itemLabel="#{performanceGroup.name}"/>
+                                    </p:selectOneMenu> 
+	                                <p:message for="performanceGroupId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
 	                                <p:outputLabel value="#{appmsg['appraisal_program.appraisal_date']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">

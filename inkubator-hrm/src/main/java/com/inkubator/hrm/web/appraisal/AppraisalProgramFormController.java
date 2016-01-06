@@ -21,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.entity.AppraisalProgram;
+import com.inkubator.hrm.service.AppraisalPerformanceGroupService;
 import com.inkubator.hrm.service.AppraisalProgramService;
 import com.inkubator.hrm.service.CareerAwardTypeService;
 import com.inkubator.hrm.service.CareerDisciplineTypeService;
@@ -46,6 +47,8 @@ public class AppraisalProgramFormController extends BaseController{
     private CareerAwardTypeService careerAwardTypeService;
     @ManagedProperty(value = "#{careerDisciplineTypeService}")
     private CareerDisciplineTypeService careerDisciplineTypeService;
+    @ManagedProperty(value = "#{appraisalPerformanceGroupService}")
+    private AppraisalPerformanceGroupService appraisalPerformanceGroupService;
     
     @PostConstruct
     @Override
@@ -62,11 +65,11 @@ public class AppraisalProgramFormController extends BaseController{
                 	isUpdate = Boolean.TRUE;
                 	model = getModelFromEntity(appraisalProgram);
                 }
-                
             }
             
             this.onChangeIsIndiscipline();
             this.onChangeIsAchievement();
+            model.setListPerformanceGroup(appraisalPerformanceGroupService.getAllData());
             
         } catch (Exception e){
             LOGGER.error("error", e);
@@ -80,6 +83,7 @@ public class AppraisalProgramFormController extends BaseController{
     	appraisalProgramService = null;
     	careerDisciplineTypeService = null;
     	careerAwardTypeService = null;
+    	appraisalPerformanceGroupService = null;
     }
     
     private AppraisalProgramModel getModelFromEntity(AppraisalProgram appraisalProgram) throws Exception{
@@ -94,6 +98,7 @@ public class AppraisalProgramFormController extends BaseController{
         model.setIsGapCompetency(appraisalProgram.getIsGapCompetency());
         model.setIsIndiscipline(appraisalProgram.getIsIndiscipline());
         model.setIsPerformanceScoring(appraisalProgram.getIsPerformanceScoring());
+        model.setAppraisalPerformanceGroupId(appraisalProgram.getAppraisalPerformanceGroup().getId());
         
         Map<Long, BigDecimal> achievements = new HashMap<>();
         appraisalProgram.getAppraisalAchievementPrograms().forEach(entity -> achievements.put(entity.getCareerAwardType().getId(), new BigDecimal(entity.getScore())));
@@ -194,6 +199,14 @@ public class AppraisalProgramFormController extends BaseController{
 
 	public void setCareerDisciplineTypeService(CareerDisciplineTypeService careerDisciplineTypeService) {
 		this.careerDisciplineTypeService = careerDisciplineTypeService;
+	}
+
+	public AppraisalPerformanceGroupService getAppraisalPerformanceGroupService() {
+		return appraisalPerformanceGroupService;
+	}
+
+	public void setAppraisalPerformanceGroupService(AppraisalPerformanceGroupService appraisalPerformanceGroupService) {
+		this.appraisalPerformanceGroupService = appraisalPerformanceGroupService;
 	}
 	
 }
