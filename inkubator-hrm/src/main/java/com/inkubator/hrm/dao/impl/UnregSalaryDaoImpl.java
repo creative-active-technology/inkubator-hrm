@@ -59,10 +59,10 @@ public class UnregSalaryDaoImpl extends IDAOImpl<UnregSalary> implements UnregSa
 
     private void doSearchByParam(UnregSalarySearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getName() != null) {
-            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
+            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
         }
         if (searchParameter.getCode() != null) {
-            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
+            criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
         }
         criteria.add(Restrictions.isNotNull("id"));
     }

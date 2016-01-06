@@ -81,7 +81,7 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
 
     private void doSearchByParam(PaySalaryComponentSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getName() != null) {
-            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
+            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
         }
         if (searchParameter.getCode() != null) {
             criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
@@ -111,7 +111,7 @@ public class PaySalaryComponentDaoImpl extends IDAOImpl<PaySalaryComponent> impl
 
     private void doSearchComponentUploadByParam(PaySalaryComponentSearchParameter searchParameter, Criteria criteria) {
         if (StringUtils.isNotEmpty(searchParameter.getName())) {
-            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
+            criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotEmpty(searchParameter.getCode())) {
             criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
