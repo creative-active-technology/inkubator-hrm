@@ -17,7 +17,7 @@ import com.inkubator.hrm.dao.CareerDisciplineTypeDao;
 import com.inkubator.hrm.entity.CareerDisciplineType;
 import com.inkubator.hrm.web.search.CareerDisciplineTypeSearchParameter;
 
-@Repository(value = "carreerDisciplineTypeDao")
+@Repository(value = "careerDisciplineTypeDao")
 @Lazy
 public class CareerDisciplineTypeDaoImpl extends IDAOImpl<CareerDisciplineType> implements CareerDisciplineTypeDao{
 

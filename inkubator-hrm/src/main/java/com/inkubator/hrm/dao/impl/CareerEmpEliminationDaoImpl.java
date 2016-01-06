@@ -33,6 +33,9 @@ public class CareerEmpEliminationDaoImpl extends IDAOImpl<CareerEmpElimination> 
 	@Override
 	public List<EmpEliminationViewModel> getListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
 		final StringBuilder query = new StringBuilder("SELECT careerEmpElimination.id AS id,");
+		query.append(" careerEmpElimination.reason AS reason,");
+		query.append(" careerEmpElimination.eliminationStatus AS status,");
+		query.append(" careerEmpElimination.effectiveDate AS terminationDate,");
 		query.append(" wtPeriode.id AS lastWtPeriodId,");
 		query.append(" wtPeriode.fromPeriode AS startDateLastWtPeriod,");
 		query.append(" empData.id AS empDataId,");

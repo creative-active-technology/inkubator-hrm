@@ -200,7 +200,8 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
     			"businessTravel.start_date AS startDate, " +
     			"businessTravel.end_date AS endDate, " +
     			"businessTravel.destination AS destination, " +
-    			"businessTravel.business_travel_no AS businessTravelNo " +
+    			"businessTravel.business_travel_no AS businessTravelNo, " +
+    			"travelType.name AS travelTypeName " +
     			"FROM approval_activity approvalActivity " +
     			"LEFT JOIN approval_definition AS approvalDefinition ON approvalDefinition.id = approvalActivity.approval_def_id " +
     			"LEFT JOIN hrm_user AS approver ON approver.user_id = approvalActivity.approved_by " +
@@ -211,6 +212,7 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
                 "INNER JOIN company AS company ON department.company_id = company.id  " +
     			"LEFT JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id " +
     			"LEFT JOIN business_travel AS businessTravel ON approvalActivity.activity_number = businessTravel.approval_activity_number " +
+    			"LEFT JOIN travel_type AS travelType ON businessTravel.travel_type_id = travelType.id " +
     			"WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number) " +    			
     			"AND approvalActivity.approval_status != :approvalStatus " +
 				"AND approvalDefinition.name = :appDefinitionName ");    	
@@ -239,6 +241,7 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
     	        "INNER JOIN company AS company ON department.company_id = company.id  " +
     	    	"LEFT JOIN bio_data AS bioData ON empData.bio_data_id = bioData.id " +
     	    	"LEFT JOIN business_travel AS businessTravel ON approvalActivity.activity_number = businessTravel.approval_activity_number " +
+    	    	"LEFT JOIN travel_type AS travelType ON businessTravel.travel_type_id = travelType.id " +
     	    	"WHERE (approvalActivity.activity_number,approvalActivity.sequence) IN (SELECT app.activity_number,max(app.sequence) FROM approval_activity app GROUP BY app.activity_number) " +    			
     	    	"AND approvalActivity.approval_status != :approvalStatus " +
     	    	"AND approvalDefinition.name = :appDefinitionName ");    	
@@ -252,9 +255,13 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
 	
 	private String setWhereQueryActivityByParam(BusinessTravelSearchParameter parameter) {
     	StringBuffer whereQuery = new StringBuffer();    	
-    	     
+    	
+    	if(StringUtils.isNotEmpty(parameter.getTravelTypeName())){
+    		whereQuery.append("AND travelType.name LIKE :travelTypeName ");
+    	}
+    	
         if (StringUtils.isNotEmpty(parameter.getEmployee())) {
-        	whereQuery.append("AND (bioData.first_name LIKE :employee OR bioData.last_name LIKE :employee OR empData.nik LIKE :employee) ");
+        	whereQuery.append("AND (ltrim(concat(concat(bioData.first_name, ' '), bioData.last_name)) LIKE :employee OR empData.nik LIKE :employee) ");
         }    
         
         if (StringUtils.isNotEmpty(parameter.getUserId())) {
@@ -273,6 +280,8 @@ public class BusinessTravelDaoImpl extends IDAOImpl<BusinessTravel> implements B
     	for(String param : hbm.getNamedParameters()){
     		if(StringUtils.equals(param, "employee")){
     			hbm.setParameter("employee", "%" + parameter.getEmployee() + "%");
+    		} else if(StringUtils.equals(param, "travelTypeName")){
+    			hbm.setParameter("travelTypeName", "%" + parameter.getTravelTypeName() + "%");
     		} else if(StringUtils.equals(param, "userId")){
     			hbm.setParameter("userId", parameter.getUserId());
     		} else if(StringUtils.equals(param, "appDefinitionName")){

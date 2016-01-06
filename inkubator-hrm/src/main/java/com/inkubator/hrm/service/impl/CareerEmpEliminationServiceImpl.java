@@ -298,7 +298,7 @@ public class CareerEmpEliminationServiceImpl extends BaseApprovalServiceImpl  im
 		for(EmpEliminationViewModel model : listEmpEliminationViewModel){
 			EmpData empData = empDataDao.getByEmpDataByBioDataId(model.getBioDataId());
 			model.setEmpName(empData.getBioData().getFullName());
-			model.setReason(model.getReason());
+			//model.setReason(model.getReason());
 			//model.setReason(getReasonByEmpCareerHistoryStatus(model.getEmpCareerHistoryStatus(), resourceBundle));
 		}
 		

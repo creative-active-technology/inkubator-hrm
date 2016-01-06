@@ -87,14 +87,16 @@ public class NeracaCutiDaoImpl extends IDAOImpl<NeracaCuti> implements NeracaCut
         criteria.createAlias("leaveDistribution.leave", "leave", JoinType.INNER_JOIN);
         if (searchParameter.getEmpData()!= null) {
 
-            Disjunction disjunction = Restrictions.disjunction();
+            /*Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.START));
             disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmpData(), MatchMode.START));
-            criteria.add(disjunction);
+            criteria.add(disjunction);*/
+        	
+            criteria.add(Restrictions.ilike("bioData.combineName", searchParameter.getEmpData().toLowerCase(), MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotEmpty(searchParameter.getLeave())) {
             
-            criteria.add(Restrictions.like("leave.name", searchParameter.getLeave(), MatchMode.START));
+            criteria.add(Restrictions.like("leave.name", searchParameter.getLeave(), MatchMode.ANYWHERE));
         }
         if (searchParameter.getNik()!= null) {
             criteria.add(Restrictions.like("empData.nik", searchParameter.getNik(), MatchMode.START));

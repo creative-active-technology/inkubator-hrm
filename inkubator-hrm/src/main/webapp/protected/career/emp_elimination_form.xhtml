@@ -119,6 +119,21 @@
 	                        </p:row> 
 	                        
 	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="effectiveDateId" value="#{appmsg['companypolicy.effective_date']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	  <p:calendar  id="effectiveDateId" pattern="dd MMMM yyyy"
+                                                 label="#{appmsg['companypolicy.effective_date']}"
+                                                 value="#{empEliminationFormController.model.effectiveDate}"  
+                                                 readonly="false" required="true"  showOn="button" 
+                                                 style="width:250px;"> 
+                                    </p:calendar>
+                                    <p:message for="effectiveDateId"/>
+	                            </p:column>
+	                        </p:row> 
+	                        
+	                        <p:row>
                             <p:column colspan="2">
                                 <p:message for="descriptionId"/>
                             </p:column>

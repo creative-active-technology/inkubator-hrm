@@ -74,9 +74,11 @@ public class WtEmpCorrectionAttendanceDaoImpl extends IDAOImpl<WtEmpCorrectionAt
         if (StringUtils.isNotEmpty(parameter.getEmployee())) {
         	Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("empData.nik", parameter.getEmployee(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bioData.firstName", parameter.getEmployee(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bioData.lastName", parameter.getEmployee(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bioData.combineName", parameter.getEmployee(), MatchMode.ANYWHERE));
             criteria.add(disjunction);
+        }
+        if(StringUtils.isNotEmpty(parameter.getStatus())){
+        	criteria.add(Restrictions.eq("approvalStatus", Integer.parseInt(parameter.getStatus())));
         }
         if(parameter.getEmpDataId() != null){
         	criteria.add(Restrictions.eq("empData.id", parameter.getEmpDataId()));

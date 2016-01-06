@@ -20,6 +20,7 @@ public class JabatanSearchParameter extends SearchParameter {
     private String departementName;
     private String costCenterName;
     private String unitKerjaName;
+    private String golJab;
 
     public String getCode() {
         if (StringUtils.equalsIgnoreCase(getKeyParam(), "code")) {
@@ -103,4 +104,18 @@ public class JabatanSearchParameter extends SearchParameter {
         this.unitKerjaName = unitKerjaName;
     }
 
+    public String getGolJab() {
+          if (StringUtils.equalsIgnoreCase(getKeyParam(), "golJab")) {
+            golJab = getParameter();
+        } else {
+            golJab = null;
+        }
+        return golJab;
+    }
+
+    public void setGolJab(String golJab) {
+        this.golJab = golJab;
+    }
+
+    
 }

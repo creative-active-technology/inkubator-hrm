@@ -75,9 +75,11 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
         if (StringUtils.isNotEmpty(parameter.getEmployee())) {
             Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("empData.nik", parameter.getEmployee(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bioData.firstName", parameter.getEmployee(), MatchMode.ANYWHERE));
-            disjunction.add(Restrictions.like("bioData.lastName", parameter.getEmployee(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.ilike("bioData.combineName", parameter.getEmployee().toLowerCase(), MatchMode.ANYWHERE));
+//            disjunction.add(Restrictions.like("bioData.lastName", parameter.getEmployee(), MatchMode.ANYWHERE));
             criteria.add(disjunction);
+
+//            criteria.add(Restrictions.ilike("bioData.combineName", parameter.getEmployee().toLowerCase(), MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotEmpty(parameter.getNumberFilling())) {
             criteria.add(Restrictions.like("numberFilling", parameter.getNumberFilling(), MatchMode.ANYWHERE));
@@ -212,72 +214,38 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
         return (LeaveImplementation) criteria.uniqueResult();
 
     }
-    
+
     @Override
-	public List<LeaveImplementation> getListByStartDateBetweenDateAndEmpId(Long empDataId,	Date dateFrom, Date dateUntill) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());		
-        criteria.setFetchMode("empData", FetchMode.JOIN);        
+    public List<LeaveImplementation> getListByStartDateBetweenDateAndEmpId(Long empDataId, Date dateFrom, Date dateUntill) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("empData", FetchMode.JOIN);
         criteria.setFetchMode("temporaryActing", FetchMode.JOIN);
         criteria.setFetchMode("temporaryActing.bioData", FetchMode.JOIN);
         criteria.setFetchMode("leave", FetchMode.JOIN);
-        criteria.add(Restrictions.eq("empData.id", empDataId));  
+        criteria.add(Restrictions.eq("empData.id", empDataId));
         criteria.add(Restrictions.ge("startDate", dateFrom));
         criteria.add(Restrictions.le("startDate", dateUntill));
         return criteria.list();
-	}
+    }
 
     @Override
     public Long getCurrentMaxId() {
-	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
-    return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
     }
 
-
-	@Override
-	public List<ReportLeaveDataViewModel> getAllDataLeaveReport(ReportLeaveDataSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
-		 final StringBuilder query = new StringBuilder("select leaveImplementationDate.id AS id,");
-	        query.append(" leaveImplementationDate.actualDate AS leaveDate,");
-	        query.append(" leaveImplementation.id AS leaveImplementationId,");
-	        query.append(" empData.nik AS nik,");
-	        query.append(" bioData.firstName AS firstName,");
-	        query.append(" bioData.lastName AS lastName,");
-	        query.append(" leave.id AS leaveId,");
-	        query.append(" leave.name AS leaveName,");
-	        query.append(" leaveImplementation.numberFilling AS numberFilling,");
-	        query.append(" leaveImplementation.approvalActivityNumber AS activityNumber");
-	        query.append(" FROM LeaveImplementationDate leaveImplementationDate");
-	        query.append(" INNER JOIN leaveImplementationDate.leaveImplementation leaveImplementation");
-	        query.append(" INNER JOIN leaveImplementation.leave leave");
-	        query.append(" INNER JOIN leaveImplementation.empData empData");
-	        query.append(" INNER JOIN empData.bioData bioData ");
-	        query.append(" INNER JOIN empData.jabatanByJabatanId jabatanByJabatanId");
-	        query.append(" INNER JOIN jabatanByJabatanId.department department");
-	        query.append(" INNER JOIN jabatanByJabatanId.golonganJabatan golonganJabatan ");
-	        
-	        
-	        //Implement Filter
-	        query.append(doFilterLeaveReport(parameter));
-	        List<Long> listDepartmentId = Lambda.extract(parameter.getListDepartment(), Lambda.on(Department.class).getId());
-	        
-	        query.append(" ORDER BY  "  + getRealFieldLeaveReport(orderable.getPropertyName()) + (!orderable.isAscending() ? " DESC" : "  "));
-	        
-	        return getCurrentSession().createQuery(query.toString())
-	        		.setParameter("startDate", parameter.getStartDate())
-	        		.setParameter("endDate", parameter.getEndDate())
-                    .setParameterList("listDepartmentId", listDepartmentId)
-                    .setParameterList("listGolJabatan", parameter.getListGolJab())
-                    .setMaxResults(maxResults).setFirstResult(firstResult)
-                    
-                    .setResultTransformer(Transformers.aliasToBean(ReportLeaveDataViewModel.class))
-                    .list();
-	        
-	}
-	
-
-	@Override
-	public Long getTotalLeaveDataReport(ReportLeaveDataSearchParameter parameter) {
-		
-		final StringBuilder query = new StringBuilder("SELECT COUNT(*)  ");
+    @Override
+    public List<ReportLeaveDataViewModel> getAllDataLeaveReport(ReportLeaveDataSearchParameter parameter, int firstResult, int maxResults, Order orderable) {
+        final StringBuilder query = new StringBuilder("select leaveImplementationDate.id AS id,");
+        query.append(" leaveImplementationDate.actualDate AS leaveDate,");
+        query.append(" leaveImplementation.id AS leaveImplementationId,");
+        query.append(" empData.nik AS nik,");
+        query.append(" bioData.firstName AS firstName,");
+        query.append(" bioData.lastName AS lastName,");
+        query.append(" leave.id AS leaveId,");
+        query.append(" leave.name AS leaveName,");
+        query.append(" leaveImplementation.numberFilling AS numberFilling,");
+        query.append(" leaveImplementation.approvalActivityNumber AS activityNumber");
         query.append(" FROM LeaveImplementationDate leaveImplementationDate");
         query.append(" INNER JOIN leaveImplementationDate.leaveImplementation leaveImplementation");
         query.append(" INNER JOIN leaveImplementation.leave leave");
@@ -286,69 +254,99 @@ public class LeaveImplementationDaoImpl extends IDAOImpl<LeaveImplementation> im
         query.append(" INNER JOIN empData.jabatanByJabatanId jabatanByJabatanId");
         query.append(" INNER JOIN jabatanByJabatanId.department department");
         query.append(" INNER JOIN jabatanByJabatanId.golonganJabatan golonganJabatan ");
-        
+
         //Implement Filter
         query.append(doFilterLeaveReport(parameter));
         List<Long> listDepartmentId = Lambda.extract(parameter.getListDepartment(), Lambda.on(Department.class).getId());
-      
+
+        query.append(" ORDER BY  " + getRealFieldLeaveReport(orderable.getPropertyName()) + (!orderable.isAscending() ? " DESC" : "  "));
+
+        return getCurrentSession().createQuery(query.toString())
+                .setParameter("startDate", parameter.getStartDate())
+                .setParameter("endDate", parameter.getEndDate())
+                .setParameterList("listDepartmentId", listDepartmentId)
+                .setParameterList("listGolJabatan", parameter.getListGolJab())
+                .setMaxResults(maxResults).setFirstResult(firstResult)
+                .setResultTransformer(Transformers.aliasToBean(ReportLeaveDataViewModel.class))
+                .list();
+
+    }
+
+    @Override
+    public Long getTotalLeaveDataReport(ReportLeaveDataSearchParameter parameter) {
+
+        final StringBuilder query = new StringBuilder("SELECT COUNT(*)  ");
+        query.append(" FROM LeaveImplementationDate leaveImplementationDate");
+        query.append(" INNER JOIN leaveImplementationDate.leaveImplementation leaveImplementation");
+        query.append(" INNER JOIN leaveImplementation.leave leave");
+        query.append(" INNER JOIN leaveImplementation.empData empData");
+        query.append(" INNER JOIN empData.bioData bioData ");
+        query.append(" INNER JOIN empData.jabatanByJabatanId jabatanByJabatanId");
+        query.append(" INNER JOIN jabatanByJabatanId.department department");
+        query.append(" INNER JOIN jabatanByJabatanId.golonganJabatan golonganJabatan ");
+
+        //Implement Filter
+        query.append(doFilterLeaveReport(parameter));
+        List<Long> listDepartmentId = Lambda.extract(parameter.getListDepartment(), Lambda.on(Department.class).getId());
+
         return (Long) getCurrentSession().createQuery(query.toString())
-        		.setParameter("startDate", parameter.getStartDate())
-        		.setParameter("endDate", parameter.getEndDate())
+                .setParameter("startDate", parameter.getStartDate())
+                .setParameter("endDate", parameter.getEndDate())
                 .setParameterList("listDepartmentId", listDepartmentId)
                 .setParameterList("listGolJabatan", parameter.getListGolJab())
                 .uniqueResult();
-        
-	}
-	
-	private String doFilterLeaveReport( ReportLeaveDataSearchParameter  parameter){
-		StringBuilder query = new StringBuilder();
-		
-		query.append(" WHERE leaveImplementationDate.actualDate >= :startDate AND  leaveImplementationDate.actualDate <= :endDate ");
-		
-		if(!parameter.getListDepartment().isEmpty()){
-			
-			query.append(" AND department.id IN :listDepartmentId");
-		}
-		
-		if(!parameter.getListGolJab().isEmpty()){
-			query.append(" AND golonganJabatan.code IN :listGolJabatan");
-		}
-		
-		return query.toString();
-	}
-	
-	public String getRealFieldLeaveReport(String orderField){
-		String realOrderField = StringUtils.EMPTY;
-	
-		switch (orderField) {
-		
-		case "leaveDate":
-			realOrderField = "leaveImplementationDate.actualDate";
-			break;
-			
-		case "firstName":
-			realOrderField = "bioData.firstName";
-			break;
-			
-		case "leaveName":
-			realOrderField = "leave.name";
-			break;
-			
-		case "numberFilling":
-			realOrderField = "leaveImplementation.numberFilling";
-			break;
 
-		default:
-			break;
-		}
-		return realOrderField;
-	}
+    }
 
-	@Override
-	public Long getTotalEmployeeByEmployeeId(Long id) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+    private String doFilterLeaveReport(ReportLeaveDataSearchParameter parameter) {
+        StringBuilder query = new StringBuilder();
+
+        query.append(" WHERE leaveImplementationDate.actualDate >= :startDate AND  leaveImplementationDate.actualDate <= :endDate ");
+
+        if (!parameter.getListDepartment().isEmpty()) {
+
+            query.append(" AND department.id IN :listDepartmentId");
+        }
+
+        if (!parameter.getListGolJab().isEmpty()) {
+            query.append(" AND golonganJabatan.code IN :listGolJabatan");
+        }
+
+        return query.toString();
+    }
+
+    public String getRealFieldLeaveReport(String orderField) {
+        String realOrderField = StringUtils.EMPTY;
+
+        switch (orderField) {
+
+            case "leaveDate":
+                realOrderField = "leaveImplementationDate.actualDate";
+                break;
+
+            case "firstName":
+                realOrderField = "bioData.firstName";
+                break;
+
+            case "leaveName":
+                realOrderField = "leave.name";
+                break;
+
+            case "numberFilling":
+                realOrderField = "leaveImplementation.numberFilling";
+                break;
+
+            default:
+                break;
+        }
+        return realOrderField;
+    }
+
+    @Override
+    public Long getTotalEmployeeByEmployeeId(Long id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.add(Restrictions.eq("empData.id", id));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-	}
+    }
 
 }

@@ -20,6 +20,7 @@ public class BusinessTravelViewModel implements Serializable {
 	private Integer approvalStatus;
 	private Integer businessTravelStatus;
 	private String destination;
+	private String travelTypeName;
 	private Date startDate;
 	private Date endDate;
 	private String jsonData;
@@ -70,6 +71,12 @@ public class BusinessTravelViewModel implements Serializable {
 	}
 	public void setBusinessTravelStatus(Integer businessTravelStatus) {
 		this.businessTravelStatus = businessTravelStatus;
+	}
+	public String getTravelTypeName() {
+		return travelTypeName;
+	}
+	public void setTravelTypeName(String travelTypeName) {
+		this.travelTypeName = travelTypeName;
 	}
 	public String getDestination() {
 		return destination;

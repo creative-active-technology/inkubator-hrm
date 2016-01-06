@@ -89,6 +89,9 @@ public class NeracaPermitDaoImpl extends IDAOImpl<NeracaPermit> implements Nerac
             criteria.createAlias("permitDistribution.permit", "permit", JoinType.INNER_JOIN);
             criteria.add(Restrictions.like("permit.name", searchParameter.getPermit(), MatchMode.START));
         }
+        if(StringUtils.isNotEmpty(searchParameter.getJabatanName())){
+        	criteria.add(Restrictions.like("jabatanByJabatanId.name", searchParameter.getJabatanName(), MatchMode.ANYWHERE));
+        }
         if (searchParameter.getNik() != null) {
             
             criteria.add(Restrictions.like("empData.nik", searchParameter.getNik(), MatchMode.START));

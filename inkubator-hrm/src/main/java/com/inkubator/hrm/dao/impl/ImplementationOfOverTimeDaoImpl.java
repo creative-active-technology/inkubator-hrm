@@ -80,12 +80,12 @@ public class ImplementationOfOverTimeDaoImpl extends IDAOImpl<ImplementationOfOv
         if (searchParameter.getEmployeeName()!= null) {
              Disjunction disjunction = Restrictions.disjunction();
             disjunction.add(Restrictions.like("empData.nik", searchParameter.getEmployeeName(), MatchMode.START));
-            disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmployeeName(), MatchMode.START));
-            disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmployeeName(), MatchMode.START));
+            disjunction.add(Restrictions.ilike("bioData.combineName", searchParameter.getEmployeeName().toLowerCase(), MatchMode.ANYWHERE));
+//            disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmployeeName(), MatchMode.START));
             criteria.add(disjunction);
         }
         if (searchParameter.getOverTimeName()!= null) {
-             criteria.add(Restrictions.like("wtOverTime.name", searchParameter.getOverTimeName(), MatchMode.START));
+             criteria.add(Restrictions.like("wtOverTime.name", searchParameter.getOverTimeName(), MatchMode.ANYWHERE));
         }
 
         criteria.add(Restrictions.isNotNull("id"));

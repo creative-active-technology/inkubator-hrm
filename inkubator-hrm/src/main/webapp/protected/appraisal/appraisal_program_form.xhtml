@@ -1,0 +1,215 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+				Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlId" globalOnly="true" showDetail="true"/>                
+                <h:form id="formId">
+                	<p:focus context="formId"/>
+                	<div id="box_bg" style="margin: 10px">
+	                    <h:panelGrid columns="2">
+	                        <p:graphicImage library="images" name="bank.png" height="36" width="36" />
+	                        <h:panelGroup layout="block">
+	                            <h:panelGrid>
+	                                <p:outputLabel value="#{appmsg['appraisal_program.form_appraisal_program']}" styleClass="header_big" />
+	                                <p:outputLabel value="#{appmsg['appraisal_program.appraisal_program_from_setting']}" styleClass="header_small_no_bold" />
+	                            </h:panelGrid>
+	                        </h:panelGroup>
+	                    </h:panelGrid>
+	                    <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+	                    <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:20px;">
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="codeId" value="#{appmsg['appraisal_program.code']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="codeId" title="#{appmsg['appraisal_program.code']}" value="#{appraisalProgramFormController.model.code}" 
+	                                    		 required="true" maxlength="12" styleClass="isitext_hrm" style="width:290px;" />
+	                                <p:message for="codeId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="nameId" value="#{appmsg['appraisal_program.name']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputText id="nameId" title="#{appmsg['appraisal_program.name']}" value="#{appraisalProgramFormController.model.name}" 
+	                                    		 required="true" maxlength="100" styleClass="isitext_hrm" style="width:290px;" />
+	                                <p:message for="nameId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel for="performanceGroupId" value="#{appmsg['performancegroup.performance_group']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectOneMenu id="performanceGroupId" styleClass="isitext_hrm" required="true"  value="#{appraisalProgramFormController.model.appraisalPerformanceGroupId}" style="width:290px;">
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                        <f:selectItems value="#{appraisalProgramFormController.model.listPerformanceGroup}" var="performanceGroup" itemValue="#{performanceGroup.id}" itemLabel="#{performanceGroup.name}"/>
+                                    </p:selectOneMenu> 
+	                                <p:message for="performanceGroupId"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['appraisal_program.appraisal_date']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:calendar id="startDateId" required="true" requiredMessage="#{appmsg['appraisal_program.appraisal_start_date_must_be_filled']}" pattern="dd MMMM yyyy" value="#{appraisalProgramFormController.model.evalStartDate}" size="15">
+	                            		<f:validator validatorId="dateBetweenValidator"  />
+	                                    <f:attribute name="endTime" value="#{endDateId}"/>
+	                                    <f:attribute name="dateBetweenValidatorMessage" value="#{appmsg['publicHoliday.publicHoliday_dateValidator']}"/>
+	                            	</p:calendar>
+	                            	<p:outputLabel value="&nbsp;&nbsp;#{appmsg['global.to']}&nbsp;&nbsp;" styleClass="label_hrm"/>
+	                            	<p:calendar id="endDateId" binding="#{endDateId}" required="true" requiredMessage="#{appmsg['appraisal_program.appraisal_end_date_must_be_filled']}" pattern="dd MMMM yyyy" value="#{appraisalProgramFormController.model.evalEndDate}" size="15"/>
+	                            	<p:message for="startDateId"/>
+	                                <p:message for="endDateId"/>
+	                            </p:column>
+	                        </p:row>	
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['appraisal_program.competency']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectBooleanButton value="#{appraisalProgramFormController.model.isGapCompetency}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" 
+	                            						   onIcon="ui-icon-check" offIcon="ui-icon-close" styleClass="label_button"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['appraisal_program.performance']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectBooleanButton value="#{appraisalProgramFormController.model.isPerformanceScoring}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" 
+	                            						   onIcon="ui-icon-check" offIcon="ui-icon-close" styleClass="label_button"/>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['appraisal_program.achievement']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectBooleanButton value="#{appraisalProgramFormController.model.isAchievement}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" 
+	                            						   onIcon="ui-icon-check" offIcon="ui-icon-close" styleClass="label_button">
+	                            		<p:ajax listener="#{appraisalProgramFormController.onChangeIsAchievement()}" update="tableAchievement"/>
+	                           		</p:selectBooleanButton>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                        	<p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value=" " styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column style="width: 80%;">
+	                            	<p:dataTable var="achievement"  value="#{appraisalProgramFormController.model.listCareerAward}" lazy="false" paginator="false" 
+			                                     id="tableAchievement" style="width:50%; margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+			                            <p:column style="text-align: center;width: 25px">
+			                                <f:facet name="header">  
+			                                    <h:outputText value="#{appmsg['global.number']}"  />
+			                                </f:facet>
+			                                <h:outputLabel value="#{no+1}." />
+			                            </p:column>
+			                            <p:column width="70%">
+			                                <f:facet name="header">  
+			                                    <h:outputText value="#{appmsg['appraisal_program.achievement_type']}"/>
+			                                </f:facet>
+			                                <h:outputLabel value= "#{achievement.name}"/>
+			                            </p:column>
+			                            <p:column width="30%">
+			                                <f:facet name="header">  
+			                                    <h:outputText value="#{appmsg['educationhistory.score']}"/>
+			                                </f:facet>
+			                                <p:inputText required="true" value="#{appraisalProgramFormController.model.listAchievementScore[achievement.id]}" size="5" maxlength="3" styleClass="isitext_hrm">
+			                                	<f:convertNumber groupingUsed="false"/>
+			                                </p:inputText>
+			                            </p:column>
+			                        </p:dataTable>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['appraisal_program.discipline']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:selectBooleanButton value="#{appraisalProgramFormController.model.isIndiscipline}" onLabel="#{appmsg['global.yes']}" offLabel="#{appmsg['global.no']}" 
+	                            						   onIcon="ui-icon-check" offIcon="ui-icon-close" styleClass="label_button">
+	                          			<p:ajax listener="#{appraisalProgramFormController.onChangeIsIndiscipline()}" update="tableDiscipline"/>
+	                         		</p:selectBooleanButton>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                        	<p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value=" " styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column style="width: 80%;">
+	                            	<p:dataTable var="discipline"  value="#{appraisalProgramFormController.model.listCareerDiscipline}" lazy="false" paginator="false" 
+			                                     id="tableDiscipline" style="width:50%; margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+			                            <p:column style="text-align: center;width: 25px">
+			                                <f:facet name="header">  
+			                                    <h:outputText value="#{appmsg['global.number']}"  />
+			                                </f:facet>
+			                                <h:outputLabel value="#{no+1}." />
+			                            </p:column>
+			                            <p:column width="70%">
+			                                <f:facet name="header">  
+			                                    <h:outputText value="#{appmsg['appraisal_program.discipline_type']}"/>
+			                                </f:facet>
+			                                <h:outputLabel value= "#{discipline.name}"/>
+			                            </p:column>
+			                            <p:column width="30%">
+			                                <f:facet name="header">  
+			                                    <h:outputText value="#{appmsg['educationhistory.score']}"/>
+			                                </f:facet>
+			                                <p:inputText required="true" value="#{appraisalProgramFormController.model.listIndisciplineScore[discipline.id]}" size="5" maxlength="3" styleClass="isitext_hrm">
+			                                	<f:convertNumber  groupingUsed="false"/>
+			                                </p:inputText>
+			                            </p:column>
+			                        </p:dataTable>
+	                            </p:column>
+	                        </p:row>
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<p:inputTextarea id="descriptionId" rows="5" cols="37" counter="counter" maxlength="225" value="#{appraisalProgramFormController.model.description}" 
+                                                 	 style="width: 290px; height: 40px;" counterTemplate="#{appmsg['global.remaining']}" autoResize="true" required="false"
+                                                 	 label="#{appmsg['global.description']}" title="#{appmsg['global.description']}" />
+                                    <p:message for="descriptionId"/>
+                                    <h:outputText id="counter" />
+	                            </p:column>
+	                        </p:row>
+	                 	</p:panelGrid>	
+	                 	                    
+	                    <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+	                    <div style="margin-bottom: 5px">
+	                        <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formId,:growlId"
+	                                         action="#{appraisalProgramFormController.doSave()}" styleClass="isitext_hrm"
+	                                         style="margin-right: 5px" label="#{appmsg['global.save']}"
+	                                         icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+	                        <p:commandButton value="#{appmsg['global.reset']}" title="#{appmsg['global.reset']}" process="@this" update="formId"
+                                                 icon="ui-icon-refresh" styleClass="isitext_hrm"  style="margin-right: 5px">  
+	                            <p:resetInput target="formId" />  
+	                        </p:commandButton>
+	                        <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{appraisalProgramFormController.doBack()}" immediate="true"
+	                                      	 styleClass="label_button"/>
+	                    </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

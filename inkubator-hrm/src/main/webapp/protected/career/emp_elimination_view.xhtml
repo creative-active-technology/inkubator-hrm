@@ -121,7 +121,9 @@
                                 <f:facet name="header">
                                     <h:outputText value="#{appmsg['global.status']}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.status}" />
+                                <h:outputLabel value= "#{data.status}" >
+                                	<f:converter converterId="empEliminationStatusConverter" />
+                                </h:outputLabel>
                             </p:column>
                             <p:column headerText="#{appmsg['global.action']}" style="width: 5%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"

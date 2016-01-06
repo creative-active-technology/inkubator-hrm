@@ -41,7 +41,7 @@ public class PermitDistributionDaoImpl extends IDAOImpl<PermitDistribution> impl
     @Override
     public List<PermitDistribution> getByParamWithDetail(PermitDistributionSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        doSearch(searchParameter, criteria);        
+        doSearch(searchParameter, criteria);
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -59,17 +59,18 @@ public class PermitDistributionDaoImpl extends IDAOImpl<PermitDistribution> impl
         criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
         criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
         criteria.createAlias("permitClassification", "permitClassification", JoinType.INNER_JOIN);
-        
+
         if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
-            Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.START));
-            disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmpData(), MatchMode.START));
-            criteria.add(disjunction);
+//            Disjunction disjunction = Restrictions.disjunction();
+//            disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.START));
+//            disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmpData(), MatchMode.START));
+//            criteria.add(disjunction);
+            criteria.add(Restrictions.ilike("bioData.combineName", searchParameter.getEmpData().toLowerCase(), MatchMode.ANYWHERE));
         }
-        if (StringUtils.isNotEmpty(searchParameter.getPermitClassification())) {            
-            criteria.add(Restrictions.like("permitClassification.name", searchParameter.getPermitClassification(), MatchMode.START));
+        if (StringUtils.isNotEmpty(searchParameter.getPermitClassification())) {
+            criteria.add(Restrictions.like("permitClassification.name", searchParameter.getPermitClassification(), MatchMode.ANYWHERE));
         }
-        if (searchParameter.getNik() != null) {            
+        if (searchParameter.getNik() != null) {
             criteria.add(Restrictions.like("empData.nik", searchParameter.getNik(), MatchMode.START));
         }
         criteria.add(Restrictions.isNotNull("id"));
@@ -143,11 +144,11 @@ public class PermitDistributionDaoImpl extends IDAOImpl<PermitDistribution> impl
         return (PermitDistribution) criteria.uniqueResult();
     }
 
-	@Override
-	public List<PermitDistribution> getAllDataByEmpDataId(Long empDataId) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("empData.id", empDataId));
-		criteria.setFetchMode("permitClassification", FetchMode.JOIN);
-		return criteria.list();
-	}
+    @Override
+    public List<PermitDistribution> getAllDataByEmpDataId(Long empDataId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        criteria.setFetchMode("permitClassification", FetchMode.JOIN);
+        return criteria.list();
+    }
 }

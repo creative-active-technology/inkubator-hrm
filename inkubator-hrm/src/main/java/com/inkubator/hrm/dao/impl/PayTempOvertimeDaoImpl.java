@@ -57,7 +57,8 @@ public class PayTempOvertimeDaoImpl extends IDAOImpl<PayTempOvertime> implements
         criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
         criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
         if (searchParameter.getEmployeeName() != null) {
-            criteria.add(Restrictions.like("bioData.firstName", searchParameter.getEmployeeName(), MatchMode.START));
+//            criteria.add(Restrictions.like("bioData.firstName", searchParameter.getEmployeeName(), MatchMode.ANYWHERE));
+            criteria.add(Restrictions.ilike("bioData.combineName", searchParameter.getEmployeeName().toLowerCase(), MatchMode.ANYWHERE));
         }
         if (searchParameter.getNim() != null) {
             criteria.add(Restrictions.like("empData.nik", searchParameter.getNim(), MatchMode.START));
@@ -82,16 +83,16 @@ public class PayTempOvertimeDaoImpl extends IDAOImpl<PayTempOvertime> implements
         return (PayTempOvertime) criteria.uniqueResult();
     }
 
-	@Override
-	public void deleteAllData() {
-		Query query = getCurrentSession().createQuery("delete from PayTempOvertime");
+    @Override
+    public void deleteAllData() {
+        Query query = getCurrentSession().createQuery("delete from PayTempOvertime");
         query.executeUpdate();
-	}
-	
-	@Override
-	public PayTempOvertime getEntityByEmpDataId(Long empDataId) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("empData.id", empDataId));
-		return (PayTempOvertime) criteria.uniqueResult();
-	}
+    }
+
+    @Override
+    public PayTempOvertime getEntityByEmpDataId(Long empDataId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("empData.id", empDataId));
+        return (PayTempOvertime) criteria.uniqueResult();
+    }
 }
