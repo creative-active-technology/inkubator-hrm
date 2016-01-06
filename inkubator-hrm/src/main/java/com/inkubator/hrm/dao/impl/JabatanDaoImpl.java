@@ -6,23 +6,30 @@
 package com.inkubator.hrm.dao.impl;
 
 import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.JabatanDao;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.web.model.EmpEliminationViewModel;
+import com.inkubator.hrm.web.model.KompetensiJabatanViewModel;
+import com.inkubator.hrm.web.search.EmpEliminationSearchParameter;
 import com.inkubator.hrm.web.search.JabatanSearchParameter;
 import com.inkubator.hrm.web.search.KompetensiJabatanSearchParameter;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
+import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -263,39 +270,67 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
 	}
 
 	@Override
-	public List<Jabatan> getByParamForKompetensiJabatan(KompetensiJabatanSearchParameter searchParameter,
+	public List<KompetensiJabatanViewModel> getByParamForKompetensiJabatan(KompetensiJabatanSearchParameter searchParameter,
 			int firstResult, int maxResults, Order order) {
-		System.out.println("Masuk====================================DAO");
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		doSearchByParamForKompetensiJabatan(searchParameter, criteria);
-		criteria.addOrder(order);
-		criteria.setFirstResult(firstResult);
-		criteria.setMaxResults(maxResults);
-		System.out.println("Size :::::::::::::::::::::::: " + criteria.list().size());
-		return criteria.list();
+		final StringBuilder query = new StringBuilder("SELECT jabatan.code AS jabatanCode,");
+		query.append(" jabatan.id AS id,");
+		query.append(" jabatan.name AS jabatanName,");
+		query.append(" golonganJabatan.code AS golonganJabatanCode ");
+		query.append(" FROM Jabatan jabatan ");
+		query.append(" INNER JOIN jabatan.golonganJabatan golonganJabatan ");
+		
+		//filter by search param
+        query.append(doSearchByParamForKompetensiJabatan(searchParameter));
+        query.append(" ORDER BY " + order);
+        
+        Query hbm = getCurrentSession().createQuery(query.toString());
+        hbm = this.setValueQueryKompetensiJabatanViewModelByParam(hbm, searchParameter);
+        
+		return hbm.setMaxResults(maxResults).setFirstResult(firstResult)
+				.setResultTransformer(Transformers.aliasToBean(KompetensiJabatanViewModel.class)).list();
 	}
 
 	@Override
 	public Long getTotalByParamForKompetensiJabatan(KompetensiJabatanSearchParameter searchParameter) {
-		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		doSearchByParamForKompetensiJabatan(searchParameter, criteria);
-		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+		final StringBuilder query = new StringBuilder("SELECT COUNT(*) ");
+		query.append(" FROM Jabatan jabatan  ");
+		query.append(" INNER JOIN jabatan.golonganJabatan golonganJabatan");
+		
+		
+		//filter by search param
+        query.append(doSearchByParamForKompetensiJabatan(searchParameter));
+        
+        Query hbm = getCurrentSession().createQuery(query.toString());
+        hbm = this.setValueQueryKompetensiJabatanViewModelByParam(hbm, searchParameter);
+        return Long.valueOf(hbm.uniqueResult().toString());
 		
 	}
 	
-	private void doSearchByParamForKompetensiJabatan(KompetensiJabatanSearchParameter searchParameter, Criteria criteria){
-		criteria.createAlias("golonganJabatan", "golonganJabatan", JoinType.INNER_JOIN);
+	private String doSearchByParamForKompetensiJabatan(KompetensiJabatanSearchParameter searchParameter){
+		StringBuilder query = new StringBuilder();
 		
 		if(searchParameter.getCode() != null){
-			criteria.add(Restrictions.like("code", searchParameter.getCode()));
+			query.append(" WHERE jabatan.code LIKE :code ");
 		}
 		if(searchParameter.getName() != null){
-			criteria.add(Restrictions.like("name", searchParameter.getName()));
+			query.append(" WHERE jabatan.name LIKE :name ");
 		}
 		if(searchParameter.getGolonganJabatan() != null){
-			criteria.add(Restrictions.like("golonganJabatan.code", searchParameter.getParameter(), MatchMode.ANYWHERE));
+			query.append(" WHERE golonganJabatan.code LIKE :golJabCode ");
 		}
-		
+		return query.toString();
 	}
-
+	
+	private Query setValueQueryKompetensiJabatanViewModelByParam(Query hbm, KompetensiJabatanSearchParameter searchParameter) {
+        for (String param : hbm.getNamedParameters()) {
+            if (StringUtils.equals(param, "code")) {
+                hbm.setParameter("code", "%" + searchParameter.getCode() + "%");
+            } else if (StringUtils.equals(param, "name")) {
+                hbm.setParameter("name", "%" + searchParameter.getName() + "%");
+            } else if (StringUtils.equals(param, "golJabCode")) {
+                hbm.setParameter("golJabCode", "%" + searchParameter.getGolonganJabatan() + "%");
+            }
+        }
+        return hbm;
+    }
 }

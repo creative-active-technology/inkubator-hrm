@@ -62,7 +62,10 @@ public class AppraisalProgramDaoImpl extends IDAOImpl<AppraisalProgram> implemen
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("id", id));
 		criteria.setFetchMode("appraisalAchievementPrograms", FetchMode.JOIN);
+		criteria.setFetchMode("appraisalAchievementPrograms.careerAwardType", FetchMode.JOIN);
 		criteria.setFetchMode("appraisalIndisciplinePrograms", FetchMode.JOIN);
+		criteria.setFetchMode("appraisalIndisciplinePrograms.careerDisciplineType", FetchMode.JOIN);
+		criteria.setFetchMode("appraisalPerformanceGroup", FetchMode.JOIN);
 		return (AppraisalProgram) criteria.uniqueResult();
 	}
 

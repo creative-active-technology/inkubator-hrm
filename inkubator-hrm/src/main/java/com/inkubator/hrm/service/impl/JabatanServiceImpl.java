@@ -71,6 +71,7 @@ import com.inkubator.hrm.entity.PaySalaryGrade;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.JobJabatanModel;
+import com.inkubator.hrm.web.model.KompetensiJabatanViewModel;
 import com.inkubator.hrm.web.search.JabatanSearchParameter;
 import com.inkubator.hrm.web.search.KompetensiJabatanSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -819,13 +820,13 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<Jabatan> getByParamForKompetensiJabatan(KompetensiJabatanSearchParameter searchParameter,
+	public List<KompetensiJabatanViewModel> getByParamForKompetensiJabatan(KompetensiJabatanSearchParameter searchParameter,
 			int firstResult, int maxResults, Order order) throws Exception {
 		System.out.println("MASUK==================================SERVICE");
-		List<Jabatan> listJabatan = jabatanDao.getByParamForKompetensiJabatan(searchParameter, firstResult, maxResults, order);
-		for(Jabatan jabatan : listJabatan){
+		List<KompetensiJabatanViewModel> listJabatan = jabatanDao.getByParamForKompetensiJabatan(searchParameter, firstResult, maxResults, order);
+		for(KompetensiJabatanViewModel jabatan : listJabatan){
 			Long total = empDataDao.getTotalKaryawanByJabatanId(jabatan.getId());
-			jabatan.setTotalPejabat(total.intValue());
+			jabatan.setJumlahPejabat(total.intValue());
 		}
 		return listJabatan;
 	}

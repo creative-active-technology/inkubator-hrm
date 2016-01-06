@@ -10,6 +10,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -35,6 +37,7 @@ public class AppraisalProgram implements Serializable {
     private Boolean isPerformanceScoring;
     private Boolean isAchievement;
     private Boolean isIndiscipline;
+    private AppraisalPerformanceGroup appraisalPerformanceGroup;
     private String createdBy;
     private String updatedBy;
     private Date createdOn;
@@ -151,6 +154,16 @@ public class AppraisalProgram implements Serializable {
 
 	public void setIsIndiscipline(Boolean isIndiscipline) {
 		this.isIndiscipline = isIndiscipline;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "appraisal_performance_group_id", nullable=false)
+	public AppraisalPerformanceGroup getAppraisalPerformanceGroup() {
+		return appraisalPerformanceGroup;
+	}
+
+	public void setAppraisalPerformanceGroup(AppraisalPerformanceGroup appraisalPerformanceGroup) {
+		this.appraisalPerformanceGroup = appraisalPerformanceGroup;
 	}
 
 	@Column(name="created_by", length=45)

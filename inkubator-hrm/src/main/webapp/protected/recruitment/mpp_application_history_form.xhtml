@@ -17,9 +17,9 @@
             <ui:define name="center">
                 <p:growl id="growlBankFormlId" globalOnly="true" showDetail="true"/>
                 <h:form id="formBankFormId">
-                    <h:panelGrid  columns="2">
+                    <h:panelGrid  columns="2" >
                         <p:graphicImage library="images" name="loan.png" height="36" width="36" />
-                        <h:panelGroup layout="block">
+                        <h:panelGroup layout="block" >
                             <h:panelGrid>
                                 <p:outputLabel value="#{appmsg['mppRecruitmentHist.mpp_actual_edit_form']}" styleClass="header_big" />
                                 <p:outputLabel value="#{appmsg['mppRecruitmentHist.mpp_actual_edit_data']}" styleClass="header_small_no_bold" />
@@ -28,10 +28,10 @@
                     </h:panelGrid>
                     <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
                     <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
-                        <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
-                        <h:outputLabel value="#{appmsg['mppRecruitmentHist.mpp_actual_edit_form_dialog']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                        <p:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="margin-left : 5px;font-weight: normal!important"/>
+                        <p:outputLabel value="#{appmsg['mppRecruitmentHist.mpp_actual_edit_form_dialog']}" styleClass="label_hrm" style="margin-left : 5px;font-weight: normal!important"/>
                     </h:panelGrid> 
-                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                    <p:panelGrid styleClass="grid_no_border" style="margin-left: 5px;margin-right: 0px">
                         <p:row>
                             <p:column style="width: 29%">
                                 <p:outputLabel value="#{appmsg['menu.period']}" styleClass="label_hrm"/>
@@ -93,7 +93,7 @@
                         
                     </p:panelGrid>
                     <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
-                    <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                    <h:panelGrid columns="2" style="margin-left : 5px;margin-bottom: -30px!important">
                         <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="formBankFormId,:growlBankFormlId"
                                          action="#{mppApplicationHistoryFormController.doSave()}" styleClass="isitext_hrm"
                                          style="margin-right: 5px" label="#{appmsg['global.save']}"

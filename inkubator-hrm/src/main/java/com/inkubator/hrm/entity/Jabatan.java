@@ -48,7 +48,6 @@ public class Jabatan implements java.io.Serializable {
     private String updatedBy;
     private Date updatedOn;
     private Integer levelJabatan;
-    private Integer totalPejabat;
     private Set<Jabatan> jabatans = new HashSet<>(0);
     private Set<JabatanDeskripsi> jabatanDeskripsis = new HashSet<>(0);
     private Set<JabatanSpesifikasi> jabatanSpesifikasis = new HashSet<>(0);
@@ -343,15 +342,6 @@ public class Jabatan implements java.io.Serializable {
         this.jabatanEdukasis = jabatanEdukasis;
     }
     
-    @Transient
-    public Integer getTotalPejabat() {
-		return totalPejabat;
-	}
-
-	public void setTotalPejabat(Integer totalPejabat) {
-		this.totalPejabat = totalPejabat;
-	}
-
 	@Override
     public int hashCode() {
         int hash = 5;

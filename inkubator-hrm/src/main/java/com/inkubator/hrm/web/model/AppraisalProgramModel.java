@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.inkubator.hrm.entity.AppraisalPerformanceGroup;
 import com.inkubator.hrm.entity.CareerAwardType;
 import com.inkubator.hrm.entity.CareerDisciplineType;
 
@@ -27,12 +28,14 @@ public class AppraisalProgramModel implements Serializable {
     private Boolean isPerformanceScoring;
     private Boolean isAchievement;
     private Boolean isIndiscipline;
+    private Long appraisalPerformanceGroupId;
     private Map<Long, BigDecimal> listAchievementScore = new HashMap<>();
     private Map<Long, BigDecimal> listIndisciplineScore = new HashMap<>();
     
     //not persisted
     private List<CareerAwardType> listCareerAward = new ArrayList<>();
     private List<CareerDisciplineType> listCareerDiscipline = new ArrayList<>();
+    private List<AppraisalPerformanceGroup> listPerformanceGroup = new ArrayList<>();
     
 	public Long getId() {
 		return id;
@@ -94,6 +97,12 @@ public class AppraisalProgramModel implements Serializable {
 	public void setIsIndiscipline(Boolean isIndiscipline) {
 		this.isIndiscipline = isIndiscipline;
 	}
+	public Long getAppraisalPerformanceGroupId() {
+		return appraisalPerformanceGroupId;
+	}
+	public void setAppraisalPerformanceGroupId(Long appraisalPerformanceGroupId) {
+		this.appraisalPerformanceGroupId = appraisalPerformanceGroupId;
+	}
 	public Map<Long, BigDecimal> getListAchievementScore() {
 		return listAchievementScore;
 	}
@@ -117,6 +126,12 @@ public class AppraisalProgramModel implements Serializable {
 	}
 	public void setListCareerDiscipline(List<CareerDisciplineType> listCareerDiscipline) {
 		this.listCareerDiscipline = listCareerDiscipline;
+	}
+	public List<AppraisalPerformanceGroup> getListPerformanceGroup() {
+		return listPerformanceGroup;
+	}
+	public void setListPerformanceGroup(List<AppraisalPerformanceGroup> listPerformanceGroup) {
+		this.listPerformanceGroup = listPerformanceGroup;
 	}
     
 }

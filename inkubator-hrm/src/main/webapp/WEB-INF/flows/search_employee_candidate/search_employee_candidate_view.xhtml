@@ -104,7 +104,7 @@
                                     <p:column style="width: 13%;background-color: #e1f0f0!important" >
                                         <p:outputLabel for="religionId"  value="#{appmsg['religion.religion']}" style="font-weight: bold"/>
                                     </p:column>
-                                    <p:column style="text-align: center;" colspan="2">
+                                    <p:column style="text-align: left;" colspan="2">
                                         <p:pickList value="#{searchEmployeeCandidateModel.dualListModelReligion}" var="religion" itemValue="#{religion}" converter="religionConverter" id="religionId"
                                                     required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['religion.religion']}" styleClass="isitext_hrm"
                                                     itemLabel="#{religion.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
@@ -118,7 +118,7 @@
                                 <p:column style="width: 15%;background-color: #e1f0f0!important">
                                     <p:outputLabel for="educationId" value="#{appmsg['global.education']}" styleClass="label_hrm"/>
                                 </p:column>
-                                 <p:column style="text-align: center;" colspan="2">
+                                 <p:column style="text-align: left;" colspan="2">
                                         <p:pickList value="#{searchEmployeeCandidateModel.dualListEducationLevel}" var="educationLevel" itemValue="#{educationLevel}" converter="educationLevelConverter" id="educationId"
                                                     required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['religion.religion']}" styleClass="isitext_hrm"
                                                     itemLabel="#{educationLevel.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"

@@ -83,7 +83,7 @@ public class MppApplicationHistoryDetailController extends BaseController {
         options.put("modal", true);
         options.put("draggable", true);
         options.put("resizable", false);
-        options.put("contentWidth", 550);
+        options.put("contentWidth", 400);
         options.put("contentHeight", 330);
         RequestContext.getCurrentInstance().openDialog("mpp_application_history_form", options, params);
     }
