@@ -14,15 +14,16 @@ import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.MedicalCare;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.hrm.service.MedicalCareService;
+import com.inkubator.hrm.web.model.KompetensiJabatanViewModel;
 import com.inkubator.hrm.web.search.KompetensiJabatanSearchParameter;
 import com.inkubator.hrm.web.search.ReportSickDataSearchParameter;
 
-public class KompetensiJabatanLazyDataModel extends LazyDataModel<Jabatan> implements Serializable{
+public class KompetensiJabatanLazyDataModel extends LazyDataModel<KompetensiJabatanViewModel> implements Serializable{
 
 	private static final Logger LOGGER = Logger.getLogger(KompetensiJabatanLazyDataModel.class);
     private final KompetensiJabatanSearchParameter searchParameter;
     private final JabatanService jabatanService;
-    private List<Jabatan> list = new ArrayList<>();
+    private List<KompetensiJabatanViewModel> list = new ArrayList<>();
     private Integer total;
     
     public KompetensiJabatanLazyDataModel(KompetensiJabatanSearchParameter searchParameter, JabatanService jabatanService){
@@ -31,14 +32,14 @@ public class KompetensiJabatanLazyDataModel extends LazyDataModel<Jabatan> imple
     }
     
     @Override
-    public List<Jabatan> load(int firstResult, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters){
+    public List<KompetensiJabatanViewModel> load(int firstResult, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters){
     	LOGGER.info("Step load lazy data Model");
     	try{
     			Order orderable = null;
     			if(sortField != null){
     				orderable = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
     			} else {
-    				orderable = Order.asc("id");
+    				orderable = Order.desc("jabatan.createdOn");
     			}
     			list = jabatanService.getByParamForKompetensiJabatan(searchParameter, firstResult, pageSize, orderable);
     			total = Integer.parseInt(String.valueOf(jabatanService.getTotalByParamForKompetensiJabatan(searchParameter)));
@@ -54,15 +55,15 @@ public class KompetensiJabatanLazyDataModel extends LazyDataModel<Jabatan> imple
     }
     
     @Override
-    public Object getRowKey(Jabatan jabatan){
-    	return jabatan.getId();
+    public Object getRowKey(KompetensiJabatanViewModel kompetensiJabatanViewModel){
+    	return kompetensiJabatanViewModel.getId();
     }
     
     @Override
-    public Jabatan getRowData(String id){
-    	for (Jabatan jabatan : list){
-    		if(id.equals(String.valueOf(jabatan.getId()))){
-    			return jabatan;
+    public KompetensiJabatanViewModel getRowData(String id){
+    	for (KompetensiJabatanViewModel kompetensiJabatanViewModel : list){
+    		if(id.equals(String.valueOf(kompetensiJabatanViewModel.getId()))){
+    			return kompetensiJabatanViewModel;
     		}
     	}
     	return null;

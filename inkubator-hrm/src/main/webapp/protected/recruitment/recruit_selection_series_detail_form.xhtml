@@ -41,7 +41,7 @@
                                 <h:outputLabel for="selectionTypeId" value=":" styleClass="label_hrm"/>
                             </p:column>
                             <p:column  style="width: 50%">
-                                <p:selectOneMenu disabled="#{recruitmenSelectionSeriesDetailFormController.isUpdate}" id="selectionTypeId" value="#{recruitmenSelectionSeriesDetailFormController.model.recruitSelectionTypeId}" style="width: 96%;margin-right: 3px" required="true">
+                                <p:selectOneMenu disabled="#{recruitmenSelectionSeriesDetailFormController.isUpdate}" id="selectionTypeId" value="#{recruitmenSelectionSeriesDetailFormController.model.recruitSelectionTypeId}" style="width: 74%;margin-right: 3px" required="true">
                                     <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                     <f:selectItems value="#{recruitmenSelectionSeriesDetailFormController.dropDownSelectionType}"/>
                                 </p:selectOneMenu>
@@ -100,7 +100,7 @@
                             </p:column>
                             <p:column style="width: 50%" >
                                 <p:inputTextarea id="description" rows="5" cols="37" counter="counter" maxlength="500" value="#{recruitmenSelectionSeriesDetailFormController.model.note}" 
-                                                 style="width: 96%; height: 50px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
+                                                 style="width: 81%; height: 50px;" counterTemplate="#{appmsg['global.remaining']}"   autoResize="true" required="false"
                                                  label="#{appmsg['role_view.role_description']}" title="#{appmsg['role_view.role_description']}" />
 
                             </p:column>
