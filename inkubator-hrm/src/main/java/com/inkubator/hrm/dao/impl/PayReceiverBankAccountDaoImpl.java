@@ -75,7 +75,7 @@ public class PayReceiverBankAccountDaoImpl extends IDAOImpl<PayReceiverBankAccou
         if (searchParameter.getGolJab() != null) {
             return getCurrentSession().createQuery(hqlQuery.toString())
                     .setParameter("empCondistion", HRMConstant.EMP_TERMINATION)
-                    .setParameter("code", searchParameter.getGolJab())
+                    .setParameter("code", '%' + searchParameter.getGolJab() + '%')
                     .setFirstResult(firstResult)
                     .setMaxResults(maxResults)
                     .setResultTransformer(Transformers.aliasToBean(PayReceiverBankAccountModel.class))
@@ -133,7 +133,7 @@ public class PayReceiverBankAccountDaoImpl extends IDAOImpl<PayReceiverBankAccou
         if (searchParameter.getGolJab() != null) {
             return Long.valueOf(getCurrentSession().createSQLQuery(nativeQuery.toString())
                     .setParameter("empCondistion", HRMConstant.EMP_TERMINATION)
-                    .setParameter("code", searchParameter.getGolJab())
+                    .setParameter("code", '%' + searchParameter.getGolJab() + '%')
                     .uniqueResult().toString());
         }
         if (searchParameter.getNik() != null) {

@@ -40,7 +40,7 @@ public class EmpPersonAchievementDaoImpl extends IDAOImpl<EmpPersonAchievement> 
         doSearchEmpPersonAchievementByParam(searchParameter, criteria);
         //criteria.setFetchMode("empData", FetchMode.JOIN);
         //criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
-        
+
         criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
         criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
         criteria.addOrder(order);
@@ -54,7 +54,7 @@ public class EmpPersonAchievementDaoImpl extends IDAOImpl<EmpPersonAchievement> 
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
         criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
-        
+
         doSearchEmpPersonAchievementByParam(searchParameter, criteria);
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
@@ -70,14 +70,15 @@ public class EmpPersonAchievementDaoImpl extends IDAOImpl<EmpPersonAchievement> 
     }
 
     private void doSearchEmpPersonAchievementByParam(EmpPersonAchievementSearchParameter searchParameter, Criteria criteria) {
-    	criteria.createAlias("careerAwardType", "careerAwardType", JoinType.INNER_JOIN);
+        criteria.createAlias("careerAwardType", "careerAwardType", JoinType.INNER_JOIN);
         if (searchParameter.getCareerAwardTypeName() != null) {
-            criteria.add(Restrictions.like("careerAwardType.name", searchParameter.getCareerAwardTypeName(), MatchMode.START));
+            criteria.add(Restrictions.like("careerAwardType.name", searchParameter.getCareerAwardTypeName(), MatchMode.ANYWHERE));
         }
         if (StringUtils.isNotEmpty(searchParameter.getEmpData())) {
             Disjunction disjunction = Restrictions.disjunction();
-            disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.START));
-            disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmpData(), MatchMode.START));
+            disjunction.add(Restrictions.like("bioData.firstName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("bioData.lastName", searchParameter.getEmpData(), MatchMode.ANYWHERE));
+            disjunction.add(Restrictions.like("empData.nik", searchParameter.getEmpData(), MatchMode.ANYWHERE));
             criteria.add(disjunction);
         }
         criteria.add(Restrictions.isNotNull("id"));
