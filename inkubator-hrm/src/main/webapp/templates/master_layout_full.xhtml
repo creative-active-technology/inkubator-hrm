@@ -246,9 +246,9 @@
                         <div style="float:left">
                             <h:panelGrid style="margin-left: 50px;padding-top: 8px" columns="2">
                                 <p:commandLink >
-                                    <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="22" width="22" cache="true" style="border:  1px solid #ffffff !important; border-radius: 4px !important"    >
+                                    <!-- <p:graphicImage value="#{imageBioDataStreamerController.fotoImage}"  height="22" width="22" cache="true" style="border:  1px solid #ffffff !important; border-radius: 4px !important"    >
                                         <f:param name="id" value="#{BIODATA_ID}"/>
-                                    </p:graphicImage>  
+                                    </p:graphicImage> -->  
                                 </p:commandLink>
                                 <h:panelGroup>
                                     <p:outputLabel value="#{realName} : " style="color: #ff9933 !important;font-weight: bold!important"  styleClass="label_welcome_header" />
@@ -920,15 +920,14 @@
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['career.work_result_management']}"  styleClass="menu_child" icon="img-user-account">
                                                 <p:submenu label="#{appmsg['global.setting']}"  styleClass="menu_child" icon="img-user-account">
-                                                    <p:menuitem value="#{appmsg['career.planning']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.planning']}" url="#" />
                                                     <p:menuitem value="#{appmsg['career.competence_type']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.competence_type']}" url="/protected/appraisal/competence_type_view.htm" />
                                                     <p:menuitem value="#{appmsg['competency_group.competency_group']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['competency_group.competency_group']}" url="/protected/appraisal/competency_group_view.htm" />
                                                     <p:menuitem value="#{appmsg['competency_unit.competency_data']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['competency_unit.competency_data']}" url="/protected/appraisal/competency_unit_view.htm" />
                                                     <p:menuitem value="#{appmsg['career.appraisal']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.appraisal']}" url="#" />                              
-                                                    <p:menuitem value="#{appmsg['career.assessment']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.assessment']}" url="/protected/appraisal/appraisal_program_view.htm" />
+                                                    <p:menuitem value="#{appmsg['career.assessment']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.assessment']}" url="/protected/personalia/system_scoring_view.htm" />
                                                     <p:menuitem value="#{appmsg['performancegroup.performance_group']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['performancegroup.performance_group']}" url="/protected/appraisal/appraisal_perform_group_view.htm" />
                                                 </p:submenu>
-                                                <p:menuitem value="#{appmsg['career.planning_form']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.planning_form']}" url="#" />
+                                                <p:menuitem value="#{appmsg['career.planning_form']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.planning_form']}" url="/protected/appraisal/appraisal_program_view.htm" />
                                                 <p:menuitem value="#{appmsg['career.work_result_form']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.work_result_form']}" url="#" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['career.training_management']}"  styleClass="menu_child" icon="img-user-account">
