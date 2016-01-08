@@ -95,7 +95,7 @@ public class WtFingerExceptionDaoImpl extends IDAOImpl<WtFingerException> implem
             criteria.add(Restrictions.like("empData.nik", searchParameter.getNik(), MatchMode.START));
         }
         if(searchParameter.getNamaJabatan() != null){
-            criteria.add(Restrictions.like("jabatanByJabatanId.name", searchParameter.getNamaJabatan(), MatchMode.START));
+            criteria.add(Restrictions.like("jabatanByJabatanId.name", searchParameter.getNamaJabatan(), MatchMode.ANYWHERE));
         }
         if(searchParameter.getCodeJabatan()!= null){
             criteria.add(Restrictions.like("jabatanByJabatanId.code", searchParameter.getCodeJabatan(), MatchMode.START));
