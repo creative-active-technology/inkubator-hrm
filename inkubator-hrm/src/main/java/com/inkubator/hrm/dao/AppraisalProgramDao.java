@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.AppraisalProgram;
+import com.inkubator.hrm.web.model.AppraisalProgramDistributionViewModel;
 import com.inkubator.hrm.web.search.AppraisalProgramSearchParameter;
 
 /**
@@ -19,5 +20,9 @@ public interface AppraisalProgramDao extends IDAO<AppraisalProgram> {
 	public Long getTotalByParam(AppraisalProgramSearchParameter searchParameter);
 
 	public AppraisalProgram getEntityByIdWithDetail(Long id);
+	
+	public List<AppraisalProgramDistributionViewModel> getAllEmpDistributionByParam(AppraisalProgramSearchParameter searchParameter, int firstResult, int maxResult, Order order);
+	
+	public Long getTotalEmpDistributionByParam(AppraisalProgramSearchParameter searchParameter); 
 	
 }
