@@ -44,6 +44,7 @@ public class AppraisalProgram implements Serializable {
     private Date updatedOn;
     private Set<AppraisalAchievementProgram> appraisalAchievementPrograms = new HashSet<AppraisalAchievementProgram>(0);
     private Set<AppraisalIndisciplineProgram> appraisalIndisciplinePrograms = new HashSet<AppraisalIndisciplineProgram>(0);
+    private Set<AppraisalProgramEmp> appraisalProgramEmps = new HashSet<AppraisalProgramEmp>(0);
     
     public AppraisalProgram() {
     	
@@ -220,6 +221,15 @@ public class AppraisalProgram implements Serializable {
 
 	public void setAppraisalIndisciplinePrograms(Set<AppraisalIndisciplineProgram> appraisalIndisciplinePrograms) {
 		this.appraisalIndisciplinePrograms = appraisalIndisciplinePrograms;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "appraisalProgram")
+	public Set<AppraisalProgramEmp> getAppraisalProgramEmps() {
+		return appraisalProgramEmps;
+	}
+
+	public void setAppraisalProgramEmps(Set<AppraisalProgramEmp> appraisalProgramEmps) {
+		this.appraisalProgramEmps = appraisalProgramEmps;
 	}
     
     
