@@ -77,7 +77,7 @@
                                 </f:facet>
                                 <h:outputLabel value="#{data.name}"/>
                             </p:column>
-                            <p:column sortBy="#{data.phone}"  style="width: 10%">
+                            <p:column sortBy="#{data.phone}"  style="width: 13%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.phone']}"/>
                                 </f:facet>
@@ -89,19 +89,19 @@
                                 </f:facet>
                                 <h:outputLabel value="#{data.positionApply}"/>
                             </p:column>
-                            <p:column sortBy="#{data.positionLast}"  style="width: 10%">
+                            <p:column sortBy="#{data.positionLast}"  style="width: 14%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['applicant_realization.last_position']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{data.positionLast}"/>
                             </p:column>
-                            <p:column style="width: 10%">
+                            <p:column style="width: 6%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.status']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{data.status}"/>
                             </p:column>
-                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 7%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.evaluate']}" label="#{appmsg['global.evaluate']}" 
                                 				 style="font-size: 10px!important" action="#{selectionApplicantRealizationViewController.doEvaluate()}">                        
                                     <f:setPropertyActionListener value="#{data}" target="#{selectionApplicantRealizationViewController.selected}" />

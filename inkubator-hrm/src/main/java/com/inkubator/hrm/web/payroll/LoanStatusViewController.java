@@ -73,6 +73,10 @@ public class LoanStatusViewController extends BaseController {
     	golonganJabatanService = null;
     	dualListGolonganJabatan = null;
     }
+    
+    public String doBack(){
+    	return "/protected/personalia/loan_schema_view.htm?faces-redirect=true";
+    }
 
 	public LazyDataModel<LoanNewApplicationStatusViewModel> getLazyDataModel() {
 		if(lazyDataModel == null){

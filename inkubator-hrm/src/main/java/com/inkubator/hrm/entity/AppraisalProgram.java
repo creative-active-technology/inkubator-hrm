@@ -10,6 +10,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -35,12 +37,14 @@ public class AppraisalProgram implements Serializable {
     private Boolean isPerformanceScoring;
     private Boolean isAchievement;
     private Boolean isIndiscipline;
+    private AppraisalPerformanceGroup appraisalPerformanceGroup;
     private String createdBy;
     private String updatedBy;
     private Date createdOn;
     private Date updatedOn;
     private Set<AppraisalAchievementProgram> appraisalAchievementPrograms = new HashSet<AppraisalAchievementProgram>(0);
     private Set<AppraisalIndisciplineProgram> appraisalIndisciplinePrograms = new HashSet<AppraisalIndisciplineProgram>(0);
+    private Set<AppraisalProgramEmp> appraisalProgramEmps = new HashSet<AppraisalProgramEmp>(0);
     
     public AppraisalProgram() {
     	
@@ -152,6 +156,16 @@ public class AppraisalProgram implements Serializable {
 	public void setIsIndiscipline(Boolean isIndiscipline) {
 		this.isIndiscipline = isIndiscipline;
 	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "appraisal_performance_group_id", nullable=false)
+	public AppraisalPerformanceGroup getAppraisalPerformanceGroup() {
+		return appraisalPerformanceGroup;
+	}
+
+	public void setAppraisalPerformanceGroup(AppraisalPerformanceGroup appraisalPerformanceGroup) {
+		this.appraisalPerformanceGroup = appraisalPerformanceGroup;
+	}
 
 	@Column(name="created_by", length=45)
     public String getCreatedBy() {
@@ -207,6 +221,15 @@ public class AppraisalProgram implements Serializable {
 
 	public void setAppraisalIndisciplinePrograms(Set<AppraisalIndisciplineProgram> appraisalIndisciplinePrograms) {
 		this.appraisalIndisciplinePrograms = appraisalIndisciplinePrograms;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "appraisalProgram")
+	public Set<AppraisalProgramEmp> getAppraisalProgramEmps() {
+		return appraisalProgramEmps;
+	}
+
+	public void setAppraisalProgramEmps(Set<AppraisalProgramEmp> appraisalProgramEmps) {
+		this.appraisalProgramEmps = appraisalProgramEmps;
 	}
     
     

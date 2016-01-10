@@ -17,6 +17,7 @@ import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.AppraisalAchievementProgramDao;
 import com.inkubator.hrm.dao.AppraisalIndisciplineProgramDao;
+import com.inkubator.hrm.dao.AppraisalPerformanceGroupDao;
 import com.inkubator.hrm.dao.AppraisalProgramDao;
 import com.inkubator.hrm.dao.CareerAwardTypeDao;
 import com.inkubator.hrm.dao.CareerDisciplineTypeDao;
@@ -26,6 +27,7 @@ import com.inkubator.hrm.entity.AppraisalProgram;
 import com.inkubator.hrm.entity.CareerAwardType;
 import com.inkubator.hrm.entity.CareerDisciplineType;
 import com.inkubator.hrm.service.AppraisalProgramService;
+import com.inkubator.hrm.web.model.AppraisalProgramDistributionViewModel;
 import com.inkubator.hrm.web.model.AppraisalProgramModel;
 import com.inkubator.hrm.web.search.AppraisalProgramSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -49,6 +51,8 @@ public class AppraisalProgramServiceImpl extends IServiceImpl implements Apprais
 	private CareerAwardTypeDao careerAwardTypeDao;
 	@Autowired
 	private CareerDisciplineTypeDao careerDisciplineTypeDao;
+	@Autowired
+	private AppraisalPerformanceGroupDao appraisalPerformanceGroupDao;
 	
 	@Override
 	public AppraisalProgram getEntiyByPK(String id) throws Exception {
@@ -63,7 +67,7 @@ public class AppraisalProgramServiceImpl extends IServiceImpl implements Apprais
 	}
 
 	@Override
-	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public AppraisalProgram getEntiyByPK(Long id) throws Exception {
 		
 		return appraisalProgramDao.getEntiyByPK(id);
@@ -281,6 +285,7 @@ public class AppraisalProgramServiceImpl extends IServiceImpl implements Apprais
 		entity.setIsGapCompetency(model.getIsGapCompetency());
 		entity.setIsIndiscipline(model.getIsIndiscipline());
 		entity.setIsPerformanceScoring(model.getIsPerformanceScoring());
+		entity.setAppraisalPerformanceGroup(appraisalPerformanceGroupDao.getEntiyByPK(model.getAppraisalPerformanceGroupId()));
 		entity.setUpdatedBy(UserInfoUtil.getUserName());
 		entity.setUpdatedOn(new Date());
 		appraisalProgramDao.update(entity);
@@ -344,6 +349,7 @@ public class AppraisalProgramServiceImpl extends IServiceImpl implements Apprais
 		entity.setIsGapCompetency(model.getIsGapCompetency());
 		entity.setIsIndiscipline(model.getIsIndiscipline());
 		entity.setIsPerformanceScoring(model.getIsPerformanceScoring());
+		entity.setAppraisalPerformanceGroup(appraisalPerformanceGroupDao.getEntiyByPK(model.getAppraisalPerformanceGroupId()));
 		entity.setCreatedBy(UserInfoUtil.getUserName());
 		entity.setCreatedOn(new Date());
 		appraisalProgramDao.save(entity);
@@ -383,6 +389,20 @@ public class AppraisalProgramServiceImpl extends IServiceImpl implements Apprais
 		indisciplineProgram.setCreatedBy(UserInfoUtil.getUserName());
 		indisciplineProgram.setCreatedOn(new Date());
 		appraisalIndisciplineProgramDao.save(indisciplineProgram);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<AppraisalProgramDistributionViewModel> getAllEmpDistributionByParam(AppraisalProgramSearchParameter searchParameter, int firstResult, int maxResult, Order order) throws Exception {
+		
+		return appraisalProgramDao.getAllEmpDistributionByParam(searchParameter, firstResult, maxResult, order);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalEmpDistributionByParam(AppraisalProgramSearchParameter searchParameter) throws Exception {
+
+		return appraisalProgramDao.getTotalEmpDistributionByParam(searchParameter);
 	}
 	
 

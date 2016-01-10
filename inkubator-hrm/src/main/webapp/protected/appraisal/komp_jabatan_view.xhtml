@@ -73,25 +73,25 @@
                                 <f:facet name="header">
                                     <h:outputText value="Kode Jabatan"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.code}" />
+                                <h:outputLabel value= "#{data.jabatanCode}" />
                             </p:column>
                             <p:column sortBy="#{data.name}" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="Nama Jabatan"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.name}" />
+                                <h:outputLabel value= "#{data.jabatanName}" />
                             </p:column>
-                            <p:column sortBy="#{data.golonganJabatan.code}" style="width: 25%">
+                            <p:column sortBy="#{data.golonganJabatan.Code}" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="Golongan Jabatan}"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.golonganJabatan.code}" />
+                                <h:outputLabel value= "#{data.golonganJabatanCode}" />
                             </p:column>
-                            <p:column sortBy="#{data.totalPejabat}" style="width: 25%">
+                            <p:column sortBy="#{data.jumlahPejabat}" style="width: 25%">
                                 <f:facet name="header">
                                     <h:outputText value="Total Pejabat"/>
                                 </f:facet>
-                                <h:outputLabel value= "#{data.totalPejabat}" />
+                                <h:outputLabel value= "#{data.jumlahPejabat}" />
                             </p:column>
                             <!-- <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}"

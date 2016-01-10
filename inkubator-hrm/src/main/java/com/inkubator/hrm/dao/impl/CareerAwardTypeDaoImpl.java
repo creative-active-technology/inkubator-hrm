@@ -54,7 +54,7 @@ public class CareerAwardTypeDaoImpl extends IDAOImpl<CareerAwardType> implements
 			criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
 		}
 		if(searchParameter.getName() != null){
-			criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.START));
+			criteria.add(Restrictions.like("name", searchParameter.getName(), MatchMode.ANYWHERE));
 		}
 		criteria.add(Restrictions.isNotNull("id"));
 	}

@@ -11,6 +11,7 @@ import org.primefaces.model.LazyDataModel;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.hrm.web.lazymodel.KompetensiJabatanLazyDataModel;
+import com.inkubator.hrm.web.model.KompetensiJabatanViewModel;
 import com.inkubator.hrm.web.search.DivisiSearchParameter;
 import com.inkubator.hrm.web.search.KompetensiJabatanSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
@@ -21,7 +22,7 @@ public class KompetensiJabatanViewController extends BaseController{
 	@ManagedProperty(value = "#{jabatanService}")
     private JabatanService jabatanService;
     private KompetensiJabatanSearchParameter searchParameter;
-    private LazyDataModel<Jabatan> lazy;
+    private LazyDataModel<KompetensiJabatanViewModel> lazy;
     private Jabatan selected;
     
     @Override
@@ -72,14 +73,14 @@ public class KompetensiJabatanViewController extends BaseController{
 		this.searchParameter = searchParameter;
 	}
 
-	public LazyDataModel<Jabatan> getLazy() {
+	public LazyDataModel<KompetensiJabatanViewModel> getLazy() {
 		if (lazy == null){
 			lazy = new KompetensiJabatanLazyDataModel(searchParameter, jabatanService);
 		}
 		return lazy;
 	}
 
-	public void setLazy(LazyDataModel<Jabatan> lazy) {
+	public void setLazy(LazyDataModel<KompetensiJabatanViewModel> lazy) {
 		this.lazy = lazy;
 	}
 

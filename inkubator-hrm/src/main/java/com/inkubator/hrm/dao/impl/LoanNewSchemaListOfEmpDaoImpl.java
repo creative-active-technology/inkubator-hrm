@@ -48,11 +48,10 @@ public class LoanNewSchemaListOfEmpDaoImpl extends IDAOImpl<LoanNewSchemaListOfE
         }else if(parameter.getCode()!= null){
             query.append(" WHERE goljab.code like '%" + parameter.getCode()+ "%'");
         }else if(parameter.getNoSk()!= null){
-            System.out.println(" Herererer");
-            query.append(" WHERE newSchema.nomor_sk like '%" + parameter.getNoSk()+ "%'");
+            query.append(" WHERE listEmp.nomor_sk like '%" + parameter.getNoSk()+ "%'");
         }
         query.append(" LIMIT " + firstResult + ", " + maxResults);
-       
+        System.out.println(" Querynya "+query.toString());
         return getCurrentSession().createSQLQuery(query.toString())
                 .setResultTransformer(Transformers.aliasToBean(LoanNewSchemaListOfEmpViewModel.class))
                 .list();
@@ -92,7 +91,7 @@ public class LoanNewSchemaListOfEmpDaoImpl extends IDAOImpl<LoanNewSchemaListOfE
         }else if(parameter.getCode()!= null){
             query.append(" WHERE goljab.code like '%" + parameter.getCode()+ "%'");
         }else if(parameter.getNoSk()!= null){
-            query.append(" WHERE newSchema.nomor_sk like '%" + parameter.getNoSk()+ "%'");
+            query.append(" WHERE listEmp.nomor_sk like '%" + parameter.getNoSk()+ "%'");
         }
         query.append(" ) as jumlahData");
         Query hbm = getCurrentSession().createSQLQuery(query.toString());
