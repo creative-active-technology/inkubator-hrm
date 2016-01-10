@@ -13,6 +13,7 @@ import com.inkubator.hrm.entity.WtPeriode;
 import com.inkubator.hrm.service.TempAttendanceRealizationService;
 import com.inkubator.hrm.service.WtPeriodeService;
 import com.inkubator.hrm.web.lazymodel.PaidOvertimeLazyDataModel;
+import com.inkubator.hrm.web.search.PaidOvertimeSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
 
 /**
@@ -26,6 +27,7 @@ public class PaidOvertimeViewController extends BaseController {
 	private WtPeriode period;
 	private Long totalEmployee;
     private LazyDataModel<TempAttendanceRealization> lazyDataModel;
+    private PaidOvertimeSearchParameter searchParameter;
     @ManagedProperty(value = "#{wtPeriodeService}")
     private WtPeriodeService wtPeriodeService;
     @ManagedProperty(value = "#{tempAttendanceRealizationService}")
@@ -36,8 +38,9 @@ public class PaidOvertimeViewController extends BaseController {
     public void initialization() {
         super.initialization();
         try {
+        	searchParameter = new PaidOvertimeSearchParameter();
 			period = wtPeriodeService.getEntityByPayrollTypeActive();
-			totalEmployee = tempAttendanceRealizationService.getTotalPaidOvertimeByParam();
+			totalEmployee = tempAttendanceRealizationService.getTotalPaidOvertimeByParam(searchParameter);
 		} catch (Exception e) {
 			LOGGER.error("Error", e);
 		}
@@ -51,6 +54,10 @@ public class PaidOvertimeViewController extends BaseController {
     	tempAttendanceRealizationService = null;
     	totalEmployee = null;
     }
+    
+    public void doSearch(){
+    	lazyDataModel = null;
+    }
 
 	public WtPeriode getPeriod() {
 		return period;
@@ -62,7 +69,7 @@ public class PaidOvertimeViewController extends BaseController {
 
 	public LazyDataModel<TempAttendanceRealization> getLazyDataModel() {
 		if(lazyDataModel == null){
-			lazyDataModel = new PaidOvertimeLazyDataModel(tempAttendanceRealizationService);
+			lazyDataModel = new PaidOvertimeLazyDataModel(searchParameter, tempAttendanceRealizationService);
 		}
 		return lazyDataModel;
 	}
@@ -94,5 +101,14 @@ public class PaidOvertimeViewController extends BaseController {
 	public void setTotalEmployee(Long totalEmployee) {
 		this.totalEmployee = totalEmployee;
 	}
+
+	public PaidOvertimeSearchParameter getSearchParameter() {
+		return searchParameter;
+	}
+
+	public void setSearchParameter(PaidOvertimeSearchParameter searchParameter) {
+		this.searchParameter = searchParameter;
+	}
+	
 	
 }

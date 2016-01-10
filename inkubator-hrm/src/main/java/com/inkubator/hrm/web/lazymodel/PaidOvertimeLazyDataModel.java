@@ -12,6 +12,7 @@ import org.primefaces.model.SortOrder;
 
 import com.inkubator.hrm.entity.TempAttendanceRealization;
 import com.inkubator.hrm.service.TempAttendanceRealizationService;
+import com.inkubator.hrm.web.search.PaidOvertimeSearchParameter;
 
 
 /**
@@ -22,10 +23,12 @@ public class PaidOvertimeLazyDataModel extends LazyDataModel<TempAttendanceReali
 
     private static final Logger LOGGER = Logger.getLogger(PaidOvertimeLazyDataModel.class);
     private final TempAttendanceRealizationService tempAttendanceRealizationService;
+    private final PaidOvertimeSearchParameter searchParameter;
     private List<TempAttendanceRealization> list = new ArrayList<>();
     private Integer total;
 
-    public PaidOvertimeLazyDataModel(TempAttendanceRealizationService tempAttendanceRealizationService) {
+    public PaidOvertimeLazyDataModel(PaidOvertimeSearchParameter searchParameter, TempAttendanceRealizationService tempAttendanceRealizationService) {
+    	this.searchParameter = searchParameter;
         this.tempAttendanceRealizationService = tempAttendanceRealizationService;
     }
 
@@ -40,8 +43,8 @@ public class PaidOvertimeLazyDataModel extends LazyDataModel<TempAttendanceReali
 	        	orderable = Order.asc("id");
 	        }
 	        
-	        list = tempAttendanceRealizationService.getPaidOvertimeByParam(first, pageSize, orderable);
-            total = Integer.parseInt(String.valueOf(tempAttendanceRealizationService.getTotalPaidOvertimeByParam()));            
+	        list = tempAttendanceRealizationService.getPaidOvertimeByParam(searchParameter, first, pageSize, orderable);
+            total = Integer.parseInt(String.valueOf(tempAttendanceRealizationService.getTotalPaidOvertimeByParam(searchParameter)));            
         	LOGGER.info("Success Load Lazy data Model");
         	
         } catch (Exception ex) {

@@ -75,6 +75,7 @@ import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.WorkingTimeDeviation;
 import com.inkubator.hrm.web.model.WorkingTimeDeviationDetailModel;
 import com.inkubator.hrm.web.model.WorkingTimeDeviationListDetailModel;
+import com.inkubator.hrm.web.search.PaidOvertimeSearchParameter;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 import com.inkubator.hrm.web.search.WtAttendanceCalculationSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
@@ -1318,23 +1319,19 @@ public class TempAttendanceRealizationServiceImpl extends IServiceImpl implement
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<TempAttendanceRealizationMonthEndViewModel> getAllDataMonthEndByPeriodId(Long wtPeriodId) throws Exception {
-
         return tempAttendanceRealizationDao.getAllDataMonthEndByPeriodId(wtPeriodId);
     }
 	
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
-	public List<TempAttendanceRealization> getPaidOvertimeByParam(int firstResult, int maxResults, Order orderable)
-			throws Exception {
-		
-		return tempAttendanceRealizationDao.getPaidOvertimeByParam(firstResult, maxResults, orderable);
+	public List<TempAttendanceRealization> getPaidOvertimeByParam(PaidOvertimeSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) throws Exception {
+		return tempAttendanceRealizationDao.getPaidOvertimeByParam(searchParameter, firstResult, maxResults, orderable);
 	}
 
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
-	public Long getTotalPaidOvertimeByParam() throws Exception {
-		
-		return tempAttendanceRealizationDao.getTotalPaidOvertimeByParam();
+	public Long getTotalPaidOvertimeByParam(PaidOvertimeSearchParameter searchParameter) throws Exception {
+		return tempAttendanceRealizationDao.getTotalPaidOvertimeByParam(searchParameter);
 	}
 	
 }
