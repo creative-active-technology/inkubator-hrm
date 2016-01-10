@@ -39,7 +39,7 @@
 <!--                                	<p:calendar value="#{reportAttendanceViewController.modelSearchParameter.startPeriod}" style="width: 100px" styleClass="isitext_hrm"/>
                                     <p:outputLabel value="&nbsp;&nbsp;&nbsp;#{appmsg['global.to']}&nbsp;&nbsp;&nbsp;" />
                                     <p:calendar value="#{reportAttendanceViewController.modelSearchParameter.endPeriod}" style="width: 100px" styleClass="isitext_hrm"/>		                    		-->
-                                    <p:selectOneMenu id="businessTypeId" styleClass="isitext_hrm" required="true"  value="#{reportAttendanceViewController.modelSearchParameter.wtPeriodeId}">
+                                    <p:selectOneMenu id="businessTypeId" styleClass="isitext_hrm"   value="#{reportAttendanceViewController.modelSearchParameter.wtPeriodeId}">
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItems value="#{reportAttendanceViewController.data}"  var="data" itemValue="#{data.id}" itemLabel="#{data.bulanAsLabel}- #{data.tahun} "/>
                                     </p:selectOneMenu>
@@ -74,15 +74,18 @@
                                     </p:column>
                                 </div>
                             </p:row>
+                            
+                             <p:row>
+                                <p:column style="width: 13%;background-color: #e1f0f0!important" >
 
+                                </p:column>
+                                <p:column>
+                                	<p:commandButton id="buttonSearchId" value="#{appmsg['global.search']}" action="#{reportAttendanceViewController.doSearchEmployee()}" title="#{appmsg['global.search']}" label="#{appmsg['global.search']}" styleClass="label_button" icon="ui-icon-document"   update="formId" />
+                                </p:column>
+                            </p:row>
                         </p:panelGrid>
-                        <p:commandButton id="buttonSearchId" value="#{appmsg['global.search']}" actionListener="#{reportAttendanceViewController.doSearchEmployee()}" title="#{appmsg['global.search']}" label="#{appmsg['global.search']}" styleClass="label_button" icon="ui-icon-document" ajax="true" update="tableId">
-                                <!--<p:ajax event="dialogReturn" listener="#{jabatanSpesifikasiDetailController.onDialogReturn}" update="tableJobSpekId, :userViewGrowlId"/>-->
-                        </p:commandButton>
-
 
                         <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
-
                         <p:toolbar  style="margin-top: 10px">
 
                             <p:toolbarGroup align="right">
