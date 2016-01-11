@@ -16,29 +16,29 @@ import org.hibernate.criterion.Order;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
-import com.inkubator.hrm.entity.AppraisalProgram;
-import com.inkubator.hrm.service.AppraisalProgramService;
-import com.inkubator.hrm.web.search.AppraisalProgramSearchParameter;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.service.AppraisalProgramEmpService;
+import com.inkubator.hrm.web.search.AppraisalProgramEmployeeSearchParameter;
 
 /**
  *
  * @author rizkykojek
  */
-public class AppraisalProgramLazyDataModel extends LazyDataModel<AppraisalProgram> implements Serializable{
+public class AppraisalProgramEmployeeLazyDataModel extends LazyDataModel<EmpData> implements Serializable{
 	
-    private static final Logger LOGGER = Logger.getLogger(AppraisalProgramLazyDataModel.class);
-    private final AppraisalProgramSearchParameter searchParameter;
-    private final AppraisalProgramService appraisalProgramService;
-    private List<AppraisalProgram> list = new ArrayList<>();
+    private static final Logger LOGGER = Logger.getLogger(AppraisalProgramEmployeeLazyDataModel.class);
+    private final AppraisalProgramEmployeeSearchParameter searchParameter;
+    private final AppraisalProgramEmpService appraisalProgramEmpService;
+    private List<EmpData> list = new ArrayList<>();
     private Integer total;
     
-    public AppraisalProgramLazyDataModel(AppraisalProgramSearchParameter searchParameter, AppraisalProgramService appraisalProgramService){
+    public AppraisalProgramEmployeeLazyDataModel(AppraisalProgramEmployeeSearchParameter searchParameter, AppraisalProgramEmpService appraisalProgramEmpService){
         this.searchParameter = searchParameter;
-        this.appraisalProgramService = appraisalProgramService;
+        this.appraisalProgramEmpService = appraisalProgramEmpService;
     }
     
     @Override
-    public List<AppraisalProgram> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters){
+    public List<EmpData> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters){
         LOGGER.info("Step Load Lazy Data Model");
         try{
             Order order = null;
@@ -47,8 +47,8 @@ public class AppraisalProgramLazyDataModel extends LazyDataModel<AppraisalProgra
             } else {
                 order = Order.desc("id");
             }
-            list = appraisalProgramService.getAllDataByParam(searchParameter, first, pageSize, order);
-            total = Integer.parseInt(String.valueOf(appraisalProgramService.getTotalByParam(searchParameter)));
+            list = appraisalProgramEmpService.getAllEmployeeNotDistributedByParam(searchParameter, first, pageSize, order);
+            total = Integer.parseInt(String.valueOf(appraisalProgramEmpService.getTotalEmployeeNotDistributedByParam(searchParameter)));
         } catch (Exception ex){
             LOGGER.error("Error", ex);
         }
@@ -60,15 +60,15 @@ public class AppraisalProgramLazyDataModel extends LazyDataModel<AppraisalProgra
     }
     
     @Override
-    public Object getRowKey(AppraisalProgram appraisalProgram){
-        return appraisalProgram.getId();
+    public Object getRowKey(EmpData empData){
+        return empData.getId();
     }
     
     @Override
-    public AppraisalProgram getRowData(String id){
-        for(AppraisalProgram appraisalProgram : list){
-        	if(StringUtils.equals(id, String.valueOf(appraisalProgram.getId()))){
-                return appraisalProgram;
+    public EmpData getRowData(String id){
+        for(EmpData empData : list){
+        	if(StringUtils.equals(id, String.valueOf(empData.getId()))){
+                return empData;
             }
         }
         return null;
