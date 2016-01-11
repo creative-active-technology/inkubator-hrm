@@ -1,7 +1,13 @@
 package com.inkubator.hrm.dao;
 
+import java.util.List;
+
+import org.hibernate.criterion.Order;
+
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.AppraisalProgramEmp;
+import com.inkubator.hrm.entity.EmpData;
+import com.inkubator.hrm.web.search.AppraisalProgramEmployeeSearchParameter;
 
 /**
  *
@@ -9,4 +15,8 @@ import com.inkubator.hrm.entity.AppraisalProgramEmp;
  */
 public interface AppraisalProgramEmpDao extends IDAO<AppraisalProgramEmp> {
 
+	public List<EmpData> getAllEmployeeNotDistributedByParam(AppraisalProgramEmployeeSearchParameter searchParameter, int firstResult, int maxResult, Order order);
+	
+	public Long getTotalEmployeeNotDistributedByParam(AppraisalProgramEmployeeSearchParameter searchParameter);
+	
 }
