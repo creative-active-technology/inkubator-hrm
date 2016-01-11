@@ -24,6 +24,7 @@ import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.BarChartSeries;
 import org.primefaces.model.chart.CartesianChartModel;
+import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
@@ -50,33 +51,30 @@ public class ChartPayrollHistoryReportController extends BaseController {
     public void initialization() {
         try {
             super.initialization();            
-            dateFormat = new SimpleDateFormat("MMMM yyyy");
+            dateFormat = new SimpleDateFormat("MMM yyyy");
             reportParameter = new ReportPayrollHistorySearchParameter();
             payrollHistoryReportModelList = logMonthEndPayrollService.getDataForPayrollHistoryReport();
-            
             //Initalize cartModelSalaryEveryMonth
             cartModelSalaryEveryMonth = new LineChartModel();
             cartModelSalaryEveryMonth.setLegendPosition("ne");
             cartModelSalaryEveryMonth.setStacked(Boolean.FALSE);
             cartModelSalaryEveryMonth.setAnimate(Boolean.TRUE);
             cartModelSalaryEveryMonth.setShowDatatip(Boolean.TRUE);
+            cartModelSalaryEveryMonth.setShowPointLabels(Boolean.TRUE);
             cartModelSalaryEveryMonth.setLegendCols(1);
-            Axis xAxisCartModelSalaryEveryMonth = cartModelSalaryEveryMonth.getAxis(AxisType.X);
+            cartModelSalaryEveryMonth.getAxes().put(AxisType.X, new CategoryAxis("Month"));
             Axis yAxisCartModelSalaryEveryMonth = cartModelSalaryEveryMonth.getAxis(AxisType.Y);
-            xAxisCartModelSalaryEveryMonth.setLabel("Month");
             yAxisCartModelSalaryEveryMonth.setLabel("Salary");
             yAxisCartModelSalaryEveryMonth.setMin(0);
             yAxisCartModelSalaryEveryMonth.setMax(1200);
-            
-            
-            
  
-            LineChartSeries lineChartSeriesPayrollPerMonth = new LineChartSeries();
+            ChartSeries lineChartSeriesPayrollPerMonth = new ChartSeries();
             lineChartSeriesPayrollPerMonth.setLabel("Grafik Gaji Perbulan (Dalam Jutaan Rupiah)");
             
+            
             //fill data from payrollModel
-            for(PayrollHistoryReportModel payrollModel : payrollHistoryReportModelList){               
-                lineChartSeriesPayrollPerMonth.set(dateFormat.format(payrollModel.getTglAwalPeriode()), payrollModel.getNominal().doubleValue()/1000000);         
+            for(PayrollHistoryReportModel payrollModel : payrollHistoryReportModelList){   
+                lineChartSeriesPayrollPerMonth.set(dateFormat.format(payrollModel.getTglAwalPeriode()), (int)payrollModel.getNominal().doubleValue()/1000000);         
             }
                         
             cartModelSalaryEveryMonth.addSeries(lineChartSeriesPayrollPerMonth);

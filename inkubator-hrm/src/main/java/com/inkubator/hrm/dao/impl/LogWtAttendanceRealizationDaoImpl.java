@@ -146,7 +146,7 @@ public class LogWtAttendanceRealizationDaoImpl extends IDAOImpl<LogWtAttendanceR
             criteria.add(Restrictions.in("empDepartementName", model.getListDeptName()));
         }
 
-        if (model.getListDeptName() != null && model.getListGolJabName().size() > 0) {
+        if (model.getListGolJabName() != null && model.getListGolJabName().size() > 0) {
             criteria.add(Restrictions.in("empGolJab", model.getListGolJabName()));
         }
 //        if (model.getListGolJabName() != null) {
