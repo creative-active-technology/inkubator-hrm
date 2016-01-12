@@ -5,6 +5,8 @@ import com.inkubator.hrm.dao.PublicHolidayExceptionDao;
 import com.inkubator.hrm.entity.PublicHolidayException;
 import com.inkubator.hrm.web.search.PublicHolidayExceptionSearchParameter;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
@@ -51,6 +53,10 @@ public class PublicHolidayExceptionDaoImpl extends IDAOImpl<PublicHolidayExcepti
         criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
         criteria.createAlias("publicHoliday", "publicHoliday", JoinType.INNER_JOIN);
         criteria.createAlias("publicHoliday.leave", "leave", JoinType.INNER_JOIN);
+        
+        if(StringUtils.isNotBlank(parameter.getPublicHolidayCode())){
+        	criteria.add(Restrictions.ilike("publicHoliday.code", parameter.getPublicHolidayCode(), MatchMode.ANYWHERE));
+        }
         
         if (parameter.getEmpDataName()!= null) {
             /*criteria.add(Restrictions.or(Restrictions.like("bioData.firstName", parameter.getEmpDataName(), MatchMode.ANYWHERE),
