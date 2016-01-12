@@ -183,17 +183,17 @@ public class LoanNewApplicationDaoImpl extends IDAOImpl<LoanNewApplication> impl
     private String setWhereQueryUndisbursedActivityByParam(LoanNewApplicationBoxSearchParameter parameter) {
     	StringBuffer whereQuery = new StringBuffer();    	
     	
-        if (StringUtils.isNotEmpty(parameter.getEmpNik())) {
+        if (StringUtils.isNotBlank(parameter.getEmpNik())) {
         	whereQuery.append("AND empData.nik LIKE :empNik ");
         }        
-        if (StringUtils.isNotEmpty(parameter.getEmpName())) {
+        if (StringUtils.isNotBlank(parameter.getEmpName())) {
         	whereQuery.append("AND (bioData.first_name LIKE :empName OR bioData.last_name LIKE :empName) ");
         }        
-        if (StringUtils.isNotEmpty(parameter.getLoanTypeName())) {
+        if (StringUtils.isNotBlank(parameter.getLoanTypeName())) {
         	whereQuery.append("AND loanType.loan_type_name LIKE :loanTypeName ");
         }    
         
-        if (StringUtils.isNotEmpty(parameter.getUserId())) {
+        if (StringUtils.isNotBlank(parameter.getUserId())) {
             whereQuery.append("AND (requester.user_id = :userId AND approvalActivity.approval_status IN (").append(HRMConstant.APPROVAL_STATUS_WAITING_APPROVAL)
                         .append(",").append(HRMConstant.APPROVAL_STATUS_APPROVED)
                         .append(",").append(HRMConstant.APPROVAL_STATUS_WAITING_REVISED)
@@ -208,6 +208,12 @@ public class LoanNewApplicationDaoImpl extends IDAOImpl<LoanNewApplication> impl
                         .append(",").append(HRMConstant.APPROVAL_STATUS_WAITING_REVISED)
                         .append(")");
         }
+        
+        if(StringUtils.isNotBlank(parameter.getApprovalStatus())){
+        	whereQuery.append("AND approvalActivity.approval_status = :approvalStatus  ");
+        }
+        
+       
         
         return whereQuery.toString();
     }
@@ -226,6 +232,8 @@ public class LoanNewApplicationDaoImpl extends IDAOImpl<LoanNewApplication> impl
     			hbm.setParameter("appDefinitionName", HRMConstant.LOAN);
     		} else if(StringUtils.equals(param, "companyId")){
     			hbm.setParameter("companyId", HrmUserInfoUtil.getCompanyId());
+    		}else if(StringUtils.equals(param, "approvalStatus")){
+    			hbm.setParameter("approvalStatus", parameter.getApprovalStatus());
     		}
     	}    	
     	return hbm;

@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -777,6 +778,16 @@ public class LoanNewApplicationServiceImpl extends BaseApprovalServiceImpl imple
         
         List<LoanNewApplicationBoxViewModel> listUndisbursedModel = this.loanNewApplicationDao.getUndisbursedActivityByParam(parameter, firstResult, maxResults, orderable);
         setUndisbursedLoanComplexData(listUndisbursedModel);
+        
+        //Khusus filter status pencairan tidak bisa di level dao dikarenakan field tersebut hanya ada di table loan_new_application, 
+        //jika activity nya masih pending, content data pinjaman masih berupa json text, 
+        //oleh karena itu di filter di level service menggunakan lambda java 8
+        //setelah terlebih dahulu di set status nya di method setUndisbursedLoanComplexData
+        if(StringUtils.isNotBlank(parameter.getDisbursementStatus())){
+        	listUndisbursedModel = listUndisbursedModel.stream()
+        			.filter(model -> StringUtils.equals(String.valueOf(model.getDisbursementStatus()), parameter.getDisbursementStatus()))
+        			.collect(Collectors.toList());
+        }
         
         return listUndisbursedModel;
     }

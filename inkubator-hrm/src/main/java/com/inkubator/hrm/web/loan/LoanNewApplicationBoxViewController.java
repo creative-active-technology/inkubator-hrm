@@ -122,7 +122,7 @@ public class LoanNewApplicationBoxViewController extends BaseController {
     }
 
     public void doChange() {
-        System.out.println(" hahahahah");
+    	
         if (parameter.getKeyParam().equals("approvalStatus")) {
             isComboStatus = Boolean.TRUE;
             isDibusrmentStatus = Boolean.FALSE;
