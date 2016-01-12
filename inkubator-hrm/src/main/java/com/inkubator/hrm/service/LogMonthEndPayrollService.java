@@ -16,6 +16,7 @@ import com.inkubator.hrm.web.model.SalaryPerDepartmentReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
 import com.inkubator.hrm.web.search.ReportDataComponentSearchParameter;
 import com.inkubator.hrm.web.search.ReportPayrollHistorySearchParameter;
+import com.inkubator.hrm.web.search.ReportPayrollHistoryViewSearchParameter;
 import com.inkubator.hrm.web.search.ReportSalaryNoteSearchParameter;
 
 /**
@@ -34,9 +35,9 @@ public interface LogMonthEndPayrollService extends IService<LogMonthEndPayroll> 
 
 	public void deleteByPeriodId(Long periodId) throws Exception;
 
-	public List<PayrollHistoryReportModel> getByParamForPayrollHistoryReport(String searchParameter, int firstResult, int maxResults, Order order);
+	public List<PayrollHistoryReportModel> getByParamForPayrollHistoryReport(ReportPayrollHistoryViewSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
-	public Long getTotalByParamForPayrollHistoryReport(String searchParameter);
+	public Long getTotalByParamForPayrollHistoryReport(ReportPayrollHistoryViewSearchParameter searchParameter);
 
 	public List<SalaryPerDepartmentReportModel> getSalaryPerDepartmentPayrollHistoryReport(Long periodeId);
 

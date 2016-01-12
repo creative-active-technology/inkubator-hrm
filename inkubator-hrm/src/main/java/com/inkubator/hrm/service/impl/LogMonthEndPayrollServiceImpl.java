@@ -49,6 +49,7 @@ import com.inkubator.hrm.web.model.SalaryPerDepartmentReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
 import com.inkubator.hrm.web.search.ReportDataComponentSearchParameter;
 import com.inkubator.hrm.web.search.ReportPayrollHistorySearchParameter;
+import com.inkubator.hrm.web.search.ReportPayrollHistoryViewSearchParameter;
 import com.inkubator.hrm.web.search.ReportSalaryNoteSearchParameter;
 
 /**
@@ -380,13 +381,13 @@ public class LogMonthEndPayrollServiceImpl extends IServiceImpl implements LogMo
         
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<PayrollHistoryReportModel> getByParamForPayrollHistoryReport(String searchParameter, int firstResult, int maxResults, Order order) {
+    public List<PayrollHistoryReportModel> getByParamForPayrollHistoryReport(ReportPayrollHistoryViewSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
         return logMonthEndPayrollDao.getByParamForPayrollHistoryReport(searchParameter, firstResult, maxResults, order);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalByParamForPayrollHistoryReport(String searchParameter) {
+    public Long getTotalByParamForPayrollHistoryReport(ReportPayrollHistoryViewSearchParameter searchParameter) {
         return logMonthEndPayrollDao.getTotalByParamForPayrollHistoryReport(searchParameter);
     }
 

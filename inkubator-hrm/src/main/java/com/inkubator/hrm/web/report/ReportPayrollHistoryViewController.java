@@ -1,6 +1,7 @@
 package com.inkubator.hrm.web.report;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -10,16 +11,24 @@ import javax.faces.bean.ViewScoped;
 
 import org.primefaces.model.LazyDataModel;
 
+import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.LogMonthEndPayrollService;
 import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.service.WtPeriodeService;
+import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.lazymodel.PayrollHistoryReportLazyDataModel;
 import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
+import com.inkubator.hrm.web.search.ReportPayrollHistoryViewSearchParameter;
 import com.inkubator.webcore.controller.BaseController;
+import com.inkubator.webcore.util.FacesUtil;
+
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
+
 import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -32,7 +41,7 @@ import org.primefaces.event.SelectEvent;
 @ViewScoped
 public class ReportPayrollHistoryViewController extends BaseController {
 
-    private String searchParameter;
+	private ReportPayrollHistoryViewSearchParameter searchParameter;
     private LazyDataModel<PayrollHistoryReportModel> lazyDataModel;
     private PayrollHistoryReportModel selectedPayrollHistData;
     @ManagedProperty(value = "#{empDataService}")
@@ -43,11 +52,21 @@ public class ReportPayrollHistoryViewController extends BaseController {
     private LogMonthEndPayrollService logMonthEndPayrollService;
     @ManagedProperty(value = "#{wtPeriodeService}")
     private WtPeriodeService wtPeriodeService;
+    private Map<String, Integer> mapMonths = new TreeMap<>();
+    private List<Integer> listTahun = new ArrayList<>();
 
     @PostConstruct
     @Override
     public void initialization() {
         super.initialization();
+        searchParameter = new ReportPayrollHistoryViewSearchParameter();
+        String[] month = DateFormatSymbols.getInstance(Locale.forLanguageTag((String) FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE))).getMonths();
+
+        for (int i = 0; i < month.length - 1; i++) {
+            mapMonths.put(month[i], i + 1);
+            listTahun.add(2013 + i);
+        }
+        mapMonths = MapUtil.sortByValue(mapMonths);
     }
 
     @PreDestroy
@@ -80,8 +99,36 @@ public class ReportPayrollHistoryViewController extends BaseController {
         return "/protected/report/report_payroll_history_detail.htm?faces-redirect=true&execution=e" + selectedPayrollHistData.getPeriodeId();
         
     }
+    
+    public void doSearch() {
+        lazyDataModel = null;
+    }
+    
+    public void doChangeYear() {
+    	lazyDataModel = null;
+    }
 
-    public PayrollHistoryReportModel getSelectedPayrollHistData() {
+    public void doChangeMonth() {
+    	lazyDataModel = null;
+    }
+    
+    public Map<String, Integer> getMapMonths() {
+		return mapMonths;
+	}
+
+	public void setMapMonths(Map<String, Integer> mapMonths) {
+		this.mapMonths = mapMonths;
+	}
+
+	public List<Integer> getListTahun() {
+		return listTahun;
+	}
+
+	public void setListTahun(List<Integer> listTahun) {
+		this.listTahun = listTahun;
+	}
+
+	public PayrollHistoryReportModel getSelectedPayrollHistData() {
         return selectedPayrollHistData;
     }
 
@@ -90,11 +137,11 @@ public class ReportPayrollHistoryViewController extends BaseController {
     }
     
     
-    public String getSearchParameter() {
+    public ReportPayrollHistoryViewSearchParameter getSearchParameter() {
         return searchParameter;
     }
 
-    public void setSearchParameter(String searchParameter) {
+    public void setSearchParameter(ReportPayrollHistoryViewSearchParameter searchParameter) {
         this.searchParameter = searchParameter;
     }
 
@@ -134,7 +181,4 @@ public class ReportPayrollHistoryViewController extends BaseController {
     }
     
     
-    public void doSearch() {
-        lazyDataModel = null;
-    }
 }
