@@ -15,8 +15,8 @@ public class LoanNewApplicationBoxSearchParameter extends SearchParameter {
     private String empName;
     private String loanTypeName;
     private String loanNumber;
-    
-    
+    private String approvalStatus;
+    private String disbursementStatus;
 
     public String getUserId() {
         return userId;
@@ -66,7 +66,7 @@ public class LoanNewApplicationBoxSearchParameter extends SearchParameter {
     }
 
     public String getLoanNumber() {
-         if (StringUtils.equalsIgnoreCase(getKeyParam(), "loanNumber")) {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "loanNumber")) {
             loanNumber = getParameter();
         } else {
             loanNumber = null;
@@ -77,7 +77,31 @@ public class LoanNewApplicationBoxSearchParameter extends SearchParameter {
     public void setLoanNumber(String loanNumber) {
         this.loanNumber = loanNumber;
     }
-    
-    
+
+    public String getApprovalStatus() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "approvalStatus")) {
+            approvalStatus = getParameter();
+        } else {
+            approvalStatus = null;
+        }
+        return approvalStatus;
+    }
+
+    public void setApprovalStatus(String approvalStatus) {
+        this.approvalStatus = approvalStatus;
+    }
+
+    public String getDisbursementStatus() {
+        if (StringUtils.equalsIgnoreCase(getKeyParam(), "disbursementStatus")) {
+            disbursementStatus = getParameter();
+        } else {
+            disbursementStatus = null;
+        }
+        return disbursementStatus;
+    }
+
+    public void setDisbursementStatus(String disbursementStatus) {
+        this.disbursementStatus = disbursementStatus;
+    }
 
 }

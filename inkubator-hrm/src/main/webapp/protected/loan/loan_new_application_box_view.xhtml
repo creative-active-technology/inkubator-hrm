@@ -38,11 +38,36 @@
                                     <p:selectOneMenu value="#{loanNewApplicationBoxViewController.parameter.keyParam}" style="margin-right: 3px" >
                                         <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
                                         <f:selectItem itemLabel="#{appmsg['loanschema.loan_type']}" itemValue="loanTypeName"/>
-                                        <f:selectItem itemLabel="#{appmsg['global.nik']}" itemValue="empNik" itemDisabled="#{not loanNewApplicationBoxViewController.isAdministator}"/>
-                                        <f:selectItem itemLabel="#{appmsg['global.employee']}" itemValue="empName" itemDisabled="#{not loanNewApplicationBoxViewController.isAdministator}"/>                                        
+                                        <f:selectItem itemLabel="#{appmsg['approvalactivity.approval_status']}" itemValue="approvalStatus" itemDisabled="#{not loanNewApplicationBoxViewController.isAdministator}"/>
+                                        <f:selectItem itemLabel="#{appmsg['loan.disbursement_status']}" itemValue="disbursementStatus" itemDisabled="#{not loanNewApplicationBoxViewController.isAdministator}"/>
+                                        <f:selectItem itemLabel="#{appmsg['global.employee']}" itemValue="empName" itemDisabled="#{not loanNewApplicationBoxViewController.isAdministator}"/>     
+                                        <p:ajax listener="#{loanNewApplicationBoxViewController.doChange()}" update="pencarianId" />
                                     </p:selectOneMenu>
-                                    <p:inputText id="searchId" value="#{loanNewApplicationBoxViewController.parameter.parameter}" style="width: 250px" styleClass="isitext_hrm"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{rmbsApplicationUndisbursedViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <h:panelGroup id="pencarianId">
+                                        <p:inputText id="searchId" value="#{loanNewApplicationBoxViewController.parameter.parameter}" style="width: 250px" styleClass="isitext_hrm" rendered="#{loanNewApplicationBoxViewController.isText}"/>
+                                        <p:selectOneMenu value="#{loanNewApplicationBoxViewController.parameter.parameter}" style="margin-right: 3px" rendered="#{loanNewApplicationBoxViewController.isComboStatus}">
+                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                            <f:selectItem itemLabel="#{appmsg['approvalactivity.approved']}" itemValue="1" />
+                                            <f:selectItem itemLabel="#{appmsg['approvalactivity.reject']}" itemValue="2"/>
+                                            <f:selectItem itemLabel="#{appmsg['approvalactivity.waiting']}" itemValue="0"/>
+                                            <f:selectItem itemLabel="#{appmsg['approvalactivity.diverted']}" itemValue="3"/>
+                                            <f:selectItem itemLabel="#{appmsg['approvalactivity.cancelled']}" itemValue="4"/>
+                                            <f:selectItem itemLabel="#{appmsg['approvalactivity.asking_for_revised']}" itemValue="5"/>
+                                            <f:selectItem itemLabel="#{appmsg['approvalactivity.waiting_for_revised']}" itemValue="6"/>
+                                            <f:selectItem itemLabel="#{appmsg['approvalactivity.revised']}" itemValue="7"/>
+                                            <f:selectItem itemLabel="#{appmsg['approvalactivity.deleted']}" itemValue="8"/>
+                                            
+                                        </p:selectOneMenu>
+                                        <p:selectOneMenu value="#{loanNewApplicationBoxViewController.parameter.parameter}" style="margin-right: 3px" rendered="#{loanNewApplicationBoxViewController.isDibusrmentStatus}">
+                                            <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue=""/>
+                                            <f:selectItem itemLabel="#{appmsg['loan.undisbursed']}" itemValue="0" />
+                                            <f:selectItem itemLabel="#{appmsg['loan.has_been_disbursed']}" itemValue="1"/>
+                                            <f:selectItem itemLabel="#{appmsg['approvalactivity.cancelled']}" itemValue="2"/>
+                                            <f:selectItem itemLabel="#{appmsg['approvalactivity.reject']}" itemValue="3"/>
+                                            <f:selectItem itemLabel="#{appmsg['loan.paid']}" itemValue="4"/>
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{loanNewApplicationBoxViewController.doSearch()}" update="tableId"  styleClass="label_button" icon="ui-icon-search"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                             <p:toolbarGroup align="right">
@@ -87,7 +112,7 @@
                                 </f:facet>
                                 <p:outputLabel value="Rp. "/>
                                 <h:outputLabel value= "#{data.nominalPrincipal}">
-                                	<f:convertNumber pattern="###,###" type="currency"/>
+                                    <f:convertNumber pattern="###,###" type="currency"/>
                                 </h:outputLabel>
                             </p:column>
                             <p:column sortBy="#{data.empName}" style="width: 12%" >
@@ -109,14 +134,14 @@
                                     <h:outputText value="#{appmsg['approvalactivity.approved_by']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.approverNik}  #{data.approverName}">
-                                	
+
                                 </h:outputLabel>
                             </p:column>
-                           <p:column  style="width: 10%">
+                            <p:column  style="width: 10%">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loan.approvedDate']}"/>
                                 </f:facet>
-                               <h:outputLabel value= "#{data.approvalDate}" >
+                                <h:outputLabel value= "#{data.approvalDate}" >
                                     <f:convertDateTime pattern="dd MMM yyyy" />
                                 </h:outputLabel>
                             </p:column>
@@ -125,26 +150,26 @@
                                     <h:outputText value="#{appmsg['approvalactivity.approval_status']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.approvalStatus}">
-                                	<f:converter converterId="approvalStatusConverter" />
+                                    <f:converter converterId="approvalStatusConverter" />
                                 </h:outputLabel>
                             </p:column> 
-                            
+
                             <p:column style="width: 12%" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['loan.disbursement_status']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.disbursementStatus}">
-                                	<f:converter converterId="loanDisbursementStatusConverter" />
+                                    <f:converter converterId="loanDisbursementStatusConverter" />
                                 </h:outputLabel>
                             </p:column> 
-							
-							<p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
                                 <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important" 
-                                				  action="#{loanNewApplicationBoxViewController.doDetail()}">                        
+                                                 action="#{loanNewApplicationBoxViewController.doDetail()}">                        
                                     <f:setPropertyActionListener value="#{data}" target="#{loanNewApplicationBoxViewController.selected}" />
                                 </p:commandButton>
                             </p:column>
-                            
+
                             <f:facet name="footer">
                                 <p:outputLabel value="#{appmsg['global.total_data']} : "/>
                                 <p:outputLabel value="#{loanNewApplicationBoxViewController.lazyData.rowCount}"/>

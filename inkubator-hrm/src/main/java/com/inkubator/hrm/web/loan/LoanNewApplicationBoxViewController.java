@@ -31,6 +31,9 @@ public class LoanNewApplicationBoxViewController extends BaseController {
     private LoanNewApplicationBoxSearchParameter parameter;
     private LazyDataModel<LoanNewApplicationBoxViewModel> lazyData;
     private LoanNewApplicationBoxViewModel selected;
+    private Boolean isComboStatus;
+    private Boolean isDibusrmentStatus;
+    private Boolean isText;
 
     @ManagedProperty(value = "#{loanNewApplicationService}")
     private LoanNewApplicationService loanNewApplicationService;
@@ -44,6 +47,7 @@ public class LoanNewApplicationBoxViewController extends BaseController {
         if (!isAdministator) { //kalo bukan administrator, maka set userId di parameter searchingnya
             parameter.setUserId(UserInfoUtil.getUserName());
         }
+        isText = Boolean.TRUE;
     }
 
     @PreDestroy
@@ -101,4 +105,48 @@ public class LoanNewApplicationBoxViewController extends BaseController {
         this.isAdministator = isAdministator;
     }
 
+    public Boolean getIsComboStatus() {
+        return isComboStatus;
+    }
+
+    public void setIsComboStatus(Boolean isComboStatus) {
+        this.isComboStatus = isComboStatus;
+    }
+
+    public Boolean getIsDibusrmentStatus() {
+        return isDibusrmentStatus;
+    }
+
+    public void setIsDibusrmentStatus(Boolean isDibusrmentStatus) {
+        this.isDibusrmentStatus = isDibusrmentStatus;
+    }
+
+    public void doChange() {
+        System.out.println(" hahahahah");
+        if (parameter.getKeyParam().equals("approvalStatus")) {
+            isComboStatus = Boolean.TRUE;
+            isDibusrmentStatus = Boolean.FALSE;
+            isText = Boolean.FALSE;
+        }
+
+        if (parameter.getKeyParam().equals("disbursementStatus")) {
+            isComboStatus = Boolean.FALSE;
+            isDibusrmentStatus = Boolean.TRUE;
+            isText = Boolean.FALSE;
+        }
+
+        if (!parameter.getKeyParam().equals("disbursementStatus") && !parameter.getKeyParam().equals("approvalStatus")) {
+            isComboStatus = Boolean.FALSE;
+            isDibusrmentStatus = Boolean.FALSE;
+            isText = Boolean.TRUE;
+        }
+    }
+
+    public Boolean getIsText() {
+        return isText;
+    }
+
+    public void setIsText(Boolean isText) {
+        this.isText = isText;
+    }
 }
