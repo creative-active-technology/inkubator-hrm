@@ -10,6 +10,7 @@ import org.hamcrest.Matchers;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Query;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
@@ -29,7 +30,11 @@ import com.inkubator.hrm.web.model.SalaryPerDepartmentReportModel;
 import com.inkubator.hrm.web.search.LogMonthEndPayrollSearchParameter;
 import com.inkubator.hrm.web.search.ReportDataComponentSearchParameter;
 import com.inkubator.hrm.web.search.ReportPayrollHistorySearchParameter;
+import com.inkubator.hrm.web.search.ReportPayrollHistoryViewSearchParameter;
 import com.inkubator.hrm.web.search.ReportSalaryNoteSearchParameter;
+import com.inkubator.hrm.web.search.WtAttendanceCalculationSearchParameter;
+import com.inkubator.hrm.web.search.WtPeriodeSearchParameter;
+
 import java.text.SimpleDateFormat;
 import org.hibernate.criterion.Projections;
 import org.hibernate.sql.JoinType;
@@ -148,44 +153,73 @@ public class LogMonthEndPayrollDaoImpl extends IDAOImpl<LogMonthEndPayroll> impl
 	}
         
     @Override
-    public List<PayrollHistoryReportModel> getByParamForPayrollHistoryReport(String searchParameter, int firstResult, int maxResults, Order order) {
+    public List<PayrollHistoryReportModel> getByParamForPayrollHistoryReport(ReportPayrollHistoryViewSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
 
-       final StringBuilder query = new StringBuilder("SELECT lme.id AS id, lme.periodeStart AS tglAwalPeriode, lme.periodeEnd AS tglAkhirPeriode, "
-                + " DATE_FORMAT(lme.periodeStart, '%d %M %Y') AS tglAwalPeriodeInString, lme.periodeId AS periodeId,  COUNT(lme.empDataId) AS jumlahKaryawan, SUM(lme.nominal) AS nominal FROM LogMonthEndPayroll lme "
-                + " WHERE lme.paySalaryCompId = 100 ");
+       final StringBuilder query = new StringBuilder(" SELECT logMonthEndPayroll.id AS id, "
+       			+ " logMonthEndPayroll.periodeStart AS tglAwalPeriode,"
+       			+ " logMonthEndPayroll.periodeEnd AS tglAkhirPeriode, "
+                + " DATE_FORMAT(logMonthEndPayroll.periodeStart, '%d %M %Y') AS tglAwalPeriodeInString,"
+                + " logMonthEndPayroll.periodeId AS periodeId,"
+                + " COUNT(logMonthEndPayroll.empDataId) AS jumlahKaryawan,"
+                + " SUM(logMonthEndPayroll.nominal) AS nominal FROM LogMonthEndPayroll logMonthEndPayroll "
+                + " WHERE logMonthEndPayroll.paySalaryCompId = 100 ");
         
-        query.append(" GROUP BY lme.periodeId ");
+        query.append(doSearchPayrollHistoryViewByParam(searchParameter));
+        query.append(" GROUP BY logMonthEndPayroll.periodeId ");
         query.append(" ORDER BY ").append(order);
         
-        if (searchParameter != null) {
-           
-            List<PayrollHistoryReportModel> listResult = getCurrentSession().createQuery(query.toString())                   
-                    .setMaxResults(maxResults).setFirstResult(firstResult)
-                    .setResultTransformer(Transformers.aliasToBean(PayrollHistoryReportModel.class))
-                    .list();
-            
-            //Filter tglAwalPeriode based on searchParameter            
-            listResult = Lambda.select(listResult, Lambda.having(Lambda.on(PayrollHistoryReportModel.class).getTglAwalPeriodeInString(), Matchers.containsString(searchParameter)));
-           
-            return listResult;
-        } else {
-            return getCurrentSession().createQuery(query.toString())
-                    .setMaxResults(maxResults).setFirstResult(firstResult)
-                    .setResultTransformer(Transformers.aliasToBean(PayrollHistoryReportModel.class))
-                    .list();
-        }
+        Query hbm = getCurrentSession().createQuery(query.toString());
+        hbm = this.setValueQueryPayrollHistoryViewByParam(hbm, searchParameter);
+        
+        List<PayrollHistoryReportModel> listResult = hbm              
+                .setMaxResults(maxResults).setFirstResult(firstResult)
+                .setResultTransformer(Transformers.aliasToBean(PayrollHistoryReportModel.class))
+                .list();
+        
+        return listResult;
+        
+      
     }
 
     @Override
-    public Long getTotalByParamForPayrollHistoryReport(String searchParameter) {
-        final StringBuilder query = new StringBuilder("SELECT COUNT(*) FROM ( SELECT lme.id AS id, "
-                + " lme.periode_start AS tglAwalPeriode, lme.periode_end AS tglAkhirPeriode, "              
-                + " COUNT(lme.emp_data_id) AS jumlahKaryawan, SUM(lme.nominal) AS nominal "
-                + " FROM log_month_end_payroll lme "
-                + " WHERE lme.pay_salary_comp_id = 100 GROUP BY lme.periode_id  ) AS jumlahRow ");
+    public Long getTotalByParamForPayrollHistoryReport(ReportPayrollHistoryViewSearchParameter searchParameter) {
+    	
+    	final StringBuilder query = new StringBuilder("SELECT COUNT(DISTINCT logMonthEndPayroll.periodeId) "
+                + " FROM LogMonthEndPayroll logMonthEndPayroll "
+                + " WHERE logMonthEndPayroll.paySalaryCompId = 100 ");
         
-        Query hbm = getCurrentSession().createSQLQuery(query.toString());
-            return Long.valueOf(hbm.uniqueResult().toString());
+        query.append(doSearchPayrollHistoryViewByParam(searchParameter));
+        Query hbm = getCurrentSession().createQuery(query.toString());
+        
+        hbm = this.setValueQueryPayrollHistoryViewByParam(hbm, searchParameter);
+        return Long.valueOf(hbm.uniqueResult().toString());
+    }
+    
+    private String doSearchPayrollHistoryViewByParam(ReportPayrollHistoryViewSearchParameter searchParameter) {
+    	StringBuilder query = new StringBuilder();
+    	
+    	if (StringUtils.isNotBlank(searchParameter.getTahun()) && !StringUtils.equals(searchParameter.getTahun(), "0")) {
+            query.append(" AND DATE_FORMAT(logMonthEndPayroll.periodeStart, '%Y') = :tahun ");
+        }
+    	
+    	if (searchParameter.getBulan() != null && StringUtils.isNotBlank(String.valueOf(searchParameter.getBulan())) && searchParameter.getBulan() != 0) {
+            query.append(" AND DATE_FORMAT(logMonthEndPayroll.periodeStart, '%c') = :bulan ");
+        }
+    	
+        return query.toString();
+    }
+    
+    private Query setValueQueryPayrollHistoryViewByParam(Query hbm, ReportPayrollHistoryViewSearchParameter parameter) {
+        for (String param : hbm.getNamedParameters()) {
+            if (StringUtils.equals(param, "tahun")) {
+                hbm.setParameter("tahun", parameter.getTahun());
+            }
+            
+            if (StringUtils.equals(param, "bulan")) {
+                hbm.setParameter("bulan", String.valueOf(parameter.getBulan()));
+            }
+        }
+        return hbm;
     }
 
     @Override

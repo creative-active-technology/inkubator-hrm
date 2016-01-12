@@ -12,6 +12,8 @@ import com.inkubator.hrm.service.PayTempKalkulasiService;
 import com.inkubator.hrm.web.model.PayTempKalkulasiModel;
 import com.inkubator.hrm.web.model.PayrollHistoryReportModel;
 import com.inkubator.hrm.web.search.PayTempKalkulasiSearchParameter;
+import com.inkubator.hrm.web.search.ReportPayrollHistoryViewSearchParameter;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +29,12 @@ import org.primefaces.model.SortOrder;
  */
 public class PayrollHistoryReportLazyDataModel extends LazyDataModel<PayrollHistoryReportModel> implements Serializable{
     private static final Logger LOGGER = Logger.getLogger(PayrollHistoryReportLazyDataModel.class);
-    private final String searchParameter;
+    private final ReportPayrollHistoryViewSearchParameter searchParameter;
     private final LogMonthEndPayrollService service;
     private List<PayrollHistoryReportModel> payrollHistoryReportModelList = new ArrayList<>();
     private Integer jumlahData;
 
-    public PayrollHistoryReportLazyDataModel(String searchParameter, LogMonthEndPayrollService service) {
+    public PayrollHistoryReportLazyDataModel(ReportPayrollHistoryViewSearchParameter searchParameter, LogMonthEndPayrollService service) {
         this.searchParameter = searchParameter;
         this.service = service;
     }
