@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.criterion.Order;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -19,13 +20,18 @@ import com.inkubator.hrm.dao.AppraisalAchievementProgramDao;
 import com.inkubator.hrm.dao.AppraisalIndisciplineProgramDao;
 import com.inkubator.hrm.dao.AppraisalPerformanceGroupDao;
 import com.inkubator.hrm.dao.AppraisalProgramDao;
+import com.inkubator.hrm.dao.AppraisalProgramEmpDao;
 import com.inkubator.hrm.dao.CareerAwardTypeDao;
 import com.inkubator.hrm.dao.CareerDisciplineTypeDao;
+import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.entity.AppraisalAchievementProgram;
 import com.inkubator.hrm.entity.AppraisalIndisciplineProgram;
 import com.inkubator.hrm.entity.AppraisalProgram;
+import com.inkubator.hrm.entity.AppraisalProgramEmp;
+import com.inkubator.hrm.entity.AppraisalProgramEmpId;
 import com.inkubator.hrm.entity.CareerAwardType;
 import com.inkubator.hrm.entity.CareerDisciplineType;
+import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.service.AppraisalProgramService;
 import com.inkubator.hrm.web.model.AppraisalProgramDistributionViewModel;
 import com.inkubator.hrm.web.model.AppraisalProgramModel;
@@ -53,6 +59,10 @@ public class AppraisalProgramServiceImpl extends IServiceImpl implements Apprais
 	private CareerDisciplineTypeDao careerDisciplineTypeDao;
 	@Autowired
 	private AppraisalPerformanceGroupDao appraisalPerformanceGroupDao;
+	@Autowired
+	private EmpDataDao empDataDao;
+	@Autowired
+	private AppraisalProgramEmpDao appraisalProgramEmpDao;
 	
 	@Override
 	public AppraisalProgram getEntiyByPK(String id) throws Exception {
@@ -403,6 +413,25 @@ public class AppraisalProgramServiceImpl extends IServiceImpl implements Apprais
 	public Long getTotalEmpDistributionByParam(AppraisalProgramSearchParameter searchParameter) throws Exception {
 
 		return appraisalProgramDao.getTotalEmpDistributionByParam(searchParameter);
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void distributeEmployee(Long appraisalProgramId, List<Long> listEmpIds) throws Exception {
+		AppraisalProgram appraisalProgram = appraisalProgramDao.getEntiyByPK(appraisalProgramId);
+		Date now = DateTime.now().toDate();
+		for(Long empId : listEmpIds){
+			EmpData empData = empDataDao.getEntiyByPK(empId);
+			AppraisalProgramEmp appraisalProgramEmp = new AppraisalProgramEmp();
+			appraisalProgramEmp.setId(new AppraisalProgramEmpId(appraisalProgramId, empId));
+			appraisalProgramEmp.setEmpData(empData);
+			appraisalProgramEmp.setAppraisalProgram(appraisalProgram);
+			appraisalProgramEmp.setCreatedBy(UserInfoUtil.getUserName());
+			appraisalProgramEmp.setCreatedOn(now);
+			
+			appraisalProgramEmpDao.save(appraisalProgramEmp);
+		}
+		
 	}
 	
 

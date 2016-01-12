@@ -45,7 +45,7 @@ public class AppraisalProgramEmployeeLazyDataModel extends LazyDataModel<EmpData
             if(sortField != null){
                 order = (sortOrder == SortOrder.ASCENDING) ? Order.asc(sortField) : Order.desc(sortField);
             } else {
-                order = Order.desc("id");
+                order = Order.asc("empData.bioData.firstName");
             }
             list = appraisalProgramEmpService.getAllEmployeeNotDistributedByParam(searchParameter, first, pageSize, order);
             total = Integer.parseInt(String.valueOf(appraisalProgramEmpService.getTotalEmployeeNotDistributedByParam(searchParameter)));

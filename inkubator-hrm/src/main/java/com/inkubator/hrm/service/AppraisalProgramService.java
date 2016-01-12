@@ -30,4 +30,6 @@ public interface AppraisalProgramService extends IService<AppraisalProgram> {
 
 	public void save(AppraisalProgramModel model) throws Exception;
 	
+	public void distributeEmployee(Long appraisalProgramId, List<Long> listEmpIds) throws Exception;
+	
 }
