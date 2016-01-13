@@ -55,7 +55,7 @@ public class CareerDisciplineTypeViewController extends BaseController{
 	
 	public void doSelectEntity(){
 		try{
-			selected = service.getEntiyByPK(selected.getId());
+			selected = service.getEntityByIdWithDetail(selected.getId());
 		} catch(Exception ex){
 			LOGGER.error("Error ", ex);
 		}

@@ -77,7 +77,9 @@ public class CareerDisciplineTypeFormController extends BaseController{
 		model.setDescription(entity.getDescription());
 		model.setValidity(entity.getValidity());
 		model.setPoint(entity.getPoint());
-		model.setSystemLetterReferenceId(entity.getSystemLetterReference().getId());
+		if(entity.getSystemLetterReference() != null) {
+			model.setSystemLetterReferenceId(entity.getSystemLetterReference().getId());
+		}
 		return model;
 	}
 	
@@ -91,7 +93,9 @@ public class CareerDisciplineTypeFormController extends BaseController{
 		careerDisciplineType.setDescription(model.getDescription());
 		careerDisciplineType.setPoint(model.getPoint());
 		careerDisciplineType.setValidity(model.getValidity());
-		careerDisciplineType.setSystemLetterReference(new SystemLetterReference(model.getSystemLetterReferenceId()));
+		if(model.getSystemLetterReferenceId() != null) {
+			careerDisciplineType.setSystemLetterReference(new SystemLetterReference(model.getSystemLetterReferenceId()));
+		}
 		return careerDisciplineType;
 	}
 

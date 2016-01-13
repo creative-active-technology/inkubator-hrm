@@ -12,4 +12,7 @@ public interface CareerDisciplineTypeService extends IService<CareerDisciplineTy
 	public List<CareerDisciplineType> getByParam(CareerDisciplineTypeSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 	
 	public Long getTotalDataByParam(CareerDisciplineTypeSearchParameter searchParameter);
+	
+	public CareerDisciplineType getEntityByIdWithDetail(Long id) throws Exception;
+	
 }
