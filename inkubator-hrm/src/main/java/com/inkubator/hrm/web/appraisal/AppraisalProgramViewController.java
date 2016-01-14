@@ -124,5 +124,10 @@ public class AppraisalProgramViewController extends BaseController{
 	public void setAppraisalProgramService(AppraisalProgramService appraisalProgramService) {
 		this.appraisalProgramService = appraisalProgramService;
 	}
-    
+   
+        
+        public String doDistribusiJabatan(){
+            return "/protected/appraisal/appraisal_program_employee.htm?faces-redirect=true&execution=e" + selected.getId();
+      
+        }
 }

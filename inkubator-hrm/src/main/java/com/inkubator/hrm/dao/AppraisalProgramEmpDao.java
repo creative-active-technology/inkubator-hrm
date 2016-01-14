@@ -15,8 +15,10 @@ import com.inkubator.hrm.web.search.AppraisalProgramEmployeeSearchParameter;
  */
 public interface AppraisalProgramEmpDao extends IDAO<AppraisalProgramEmp> {
 
-	public List<EmpData> getAllEmployeeNotDistributedByParam(AppraisalProgramEmployeeSearchParameter searchParameter, int firstResult, int maxResult, Order order);
-	
-	public Long getTotalEmployeeNotDistributedByParam(AppraisalProgramEmployeeSearchParameter searchParameter);
-	
+    public List<EmpData> getAllEmployeeNotDistributedByParam(AppraisalProgramEmployeeSearchParameter searchParameter, int firstResult, int maxResult, Order order);
+
+    public Long getTotalEmployeeNotDistributedByParam(AppraisalProgramEmployeeSearchParameter searchParameter);
+
+    public Long totalEmpBYAppraisalProgram(long AppraisalProgramId);
+
 }
