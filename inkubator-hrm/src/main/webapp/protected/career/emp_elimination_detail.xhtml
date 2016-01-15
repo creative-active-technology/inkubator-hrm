@@ -35,7 +35,7 @@
                                     <p:outputLabel value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:outputLabel value="#{empEliminationApprovalFormController.model.empData.nikWithFullName}"/>
+                                    <p:outputLabel value="#{empEliminationDetailController.model.empData.nikWithFullName}"/>
                                 </p:column>
                                 
 
@@ -45,7 +45,7 @@
                                     <p:outputLabel  value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:outputLabel value="#{empEliminationApprovalFormController.model.jabatanName}"/>
+                                    <p:outputLabel value="#{empEliminationDetailController.model.jabatanName}"/>
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -53,7 +53,7 @@
                                     <p:outputLabel value="#{appmsg['career.employee_elimination_boss_name']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:outputLabel value="#{empEliminationApprovalFormController.model.atasanName}"/>
+                                    <p:outputLabel value="#{empEliminationDetailController.model.atasanName}"/>
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -61,7 +61,7 @@
                                     <p:outputLabel value="#{appmsg['jabatan.jabatan_deparment_boss']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:outputLabel value="#{empEliminationApprovalFormController.model.jabatanAtasanName}" />
+                                    <p:outputLabel value="#{empEliminationDetailController.model.jabatanAtasanName}" />
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -69,7 +69,7 @@
                                     <p:outputLabel value="#{appmsg['menu.department']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:outputLabel value="#{empEliminationApprovalFormController.model.departmentName}" />
+                                    <p:outputLabel value="#{empEliminationDetailController.model.departmentName}" />
                                 </p:column>
                             </p:row> 
                             <p:row>
@@ -77,7 +77,7 @@
                                     <p:outputLabel value="#{appmsg['terminate.termination_type']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:outputLabel value="#{empEliminationApprovalFormController.model.terminationTypeName}" />
+                                    <p:outputLabel value="#{empEliminationDetailController.model.terminationTypeName}" />
                                 </p:column>
                             </p:row>
                              <p:row>
@@ -85,7 +85,7 @@
                                     <p:outputLabel value="#{appmsg['career.employee_elimination_termination_date']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:outputLabel value="#{empEliminationApprovalFormController.model.effectiveDate}" >
+                                    <p:outputLabel value="#{empEliminationDetailController.model.effectiveDate}" >
                                     	<f:convertDateTime pattern="dd MMMM yyyy" />
                                     </p:outputLabel>
                                 </p:column>
@@ -95,18 +95,18 @@
                                     <p:outputLabel value="#{appmsg['career.employee_elimination_termination_reason']}" styleClass="label_hrm"/>
                                 </p:column>
                                 <p:column  style="width: 80%">
-                                    <p:outputLabel value="#{empEliminationApprovalFormController.model.reason}" />
+                                    <p:outputLabel value="#{empEliminationDetailController.model.reason}" />
                                 </p:column>
                             </p:row>
                             
-                           
-                            <p:row rendered="#{empEliminationApprovalFormController.isWaitingApproval}">
-                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
-                                    <p:outputLabel value="#{appmsg['global.comment']}" styleClass="label_hrm"/>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['approvalactivity.approval_status']}" styleClass="label_hrm"/>
                                 </p:column>
-                                <p:column  style="width: 80%" colspan="3">
-                                    <p:inputTextarea title="#{appmsg['global.comment']}" value="#{empEliminationApprovalFormController.comment}" 
-                                                     maxlength="1000" styleClass="isitext_hrm" style="width:290px;" />
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{empEliminationDetailController.model.approvalStatus}" >
+                                    	<f:converter converterId="approvalStatusConverter" />
+                                    </p:outputLabel>
                                 </p:column>
                             </p:row>
 
@@ -121,7 +121,7 @@
                                      </p:column>
                                      <p:column  style="width: 80%" />
                                  </p:row> 
-	                        	<c:forEach   var="dataTunjangan"  items="#{empEliminationApprovalFormController.model.listMonthEndPayrollTunjangan}" id="repeat" begin="0" end="#{empEliminationApprovalFormController.model.listMonthEndPayrollTunjangan.size()-1}" varStatus="loop"  >                                
+	                        	<c:forEach   var="dataTunjangan"  items="#{empEliminationDetailController.model.listMonthEndPayrollTunjangan}" id="repeat" begin="0" end="#{empEliminationApprovalFormController.model.listMonthEndPayrollTunjangan.size()-1}" varStatus="loop"  >                                
                                     <p:row>
                                         <p:column style="width: 20%;background-color: #e1f0f0!important">
                                             <p:outputLabel  value="#{dataTunjangan.paySalaryDesc}" styleClass="label_hrm" style="margin-left:30px;"/>
@@ -142,7 +142,7 @@
                                      </p:column>
                                      <p:column  style="width: 80%" />
                                  </p:row> 
-	                        	<c:forEach   var="dataPotongan"  items="#{empEliminationApprovalFormController.model.listMonthEndPayrollPotongan}" id="repeat" begin="0" end="#{empEliminationApprovalFormController.model.listMonthEndPayrollPotongan.size()-1}" varStatus="loop"  >                                
+	                        	<c:forEach   var="dataPotongan"  items="#{empEliminationDetailController.model.listMonthEndPayrollPotongan}" id="repeat" begin="0" end="#{empEliminationApprovalFormController.model.listMonthEndPayrollPotongan.size()-1}" varStatus="loop"  >                                
                                     <p:row>
                                         <p:column style="width: 20%;background-color: #e1f0f0!important">
                                             <p:outputLabel  value="#{dataPotongan.paySalaryDesc}" styleClass="label_hrm" style="margin-left:30px;"/>
@@ -163,7 +163,7 @@
                                      </p:column>
                                      <p:column  style="width: 80%" />
                                  </p:row> 
-	                        	<c:forEach   var="dataSubsidi"  items="#{empEliminationApprovalFormController.model.listMonthEndPayrollSubsidi}" id="repeat" begin="0" end="#{empEliminationApprovalFormController.model.listMonthEndPayrollSubsidi.size()-1}" varStatus="loop"  >                                
+	                        	<c:forEach   var="dataSubsidi"  items="#{empEliminationDetailController.model.listMonthEndPayrollSubsidi}" id="repeat" begin="0" end="#{empEliminationApprovalFormController.model.listMonthEndPayrollSubsidi.size()-1}" varStatus="loop"  >                                
                                     <p:row>
                                         <p:column style="width: 20%;background-color: #e1f0f0!important">
                                             <p:outputLabel  value="#{dataSubsidi.paySalaryDesc}" styleClass="label_hrm" style="margin-left:30px;"/>
@@ -186,7 +186,7 @@
                                 </p:column>
                                 <p:column id="listLoanId" style="width: 75%">
                                 	<h:panelGrid  columns="1" style="margin-left: -10px;">
-                                        <p:dataTable  id="tableLoanId" var="data"  value="#{empEliminationApprovalFormController.model.listLoanModel}" lazy="false" paginator="false" 
+                                        <p:dataTable  id="tableLoanId" var="data"  value="#{empEliminationDetailController.model.listLoanModel}" lazy="false" paginator="false" 
                                                         style="margin-top: 10px;margin-bottom: 10px"
                                                       rowIndexVar="no"> 
                                             <p:column style="text-align: center;width: 5%">
@@ -236,7 +236,7 @@
 	                                <p:outputLabel value="#{appmsg['career.employee_elimination_total_loan_outstanding']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<h:outputLabel value= "#{empEliminationApprovalFormController.model.totalOutstandingLoan}" >
+	                            	<h:outputLabel value= "#{empEliminationDetailController.model.totalOutstandingLoan}" >
                                     	<f:convertNumber pattern="###,###" type="currency"/>
                                     </h:outputLabel>
 	                            </p:column>
@@ -246,7 +246,7 @@
 	                                <p:outputLabel  value="#{appmsg['career.employee_elimination_pesangon']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<h:outputLabel value= "#{empEliminationApprovalFormController.model.separationPay}" >
+	                            	<h:outputLabel value= "#{empEliminationDetailController.model.separationPay}" >
                                     	<f:convertNumber pattern="###,###" type="currency"/>
                                     </h:outputLabel>
 	                            </p:column>
@@ -256,7 +256,7 @@
 	                                <p:outputLabel value="#{appmsg['career.employee_elimination_remainder_payable']}" styleClass="label_hrm"/>
 	                            </p:column>
 	                            <p:column  style="width: 80%">
-	                            	<h:outputLabel value= "#{empEliminationApprovalFormController.model.remainSeparationPay}" >
+	                            	<h:outputLabel value= "#{empEliminationDetailController.model.remainSeparationPay}" >
                                     	<f:convertNumber pattern="###,###" type="currency"/>
                                     </h:outputLabel>
 	                            </p:column>
@@ -267,13 +267,7 @@
 	                 	 
                         <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
                         <div style="margin-bottom: 5px">
-                            <h:panelGroup rendered="#{empEliminationApprovalFormController.isWaitingApproval}">
-                                <p:commandButton value="#{appmsg['approvalactivity.approved']}" icon="ui-icon-check" title="#{appmsg['approvalactivity.approved']}" action="#{empEliminationApprovalFormController.doApproved()}"
-                                                 style="margin-right: 5px" styleClass="label_button" rendered="#{empEliminationApprovalFormController.isApprover}" update=":growlLoanApprovalFormId"/>
-                                <p:commandButton value="#{appmsg['approvalactivity.reject']}" icon="ui-icon-close" title="#{appmsg['approvalactivity.reject']}" action="#{empEliminationApprovalFormController.doRejected()}"
-                                                 style="margin-right: 5px" styleClass="label_button" rendered="#{empEliminationApprovalFormController.isApprover}" update=":growlLoanApprovalFormId"/>
-                            </h:panelGroup>
-                            <p:commandButton value="#{appmsg['global.close']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{empEliminationApprovalFormController.doBack()}" immediate="true"
+                            <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{empEliminationDetailController.doBack()}" immediate="true"
                                              styleClass="label_button"/>
                         </div>
                     </div>

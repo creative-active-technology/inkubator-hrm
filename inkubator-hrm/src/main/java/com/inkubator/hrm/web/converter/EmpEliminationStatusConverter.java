@@ -29,10 +29,12 @@ public class EmpEliminationStatusConverter implements Converter {
         
         String messages = StringUtils.EMPTY;
         Integer data= (Integer) obj;
-        if(Objects.equals(data, HRMConstant.EMP_ELIMINATION_APPROVED)){
+        if(Objects.equals(data, HRMConstant.EMP_ELIMINATION_WAITING_APPROVAL)){
+        	messages = resourceBundle.getString("approvalactivity.waiting");
+        } else if(Objects.equals(data, HRMConstant.EMP_ELIMINATION_APPROVED)){
         	messages = resourceBundle.getString("career.employee_elimination_approval_approved");
         } else if(Objects.equals(data, HRMConstant.EMP_ELIMINATION_REJECTED)){
-        	messages = resourceBundle.getString("career.employee_elimination_approval_approved");
+        	messages = resourceBundle.getString("career.employee_elimination_approval_rejected");
         } 
         return messages;
 
