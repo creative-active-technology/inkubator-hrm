@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.exception.BussinessException;
 import com.inkubator.hrm.dao.AppraisalAchievementProgramDao;
 import com.inkubator.hrm.dao.AppraisalIndisciplineProgramDao;
 import com.inkubator.hrm.dao.AppraisalPerformanceGroupDao;
@@ -287,6 +288,20 @@ public class AppraisalProgramServiceImpl extends IServiceImpl implements Apprais
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(AppraisalProgramModel model) throws Exception {
+    	// check duplicate name
+        long totalDuplicates = appraisalProgramDao.getTotalByNameAndNotId(model.getName(), model.getId());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("appraisal_program.error_name_duplicate");
+        }
+        //check duplicate code
+        long codeDuplicates = appraisalProgramDao.getTotalByCodeAndNotId(model.getCode(), model.getId());
+        if (codeDuplicates > 0){
+            throw new BussinessException("appraisal_program.error_code_duplicate");
+        }
+        if(!model.getIsGapCompetency() && !model.getIsPerformanceScoring()){
+        	throw new BussinessException("appraisal_program.error_should_pick_one_of_compe_or_perfm");
+        }
+        
         AppraisalProgram entity = appraisalProgramDao.getEntiyByPK(model.getId());
         entity.setCode(model.getCode());
         entity.setName(model.getName());
@@ -350,6 +365,21 @@ public class AppraisalProgramServiceImpl extends IServiceImpl implements Apprais
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(AppraisalProgramModel model) throws Exception {
+    	
+    	// check duplicate name
+        long totalDuplicates = appraisalProgramDao.getTotalByName(model.getName());
+        if (totalDuplicates > 0) {
+            throw new BussinessException("appraisal_program.error_name_duplicate");
+        }
+        //check duplicate code
+        long codeDuplicates = appraisalProgramDao.getTotalByCode(model.getCode());
+        if (codeDuplicates > 0){
+            throw new BussinessException("appraisal_program.error_code_duplicate");
+        }
+        if(!model.getIsGapCompetency() && !model.getIsPerformanceScoring()){
+        	throw new BussinessException("appraisal_program.error_should_pick_one_of_compe_or_perfm");
+        }
+        
         AppraisalProgram entity = new AppraisalProgram();
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         entity.setCode(model.getCode());
