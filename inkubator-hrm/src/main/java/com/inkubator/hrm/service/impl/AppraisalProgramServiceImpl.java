@@ -280,8 +280,9 @@ public class AppraisalProgramServiceImpl extends IServiceImpl implements Apprais
     @Override
     @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
     public AppraisalProgram getEntityByIdWithDetail(Long id) throws Exception {
-        
-        return appraisalProgramDao.getEntityByIdWithDetail(id);
+        AppraisalProgram appraisalProgram=appraisalProgramDao.getEntityByIdWithDetail(id);
+         appraisalProgram.setTotalEmp(appraisalProgramEmpDao.totalEmpBYAppraisalProgram(appraisalProgram.getId()));
+         return appraisalProgram;
     }
     
     @Override

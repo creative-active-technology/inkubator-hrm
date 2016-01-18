@@ -69,6 +69,10 @@ public class AppraisalProgramDaoImpl extends IDAOImpl<AppraisalProgram> implemen
         criteria.setFetchMode("appraisalIndisciplinePrograms", FetchMode.JOIN);
         criteria.setFetchMode("appraisalIndisciplinePrograms.careerDisciplineType", FetchMode.JOIN);
         criteria.setFetchMode("appraisalPerformanceGroup", FetchMode.JOIN);
+        criteria.setFetchMode("appraisalProgramEmps", FetchMode.JOIN);
+        criteria.setFetchMode("appraisalProgramEmps.empData", FetchMode.JOIN);
+ criteria.setFetchMode("appraisalProgramEmps.empData.bioData", FetchMode.JOIN);
+  criteria.setFetchMode("appraisalProgramEmps.empData.jabatanByJabatanId", FetchMode.JOIN);
         return (AppraisalProgram) criteria.uniqueResult();
     }
 
