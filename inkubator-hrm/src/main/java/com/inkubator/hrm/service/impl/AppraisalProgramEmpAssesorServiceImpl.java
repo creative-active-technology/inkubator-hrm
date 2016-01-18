@@ -195,4 +195,10 @@ public class AppraisalProgramEmpAssesorServiceImpl extends IServiceImpl implemen
         return this.appraisalProgramEmpAssesorDao.getTotalAssesorByAppraisalIAndEmpId(appraisalId, empId);
     }
 
+    @Override
+    @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<AppraisalProgramEmpAssesor> getAllBy(Long appraisalId, Long empId) throws Exception {
+       return appraisalProgramEmpAssesorDao.getAllBy(appraisalId, empId);
+    }
+
 }

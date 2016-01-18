@@ -8,7 +8,9 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.AppraisalProgramEmpAssesorDao;
 import com.inkubator.hrm.entity.AppraisalProgramEmpAssesor;
+import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
@@ -35,6 +37,19 @@ public class AppraisalProgramEmpAssesorDaoImpl extends IDAOImpl<AppraisalProgram
         criteria.add(Restrictions.eq("ap.id", appraisalId));
         criteria.add(Restrictions.eq("em.id", empId));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public List<AppraisalProgramEmpAssesor> getAllBy(Long appraisalId, Long empId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.createAlias("appraisalProgram", "ap");
+        criteria.createAlias("empDataByEmpId", "em");
+        criteria.setFetchMode("empDataByAssesorEmpId", FetchMode.JOIN);
+        criteria.setFetchMode("empDataByAssesorEmpId.jabatanByJabatanId", FetchMode.JOIN);
+        criteria.setFetchMode("empDataByAssesorEmpId.bioData", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("ap.id", appraisalId));
+        criteria.add(Restrictions.eq("em.id", empId));
+        return criteria.list();
     }
 
 }

@@ -44,6 +44,7 @@ public class AppraisalProgramEmployeeController extends BaseController {
         try {
             super.initialization();
             String id = FacesUtil.getRequestParameter("execution").substring(1);
+            System.out.println(" nilainya "+FacesUtil.getRequestParameter("caution"));
             appraisalProgram = appraisalProgramService.getEntityByIdWithDetail(Long.parseLong(id));
             dataEmpAssesor = new ArrayList<>(appraisalProgram.getAppraisalProgramEmps());
             for (AppraisalProgramEmp appraisalProgramEmp : dataEmpAssesor) {
@@ -104,6 +105,6 @@ public class AppraisalProgramEmployeeController extends BaseController {
     }
 
     public String doDistribusiPenilai(){
-        return null;
+            return "/protected/appraisal/appraisal_program_assesor.htm?faces-redirect=true&execution=e" + selected.getId().getAppraisalProgramId()+"&caution=c"+selected.getId().getEmpDataId();
     }
 }

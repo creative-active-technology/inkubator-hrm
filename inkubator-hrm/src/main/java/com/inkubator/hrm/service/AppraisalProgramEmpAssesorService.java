@@ -7,6 +7,7 @@ package com.inkubator.hrm.service;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.AppraisalProgramEmpAssesor;
+import java.util.List;
 
 /**
  *
@@ -15,4 +16,6 @@ import com.inkubator.hrm.entity.AppraisalProgramEmpAssesor;
 public interface AppraisalProgramEmpAssesorService extends IService<AppraisalProgramEmpAssesor> {
 
     public Long getTotalAssesorByAppraisalIAndEmpId(Long appraisalId, Long empId) throws Exception;
+
+    public List<AppraisalProgramEmpAssesor> getAllBy(Long appraisalId, Long empId) throws Exception;
 }

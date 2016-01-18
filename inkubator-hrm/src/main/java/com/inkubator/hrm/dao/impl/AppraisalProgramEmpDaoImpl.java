@@ -12,9 +12,11 @@ import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.HRMConstant;
 import com.inkubator.hrm.dao.AppraisalProgramEmpDao;
 import com.inkubator.hrm.entity.AppraisalProgramEmp;
+import com.inkubator.hrm.entity.AppraisalProgramEmpId;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.web.search.AppraisalProgramEmployeeSearchParameter;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
@@ -113,6 +115,17 @@ public class AppraisalProgramEmpDaoImpl extends IDAOImpl<AppraisalProgramEmp> im
                 + "", "ap", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("ap.id", AppraisalProgramId));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+
+    @Override
+    public AppraisalProgramEmp getByIdWithDetail(AppraisalProgramEmpId id) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("id", id));
+        criteria.setFetchMode("appraisalProgram", FetchMode.JOIN);
+        criteria.setFetchMode("empData", FetchMode.JOIN);
+        criteria.setFetchMode("empData.bioData", FetchMode.JOIN);
+          criteria.setFetchMode("empData.jabatanByJabatanId", FetchMode.JOIN);
+        return (AppraisalProgramEmp) criteria.uniqueResult();
     }
 
 }

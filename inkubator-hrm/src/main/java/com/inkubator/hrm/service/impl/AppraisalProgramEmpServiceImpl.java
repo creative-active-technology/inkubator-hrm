@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.inkubator.datacore.service.impl.IServiceImpl;
 import com.inkubator.hrm.dao.AppraisalProgramEmpDao;
 import com.inkubator.hrm.entity.AppraisalProgramEmp;
+import com.inkubator.hrm.entity.AppraisalProgramEmpId;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.service.AppraisalProgramEmpService;
 import com.inkubator.hrm.web.search.AppraisalProgramEmployeeSearchParameter;
@@ -236,5 +237,11 @@ public class AppraisalProgramEmpServiceImpl extends IServiceImpl implements Appr
 		// TODO Auto-generated method stub
 		return appraisalProgramEmpDao.getTotalEmployeeNotDistributedByParam(searchParameter);
 	}
+
+    @Override
+    @Transactional(readOnly = true,isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+    public AppraisalProgramEmp getByIdWithDetail(AppraisalProgramEmpId id) throws Exception {
+      return appraisalProgramEmpDao.getByIdWithDetail(id);
+    }
 
 }

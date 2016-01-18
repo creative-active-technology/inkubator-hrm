@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 
 import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.AppraisalProgramEmp;
+import com.inkubator.hrm.entity.AppraisalProgramEmpId;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.web.search.AppraisalProgramEmployeeSearchParameter;
 
@@ -15,8 +16,9 @@ import com.inkubator.hrm.web.search.AppraisalProgramEmployeeSearchParameter;
  */
 public interface AppraisalProgramEmpService extends IService<AppraisalProgramEmp> {
 
-	public List<EmpData> getAllEmployeeNotDistributedByParam(AppraisalProgramEmployeeSearchParameter searchParameter, int firstResult, int maxResult, Order order) throws Exception;
-	
-	public Long getTotalEmployeeNotDistributedByParam(AppraisalProgramEmployeeSearchParameter searchParameter) throws Exception;
-	
+    public List<EmpData> getAllEmployeeNotDistributedByParam(AppraisalProgramEmployeeSearchParameter searchParameter, int firstResult, int maxResult, Order order) throws Exception;
+
+    public Long getTotalEmployeeNotDistributedByParam(AppraisalProgramEmployeeSearchParameter searchParameter) throws Exception;
+
+    public AppraisalProgramEmp getByIdWithDetail(AppraisalProgramEmpId id) throws Exception;
 }

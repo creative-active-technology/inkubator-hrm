@@ -7,6 +7,7 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.AppraisalProgramEmpAssesor;
+import java.util.List;
 
 /**
  *
@@ -14,4 +15,5 @@ import com.inkubator.hrm.entity.AppraisalProgramEmpAssesor;
  */
 public interface AppraisalProgramEmpAssesorDao extends IDAO<AppraisalProgramEmpAssesor>{
     public  Long getTotalAssesorByAppraisalIAndEmpId(Long appraisalId, Long empId);
+    public List<AppraisalProgramEmpAssesor> getAllBy(Long appraisalId, Long empId);
 }
