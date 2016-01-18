@@ -53,14 +53,12 @@ public class EmpEliminationViewController extends BaseController{
     }
             
     public String doDetail(){
-    	return "/protected/career/emp_elimination_detail.htm?faces-redirect=true&execution=e" + selected.getEmpCareerHistoryId();
+    	return "/protected/career/emp_elimination_detail.htm?faces-redirect=true&execution=e" + selected.getApprovalActivityId();
     }
     
 	public void setCareerEmpEliminationService(CareerEmpEliminationService careerEmpEliminationService) {
 		this.careerEmpEliminationService = careerEmpEliminationService;
 	}
-	
-	
 
 	public void setEmpCareerHistoryService(EmpCareerHistoryService empCareerHistoryService) {
 		this.empCareerHistoryService = empCareerHistoryService;

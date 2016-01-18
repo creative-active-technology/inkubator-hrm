@@ -124,6 +124,7 @@ public class EmpEliminationFormController extends BaseController {
         careerEmpElimination.setSeparationPay(model.getSeparationPay());
         careerEmpElimination.setWtPeriode(new WtPeriode(model.getWtPeriodeId()));
         careerEmpElimination.setCreatedBy(HrmUserInfoUtil.getUserName());
+        careerEmpElimination.setEffectiveDate(model.getEffectiveDate());
         return careerEmpElimination;
     }
 
