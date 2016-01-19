@@ -1739,17 +1739,27 @@ public class EmpDataDaoImpl extends IDAOImpl<EmpData> implements EmpDataDao {
     }
 
     @Override
-    public Long getTotalKaryawanByJabatanId(Long jabatanId) {
+    public Long getTotalKaryawanByJabatanId(Long companyId, Long jabatanId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         /**
          * automatically get relations of jabatanByJabatanId, department,
          * company don't create alias for that entity, or will get error :
          * duplicate association path
          */
-        criteria = this.addJoinRelationsOfCompanyId(criteria, HrmUserInfoUtil.getCompanyId());
+        criteria = this.addJoinRelationsOfCompanyId(criteria, companyId);
         criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
 
         criteria.add(Restrictions.eq("jabatanByJabatanId.id", jabatanId));
+        return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+    }
+    
+    @Override
+    public Long getTotalKaryawanByJabatanId(Long jabatanId) {
+        Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        
+        criteria.add(Restrictions.not(Restrictions.eq("status", HRMConstant.EMP_TERMINATION)));
+        criteria.add(Restrictions.eq("jabatanByJabatanId.id", jabatanId));
+        
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 

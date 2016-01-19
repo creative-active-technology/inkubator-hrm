@@ -969,8 +969,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalKaryawanByJabatanId(Long jabatanId) throws Exception {
-        return empDataDao.getTotalKaryawanByJabatanId(jabatanId);
+    public Long getTotalKaryawanByJabatanId(Long companyId, Long jabatanId) throws Exception {
+        return empDataDao.getTotalKaryawanByJabatanId(companyId, jabatanId);
     }
 
     @Override

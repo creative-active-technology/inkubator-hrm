@@ -42,6 +42,7 @@ import com.inkubator.hrm.service.RecruitHireApplyService;
 import com.inkubator.hrm.service.RecruitMppApplyDetailService;
 import com.inkubator.hrm.service.RecruitMppApplyService;
 import com.inkubator.hrm.service.RecruitMppPeriodService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.RecruitHireApplyModel;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.controller.BaseController;
@@ -273,7 +274,7 @@ public class RecruitHireApplyFormController extends BaseController {
 
     public void onChangeJabatan() {
         try {
-            Long totalActual = empDataService.getTotalKaryawanByJabatanId(model.getJabatanId());
+            Long totalActual = empDataService.getTotalKaryawanByJabatanId(HrmUserInfoUtil.getCompanyId(), model.getJabatanId());
             model.setActual(totalActual);
             if (model.getRecruitMppPeriodId() != null) {
 
@@ -317,7 +318,7 @@ public class RecruitHireApplyFormController extends BaseController {
         recruitHireApplyModel.setSalaryMax(recruitHireApply.getSalaryMax());
         recruitHireApplyModel.setYearExperience(recruitHireApply.getYearExperience());
 
-        Long totalActual = empDataService.getTotalKaryawanByJabatanId(recruitHireApplyModel.getJabatanId());
+        Long totalActual = empDataService.getTotalKaryawanByJabatanId(HrmUserInfoUtil.getCompanyId(), recruitHireApplyModel.getJabatanId());
         recruitHireApplyModel.setActual(totalActual);
 
         Long totalMpp = recruitMppApplyDetailService.getRecruitPlanByJabatanIdAndMppPeriodId(recruitHireApplyModel.getJabatanId(), recruitHireApplyModel.getRecruitMppId());

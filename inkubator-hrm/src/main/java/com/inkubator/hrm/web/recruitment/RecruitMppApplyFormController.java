@@ -24,6 +24,7 @@ import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.service.RecruitMppApplyService;
 import com.inkubator.hrm.service.RecruitMppPeriodService;
 import com.inkubator.hrm.service.RecruitMppApplyDetailService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.util.UploadFilesUtil;
 import com.inkubator.hrm.web.model.RecruitMppApplyModel;
 import com.inkubator.webcore.controller.BaseController;
@@ -358,7 +359,7 @@ public class RecruitMppApplyFormController extends BaseController {
         for (int i = 0; i < arrayDetailMpp.size(); i++) {
             RecruitMppApplyDetail detail = gson.fromJson(arrayDetailMpp.get(i), RecruitMppApplyDetail.class);
 
-            Integer actual = empDataService.getTotalKaryawanByJabatanId(detail.getJabatan().getId()).intValue();
+            Integer actual = empDataService.getTotalKaryawanByJabatanId(HrmUserInfoUtil.getCompanyId(), detail.getJabatan().getId()).intValue();
             Integer difference = detail.getRecruitPlan() == actual ? 0 : detail.getRecruitPlan() > actual ? (detail.getRecruitPlan() - actual) : (actual - detail.getRecruitPlan());
             detail.setActualNumber(actual);
             detail.setDifference(difference);
