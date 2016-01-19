@@ -26,9 +26,11 @@ public class SystemScoringIndexLazyDataModel extends LazyDataModel<SystemScoring
     private final SystemScoringIndexService service;
     private List<SystemScoringIndex> listSystemScoringIndex = new ArrayList<>();
     private Integer jumlahData;
+    private Long systemScoringId;
 
-    public SystemScoringIndexLazyDataModel(SystemScoringIndexService service) {
+    public SystemScoringIndexLazyDataModel(SystemScoringIndexService service, Long systemScoringId) {
         this.service = service;
+        this.systemScoringId = systemScoringId;
     }
     
     @Override
@@ -42,8 +44,8 @@ public class SystemScoringIndexLazyDataModel extends LazyDataModel<SystemScoring
                 }else{
                     order = Order.asc("orderScala");
                 }
-                listSystemScoringIndex = service.getByParam(first, pageSize, order);
-                jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParam()));
+                listSystemScoringIndex = service.getAllByParam(systemScoringId, first, pageSize, order);
+                jumlahData = Integer.parseInt(String.valueOf(service.getTotalByParam(systemScoringId)));
             } catch (Exception ex) {
                 LOGGER.error("Error", ex);
             }

@@ -15,9 +15,9 @@ import org.hibernate.criterion.Order;
  * @author Deni
  */
 public interface SystemScoringIndexService extends IService<SystemScoringIndex> {
-    public List<SystemScoringIndex> getByParam(int firstResult, int maxResults, Order order) throws Exception;
+    public List<SystemScoringIndex> getAllByParam(Long systemScoringId, int firstResult, int maxResults, Order order) throws Exception;
 
-    public Long getTotalByParam() throws Exception;
+    public Long getTotalByParam(Long systemScoringId) throws Exception;
     
-    public void doChangerOrderScala(int newGradeLevel, long oldId) throws Exception;
+    public void doChangerOrderScala(Long systemScoringId, int newGradeLevel, long oldId) throws Exception;
 }

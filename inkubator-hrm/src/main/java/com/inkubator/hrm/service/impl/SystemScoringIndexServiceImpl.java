@@ -38,14 +38,14 @@ public class SystemScoringIndexServiceImpl extends IServiceImpl implements Syste
     
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-    public List<SystemScoringIndex> getByParam(int firstResult, int maxResults, Order order) throws Exception {
-        return systemScoringIndexDao.getByParam(firstResult, maxResults, order);
+    public List<SystemScoringIndex> getAllByParam(Long systemScoringId, int firstResult, int maxResults, Order order) throws Exception {
+        return systemScoringIndexDao.getAllByParam(systemScoringId, firstResult, maxResults, order);
     }
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
-    public Long getTotalByParam() throws Exception {
-        return systemScoringIndexDao.getTotalByParam();
+    public Long getTotalByParam(Long systemScoringId) throws Exception {
+        return systemScoringIndexDao.getTotalByParam(systemScoringId);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class SystemScoringIndexServiceImpl extends IServiceImpl implements Syste
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void save(SystemScoringIndex entity) throws Exception {
-        // check duplicate code
+        /*// check duplicate code
         long totalDuplicateLabelMask = systemScoringIndexDao.getTotalBylabelMask(entity.getLabelMask());
         if (totalDuplicateLabelMask > 0) {
             throw new BussinessException("global.error_duplicate_code");
@@ -77,8 +77,8 @@ public class SystemScoringIndexServiceImpl extends IServiceImpl implements Syste
         long totalDuplicateValue = systemScoringIndexDao.getTotalByValue(entity.getValue());
         if (totalDuplicateValue > 0) {
             throw new BussinessException("global.error_duplicate_code");
-        }
-        Integer lastOrderScala = systemScoringIndexDao.getLastOrderScala();
+        }*/
+        Integer lastOrderScala = systemScoringIndexDao.getLastOrderScala(entity.getSystemScoring().getId());
         entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
         if(lastOrderScala != null){
             entity.setOrderScala(lastOrderScala + 1);
@@ -94,7 +94,7 @@ public class SystemScoringIndexServiceImpl extends IServiceImpl implements Syste
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(SystemScoringIndex entity) throws Exception {
-        // check duplicate code
+        /*// check duplicate code
         long totalDuplicateLabelMask = systemScoringIndexDao.getTotalBylabelMaskAndNotId(entity.getLabelMask(), entity.getId());
         if (totalDuplicateLabelMask > 0) {
             throw new BussinessException("global.error_duplicate_code");
@@ -104,7 +104,7 @@ public class SystemScoringIndexServiceImpl extends IServiceImpl implements Syste
         long totalDuplicateValue = systemScoringIndexDao.getTotalByValueAndNotId(entity.getValue(), entity.getId());
         if (totalDuplicateValue > 0) {
             throw new BussinessException("global.error_duplicate_code");
-        }
+        }*/
         SystemScoringIndex update = systemScoringIndexDao.getEntiyByPK(entity.getId());
         update.setLabelMask(entity.getLabelMask());
         update.setDescription(entity.getDescription());
@@ -183,7 +183,18 @@ public class SystemScoringIndexServiceImpl extends IServiceImpl implements Syste
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(SystemScoringIndex entity) throws Exception {
-        this.systemScoringIndexDao.delete(entity);
+    	List<SystemScoringIndex> listUpdateOrdering = systemScoringIndexDao.getAllDataBySystemScoringIdAndGreaterOrderScala(entity.getSystemScoring().getId(), entity.getOrderScala());
+
+    	//delete
+    	this.systemScoringIndexDao.delete(entity);
+    	
+    	//update scala up to 1
+    	for(SystemScoringIndex systemScoringIndex : listUpdateOrdering){
+    		systemScoringIndex.setOrderScala(systemScoringIndex.getOrderScala() - 1);
+    		systemScoringIndex.setUpdatedBy(UserInfoUtil.getUserName());
+    		systemScoringIndex.setUpdatedOn(new Date());
+            this.systemScoringIndexDao.update(systemScoringIndex);
+    	}
     }
 
     @Override
@@ -254,12 +265,12 @@ public class SystemScoringIndexServiceImpl extends IServiceImpl implements Syste
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void doChangerOrderScala(int newGradeLevel, long oldId) throws Exception {
-        SystemScoringIndex targetChage = this.systemScoringIndexDao.getByGradeNumber(newGradeLevel);
-        targetChage.setOrderScala(0);
-        targetChage.setUpdatedBy(UserInfoUtil.getUserName());
-        targetChage.setUpdatedOn(new Date());
-        this.systemScoringIndexDao.update(targetChage);
+    public void doChangerOrderScala(Long systemScoringId, int newGradeLevel, long oldId) throws Exception {
+        SystemScoringIndex targetChange = this.systemScoringIndexDao.getEntityBySystemScoringIdAndOrderScala(systemScoringId, newGradeLevel);
+        targetChange.setOrderScala(0);
+        targetChange.setUpdatedBy(UserInfoUtil.getUserName());
+        targetChange.setUpdatedOn(new Date());
+        this.systemScoringIndexDao.update(targetChange);
 
         SystemScoringIndex newChange = this.systemScoringIndexDao.getEntiyByPK(oldId);
         int gradeNumberOld = newChange.getOrderScala();
@@ -268,11 +279,11 @@ public class SystemScoringIndexServiceImpl extends IServiceImpl implements Syste
         newChange.setUpdatedOn(new Date());
         this.systemScoringIndexDao.update(newChange);
 
-        SystemScoringIndex targetChageLast = this.systemScoringIndexDao.getByGradeNumber(0);
-        targetChageLast.setOrderScala(gradeNumberOld);
-        targetChageLast.setUpdatedBy(UserInfoUtil.getUserName());
-        targetChageLast.setUpdatedOn(new Date());
-        this.systemScoringIndexDao.update(targetChageLast);
+        SystemScoringIndex targetChangeLast = this.systemScoringIndexDao.getEntityBySystemScoringIdAndOrderScala(systemScoringId, 0);
+        targetChangeLast.setOrderScala(gradeNumberOld);
+        targetChangeLast.setUpdatedBy(UserInfoUtil.getUserName());
+        targetChangeLast.setUpdatedOn(new Date());
+        this.systemScoringIndexDao.update(targetChangeLast);
     }
     
 }
