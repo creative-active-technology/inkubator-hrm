@@ -30,9 +30,9 @@ public class SystemScoringIndexDaoImpl extends IDAOImpl<SystemScoringIndex> impl
     }
 
     @Override
-    public List<SystemScoringIndex> getByParam(int firstResult, int maxResults, Order order) {
+    public List<SystemScoringIndex> getAllByParam(Long systemScoringId, int firstResult, int maxResults, Order order) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-//        doSearchByParam(searchParameter, criteria);
+        criteria.add(Restrictions.eq("systemScoring.id", systemScoringId));
         criteria.addOrder(order);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -40,9 +40,9 @@ public class SystemScoringIndexDaoImpl extends IDAOImpl<SystemScoringIndex> impl
     }
 
     @Override
-    public Long getTotalByParam() {
+    public Long getTotalByParam(Long systemScoringId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-//        doSearchByParam(searchParameter, criteria);
+        criteria.add(Restrictions.eq("systemScoring.id", systemScoringId));
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
@@ -77,17 +77,27 @@ public class SystemScoringIndexDaoImpl extends IDAOImpl<SystemScoringIndex> impl
     }
 
     @Override
-    public Integer getLastOrderScala() {
+    public Integer getLastOrderScala(Long systemScoringId) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("systemScoring.id", systemScoringId));
         criteria.addOrder(Order.desc("orderScala"));
         return (Integer) criteria.setProjection(Projections.property("orderScala")).setMaxResults(1).uniqueResult();
     }
 
     @Override
-    public SystemScoringIndex getByGradeNumber(int number) {
+    public SystemScoringIndex getEntityBySystemScoringIdAndOrderScala(Long systemScoringId, int orderScala) {
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-        criteria.add(Restrictions.eq("orderScala", number));
+        criteria.add(Restrictions.eq("systemScoring.id", systemScoringId));
+        criteria.add(Restrictions.eq("orderScala", orderScala));
         return (SystemScoringIndex) criteria.uniqueResult();
+    }
+    
+    @Override
+    public List<SystemScoringIndex> getAllDataBySystemScoringIdAndGreaterOrderScala(Long systemScoringId, int orderScala){
+    	Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.add(Restrictions.eq("systemScoring.id", systemScoringId));
+        criteria.add(Restrictions.gt("orderScala", orderScala));
+        return criteria.list();
     }
     
 }

@@ -15,9 +15,9 @@ import org.hibernate.criterion.Order;
  * @author Deni
  */
 public interface SystemScoringIndexDao extends IDAO<SystemScoringIndex>{
-    public List<SystemScoringIndex> getByParam(int firstResult, int maxResults, Order order);
+    public List<SystemScoringIndex> getAllByParam(Long systemScoringId, int firstResult, int maxResults, Order order);
 
-    public Long getTotalByParam();
+    public Long getTotalByParam(Long systemScoringId);
     
     public Long getTotalBylabelMask(String labelMask);
     
@@ -27,8 +27,10 @@ public interface SystemScoringIndexDao extends IDAO<SystemScoringIndex>{
     
     public Long getTotalByValueAndNotId(Integer value, Long id);
     
-    public Integer getLastOrderScala();
+    public Integer getLastOrderScala(Long systemScoringId);
     
-    public SystemScoringIndex getByGradeNumber(int number);
+    public SystemScoringIndex getEntityBySystemScoringIdAndOrderScala(Long systemScoringId, int number);
+
+	public List<SystemScoringIndex> getAllDataBySystemScoringIdAndGreaterOrderScala(Long systemScoringId, int orderScala);
 }
 

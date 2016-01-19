@@ -105,7 +105,7 @@ public class SystemScoringDetailController extends BaseController {
     public LazyDataModel<SystemScoringIndex> getLazyDataModel() {
         try {
             dataToShow = new ArrayList<>();
-            Long totalData = systemScoringIndexService.getTotalData();
+            Long totalData = systemScoringIndexService.getTotalByParam(selectedSystemScoring.getId());
             for (int i = 1; i < totalData + 1; i++) {
                 dataToShow.add(i);
             }
@@ -113,7 +113,7 @@ public class SystemScoringDetailController extends BaseController {
             LOGGER.error(ex, ex);
         }
         if (lazyDataModel == null) {
-            lazyDataModel = new SystemScoringIndexLazyDataModel(systemScoringIndexService);
+            lazyDataModel = new SystemScoringIndexLazyDataModel(systemScoringIndexService, selectedSystemScoring.getId());
         }
         return lazyDataModel;
     }
@@ -123,7 +123,7 @@ public class SystemScoringDetailController extends BaseController {
         try {
             int newGrade = systemScoringIndex.getOrderScala();
             Long idOldData = systemScoringIndex.getId();
-            systemScoringIndexService.doChangerOrderScala(newGrade, idOldData);
+            systemScoringIndexService.doChangerOrderScala(selectedSystemScoring.getId(), newGrade, idOldData);
         } catch (Exception ex) {
             LOGGER.error(ex, ex);
         }
