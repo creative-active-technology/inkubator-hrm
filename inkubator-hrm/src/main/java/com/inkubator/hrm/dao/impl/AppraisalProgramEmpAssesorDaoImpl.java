@@ -44,6 +44,7 @@ public class AppraisalProgramEmpAssesorDaoImpl extends IDAOImpl<AppraisalProgram
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
         criteria.createAlias("appraisalProgram", "ap");
         criteria.createAlias("empDataByEmpId", "em");
+        criteria.setFetchMode("appraisalProgram", FetchMode.JOIN);
         criteria.setFetchMode("empDataByAssesorEmpId", FetchMode.JOIN);
         criteria.setFetchMode("empDataByAssesorEmpId.jabatanByJabatanId", FetchMode.JOIN);
         criteria.setFetchMode("empDataByAssesorEmpId.bioData", FetchMode.JOIN);

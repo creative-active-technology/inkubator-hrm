@@ -5,10 +5,15 @@
  */
 package com.inkubator.hrm.service.impl;
 
+import com.inkubator.common.util.RandomNumberUtil;
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.AppraisalProgramDao;
 import com.inkubator.hrm.dao.AppraisalProgramEmpAssesorDao;
+import com.inkubator.hrm.dao.EmpDataDao;
 import com.inkubator.hrm.entity.AppraisalProgramEmpAssesor;
 import com.inkubator.hrm.service.AppraisalProgramEmpAssesorService;
+import com.inkubator.securitycore.util.UserInfoUtil;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +33,10 @@ public class AppraisalProgramEmpAssesorServiceImpl extends IServiceImpl implemen
 
     @Autowired
     private AppraisalProgramEmpAssesorDao appraisalProgramEmpAssesorDao;
+    @Autowired
+    private EmpDataDao empDataDao;
+    @Autowired
+    private AppraisalProgramDao appraisalProgramDao;
 
     @Override
     public AppraisalProgramEmpAssesor getEntiyByPK(String string) throws Exception {
@@ -45,8 +54,14 @@ public class AppraisalProgramEmpAssesorServiceImpl extends IServiceImpl implemen
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public void save(AppraisalProgramEmpAssesor t) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        t.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(12)));
+        t.setEmpDataByEmpId(empDataDao.getEntiyByPK(t.getEmpDataByEmpId().getId()));
+        t.setAppraisalProgram(appraisalProgramDao.getEntiyByPK(t.getAppraisalProgram().getId()));
+        t.setCreatedBy(UserInfoUtil.getUserName());
+        t.setCreatedOn(new Date());
+        appraisalProgramEmpAssesorDao.save(t);
     }
 
     @Override
@@ -120,8 +135,9 @@ public class AppraisalProgramEmpAssesorServiceImpl extends IServiceImpl implemen
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(AppraisalProgramEmpAssesor t) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        appraisalProgramEmpAssesorDao.delete(t);
     }
 
     @Override
@@ -198,7 +214,7 @@ public class AppraisalProgramEmpAssesorServiceImpl extends IServiceImpl implemen
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
     public List<AppraisalProgramEmpAssesor> getAllBy(Long appraisalId, Long empId) throws Exception {
-       return appraisalProgramEmpAssesorDao.getAllBy(appraisalId, empId);
+        return appraisalProgramEmpAssesorDao.getAllBy(appraisalId, empId);
     }
 
 }
