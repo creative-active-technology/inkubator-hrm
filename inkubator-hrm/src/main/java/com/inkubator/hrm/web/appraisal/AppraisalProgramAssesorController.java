@@ -19,7 +19,6 @@ import com.inkubator.hrm.entity.AppraisalProgramEmpId;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.service.AppraisalProgramEmpAssesorService;
 import com.inkubator.hrm.service.AppraisalProgramEmpService;
-import com.inkubator.hrm.service.CareerEmpEliminationService;
 import com.inkubator.hrm.service.EmpDataService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.AppraisalProgramEmpAssesorModel;
@@ -28,8 +27,6 @@ import com.inkubator.webcore.util.FacesUtil;
 import com.inkubator.webcore.util.MessagesResourceUtil;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
@@ -81,7 +78,7 @@ public class AppraisalProgramAssesorController extends BaseController {
     }
 
     public String doBack() {
-        return "/protected/appraisal/appraisal_program_result.htm?faces-redirect=true";
+        return "/protected/appraisal/appraisal_program_employee.htm?faces-redirect=true&execution=e" + appraisalProgramId;
     }
 
     public AppraisalProgram getAppraisalProgram() {
@@ -184,19 +181,38 @@ public class AppraisalProgramAssesorController extends BaseController {
     }
 
     public void doSave() {
-        try {
-            AppraisalProgramEmpAssesor apea = new AppraisalProgramEmpAssesor();
-            apea.setEmpDataByAssesorEmpId(assesorModel.getEmpData());
-            apea.setAppraisalProgram(new AppraisalProgram(Long.parseLong(appraisalProgramId)));
-            apea.setEmpDataByEmpId(new EmpData(Long.parseLong(empDataId)));
-            apea.setScala(assesorModel.getScala());
-            appraisalProgramEmpAssesorService.save(apea);
-            dataToShow = appraisalProgramEmpAssesorService.getAllBy(Long.parseLong(appraisalProgramId), Long.parseLong(empDataId));
-            MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
-                    FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
-        } catch (Exception ex) {
-            LOGGER.error(ex, ex);
+        if (isEdit) {
+            System.out.println(" edittt tlhooooooo");
+            try {
+                AppraisalProgramEmpAssesor apea = new AppraisalProgramEmpAssesor();
+                apea.setId(assesorModel.getId());
+                apea.setEmpDataByAssesorEmpId(assesorModel.getEmpData());
+                apea.setAppraisalProgram(new AppraisalProgram(Long.parseLong(appraisalProgramId)));
+                apea.setEmpDataByEmpId(new EmpData(Long.parseLong(empDataId)));
+                apea.setScala(assesorModel.getScala());
+                appraisalProgramEmpAssesorService.update(apea);
+                dataToShow = appraisalProgramEmpAssesorService.getAllBy(Long.parseLong(appraisalProgramId), Long.parseLong(empDataId));
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            } catch (Exception ex) {
+                LOGGER.error(ex, ex);
+            }
+        } else {
+            try {
+                AppraisalProgramEmpAssesor apea = new AppraisalProgramEmpAssesor();
+                apea.setEmpDataByAssesorEmpId(assesorModel.getEmpData());
+                apea.setAppraisalProgram(new AppraisalProgram(Long.parseLong(appraisalProgramId)));
+                apea.setEmpDataByEmpId(new EmpData(Long.parseLong(empDataId)));
+                apea.setScala(assesorModel.getScala());
+                appraisalProgramEmpAssesorService.save(apea);
+                dataToShow = appraisalProgramEmpAssesorService.getAllBy(Long.parseLong(appraisalProgramId), Long.parseLong(empDataId));
+                MessagesResourceUtil.setMessages(FacesMessage.SEVERITY_INFO, "global.save_info", "global.added_successfully",
+                        FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString());
+            } catch (Exception ex) {
+                LOGGER.error(ex, ex);
+            }
         }
+
     }
 
     public Boolean getIsEdit() {
@@ -208,7 +224,6 @@ public class AppraisalProgramAssesorController extends BaseController {
     }
 
     public void doEdit() {
-        System.out.println(" heheheheheh" + selectedAppraisalProgramEmpAssesor);
         assesorModel = new AppraisalProgramEmpAssesorModel();
         assesorModel.setId(selectedAppraisalProgramEmpAssesor.getId());
         assesorModel.setEmpData(selectedAppraisalProgramEmpAssesor.getEmpDataByAssesorEmpId());
@@ -219,4 +234,6 @@ public class AppraisalProgramAssesorController extends BaseController {
         onChangeEmployee();
     }
 
+    
+    
 }

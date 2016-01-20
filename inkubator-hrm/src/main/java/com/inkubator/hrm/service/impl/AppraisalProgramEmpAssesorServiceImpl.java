@@ -65,8 +65,16 @@ public class AppraisalProgramEmpAssesorServiceImpl extends IServiceImpl implemen
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(AppraisalProgramEmpAssesor t) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        AppraisalProgramEmpAssesor apea = appraisalProgramEmpAssesorDao.getEntiyByPK(t.getId());
+        apea.setEmpDataByEmpId(empDataDao.getEntiyByPK(t.getEmpDataByEmpId().getId()));
+        apea.setAppraisalProgram(appraisalProgramDao.getEntiyByPK(t.getAppraisalProgram().getId()));
+        apea.setEmpDataByAssesorEmpId(t.getEmpDataByAssesorEmpId());
+        apea.setScala(t.getScala());
+        apea.setUpdatedBy(UserInfoUtil.getUserName());
+        apea.setUpdatedOn(new Date());
+        appraisalProgramEmpAssesorDao.update(apea);
     }
 
     @Override
