@@ -81,7 +81,7 @@
                                     <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" action="#{appraisalProgramAssesorController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" 
                                                      onclick="PF('statusDialog').show()" oncomplete="PF('assesorForm').show()" icon="ui-icon-document" ajax="true" update=":assesorFormId">
                                     </p:commandButton>
-                                    <p:commandButton value="#{appmsg['global.back']}" title="#{appmsg['global.back']}" styleClass="label_button" action="#{religionViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                    <p:commandButton value="#{appmsg['global.back']}" title="#{appmsg['global.back']}" styleClass="label_button" action="#{appraisalProgramAssesorController.doBack()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
