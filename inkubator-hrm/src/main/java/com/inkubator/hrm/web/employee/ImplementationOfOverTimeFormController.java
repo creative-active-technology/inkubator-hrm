@@ -172,7 +172,7 @@ public class ImplementationOfOverTimeFormController extends BaseController {
         implementationOfOT.setCode(model.getImplementationNumber());
         implementationOfOT.setDescription(model.getDescription());
         
-        if(model.getCalculationMethod() == 0){        	
+        if(model.getCalculationMethod() == HRMConstant.OVERTIME_CALCULATION_STATIC){        	
         	model = this.setRelativeHourAndMinute(model);   
         	
         	implementationOfOT.setRelativeHour(model.getRelativeHour());
