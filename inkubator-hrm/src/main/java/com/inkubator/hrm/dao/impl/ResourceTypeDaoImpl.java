@@ -49,10 +49,10 @@ public class ResourceTypeDaoImpl extends IDAOImpl<ResourceType> implements Resou
     
     private void doSearchByParam(ResourceTypeSearchParameter searchParameter, Criteria criteria) {
         if (searchParameter.getCode()!=null) {
-        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
+        	criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.ANYWHERE));
         } 
         if (searchParameter.getResourceType()!=null) {
-        	criteria.add(Restrictions.like("resourceType", searchParameter.getResourceType(), MatchMode.START));
+        	criteria.add(Restrictions.like("resourceType", searchParameter.getResourceType(), MatchMode.ANYWHERE));
         } 
         criteria.add(Restrictions.isNotNull("id"));
     }

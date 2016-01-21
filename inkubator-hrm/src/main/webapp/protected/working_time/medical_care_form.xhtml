@@ -67,7 +67,7 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:calendar id="requestDateId" required="true" pattern="dd MMMM yyyy" value="#{medicalCareFormController.model.requestDate}"
-                                    			mindate="#{medicalCareFormController.minDate}" maxdate="#{medicalCareFormController.maxDate}">
+                                    			mindate="#{medicalCareFormController.minDate}" >
                                     </p:calendar>
                                     <p:message for="requestDateId"/>
                                 </p:column>
@@ -84,7 +84,7 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:calendar id="startDateId" required="true" pattern="dd MMMM yyyy" value="#{medicalCareFormController.model.startDate}" 
-                                    		  	mindate="#{medicalCareFormController.minDate}" maxdate="#{medicalCareFormController.maxDate}">
+                                    		  	mindate="#{medicalCareFormController.minDate}">
                                         <p:ajax event="dateSelect" listener="#{medicalCareFormController.onChangeStartOrEndDate()}" update="totalDaysId,startDateId"/>
                                         <f:validator validatorId="dateBetweenValidator"  />
                                         <f:attribute name="endTime" value="#{endDateId}"/>
@@ -99,7 +99,7 @@
                                 </p:column>
                                 <p:column  style="width: 80%">
                                     <p:calendar id="endDateId" binding="#{endDateId}" required="true" pattern="dd MMMM yyyy" value="#{medicalCareFormController.model.endDate}"
-                                    			mindate="#{medicalCareFormController.minDate}" maxdate="#{medicalCareFormController.maxDate}">
+                                    			mindate="#{medicalCareFormController.minDate}">
                                         <p:ajax event="dateSelect" listener="#{medicalCareFormController.onChangeStartOrEndDate()}" update="totalDaysId"/>
 
                                     </p:calendar>

@@ -49,18 +49,18 @@
         <p:growl id="mainGrowl" showDetail="true" globalOnly="true"  />
         <!--<h:panelGroup id="panelGroupAnnouncement" rendered="#{homeController.isRenderAnnouncement}">-->
         <!--<p:panel id="panelGroupAnnouncement" rendered="#{homeController.isRenderAnnouncement}"  style="margin-top: -50px">--> 
-            <!--<h:outputScript library="js" name="announcement.js" />-->
-            <!--<p:scrollPanel >-->
-            <p:notificationBar position="top" effect="slide" widgetVar="announcementNotif"  autoDisplay="true" id="panelGroupAnnouncement" rendered="#{homeController.isRenderAnnouncement}" style="margin-left: -11px;margin-top: -12px">
-                <p:panel>
-                    <p:outputLabel value="#{homeController.announcementLog.announcement.announcementContent}" escape="false"></p:outputLabel>
-                    <br/>
-                    <p:commandButton value="#{appmsg['announcement.hide']}"  action="#{homeController.doAnnouncementExecute()}" onclick="PF('announcementNotif').hide()" update="panelGroupAnnouncement"  icon="ui-icon-arrow-1-n"/>
-                </p:panel>
-            </p:notificationBar>
-            <!--</p:scrollPanel>-->
-            <!--<p:commandButton value="#{appmsg['announcement.show']}" action="#{homeController.doAnnouncementExecute()}" oncomplete="PF('announcementNotif').show()" icon="ui-icon-arrow-1-s"/>-->
-            <!--</h:panelGroup>-->
+        <!--<h:outputScript library="js" name="announcement.js" />-->
+        <!--<p:scrollPanel >-->
+        <p:notificationBar position="top" effect="slide" widgetVar="announcementNotif"  autoDisplay="true" id="panelGroupAnnouncement" rendered="#{homeController.isRenderAnnouncement}" style="margin-left: -11px;margin-top: -12px">
+            <p:panel>
+                <p:outputLabel value="#{homeController.announcementLog.announcement.announcementContent}" escape="false"></p:outputLabel>
+                <br/>
+                <p:commandButton value="#{appmsg['announcement.hide']}"  action="#{homeController.doAnnouncementExecute()}" onclick="PF('announcementNotif').hide()" update="panelGroupAnnouncement"  icon="ui-icon-arrow-1-n"/>
+            </p:panel>
+        </p:notificationBar>
+        <!--</p:scrollPanel>-->
+        <!--<p:commandButton value="#{appmsg['announcement.show']}" action="#{homeController.doAnnouncementExecute()}" oncomplete="PF('announcementNotif').show()" icon="ui-icon-arrow-1-s"/>-->
+        <!--</h:panelGroup>-->
         <!--</p:panel>-->
         <!-- input hidden disini untuk memaksa view ini memanggil homeController yg bertujuan untuk memaksa nge-set default language/locale -->
         <h:inputHidden value="#{homeController.bahasa}" />
@@ -655,7 +655,7 @@
 
                                             </p:submenu>
                                         </p:submenu>
-                                        
+
                                         <p:submenu label="#{appmsg['menu.reimbursement']}" styleClass="menu" icon="img-reimbursement">
                                             <p:menuitem value="#{appmsg['reimbursement.personal_reimbursement_histoty']}" icon="img-reimbursement" style="font-size: 12px !important;color: #003366" title="#{appmsg['reimbursement.personal_reimbursement_histoty']}" url="/protected/reimbursement/rmbs_history_view.htm" /> 
                                             <p:submenu label="#{appmsg['reimbursement.reimbursement_setting']}"  styleClass="menu_child" >
@@ -812,7 +812,7 @@
                                                 <p:menuitem value="#{appmsg['report.late_data']}" icon="img-reporting" style="font-size: 12px !important;color: #003366" title="#{appmsg['report.late_data']}" url="#" />
                                             </p:submenu>
                                         </p:submenu>-->
-                                        
+
                                         <p:submenu label="#{appmsg['menu.recruitment']}"  style="font-size: 12px !important;font-weight: bold !important" styleClass="menu" icon="img-employees">
                                             <p:submenu label="#{appmsg['global.setting_2']}"  styleClass="menu_child" >
                                                 <p:menuitem value="#{appmsg['menu.adv_source_category']}" icon="img-admonition" style="font-size: 12px !important;color: #003366" title="#{appmsg['menu.adv_source_category']}" url="/protected/recruitment/recruitment_category_view.htm" /> 
@@ -894,7 +894,7 @@
                                                 <p:menuitem value="#{appmsg['recruitment.user_defined_recruitment_report']}" icon="img-bio-data" style="font-size: 12px !important;color: #003366" title="#{appmsg['recruitment.user_defined_recruitment_report']}" url="#" />
                                             </p:submenu> -->
                                         </p:submenu>
-                                        
+
                                         <p:submenu label="#{appmsg['menu.more']}"  styleClass="menu" icon="img-user-account">
                                             <p:submenu label="#{appmsg['menu.career_management']}"  styleClass="menu_child" icon="img-user-account">
                                                 <p:submenu label="#{appmsg['global.setting']}"  styleClass="menu_child" icon="img-user-account">
@@ -928,8 +928,10 @@
                                                     <p:menuitem value="#{appmsg['career.assessment']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.assessment']}" url="/protected/personalia/system_scoring_view.htm" />
                                                     <p:menuitem value="#{appmsg['performancegroup.performance_group']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['performancegroup.performance_group']}" url="/protected/appraisal/appraisal_perform_group_view.htm" />
                                                 </p:submenu>
+
                                                 <p:menuitem value="#{appmsg['career.planning_form']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.planning_form']}" url="/protected/appraisal/appraisal_program_view.htm" />
                                                 <p:menuitem value="#{appmsg['career.work_result_form']}" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="#{appmsg['career.work_result_form']}" url="/protected/appraisal/appraisal_program_distribution_view.htm" />
+                                                <p:menuitem value="Penilai Hasil Kerja" icon="img-employee_family" style="font-size: 12px !important;color: #003366" title="Penilai Hasil Kerja" url="/protected/appraisal/appraisal_program_result.htm" />
                                             </p:submenu>
                                             <p:submenu label="#{appmsg['career.training_management']}"  styleClass="menu_child" icon="img-user-account">
                                                 <p:submenu label="#{appmsg['global.setting']}"  styleClass="menu_child" icon="img-user-account">
