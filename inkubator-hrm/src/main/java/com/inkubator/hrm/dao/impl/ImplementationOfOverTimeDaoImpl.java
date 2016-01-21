@@ -7,10 +7,12 @@ package com.inkubator.hrm.dao.impl;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.ImplementationOfOverTimeDao;
 import com.inkubator.hrm.entity.ImplementationOfOverTime;
+import com.inkubator.hrm.web.model.OvertimeImplSearchingModel;
 import com.inkubator.hrm.web.search.ImplementationOfOvertimeSearchParameter;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
@@ -20,6 +22,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
+import org.primefaces.model.DualListModel;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -119,5 +122,67 @@ public class ImplementationOfOverTimeDaoImpl extends IDAOImpl<ImplementationOfOv
         Criteria criteria = getCurrentSession().createCriteria(getEntityClass());        
         return (Long) criteria.setProjection(Projections.max("id")).uniqueResult();
     }
+
+	@Override
+	public List<ImplementationOfOverTime> getListSearchByParam(OvertimeImplSearchingModel overtimeImplSearchingModel,
+			int firstResult, int maxResults, Order order) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		doSearchForOtImplSearchingByParam(overtimeImplSearchingModel, criteria);
+		criteria.addOrder(order);
+		criteria.setFirstResult(firstResult);
+		criteria.setMaxResults(maxResults);
+		return criteria.list();
+	}
+
+	@Override
+	public Long getTotalListSearchByParam(OvertimeImplSearchingModel overtimeImplSearchingModel) {
+		 Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		 doSearchForOtImplSearchingByParam(overtimeImplSearchingModel, criteria);
+	     return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+	}
+	
+	private void doSearchForOtImplSearchingByParam(OvertimeImplSearchingModel overtimeImplSearchingModel, Criteria criteria) {
+		criteria.createAlias("wtOverTime", "wtOverTime", JoinType.INNER_JOIN);
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+		criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+		criteria.createAlias("empData.golonganJabatan", "golonganJabatan", JoinType.INNER_JOIN);
+		criteria.createAlias("empData.jabatanByJabatanId", "jabatan", JoinType.INNER_JOIN);
+		criteria.createAlias("jabatan.department", "department", JoinType.INNER_JOIN);
+		
+		if(overtimeImplSearchingModel.getStartDatePeriod() != null){
+			criteria.add(Restrictions.ge("implementationDate", overtimeImplSearchingModel.getStartDatePeriod()));
+		}
+		
+		if(overtimeImplSearchingModel.getEndDatePeriod() != null){
+			criteria.add(Restrictions.le("implementationDate", overtimeImplSearchingModel.getEndDatePeriod()));
+		}
+		
+		if(!overtimeImplSearchingModel.getListSelectedWtOvertime().isEmpty()){
+			List<Long> listIdSelectedWtOvertime = overtimeImplSearchingModel.getListSelectedWtOvertime()
+					.stream().map(wtOvertime -> new Long(wtOvertime.getId()))
+					.collect(Collectors.toList());
+					
+			criteria.add(Restrictions.in("wtOverTime.id", listIdSelectedWtOvertime));
+		}
+		
+		if (!overtimeImplSearchingModel.getListSelectedGolJabatan().isEmpty()) {
+			List<Long> listIdSelectedGolonganJabatan = overtimeImplSearchingModel.getListSelectedGolJabatan()
+														.stream().map(golJab -> new Long(golJab.getId()))
+														.collect(Collectors.toList());
+														
+			criteria.add(Restrictions.in("golonganJabatan.id", listIdSelectedGolonganJabatan));
+		}
+		
+		if (!overtimeImplSearchingModel.getListSelectedDepartment().isEmpty()) {
+			List<Long> listIdSelectedDepartemen = overtimeImplSearchingModel.getListSelectedDepartment()
+														.stream().map(departemen -> new Long(departemen.getId()))
+														.collect(Collectors.toList());
+														
+			criteria.add(Restrictions.in("department.id", listIdSelectedDepartemen));
+		}
+		
+
+       criteria.add(Restrictions.isNotNull("id"));
+   }
     
 }

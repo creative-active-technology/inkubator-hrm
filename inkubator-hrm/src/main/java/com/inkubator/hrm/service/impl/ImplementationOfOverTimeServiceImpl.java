@@ -5,7 +5,6 @@
 package com.inkubator.hrm.service.impl;
 
 import ch.lambdaj.Lambda;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -33,6 +32,7 @@ import com.inkubator.hrm.json.util.JsonUtil;
 import com.inkubator.hrm.service.ImplementationOfOverTimeService;
 import com.inkubator.hrm.service.TempJadwalKaryawanService;
 import com.inkubator.hrm.util.KodefikasiUtil;
+import com.inkubator.hrm.web.model.OvertimeImplSearchingModel;
 import com.inkubator.hrm.web.search.ImplementationOfOvertimeSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 import com.inkubator.webcore.util.FacesUtil;
@@ -51,6 +51,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.hamcrest.Matchers;
 import org.hibernate.criterion.Order;
+import org.joda.time.DateTime;
+import org.joda.time.Hours;
+import org.joda.time.Minutes;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -577,5 +580,44 @@ public class ImplementationOfOverTimeServiceImpl extends BaseApprovalServiceImpl
         detail.append("Total " + entity.getRelativeHour() + " jam, " + entity.getRelativeMinute() + " menit");
         return detail.toString();
     }
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<ImplementationOfOverTime> getListSearchByParam(OvertimeImplSearchingModel overtimeImplSearchingModel,
+			int firstResult, int maxResults, Order order) throws Exception {
+		List<ImplementationOfOverTime> listImplementationOfOvertime = implementationOfOverTimeDao.getListSearchByParam(overtimeImplSearchingModel, firstResult, maxResults, order);
+		calculateOvertime(listImplementationOfOvertime);
+		return listImplementationOfOvertime;
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public Long getTotalListSearchByParam(OvertimeImplSearchingModel overtimeImplSearchingModel) throws Exception {
+		return implementationOfOverTimeDao.getTotalListSearchByParam(overtimeImplSearchingModel);
+	}
+	
+	private void calculateOvertime(List<ImplementationOfOverTime> listImplementationOfOvertime){
+		for(ImplementationOfOverTime implementationOfOverTime : listImplementationOfOvertime){
+			
+			if(implementationOfOverTime.getStartTime() == null && implementationOfOverTime.getEndTime() == null){
+				
+				implementationOfOverTime.setCalculationMethod(HRMConstant.OVERTIME_CALCULATION_STATIC);
+				DateTime startDT = new DateTime(implementationOfOverTime.getStartTime());
+		    	DateTime endDT = new DateTime(implementationOfOverTime.getEndTime());
+		    	
+		    	Integer relativeHour = Hours.hoursBetween(startDT, endDT).getHours();
+		    	Integer relativeMinute = Minutes.minutesBetween(startDT.plusHours(relativeHour), endDT).getMinutes();
+				Double overtimeDuration = (double) relativeHour + (relativeMinute / 60);
+				implementationOfOverTime.setOvertimeDuration(overtimeDuration);
+				
+			}else{
+				
+				implementationOfOverTime.setCalculationMethod(HRMConstant.OVERTIME_CALCULATION_RELATIVE);
+				Double overtimeDuration = (double) (implementationOfOverTime.getRelativeHour() + (implementationOfOverTime.getRelativeMinute() / 60));
+				implementationOfOverTime.setOvertimeDuration(overtimeDuration);
+			}
+		}
+	}
 
 }

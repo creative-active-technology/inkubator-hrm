@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Query;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -26,6 +27,8 @@ import com.inkubator.hrm.dao.TempAttendanceRealizationDao;
 import com.inkubator.hrm.entity.TempAttendanceRealization;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationMonthEndViewModel;
 import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
+import com.inkubator.hrm.web.search.PaidOvertimeSearchParameter;
+import com.inkubator.hrm.web.search.ReligionSearchParameter;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 import com.inkubator.hrm.web.search.WtAttendanceCalculationSearchParameter;
 
@@ -309,10 +312,9 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
 	}
     
     @Override
-	public List<TempAttendanceRealization> getPaidOvertimeByParam(int firstResult, int maxResults, Order orderable) {
+	public List<TempAttendanceRealization> getPaidOvertimeByParam(PaidOvertimeSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
-		criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+		doSearchPaidOvertimeByParam(searchParameter, criteria);
         criteria.addOrder(orderable);
         criteria.setFirstResult(firstResult);
         criteria.setMaxResults(maxResults);
@@ -320,9 +322,28 @@ public class TempAttendanceRealizationDaoImpl extends IDAOImpl<TempAttendanceRea
 	}
 
 	@Override
-	public Long getTotalPaidOvertimeByParam() {
+	public Long getTotalPaidOvertimeByParam(PaidOvertimeSearchParameter searchParameter) {
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		doSearchPaidOvertimeByParam(searchParameter, criteria);
 		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
+	
+	private void doSearchPaidOvertimeByParam(PaidOvertimeSearchParameter searchParameter, Criteria criteria) {
+		criteria.createAlias("empData", "empData", JoinType.INNER_JOIN);
+		criteria.createAlias("empData.bioData", "bioData", JoinType.INNER_JOIN);
+		
+        if (StringUtils.isNotBlank(searchParameter.getEmpName())) {
+        	Disjunction disjunctionName = Restrictions.disjunction();
+        	disjunctionName.add(Restrictions.like("bioData.firstName", searchParameter.getEmpName(), MatchMode.ANYWHERE));
+        	disjunctionName.add(Restrictions.like("bioData.middleName", searchParameter.getEmpName(), MatchMode.ANYWHERE));
+        	disjunctionName.add(Restrictions.like("bioData.lastName", searchParameter.getEmpName(), MatchMode.ANYWHERE));
+        	criteria.add(disjunctionName);
+        }
+        
+        if (StringUtils.isNotBlank(searchParameter.getNik())){
+            criteria.add(Restrictions.like("empData.nik", searchParameter.getNik(), MatchMode.ANYWHERE));
+        }
+        criteria.add(Restrictions.isNotNull("id"));
+    }
     
 }

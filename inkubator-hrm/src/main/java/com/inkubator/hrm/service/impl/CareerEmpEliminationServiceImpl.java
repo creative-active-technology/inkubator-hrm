@@ -1,11 +1,13 @@
 package com.inkubator.hrm.service.impl;
 
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -45,6 +47,7 @@ import com.inkubator.hrm.entity.CareerTerminationType;
 import com.inkubator.hrm.entity.EmpCareerHistory;
 import com.inkubator.hrm.entity.EmpData;
 import com.inkubator.hrm.entity.HrmUser;
+import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.entity.LoanNewApplication;
 import com.inkubator.hrm.entity.SystemCareerConst;
 import com.inkubator.hrm.entity.WtPeriode;
@@ -289,19 +292,8 @@ public class CareerEmpEliminationServiceImpl extends BaseApprovalServiceImpl  im
 	@Override
 	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
 	public List<EmpEliminationViewModel> getListEmpEliminationViewModelByParam(EmpEliminationSearchParameter searchParameter, int firstResult, int maxResults, Order order)	throws Exception {
-		/*List<EmpEliminationViewModel> listModel =  careerEmpEliminationDao.getListEmpEliminationViewModelByParam(searchParameter, firstResult, maxResults, order);
-		return listModel;*/
-		
-		ResourceBundle resourceBundle = ResourceBundle.getBundle("Messages", new Locale(FacesUtil.getSessionAttribute(HRMConstant.BAHASA_ACTIVE).toString()));
 		List<EmpEliminationViewModel> listEmpEliminationViewModel = careerEmpEliminationDao.getListEmpEliminationViewModelByParam(searchParameter, firstResult, maxResults, order);
-		
-		for(EmpEliminationViewModel model : listEmpEliminationViewModel){
-			EmpData empData = empDataDao.getByEmpDataByBioDataId(model.getBioDataId());
-			model.setEmpName(empData.getBioData().getFullName());
-			//model.setReason(model.getReason());
-			//model.setReason(getReasonByEmpCareerHistoryStatus(model.getEmpCareerHistoryStatus(), resourceBundle));
-		}
-		
+		setComplexDataForListEmpEliminationViewModel(listEmpEliminationViewModel);
 		return listEmpEliminationViewModel;
 	}
 
@@ -311,36 +303,29 @@ public class CareerEmpEliminationServiceImpl extends BaseApprovalServiceImpl  im
 		return careerEmpEliminationDao.getTotalListEmpEliminationViewModelByParam(searchParameter);
 	}
 	
-	private String getReasonByEmpCareerHistoryStatus(String status, ResourceBundle resourceBundle){
-		String reason = StringUtils.EMPTY;
-		
-		switch (status) {
-		case HRMConstant.EMP_STOP_CONTRACT:
-			reason = resourceBundle.getString("career.employee_elimination_status_stop_contract");
-			break;
-			
-		case HRMConstant.EMP_TERMINATION:
-			reason = resourceBundle.getString("career.employee_elimination_status_resign");
-			break;
-			
-		case HRMConstant.EMP_LAID_OFF:
-			reason = resourceBundle.getString("career.employee_elimination_status_laid_off");
-			break;
-			
-		case HRMConstant.EMP_PENSION:
-			reason = resourceBundle.getString("finance.pension");
-			break;
-			
-		case HRMConstant.EMP_DISCHAGED:
-			reason = resourceBundle.getString("career.employee_elimination_status_discharge");
-			break;
-
-		default:
-			break;
+	private void setComplexDataForListEmpEliminationViewModel(List<EmpEliminationViewModel> listModel){
+		for(EmpEliminationViewModel model : listModel){
+			if(model.getCareerEmpEliminationId() == null){
+				ApprovalActivity approvalActivity = approvalActivityDao.getEntiyByPK(model.getApprovalActivityId().longValue());
+				Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+				CareerEmpElimination careerEmpElimination = gson.fromJson(model.getJsonData(),CareerEmpElimination.class);
+				EmpData empData = empDataDao.getByEmpIdWithDetail(careerEmpElimination.getEmpData().getId());
+				WtPeriode lastWtPeriode = wtPeriodeDao.getEntiyByPK(careerEmpElimination.getWtPeriode().getId());
+				model.setEmpDataId(new BigInteger(String.valueOf(careerEmpElimination.getEmpData().getId())));
+				model.setEmpName(empData.getBioData().getFullName());
+				model.setNik(empData.getNik());
+				model.setJoinDate(empData.getJoinDate());
+				model.setJabatanName(empData.getJabatanByJabatanId().getName());
+				model.setBioDataId(new BigInteger(String.valueOf(empData.getBioData().getId())));
+				model.setLastWtPeriodId(new BigInteger(String.valueOf(lastWtPeriode.getId())));
+				model.setStartDateLastWtPeriod(lastWtPeriode.getFromPeriode());
+				model.setTerminationDate(careerEmpElimination.getEffectiveDate());
+				model.setStatus(approvalActivity.getApprovalStatus());
+				model.setReason(careerEmpElimination.getReason());
+			}
 		}
-		
-		return reason;
 	}
+	
 	
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -357,9 +342,21 @@ public class CareerEmpEliminationServiceImpl extends BaseApprovalServiceImpl  im
 	}
 	
 	private String isEliminationProcessValid(CareerEmpElimination careerEmpElimination){
+		
 		List<ApprovalDefinition> listEmpEliminationApprovalDefinition = approvalDefinitionDao.getAllDataByName(HRMConstant.EMPLOYEE_ELIMINATION);
 		if(listEmpEliminationApprovalDefinition.isEmpty()){
 			return "career.employee_elimination_approval_def_not_found";
+		}
+		
+		//Validasi untuk karyawan yang sudah di ajukan proses eliminasi dan approval nya masih pending tidak boleh di ajukan kembali.
+		//HrmUser hrmUser = hrmUserDao.getByEmpDataId(careerEmpElimination.getEmpData().getId());
+		List<ApprovalActivity> listPendingApproval = approvalActivityDao.getAllDataPendingRequestByApprovalDefName(HRMConstant.EMPLOYEE_ELIMINATION);
+		for(ApprovalActivity pendingApproval : listPendingApproval){
+			 Gson gson = JsonUtil.getHibernateEntityGsonBuilder().create();
+			 CareerEmpElimination empEliminationFromApproval = gson.fromJson(pendingApproval.getPendingData(), CareerEmpElimination.class);
+			 if(careerEmpElimination.getEmpData().getId() == empEliminationFromApproval.getEmpData().getId()){
+				 return "career.elimination_for_selected_emp_already_submitted";
+			 }
 		}
 		
 		return "yes";

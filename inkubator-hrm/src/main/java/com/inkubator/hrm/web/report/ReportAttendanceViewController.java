@@ -88,20 +88,22 @@ public class ReportAttendanceViewController extends BaseController {
     }
 
     public void doSearchEmployee() {
-//        modelSearchParameter=new LogWtAttendanceRealizationModel();
         modelSearchParameter.setListSelectedDepartment(departmentDualListModel.getTarget());
         modelSearchParameter.setListSelectedGolJab(golJabDualListModel.getTarget());
+        
         List<String> listDeptName = new ArrayList<String>();
         List<String> listGolJabName = new ArrayList<String>();
+        
         for (Department departmentName : modelSearchParameter.getListSelectedDepartment()) {
             listDeptName.add(departmentName.getDepartmentName());
         }
+        
         for (GolonganJabatan golJab : modelSearchParameter.getListSelectedGolJab()) {
             listGolJabName.add(golJab.getCode());
         }
+        
         modelSearchParameter.setListDeptName(listDeptName);
         modelSearchParameter.setListGolJabName(listGolJabName);
-
         lazyDataModel = null;
     }
 

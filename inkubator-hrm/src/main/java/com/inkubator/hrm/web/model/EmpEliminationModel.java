@@ -31,6 +31,7 @@ public class EmpEliminationModel implements Serializable {
     private Double separationPay;
     private Double remainSeparationPay;
     private Date effectiveDate;
+    private Integer approvalStatus;
     private List<LogMonthEndPayroll> listMonthEndPayrollAll = new ArrayList<LogMonthEndPayroll>();
     private List<LogMonthEndPayroll> listMonthEndPayrollSubsidi = new ArrayList<LogMonthEndPayroll>();
     private List<LogMonthEndPayroll> listMonthEndPayrollTunjangan = new ArrayList<LogMonthEndPayroll>();
@@ -169,6 +170,12 @@ public class EmpEliminationModel implements Serializable {
 	}
 	public void setEffectiveDate(Date effectiveDate) {
 		this.effectiveDate = effectiveDate;
+	}
+	public Integer getApprovalStatus() {
+		return approvalStatus;
+	}
+	public void setApprovalStatus(Integer approvalStatus) {
+		this.approvalStatus = approvalStatus;
 	}
 	
 	

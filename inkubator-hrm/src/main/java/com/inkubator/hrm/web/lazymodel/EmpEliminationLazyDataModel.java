@@ -71,13 +71,13 @@ public class EmpEliminationLazyDataModel extends LazyDataModel<EmpEliminationVie
     
     @Override
     public Object getRowKey(EmpEliminationViewModel empEliminationViewModel) {
-        return empEliminationViewModel.getId();
+        return empEliminationViewModel.getApprovalActivityId();
     }
 
     @Override
     public EmpEliminationViewModel getRowData(String id) {
         for (EmpEliminationViewModel empEliminationViewModel : listEmpEliminationViewModel) {
-            if (id.equals(String.valueOf(empEliminationViewModel.getId()))) {
+            if (id.equals(String.valueOf(empEliminationViewModel.getApprovalActivityId()))) {
                 return empEliminationViewModel;
             }
         }

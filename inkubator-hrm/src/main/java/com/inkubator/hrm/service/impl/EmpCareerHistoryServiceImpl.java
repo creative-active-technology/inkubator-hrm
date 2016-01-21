@@ -610,7 +610,7 @@ public class EmpCareerHistoryServiceImpl extends BaseApprovalServiceImpl impleme
 		List<EmpEliminationViewModel> listEmpEliminationViewModel = empCareerHistoryDao.getListEmpEliminationViewModelByParam(searchParameter, firstResult, maxResults, order);
 		
 		for(EmpEliminationViewModel model : listEmpEliminationViewModel){
-			EmpData empData = empDataDao.getByEmpDataByBioDataId(model.getBioDataId());
+			EmpData empData = empDataDao.getByEmpDataByBioDataId(model.getBioDataId().longValue());
 			model.setEmpName(empData.getBioData().getFullName());
 			model.setJoinDate(empData.getJoinDate());
 			model.setReason(getReasonByEmpCareerHistoryStatus(model.getEmpCareerHistoryStatus(), resourceBundle));

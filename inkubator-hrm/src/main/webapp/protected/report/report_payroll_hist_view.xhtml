@@ -31,17 +31,28 @@
                         <p:focus context="formReportEmpGroupWorkingViewId"/>
 
                         <p:toolbar  style="margin-top: 10px">
+                                                       
                             <p:toolbarGroup align="left">
-                                <h:panelGrid columns="5" >
-                                    <p:outputLabel value="#{appmsg['global.searching']}" styleClass="label_hrm"/>
+                                <h:panelGrid columns="8">
+                                    <p:outputLabel value="#{appmsg['global.year']}" styleClass="label_hrm"/>
                                     <p:outputLabel value=":" styleClass="label_hrm" />
-                                    <p:inputText id="searchId" value="#{reportPayrollHistoryViewController.searchParameter}" style="width: 180px" styleClass="label_button"/>
-                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reportPayrollHistoryViewController.doSearch()}" update="tableReportId,exportId"  styleClass="label_button" icon="ui-icon-search"/>
+                                    <p:selectOneMenu id="pilihanTahun" value="#{reportPayrollHistoryViewController.searchParameter.tahun}"
+                                                     required="true" label="#{appmsg['global.year']}"
+                                                     style="font-family: Calibri!important;width: 130px;text-align: left" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="0" />
+                                        <f:selectItems value="#{reportPayrollHistoryViewController.listTahun}" />
+                                        <p:ajax listener="#{reportPayrollHistoryViewController.doChangeYear()}" update="tableReportId" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="#{appmsg['global.month']}" styleClass="label_hrm"/>
+                                    <p:outputLabel value=":" styleClass="label_hrm" />
+                                    <p:selectOneMenu id="pilihanBulan" value="#{reportPayrollHistoryViewController.searchParameter.bulan}"
+                                                     required="true" label="#{appmsg['global.month']}"
+                                                     style="font-family: Calibri!important;width: 130px;text-align: left" >
+                                        <f:selectItem itemLabel="#{appmsg['global.please_choose']}" itemValue="0" />
+                                        <f:selectItems value="#{reportPayrollHistoryViewController.mapMonths}" />
+                                        <p:ajax listener="#{reportPayrollHistoryViewController.doChangeMonth()}" update="tableReportId"/>
+                                    </p:selectOneMenu>
                                 </h:panelGrid>
-                            </p:toolbarGroup>
-                            <p:toolbarGroup align="right">
-                                <p:panelGrid style="width: 100%;" styleClass="grid_no_border">
-                                </p:panelGrid>
                             </p:toolbarGroup>
 
                             <p:toolbarGroup align="right">
@@ -54,18 +65,6 @@
                                 </h:panelGrid>
                             </p:toolbarGroup>
                         </p:toolbar>
-                        <!--                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3">
-                                                  
-                                                    
-                                                    <p:row>
-                                                        <p:column style="width: 20%;background-color: #e1f0f0!important" >
-                                                            
-                                                        </p:column>
-                                                        <p:column>
-                                                            <p:commandButton id="btnSearchId" style="margin-left:0px;" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{reportPayrollHistoryViewController.doSearch()}" update="tableReportId"  styleClass="label_button" icon="ui-icon-search"/>
-                                                        </p:column>
-                                                    </p:row>
-                                                </p:panelGrid>-->
 
                         <p:dataTable  id="tableReportId" var="payrollHistData"  value="#{reportPayrollHistoryViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -187,7 +186,7 @@
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
-                        <p:blockUI block="formReportEmpGroupWorkingViewId" trigger="tableReportId,btnSearchId" >
+                        <p:blockUI block="formReportEmpGroupWorkingViewId" trigger="tableReportId,,pilihanTahun,pilihanBulan" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
                                 <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
                                 <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>

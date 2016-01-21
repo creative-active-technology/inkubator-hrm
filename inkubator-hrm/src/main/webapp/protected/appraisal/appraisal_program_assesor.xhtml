@@ -1,0 +1,292 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlId" globalOnly="true" showDetail="true"/>                
+                <h:form id="formId">
+                    <p:focus context="formId"/>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid columns="2">
+                            <p:graphicImage library="images" name="bank.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['appraisal_program.detail_appraisal_program']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['appraisal_program.appraisal_program_from_setting']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:20px;">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="Program Hasil Kerja" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{appraisalProgramAssesorController.selected.appraisalProgram.name}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="Periode Hasil Kerja" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{appraisalProgramAssesorController.selected.appraisalProgram.evalStartDate}">
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
+                                    <p:outputLabel value="&nbsp;&nbsp;#{appmsg['global.to']}&nbsp;&nbsp;"/>
+                                    <p:outputLabel value="#{appraisalProgramAssesorController.selected.appraisalProgram.evalEndDate}">
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="Nama Peserta" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{appraisalProgramAssesorController.selected.empData.bioData.fullName}"/>
+                                </p:column>
+                            </p:row>	
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="Jabatan" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{appraisalProgramAssesorController.selected.empData.jabatanByJabatanId.name}"/>
+                                </p:column>
+                            </p:row>	
+
+                        </p:panelGrid>	
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="left">
+                            </p:toolbarGroup>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="#{appmsg['global.add']}" title="#{appmsg['global.add']}" action="#{appraisalProgramAssesorController.doAdd()}" label="#{appmsg['global.add']}" styleClass="label_button" 
+                                                     onclick="PF('statusDialog').show()" oncomplete="PF('assesorForm').show()" icon="ui-icon-document" ajax="true" update=":assesorFormId">
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.back']}" title="#{appmsg['global.back']}" styleClass="label_button" action="#{appraisalProgramAssesorController.doBack()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        <p:dataTable var="emp"  value="#{appraisalProgramAssesorController.dataToShow}" lazy="false" paginator="false"  
+                                     id="tableEmp" style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="Daftar Assesor"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"  />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column >
+                                <f:facet name="header">  
+                                    <h:outputText value="Karyawan"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{emp.empDataByAssesorEmpId.bioData.fullName}"/>
+                            </p:column>
+                            <p:column >
+                                <f:facet name="header">  
+                                    <h:outputText value="Jabatan"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{emp.empDataByAssesorEmpId.jabatanByJabatanId.name}"/>
+                            </p:column>
+                            <p:column  style="text-align: center; width: 60px">
+                                <f:facet name="header">  
+                                    <h:outputText value="Skala"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{emp.scala}"/>
+                            </p:column>
+                            <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" 
+                                                 style="font-size: 10px!important"  update=":detailPanel"
+                                                 onclick="PF('statusDialog').show()" oncomplete="PF('detail').show()">                        
+                                    <f:setPropertyActionListener value="#{emp}" target="#{appraisalProgramAssesorController.selectedAppraisalProgramEmpAssesor}" />
+                                </p:commandButton>
+                                - 
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                                 style="font-size: 10px!important"  update=":panelDialogConfirmId"
+                                                 onclick="PF('statusDialog').show()" oncomplete="PF('dialogConfirmDelete').show()" >
+                                    <f:setPropertyActionListener value="#{emp}" target="#{appraisalProgramAssesorController.selectedAppraisalProgramEmpAssesor}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                 action="#{appraisalProgramAssesorController.doEdit()}"   onclick="PF('statusDialog').show()" oncomplete="PF('assesorForm').show()"  update=":assesorFormId">
+                                    <f:setPropertyActionListener value="#{emp}" target="#{appraisalProgramAssesorController.selectedAppraisalProgramEmpAssesor}" />
+                                  
+                                </p:commandButton>
+                            </p:column>                
+                        </p:dataTable>
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+<!--                            <p:commandButton value="#{appmsg['global.edit']}" icon="ui-icon-zoomin" title="#{appmsg['global.edit']}" action="#{appraisalProgramAssesorController.doUpdate()}" immediate="true"
+                                             style="margin-right: 5px" styleClass="label_button"/>-->
+<!--                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{appraisalProgramAssesorController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>-->
+                        </div>
+
+                    </div>
+
+                </h:form>
+                <p:dialog widgetVar="dialogConfirmDelete" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['global.name']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{appraisalProgramAssesorController.selectedAppraisalProgramEmpAssesor.empDataByAssesorEmpId.bioData.fullName}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{appraisalProgramAssesorController.doDelete()}" update=":growlId,:formId"
+                                         oncomplete="PF('dialogConfirmDelete').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmDelete').hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
+                <p:dialog widgetVar="detail" header="Detil Data Penilai" width="450" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
+                    <p:panelGrid id="detailPanel" style="width:100%;margin:5px;">
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Karyawan" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{appraisalProgramAssesorController.selectedAppraisalProgramEmpAssesor.empDataByAssesorEmpId.bioData.fullName}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Jabatan" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{appraisalProgramAssesorController.selectedAppraisalProgramEmpAssesor.empDataByAssesorEmpId.jabatanByJabatanId.name}"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Skala" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{appraisalProgramAssesorController.selectedAppraisalProgramEmpAssesor.scala}"></p:outputLabel></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="Program Hasil Kerja" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{appraisalProgramAssesorController.selectedAppraisalProgramEmpAssesor.appraisalProgram.name}"></p:outputLabel></p:column>
+                        </p:row>
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2"><p:outputLabel value="Kelompok Penilaian Kerja" styleClass="label_hrm" style="margin-left: 5px "/></p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+                <p:dialog widgetVar="assesorForm" header="Assesor Form" width="450"  height="270" modal="true" resizable="false" hideEffect="puff"  styleClass="header_small_no_bold"
+                          showEffect="clip" onShow="PF('statusDialog').hide()" appendTo="@(body)" dynamic="true">
+                    <p:growl id="growlUnitKerjaFormlId" globalOnly="true" showDetail="true"/>
+                    <h:form id="assesorFormId">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="unit.png" height="36" width="36"  cache="true"/>
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['appraisal_program.detail_appraisal_program']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['appraisal_program.appraisal_program_from_setting']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <h:panelGrid columns="1" style="margin-bottom: 5px;margin-left: 0px">
+                            <h:outputLabel value="#{appmsg['global.ensure_data_you_enter']}" styleClass="label_hrm" style="font-weight: normal!important"/>
+                            <!--<h:outputLabel value="#{appmsg['unitkerja.dialog_unit_kerja_info']}" styleClass="label_hrm" style="font-weight: normal!important"/>-->
+                        </h:panelGrid> 
+                        <p:panelGrid styleClass="grid_no_border" style="margin-left: 0px;margin-right: 0px">
+                            <p:row>
+                                <p:column style="width: 40%">
+                                    <p:outputLabel for="employeeId" value="Karyawan Penilai" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 1%">
+                                    <h:outputLabel for="employeeId" value=":" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 50%">
+                                    <p:autoComplete id="employeeId" title="#{appmsg['global.employee']}" value="#{appraisalProgramAssesorController.assesorModel.empData}"
+                                                    completeMethod="#{appraisalProgramAssesorController.doAutoCompleteEmployee}"                                                
+                                                    var="empData" itemValue="#{empData}" itemLabel="#{empData.nik} #{empData.bioData.firstName} #{empData.bioData.middleName} #{empData.bioData.lastName}"
+                                                    converter="empDataConverter" styleClass="isitext_hrm" size="30" 
+                                                    required="true" >
+                                        <p:ajax event="itemSelect" listener="#{appraisalProgramAssesorController.onChangeEmployee()}"  update="assesorFormId"/>
+                                    </p:autoComplete>
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="3">
+                                    <p:message for="employeeId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 50%">
+                                    <p:outputLabel for="jabatanId" value="Jabatan" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 1%">
+                                    <h:outputLabel for="jabatanId" value=":" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 50%">
+                                    <p:inputText id="jabatanId" value="#{appraisalProgramAssesorController.assesorModel.jabatanName}" readonly="false"  size="30"/>
+                                             
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="3">
+                                    <p:message for="jabatanId"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 50%">
+                                    <p:outputLabel for="scalaId" value="Skala Nilai" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column style="width: 1%">
+                                    <h:outputLabel for="scalaId" value=":" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 50%">
+                                    <p:spinner id="scalaId" value="#{appraisalProgramAssesorController.assesorModel.scala}" size="4" min="0" max="100" styleClass="isitext_hrm" required="true"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="3">
+                                    <p:message for="scalaId"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        <p:focus context="assesorFormId" />
+                        <p:separator style="margin-top: 20px;margin-bottom: 10px"/>
+                        <h:panelGrid columns="2" style="margin-bottom: -30px!important">
+                            <p:commandButton value="#{appmsg['global.save']}" ajax="true" update="assesorFormId,:growlUnitKerjaFormlId,:formId"
+                                             action="#{appraisalProgramAssesorController.doSave()}" styleClass="isitext_hrm" 
+                                             style="margin-right: 5px" label="#{appmsg['global.save']}" oncomplete="PF('assesorForm').hide()"
+                                             icon="ui-icon-disk" title="#{appmsg['global.save']}"/>
+                            <p:commandButton value="#{appmsg['global.clear']}" title="#{appmsg['global.clear']}" process="@this" update="assesorFormId" 
+                                             icon="ui-icon-refresh" styleClass="isitext_hrm" >  
+                                <p:resetInput target="assesorFormId" />  
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

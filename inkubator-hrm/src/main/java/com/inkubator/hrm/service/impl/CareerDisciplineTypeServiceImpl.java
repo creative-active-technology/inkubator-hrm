@@ -197,7 +197,9 @@ public class CareerDisciplineTypeServiceImpl extends IServiceImpl implements Car
 			throw new BussinessException("appraisalDetail.error_duplicate_appraisalDetail_name");
 		}
 		entity.setId(Long.parseLong(RandomNumberUtil.getRandomNumber(9)));
-		entity.setSystemLetterReference(systemLetterReferenceDao.getEntiyByPK(entity.getSystemLetterReference().getId()));
+		if(entity.getSystemLetterReference() != null) {
+			entity.setSystemLetterReference(systemLetterReferenceDao.getEntiyByPK(entity.getSystemLetterReference().getId()));
+		}
 		entity.setCreatedBy(UserInfoUtil.getUserName());
 		entity.setCreatedOn(new Date());
 		this.careerdisciplinetypeDao.save(entity);
@@ -246,8 +248,12 @@ public class CareerDisciplineTypeServiceImpl extends IServiceImpl implements Car
 		update.setDescription(entity.getDescription());
 		update.setValidity(entity.getValidity());
 		update.setPoint(entity.getPoint());
-		SystemLetterReference systemLetterReference = this.systemLetterReferenceDao.getEntiyByPK(entity.getSystemLetterReference().getId());
-		update.setSystemLetterReference(systemLetterReference);
+		if(entity.getSystemLetterReference() != null) {
+			SystemLetterReference systemLetterReference = this.systemLetterReferenceDao.getEntiyByPK(entity.getSystemLetterReference().getId());
+			update.setSystemLetterReference(systemLetterReference);
+		} else {
+			update.setSystemLetterReference(null);
+		}
 		update.setUpdatedBy(UserInfoUtil.getUserName());
 		update.setUpdatedOn(new Date());
 		this.careerdisciplinetypeDao.update(update);
@@ -267,9 +273,15 @@ public class CareerDisciplineTypeServiceImpl extends IServiceImpl implements Car
 	}
 
 	@Override
-	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
 	public Long getTotalDataByParam(CareerDisciplineTypeSearchParameter searchParameter) {
 		return this.careerdisciplinetypeDao.getTotalDataByParam(searchParameter);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public CareerDisciplineType getEntityByIdWithDetail(Long id) throws Exception {
+		return careerdisciplinetypeDao.getEntityByIdWithDetail(id);
 	}
 
 }

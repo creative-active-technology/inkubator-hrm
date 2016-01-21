@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlId" globalOnly="true" showDetail="true"/>                
+                <h:form id="formId">
+                    <p:focus context="formId"/>
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid columns="2">
+                            <p:graphicImage library="images" name="bank.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['appraisal_program.detail_appraisal_program']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['appraisal_program.appraisal_program_from_setting']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:20px;">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="Program Hasil Kerja" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{appraisalProgramEmployeeController.appraisalProgram.name}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="Periode Hasil Kerja" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{appraisalProgramEmployeeController.appraisalProgram.evalStartDate}">
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
+                                    <p:outputLabel value="&nbsp;&nbsp;#{appmsg['global.to']}&nbsp;&nbsp;"/>
+                                    <p:outputLabel value="#{appraisalProgramEmployeeController.appraisalProgram.evalEndDate}">
+                                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="Jumlah Peserta" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{appraisalProgramEmployeeController.appraisalProgram.totalEmp}"/> #{appmsg['global.people_only']}
+                                </p:column>
+                            </p:row>	
+
+                        </p:panelGrid>	
+                        <p:dataTable var="emp"  value="#{appraisalProgramEmployeeController.dataEmpAssesor}" lazy="false" paginator="false" 
+                                     id="tableEmp" style="margin-top: 10px;margin-bottom: 10px" rowIndexVar="no">
+                            <p:column style="text-align: center;width: 25px">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"  />
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column >
+                                <f:facet name="header">  
+                                    <h:outputText value="Karyawan"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{emp.empData.nik} #{emp.empData.bioData.fullName}"/>
+                            </p:column>
+                            <p:column >
+                                <f:facet name="header">  
+                                    <h:outputText value="Jabatan"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{emp.empData.jabatanByJabatanId.name}"/>
+                            </p:column>
+                            <p:column >
+                                <f:facet name="header">  
+                                    <h:outputText value="Tanggal Mulai Bekerja"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{emp.empData.joinDate}">
+                                    <f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column  style="width: 50px;text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="Penilai"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{emp.totalAssesor}"/>
+                            </p:column>
+                              <p:column headerText="#{appmsg['global.action']}" style="width:100px;text-align: center" exportable="false">
+                                <p:commandButton  icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important"  value="Daftar Penilai"
+                                                  action="#{appraisalProgramEmployeeController.doDistribusiPenilai()}" >
+                                    <f:setPropertyActionListener value="#{emp}" target="#{appraisalProgramEmployeeController.selected}" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+<!--                            <p:commandButton value="#{appmsg['global.edit']}" icon="ui-icon-zoomin" title="#{appmsg['global.edit']}" action="#{appraisalProgramEmployeeController.doUpdate()}" immediate="true"
+                                             style="margin-right: 5px" styleClass="label_button"/>-->
+                            <p:commandButton value="#{appmsg['global.back']}"  icon="ui-icon-contact"  title="#{appmsg['global.back']}" action="#{appraisalProgramEmployeeController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

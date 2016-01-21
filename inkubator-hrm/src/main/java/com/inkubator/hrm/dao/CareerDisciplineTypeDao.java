@@ -13,5 +13,5 @@ public interface CareerDisciplineTypeDao extends IDAO<CareerDisciplineType>{
 	
 	public Long getTotalDataByParam(CareerDisciplineTypeSearchParameter searchParameter);
 	
-	public CareerDisciplineType getEntityWithDetail(long id);
+	public CareerDisciplineType getEntityByIdWithDetail(long id);
 }

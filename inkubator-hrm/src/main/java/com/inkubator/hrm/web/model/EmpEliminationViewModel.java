@@ -1,6 +1,7 @@
 package com.inkubator.hrm.web.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -9,12 +10,12 @@ import java.util.Date;
  */
 public class EmpEliminationViewModel implements Serializable {
 	
-	private Long id;
+	private BigInteger careerEmpEliminationId;
     private Long empCareerHistoryId;
-    private Long empDataId;
-    private Long  bioDataId;
-    private Long lastJabatanId;
-    private Long lastWtPeriodId;
+    private BigInteger empDataId;
+    private BigInteger  bioDataId;
+    private BigInteger lastJabatanId;
+    private BigInteger lastWtPeriodId;
     private String nik;
     private String empName;
     private String jabatanName;
@@ -24,32 +25,34 @@ public class EmpEliminationViewModel implements Serializable {
     private String reason;
     private Integer status;
     private String empCareerHistoryStatus;
+    private BigInteger approvalActivityId;
+    private String activityNumber;
+    private String jsonData;
     
-    
-    
-	public Long getId() {
-		return id;
+	public BigInteger getCareerEmpEliminationId() {
+		return careerEmpEliminationId;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setCareerEmpEliminationId(BigInteger careerEmpEliminationId) {
+		this.careerEmpEliminationId = careerEmpEliminationId;
 	}
+	
 	public Long getEmpCareerHistoryId() {
 		return empCareerHistoryId;
 	}
 	public void setEmpCareerHistoryId(Long empCareerHistoryId) {
 		this.empCareerHistoryId = empCareerHistoryId;
 	}
-	public Long getEmpDataId() {
+	public BigInteger getEmpDataId() {
 		return empDataId;
 	}
-	public void setEmpDataId(Long empDataId) {
+	public void setEmpDataId(BigInteger empDataId) {
 		this.empDataId = empDataId;
 	}
 	
-	public Long getLastJabatanId() {
+	public BigInteger getLastJabatanId() {
 		return lastJabatanId;
 	}
-	public void setLastJabatanId(Long lastJabatanId) {
+	public void setLastJabatanId(BigInteger lastJabatanId) {
 		this.lastJabatanId = lastJabatanId;
 	}
 	
@@ -95,10 +98,10 @@ public class EmpEliminationViewModel implements Serializable {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	public Long getLastWtPeriodId() {
+	public BigInteger getLastWtPeriodId() {
 		return lastWtPeriodId;
 	}
-	public void setLastWtPeriodId(Long lastWtPeriodId) {
+	public void setLastWtPeriodId(BigInteger lastWtPeriodId) {
 		this.lastWtPeriodId = lastWtPeriodId;
 	}
 	public Date getStartDateLastWtPeriod() {
@@ -107,10 +110,10 @@ public class EmpEliminationViewModel implements Serializable {
 	public void setStartDateLastWtPeriod(Date startDateLastWtPeriod) {
 		this.startDateLastWtPeriod = startDateLastWtPeriod;
 	}
-	public Long getBioDataId() {
+	public BigInteger getBioDataId() {
 		return bioDataId;
 	}
-	public void setBioDataId(Long bioDataId) {
+	public void setBioDataId(BigInteger bioDataId) {
 		this.bioDataId = bioDataId;
 	}
 	public String getEmpCareerHistoryStatus() {
@@ -119,6 +122,23 @@ public class EmpEliminationViewModel implements Serializable {
 	public void setEmpCareerHistoryStatus(String empCareerHistoryStatus) {
 		this.empCareerHistoryStatus = empCareerHistoryStatus;
 	}
-	
+	public BigInteger getApprovalActivityId() {
+		return approvalActivityId;
+	}
+	public void setApprovalActivityId(BigInteger approvalActivityId) {
+		this.approvalActivityId = approvalActivityId;
+	}
+	public String getActivityNumber() {
+		return activityNumber;
+	}
+	public void setActivityNumber(String activityNumber) {
+		this.activityNumber = activityNumber;
+	}
+	public String getJsonData() {
+		return jsonData;
+	}
+	public void setJsonData(String jsonData) {
+		this.jsonData = jsonData;
+	}
 	
 }

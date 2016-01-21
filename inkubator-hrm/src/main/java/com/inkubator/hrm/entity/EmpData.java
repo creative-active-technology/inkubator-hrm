@@ -97,6 +97,8 @@ public class EmpData implements java.io.Serializable {
     private Set<RecruitSelectionApplicantSchedulleDetail> recruitSelectionApplicantSchedulleDetails = new HashSet<RecruitSelectionApplicantSchedulleDetail>(0);
     private Set<RecruitSelectionApplicantSchedulle> recruitSelectionApplicantSchedulles = new HashSet<RecruitSelectionApplicantSchedulle>(0);
     private Set<CareerEmpElimination> careerEmpEliminations = new HashSet<CareerEmpElimination>(0);
+    private Set<AppraisalProgramEmp> appraisalProgramEmps = new HashSet<AppraisalProgramEmp>(0);
+    
     public EmpData() {
     }
 
@@ -669,6 +671,15 @@ public class EmpData implements java.io.Serializable {
 
 	public void setCareerEmpEliminations(Set<CareerEmpElimination> careerEmpEliminations) {
 		this.careerEmpEliminations = careerEmpEliminations;
+	}
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="empData")
+	public Set<AppraisalProgramEmp> getAppraisalProgramEmps() {
+		return appraisalProgramEmps;
+	}
+
+	public void setAppraisalProgramEmps(Set<AppraisalProgramEmp> appraisalProgramEmps) {
+		this.appraisalProgramEmps = appraisalProgramEmps;
 	}
 
 	@Transient

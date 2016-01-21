@@ -13,6 +13,7 @@ import com.inkubator.hrm.web.model.TempAttendanceRealizationViewModel;
 import com.inkubator.hrm.web.model.WorkingTimeDeviation;
 import com.inkubator.hrm.web.model.WorkingTimeDeviationDetailModel;
 import com.inkubator.hrm.web.model.WorkingTimeDeviationListDetailModel;
+import com.inkubator.hrm.web.search.PaidOvertimeSearchParameter;
 import com.inkubator.hrm.web.search.TempAttendanceRealizationSearchParameter;
 import com.inkubator.hrm.web.search.WtAttendanceCalculationSearchParameter;
 
@@ -58,8 +59,8 @@ public interface TempAttendanceRealizationService extends IService<TempAttendanc
     
     public Long getTotalOvertimeAndReadFingerByEmpDataId(Long id) throws Exception;
 
-	public List<TempAttendanceRealization> getPaidOvertimeByParam(int firstResult, int maxResults, Order orderable) throws Exception;
+	public List<TempAttendanceRealization> getPaidOvertimeByParam(PaidOvertimeSearchParameter searchParameter, int firstResult, int maxResults, Order orderable) throws Exception;
 
-	public Long getTotalPaidOvertimeByParam() throws Exception;
+	public Long getTotalPaidOvertimeByParam(PaidOvertimeSearchParameter searchParameter) throws Exception;
 
 }

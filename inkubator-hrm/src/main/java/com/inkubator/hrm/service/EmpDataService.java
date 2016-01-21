@@ -160,7 +160,7 @@ public interface EmpDataService extends IService<EmpData> {
 
     public List<EmpData> getAllDataByAnnouncementId(Long announcementId);
 
-    public Long getTotalKaryawanByJabatanId(Long jabatanId) throws Exception;
+    public Long getTotalKaryawanByJabatanId(Long companyId, Long jabatanId) throws Exception;
 
     public List<SearchEmployeeCandidateViewModel> getAllDataEmpCandidateByParamWithDetail(SearchEmployeeCandidateParameter searchEmployeeCandidateParameter) throws Exception;
 

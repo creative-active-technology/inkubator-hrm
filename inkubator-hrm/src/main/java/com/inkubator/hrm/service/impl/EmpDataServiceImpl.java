@@ -969,8 +969,8 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
 
     @Override
     @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
-    public Long getTotalKaryawanByJabatanId(Long jabatanId) throws Exception {
-        return empDataDao.getTotalKaryawanByJabatanId(jabatanId);
+    public Long getTotalKaryawanByJabatanId(Long companyId, Long jabatanId) throws Exception {
+        return empDataDao.getTotalKaryawanByJabatanId(companyId, jabatanId);
     }
 
     @Override
@@ -1455,6 +1455,7 @@ public class EmpDataServiceImpl extends IServiceImpl implements EmpDataService {
     	List<LogMonthEndPayroll> listMonthEndSubsidi = listMonthEndPayroll.stream()
     			.filter(monthEndPayroll -> getComponentCategoryFromLog(monthEndPayroll.getPaySalaryCompId()) == HRMConstant.PAY_SALARY_COMPONENT_SUBSIDI)
     			.collect(Collectors.toList());
+    	
     	
     	List<LoanUnpaidForEmpTerminationViewModel> listLoanModel = generateListLoanUnpaidModel(empDataId);
     	Double totalOutstandingLoan = listLoanModel.stream().mapToDouble((loanModel) -> loanModel.getTotalOutstanding()).sum();

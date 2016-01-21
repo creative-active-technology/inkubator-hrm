@@ -22,6 +22,7 @@ import com.inkubator.hrm.service.OccupationTypeService;
 import com.inkubator.hrm.service.RecruitMppApplyDetailService;
 import com.inkubator.hrm.service.RecruitMppApplyService;
 import com.inkubator.hrm.service.RecruitMppPeriodService;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.util.MapUtil;
 import com.inkubator.hrm.web.model.BioEmploymentHistoryModel;
 import com.inkubator.hrm.web.model.MppApplyDetailModel;
@@ -154,7 +155,7 @@ public class MppApplyDetailFormController extends BaseController {
 
     public void updateActualTotalEmployeeBasedOnJabatan() {
         try {
-            Long totalEmp = empDataService.getTotalKaryawanByJabatanId(mppApplyDetailModel.getJabatanId());
+            Long totalEmp = empDataService.getTotalKaryawanByJabatanId(HrmUserInfoUtil.getCompanyId(), mppApplyDetailModel.getJabatanId());
             mppApplyDetailModel.setNumberOfActualPosition(totalEmp);
         } catch (Exception ex) {
             Logger.getLogger(MppApplyDetailFormController.class.getName()).log(Level.SEVERE, null, ex);

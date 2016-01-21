@@ -593,7 +593,12 @@ public class HRMConstant {
     public static final Byte COMPETENCE_HARD_SKILL = 1;
     
     /* Employee Elimination Status */
+    public static final Integer EMP_ELIMINATION_WAITING_APPROVAL = 0;
     public static final Integer EMP_ELIMINATION_APPROVED = 1;
-    public static final Integer EMP_ELIMINATION_REJECTED = 0;
+    public static final Integer EMP_ELIMINATION_REJECTED = 2;
+    
+    /* Overtime Calculation Method */
+    public static final Integer OVERTIME_CALCULATION_STATIC = 0;
+    public static final Integer OVERTIME_CALCULATION_RELATIVE = 1;
     
 }

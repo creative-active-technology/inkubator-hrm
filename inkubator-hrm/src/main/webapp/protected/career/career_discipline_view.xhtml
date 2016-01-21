@@ -160,6 +160,18 @@
                             <p:column><p:outputLabel value="#{careerDisciplineTypeViewController.selected.name}"/></p:column>
                         </p:row>
                         <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['careerawardtype.letter_reference']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{careerDisciplineTypeViewController.selected.systemLetterReference.name}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['careerawardtype.validity']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{careerDisciplineTypeViewController.selected.validity} #{appmsg['global.month']}"/> </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="color: #003366"><p:outputLabel value="#{appmsg['careerawardtype.point']}" styleClass="label_hrm"/></p:column>
+                            <p:column><p:outputLabel value="#{careerDisciplineTypeViewController.selected.point}"/> </p:column>
+                        </p:row>
+                        <p:row>
                             <p:column style="color: #003366"><p:outputLabel value="#{appmsg['global.description']}" styleClass="label_hrm"/></p:column>
                             <p:column><p:outputLabel value="#{careerDisciplineTypeViewController.selected.description}"/> </p:column>
                         </p:row>

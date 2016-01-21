@@ -26,7 +26,7 @@ import com.inkubator.hrm.web.search.AppraisalProgramSearchParameter;
  */
 public class AppraisalProgramLazyDataModel extends LazyDataModel<AppraisalProgram> implements Serializable{
 	
-    private static final Logger LOGGER = Logger.getLogger(AppraisalProgram.class);
+    private static final Logger LOGGER = Logger.getLogger(AppraisalProgramLazyDataModel.class);
     private final AppraisalProgramSearchParameter searchParameter;
     private final AppraisalProgramService appraisalProgramService;
     private List<AppraisalProgram> list = new ArrayList<>();

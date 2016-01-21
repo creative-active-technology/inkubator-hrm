@@ -46,7 +46,6 @@ public class CareerDisciplineTypeDaoImpl extends IDAOImpl<CareerDisciplineType> 
 	}
 	
 	public void doSearchByParam(CareerDisciplineTypeSearchParameter searchParameter, Criteria criteria){
-		criteria.createAlias("systemLetterReference", "systemLetterReference", JoinType.INNER_JOIN);
 		if(searchParameter.getCode() != null){
 			criteria.add(Restrictions.like("code", searchParameter.getCode(), MatchMode.START));
 		}
@@ -57,9 +56,9 @@ public class CareerDisciplineTypeDaoImpl extends IDAOImpl<CareerDisciplineType> 
 	}
 	
 	@Override
-	public CareerDisciplineType getEntityWithDetail(long id){
+	public CareerDisciplineType getEntityByIdWithDetail(long id){
 		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
-		criteria.setFetchMode("systemLetterReference", FetchMode.JOIN);
+		criteria.createAlias("systemLetterReference", "systemLetterReference", JoinType.LEFT_OUTER_JOIN);
 		criteria.add(Restrictions.eq("id", id));
 		return (CareerDisciplineType) criteria.uniqueResult();
 	}

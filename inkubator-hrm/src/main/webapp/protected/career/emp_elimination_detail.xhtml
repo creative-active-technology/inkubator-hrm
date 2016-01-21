@@ -1,0 +1,279 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">     
+                <p:growl id="growlLoanApprovalFormId" globalOnly="true" showDetail="true"/>         
+                <h:form id="formLoanApprovalFormId">
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="bio_data.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['career.employee_detail_elimination_form']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['career.employee_detail_elimination_form_from_career']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+                        <p:panelGrid styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['global.employee']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{empEliminationDetailController.model.empData.nikWithFullName}"/>
+                                </p:column>
+                                
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="#{appmsg['jabatan.jabatan']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{empEliminationDetailController.model.jabatanName}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['career.employee_elimination_boss_name']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{empEliminationDetailController.model.atasanName}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                 <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['jabatan.jabatan_deparment_boss']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{empEliminationDetailController.model.jabatanAtasanName}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['menu.department']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{empEliminationDetailController.model.departmentName}" />
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['terminate.termination_type']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{empEliminationDetailController.model.terminationTypeName}" />
+                                </p:column>
+                            </p:row>
+                             <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['career.employee_elimination_termination_date']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{empEliminationDetailController.model.effectiveDate}" >
+                                    	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['career.employee_elimination_termination_reason']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{empEliminationDetailController.model.reason}" />
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel value="#{appmsg['approvalactivity.approval_status']}" styleClass="label_hrm"/>
+                                </p:column>
+                                <p:column  style="width: 80%">
+                                    <p:outputLabel value="#{empEliminationDetailController.model.approvalStatus}" >
+                                    	<f:converter converterId="approvalStatusConverter" />
+                                    </p:outputLabel>
+                                </p:column>
+                            </p:row>
+
+                          
+                        </p:panelGrid>
+
+                      	 <p:fieldset id="fieldSetDataSalary" legend="#{appmsg['career.employee_elimination_last_salary_data']}" style="margin-bottom:10px">
+	                 	 	<p:panelGrid  id="panelTunjangan" styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
+	                 	 		<p:row id="labelTunjangan" >
+                                     <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                         <p:outputLabel  value="#{appmsg['paySalaryComponent.paySalaryComponent_tunjangan']}" styleClass="label_hrm" />
+                                     </p:column>
+                                     <p:column  style="width: 80%" />
+                                 </p:row> 
+	                        	<c:forEach   var="dataTunjangan"  items="#{empEliminationDetailController.model.listMonthEndPayrollTunjangan}" id="repeat" begin="0" end="#{empEliminationApprovalFormController.model.listMonthEndPayrollTunjangan.size()-1}" varStatus="loop"  >                                
+                                    <p:row>
+                                        <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                            <p:outputLabel  value="#{dataTunjangan.paySalaryDesc}" styleClass="label_hrm" style="margin-left:30px;"/>
+                                        </p:column>
+                                        <p:column  style="width: 80%">
+                                        	<p:outputLabel  value="#{dataTunjangan.nominal}" styleClass="label_hrm" >
+                                        		<f:convertNumber pattern="###,###" type="currency"/>
+                                        	</p:outputLabel>
+                                        </p:column>
+                                    </p:row>                          
+                                </c:forEach>
+	                 	 	</p:panelGrid>
+	                 	 	
+	                 	 	<p:panelGrid  id="panelPotongan" styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
+	                 	 		<p:row id="labelPotongan" >
+                                     <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                         <p:outputLabel  value="#{appmsg['payroll.deduction']}" styleClass="label_hrm" />
+                                     </p:column>
+                                     <p:column  style="width: 80%" />
+                                 </p:row> 
+	                        	<c:forEach   var="dataPotongan"  items="#{empEliminationDetailController.model.listMonthEndPayrollPotongan}" id="repeat" begin="0" end="#{empEliminationApprovalFormController.model.listMonthEndPayrollPotongan.size()-1}" varStatus="loop"  >                                
+                                    <p:row>
+                                        <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                            <p:outputLabel  value="#{dataPotongan.paySalaryDesc}" styleClass="label_hrm" style="margin-left:30px;"/>
+                                        </p:column>
+                                        <p:column  style="width: 80%">
+                                        	<p:outputLabel  value="#{dataPotongan.nominal}" styleClass="label_hrm" >
+                                        		<f:convertNumber pattern="###,###" type="currency"/>
+                                        	</p:outputLabel>
+                                        </p:column>
+                                    </p:row>                          
+                                </c:forEach>
+	                 	 	</p:panelGrid>
+	                 	 	
+	                 	 	<p:panelGrid id="panelSubsidi" styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
+	                 	 		<p:row id="labelSubsidi" >
+                                     <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                         <p:outputLabel  value="#{appmsg['payroll.subsidy']}" styleClass="label_hrm" />
+                                     </p:column>
+                                     <p:column  style="width: 80%" />
+                                 </p:row> 
+	                        	<c:forEach   var="dataSubsidi"  items="#{empEliminationDetailController.model.listMonthEndPayrollSubsidi}" id="repeat" begin="0" end="#{empEliminationApprovalFormController.model.listMonthEndPayrollSubsidi.size()-1}" varStatus="loop"  >                                
+                                    <p:row>
+                                        <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                            <p:outputLabel  value="#{dataSubsidi.paySalaryDesc}" styleClass="label_hrm" style="margin-left:30px;"/>
+                                        </p:column>
+                                        <p:column  style="width: 80%">
+                                        	<p:outputLabel  value="#{dataSubsidi.nominal}" styleClass="label_hrm" >
+                                        		<f:convertNumber pattern="###,###" type="currency"/>
+                                        	</p:outputLabel>
+                                        </p:column>
+                                    </p:row>                          
+                                </c:forEach>
+	                 	 	</p:panelGrid>
+	                 	 </p:fieldset>
+	                 	 
+	                 	 <p:fieldset legend="#{appmsg['career.employee_elimination_loan_bill_data']}" style="margin-bottom:10px">
+	                 	 	<p:panelGrid id="panelLoanDetail" styleClass="grid_border3" style="width:100%;margin-left: 0px;margin-right: 0px;margin-bottom:10px;margin-top: 10px">
+	                 	 		<p:row>
+                                <p:column style="width: 25%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['career.employee_elimination_loan_bill_data']}"  styleClass="label_hrm" />
+                                </p:column>
+                                <p:column id="listLoanId" style="width: 75%">
+                                	<h:panelGrid  columns="1" style="margin-left: -10px;">
+                                        <p:dataTable  id="tableLoanId" var="data"  value="#{empEliminationDetailController.model.listLoanModel}" lazy="false" paginator="false" 
+                                                        style="margin-top: 10px;margin-bottom: 10px"
+                                                      rowIndexVar="no"> 
+                                            <p:column style="text-align: center;width: 5%">
+                                                <f:facet name="header">  
+                                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                                </f:facet>
+                                                <h:outputLabel value="#{no+1}." />
+                                            </p:column>  
+                                            <p:column style="text-align: center;width: 35%">
+                                                <f:facet name="header">  
+                                                    <h:outputText value="#{appmsg['loan.loan_new_type_name']}"/>
+                                                </f:facet>
+                                                <h:outputLabel value= "#{data.loanNewTypeName}" />
+                                               
+                                            </p:column>
+                                            <p:column style="text-align: center;width: 20%">
+                                                <f:facet name="header">  
+                                                    <h:outputText value="#{appmsg['loan.loan_nominal']}"/>
+                                                </f:facet>
+                                                <h:outputLabel value= "#{data.totalPrincipal}" >
+                                                	<f:convertNumber pattern="###,###" type="currency"/>
+                                                </h:outputLabel>
+                                               
+                                            </p:column>
+                                            <p:column style="text-align: center;width: 20%">
+                                                <f:facet name="header">  
+                                                    <h:outputText value="#{appmsg['loan.remaining_principal_loan']}"/>
+                                                </f:facet>
+                                                <h:outputLabel value= "#{data.totalOutstanding}" >
+                                                	<f:convertNumber pattern="###,###" type="currency"/>
+                                                </h:outputLabel>
+                                               
+                                            </p:column>
+                                            <p:column style="text-align: center;width: 20%">
+                                                <f:facet name="header">  
+                                                    <h:outputText value="#{appmsg['loan.termin_progress']}"/>
+                                                </f:facet>
+                                                <h:outputLabel value= "#{data.lastPaidTermin} / #{data.totalNumberOfInstallment}" />
+                                                
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:panelGrid> 
+                                </p:column>
+                            </p:row>
+                             <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['career.employee_elimination_total_loan_outstanding']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<h:outputLabel value= "#{empEliminationDetailController.model.totalOutstandingLoan}" >
+                                    	<f:convertNumber pattern="###,###" type="currency"/>
+                                    </h:outputLabel>
+	                            </p:column>
+	                        </p:row> 
+                            <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel  value="#{appmsg['career.employee_elimination_pesangon']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<h:outputLabel value= "#{empEliminationDetailController.model.separationPay}" >
+                                    	<f:convertNumber pattern="###,###" type="currency"/>
+                                    </h:outputLabel>
+	                            </p:column>
+	                        </p:row> 
+	                        <p:row>
+	                            <p:column style="width: 20%;background-color: #e1f0f0!important">
+	                                <p:outputLabel value="#{appmsg['career.employee_elimination_remainder_payable']}" styleClass="label_hrm"/>
+	                            </p:column>
+	                            <p:column  style="width: 80%">
+	                            	<h:outputLabel value= "#{empEliminationDetailController.model.remainSeparationPay}" >
+                                    	<f:convertNumber pattern="###,###" type="currency"/>
+                                    </h:outputLabel>
+	                            </p:column>
+	                        </p:row>
+	                 	 	</p:panelGrid>
+	                 	 </p:fieldset>
+	                 	
+	                 	 
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.back']}" icon="ui-icon-home"  title="#{appmsg['global.close']}" action="#{empEliminationDetailController.doBack()}" immediate="true"
+                                             styleClass="label_button"/>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
