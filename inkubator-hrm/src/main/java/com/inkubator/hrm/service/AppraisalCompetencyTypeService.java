@@ -22,4 +22,6 @@ public interface AppraisalCompetencyTypeService extends IService<AppraisalCompet
 	public String updateDataCompetenceType(AppraisalCompetencyType competencyType, List<Long> listIdGolonganJabatan ) throws Exception;
 	
 	public AppraisalCompetencyType getEntityByIdWithDetail(Long id) throws Exception;
+	
+	public List<String> getAppraisalCompetencyTypeName() throws Exception;
 }
