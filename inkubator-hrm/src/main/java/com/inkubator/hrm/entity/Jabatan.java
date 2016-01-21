@@ -59,6 +59,8 @@ public class Jabatan implements java.io.Serializable {
     private Set<JabatanProfesi> jabatanProfesis = new HashSet<>(0);
     private Set<JabatanMajor> jabatanMajors = new HashSet<>(0);
     private Set<JabatanEdukasi> jabatanEdukasis = new HashSet<>(0);
+    private Set<EmpData> empByJabatans = new HashSet<>(0);
+    private Set<EmpData> empByJabatanGajis = new HashSet<>(0);
 
     public Jabatan() {
     }
@@ -342,6 +344,24 @@ public class Jabatan implements java.io.Serializable {
         this.jabatanEdukasis = jabatanEdukasis;
     }
     
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "jabatanByJabatanId")
+	public Set<EmpData> getEmpByJabatans() {
+		return empByJabatans;
+	}
+
+	public void setEmpByJabatans(Set<EmpData> empByJabatans) {
+		this.empByJabatans = empByJabatans;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "jabatanByJabatanGajiId")
+	public Set<EmpData> getEmpByJabatanGajis() {
+		return empByJabatanGajis;
+	}
+
+	public void setEmpByJabatanGajis(Set<EmpData> empByJabatanGajis) {
+		this.empByJabatanGajis = empByJabatanGajis;
+	}
+
 	@Override
     public int hashCode() {
         int hash = 5;

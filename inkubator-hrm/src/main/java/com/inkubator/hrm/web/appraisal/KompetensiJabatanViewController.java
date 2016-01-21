@@ -51,6 +51,10 @@ public class KompetensiJabatanViewController extends BaseController{
         }
     }
     
+    public String doDetail(){
+    	return "/protected/appraisal/komp_jabatan_detail.htm?faces-redirect=true&execution=e" + selected.getId();
+    }
+    
     @Override
     public void onDialogReturn(SelectEvent event){
         lazy = null;

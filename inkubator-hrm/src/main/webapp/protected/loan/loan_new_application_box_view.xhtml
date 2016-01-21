@@ -73,7 +73,7 @@
                             <p:toolbarGroup align="right">
                                 <h:panelGrid columns="3" >
                                     <p:commandButton value="#{appmsg['global.export']}" style="margin-right: 5px" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
-                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Loan_Undisbursed"/>
+                                        <pe:exporter target="tableIdExcel" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Loan_Undisbursed"/>
                                     </p:commandButton>
                                     <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{loanNewApplicationBoxViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
                                 </h:panelGrid>
@@ -176,6 +176,201 @@
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
+                        
+                        <!-- Data table dibawah untuk export excel -->
+                        
+                        <p:dataTable  id="tableIdExcel" var="data" rendered="false" value="#{loanNewApplicationBoxViewController.lazyData}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['loan.list_loan_application']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column  >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['loan.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.loanNumber}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.loanNewTypeName}" >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['loanschema.loan_type']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.loanNewTypeName}"/>
+                            </p:column>
+                            
+                            <p:column  >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['loan.purpose']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.purposeNote}"/>
+                            </p:column>
+                            
+                            <p:column  >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.nominal']}"/>
+                                </f:facet>
+                                <p:outputLabel value="Rp. "/>
+                                <h:outputLabel value= "#{data.nominalPrincipal}">
+                                	<f:convertNumber pattern="###,###" type="currency"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column sortBy="#{data.empName}" >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['loan.apply_by']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empNik}  #{data.empName}"/>
+                            </p:column>
+                            
+                            <p:column  >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['loanschema.loan']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.loanNewSchema.loanSchemaName}"/>
+                            </p:column>
+                            
+                            <p:column >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['rmbs_application.request_date']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.applicationDate}" >
+                                    <f:convertDateTime pattern="dd MMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column  sortBy="#{data.approverName}">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvalactivity.approved_by']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.approverNik}  #{data.approverName}">
+                                	
+                                </h:outputLabel>
+                            </p:column>
+                           <p:column  >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['loan.approvedDate']}"/>
+                                </f:facet>
+                               <h:outputLabel value= "#{data.approvalDate}" >
+                                    <f:convertDateTime pattern="dd MMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column  sortBy="#{data.approvalStatus}">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['approvalactivity.approval_status']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.approvalStatus}">
+                                	<f:converter converterId="approvalStatusConverter" />
+                                </h:outputLabel>
+                            </p:column> 
+                            
+                            <p:column  >
+                                <f:facet name="header">  
+                                    <h:outputText value="Termin"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.termin}"/>
+                            </p:column>
+                            
+                            <p:column  >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['loanNewSchema.loanTotalMaximum']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.loanNewSchema.totalMaximumLoan}"/>
+                            </p:column>
+                            
+                            <p:column  >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.description']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.description}"/>
+                            </p:column>
+                            
+                            <p:column  >
+                                <f:facet name="header">  
+                                    <h:outputText value="Pencairan yang diharapkan"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.dibursementDate}"/>
+                            </p:column>
+                            
+                            <p:column  >
+                                <f:facet name="header">  
+                                    <h:outputText value="Subsidi"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.subsidizedNominal}"/>
+                            </p:column>
+                            
+                            <p:column  >
+                                <f:facet name="header">  
+                                    <h:outputText value="Pokok"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.loanNewApplicationInstallments.basicNominal}"/>
+                            </p:column>
+                            
+                            <p:column  >
+                                <f:facet name="header">  
+                                    <h:outputText value="Sisa Hutang Pokok"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.loanNewApplicationInstallments.remainingBasic}"/>
+                            </p:column>
+                            
+                            <p:column  >
+                                <f:facet name="header">  
+                                    <h:outputText value="Bunga"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.loanNewApplicationInstallments.interestNominal}"/>
+                            </p:column>
+                            
+                            <p:column  >
+                                <f:facet name="header">  
+                                    <h:outputText value="Cicilan Pertama Sejak Pencairan"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.loanNewApplicationInstallments.numOfInstallment}"/>
+                            </p:column>
+                            
+                            <p:column  >
+                                <f:facet name="header">  
+                                    <h:outputText value="Tanggal Jatuh Tempo"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.loanNewApplicationInstallments.installmentDate}"/>
+                            </p:column>
+                            
+                            <p:column  >
+                                <f:facet name="header">  
+                                    <h:outputText value="Angsuran"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.loanNewApplicationInstallments.totalPayment}"/>
+                            </p:column>
+                            
+                            
+                            
+                            <p:column  >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['loan.disbursement_status']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.disbursementStatus}">
+                                	<f:converter converterId="loanDisbursementStatusConverter" />
+                                </h:outputLabel>
+                            </p:column> 
+							
+							<p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-zoomin" title="#{appmsg['global.detail']}" label="#{appmsg['global.detail']}" style="font-size: 10px!important" 
+                                				  action="#{loanNewApplicationBoxViewController.doDetail()}">                        
+                                    <f:setPropertyActionListener value="#{data}" target="#{loanNewApplicationBoxViewController.selected}" />
+                                </p:commandButton>
+                            </p:column>
+                            
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{loanNewApplicationBoxViewController.lazyData.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                        <!-- Data table untuk export excel -->
+                        
                         <p:blockUI block="formId" trigger="tableId,btnSearchId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
                                 <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>

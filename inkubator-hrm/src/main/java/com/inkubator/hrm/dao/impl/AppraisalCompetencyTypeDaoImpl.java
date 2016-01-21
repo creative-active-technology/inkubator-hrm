@@ -1,6 +1,7 @@
 package com.inkubator.hrm.dao.impl;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import com.inkubator.datacore.dao.impl.IDAOImpl;
 import com.inkubator.hrm.dao.AppraisalCompetencyTypeDao;
 import com.inkubator.hrm.entity.AppraisalCompetencyType;
+import com.inkubator.hrm.entity.OrgTypeOfSpec;
 import com.inkubator.hrm.web.search.AppraisalCompetencyTypeSearchParameter;
 
 /**
@@ -65,5 +67,6 @@ public class AppraisalCompetencyTypeDaoImpl extends IDAOImpl<AppraisalCompetency
         criteria.setFetchMode("appraisalCompetencyTypeGolJabs", FetchMode.JOIN);
         return (AppraisalCompetencyType) criteria.uniqueResult();
 	}
+
 
 }

@@ -72,8 +72,10 @@ import com.inkubator.hrm.service.JabatanService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.model.JobJabatanModel;
 import com.inkubator.hrm.web.model.KompetensiJabatanViewModel;
+import com.inkubator.hrm.web.model.PerformanceIndicatorJabatanViewModel;
 import com.inkubator.hrm.web.search.JabatanSearchParameter;
 import com.inkubator.hrm.web.search.KompetensiJabatanSearchParameter;
+import com.inkubator.hrm.web.search.PerformanceIndicatorJabatanSearchParameter;
 import com.inkubator.securitycore.util.UserInfoUtil;
 
 import ch.lambdaj.Lambda;
@@ -836,9 +838,19 @@ public class JabatanServiceImpl extends IServiceImpl implements JabatanService {
 	public Long getTotalByParamForKompetensiJabatan(KompetensiJabatanSearchParameter searchParameter) throws Exception {
 		return this.jabatanDao.getTotalByParamForKompetensiJabatan(searchParameter);
 	}
-
 	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<PerformanceIndicatorJabatanViewModel> getByParamForPerformanceIndicatorJabatan(PerformanceIndicatorJabatanSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception {
+		List<PerformanceIndicatorJabatanViewModel> listJabatan = jabatanDao.getByParamForPerformanceIndicatorJabatan(searchParameter, firstResult, maxResults, order);
+		
+		return listJabatan;
+	}
 
-	
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 30)
+	public Long getTotalByParamForPerformanceIndicatorJabatan(PerformanceIndicatorJabatanSearchParameter searchParameter) throws Exception {
+		return this.jabatanDao.getTotalByParamForPerformanceIndicatorJabatan(searchParameter);
+	}
 
 }

@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">
+                <div id="box_bg">
+                    <h:panelGrid style="margin-bottom: 5px" columns="2">
+                        <p:graphicImage library="images" name="loan.png" height="36" width="36" />
+                        <h:panelGroup layout="block">
+                            <h:panelGrid>
+                                <p:outputLabel value="Kompetensi Jabatan" styleClass="header_big" />
+                                <p:outputLabel value="Data Kompetensi Jabatan dari Aplikasi" styleClass="header_small_no_bold" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:separator />
+                    <p:growl id="growlMenuId" showDetail="true" showSummary="true" globalOnly="true" life="5000"/>
+                    <h:form id="formLoanHistoryId" >
+                        
+                        <p:panelGrid style="width: 100%;margin-top: 15px; margin-bottom: 20px" styleClass="grid_border4">
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['jabat.jabatan_code']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 75%">
+                                    <p:outputLabel  value="" />
+                                </p:column>
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['companyRelation.jabatan']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 75%">
+                                    <p:outputLabel  value="" />
+                                </p:column>
+
+
+
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 15%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel  value="#{appmsg['menu.job_grade']}" style="font-weight: bold"/>
+                                </p:column>
+                                <p:column style="width: 75%">
+                                    <p:outputLabel  value="" />
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        
+                       <p:fieldset legend="#{appmsg['career.competence_type']}" style="margin-bottom:15px">
+                       
+                        <c:forEach   var="dataRender" items="" id="repeat" begin="0" end="" varStatus="loop"  >       
+                        	  <p:outputLabel  value="" style="font-weight: bold"/>                        
+                                    <p:dataTable  value=""  var="" itemValue=""  value="" 
+                                      id="tableId" rows="11" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                                      
+                                      <p:column >
+                                		<f:facet name="header">
+                                   			 <h:outputText value="Kelompok"/>
+                                				</f:facet>
+                                					<h:outputLabel value= " " />
+                            		   </p:column>
+                            		   
+                            		   <p:column >
+                                		<f:facet name="header">
+                                   			 <h:outputText value="Kompetensi"/>
+                                				</f:facet>
+                                					<h:outputLabel value= " " />
+                                					
+                            		   </p:column>
+                            		   <p:column >
+                                		<f:facet name="header">
+                                   			 <h:outputText value="Indikator Harapan"/>
+                                				</f:facet>
+                                					<h:outputLabel value= " " />
+                                					
+                            		   </p:column>
+                                     </p:dataTable>              
+                                </c:forEach>
+                      </p:fieldset>
+                      
+                 <div id="box_bg" style="margin: 10px">
+
+                        <p:separator  style="margin-top: 10px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.close']}"  icon="ui-icon-contact"  title="#{appmsg['global.close']}" action="#{loanHistoryViewController.doExit()}" immediate="true"
+                                             styleClass="label_button"/>
+                    
+                        </div>
+                    </div>
+               </h:form>
+               </div>
+               
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

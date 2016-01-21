@@ -1,5 +1,6 @@
 package com.inkubator.hrm.service.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -24,6 +25,7 @@ import com.inkubator.hrm.entity.AppraisalCompetencyType;
 import com.inkubator.hrm.entity.AppraisalCompetencyTypeGolJab;
 import com.inkubator.hrm.entity.AppraisalCompetencyTypeGolJabId;
 import com.inkubator.hrm.entity.GolonganJabatan;
+import com.inkubator.hrm.entity.OrgTypeOfSpec;
 import com.inkubator.hrm.service.AppraisalCompetencyTypeService;
 import com.inkubator.hrm.util.HrmUserInfoUtil;
 import com.inkubator.hrm.web.search.AppraisalCompetencyTypeSearchParameter;
@@ -370,5 +372,14 @@ public class AppraisalCompetencyTypeServiceImpl extends IServiceImpl implements 
 		return appraisalCompetencyType;
 	}
 
-	
+	@Override
+    @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+    public List<String> getAppraisalCompetencyTypeName() throws Exception {
+        List<String> data = new ArrayList<>();
+        List<AppraisalCompetencyType> list = this.appraisalCompetencyTypeDao.getAllData();
+        for (AppraisalCompetencyType appraisalComp : list) {
+            data.add(appraisalComp.getName());
+        }
+        return data;
+    }
 }
