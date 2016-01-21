@@ -134,6 +134,8 @@
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
+                        
+                        
                         <p:dataTable  id="exportId" var="data"  value="#{rmbsApplicationUndisbursedViewController.lazyData}" lazy="true" paginator="true" pageLinks="7" rendered="false"
                                       paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
                                       rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
@@ -141,19 +143,73 @@
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['rmbs_application.list_of_reimbursement_request']}"/>
                             </f:facet> 
-                            <p:column style="text-align: center;width: 3%">
+                            <p:column style="text-align: center">
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.number']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{no+1}." />
                             </p:column>
-                            <p:column sortBy="#{data.empNik}" style="width: 10%">
+                            <p:column >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmgs['Tanggal Pengajuan']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.applicationDate}"/>
+                            </p:column>
+                            <p:column >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmgs['reimbursement.reimbursement_schema']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.rmbsType.rmbsSchemaListOfTypes.rmbsSchema.name}"/>
+                            </p:column>
+                            <p:column >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmgs['rmbs_application.purpose']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.purpose}"/>
+                            </p:column>
+                            <p:column >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmgs['global.description']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.description}"/>
+                            </p:column>
+                            <p:column >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmgs['rmbs_schema.submission_deadline']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.rmbsType.rmbsSchemaListOfTypes.rmbsSchema.submissionDeadline}"/>
+                            </p:column>
+                            <p:column >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmgs['rmbs_application.limit_nominal_per_claim']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.rmbsType.rmbsSchemaListOfTypes.limitPerClaim}"/>
+                            </p:column>
+                            <p:column >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmgs['rmbs_application.max_total_request_per_month']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.rmbsType.rmbsSchemaListOfTypes.maxPerMonth}"/>
+                            </p:column>
+                            <p:column >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmgs['rmbs_application.total_requested_this_month']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.rmbsType.rmbsSchemaListOfTypes.rmbsSchema.maxTotalReimburst}"/>
+                            </p:column>
+                            <p:column >
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmgs['bioBankAccount.bioBankAccount_currency']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{data.currency.name}"/>
+                            </p:column>
+                            <p:column sortBy="#{data.empNik}" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.nik']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.empNik}"/>
                             </p:column>
-                            <p:column sortBy="#{data.empName}" style="width: 20%">
+                            <p:column sortBy="#{data.empName}" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.employee']}"/>
                                 </f:facet>
@@ -165,13 +221,13 @@
                                 </f:facet>
                                 <h:outputLabel value= "#{data.rmbsApplicationCode}"/>
                             </p:column>
-                            <p:column sortBy="#{data.rmbsTypeName}" style="width: 15%">
+                            <p:column sortBy="#{data.rmbsTypeName}" >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['rmbs_type.reimbursement_type']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.rmbsTypeName}"/>
                             </p:column>
-                            <p:column style="width: 10%">
+                            <p:column >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['biodocument.attachments']}"/>
                                 </f:facet>
@@ -179,13 +235,13 @@
                                     <f:converter converterId="booleanMessageConverter"/>
                                 </h:outputLabel>
                             </p:column>
-                            <p:column style="width: 10%">
+                            <p:column >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.nominal']}"/>
                                 </f:facet>
                                 <h:outputLabel value="#{data.nominal}"/>
                             </p:column>
-                            <p:column style="width: 15%">
+                            <p:column >
                                 <f:facet name="header">  
                                     <h:outputText value="#{appmsg['global.status']}"/>
                                 </f:facet>
@@ -209,6 +265,9 @@
                                 <p:outputLabel value="Data" style="margin-left: 3px"/>
                             </f:facet>  
                         </p:dataTable>
+                        
+                        
+                        
                         <p:blockUI block="formId" trigger="tableId,btnSearchId" >
                             <h:panelGrid columns="2" styleClass="grid_no_border">
                                 <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
