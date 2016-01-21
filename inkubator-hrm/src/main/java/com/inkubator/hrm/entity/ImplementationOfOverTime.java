@@ -18,6 +18,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
@@ -49,6 +50,8 @@ public class ImplementationOfOverTime implements java.io.Serializable {
      private Date createdOn;
      private String updatedBy;
      private Date updatedOn;
+     private Integer calculationMethod;
+     private Double overtimeDuration;
 
     public ImplementationOfOverTime() {
     }
@@ -221,6 +224,25 @@ public class ImplementationOfOverTime implements java.io.Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	@Transient
+	public Integer getCalculationMethod() {
+		return calculationMethod;
+	}
+
+	public void setCalculationMethod(Integer calculationMethod) {
+		this.calculationMethod = calculationMethod;
+	}
+
+	@Transient
+	public Double getOvertimeDuration() {
+		return overtimeDuration;
+	}
+	
+	public void setOvertimeDuration(Double overtimeDuration) {
+		this.overtimeDuration = overtimeDuration;
 	}    
-    
+	
+	
 }

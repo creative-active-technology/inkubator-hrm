@@ -6,6 +6,7 @@ package com.inkubator.hrm.dao;
 
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.ImplementationOfOverTime;
+import com.inkubator.hrm.web.model.OvertimeImplSearchingModel;
 import com.inkubator.hrm.web.search.ImplementationOfOvertimeSearchParameter;
 
 import java.util.Date;
@@ -33,4 +34,8 @@ public interface ImplementationOfOverTimeDao extends IDAO<ImplementationOfOverTi
     public List<ImplementationOfOverTime> getAllEmpOtImplBetweenStartDateAndEndDate(Long empDataId, Date startDate, Date endDate);
     
     public Long getCurrentMaxId();
+    
+    public List<ImplementationOfOverTime> getListSearchByParam(OvertimeImplSearchingModel overtimeImplSearchingModel, int firstResult, int maxResults, Order order);
+    
+    public Long getTotalListSearchByParam(OvertimeImplSearchingModel overtimeImplSearchingModel);
 }

@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>TODO supply a title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+                Home
+            </ui:define>
+            <ui:define name="center">                
+                <div id="box_bg" style="margin: 10px">
+                    <h:form id="formId">
+                        <h:panelGrid style="margin-bottom: 5px" columns="2">
+                            <p:graphicImage library="images" name="marital_status.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['overTimeImplementation.overtime_impl_searching']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['overTimeImplementation.overtime_impl_searching_header']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:growl id="growlId" globalOnly="true" showDetail="true" />
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 10px" styleClass="grid_border3" >
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel for="startDatePeriod"  value="#{appmsg['salaryCalculation.period']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                    
+                                    <p:calendar  id="startDatePeriod" pattern="dd MMMM yyyy"
+                                                 label="#{appmsg['workingTime.start_period']}"
+                                                 value="#{overtimeImplSearchingViewController.overtimeImplSearchingModel.startDatePeriod}"  
+                                                 readonly="false" required="true"  size="15" showOn="button" 
+                                                 style="width:100px;" />      
+                                                 
+                                    <p:outputLabel value="#{appmsg['global.to']}" style="margin-left: 3px;margin-right: 3px;" />
+                                    
+                                     <p:calendar  id="endDatePeriod" pattern="dd MMMM yyyy"
+                                                 label="#{appmsg['workingTime.end_period']}"
+                                                 value="#{overtimeImplSearchingViewController.overtimeImplSearchingModel.endDatePeriod}"  
+                                                 readonly="false" required="true"  size="15" showOn="button" 
+                                                 style="width:100px;" />  
+                                      <p:message for="startDatePeriod" />
+                                      <p:message for="endDatePeriod" />
+                                </p:column>
+                            </p:row>
+                             <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel for="wtOvertimeId"  value="#{appmsg['overTimeImplementation.name']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                 	  <p:pickList value="#{overtimeImplSearchingViewController.overtimeImplSearchingModel.dualListWtOverTime}" var="wtOvertime" itemValue="#{wtOvertime}" converter="wtOvertimeConverter" id="wtOvertimeId"
+                                                    required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['overTimeImplementation.name']}" styleClass="isitext_hrm"
+                                                    itemLabel="#{wtOvertime.name}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                    removeLabel="#{appmsg['global.remove']}"/>
+                                        <p:message for="wtOvertimeId" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel for="goljabatanId"  value="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                 	  <p:pickList value="#{overtimeImplSearchingViewController.overtimeImplSearchingModel.dualListGolonganJabatan}" var="golJabatan" itemValue="#{golJabatan}" converter="golonganJabatanConverter" id="goljabatanId"
+                                                    required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['benefitGroupRate.benefitGroupRate_golongan']}" styleClass="isitext_hrm"
+                                                    itemLabel="#{golJabatan.code}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                    removeLabel="#{appmsg['global.remove']}"/>
+                                        <p:message for="goljabatanId" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                    <p:outputLabel for="departmentId"  value="#{appmsg['department.department']}" styleClass="label_hrm" />
+                                </p:column>
+                                <p:column style="width: 80%">
+                                 	  <p:pickList value="#{overtimeImplSearchingViewController.overtimeImplSearchingModel.dualListDepartemen}" var="department" itemValue="#{department}" converter="departmentConverter" id="departmentId"
+                                                    required="true"  style="margin-top: 15px;margin-bottom: 15px;" label="#{appmsg['department.department']}" styleClass="isitext_hrm"
+                                                    itemLabel="#{department.departmentName}" addAllLabel="#{appmsg['global.addAll']}"  addLabel="#{appmsg['global.add']}" removeAllLabel="#{appmsg['global.removeAll']}"
+                                                    removeLabel="#{appmsg['global.remove']}"/>
+                                        <p:message for="departmentId" />
+                                </p:column>
+                            </p:row>
+                         
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important" >
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton id="btnSearchId" value="#{appmsg['global.search']}" title="#{appmsg['global.search']}" action="#{overtimeImplSearchingViewController.doSearch()}"  update="formId"  styleClass="label_button" icon="ui-icon-search"/>
+                                </p:column>
+                            </p:row>
+
+
+
+                        </p:panelGrid>
+                        <p:toolbar  style="margin-top: 10px">
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="3" >
+                                    <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" immediate="true" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableId" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Overtime_Implementation"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.close']}" title="#{appmsg['global.close']}" styleClass="label_button" action="#{overtimeImplSearchingViewController.doClose()}" icon="ui-icon-home" immediate="true" ajax="true" partialSubmit="true" process="@this"/>
+
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                        
+                        <p:defaultCommand target="btnSearchId" />
+                        <p:dataTable  var="data"  value="#{overtimeImplSearchingViewController.lazyDataModel}" lazy="true" paginator="true" pageLinks="7"
+                                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {PageLinks} {NextPageLink} {LastPageLink}"
+                                      id="tableId" rows="11" rowsPerPageTemplate="5,7,11,15,21,25,31" style="margin-top: 10px;margin-bottom: 10px"
+                                      rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['overTimeImplementation.overTimeImplementation_list']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="#{data.empData.nik}" style="width: 20%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['businesstravel.employee']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.empData.nikWithFullName}" />
+                            </p:column>
+                            <p:column sortBy="#{data.code}" style="width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['overTimeImplementation.implementation_no']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.code}" />
+                            </p:column>
+                            <p:column sortBy="#{data.implementationDate}" style="width: 15%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['overTimeImplementation.implementation_date']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.implementationDate}" >
+                                	<f:convertDateTime pattern="dd MMMM yyyy" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column  style="width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['overTimeImplementation.calculation_type']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.calculationMethod}" >
+                                    <f:converter converterId="overtimeImplCalculationMethodConverter" />
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column  style="width: 10%">
+                                <f:facet name="header">
+                                    <h:outputText value="#{appmsg['overTimeImplementation.time_calculation']}"/>
+                                </f:facet>
+                                 <h:outputLabel value= "#{data.overtimeDuration}" >
+                                 	<f:convertNumber maxFractionDigits="1" minFractionDigits="1" minIntegerDigits="1"  pattern="###,###" type="number"/>
+                                 </h:outputLabel>
+                                 <h:outputLabel value= "#{appmsg['global.hour']}" style="margin-left: 3px" />
+                            </p:column>
+                            
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{appmsg['global.total_data']} : "/>
+                                <p:outputLabel value="#{overtimeImplSearchingViewController.lazyDataModel.rowCount}"/>
+                                <p:outputLabel value="Data" style="margin-left: 3px"/>
+                            </f:facet>  
+                        </p:dataTable>
+                     
+                        <p:blockUI block="formId" trigger="tableId, btnSearchId" >
+                            <h:panelGrid columns="2" styleClass="grid_no_border">
+                                <h:graphicImage library="images" name="loading.gif" width="42" height="42"/>
+                                <h:outputLabel value="#{appmsg['global.waiting']}" styleClass="label_hrm"/>
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </h:form>
+                </div>
+                
+                <h:outputStylesheet library="css" name="progress_bar.css" />
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
