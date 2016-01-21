@@ -9,8 +9,10 @@ import com.inkubator.datacore.service.IService;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.web.model.JobJabatanModel;
 import com.inkubator.hrm.web.model.KompetensiJabatanViewModel;
+import com.inkubator.hrm.web.model.PerformanceIndicatorJabatanViewModel;
 import com.inkubator.hrm.web.search.JabatanSearchParameter;
 import com.inkubator.hrm.web.search.KompetensiJabatanSearchParameter;
+import com.inkubator.hrm.web.search.PerformanceIndicatorJabatanSearchParameter;
 
 import java.util.List;
 
@@ -59,4 +61,8 @@ public interface JabatanService extends IService<Jabatan> {
 	public List<KompetensiJabatanViewModel> getByParamForKompetensiJabatan(KompetensiJabatanSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 
 	public Long getTotalByParamForKompetensiJabatan(KompetensiJabatanSearchParameter searchParameter) throws Exception;
+
+	public List<PerformanceIndicatorJabatanViewModel> getByParamForPerformanceIndicatorJabatan(PerformanceIndicatorJabatanSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
+
+	public Long getTotalByParamForPerformanceIndicatorJabatan(PerformanceIndicatorJabatanSearchParameter searchParameter) throws Exception;
 }

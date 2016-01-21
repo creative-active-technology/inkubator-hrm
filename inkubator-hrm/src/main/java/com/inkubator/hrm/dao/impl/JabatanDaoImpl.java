@@ -5,18 +5,6 @@
  */
 package com.inkubator.hrm.dao.impl;
 
-import com.inkubator.datacore.dao.impl.IDAOImpl;
-import com.inkubator.hrm.HRMConstant;
-import com.inkubator.hrm.dao.JabatanDao;
-import com.inkubator.hrm.entity.Jabatan;
-import com.inkubator.hrm.util.HrmUserInfoUtil;
-import com.inkubator.hrm.web.model.EmpEliminationViewModel;
-import com.inkubator.hrm.web.model.KompetensiJabatanViewModel;
-import com.inkubator.hrm.web.search.EmpEliminationSearchParameter;
-import com.inkubator.hrm.web.search.JabatanSearchParameter;
-import com.inkubator.hrm.web.search.KompetensiJabatanSearchParameter;
-
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +20,16 @@ import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
+
+import com.inkubator.datacore.dao.impl.IDAOImpl;
+import com.inkubator.hrm.dao.JabatanDao;
+import com.inkubator.hrm.entity.Jabatan;
+import com.inkubator.hrm.util.HrmUserInfoUtil;
+import com.inkubator.hrm.web.model.KompetensiJabatanViewModel;
+import com.inkubator.hrm.web.model.PerformanceIndicatorJabatanViewModel;
+import com.inkubator.hrm.web.search.JabatanSearchParameter;
+import com.inkubator.hrm.web.search.KompetensiJabatanSearchParameter;
+import com.inkubator.hrm.web.search.PerformanceIndicatorJabatanSearchParameter;
 
 /**
  *
@@ -333,4 +331,85 @@ public class JabatanDaoImpl extends IDAOImpl<Jabatan> implements JabatanDao {
         }
         return hbm;
     }
+
+	@Override
+	public List<PerformanceIndicatorJabatanViewModel> getByParamForPerformanceIndicatorJabatan(PerformanceIndicatorJabatanSearchParameter searchParameter, int firstResult, int maxResults, Order order) {
+		StringBuffer selectQuery = new StringBuffer(
+                "SELECT jabatan.id AS jabatanId, "
+                + "jabatan.code AS jabatanCode, "
+                + "jabatan.name AS jabatanName, "
+                + "CONCAT(golonganJabatan.code,' - ',pangkat.pangkatName) AS golonganJabatan, "
+                + "SUM(CASE WHEN emp IS NULL THEN 0 ELSE 1 END) AS totalEmployee "
+                + "FROM Jabatan AS jabatan "
+                + "JOIN jabatan.golonganJabatan AS golonganJabatan "
+                + "JOIN golonganJabatan.pangkat AS pangkat "
+                + "LEFT JOIN jabatan.empByJabatans AS emp ");
+        selectQuery.append(this.getWhereQueryByParamForPerformanceIndicatorJabatan(searchParameter));
+        selectQuery.append("GROUP BY jabatan.id ");
+        selectQuery.append("ORDER BY " + order);
+
+        Query hbm = getCurrentSession().createQuery(selectQuery.toString()).setMaxResults(maxResults).setFirstResult(firstResult)
+                .setResultTransformer(Transformers.aliasToBean(PerformanceIndicatorJabatanViewModel.class));
+        hbm = this.setValueQueryByParamForPerformanceIndicatorJabatan(hbm, searchParameter);
+
+        return hbm.list();
+	}
+
+	@Override
+	public Long getTotalByParamForPerformanceIndicatorJabatan(PerformanceIndicatorJabatanSearchParameter searchParameter) {
+		StringBuffer selectQuery = new StringBuffer(
+                "SELECT count(*) "
+                + "FROM Jabatan AS jabatan ");
+        selectQuery.append(this.getWhereQueryByParamForPerformanceIndicatorJabatan(searchParameter));
+
+        Query hbm = getCurrentSession().createQuery(selectQuery.toString());
+        hbm = this.setValueQueryByParamForPerformanceIndicatorJabatan(hbm, searchParameter);
+
+        return Long.valueOf(hbm.uniqueResult().toString());
+	}
+	
+	private Object getWhereQueryByParamForPerformanceIndicatorJabatan(PerformanceIndicatorJabatanSearchParameter searchParameter) {
+		StringBuffer whereQuery = new StringBuffer();
+
+        if (StringUtils.isNotEmpty(searchParameter.getJabatanCode())) {
+            if (StringUtils.isNotEmpty(whereQuery)) {
+                whereQuery.append("AND ");
+            }
+            whereQuery.append("jabatan.code LIKE :jabatanCode ");
+        }
+        
+        if (StringUtils.isNotEmpty(searchParameter.getJabatanName())) {
+            if (StringUtils.isNotEmpty(whereQuery)) {
+                whereQuery.append("AND ");
+            }
+            whereQuery.append("jabatan.name LIKE :jabatanName ");
+        }
+        
+        if (StringUtils.isNotEmpty(searchParameter.getGolonganJabatan())) {
+            if (StringUtils.isNotEmpty(whereQuery)) {
+                whereQuery.append("AND ");
+            }
+            whereQuery.append("(golonganJabatan.code LIKE :golonganJabatan OR pangkat.name LIKE :golonganJabatan) ");
+        }
+
+        return StringUtils.isNotEmpty(whereQuery) ? "WHERE " + whereQuery.toString() : StringUtils.EMPTY;
+	}
+
+	private Query setValueQueryByParamForPerformanceIndicatorJabatan(Query hbm, PerformanceIndicatorJabatanSearchParameter searchParameter) {
+		for (String param : hbm.getNamedParameters()) {
+            if (StringUtils.equals(param, "jabatanCode")) {
+                hbm.setParameter("jabatanCode", "%" + searchParameter.getJabatanCode() + "%");
+            
+            } else if (StringUtils.equals(param, "jabatanName")) {
+                hbm.setParameter("jabatanName", "%" + searchParameter.getJabatanName() + "%");
+            
+            } else if (StringUtils.equals(param, "golonganJabatan")) {
+                hbm.setParameter("golonganJabatan", "%" + searchParameter.getGolonganJabatan() + "%");
+            }
+        }
+
+        return hbm;
+	}
+	
+	
 }

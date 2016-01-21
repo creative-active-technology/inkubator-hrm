@@ -12,8 +12,10 @@ import org.hibernate.criterion.Order;
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.Jabatan;
 import com.inkubator.hrm.web.model.KompetensiJabatanViewModel;
+import com.inkubator.hrm.web.model.PerformanceIndicatorJabatanViewModel;
 import com.inkubator.hrm.web.search.JabatanSearchParameter;
 import com.inkubator.hrm.web.search.KompetensiJabatanSearchParameter;
+import com.inkubator.hrm.web.search.PerformanceIndicatorJabatanSearchParameter;
 
 /**
  *
@@ -50,4 +52,8 @@ public interface JabatanDao extends IDAO<Jabatan> {
 	public List<KompetensiJabatanViewModel> getByParamForKompetensiJabatan(KompetensiJabatanSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 
 	public Long getTotalByParamForKompetensiJabatan(KompetensiJabatanSearchParameter searchParameter);
+
+	public List<PerformanceIndicatorJabatanViewModel> getByParamForPerformanceIndicatorJabatan(PerformanceIndicatorJabatanSearchParameter searchParameter, int firstResult, int maxResults, Order order);
+
+	public Long getTotalByParamForPerformanceIndicatorJabatan(PerformanceIndicatorJabatanSearchParameter searchParameter);
 }
