@@ -3,10 +3,15 @@ package com.inkubator.hrm.service.impl;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.inkubator.datacore.service.impl.IServiceImpl;
+import com.inkubator.hrm.dao.AppraisalPerformanceIndicatorDao;
 import com.inkubator.hrm.entity.AppraisalPerformanceIndicator;
 import com.inkubator.hrm.service.AppraisalPerformanceIndicatorService;
 
@@ -17,6 +22,9 @@ import com.inkubator.hrm.service.AppraisalPerformanceIndicatorService;
 @Service(value = "appraisalPerformanceIndicatorService")
 @Lazy
 public class AppraisalPerformanceIndicatorServiceImpl extends IServiceImpl implements AppraisalPerformanceIndicatorService {
+	
+	@Autowired
+    private AppraisalPerformanceIndicatorDao appraisalPerformanceIndicatorDao;
 
 	@Override
 	public AppraisalPerformanceIndicator getEntiyByPK(String id) throws Exception {
@@ -31,9 +39,9 @@ public class AppraisalPerformanceIndicatorServiceImpl extends IServiceImpl imple
 	}
 
 	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
 	public AppraisalPerformanceIndicator getEntiyByPK(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return appraisalPerformanceIndicatorDao.getEntiyByPK(id);
 	}
 
 	@Override
@@ -212,6 +220,18 @@ public class AppraisalPerformanceIndicatorServiceImpl extends IServiceImpl imple
 			Byte isActive) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<AppraisalPerformanceIndicator> getListByIdAppraisalPerformanceGroup(Long idAppraisalPerformanceGroup) throws Exception {
+		return appraisalPerformanceIndicatorDao.getListByIdAppraisalPerformanceGroup(idAppraisalPerformanceGroup);
+	}
+
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED, propagation = Propagation.SUPPORTS, timeout = 30)
+	public AppraisalPerformanceIndicator getEntityWithDetailById(Long id) {
+		return appraisalPerformanceIndicatorDao.getEntityWithDetailById(id);
 	}
 
 }

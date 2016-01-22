@@ -15,13 +15,19 @@ import com.inkubator.hrm.web.model.RecruitMppApplyModel;
 import com.inkubator.webcore.controller.BaseController;
 import com.inkubator.webcore.util.FacesUtil;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -38,7 +44,8 @@ public class AppraisalPerformGroupDetailController extends BaseController {
     private AppraisalPerformanceIndicatorService appraisalPerformanceIndicatorService;
     private List<AppraisalPerformanceIndicator> listPerformanceAppraisalIndicator;
     private AppraisalPerformanceGroup selectedAppraisalPerformanceGroup;
-
+    private AppraisalPerformanceIndicator selectedAppraisalPerformanceIndicator;
+    
     @PostConstruct
     @Override
     public void initialization() {
@@ -47,8 +54,9 @@ public class AppraisalPerformGroupDetailController extends BaseController {
 
         	listPerformanceAppraisalIndicator = new ArrayList<AppraisalPerformanceIndicator>();
             String idAppraisalPerformanceGroup = FacesUtil.getRequestParameter("execution");
-            if (StringUtils.isNotBlank(idAppraisalPerformanceGroup)) {
+            if (StringUtils.isNotBlank(idAppraisalPerformanceGroup) && StringUtils.isNumeric(idAppraisalPerformanceGroup)) {
                 selectedAppraisalPerformanceGroup = appraisalPerformanceGroupService.getEntiyByPK(Long.valueOf(idAppraisalPerformanceGroup));
+                listPerformanceAppraisalIndicator = appraisalPerformanceIndicatorService.getListByIdAppraisalPerformanceGroup(Long.valueOf(idAppraisalPerformanceGroup));
             }
 
         } catch (Exception e) {
@@ -66,37 +74,64 @@ public class AppraisalPerformGroupDetailController extends BaseController {
         listPerformanceAppraisalIndicator = null;
         
     }
+    
+    public void doSelectEntityIndicator() {
+    	
+    }
 
     public String doBack() {
         cleanAndExit();
         return "/protected/appraisal/appraisal_perform_group_view.htm?faces-redirect=true";
     }
+    
+    public void doAddEntityIndicator(){
+    	//showDialog(null);
+    	Map<String, List<String>> dataToSend = new HashMap<>();
+        dataToSend.put("appraisalPerformanceGroupId", Arrays.asList(String.valueOf(selectedAppraisalPerformanceGroup.getId())));
+        showDialog(dataToSend);
+    }
 
-    public String doEdit() {
+    public String doEditEntityIndicator() {
         //return "/protected/recruitment/recruit_mpp_apply_form.htm?faces-redirect=true&execution=" + activityNumber;
     	return "/protected/recruitment/recruit_mpp_apply_view.htm?faces-redirect=true";
     }
 
-    
-
-   
-
-    private RecruitMppApplyModel convertEntityToModel(RecruitMppApply entity) throws Exception {
-        RecruitMppApplyModel model = new RecruitMppApplyModel();
-      /*  model.setApplyDate(entity.getApplyDate());
-
-        RecruitMppPeriod period = recruitMppPeriodService.getEntiyByPK(entity.getRecruitMppPeriod().getId());
-        model.setMppPeriodId(period.getId());
-        model.setSelectedRecruitMppPeriod(period);
-
-        model.setRecruitMppApplyCode(entity.getRecruitMppApplyCode());
-        model.setRecruitMppApplyName(entity.getRecruitMppApplyName());
-        model.setReason(entity.getReason());
-        model.setUploadPath(entity.getAttachmentDocPath());
-        model.setRecruitMppApplyFileName(entity.getRecruitMppApplyName());*/
-
-        return model;
+    public void doDeleteEntityIndicator(){
+    	  try {
+          	appraisalPerformanceIndicatorService.delete(selectedAppraisalPerformanceIndicator);
+          } catch (Exception e) {
+              LOGGER.error("Error", e);
+          }
     }
+    
+    private void showDialog(Map<String, List<String>> params) {
+        Map<String, Object> options = new HashMap<>();
+        options.put("modal", true);
+        options.put("draggable", true);
+        options.put("resizable", false);
+        options.put("contentWidth", 430);
+        options.put("contentHeight", 330);
+        RequestContext.getCurrentInstance().openDialog("performance_indicator_form", options, params);
+    }
+
+    @Override
+    public void onDialogReturn(SelectEvent event){
+    	 try {
+    		 listPerformanceAppraisalIndicator = appraisalPerformanceIndicatorService.getListByIdAppraisalPerformanceGroup(Long.valueOf(selectedAppraisalPerformanceGroup.getId()));
+    	      super.onDialogReturn(event);
+    	 }catch(Exception e){
+    		 LOGGER.error("Error", e);
+    	 }
+    }
+
+	public AppraisalPerformanceIndicator getSelectedAppraisalPerformanceIndicator() {
+		return selectedAppraisalPerformanceIndicator;
+	}
+
+	public void setSelectedAppraisalPerformanceIndicator(
+			AppraisalPerformanceIndicator selectedAppraisalPerformanceIndicator) {
+		this.selectedAppraisalPerformanceIndicator = selectedAppraisalPerformanceIndicator;
+	}
 
 	public List<AppraisalPerformanceIndicator> getListPerformanceAppraisalIndicator() {
 		return listPerformanceAppraisalIndicator;
@@ -123,6 +158,5 @@ public class AppraisalPerformGroupDetailController extends BaseController {
 			AppraisalPerformanceIndicatorService appraisalPerformanceIndicatorService) {
 		this.appraisalPerformanceIndicatorService = appraisalPerformanceIndicatorService;
 	}
-    
  
 }

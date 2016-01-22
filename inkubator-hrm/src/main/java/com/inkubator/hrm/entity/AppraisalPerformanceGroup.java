@@ -35,7 +35,12 @@ public class AppraisalPerformanceGroup  implements java.io.Serializable {
     }
 
 	
-    public AppraisalPerformanceGroup(long id, String code, String orientation, String appraiser) {
+    public AppraisalPerformanceGroup(long id) {
+		this.id = id;
+	}
+
+
+	public AppraisalPerformanceGroup(long id, String code, String orientation, String appraiser) {
         this.id = id;
         this.code = code;
         this.orientation = orientation;

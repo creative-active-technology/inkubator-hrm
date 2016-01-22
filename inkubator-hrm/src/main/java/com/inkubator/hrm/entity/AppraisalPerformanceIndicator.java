@@ -23,7 +23,7 @@ import javax.persistence.Version;
 )
 public class AppraisalPerformanceIndicator implements Serializable {
 
-	private long id;
+	private Long id;
     private Integer version;
     private String indicatorCode;
     private String indicatorLabel;
@@ -45,7 +45,7 @@ public class AppraisalPerformanceIndicator implements Serializable {
     
     @Id 
     @Column(name="id", unique=true, nullable=false)
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
     

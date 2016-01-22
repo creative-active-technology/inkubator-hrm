@@ -35,9 +35,7 @@
                                     <p:outputLabel  value="#{appmsg['performancegroup.performance_group_code']}" styleClass="label_hrm"/>
                                 </p:column>                          
                                 <p:column  style="width: 80%"> 
-                                    <h:panelGrid columns="1" style="margin-left: -10px;">
-                                        <p:outputLabel value="#{appraisalPerformGroupDetailController.selectedAppraisalPerformanceGroup.code}" />
-                                    </h:panelGrid>
+                                    <p:outputLabel value="#{appraisalPerformGroupDetailController.selectedAppraisalPerformanceGroup.code}" />
                                 </p:column>
                             </p:row>
 
@@ -47,9 +45,7 @@
                                 </p:column>
 
                                 <p:column  style="width: 80%">     
-                                    <h:panelGrid columns="1" style="margin-left: -10px;">
-                                        <p:outputLabel value="#{appraisalPerformGroupDetailController.selectedAppraisalPerformanceGroup.name}" />
-                                    </h:panelGrid>
+                                    <p:outputLabel value="#{appraisalPerformGroupDetailController.selectedAppraisalPerformanceGroup.name}" />
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -58,11 +54,9 @@
                                 </p:column>
 
                                 <p:column  style="width: 80%">
-                                    <h:panelGrid columns="1" style="margin-left: -10px;">
                                         <p:outputLabel value="#{appraisalPerformGroupDetailController.selectedAppraisalPerformanceGroup.orientation}" >
                                             <f:converter converterId="appraisalPerformanceGroupConverter"/>
                                         </p:outputLabel>
-                                    </h:panelGrid>
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -71,11 +65,9 @@
                                 </p:column>
 
                                 <p:column  style="width: 80%">
-                                    <h:panelGrid columns="1" style="margin-left: -10px;">
                                         <p:outputLabel value="#{appraisalPerformGroupDetailController.selectedAppraisalPerformanceGroup.appraiser}" >
                                         	<f:converter converterId="appraisalPerformanceGroupConverter"/>
                                         </p:outputLabel>
-                                    </h:panelGrid>
                                 </p:column>
                             </p:row>
 
@@ -83,8 +75,23 @@
 
                                  
                         <p:separator/>
+                        
+                         <p:toolbar  style="margin-top: 10px">
+                            
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="2" >
+                                    <p:commandButton value="#{appmsg['global.export']}" icon="ui-icon-calculator" title="Export Table to Exel" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop)">
+                                        <pe:exporter target="tableDetailPerformanceIndicator" type="xlsx" pageOnly="false" selectionOnly="false" fileName="List_Performance_Indicator"/>
+                                    </p:commandButton>
+                                    <p:commandButton value="#{appmsg['global.add']}" actionListener="#{appraisalPerformGroupDetailController.doAddEntityIndicator()}" title="#{appmsg['global.add']}" label="#{appmsg['global.add']}" styleClass="label_button" icon="ui-icon-document" ajax="true">
+                                        <p:ajax event="dialogReturn" listener="#{appraisalPerformGroupDetailController.onDialogReturn}"  update="tableDetailPerformanceIndicator, growlId"/>
+                                    </p:commandButton>
+                                    
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
 
-                        <p:dataTable  id="tableDetailRecruitMppApply" var="data"  value="#{appraisalPerformGroupDetailController.listPerformanceAppraisalIndicator}" lazy="false" paginator="false"
+                        <p:dataTable  id="tableDetailPerformanceIndicator" var="data"  value="#{appraisalPerformGroupDetailController.listPerformanceAppraisalIndicator}" lazy="false" paginator="false"
                                       style="margin-top: 10px;margin-bottom: 10px"   rowIndexVar="no">
                             <f:facet name="header">  
                                 <h:outputText value="#{appmsg['performancegroup.list_perform_indicator']}"/>
@@ -112,32 +119,20 @@
                                     <h:outputText value="#{appmsg['appraisal.appraisal']}"/>
                                 </f:facet>
                                 <h:outputLabel value= "#{data.systemScoring.systemScoringName}"/>
-                                <!-- <h:outputLabel value= "#{recruitMppApplyDetailController.recruitMppApplyModel.selectedRecruitMppPeriod.periodeStart}">
-                                    <f:convertDateTime pattern="dd MMM yyyy" />
-                                </h:outputLabel>
-                                <h:outputLabel value= " - " />
-                                <h:outputLabel value= "#{recruitMppApplyDetailController.recruitMppApplyModel.selectedRecruitMppPeriod.periodeEnd}">
-                                    <f:convertDateTime pattern="dd MMM yyyy" />
-                                </h:outputLabel> -->
                             </p:column> 
-                            <!-- <p:column sortBy="actualNumber"  style="width: 8%">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['mpp_recruitment.actual']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{data.actualNumber}"/> 
-                            </p:column> 
-                            <p:column sortBy="recruitPlan"  style="width: 8%">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['mpp_recruitment.mpp']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{data.recruitPlan}"/> 
-                            </p:column>  
-                            <p:column sortBy="difference"  style="width: 8%">
-                                <f:facet name="header">  
-                                    <h:outputText value="#{appmsg['mpp_recruitment.selisih']}"/>
-                                </f:facet>
-                                <h:outputLabel value= "#{data.difference}"/> 
-                            </p:column>        -->                               
+                          	 <p:column headerText="#{appmsg['global.action']}" style="width: 10%;text-align: center" exportable="false">
+                                <p:commandButton icon="ui-icon-trash" title="#{appmsg['global.delete']}" label="#{appmsg['global.delete']}"  
+                                				 style="font-size: 10px!important" update=":panelDialogConfirmId" 
+                                				 action="#{appraisalPerformGroupDetailController.doSelectEntityIndicator()}" onclick="PF('statusDialog').show()" oncomplete="PF('dialogConfirmPerformIndicator').show()" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{appraisalPerformGroupDetailController.selectedAppraisalPerformanceIndicator}" />
+                                </p:commandButton>
+                                -
+                                <p:commandButton icon="ui-icon-folder-open" title="#{appmsg['global.edit']}" label="#{appmsg['global.edit']}" style="font-size: 10px!important" 
+                                                 action="#{appraisalPerformGroupDetailController.doEditEntityIndicator()}" >
+                                    <f:setPropertyActionListener value="#{data}" target="#{appraisalPerformGroupDetailController.selectedAppraisalPerformanceIndicator}" />
+                                    <p:ajax event="dialogReturn" listener="#{appraisalPerformGroupDetailController.onDialogReturn}"  update="tableDetailPerformanceIndicator,:growlId"/>
+                                </p:commandButton>
+                            </p:column>                                         
                         </p:dataTable>
                     </div>
 
@@ -154,7 +149,30 @@
 
 
                 </h:form>
-
+				 <p:dialog widgetVar="dialogConfirmPerformIndicator" header="#{appmsg['global.header_confirmation']}" modal="true" width="450" dynamic="true" onShow="PF('statusDialog').hide()"
+                          appendTo="@(body)" resizable="false" hideEffect="puff" showEffect="clip" closeOnEscape="true"  styleClass="header_small_no_bold">
+                    <div align="center">
+                        <div align="center">
+                            <h:panelGrid columns="2" style="text-align: justify">
+                                <p:graphicImage library="images" name="recycle_bin.png" width="81" height="81" cache="true" />
+                                <h:panelGroup>
+                                    <h:panelGrid style="text-align: center">
+                                        <p:outputLabel value="#{appmsg['global.delete_confirm']}" styleClass="label_hrm"/>
+                                    </h:panelGrid>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </div>
+                        <h:panelGrid id="panelDialogConfirmId"  columns="3">
+                            <p:outputLabel value="#{appmsg['performancegroup.perform_indicator']}"  style="font-weight: bold"/>
+                            <p:outputLabel value=":"  style="font-weight: bold"/>
+                            <p:outputLabel value="#{appraisalPerformGroupDetailController.selectedAppraisalPerformanceIndicator.indicatorCode} - #{appraisalPerformGroupDetailController.selectedAppraisalPerformanceIndicator.indicatorLabel}" styleClass="label_hrm"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="#{appmsg['global.yes']}" action="#{appraisalPerformGroupDetailController.doDeleteEntityIndicator()}" update="formRecruitMppId,:growlId"
+                                         oncomplete="PF('dialogConfirmPerformIndicator').hide()" style="margin-right: 5px" icon="ui-icon-check"/>
+                        <p:commandButton value="#{appmsg['global.no']}" oncomplete="PF('dialogConfirmPerformIndicator').hide()" icon="ui-icon-close" />                     	
+                    </div>
+                </p:dialog>
             </ui:define>
 
         </ui:composition>
