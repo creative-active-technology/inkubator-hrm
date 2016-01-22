@@ -1,5 +1,10 @@
 package com.inkubator.hrm.dao.impl;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
@@ -17,8 +22,25 @@ public class AppraisalPerformanceIndicatorDaoImpl extends IDAOImpl<AppraisalPerf
 
 	@Override
 	public Class<AppraisalPerformanceIndicator> getEntityClass() {
-		// TODO Auto-generated method stub
 		return AppraisalPerformanceIndicator.class;
+	}
+
+	@Override
+	public List<AppraisalPerformanceIndicator> getListByIdAppraisalPerformanceGroup(Long idAppraisalPerformanceGroup) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("performanceGroup", FetchMode.JOIN);
+        criteria.setFetchMode("systemScoring", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("performanceGroup.id", idAppraisalPerformanceGroup));
+        return criteria.list();
+	}
+
+	@Override
+	public AppraisalPerformanceIndicator getEntityWithDetailById(Long id) {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+        criteria.setFetchMode("performanceGroup", FetchMode.JOIN);
+        criteria.setFetchMode("systemScoring", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("id", id));
+        return (AppraisalPerformanceIndicator) criteria.uniqueResult();
 	}
 
 }

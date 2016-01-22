@@ -25,7 +25,7 @@ import javax.persistence.Version;
 @Table(name="system_scoring_index"
     ,catalog="hrm"
 )
-public class SystemScoringIndex  implements java.io.Serializable {
+public class SystemScoringIndex  implements java.io.Serializable,Comparable<SystemScoringIndex> {
 
 
      private long id;
@@ -172,6 +172,13 @@ public class SystemScoringIndex  implements java.io.Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+
+
+	@Override
+	public int compareTo(SystemScoringIndex o) {
+		// TODO Auto-generated method stub
+		return this.orderScala.compareTo(o.orderScala);
+	}
 
 
 

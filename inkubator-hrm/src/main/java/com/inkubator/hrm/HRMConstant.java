@@ -601,4 +601,6 @@ public class HRMConstant {
     public static final Integer OVERTIME_CALCULATION_STATIC = 0;
     public static final Integer OVERTIME_CALCULATION_RELATIVE = 1;
     
+    
+    
 }

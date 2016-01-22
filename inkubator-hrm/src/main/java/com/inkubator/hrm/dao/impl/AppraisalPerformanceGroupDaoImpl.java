@@ -3,9 +3,9 @@ package com.inkubator.hrm.dao.impl;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Lazy;
@@ -50,6 +50,16 @@ public class AppraisalPerformanceGroupDaoImpl extends IDAOImpl<AppraisalPerforma
 	@Override
 	public Class<AppraisalPerformanceGroup> getEntityClass() {
 		return AppraisalPerformanceGroup.class;
+	}
+
+	@Override
+	public List<AppraisalPerformanceGroup> getAllDataFetchPerformanceIndicatorAndScoringIndex() {
+		Criteria criteria = getCurrentSession().createCriteria(getEntityClass());
+		criteria.setFetchMode("appraisalPerformanceIndicators", FetchMode.JOIN);
+		criteria.setFetchMode("appraisalPerformanceIndicators.systemScoring", FetchMode.JOIN);
+		criteria.setFetchMode("appraisalPerformanceIndicators.systemScoring.systemScoringIndexes", FetchMode.JOIN);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return criteria.list();
 	}
 
 }
