@@ -89,6 +89,11 @@ public class AppraisalPerformanceGroupViewController extends BaseController{
 		showDialog(null);
 	}
 	
+	 public String doDetail() {
+	        return "/protected/appraisal/appraisal_perform_group_detail.htm?faces-redirect=true&execution=" + selected.getId();
+	    	//return "/protected/recruitment/recruit_mpp_apply_view.htm?faces-redirect=true";
+	    }
+	
 	public void doEdit(){
         Map<String, List<String>> dataToSend = new HashMap<>();
         List<String> dataIsi = new ArrayList<>();

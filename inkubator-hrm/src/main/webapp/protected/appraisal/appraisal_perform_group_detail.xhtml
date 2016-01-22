@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>IGNORED</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/master_layout_full.xhtml">
+            <ui:define name="windowTitle">
+
+            </ui:define>
+            <ui:define name="center">
+                <p:growl id="growlId" globalOnly="true" showDetail="true"/>
+                <h:form id="formRecruitMppId">
+                    <div id="box_bg" style="margin: 10px">
+                        <h:panelGrid  columns="2">
+                            <p:graphicImage library="images" name="loan.png" height="36" width="36" />
+                            <h:panelGroup layout="block">
+                                <h:panelGrid>
+                                    <p:outputLabel value="#{appmsg['performancegroup.performance_group_detail']}" styleClass="header_big" />
+                                    <p:outputLabel value="#{appmsg['performancegroup.performance_group_detail_from_app']}" styleClass="header_small_no_bold" />
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:panelGrid>
+                        <p:separator  style="margin-left: 0px;margin-right: 0px;margin-bottom: 10px"/>
+
+                        <p:panelGrid style="width: 100%;margin-bottom: 10px;margin-top: 20px" styleClass="grid_border3">
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="#{appmsg['performancegroup.performance_group_code']}" styleClass="label_hrm"/>
+                                </p:column>                          
+                                <p:column  style="width: 80%"> 
+                                    <h:panelGrid columns="1" style="margin-left: -10px;">
+                                        <p:outputLabel value="#{appraisalPerformGroupDetailController.selectedAppraisalPerformanceGroup.code}" />
+                                    </h:panelGrid>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="#{appmsg['performancegroup.performance_group_name']}" styleClass="label_hrm"/>
+                                </p:column>
+
+                                <p:column  style="width: 80%">     
+                                    <h:panelGrid columns="1" style="margin-left: -10px;">
+                                        <p:outputLabel value="#{appraisalPerformGroupDetailController.selectedAppraisalPerformanceGroup.name}" />
+                                    </h:panelGrid>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="#{appmsg['performancegroup.orientation']}" styleClass="label_hrm"/>
+                                </p:column>
+
+                                <p:column  style="width: 80%">
+                                    <h:panelGrid columns="1" style="margin-left: -10px;">
+                                        <p:outputLabel value="#{appraisalPerformGroupDetailController.selectedAppraisalPerformanceGroup.orientation}" >
+                                            <f:converter converterId="appraisalPerformanceGroupConverter"/>
+                                        </p:outputLabel>
+                                    </h:panelGrid>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 20%;background-color: #e1f0f0!important">
+                                    <p:outputLabel  value="#{appmsg['performancegroup.appraiser']}" styleClass="label_hrm"/>
+                                </p:column>
+
+                                <p:column  style="width: 80%">
+                                    <h:panelGrid columns="1" style="margin-left: -10px;">
+                                        <p:outputLabel value="#{appraisalPerformGroupDetailController.selectedAppraisalPerformanceGroup.appraiser}" >
+                                        	<f:converter converterId="appraisalPerformanceGroupConverter"/>
+                                        </p:outputLabel>
+                                    </h:panelGrid>
+                                </p:column>
+                            </p:row>
+
+                        </p:panelGrid>
+
+                                 
+                        <p:separator/>
+
+                        <p:dataTable  id="tableDetailRecruitMppApply" var="data"  value="#{appraisalPerformGroupDetailController.listPerformanceAppraisalIndicator}" lazy="false" paginator="false"
+                                      style="margin-top: 10px;margin-bottom: 10px"   rowIndexVar="no">
+                            <f:facet name="header">  
+                                <h:outputText value="#{appmsg['performancegroup.list_perform_indicator']}"/>
+                            </f:facet> 
+                            <p:column style="text-align: center;width: 3%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.number']}"/>
+                                </f:facet>
+                                <h:outputLabel value="#{no+1}." />
+                            </p:column>
+                            <p:column sortBy="data.indicatorCode"  style="width: 12%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['global.code']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.indicatorCode}"/> 
+                            </p:column>  
+                            <p:column sortBy="data.indicatorLabel"  style="width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['performancegroup.perform_indicator']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.indicatorLabel}"/>
+                            </p:column>  
+                            <p:column  style="width: 20%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['appraisal.appraisal']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.systemScoring.systemScoringName}"/>
+                                <!-- <h:outputLabel value= "#{recruitMppApplyDetailController.recruitMppApplyModel.selectedRecruitMppPeriod.periodeStart}">
+                                    <f:convertDateTime pattern="dd MMM yyyy" />
+                                </h:outputLabel>
+                                <h:outputLabel value= " - " />
+                                <h:outputLabel value= "#{recruitMppApplyDetailController.recruitMppApplyModel.selectedRecruitMppPeriod.periodeEnd}">
+                                    <f:convertDateTime pattern="dd MMM yyyy" />
+                                </h:outputLabel> -->
+                            </p:column> 
+                            <!-- <p:column sortBy="actualNumber"  style="width: 8%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['mpp_recruitment.actual']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.actualNumber}"/> 
+                            </p:column> 
+                            <p:column sortBy="recruitPlan"  style="width: 8%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['mpp_recruitment.mpp']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.recruitPlan}"/> 
+                            </p:column>  
+                            <p:column sortBy="difference"  style="width: 8%">
+                                <f:facet name="header">  
+                                    <h:outputText value="#{appmsg['mpp_recruitment.selisih']}"/>
+                                </f:facet>
+                                <h:outputLabel value= "#{data.difference}"/> 
+                            </p:column>        -->                               
+                        </p:dataTable>
+                    </div>
+
+                    <div id="box_bg" style="margin: 10px">
+
+                        <p:separator style="margin-top: 30px;margin-bottom: 10px"/>
+                        <div style="margin-bottom: 5px">
+                            <p:commandButton value="#{appmsg['global.back']}" ajax="true" 
+                                             action="#{appraisalPerformGroupDetailController.doBack()}" styleClass="isitext_hrm"
+                                             style="margin-right: 5px" label="#{appmsg['global.back']}"
+                                             icon="ui-icon-home" title="#{appmsg['global.back']}"/>
+                        </div>
+                    </div>
+
+
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
