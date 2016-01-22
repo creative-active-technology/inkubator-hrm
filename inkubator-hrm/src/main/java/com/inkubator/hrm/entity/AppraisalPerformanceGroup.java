@@ -1,9 +1,14 @@
 package com.inkubator.hrm.entity;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,6 +35,7 @@ public class AppraisalPerformanceGroup  implements java.io.Serializable {
      private String createdBy;
      private String updatedBy;
      private Date updatedOn;
+     private Set<AppraisalPerformanceIndicator> appraisalPerformanceIndicators = new HashSet<AppraisalPerformanceIndicator>(0);
 
     public AppraisalPerformanceGroup() {
     }
@@ -165,4 +171,14 @@ public class AppraisalPerformanceGroup  implements java.io.Serializable {
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
     }
+
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="performanceGroup")
+	public Set<AppraisalPerformanceIndicator> getAppraisalPerformanceIndicators() {
+		return appraisalPerformanceIndicators;
+	}
+
+	public void setAppraisalPerformanceIndicators(Set<AppraisalPerformanceIndicator> appraisalPerformanceIndicators) {
+		this.appraisalPerformanceIndicators = appraisalPerformanceIndicators;
+	}
+    
 }

@@ -48,7 +48,7 @@ public class PerformanceIndicatorJabatanViewController extends BaseController{
     }
     
     public String doDetail(){
-    	return "/protected/appraisal/performance_indicator_jabatan_detail.htm?faces-redirect=true&execution=e" + selected.getJabatanId();
+    	return "/protected/appraisal/performance_indicator_jabatan_form.htm?faces-redirect=true&execution=e" + selected.getJabatanId();
     }
 
 	public PerformanceIndicatorJabatanSearchParameter getSearchParameter() {

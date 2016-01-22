@@ -8,7 +8,11 @@ import com.inkubator.hrm.web.search.AppraisalPerformanceGroupSearchParameter;
 import org.hibernate.criterion.Order;
 
 public interface AppraisalPerformanceGroupDao extends IDAO<AppraisalPerformanceGroup>{
+	
 	public List<AppraisalPerformanceGroup> getByParam(AppraisalPerformanceGroupSearchParameter searchParameter, int firstResult, int maxResults, Order order);
 	
 	public Long getTotalByParam(AppraisalPerformanceGroupSearchParameter searchParameter);
+
+	public List<AppraisalPerformanceGroup> getAllDataFetchPerformanceIndicatorAndScoringIndex();
+	
 }

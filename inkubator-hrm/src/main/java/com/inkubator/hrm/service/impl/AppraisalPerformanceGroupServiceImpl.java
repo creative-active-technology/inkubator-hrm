@@ -261,4 +261,11 @@ public class AppraisalPerformanceGroupServiceImpl extends IServiceImpl implement
 		return this.appraisalPerformanceGroupDao.getTotalByParam(searchParameter);
 	}
 
+	@Override
+	@Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.SUPPORTS, timeout = 50)
+	public List<AppraisalPerformanceGroup> getAllDataFetchPerformanceIndicatorAndScoringIndex() throws Exception {
+		
+		return this.appraisalPerformanceGroupDao.getAllDataFetchPerformanceIndicatorAndScoringIndex();
+	}
+
 }

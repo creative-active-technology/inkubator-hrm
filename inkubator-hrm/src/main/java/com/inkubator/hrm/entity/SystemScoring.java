@@ -19,6 +19,9 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Sort;
+import org.hibernate.annotations.SortType;
+
 /**
  *
  * @author Deni
@@ -156,7 +159,8 @@ public class SystemScoring  implements java.io.Serializable {
         this.updatedOn = updatedOn;
     }
 
-@OneToMany(fetch=FetchType.LAZY, mappedBy="systemScoring")
+    @Sort(type = SortType.NATURAL)
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="systemScoring")
     public Set<SystemScoringIndex> getSystemScoringIndexes() {
         return this.systemScoringIndexes;
     }
