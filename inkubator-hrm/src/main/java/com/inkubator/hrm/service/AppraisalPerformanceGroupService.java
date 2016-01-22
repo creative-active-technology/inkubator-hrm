@@ -9,7 +9,11 @@ import com.inkubator.hrm.entity.AppraisalPerformanceGroup;
 import com.inkubator.hrm.web.search.AppraisalPerformanceGroupSearchParameter;
 
 public interface AppraisalPerformanceGroupService extends IService<AppraisalPerformanceGroup>{
+	
 	public List<AppraisalPerformanceGroup> getByParam(AppraisalPerformanceGroupSearchParameter searchParameter, int firstResult, int maxResults, Order order) throws Exception;
 	
 	public Long getTotalByParam(AppraisalPerformanceGroupSearchParameter searchParameter) throws Exception;
+
+	public List<AppraisalPerformanceGroup> getAllDataFetchPerformanceIndicatorAndScoringIndex() throws Exception;
+	
 }

@@ -1,5 +1,7 @@
 package com.inkubator.hrm.dao;
 
+import java.util.List;
+
 import com.inkubator.datacore.dao.IDAO;
 import com.inkubator.hrm.entity.AppraisalPerformanceIndicatorJabatan;
 
@@ -9,4 +11,8 @@ import com.inkubator.hrm.entity.AppraisalPerformanceIndicatorJabatan;
  */
 public interface AppraisalPerformanceIndicatorJabatanDao extends IDAO<AppraisalPerformanceIndicatorJabatan> {
 
+	public List<AppraisalPerformanceIndicatorJabatan> getAllDataByJabatanIdFetchScoringIndex(Long jabatanId);
+
+	public void deleteByJabatanId(Long jabatanId);
+	
 }
